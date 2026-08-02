@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.full-stack-recipe.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "recipeId",
+    "familyId",
+    "presetId",
+    "neutralMeaningId",
+    "identityProfileId",
+    "compatibilityStatus",
+    "bindingStatus",
+    "recipeCoverageStatus",
+    "applicationReadiness",
+    "evidenceStatus",
+    "instructionOnly",
+    "runtimeMutationAllowed",
+    "productApplicationAllowed",
+    "visualStackId",
+    "trace",
+    "sourceArtifact",
+    "bindingRequirements",
+    "structuralFingerprint",
+    "semanticFingerprint",
+    "visualStack",
+    "stateCoverage",
+    "variantCoverage",
+    "extensionStates",
+    "assetCoverage",
+    "legacyEffectPolicy",
+    "authorityBasis",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.full-stack-recipe.v1"
+    },
+    "version": {
+      "type": "string"
+    },
+    "recipeId": {
+      "const": "REC.button.primary"
+    },
+    "familyId": {
+      "type": "string"
+    },
+    "presetId": {
+      "type": "string"
+    },
+    "neutralMeaningId": {
+      "const": "ACT.primary"
+    },
+    "identityProfileId": {
+      "const": "prisma.clear-operational.v1"
+    },
+    "compatibilityStatus": {
+      "type": "string"
+    },
+    "bindingStatus": {
+      "type": "string"
+    },
+    "recipeCoverageStatus": {
+      "const": "COMPLETE"
+    },
+    "applicationReadiness": {
+      "type": "string"
+    },
+    "evidenceStatus": {
+      "type": "string"
+    },
+    "instructionOnly": {
+      "const": true
+    },
+    "runtimeMutationAllowed": {
+      "const": false
+    },
+    "productApplicationAllowed": {
+      "const": false
+    },
+    "visualStackId": {
+      "type": "string"
+    },
+    "trace": {
+      "type": "object"
+    },
+    "sourceArtifact": {
+      "type": "object"
+    },
+    "bindingRequirements": {
+      "type": "object"
+    },
+    "structuralFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "semanticFingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "visualStack": {
+      "type": "object"
+    },
+    "stateCoverage": {
+      "type": "array",
+      "minItems": 4
+    },
+    "variantCoverage": {
+      "type": "array",
+      "minItems": 2
+    },
+    "extensionStates": {
+      "type": "array",
+      "minItems": 7
+    },
+    "assetCoverage": {
+      "type": "object"
+    },
+    "legacyEffectPolicy": {
+      "type": "object"
+    },
+    "authorityBasis": {
+      "type": "object"
+    },
+    "integrity": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,842 @@
+{
+  "schema": "prisma.identity.full-stack-recipe.v1",
+  "version": "1.0.0",
+  "recipeId": "REC.button.primary",
+  "familyId": "FAM.button.action",
+  "presetId": "PRESET.button.primary.clear-operational.v1",
+  "neutralMeaningId": "ACT.primary",
+  "identityProfileId": "prisma.clear-operational.v1",
+  "compatibilityStatus": "COMPATIBLE_V1_ADDITIVE_EXTENSION",
+  "bindingStatus": "RESOLVED",
+  "recipeCoverageStatus": "COMPLETE",
+  "applicationReadiness": "BLOCKED_PENDING_FUTURE_EXACT_TARGET_APPLICATION_GATE",
+  "evidenceStatus": "SOURCE_EVIDENCE_COMPLETE_RUNTIME_NOT_CERTIFIED",
+  "instructionOnly": true,
+  "runtimeMutationAllowed": false,
+  "productApplicationAllowed": false,
+  "visualStackId": "VSTACK.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+  "trace": {
+    "surfaceId": "tablet",
+    "ownerId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+    "routeId": "tablet.pos.route",
+    "regionId": "products.tablet.app.components.pos.pos.ticket.panel.tsx.pos.buttons",
+    "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.layer",
+    "componentUiId": "products.tablet.app.components.pos.pos.ticket.panel.tsx",
+    "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+    "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+    "selector": ".cobrarReferenceButton"
+  },
+  "sourceArtifact": {
+    "exportId": "PEX.preview-component-recipe-iddict-preview-primary-btn-01.733104ad5ccd",
+    "schema": "prisma.identity.portable-element-export.v1",
+    "canonicalPayloadSha256": "733104ad5ccd8011222797bf9ffc80b4340a5b5b620e6f0b1eb591a174198368",
+    "path": "portable/examples/preview-component-recipe_iddict-preview-primary-btn-01.tablet.prisma-visual.json"
+  },
+  "bindingRequirements": {
+    "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+    "bindingStatusRequired": "RESOLVED",
+    "layerIdRequired": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+    "implementationLayerIdRequired": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+    "freshAuthorityMeshRequiredForApplication": true
+  },
+  "structuralFingerprint": "4a5c76be820b9a3b309e40ab970d22c0b94e2a11bf3b580aa3741220e5894af8",
+  "semanticFingerprint": "3596a565a0674eb372482cb55af6cb22051d695693fff23962e55f0dbc7d0e3e",
+  "visualStack": {
+    "units": [
+      {
+        "unitId": "base",
+        "kind": "BASE_SELECTOR",
+        "selector": ".cobrarReferenceButton",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_REPLACE_VISUAL_PRESERVE_STRUCTURE",
+        "properties": {
+          "position": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "relative",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "display": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "grid",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "grid-template-columns": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "42px minmax(0, 1fr) auto",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "align-items": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "center",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "gap": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "10px",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_GAP"
+          },
+          "min-height": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "68px",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_MINIMUM"
+          },
+          "padding": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "9px 14px",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_PADDING"
+          },
+          "overflow": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "hidden",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "border": {
+            "mode": "EXPRESSION",
+            "value": "token(border.width) solid color-mix(in srgb, token(color.accentText) 34%, token(color.accent))",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+          },
+          "border-color": {
+            "mode": "EXPRESSION",
+            "value": "color-mix(in srgb, token(color.accentText) 34%, token(color.accent))",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_BORDER"
+          },
+          "border-width": {
+            "mode": "TOKEN",
+            "value": "border.width",
+            "source": "semantic-token",
+            "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+          },
+          "border-radius": {
+            "mode": "TOKEN",
+            "value": "border.radiusControl",
+            "source": "surface-adapted-token",
+            "zeroSemantics": "ZERO_MEANS_SQUARE"
+          },
+          "background": {
+            "mode": "EXPRESSION",
+            "value": "linear-gradient(135deg, token(color.accent), color-mix(in srgb, token(color.accent) 78%, #0f172a))",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+          },
+          "box-shadow": {
+            "mode": "EXPRESSION",
+            "value": "0 14px 32px color-mix(in srgb, token(color.accent) 28%, transparent), inset 0 1px 0 color-mix(in srgb, token(color.accentText) 30%, transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+          },
+          "color": {
+            "mode": "TOKEN",
+            "value": "color.accentText",
+            "source": "semantic-token",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FOREGROUND"
+          },
+          "cursor": {
+            "mode": "LITERAL",
+            "value": "pointer",
+            "source": "recipe",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "font": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "inherit",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "text-align": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "left",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "text-shadow": {
+            "mode": "EXPRESSION",
+            "value": "0 1px 8px color-mix(in srgb, #0f172a 30%, transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+          },
+          "transition": {
+            "mode": "EXPRESSION",
+            "value": "transform token(motion.fast) token(motion.easing), filter token(motion.fast) token(motion.easing), box-shadow token(motion.fast) token(motion.easing), border-color token(motion.fast) token(motion.easing), background token(motion.fast) token(motion.easing)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+          },
+          "duration": {
+            "mode": "TOKEN",
+            "value": "motion.fast",
+            "source": "semantic-token",
+            "zeroSemantics": "ZERO_MEANS_INSTANT"
+          },
+          "easing": {
+            "mode": "TOKEN",
+            "value": "motion.easing",
+            "source": "semantic-token",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "transform": {
+            "mode": "NONE",
+            "value": "none",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+          },
+          "filter": {
+            "mode": "NONE",
+            "value": "none",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_FILTER"
+          }
+        }
+      },
+      {
+        "unitId": "before",
+        "kind": "PSEUDO_ELEMENT",
+        "selector": ".cobrarReferenceButton::before",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "properties": {
+          "enabled": {
+            "mode": "LITERAL",
+            "value": true,
+            "source": "recipe",
+            "zeroSemantics": "FALSE_MEANS_NOT_RENDERED"
+          },
+          "content": {
+            "mode": "LITERAL",
+            "value": "\"\"",
+            "source": "recipe",
+            "zeroSemantics": "EMPTY_MEANS_NO_GENERATED_CONTENT"
+          },
+          "position": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "absolute",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "top": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "-30%",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "bottom": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "-30%",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "left": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "-38%",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "width": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "28%",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_WIDTH"
+          },
+          "pointer-events": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "none",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "background": {
+            "mode": "EXPRESSION",
+            "value": "linear-gradient(90deg, transparent, color-mix(in srgb, token(color.accentText) 34%, transparent), transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+          },
+          "opacity": {
+            "mode": "LITERAL",
+            "value": 1,
+            "source": "recipe",
+            "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+          },
+          "transform": {
+            "mode": "LITERAL",
+            "value": "translateX(0) skewX(-18deg)",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+          },
+          "size": {
+            "mode": "POLICY",
+            "value": {
+              "inline": "28%",
+              "block": "160%"
+            },
+            "source": "recipe",
+            "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_AREA"
+          },
+          "transition": {
+            "mode": "EXPRESSION",
+            "value": "transform token(motion.slow) token(motion.easing), opacity token(motion.fast) token(motion.easing)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+          },
+          "duration": {
+            "mode": "TOKEN",
+            "value": "motion.slow",
+            "source": "semantic-token",
+            "zeroSemantics": "ZERO_MEANS_INSTANT"
+          },
+          "easing": {
+            "mode": "TOKEN",
+            "value": "motion.easing",
+            "source": "semantic-token",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "sheen-policy": {
+            "mode": "POLICY",
+            "value": "SINGLE_PASS_ON_HOVER",
+            "source": "recipe",
+            "zeroSemantics": "DISABLED_MEANS_NO_SHEEN"
+          },
+          "animation-policy": {
+            "mode": "POLICY",
+            "value": "TRANSITION_ONLY_NO_INFINITE_ANIMATION",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_ANIMATION"
+          }
+        }
+      },
+      {
+        "unitId": "hover",
+        "kind": "STATE",
+        "selector": ".cobrarReferenceButton:hover",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "properties": {
+          "filter": {
+            "mode": "LITERAL",
+            "value": "saturate(1.03) brightness(1.02)",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_FILTER"
+          },
+          "box-shadow": {
+            "mode": "EXPRESSION",
+            "value": "0 18px 40px color-mix(in srgb, token(color.accent) 34%, transparent), 0 0 22px color-mix(in srgb, token(color.focus) 16%, transparent), inset 0 1px 0 color-mix(in srgb, token(color.accentText) 34%, transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+          },
+          "transform": {
+            "mode": "EXPRESSION",
+            "value": "translateY(token(state.hoverLift))",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+          },
+          "border": {
+            "mode": "EXPRESSION",
+            "value": "token(border.width) solid color-mix(in srgb, token(color.accentText) 46%, token(color.accent))",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+          },
+          "border-color": {
+            "mode": "EXPRESSION",
+            "value": "color-mix(in srgb, token(color.accentText) 46%, token(color.accent))",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_BORDER"
+          },
+          "background": {
+            "mode": "INHERIT",
+            "value": "base.background",
+            "source": "recipe",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+          },
+          "transition": {
+            "mode": "INHERIT",
+            "value": "base.transition",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+          },
+          "duration": {
+            "mode": "TOKEN",
+            "value": "motion.fast",
+            "source": "semantic-token",
+            "zeroSemantics": "ZERO_MEANS_INSTANT"
+          },
+          "easing": {
+            "mode": "TOKEN",
+            "value": "motion.easing",
+            "source": "semantic-token",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "elevation": {
+            "mode": "POLICY",
+            "value": "RAISED_ONE_STEP",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_ELEVATION"
+          }
+        }
+      },
+      {
+        "unitId": "hoverBefore",
+        "kind": "STATE_PSEUDO_ELEMENT",
+        "selector": ".cobrarReferenceButton:hover::before",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "properties": {
+          "left": {
+            "mode": "LITERAL",
+            "value": "112%",
+            "source": "recipe",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "transform": {
+            "mode": "LITERAL",
+            "value": "translateX(535%) skewX(-18deg)",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+          },
+          "opacity": {
+            "mode": "LITERAL",
+            "value": 1,
+            "source": "recipe",
+            "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+          },
+          "transition": {
+            "mode": "INHERIT",
+            "value": "before.transition",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSITION"
+          },
+          "duration": {
+            "mode": "TOKEN",
+            "value": "motion.slow",
+            "source": "semantic-token",
+            "zeroSemantics": "ZERO_MEANS_INSTANT"
+          },
+          "easing": {
+            "mode": "TOKEN",
+            "value": "motion.easing",
+            "source": "semantic-token",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "animation-policy": {
+            "mode": "POLICY",
+            "value": "TRANSITION_ONLY_NO_LOOP",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_ANIMATION"
+          },
+          "final-position": {
+            "mode": "LITERAL",
+            "value": "outside-inline-end",
+            "source": "recipe",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          }
+        }
+      },
+      {
+        "unitId": "disabled",
+        "kind": "STATE",
+        "selector": ".cobrarReferenceButton:disabled",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_REPLACE",
+        "properties": {
+          "opacity": {
+            "mode": "TOKEN",
+            "value": "state.disabledOpacity",
+            "source": "semantic-token",
+            "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+          },
+          "filter": {
+            "mode": "LITERAL",
+            "value": "saturate(0.20) brightness(0.96)",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_FILTER"
+          },
+          "saturation": {
+            "mode": "LITERAL",
+            "value": 0.2,
+            "source": "recipe",
+            "zeroSemantics": "ZERO_MEANS_DESATURATED"
+          },
+          "box-shadow": {
+            "mode": "NONE",
+            "value": "none",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+          },
+          "transform": {
+            "mode": "NONE",
+            "value": "none",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_TRANSFORM"
+          },
+          "cursor": {
+            "mode": "LITERAL",
+            "value": "not-allowed",
+            "source": "recipe",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "pseudo-element-behavior": {
+            "mode": "POLICY",
+            "value": "DISABLED",
+            "source": "recipe",
+            "zeroSemantics": "DISABLED_MEANS_NOT_RENDERED"
+          },
+          "contrast-policy": {
+            "mode": "POLICY",
+            "value": {
+              "foreground": "inherit",
+              "minimum": "WCAG_AA_TEXT",
+              "readability": "REQUIRED"
+            },
+            "source": "recipe",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          }
+        }
+      },
+      {
+        "unitId": "icon",
+        "kind": "SUBCOMPONENT",
+        "selector": ".cobrarIcon",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_REPLACE_VISUAL_PRESERVE_STRUCTURE",
+        "properties": {
+          "display": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "grid",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "width": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "42px",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_WIDTH"
+          },
+          "height": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "42px",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_HEIGHT"
+          },
+          "place-items": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "center",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "background": {
+            "mode": "EXPRESSION",
+            "value": "color-mix(in srgb, token(color.accentText) 14%, transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FILL"
+          },
+          "foreground": {
+            "mode": "TOKEN",
+            "value": "color.accentText",
+            "source": "semantic-token",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_FOREGROUND"
+          },
+          "border": {
+            "mode": "EXPRESSION",
+            "value": "token(border.width) solid color-mix(in srgb, #0f172a 20%, transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+          },
+          "border-color": {
+            "mode": "EXPRESSION",
+            "value": "color-mix(in srgb, #0f172a 20%, transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "TRANSPARENT_MEANS_NO_VISIBLE_BORDER"
+          },
+          "border-width": {
+            "mode": "TOKEN",
+            "value": "border.width",
+            "source": "semantic-token",
+            "zeroSemantics": "ZERO_MEANS_NO_BORDER"
+          },
+          "border-radius": {
+            "mode": "EXPRESSION",
+            "value": "calc(token(border.radiusControl) - 2px)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "ZERO_MEANS_SQUARE"
+          },
+          "box-shadow": {
+            "mode": "EXPRESSION",
+            "value": "inset 0 1px 0 color-mix(in srgb, token(color.accentText) 22%, transparent)",
+            "source": "identityProfile+recipe",
+            "zeroSemantics": "NONE_MEANS_NO_SHADOW"
+          },
+          "size-policy": {
+            "mode": "POLICY",
+            "value": {
+              "inline": "42px",
+              "block": "42px",
+              "iconGlyph": "21px"
+            },
+            "source": "recipe",
+            "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_AREA"
+          },
+          "opacity": {
+            "mode": "LITERAL",
+            "value": 1,
+            "source": "recipe",
+            "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+          },
+          "filter": {
+            "mode": "NONE",
+            "value": "none",
+            "source": "recipe",
+            "zeroSemantics": "NONE_MEANS_NO_FILTER"
+          },
+          "state-interaction": {
+            "mode": "POLICY",
+            "value": {
+              "disabled": "INHERIT_PARENT_OPACITY_AND_FILTER",
+              "loading": "PRESERVE_LAYOUT_NO_UNREGISTERED_SPINNER"
+            },
+            "source": "recipe",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          }
+        }
+      },
+      {
+        "unitId": "copy",
+        "kind": "SUBCOMPONENT",
+        "selector": ".cobrarCopy",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "properties": {
+          "display": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "grid",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          },
+          "gap": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "1px",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_GAP"
+          }
+        }
+      },
+      {
+        "unitId": "copyStrong",
+        "kind": "SUBCOMPONENT",
+        "selector": ".cobrarCopy strong",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "properties": {
+          "font-size": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "1.02rem",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_TEXT"
+          }
+        }
+      },
+      {
+        "unitId": "copySmall",
+        "kind": "SUBCOMPONENT",
+        "selector": ".cobrarCopy small",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "properties": {
+          "opacity": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": 0.72,
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_FULLY_TRANSPARENT"
+          }
+        }
+      },
+      {
+        "unitId": "amount",
+        "kind": "SUBCOMPONENT",
+        "selector": ".cobrarAmount",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_PRESERVE_STRUCTURE",
+        "properties": {
+          "font-size": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "1.15rem",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_NO_VISIBLE_TEXT"
+          },
+          "letter-spacing": {
+            "mode": "PRESERVE_STRUCTURAL",
+            "value": "-0.03em",
+            "source": "structuralFingerprint",
+            "zeroSemantics": "ZERO_MEANS_DEFAULT_TRACKING"
+          }
+        }
+      },
+      {
+        "unitId": "loading",
+        "kind": "COMPONENT_STATE",
+        "selector": "[data-prisma-state=\"loading\"]",
+        "coverageStatus": "DEFINED",
+        "applicationPolicy": "EXPLICIT_INHERIT_BASE",
+        "properties": {
+          "loading-policy": {
+            "mode": "POLICY",
+            "value": {
+              "visualState": "INHERIT_BASE",
+              "copyMayChange": true,
+              "layoutMutation": false,
+              "icon": "PRESERVE_LAYOUT_NO_UNREGISTERED_EFFECT",
+              "unregisteredSpinner": "FORBIDDEN"
+            },
+            "source": "component-state-contract",
+            "zeroSemantics": "NOT_ZERO_CAPABLE"
+          }
+        }
+      }
+    ]
+  },
+  "stateCoverage": [
+    {
+      "stateId": "ready",
+      "status": "DEFINED",
+      "unitRefs": [
+        "base",
+        "before",
+        "icon",
+        "copy",
+        "copyStrong",
+        "copySmall",
+        "amount"
+      ]
+    },
+    {
+      "stateId": "hover",
+      "status": "DEFINED",
+      "unitRefs": [
+        "hover",
+        "hoverBefore"
+      ]
+    },
+    {
+      "stateId": "disabled",
+      "status": "DEFINED",
+      "unitRefs": [
+        "disabled",
+        "icon"
+      ]
+    },
+    {
+      "stateId": "loading",
+      "status": "DEFINED",
+      "unitRefs": [
+        "loading",
+        "icon",
+        "copy"
+      ]
+    }
+  ],
+  "variantCoverage": [
+    {
+      "variantId": "primary",
+      "status": "DEFINED"
+    },
+    {
+      "variantId": "tablet-pos-cobrar",
+      "status": "DEFINED"
+    }
+  ],
+  "extensionStates": [
+    {
+      "stateId": "focus",
+      "status": "NOT_DEFINED",
+      "reason": "No explicit current selector; future registry extension point."
+    },
+    {
+      "stateId": "focus-visible",
+      "status": "NOT_DEFINED",
+      "reason": "No explicit current selector; future accessibility gate."
+    },
+    {
+      "stateId": "pressed",
+      "status": "NOT_DEFINED",
+      "reason": "No explicit current selector; future interaction gate."
+    },
+    {
+      "stateId": "success",
+      "status": "NOT_APPLICABLE",
+      "reason": "No current Cobrar success selector."
+    },
+    {
+      "stateId": "warning",
+      "status": "NOT_APPLICABLE",
+      "reason": "No current Cobrar warning selector."
+    },
+    {
+      "stateId": "error",
+      "status": "NOT_APPLICABLE",
+      "reason": "Error is currently a sibling inline error, not this target."
+    },
+    {
+      "stateId": "reduced-motion",
+      "status": "NOT_DEFINED",
+      "reason": "Future adapter policy; no current target selector."
+    }
+  ],
+  "assetCoverage": {
+    "status": "NOT_APPLICABLE",
+    "assets": [],
+    "unregisteredAssetsForbidden": true
+  },
+  "legacyEffectPolicy": {
+    "implicitPreservationAllowed": false,
+    "unknownEffectStatus": "BLOCKED_BY_INCOMPLETE_RECIPE_COVERAGE",
+    "unknownStateStatus": "BLOCKED_BY_UNGOVERNED_STATE",
+    "unknownSubcomponentStatus": "BLOCKED_BY_UNGOVERNED_SUBCOMPONENT",
+    "unknownPseudoElementStatus": "BLOCKED_BY_UNGOVERNED_PSEUDO_ELEMENT",
+    "unknownAssetStatus": "BLOCKED_BY_UNGOVERNED_ASSET"
+  },
+  "authorityBasis": {
+    "fieldManual": "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+    "factoryLedgerAgentGate": "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+    "idrecipePreflightResult": "FULL_STACK_RECIPE_AUTHORITY_PREFLIGHT_READY",
+    "idapplyPlanFix1Result": "EXACT_TARGET_FULL_VISUAL_STACK_PREVIEW_READY"
+  },
+  "integrity": {
+    "algorithm": "SHA-256",
+    "canonicalization": "json-sort-keys-compact-utf8-v1",
+    "coveredTopLevelFields": [
+      "applicationReadiness",
+      "assetCoverage",
+      "authorityBasis",
+      "bindingRequirements",
+      "bindingStatus",
+      "compatibilityStatus",
+      "evidenceStatus",
+      "extensionStates",
+      "familyId",
+      "identityProfileId",
+      "instructionOnly",
+      "legacyEffectPolicy",
+      "neutralMeaningId",
+      "presetId",
+      "productApplicationAllowed",
+      "recipeCoverageStatus",
+      "recipeId",
+      "runtimeMutationAllowed",
+      "schema",
+      "semanticFingerprint",
+      "sourceArtifact",
+      "stateCoverage",
+      "structuralFingerprint",
+      "trace",
+      "variantCoverage",
+      "version",
+      "visualStack",
+      "visualStackId"
+    ],
+    "canonicalPayloadSha256": "debba4345ea1ec27963be2cf73e8d26a5151c89b2072dd584863777c06643758"
+  }
+}

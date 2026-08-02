@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.identity.element-bindings.registry.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "authoritySnapshot",
+    "policies",
+    "bindings"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.identity.element-bindings.registry.v1"
+    },
+    "version": {
+      "type": "string"
+    },
+    "authoritySnapshot": {
+      "type": "object"
+    },
+    "policies": {
+      "type": "object"
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "prisma.identity.element-binding.v1"
+      }
+    }
+  },
+  "additionalProperties": true
+}

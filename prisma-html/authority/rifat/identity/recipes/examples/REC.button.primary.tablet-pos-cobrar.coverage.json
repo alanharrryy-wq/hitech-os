@@ -1,0 +1,173 @@
+{
+  "schema": "prisma.identity.recipe-coverage-matrix.v1",
+  "recipeId": "REC.button.primary",
+  "visualStackId": "VSTACK.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+  "sourceCssPath": "products/tablet/app/components/pos/pos.module.css",
+  "sourceCssSha256": "fc80de7a963ded76839d2dae429c17623ca5075463615753e9033868d5fd053f",
+  "sourceComponentPath": "products/tablet/app/components/pos/pos-ticket-panel.tsx",
+  "sourceComponentSha256": "cb6f3218213cd4acba7169447055f72df0dbe696f6579173d00f2fa6a53cee35",
+  "recipeCoverageStatus": "COMPLETE",
+  "knownDeclarationCount": 49,
+  "uncoveredKnownDeclarationCount": 0,
+  "units": [
+    {
+      "unitId": "base",
+      "selector": ".cobrarReferenceButton",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "align-items",
+        "background",
+        "border",
+        "border-radius",
+        "box-shadow",
+        "color",
+        "cursor",
+        "display",
+        "font",
+        "gap",
+        "grid-template-columns",
+        "min-height",
+        "overflow",
+        "padding",
+        "position",
+        "text-align",
+        "text-shadow",
+        "transition"
+      ],
+      "knownDeclarationCount": 18,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 24
+    },
+    {
+      "unitId": "before",
+      "selector": ".cobrarReferenceButton::before",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "background",
+        "bottom",
+        "content",
+        "left",
+        "pointer-events",
+        "position",
+        "top",
+        "transform",
+        "transition",
+        "width"
+      ],
+      "knownDeclarationCount": 10,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 17
+    },
+    {
+      "unitId": "hover",
+      "selector": ".cobrarReferenceButton:hover",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "box-shadow",
+        "filter",
+        "transform"
+      ],
+      "knownDeclarationCount": 3,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 10
+    },
+    {
+      "unitId": "hoverBefore",
+      "selector": ".cobrarReferenceButton:hover::before",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "left"
+      ],
+      "knownDeclarationCount": 1,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 8
+    },
+    {
+      "unitId": "disabled",
+      "selector": ".cobrarReferenceButton:disabled",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "cursor",
+        "filter",
+        "opacity",
+        "transform"
+      ],
+      "knownDeclarationCount": 4,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 8
+    },
+    {
+      "unitId": "icon",
+      "selector": ".cobrarIcon",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "background",
+        "border",
+        "border-radius",
+        "display",
+        "height",
+        "place-items",
+        "width"
+      ],
+      "knownDeclarationCount": 7,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 15
+    },
+    {
+      "unitId": "copy",
+      "selector": ".cobrarCopy",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "display",
+        "gap"
+      ],
+      "knownDeclarationCount": 2,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 2
+    },
+    {
+      "unitId": "copyStrong",
+      "selector": ".cobrarCopy strong",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "font-size"
+      ],
+      "knownDeclarationCount": 1,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 1
+    },
+    {
+      "unitId": "copySmall",
+      "selector": ".cobrarCopy small",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "opacity"
+      ],
+      "knownDeclarationCount": 1,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 1
+    },
+    {
+      "unitId": "amount",
+      "selector": ".cobrarAmount",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [
+        "font-size",
+        "letter-spacing"
+      ],
+      "knownDeclarationCount": 2,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 2
+    },
+    {
+      "unitId": "loading",
+      "selector": "[data-prisma-state=\"loading\"]",
+      "coverageStatus": "DEFINED",
+      "knownProperties": [],
+      "knownDeclarationCount": 0,
+      "uncoveredKnownProperties": [],
+      "recipePropertyCount": 1
+    }
+  ],
+  "hardRule": "Any new known declaration, selector, state, pseudo-element, subcomponent or asset blocks COMPLETE until registered."
+}

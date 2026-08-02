@@ -1,0 +1,33 @@
+{
+  "schema": "prisma.identity.surface-adapter.v1",
+  "id": "prisma.adapter.shared-ui.v1",
+  "surface": "shared-ui",
+  "role": "NEUTRAL_SOURCE",
+  "readiness": "NEUTRAL_SOURCE_READY",
+  "intent": "Neutral semantic source. It does not dictate end-surface density.",
+  "tokenOverrides": {},
+  "projectionRules": {
+    "meaningOrder": [
+      "semantic-token",
+      "identity-profile",
+      "surface-adapter",
+      "owner-slot-binding",
+      "compiled-projection"
+    ],
+    "bindingRegistry": "registries/bindings.registry.json",
+    "routeSource": "authority/rifat/prisma-ui/routes.json",
+    "fewestContainersPossible": true,
+    "zeroVisualKnobMeansTransparent": true,
+    "preserveFunctionalBehavior": true,
+    "manualRuntimeEditsForbidden": true
+  },
+  "forbiddenMutations": [
+    "functional-behavior",
+    "database-or-sync",
+    "backend",
+    "deploy-or-dns",
+    "process-or-port",
+    "priority-override",
+    "global-css-blast"
+  ]
+}
