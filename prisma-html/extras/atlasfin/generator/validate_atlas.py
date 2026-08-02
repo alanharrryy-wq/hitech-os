@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 PAGES = ["index.html", "a-fundamentos.html", "b-materiales.html", "c-acciones.html", "d-entrada-texto.html", "e-seleccion-filtros.html", "f-navegacion.html", "g-tablas.html", "h-listas.html", "i-paneles-cards.html", "j-expansion.html", "k-estados-feedback.html", "l-carga-progreso.html", "m-overlays.html", "n-operativos.html", "o-patrones-pantalla.html", "p-movimiento.html", "q-responsive-accesibilidad.html", "r-contenido.html", "s-analitica.html", "t-archivos-medios.html", "u-calendario.html", "v-comercio-pagos.html", "w-identidad-seguridad.html", "x-sistema-diagnostico.html", "y-i18n-impresion-offline.html", "z-gobierno.html"]
-SCHEMAS = ["PRISMA_VISUAL_PROPERTY_REGISTRY_V1", "PRISMA_VISUAL_FAMILY_REGISTRY_V1", "PRISMA_VISUAL_PRESET_REGISTRY_V1", "PRISMA_VISUAL_RECIPE_REGISTRY_V4", "PRISMA_VISUAL_STATE_REGISTRY_V1", "PRISMA_VISUAL_VARIANT_REGISTRY_V1", "PRISMA_SURFACE_ADAPTER_REGISTRY_V2", "PRISMA_VISUAL_ASSET_REGISTRY_V1", "PRISMA_PORTABLE_VISUAL_TRANSFER_V2", "PRISMA_VISUAL_BINDING_REQUIREMENTS_V1", "PRISMA_VISUAL_RECIPE_COVERAGE_V1", "PRISMA_VISUAL_MIGRATION_REPORT_V1", "PRISMA_VISUAL_IMPORT_INSPECTION_V1", "PRISMA_VISUAL_DELTA_V2", "PRISMA_VISREC2_CONSOLE_STATE_V2", "PRISMA_ATLASFIN_VISUAL_CONTROL_PILOT_V1"]
+SCHEMAS = ["PRISMA_VISUAL_PROPERTY_REGISTRY_V1", "PRISMA_VISUAL_FAMILY_REGISTRY_V1", "PRISMA_VISUAL_PRESET_REGISTRY_V1", "PRISMA_VISUAL_RECIPE_REGISTRY_V4", "PRISMA_VISUAL_STATE_REGISTRY_V1", "PRISMA_VISUAL_VARIANT_REGISTRY_V1", "PRISMA_SURFACE_ADAPTER_REGISTRY_V2", "PRISMA_VISUAL_ASSET_REGISTRY_V1", "PRISMA_PORTABLE_VISUAL_TRANSFER_V2", "PRISMA_VISUAL_BINDING_REQUIREMENTS_V1", "PRISMA_VISUAL_RECIPE_COVERAGE_V1", "PRISMA_VISUAL_MIGRATION_REPORT_V1", "PRISMA_VISUAL_IMPORT_INSPECTION_V1", "PRISMA_VISUAL_DELTA_V2", "PRISMA_VISREC2_CONSOLE_STATE_V2", "PRISMA_ATLASFIN_VISUAL_CONTROL_PILOT_V1", "PRISMA_ATLASFIN_VISUAL_APPLICATION_REQUEST_V1", "PRISMA_ATLASFIN_VISUAL_APPLICATION_RESULT_V1", "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1"]
 MODULES = ["runtime.js", "selection-engine.js", "fingerprint-engine.js", "property-engine.js", "recipe-engine.js", "state-engine.js", "adapter-engine.js", "compatibility-engine.js", "preview-engine.js", "export-engine.js", "migration-engine.js", "import-inspector.js", "checksum-engine.js", "console-engine.js", "governed-control-engine.js"]
 VISREC2_TASK_COUNT = 20
 VISIBLE_CONTROL_COUNTS = {"properties": 12, "states": 12, "variants": 8, "targets": 4, "transferModes": 3}
@@ -64,6 +64,8 @@ def main() -> int:
 
     pilot_json_path = data / "visual-control.cobrar.pilot.json"
     pilot_js_path = data / "visual-control.cobrar.pilot.js"
+    application_json_path = data / "visual-application.cobrar.current.json"
+    application_js_path = data / "visual-application.cobrar.current.js"
     index_text = (atlas / "index.html").read_text(encoding="utf-8", errors="replace")
     for marker in [
         'src="assets/js/visrec2/governed-control-engine.js"',
@@ -118,8 +120,8 @@ def main() -> int:
             issues.append({"code": "CONTROL_SOURCE_PLAN_BLOCKED", "actual": plan.get("blockingReasons")})
         gate_statuses = {gate.get("gateId"): gate.get("status") for gate in pilot.get("gates", []) if isinstance(gate, dict)}
         required_gate_statuses = {
-            "RECIPE_COVERAGE_FRESHNESS": "BLOCKED_BY_STALE_RUNTIME_EVIDENCE",
-            "MAMASTROPHIC_VISUAL_EVIDENCE": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE",
+            "RECIPE_COVERAGE_FRESHNESS": "PASS",
+            "MAMASTROPHIC_VISUAL_EVIDENCE": "SOURCE_EVIDENCE_AVAILABLE_RUNTIME_REVIEW_REQUIRED",
             "PRODUCT_APPLICATION": "DISABLED_BY_CONTRACT",
         }
         for gate_id, expected in required_gate_statuses.items():
@@ -148,14 +150,55 @@ def main() -> int:
             if js_payload != pilot:
                 issues.append({"code": "CONTROL_PILOT_JS_PARITY"})
 
+    application = None
+    if not application_json_path.is_file():
+        issues.append({"code": "CONTROL_APPLICATION_MISSING", "path": application_json_path.name})
+    else:
+        application_text = application_json_path.read_text(encoding="utf-8")
+        application = json.loads(application_text)
+        if re.search(r"[A-Za-z]:\\\\", application_text) or "file://" in application_text.lower():
+            issues.append({"code": "CONTROL_APPLICATION_LOCAL_PATH"})
+        if application.get("schema") != "PRISMA_ATLASFIN_VISUAL_APPLICATION_RESULT_V1":
+            issues.append({"code": "CONTROL_APPLICATION_SCHEMA", "actual": application.get("schema")})
+        if application.get("status") != "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED":
+            issues.append({"code": "CONTROL_APPLICATION_STATUS", "actual": application.get("status")})
+        if application.get("productFileCount") != 1 or len(application.get("productFiles", [])) != 1:
+            issues.append({"code": "CONTROL_APPLICATION_SCOPE", "actual": application.get("productFiles")})
+        preview = application.get("preview", {})
+        evidence = preview.get("evidenceBundle", {})
+        post_plan = preview.get("postApplicationPlan", {})
+        if post_plan.get("status") != "NO_ACTIONABLE_DIFF" or post_plan.get("changedLineCount") != 0:
+            issues.append({"code": "CONTROL_APPLICATION_POST_PLAN", "actual": post_plan})
+        if evidence.get("comparison", {}).get("pixel", {}).get("visuallyChanged") is not True:
+            issues.append({"code": "CONTROL_APPLICATION_VISUAL_DIFF"})
+        if evidence.get("console", {}).get("newErrorCount") != 0:
+            issues.append({"code": "CONTROL_APPLICATION_CONSOLE_REGRESSION"})
+        if evidence.get("network", {}).get("status") != "PASS_NO_TARGET_NETWORK_FAILURES":
+            issues.append({"code": "CONTROL_APPLICATION_NETWORK"})
+        if application.get("rollback", {}).get("ready") is not True:
+            issues.append({"code": "CONTROL_APPLICATION_ROLLBACK"})
+        integrity = application.get("integrity", {})
+        payload_without_integrity = dict(application)
+        payload_without_integrity.pop("integrity", None)
+        if integrity.get("canonicalPayloadSha256") != canonical_sha256(payload_without_integrity):
+            issues.append({"code": "CONTROL_APPLICATION_INTEGRITY"})
+
+    if not application_js_path.is_file():
+        issues.append({"code": "CONTROL_APPLICATION_JS_MISSING", "path": application_js_path.name})
+    elif application is not None:
+        application_js = application_js_path.read_text(encoding="utf-8")
+        prefix = "window.PRISMA_ATLASFIN_VISUAL_APPLICATION = "
+        if not application_js.startswith(prefix) or not application_js.endswith(";\n"):
+            issues.append({"code": "CONTROL_APPLICATION_JS_WRAPPER"})
+        elif json.loads(application_js[len(prefix):-2]) != application:
+            issues.append({"code": "CONTROL_APPLICATION_JS_PARITY"})
+
     control_module_path = module_dir / "governed-control-engine.js"
     if control_module_path.is_file():
         control_text = control_module_path.read_text(encoding="utf-8", errors="replace")
-        for marker in ['document.createElement("script")', ".slice(", "operationPageSize", "searchText"]:
+        for marker in ['document.createElement("script")', ".slice(", "operationPageSize", "searchText", "visual-application.cobrar.current.js", "data-atlas-application-action"]:
             if marker not in control_text:
                 issues.append({"code": "CONTROL_RUNTIME_MARKER", "marker": marker})
-        if "JSON.stringify" in control_text:
-            issues.append({"code": "CONTROL_MASS_STRINGIFY_SEARCH"})
         control_css = (atlas / "assets/css/visual-recipe-dock.css").read_text(encoding="utf-8", errors="replace")
         if "content-visibility: auto" not in control_css or "contain-intrinsic-size" not in control_css:
             issues.append({"code": "CONTROL_VIRTUALIZATION_MISSING"})

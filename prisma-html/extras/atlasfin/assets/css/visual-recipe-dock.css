@@ -662,3 +662,23 @@ body.is-visrec2-selecting,body.is-visrec2-selecting *{cursor:crosshair}.visrec2-
   .atlas-control-gates strong { text-align: left; }
   .atlas-control-workflow { columns: 1; }
 }
+.atlas-control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.atlas-control-inspector {
+  max-height: 22rem;
+  overflow: auto;
+  padding: 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--atlas-accent, #65d2ff) 24%, transparent);
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, #07111f 88%, transparent);
+  color: #d9f4ff;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

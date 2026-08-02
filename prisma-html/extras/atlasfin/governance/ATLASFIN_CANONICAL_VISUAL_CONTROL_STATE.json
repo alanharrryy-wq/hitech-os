@@ -2,7 +2,7 @@
   "schema": "prisma.atlasfin.canonical-visual-control-state.v1",
   "version": "1.0.0",
   "authority": "prisma-html/extras/atlasfin",
-  "status": "CONTROL_READY_SOURCE_ONLY",
+  "status": "CONTROL_READY_WITH_SEPARATE_CERTIFIED_APPLICATION",
   "pilot": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1",
   "surfaceScope": ["SURF.tb.pos"],
   "componentScope": ["TB-POS-PAY-COBRAR-BTN-01"],
@@ -10,10 +10,19 @@
   "productApplicationAllowed": false,
   "sourceMutationPerformed": false,
   "projection": "assets/data/visual-control.cobrar.pilot.json",
+  "applicationProjection": "assets/data/visual-application.cobrar.current.json",
   "generator": "generator/build_canonical_visual_control.py",
   "blocks": {
-    "visualEvidence": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE",
-    "runtimeCertification": "BLOCKED_BY_MISSING_MAMASTROPHIC_EVIDENCE",
-    "productApplication": "BLOCKED_PENDING_EVIDENCE_AND_EXPLICIT_AUTHORIZATION"
+    "historicalPilotApplication": "DISABLED_BY_SOURCE_ONLY_V1_CONTRACT",
+    "currentApplication": "NONE"
+  },
+  "currentApplication": {
+    "status": "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED",
+    "transactionId": "ATLASFIN.APPLY.TABLET.POS.COBRAR.V1",
+    "productFileCount": 1,
+    "postApplicationPlan": "NO_ACTIONABLE_DIFF",
+    "rollbackReady": true,
+    "browserMutationAllowed": false,
+    "runner": "tools/code-atlas/src/code_atlas/ui_bridge/cobrar_application.py"
   }
 }

@@ -1,0 +1,27 @@
+{
+  "$id": "https://prisma.local/schemas/visual/PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Atlasfin Cobrar runtime visual evidence bundle",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["schema", "schemaVersion", "taskId", "controlId", "status", "before", "after", "comparison", "states", "console", "network", "rollback", "integrity"],
+  "properties": {
+    "schema": {"const": "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1"},
+    "schemaVersion": {"const": "1.0.0"},
+    "taskId": {"const": "ATLASFIN_COBRAR_FULL_GOVERNED_APPLICATION_V1"},
+    "controlId": {"const": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1"},
+    "status": {"enum": ["APPLIED_AND_RUNTIME_VISUAL_CERTIFIED", "ROLLED_BACK_RUNTIME_VISUAL_CERTIFICATION_FAILED"]},
+    "before": {"type": "object"},
+    "after": {"type": "object"},
+    "comparison": {"type": "object"},
+    "states": {"type": "array", "minItems": 4},
+    "console": {"type": "object"},
+    "network": {"type": "object"},
+    "rollback": {"type": "object"},
+    "integrity": {"type": "object"}
+  },
+  "additionalProperties": false,
+  "x-discriminator": "controlId",
+  "examples": [{"controlId": "ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1", "status": "APPLIED_AND_RUNTIME_VISUAL_CERTIFIED"}],
+  "x-migration": {"from": [], "policy": "Additive runtime evidence; source-only evidence cannot self-promote."}
+}
