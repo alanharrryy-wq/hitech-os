@@ -1,0 +1,59 @@
+{
+  "$id": "https://prisma.local/schemas/visual/PRISMA_VISREC2_CONSOLE_STATE_V2.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "schema": "PRISMA_VISREC2_CONSOLE_STATE_V2",
+      "version": "2.0.0"
+    }
+  ],
+  "properties": {
+    "activePreset": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "activeSelection": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "readOnlySummaries": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "PRISMA_VISREC2_CONSOLE_STATE_V2"
+    },
+    "status": {
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "visibleControlContract": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "version"
+  ],
+  "title": "PRISMA_VISREC2_CONSOLE_STATE_V2",
+  "type": "object",
+  "version": "2.0.0",
+  "x-discriminator": "schema",
+  "x-migration": {
+    "from": [],
+    "strategy": "explicit-and-lossless"
+  }
+}

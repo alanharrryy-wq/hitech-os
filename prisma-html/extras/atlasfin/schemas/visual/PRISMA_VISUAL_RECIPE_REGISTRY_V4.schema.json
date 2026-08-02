@@ -1,0 +1,40 @@
+{
+  "$id": "https://prisma.local/schemas/visual/PRISMA_VISUAL_RECIPE_REGISTRY_V4.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "examples": [
+    {
+      "items": [],
+      "schema": "PRISMA_VISUAL_RECIPE_REGISTRY_V4",
+      "version": "1.0.0"
+    }
+  ],
+  "properties": {
+    "items": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "schema": {
+      "const": "PRISMA_VISUAL_RECIPE_REGISTRY_V4"
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "items"
+  ],
+  "title": "PRISMA_VISUAL_RECIPE_REGISTRY_V4",
+  "type": "object",
+  "version": "1.0.0",
+  "x-discriminator": "schema",
+  "x-migration": {
+    "from": [],
+    "strategy": "explicit-and-lossless"
+  }
+}
