@@ -1,0 +1,23 @@
+{
+  "$id": "prisma.ui.bridge.plan.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "applicationEnabled": {
+      "const": false
+    },
+    "mode": {
+      "const": "READ_ONLY_SOURCE_PLAN"
+    }
+  },
+  "required": [
+    "planId",
+    "mode",
+    "applicationEnabled",
+    "status",
+    "operations",
+    "blockingReasons"
+  ],
+  "title": "PRISMA UI Bridge Plan V1",
+  "type": "object"
+}
