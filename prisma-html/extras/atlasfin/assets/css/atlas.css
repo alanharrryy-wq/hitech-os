@@ -612,7 +612,6 @@ body.is-ready .atlas-hero::after {
   align-content: start;
   gap: 10px;
   overflow: hidden;
-  overflow-wrap: anywhere;
   background:
     linear-gradient(145deg, rgba(255,255,255,.036), rgba(255,255,255,.004)),
     rgba(9, 24, 37, .46);
@@ -797,15 +796,10 @@ body.is-ready .atlas-hero::after {
 }
 
 .atlas-component-card__id {
-  display: block;
-  min-width: 0;
-  max-width: 100%;
   color: rgb(var(--atlas-accent));
   font-family: Consolas, monospace;
   font-size: .62rem;
-  line-height: 1.35;
   letter-spacing: .06em;
-  overflow-wrap: anywhere;
 }
 
 .atlas-table-shell {
@@ -865,12 +859,9 @@ body.is-ready .atlas-hero::after {
 }
 
 .atlas-status {
-  min-width: 0;
-  max-width: 100%;
   min-height: 26px;
   padding: 4px 8px;
   display: inline-flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   color: rgb(var(--status-rgb, 102,236,177));
@@ -879,8 +870,6 @@ body.is-ready .atlas-hero::after {
   border-radius: 999px;
   font-size: .68rem;
   font-weight: 760;
-  line-height: 1.3;
-  overflow-wrap: anywhere;
 }
 
 .atlas-progress {
@@ -3837,7 +3826,6 @@ html[data-motion="off"] .atlas-progress span::after {
 .atlas-content-panel > header,
 .atlas-section-panel > header {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -3856,7 +3844,6 @@ html[data-motion="off"] .atlas-progress span::after {
 }
 
 .atlas-metric-strip > div {
-  min-width: 0;
   min-height: 76px;
   padding: 11px;
   display: grid;
@@ -3874,7 +3861,6 @@ html[data-motion="off"] .atlas-progress span::after {
 .atlas-metric-strip span {
   color: var(--atlas-text-3);
   font-size: .70rem;
-  overflow-wrap: anywhere;
 }
 
 .atlas-card-mosaic {
@@ -4264,11 +4250,10 @@ button.atlas-rich-card {
 }
 
 .atlas-mini-state {
-  min-width: 0;
   min-height: 110px;
   padding: 13px;
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-columns: 34px 1fr;
   align-items: start;
   gap: 10px;
   background: rgba(3,10,16,.28);
@@ -4290,7 +4275,6 @@ button.atlas-rich-card {
   margin: 3px 0 0;
   color: var(--atlas-text-3);
   font-size: .72rem;
-  overflow-wrap: anywhere;
 }
 
 .atlas-retry-state {
@@ -4631,7 +4615,6 @@ html[data-motion="off"] :is(
   border:1px solid rgba(190,222,241,.14);
   border-radius:17px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
-  overflow-wrap:anywhere;
 }
 
 :is(.atlas-demo-panel,.atlas-type-demo,.atlas-quote-demo) :is(h1,h2,h3,p) { margin:0; }
@@ -4639,13 +4622,11 @@ html[data-motion="off"] :is(
 .atlas-rowline {
   min-height:42px;
   display:flex;
-  flex-wrap:wrap;
   align-items:center;
   justify-content:space-between;
   gap:12px;
   border-bottom:1px solid rgba(190,222,241,.10);
 }
-.atlas-rowline > * { min-width:0;max-width:100%;overflow-wrap:anywhere; }
 .atlas-rowline--total {
   color:rgb(var(--atlas-accent));
   font-size:1.08rem;
@@ -4698,7 +4679,6 @@ html[data-motion="off"] :is(
   background:rgba(var(--atlas-accent),.08);
   border-radius:11px;font-weight:820;
 }
-.atlas-status-tile :is(strong,small) { min-width:0;max-width:100%;overflow-wrap:anywhere; }
 .atlas-status-tile small { color:var(--atlas-text-3); }
 
 .atlas-screen-demo {
@@ -4836,12 +4816,10 @@ html[data-motion="off"] :is(
 .atlas-avatar--large { width:72px;height:72px;font-size:1.15rem; }
 .atlas-role-badge { width:fit-content;padding:6px 10px;color:rgb(var(--atlas-accent));background:rgba(var(--atlas-accent),.08);border:1px solid rgba(var(--atlas-accent),.18);border-radius:999px;font-size:.72rem; }
 
-.atlas-health-demo { min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px; }
-.atlas-health-demo article { min-width:0;max-width:100%;min-height:100px;padding:11px;display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:9px;background:rgba(3,10,16,.34);border:1px solid rgba(190,222,241,.13);border-radius:13px; }
+.atlas-health-demo { display:grid;grid-template-columns:repeat(3,1fr);gap:9px; }
+.atlas-health-demo article { min-height:100px;padding:11px;display:grid;grid-template-columns:38px 1fr 10px;align-items:center;gap:9px;background:rgba(3,10,16,.34);border:1px solid rgba(190,222,241,.13);border-radius:13px; }
 .atlas-health-demo article>span { width:36px;height:36px;display:grid;place-items:center;color:rgb(var(--atlas-accent));background:rgba(var(--atlas-accent),.08);border-radius:10px;font-size:.65rem; }
 .atlas-health-demo article i { width:9px;height:9px;border-radius:50%;background:rgb(102,236,177);box-shadow:0 0 8px rgba(102,236,177,.5); }
-.atlas-health-demo article > * { min-width:0;max-width:100%; }
-.atlas-health-demo :is(strong,small) { overflow-wrap:anywhere; }
 .atlas-health-demo small { color:var(--atlas-text-3); }
 .atlas-log-search { min-height:44px;padding:0 11px;color:var(--atlas-text);background:rgba(2,8,12,.54);border:1px solid rgba(190,222,241,.15);border-radius:10px; }
 .atlas-log-demo { max-height:300px;padding:11px;display:grid;gap:6px;overflow:auto;color:rgba(224,238,247,.82);background:rgb(1 5 8 / .82);border-radius:13px; }
@@ -4853,8 +4831,8 @@ html[data-motion="off"] :is(
 .atlas-locale-demo span { color:var(--atlas-text-3);font-size:.7rem; }
 .atlas-locale-demo[dir="rtl"] { direction:rtl;text-align:right; }
 .atlas-offline-demo { display:grid;gap:7px; }
-.atlas-offline-demo article { min-width:0;min-height:64px;padding:9px;display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:9px;background:rgba(3,10,16,.30);border:1px solid rgba(190,222,241,.12);border-radius:12px; }
-.atlas-offline-demo article div { min-width:0;display:grid;gap:2px;overflow-wrap:anywhere; }
+.atlas-offline-demo article { min-height:64px;padding:9px;display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:9px;background:rgba(3,10,16,.30);border:1px solid rgba(190,222,241,.12);border-radius:12px; }
+.atlas-offline-demo article div { display:grid;gap:2px; }
 .atlas-offline-demo small { color:var(--atlas-text-3); }
 
 @media (max-width:1180px) {
@@ -4867,8 +4845,6 @@ html[data-motion="off"] :is(
   .atlas-payment-cards,.atlas-locale-controls { grid-template-columns:1fr; }
   .atlas-screen-demo { --rail:0px;grid-template-columns:1fr; }
   .atlas-screen-demo>aside { display:none; }
-  .atlas-offline-demo article { grid-template-columns:32px minmax(0,1fr); }
-  .atlas-offline-demo article > :last-child { grid-column:2;max-width:100%; }
 }
 @media print {
   body * { visibility:hidden; }
@@ -6014,4 +5990,181 @@ html[data-motion="off"] body[data-atlas-chroma][data-atlas-premium][data-atlas-p
 html[data-motion="off"] body[data-atlas-chroma][data-atlas-premium][data-atlas-page][data-default-accent] *::after {
   animation: none;
   transition: none;
+}
+/* UIMAPFINAL_ATLASFIN_STATE_EVIDENCE_V1
+   Canonical owner for status wrapping, collision safety and evidence fixtures.
+   Priority overrides are prohibited in this governed block. */
+:is(
+  .atlas-rich-card,
+  .atlas-entity-card,
+  .atlas-component-card,
+  .atlas-status-tile,
+  .atlas-tile
+) {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+:is(
+  .atlas-rich-card,
+  .atlas-entity-card,
+  .atlas-component-card,
+  .atlas-status-tile,
+  .atlas-tile
+) > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.atlas-status {
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.25;
+  text-align: center;
+  justify-content: center;
+}
+
+.atlas-rich-card--horizontal {
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, auto);
+}
+
+.atlas-rich-card--horizontal .atlas-status {
+  justify-self: end;
+}
+
+.atlas-evidence-fixture {
+  box-sizing: border-box;
+  width: min(1320px, 100%);
+  height: min(820px, calc(100vh - 32px));
+  margin: 0;
+  padding: 18px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
+  overflow: hidden;
+  color: var(--atlas-text);
+  background: rgb(3 10 16 / .98);
+  border: 1px solid rgba(190, 222, 241, .16);
+  border-radius: 20px;
+}
+
+.atlas-evidence-fixture__header {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.atlas-evidence-fixture__header :is(h1, p) {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.atlas-evidence-fixture__grid {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.atlas-evidence-state-card {
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-content: start;
+  gap: 9px;
+  overflow: hidden;
+  color: var(--atlas-text);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .055), transparent),
+    rgb(5 11 16 / .94);
+  border: 1px solid rgba(190, 222, 241, .16);
+  border-radius: 16px;
+}
+
+.atlas-evidence-state-card :is(h2, p, strong, small, span) {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.atlas-evidence-state-card [data-evidence-status] {
+  width: 100%;
+  justify-self: stretch;
+  border-radius: 12px;
+}
+
+.atlas-evidence-state-card[data-atlas-evidence-state="disabled"] {
+  opacity: .58;
+}
+
+.atlas-evidence-state-card[data-atlas-evidence-state="focus"] {
+  outline: 3px solid rgb(var(--atlas-accent));
+  outline-offset: -4px;
+}
+
+.atlas-evidence-state-card[data-atlas-evidence-state="loading"] {
+  background:
+    linear-gradient(110deg, rgba(var(--atlas-accent), .04), rgba(var(--atlas-accent), .12), rgba(var(--atlas-accent), .04)),
+    rgb(5 11 16 / .94);
+}
+
+.atlas-evidence-state-card[data-atlas-evidence-state="skipped"] {
+  border-style: dashed;
+}
+
+@media (max-width: 1100px) {
+  .atlas-evidence-fixture__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .atlas-evidence-fixture {
+    height: auto;
+    min-height: calc(100vh - 24px);
+    margin: 12px auto;
+  }
+
+  .atlas-evidence-fixture__grid {
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+}
+
+
+body:has(> .atlas-evidence-fixture) {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 16px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  body:has(> .atlas-evidence-fixture) {
+    min-height: 100vh;
+    padding: 12px;
+    display: block;
+    overflow: auto;
+  }
+
+  body:has(> .atlas-evidence-fixture) > .atlas-evidence-fixture {
+    width: 100%;
+    margin: 0 auto;
+  }
 }
