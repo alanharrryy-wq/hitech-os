@@ -10,7 +10,6 @@ import type { getProductVariantWorkspace } from "@/server/services/product-varia
 import type { getProductMediaWorkspace } from "@/server/services/product-media.service";
 import styles from "../inventory/pc-inventory-master-detail.module.css";
 import mediaStyles from "./product-media-workspace.module.css";
-import mediaStyles from "./product-media-workspace.module.css";
 
 function money(cents: number) {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(cents / 100);

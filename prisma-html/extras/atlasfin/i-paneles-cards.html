@@ -289,7 +289,7 @@
       </div>
     </article>
 
-    <article class="atlas-rich-card atlas-rich-card--status">
+    <article class="atlas-rich-card atlas-rich-card--status" data-atlas-evidence-card="status">
       <p class="atlas-eyebrow">Status Card</p>
       <span class="atlas-state-orb" aria-hidden="true"></span>
       <h3>Operación saludable</h3>
@@ -340,8 +340,8 @@
   </header>
 
   <div class="atlas-tile-grid">
-    <button class="atlas-tile" type="button">
-      <span>CSV</span><strong>Ventas CSV</strong><small>Descargar →</small>
+    <button class="atlas-tile" type="button" data-atlas-evidence-state="enabled-fixture" data-atlas-evidence-kind="fixture" aria-label="Fixture visual habilitado, sin acción de producto">
+      <span>FX</span><strong>Fixture habilitado</strong><small>Prueba visual segura</small>
     </button>
     <button class="atlas-tile" type="button">
       <span>JSON</span><strong>Ventas JSON</strong><small>Descargar →</small>
@@ -349,11 +349,11 @@
     <button class="atlas-tile" type="button">
       <span>PDF</span><strong>Reporte ejecutivo</strong><small>Abrir →</small>
     </button>
-    <button class="atlas-tile" type="button" disabled>
+    <button class="atlas-tile" type="button" disabled data-atlas-evidence-state="disabled" aria-label="Estado visual deshabilitado">
       <span>⏳</span><strong>Turno y caja</strong><small>No disponible</small>
     </button>
     <button class="atlas-tile atlas-tile--loading" type="button"
-      data-loading-tile>
+      data-loading-tile data-atlas-evidence-state="loading" aria-busy="true">
       <span class="atlas-tile__loader"></span>
       <strong>Loading Tile</strong><small>Simular carga</small>
     </button>

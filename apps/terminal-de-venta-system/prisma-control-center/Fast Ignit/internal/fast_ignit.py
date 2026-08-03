@@ -33,6 +33,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
 
 PORTS_ALL = [3000, 3110, 3120, 3130, 3140, 3150, 3160]
+PRISMA_FAST_IGNIT_FAIL_FAST_V1 = True
 
 
 def now_stamp() -> str:
@@ -150,6 +151,8 @@ class ServiceResult:
     log_file: str = ""
     elapsed_sec: float = 0.0
     error: str = ""
+    startup_error: str = ""
+    last_probe_error: str = ""
     zero_idle: Dict[str, object] = field(default_factory=dict)
 
 
@@ -468,15 +471,18 @@ class FastIgnit:
             else:
                 result.action = "start-exited"
                 result.error = f"process exited early with code {exit_code}"
+                result.startup_error = result.error
                 try:
                     tail = log_file.read_text(encoding="utf-8", errors="replace").splitlines()[-24:]
                     if tail:
                         result.error += "\n" + "\n".join(tail)
+                        result.startup_error = result.error
                 except Exception:
                     pass
         except Exception:
             result.action = "start-failed"
-            result.error = traceback.format_exc()
+            result.startup_error = traceback.format_exc()
+            result.error = result.startup_error
         result.elapsed_sec = round(time.monotonic() - started, 3)
         return result
 
@@ -485,6 +491,18 @@ class FastIgnit:
         total = len(selected)
         last_print = 0.0
         while time.monotonic() < deadline:
+            failed = [
+                self.results[svc.port]
+                for svc in selected
+                if self.results[svc.port].action in ("start-failed", "start-exited")
+                or self.results[svc.port].startup_error
+            ]
+            if failed:
+                details = []
+                for res in failed:
+                    original = res.startup_error or res.error or "unknown startup failure"
+                    details.append(f"{res.port} {res.name}: {res.action}\n{original}")
+                raise GuardError("FAST_IGNIT_START_FAILED_FAST:\n" + "\n\n".join(details))
             ready_count = 0
             with concurrent.futures.ThreadPoolExecutor(max_workers=min(max(total, 1), 12)) as pool:
                 future_map = {pool.submit(self.service_ready, svc): svc for svc in selected}
@@ -501,12 +519,15 @@ class FastIgnit:
                     if ok:
                         res.ready = True
                         res.ready_url = url
+                        res.last_probe_error = ""
                         res.error = ""
                         res.elapsed_sec = round(time.monotonic() - self.started_at, 3)
                         if res.action == "pending":
                             res.action = "reused"
                     else:
-                        res.error = msg
+                        res.last_probe_error = msg
+                        if not res.startup_error:
+                            res.error = msg
                     if res.ready:
                         ready_count += 1
             if ready_count >= total:

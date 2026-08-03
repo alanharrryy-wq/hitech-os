@@ -9,7 +9,7 @@ import re
 import shutil
 import tempfile
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
 
 from .contracts import (
@@ -908,7 +908,7 @@ def aliases_have_cycle(aliases: list[dict[str, Any]]) -> bool:
     return False
 
 
-def coverage_for(records: list[dict[str, Any]], routes: list[dict[str, Any]], deprecated_count: int = 0) -> dict[str, Any]:
+def coverage_for(records: list[dict[str, Any]], routes: list[dict[str, Any]], deprecated_count: int = 0, runtime_alias: str | None = None) -> dict[str, Any]:
     eligible = len(records)
     discovered_routes = len(routes)
     mapped_route_ids = {record["routeId"] for record in records if record.get("routeId")}
@@ -941,6 +941,18 @@ def coverage_for(records: list[dict[str, Any]], routes: list[dict[str, Any]], de
         "recipeCompatibleComponents": recipe_compatible,
         "deprecatedComponents": deprecated_count,
     }
+    runtime_disposition = (
+        "ACTIVE_AGGREGATE"
+        if runtime_alias is None
+        else "INTERNAL_NO_ROUTE_REGISTRY"
+        if runtime_alias == "shared"
+        else "SKIPPED_OFFLINE"
+        if discovered_routes == 0 and eligible == 0
+        else "BLOCKED_BY_MISSING_ROUTE_REGISTRY"
+        if discovered_routes == 0
+        else "ACTIVE_SOURCE_DISCOVERY"
+    )
+    metrics["runtimeDisposition"] = runtime_disposition
     metrics.update({
         "routeCoverage": percent(metrics["mappedRoutes"], discovered_routes),
         "identificationCoverage": percent(identified, eligible),
@@ -1439,33 +1451,88 @@ def validate_outputs(
     }
 
 
-def tree_hash(roots: list[Path], exclude_roots: list[Path] | None = None, workers: int = 18) -> tuple[str, dict[str, str]]:
-    exclude_roots = [path.resolve() for path in (exclude_roots or []) if path.exists()]
+def _git_tracked_paths(root: Path) -> list[Path] | None:
+    """Return Git-tracked files only; fall back to tree walk outside Git repos."""
+    import subprocess
+
+    try:
+        process = subprocess.run(
+            ["git", "-C", str(root), "ls-files", "-z"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=120,
+        )
+    except Exception:
+        return None
+    if process.returncode != 0:
+        return None
+
+    paths: list[Path] = []
+    for raw in process.stdout.split(b"\0"):
+        if not raw:
+            continue
+        relative = raw.decode("utf-8", errors="surrogateescape")
+        candidate = root / Path(*PurePosixPath(relative).parts)
+        if candidate.is_file():
+            paths.append(candidate)
+    return paths
+
+
+def tree_hash(
+    roots: list[Path],
+    exclude_roots: list[Path] | None = None,
+    workers: int = 18,
+) -> tuple[str, dict[str, str]]:
+    """Hash tracked source bytes, never volatile/untracked runtime evidence."""
+    exclude_roots = [path.resolve() for path in (exclude_roots or [])]
     files: list[tuple[Path, Path]] = []
+
     for root in roots:
         if not root.exists():
             continue
         root_resolved = root.resolve()
-        for path in root.rglob("*"):
+        tracked = _git_tracked_paths(root_resolved)
+        candidates = tracked if tracked is not None else list(root_resolved.rglob("*"))
+
+        for path in candidates:
             if not path.is_file():
                 continue
             try:
                 resolved = path.resolve()
-                if any(resolved == excluded or excluded in resolved.parents for excluded in exclude_roots):
+                if any(
+                    resolved == excluded or excluded in resolved.parents
+                    for excluded in exclude_roots
+                ):
                     continue
                 rel = resolved.relative_to(root_resolved)
             except Exception:
                 continue
+
             low_parts = {part.lower() for part in rel.parts}
-            if low_parts & {".git", "node_modules", ".next", "dist", "build", "coverage", "__pycache__", ".mam-runtime"}:
+            if low_parts & {
+                ".git",
+                "node_modules",
+                ".next",
+                "dist",
+                "build",
+                "coverage",
+                "__pycache__",
+                ".mam-runtime",
+            }:
                 continue
             if path.stat().st_size > 64 * 1024 * 1024:
                 continue
             files.append((root_resolved, path))
+
     from concurrent.futures import ThreadPoolExecutor, as_completed
+
     hashes: dict[str, str] = {}
     with ThreadPoolExecutor(max_workers=max(1, min(18, workers))) as pool:
-        futures = {pool.submit(sha256_file, path): (root, path) for root, path in files}
+        futures = {
+            pool.submit(sha256_file, path): (root, path)
+            for root, path in files
+        }
         for future in as_completed(futures):
             root, path = futures[future]
             try:
@@ -1473,8 +1540,31 @@ def tree_hash(roots: list[Path], exclude_roots: list[Path] | None = None, worker
                 hashes[key] = future.result()
             except Exception:
                 continue
-    digest = source_snapshot_hash(hashes)
-    return digest, {key: hashes[key] for key in sorted(hashes)}
+
+    ordered = {key: hashes[key] for key in sorted(hashes)}
+    return source_snapshot_hash(ordered), ordered
+
+
+def tree_hash_diff(
+    before: dict[str, str],
+    after: dict[str, str],
+) -> dict[str, Any]:
+    before_keys = set(before)
+    after_keys = set(after)
+    added = sorted(after_keys - before_keys)
+    removed = sorted(before_keys - after_keys)
+    changed = sorted(
+        key
+        for key in before_keys & after_keys
+        if before[key] != after[key]
+    )
+    return {
+        "added": added,
+        "removed": removed,
+        "changed": changed,
+        "mutationCount": len(added) + len(removed) + len(changed),
+        "intact": not added and not removed and not changed,
+    }
 
 
 
@@ -1636,12 +1726,13 @@ def run_uimap(
     )
     deprecations = make_deprecations(product, governor, generated_at)
     source_snapshot = source_snapshot_hash(global_source_files)
-    coverage_global = coverage_for(records, all_routes, len(deprecations))
+    coverage_global = coverage_for(records, all_routes, len(deprecations), None)
     coverage_by_runtime = {
         alias: coverage_for(
             [record for record in records if record["runtimeAlias"] == alias],
             [route for route in all_routes if route["runtimeAlias"] == alias],
             0,
+            alias,
         )
         for alias in ACTIVE_RUNTIME_ALIASES
     }
@@ -1824,8 +1915,23 @@ def run_uimap(
         })
         write_json(batches_dir / f"{index:02d}_{alias}.json", batch)
 
-    product_after_hash, product_after_files = tree_hash([product], exclude_roots=exclude_paths, workers=workers)
-    governor_after_hash, governor_after_files = tree_hash([governor], workers=workers)
+    product_after_hash, product_after_files = tree_hash(
+        [product],
+        exclude_roots=exclude_paths,
+        workers=workers,
+    )
+    governor_after_hash, governor_after_files = tree_hash(
+        [governor],
+        workers=workers,
+    )
+    product_integrity_diff = tree_hash_diff(
+        product_before_files,
+        product_after_files,
+    )
+    governor_integrity_diff = tree_hash_diff(
+        governor_before_files,
+        governor_after_files,
+    )
     validation = validate_outputs(
         records,
         aliases,
@@ -1869,13 +1975,21 @@ def run_uimap(
     validation["sourceSnapshotHash"] = source_snapshot
     write_json(reports_dir / "VALIDATION.json", validation)
     write_json(reports_dir / "SOURCE_PRESERVATION.json", {
+        "schema": "prisma.uimap.source-preservation.v2",
+        "integrityScope": "GIT_TRACKED_SOURCE_ONLY",
         "productBeforeHash": product_before_hash,
         "productAfterHash": product_after_hash,
-        "productIntact": product_before_hash == product_after_hash,
+        "productIntact": product_integrity_diff["intact"],
+        "productDiff": product_integrity_diff,
         "governorBeforeHash": governor_before_hash,
         "governorAfterHash": governor_after_hash,
-        "governorIntact": governor_before_hash == governor_after_hash,
-        "excludedCodeAtlasPaths": [str(path) for path in exclude_paths],
+        "governorIntact": governor_integrity_diff["intact"],
+        "governorDiff": governor_integrity_diff,
+        "exactTaskOwnedExclusions": [str(path) for path in exclude_paths],
+        "untrackedAndVolatileFilesPolicy": (
+            "Excluded from product-source integrity. Git-tracked source bytes "
+            "remain mandatory and any added/removed/changed tracked path fails."
+        ),
     })
     write_json(reports_dir / "GIT_CONTEXT.json", git_context or {"status": "NOT_PROVIDED_BY_CALLER"})
     write_json(reports_dir / "BACKUP_MANIFEST.json", backup_manifest or {"status": "NOT_APPLICABLE_MAPPER_ONLY"})

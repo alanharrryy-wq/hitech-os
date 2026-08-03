@@ -732,3 +732,66 @@ F:\descargasf\status refresh diag 0507 090852 result.zip
   fallo de validación.
 - **Deuda pendiente:** certificar un emisor de sesión Mobile vivo, Customer Setup
   hosted, auth/tenant/license/device E2E y pruebas negativas cross-context.
+
+<!-- PRISMA_FAST3160_LIFECYCLE_FIX_20260802:START -->
+## Aprendizaje operativo: Fast Ignit y Cloud Command Center 3160
+
+Fecha: 2026-08-02
+Estado documental: `SOURCE_READY_STATIC_VALIDATED`
+Runtime pendiente: volver a ejecutar Fast Ignit y exigir HTTP real en `http://127.0.0.1:3160/unified-shell.html`.
+
+### Incidente
+
+Fast Ignit levantó 3000, 3110, 3120, 3130, 3140 y 3150, pero el proceso foreground de 3160 terminó con código `0` antes de servir HTTP. La causa no fue el puerto: el wrapper llamó al Python sin `--serve`, por lo que `start()` intentó crear un hijo silencioso y devolvió éxito al proceso custodio.
+
+Además, `-OutputDir` viajaba por array splatting posicional y podía ocupar accidentalmente `ServiceId`.
+
+### Corrección canónica
+
+- `OutputDir` se declara y reenvía como parámetro nombrado.
+- `ForwardArgs` ya no invade parámetros posicionales.
+- Foreground 3160 ejecuta el servidor real con `--serve` y permanece vivo hasta `Ctrl+C` o fallo real.
+- Detached 3160 también usa el comando servidor real y conserva health gate.
+- PC 3130 deja de ejecutar `prisma:generate` automáticamente durante `dev`; la generación sigue explícita y permanece en build/typecheck.
+
+### Regla anti-fake-green
+
+`exitCode = 0` no certifica un servicio. Fast Ignit sólo puede declarar PASS cuando el custodio permanece vivo, el puerto escucha, el endpoint HTTP responde y el reporte identifica la URL ready real.
+
+### Límites
+
+Esta intervención no inicia ni detiene servicios, no libera puertos, no toca DB, Prisma schema, Git, Cloudflare ni secretos. Runtime se certifica únicamente con un nuevo Fast Ignit y su ZIP final.
+<!-- PRISMA_FAST3160_LIFECYCLE_FIX_20260802:END -->
+
+## PRISMA_VSCODE_PORT_CONTROL_FOLDEROPEN_20260802
+
+### VS Code abre Port Control, no todos los puertos
+
+- `folderOpen` debe abrir únicamente `PRISMA FAST IGNIT: Port Control`.
+- La tarea `PRISMA FAST IGNIT: Todo Local Paralelo` permanece disponible sólo para ejecución manual.
+- Abrir VS Code no debe iniciar 3000, 3110, 3120, 3130, 3140, 3150 ni 3160 por sí solo.
+- La consola interactiva muestra el estado y espera una orden explícita:
+  - `L1` abre 3000.
+  - `L2` abre 3110.
+  - `L3` abre 3120.
+  - `L4` abre 3130.
+  - `L5` abre 3140.
+  - `L6` abre 3150.
+  - `L7` abre 3160.
+  - `L1.L3.L7` solicita varios puertos.
+- El generador canónico `PRISMA VSCode Menu Misma Sesion.ps1` debe conservar esta regla para no reintroducir el autoarranque masivo.
+- Instalar o validar esta regla no autoriza iniciar servicios, matar procesos, liberar puertos, generar Prisma, tocar DB, Cloudflare o Git.
+
+## PRISMA_FAST_IGNIT_L3_OWNER_20260803
+
+### L3 / Tablet 3120: owner persistente y fallo rápido
+
+- Tablet 3120 usa Windows Job Objects mediante Zero-Idle Guard.
+- `L3` debe lanzar Fast Ignit con `--hold`; Fast Ignit permanece vivo como owner probado del Job.
+- Port Control no espera a que el owner termine: espera únicamente a que 3120 quede READY y vuelve al menú interactivo.
+- El owner escribe su estado en `F:\descargasf\FAST_IGNIT_TABLET_OWNER.json`.
+- `S` muestra el estado del owner además del listener de 3120.
+- `C3` y `R3` pueden detener el owner únicamente cuando PID y command line prueban Fast Ignit + 3120 + `--hold`.
+- No se permiten `node kill` globales, consolas separadas ni cierre de procesos no probados.
+- Un `start-failed` o `start-exited` termina el readiness inmediatamente y conserva `startup_error`; el último timeout HTTP no puede sustituir la causa original.
+- El instalador de esta corrección es estático: no inicia servicios, no mata procesos y no libera puertos.

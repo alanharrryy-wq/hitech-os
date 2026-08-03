@@ -17,6 +17,8 @@ param(
 
   [string]$ServiceId = "",
 
+  [string]$OutputDir = "",
+
   [switch]$Foreground,
 
   [switch]$Detached,
@@ -184,14 +186,18 @@ $CloudflareConfigPath = Join-Path $ControlRoot "internal\config\cloudflare.json"
 $LauncherName = $Profile.ToUpperInvariant().Replace("-", "_")
 $Stamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $BaseLogRoot = ""
-$forwardOutputDir = Get-NamedForwardArg -ArgsValue $ForwardArgs -Name "-OutputDir"
-if ($forwardOutputDir) {
-  $BaseLogRoot = $forwardOutputDir
-  $ForwardArgs = @(Remove-NamedForwardArg -ArgsValue $ForwardArgs -Name "-OutputDir")
-} elseif (-not [string]::IsNullOrWhiteSpace($env:PRISMA_OUTPUT_DIR)) {
-  $BaseLogRoot = $env:PRISMA_OUTPUT_DIR
+if (-not [string]::IsNullOrWhiteSpace($OutputDir)) {
+  $BaseLogRoot = $OutputDir
 } else {
-  $BaseLogRoot = "F:\descargasf"
+  $forwardOutputDir = Get-NamedForwardArg -ArgsValue $ForwardArgs -Name "-OutputDir"
+  if ($forwardOutputDir) {
+    $BaseLogRoot = $forwardOutputDir
+    $ForwardArgs = @(Remove-NamedForwardArg -ArgsValue $ForwardArgs -Name "-OutputDir")
+  } elseif (-not [string]::IsNullOrWhiteSpace($env:PRISMA_OUTPUT_DIR)) {
+    $BaseLogRoot = $env:PRISMA_OUTPUT_DIR
+  } else {
+    $BaseLogRoot = "F:\descargasf"
+  }
 }
 $BaseLogRoot = [Environment]::ExpandEnvironmentVariables($BaseLogRoot)
 try {
@@ -542,23 +548,32 @@ function Start-CloudCommandCenter3160 {
   $safeLabRoot = $labRoot.Replace("'", "''")
   $safeControlRoot = $ControlRoot.Replace("'", "''")
   $safeOutputDir = $BaseLogRoot.Replace("'", "''")
-  $cmd = "py -3 '$safeLabScript' --lab-root '$safeLabRoot' --protected-current '$safeControlRoot' --out-dir '$safeOutputDir' --port 3160 --no-open"
+  $serveCmd = "py -3 '$safeLabScript' --lab-root '$safeLabRoot' --protected-current '$safeControlRoot' --out-dir '$safeOutputDir' --port 3160 --no-open --serve"
+  $serveArgs = @(
+    "-3", $labScript,
+    "--lab-root", $labRoot,
+    "--protected-current", $ControlRoot,
+    "--out-dir", $BaseLogRoot,
+    "--port", "3160",
+    "--no-open",
+    "--serve"
+  )
 
   if ($Foreground) {
-    Write-Host "[PRISMA] Modo 3160: FOREGROUND en esta misma terminal. Ctrl+C lo apaga." -ForegroundColor Yellow
+    Write-Host "[PRISMA] Modo 3160: FOREGROUND real en esta misma terminal. Ctrl+C lo apaga." -ForegroundColor Yellow
     Write-Host "[PRISMA] No abre navegador automatico. URL manual: http://127.0.0.1:3160/unified-shell.html" -ForegroundColor DarkYellow
     if ($shouldOpenBrowser) { Start-Process "http://127.0.0.1:3160/unified-shell.html" }
     Push-Location $labRoot
     try {
-      Invoke-Expression $cmd
-      return (ConvertTo-ScalarExitCode -Code $LASTEXITCODE -Default 0)
+      & py @serveArgs
+      return (ConvertTo-ScalarExitCode -Code $LASTEXITCODE -Default 1)
     } finally {
       Pop-Location
     }
   }
 
   Write-Host "[PRISMA] Modo 3160: DETACHED solicitado explicitamente." -ForegroundColor Yellow
-  [void](Start-DetachedPowerShell -Name "cloud-command-center-3160" -WorkingDirectory $labRoot -Command $cmd)
+  [void](Start-DetachedPowerShell -Name "cloud-command-center-3160" -WorkingDirectory $labRoot -Command $serveCmd)
   if (-not (Wait-Port -Port 3160 -TimeoutSeconds 60 -Name "PRISMA Cloud Command Center")) { return 2 }
   if ($shouldOpenBrowser) { Start-Process "http://127.0.0.1:3160/unified-shell.html" }
   return 0

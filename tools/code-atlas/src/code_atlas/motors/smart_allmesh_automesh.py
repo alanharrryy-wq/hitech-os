@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PRISMA AutoMesh v5
+PRISMA AutoMesh v6
 Task-scoped Authority Mesh generator with mandatory Layer Map.
 Read-only against repo: no patch, no process control, no dev server, no hot Prisma.
 """
@@ -21,6 +21,38 @@ import zipfile
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
 
+import tempfile
+import threading
+import time
+
+try:
+    from .prisma_automesh_runtime import (
+        DEFAULT_GLOBAL_BUDGET_ROOT,
+        GlobalWorkerBudget,
+        ProgressReporter,
+        atomic_zip_dir,
+        capture_exception,
+        make_run_id,
+        safe_rmtree,
+        short_run_id,
+        write_json_atomic,
+    )
+except ImportError:
+    from prisma_automesh_runtime import (
+        DEFAULT_GLOBAL_BUDGET_ROOT,
+        GlobalWorkerBudget,
+        ProgressReporter,
+        atomic_zip_dir,
+        capture_exception,
+        make_run_id,
+        safe_rmtree,
+        short_run_id,
+        write_json_atomic,
+    )
+
+_REPORTER: ProgressReporter | None = None
+_CANCEL_EVENT = threading.Event()
+
 DEFAULT_OUT = Path(r"F:\descargasf")
 DEFAULT_REPOS = [
     Path.cwd(),
@@ -30,7 +62,8 @@ DEFAULT_REPOS = [
 EXCLUDE_DIRS = {
     ".git", "node_modules", ".next", "dist", "build", "out", ".turbo", ".cache",
     ".prisma_installer_backups", "coverage", "playwright-report", "test-results",
-    ".venv", "venv", "__pycache__", ".pytest_cache", ".pnpm-store", "tmp", "temp"
+    ".venv", "venv", "__pycache__", ".pytest_cache", ".pnpm-store", "tmp", "temp",
+    "_local", "backups", "backup", "salvage", "evidence", "archive", "archives"
 }
 TEXT_EXTS = {
     ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".css", ".scss", ".sass",
@@ -72,10 +105,12 @@ POS_KNOWN_OWNER_HINTS = [
 def progress(done: int, total: int, label: str) -> None:
     total = max(total, 1)
     pct = int(done * 100 / total)
+    if _REPORTER is not None:
+        _REPORTER.emit(pct, label)
+        return
     fill = int(30 * pct / 100)
     bar = "█" * fill + "░" * (30 - fill)
-    print(f"[{bar}] {pct:3d}% | falta {100-pct:3d}% | {label}", flush=True)
-
+    print(f"[{bar}] {pct:3d}% | {label}", flush=True)
 
 def run_git(repo: Path, args: List[str], timeout: int = 45) -> Dict[str, Any]:
     try:
@@ -174,18 +209,23 @@ def detect_surfaces(task: str, surface: str) -> Dict[str, Any]:
 
 
 def iter_files(repo: Path) -> List[Path]:
-    out = []
+    out: List[Path] = []
+    directories_seen = 0
+    last_emit = time.monotonic()
     for root, dirs, files in os.walk(repo):
         rootp = Path(root)
-        dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS]
+        dirs[:] = sorted(d for d in dirs if d not in EXCLUDE_DIRS)
         if is_skipped(rootp):
             continue
-        for name in files:
+        directories_seen += 1
+        for name in sorted(files):
             p = rootp / name
             if p.suffix.lower() in TEXT_EXTS and not is_skipped(p):
                 out.append(p)
+        if _REPORTER is not None and (time.monotonic() - last_emit >= 2.0):
+            _REPORTER.emit(40, "inventariando archivos texto", done=len(out), details={"directories": directories_seen})
+            last_emit = time.monotonic()
     return out
-
 
 def shard(items: List[Path], count: int) -> List[List[Path]]:
     count = max(1, min(count, max(1, len(items))))
@@ -249,15 +289,18 @@ def score_one(repo: Path, p: Path, terms: List[str], surfaces: Dict[str, Any]) -
     return {"path": rp, "score": score, "size": p.stat().st_size, "sha256": sha256(p), "suffix": p.suffix.lower(), "terms": sorted(set(found)), "snippets": snippets}
 
 
-def scan_shard(args: Tuple[Path, List[Path], List[str], Dict[str, Any]]) -> List[Dict[str, Any]]:
-    repo, files, terms, surfaces = args
-    out = []
-    for p in files:
-        h = score_one(repo, p, terms, surfaces)
-        if h:
-            out.append(h)
-    return out
-
+def scan_shard(args: Tuple[Any, ...]) -> List[Dict[str, Any]]:
+    repo, files, terms, surfaces, budget_root, run_id, task_id = args
+    budget = GlobalWorkerBudget(budget_root, slots=18, run_id=run_id)
+    with budget.lease(str(task_id), cancel_event=_CANCEL_EVENT):
+        out = []
+        for p in files:
+            if _CANCEL_EVENT.is_set():
+                raise RuntimeError("AUTOMESH_CANCELLED")
+            h = score_one(repo, p, terms, surfaces)
+            if h:
+                out.append(h)
+        return out
 
 def copy_selected(repo: Path, out_dir: Path, hits: List[Dict[str, Any]], max_files: int, max_mb: int) -> List[Dict[str, Any]]:
     selected: Dict[str, Dict[str, Any]] = {}
@@ -353,13 +396,7 @@ def build_layers(repo: Path, selected: List[Dict[str, Any]]) -> List[Dict[str, A
 
 
 def zip_dir(src: Path, dst: Path) -> None:
-    if dst.exists():
-        dst.unlink()
-    with zipfile.ZipFile(dst, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=8) as z:
-        for p in src.rglob("*"):
-            if p.is_file():
-                z.write(p, p.relative_to(src.parent).as_posix())
-
+    atomic_zip_dir(src, dst, include_root=False, compression_level=8)
 
 def write_reports(out_dir: Path, repo: Path, args: argparse.Namespace, surfaces: Dict[str, Any], hits: List[Dict[str, Any]], selected: List[Dict[str, Any]], layers: List[Dict[str, Any]], git_state: Dict[str, Any]) -> None:
     reports = out_dir / "reports"
@@ -378,7 +415,7 @@ def write_reports(out_dir: Path, repo: Path, args: argparse.Namespace, surfaces:
             missing.append(p)
     readset = {
         "kind": "PRISMA_AUTHORITY_READSET",
-        "version": "automesh-v5",
+        "version": "automesh-v6",
         "generated_at": _dt.datetime.now().isoformat(),
         "task": args.task,
         "repo": str(repo),
@@ -469,12 +506,223 @@ def self_test() -> int:
     buckets = shard([Path(str(x)) for x in fake], 54)
     assert sum(len(x) for x in buckets) == 111
     assert len(buckets) == 54
-    print("AUTOMESH V5 SELFTEST OK: sharders=54 workers_cap=18")
+
+    first = make_run_id("automesh")
+    second = make_run_id("automesh")
+    assert first != second
+
+    with tempfile.TemporaryDirectory(prefix="automesh_v6_selftest_") as temporary:
+        root = Path(temporary)
+        budget_root = root / "budget"
+        active = 0
+        peak = 0
+        lock = threading.Lock()
+        budget = GlobalWorkerBudget(budget_root, slots=18, run_id=first)
+
+        def governed_job(index: int) -> None:
+            nonlocal active, peak
+            with budget.lease(f"selftest-{index}"):
+                with lock:
+                    active += 1
+                    peak = max(peak, active)
+                time.sleep(0.02)
+                with lock:
+                    active -= 1
+
+        with cf.ThreadPoolExecutor(max_workers=36) as executor:
+            list(executor.map(governed_job, range(54)))
+        assert peak <= 18, peak
+        assert peak >= 2, peak
+
+        source = root / "zip_source"
+        source.mkdir()
+        (source / "ok.txt").write_text("ok\n", encoding="utf-8")
+        target = root / "atomic.zip"
+        result = atomic_zip_dir(source, target)
+        assert result["entries"] == 1
+        assert target.exists()
+
+    print(f"AUTOMESH V6 SELFTEST OK: sharders=54 global_worker_peak={peak}/18 atomic_zip=pass unique_run=pass")
     return 0
 
 
+def run_mesh(args: argparse.Namespace) -> int:
+    global _REPORTER, _CANCEL_EVENT
+    _CANCEL_EVENT = threading.Event()
+    args.workers = max(1, min(18, int(args.workers)))
+    args.shards = max(args.workers, min(216, int(args.shards)))
+    args.max_files = max(1, int(args.max_files))
+    args.max_mb = max(1, int(args.max_mb))
+
+    base = Path(args.out)
+    base.mkdir(parents=True, exist_ok=True)
+    run_id = str(args.run_id).strip() or make_run_id("automesh")
+    short_id = short_run_id(run_id)
+    stamp = _dt.datetime.now().strftime("%d%m %H%M%S")
+    work_root = base / ".automesh_work" / run_id
+    out_dir = work_root / "payload"
+    progress_path = Path(args.progress_jsonl) if str(args.progress_jsonl).strip() else work_root / "progress.jsonl"
+    result_zip = base / f"automesh mesh1 {stamp} {short_id} result.zip"
+    fail_zip = base / f"automesh mesh1 {stamp} {short_id} fail.zip"
+    out_dir.mkdir(parents=True, exist_ok=False)
+
+    _REPORTER = ProgressReporter(
+        run_id=run_id,
+        jsonl_path=progress_path,
+        width=30,
+        component="automesh-v6",
+    )
+    _REPORTER.start_heartbeat(5.0)
+    exit_code = 1
+    final_zip: Path | None = None
+    executor: cf.ThreadPoolExecutor | None = None
+
+    try:
+        _REPORTER.emit(3, "detectando repo")
+        repo = find_repo(args.repo or None)
+        _REPORTER.emit(10, "capturando git status read-only")
+        git_state = {
+            "status_short": run_git(repo, ["git", "status", "--short"]),
+            "head": run_git(repo, ["git", "rev-parse", "HEAD"]),
+            "branch": run_git(repo, ["git", "branch", "--show-current"]),
+        }
+        _REPORTER.emit(18, "detectando superficies y tokens")
+        surfaces = detect_surfaces(args.task, args.surface)
+        terms = tokenize(args.task, args.surface)
+
+        _REPORTER.emit(28, "iniciando inventario secuencial seguro")
+        files = iter_files(repo)
+        _REPORTER.emit(45, "inventario terminado", done=len(files), details={"directories_excluded": sorted(EXCLUDE_DIRS)})
+        buckets = shard(files, args.shards)
+        _REPORTER.emit(48, f"shards preparados; presupuesto global 18", done=0, total=len(buckets), details={"local_worker_cap": args.workers, "budget_root": str(args.budget_root)})
+
+        hits: List[Dict[str, Any]] = []
+        executor = cf.ThreadPoolExecutor(max_workers=args.workers, thread_name_prefix="automesh-shard")
+        futures = [
+            executor.submit(
+                scan_shard,
+                (repo, bucket, terms, surfaces, Path(args.budget_root), run_id, index),
+            )
+            for index, bucket in enumerate(buckets)
+        ]
+        done = 0
+        try:
+            for future in cf.as_completed(futures):
+                done += 1
+                hits.extend(future.result())
+                percent = 48 + int(done * 24 / max(1, len(futures)))
+                _REPORTER.emit(
+                    percent,
+                    "procesando shards gobernados",
+                    done=done,
+                    total=len(futures),
+                    details={"hits": len(hits), "global_worker_budget": 18, "local_worker_cap": args.workers},
+                    force=(done == len(futures) or done % max(1, len(futures)//24) == 0),
+                )
+        except BaseException:
+            _CANCEL_EVENT.set()
+            for future in futures:
+                future.cancel()
+            executor.shutdown(wait=False, cancel_futures=True)
+            executor = None
+            raise
+        else:
+            executor.shutdown(wait=True)
+            executor = None
+
+        _REPORTER.emit(74, "copiando candidatos a workspace privado", details={"hits": len(hits)})
+        selected = copy_selected(repo, out_dir, hits, args.max_files, args.max_mb)
+        _REPORTER.emit(82, "generando layer map obligatorio", done=len(selected))
+        layers = build_layers(repo, selected)
+        if not layers:
+            raise RuntimeError("LAYER_MAP_EMPTY: Mesh incompleto, ajusta task/surface.")
+
+        _REPORTER.emit(89, "escribiendo matrices y reportes", done=len(layers))
+        write_reports(out_dir, repo, args, surfaces, hits, selected, layers, git_state)
+        run_manifest = {
+            "kind": "PRISMA_AUTOMESH_RUN",
+            "version": "v6",
+            "status": "PASS",
+            "run_id": run_id,
+            "generated_at": _dt.datetime.now().isoformat(),
+            "repo": str(repo),
+            "workers_local_cap": args.workers,
+            "global_worker_budget": 18,
+            "shards": args.shards,
+            "files_inventoried": len(files),
+            "hits": len(hits),
+            "selected": len(selected),
+            "layers": len(layers),
+            "budget_root": str(args.budget_root),
+            "collision_proof_workspace": str(work_root),
+            "atomic_zip_publication": True,
+        }
+        write_json_atomic(out_dir / "RUN_MANIFEST.json", run_manifest)
+        if progress_path.exists():
+            shutil.copy2(progress_path, out_dir / "progress.jsonl")
+
+        _REPORTER.emit(96, "comprimiendo ZIP secuencial y atómico")
+        atomic_zip_dir(out_dir, result_zip, include_root=False, compression_level=8)
+        final_zip = result_zip
+        exit_code = 0
+        _REPORTER.emit(100, "AutoMesh terminado", status="PASS", details={"zip": str(result_zip)})
+        print(f"OK_RESULT_ZIP={result_zip}", flush=True)
+        return 0
+
+    except KeyboardInterrupt as exc:
+        _CANCEL_EVENT.set()
+        exit_code = 130
+        error = capture_exception(exc)
+        status = "CANCELLED"
+    except Exception as exc:
+        _CANCEL_EVENT.set()
+        exit_code = 1
+        error = capture_exception(exc)
+        status = "FAIL"
+    finally:
+        if executor is not None:
+            executor.shutdown(wait=False, cancel_futures=True)
+        if exit_code != 0:
+            try:
+                out_dir.mkdir(parents=True, exist_ok=True)
+                write_json_atomic(out_dir / "ERROR.json", error)
+                (out_dir / "ERROR.txt").write_text(error.get("traceback", error.get("repr", "unknown error")), encoding="utf-8", errors="replace")
+                write_json_atomic(
+                    out_dir / "RUN_MANIFEST.json",
+                    {
+                        "kind": "PRISMA_AUTOMESH_RUN",
+                        "version": "v6",
+                        "status": status,
+                        "run_id": run_id,
+                        "generated_at": _dt.datetime.now().isoformat(),
+                        "workers_local_cap": args.workers,
+                        "global_worker_budget": 18,
+                        "shards": args.shards,
+                        "budget_root": str(args.budget_root),
+                        "error": error,
+                    },
+                )
+                if progress_path.exists() and progress_path.resolve() != (out_dir / "progress.jsonl").resolve():
+                    shutil.copy2(progress_path, out_dir / "progress.jsonl")
+                _REPORTER.emit(96, "empaquetando fail ZIP atómico", status=status)
+                atomic_zip_dir(out_dir, fail_zip, include_root=False, compression_level=8)
+                final_zip = fail_zip
+                _REPORTER.emit(100, "fail ZIP listo", status=status, details={"zip": str(fail_zip)})
+                print(f"FAIL_ZIP={fail_zip}", flush=True)
+            except Exception as packaging_exc:
+                print("AUTOMESH_FATAL_PACKAGING_ERROR=" + json.dumps(capture_exception(packaging_exc), ensure_ascii=False), flush=True)
+                print(f"AUTOMESH_WORK_ROOT_PRESERVED={work_root}", flush=True)
+        if _REPORTER is not None:
+            _REPORTER.stop_heartbeat()
+        if final_zip is not None and final_zip.exists():
+            safe_rmtree(work_root)
+        _REPORTER = None
+
+    return exit_code
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="PRISMA AutoMesh v5")
+    parser = argparse.ArgumentParser(description="PRISMA AutoMesh v6")
     parser.add_argument("--task", required=False)
     parser.add_argument("--surface", default="")
     parser.add_argument("--repo", default="")
@@ -483,65 +731,16 @@ def main() -> int:
     parser.add_argument("--shards", type=int, default=54)
     parser.add_argument("--max-files", type=int, default=120)
     parser.add_argument("--max-mb", type=int, default=40)
+    parser.add_argument("--run-id", default="")
+    parser.add_argument("--progress-jsonl", default="")
+    parser.add_argument("--budget-root", default=str(DEFAULT_GLOBAL_BUDGET_ROOT))
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
     if args.self_test:
         return self_test()
     if not args.task:
         raise SystemExit("Falta --task")
-    args.workers = max(1, min(18, args.workers))
-    args.shards = max(args.workers, min(216, args.shards))
-    base = Path(args.out)
-    base.mkdir(parents=True, exist_ok=True)
-    stamp = _dt.datetime.now().strftime("%d%m %H%M")
-    out_dir = base / f"automesh mesh1 {stamp} result"
-    zip_path = base / f"automesh mesh1 {stamp} result.zip"
-    fail_zip = base / f"automesh mesh1 {stamp} fail.zip"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    try:
-        progress(1, 10, "detectando repo")
-        repo = find_repo(args.repo or None)
-        progress(2, 10, "capturando git status read-only")
-        git_state = {
-            "status_short": run_git(repo, ["git", "status", "--short"]),
-            "head": run_git(repo, ["git", "rev-parse", "HEAD"]),
-            "branch": run_git(repo, ["git", "branch", "--show-current"]),
-        }
-        progress(3, 10, "detectando superficies y tokens")
-        surfaces = detect_surfaces(args.task, args.surface)
-        terms = tokenize(args.task, args.surface)
-        progress(4, 10, "escaneando archivos texto")
-        files = iter_files(repo)
-        progress(5, 10, f"dividiendo {len(files)} archivos en {args.shards} sharders")
-        buckets = shard(files, args.shards)
-        hits: List[Dict[str, Any]] = []
-        done = 0
-        with cf.ThreadPoolExecutor(max_workers=args.workers) as ex:
-            futures = [ex.submit(scan_shard, (repo, b, terms, surfaces)) for b in buckets]
-            for fut in cf.as_completed(futures):
-                done += 1
-                hits.extend(fut.result())
-                if done == len(futures) or done % max(1, len(futures)//10) == 0:
-                    progress(5 + min(2, int(done * 2 / max(1, len(futures)))), 10, f"procesando sharders {done}/{len(futures)}")
-        progress(7, 10, "copiando candidatos compactos")
-        selected = copy_selected(repo, out_dir, hits, args.max_files, args.max_mb)
-        progress(8, 10, "generando layer map obligatorio")
-        layers = build_layers(repo, selected)
-        if not layers:
-            raise RuntimeError("LAYER_MAP_EMPTY: Mesh incompleto, ajusta task/surface.")
-        progress(9, 10, "escribiendo matrices y reportes")
-        write_reports(out_dir, repo, args, surfaces, hits, selected, layers, git_state)
-        progress(10, 10, "comprimiendo result ZIP")
-        zip_dir(out_dir, zip_path)
-        print(f"OK_RESULT_ZIP={zip_path}")
-        return 0
-    except Exception as exc:
-        (out_dir / "ERROR.txt").write_text(repr(exc), encoding="utf-8", errors="replace")
-        try:
-            zip_dir(out_dir, fail_zip)
-            print(f"FAIL_ZIP={fail_zip}")
-        finally:
-            raise
+    return run_mesh(args)
 
 if __name__ == "__main__":
     raise SystemExit(main())

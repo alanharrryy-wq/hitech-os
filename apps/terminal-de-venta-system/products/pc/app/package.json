@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "prisma:generate": "python ../../../tooling/scripts/generate_prisma_canonical.py pc",
-    "dev": "pnpm run prisma:generate && next dev --webpack -p 3130",
-    "dev:turbopack": "pnpm run prisma:generate && next dev -p 3130",
+    "dev": "next dev --webpack -p 3130",
+    "dev:turbopack": "next dev --turbopack -p 3130",
     "build": "pnpm run prisma:generate && node ../../../tools/run-next-build.mjs",
     "start": "next start -p 3130",
     "typecheck": "pnpm run prisma:generate && tsc --noEmit",
@@ -38,7 +38,7 @@
     "predev": "pnpm run verify:zero-important",
     "predev:turbopack": "pnpm run verify:zero-important",
     "verify:pcfunc-dropdowns": "node tools/verify_pcfunc_dropdowns_2406.mjs",
-    "dev:webpack": "pnpm run prisma:generate && next dev --webpack -p 3130",
+    "dev:webpack": "next dev --webpack -p 3130",
     "predev:webpack": "pnpm run verify:zero-important"
   },
   "dependencies": {

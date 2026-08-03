@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atlasfin State Evidence Fixture</title>
+  <link rel="stylesheet" href="../assets/css/atlas.css">
+</head>
+<body>
+  <main class="atlas-evidence-fixture" data-atlasfin-evidence-fixture="safe-v1">
+    <header class="atlas-evidence-fixture__header">
+      <p class="atlas-eyebrow">ATLASFIN · Evidencia mecánica</p>
+      <h1>Estados visuales seguros y explícitos</h1>
+      <p>Este fixture no vende, no cobra, no persiste y no toca DB.</p>
+    </header>
+    <section class="atlas-evidence-fixture__grid" aria-label="Matriz de estados">
+      <article class="atlas-evidence-state-card" data-atlas-evidence-state="disabled">
+        <span class="atlas-status" data-evidence-status data-evidence-label>DISABLED</span>
+        <h2 data-evidence-label>Deshabilitado</h2>
+        <p data-evidence-label>No disponible por contrato. Esta captura nunca representa un estado normal.</p>
+        <button class="atlas-button" type="button" disabled>Acción deshabilitada</button>
+      </article>
+      <article class="atlas-evidence-state-card" data-atlas-evidence-state="enabled" data-atlas-evidence-kind="fixture">
+        <span class="atlas-status" data-evidence-status data-evidence-label>ENABLED_FIXTURE</span>
+        <h2 data-evidence-label>Habilitado seguro</h2>
+        <p data-evidence-label>Fixture visual, sin venta, pago, persistencia, red ni mutación.</p>
+        <button class="atlas-button" type="button">Fixture habilitado</button>
+      </article>
+      <article class="atlas-evidence-state-card" data-atlas-evidence-state="focus" tabindex="0">
+        <span class="atlas-status" data-evidence-status data-evidence-label>FOCUS</span>
+        <h2 data-evidence-label>Foco visible</h2>
+        <p data-evidence-label>La evidencia distingue foco de habilitación normal.</p>
+        <button class="atlas-button" type="button">Control enfocado</button>
+      </article>
+      <article class="atlas-evidence-state-card" data-atlas-evidence-state="loading" aria-busy="true">
+        <span class="atlas-status" data-evidence-status data-evidence-label>LOADING</span>
+        <h2 data-evidence-label>Cargando</h2>
+        <p data-evidence-label>Estado transitorio, no éxito y no disponibilidad.</p>
+        <span class="atlas-tile__loader" aria-hidden="true"></span>
+      </article>
+      <article class="atlas-evidence-state-card" data-atlas-evidence-state="skipped" data-test-status="skipped_not_tested">
+        <span class="atlas-status" data-evidence-status data-evidence-label>SKIPPED_NOT_TESTED</span>
+        <h2 data-evidence-label>Omitido</h2>
+        <p data-evidence-label>BLOCKED_BY_MISSING_ELEMENT_BINDING_WITH_EXPLICIT_PROVENANCE_REVIEW_REQUIRED</p>
+        <small data-evidence-label>No se promueve a PASS.</small>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
