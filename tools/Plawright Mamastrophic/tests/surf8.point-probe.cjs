@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { legalEvidenceEnabled, applyLegalRedaction, sanitizeText, sanitizeUrl, sanitizeObject, sanitizeConsoleEntry, sanitizeNetworkEntry } = require('./surf8.legal-evidence.cjs');
 const { createRequire } = require('module');
+const { REAL_RUNTIME_DISABLED_BASELINE, classifyBaseline, classifyHover } = require('../core/exact-target-state-semantics.cjs');
 
 function arg(name, fallback = '') { const i = process.argv.indexOf(name); return (i >= 0 && i + 1 < process.argv.length) ? process.argv[i + 1] : fallback; }
 function has(name) { return process.argv.includes(name); }
@@ -102,7 +103,7 @@ const exactSelector = arg('--selector', '');
 const authoritySelector = arg('--authority-selector', exactSelector);
 const componentUiId = arg('--component-ui-id', '');
 const evidencePhase = arg('--evidence-phase', '');
-const outDir = path.resolve(arg('--out-dir', path.join('F:\\descargasf', `mam point ${surface}`)));
+const outDir = path.resolve(arg('--out-dir', path.join('[REDACTED_ABSOLUTE_PATH]', `mam point ${surface}`)));
 const reportsDir = path.join(outDir, 'reports');
 const screensDir = path.join(outDir, 'screens');
 const domDir = path.join(outDir, 'dom');
@@ -221,13 +222,15 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
       const states = [];
       const base = await computedSnapshot(target);
       const beforePseudo = await computedSnapshot(target, '::before');
-      states.push({ state: 'normal', status: 'PASS', snapshot: base, beforePseudo });
-      states.push({ state: 'disabled', status: base.disabled ? 'PASS' : 'SKIPPED_STATE_NOT_REPRODUCIBLE_WITHOUT_PRODUCT_SIDE_EFFECT', snapshot: base });
+      states.push(classifyBaseline(base, beforePseudo));
       await target.hover({ timeout: gotoTimeout });
       await page.waitForTimeout(180);
       const hover = await computedSnapshot(target);
-      states.push({ state: 'hover', status: 'PASS', snapshot: hover, beforePseudo: await computedSnapshot(target, '::before') });
-      if (!noScreens) await target.screenshot({ path: path.join(screensDir, `${safeName(surface)}.${safeName(evidencePhase || 'capture')}.exact-target-hover.png`) });
+      states.push(classifyHover(base, hover, await computedSnapshot(target, '::before')));
+      if (!noScreens) {
+        const hoverName = base.disabled ? 'exact-target-disabled-hover-observation' : 'exact-target-enabled-hover';
+        await target.screenshot({ path: path.join(screensDir, `${safeName(surface)}.${safeName(evidencePhase || 'capture')}.${hoverName}.png`) });
+      }
       if (!base.disabled) {
         await page.keyboard.press('Tab');
         for (let i = 0; i < 80 && !(await target.evaluate(el => el === document.activeElement)); i++) await page.keyboard.press('Tab');
@@ -241,7 +244,8 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
       states.push({ state: 'loading', status: base.attributes['data-prisma-state'] === 'loading' ? 'PASS' : 'SKIPPED_STATE_NOT_REPRODUCIBLE_WITHOUT_PRODUCT_SIDE_EFFECT' });
       let targetScreenshot = null;
       if (!noScreens) {
-        targetScreenshot = path.join(screensDir, `${safeName(surface)}.${safeName(evidencePhase || 'capture')}.exact-target.png`);
+        const baselineName = base.disabled ? 'exact-target-disabled-baseline' : 'exact-target-enabled-normal';
+        targetScreenshot = path.join(screensDir, `${safeName(surface)}.${safeName(evidencePhase || 'capture')}.${baselineName}.png`);
         await target.screenshot({ path: targetScreenshot });
       }
       exactEvidence = {
@@ -250,7 +254,8 @@ function mdEscape(s) { return String(s || '').replace(/\|/g, '\\|').replace(/\n/
         controlId: 'ATLASFIN.CONTROL.TABLET.POS.COBRAR.V1',
         componentUiId,
         phase: evidencePhase || 'UNSPECIFIED',
-        status: states.some(row => String(row.status).startsWith('FAIL')) ? 'FAIL' : 'PASS',
+        status: states.some(row => String(row.status).startsWith('FAIL')) ? 'FAIL' : (base.disabled ? REAL_RUNTIME_DISABLED_BASELINE : 'PASS'),
+        runtimeBaseline: base.disabled ? REAL_RUNTIME_DISABLED_BASELINE : 'ENABLED_RUNTIME_BASELINE',
         runtimeSelector: exactSelector,
         authoritySelector,
         route,

@@ -194,9 +194,30 @@
         "Hosted production deployment",
         "Visual certification outside Tablet POS Cobrar"
       ]
+    },
+    {
+      "artifact": "ATLASFIN_COBRAR_VISUAL_EVIDENCE_HARDENING_FINAL_V1",
+      "type": "atlasfin_visual_evidence_hardening",
+      "scope": [
+        "atlasfin",
+        "mamastrophic",
+        "tablet_pos_cobrar_evidence"
+      ],
+      "status": "ATLASFIN_VISUAL_EVIDENCE_HARDENING_CERTIFIED",
+      "proves": [
+        "Long Atlasfin states wrap without card collision, parent escape, clipping, or element overflow at four governed viewports",
+        "Disabled runtime evidence is labelled REAL_RUNTIME_DISABLED_BASELINE and never normal",
+        "Enabled visual states are certified only through the isolated no-handler fixture",
+        "Protected Cobrar and RIFAT bytes remain unchanged"
+      ],
+      "doesNotProve": [
+        "Sale, payment, API, database, or hosted runtime behavior",
+        "Enabled state behavior on the real disabled runtime target",
+        "Visual certification outside the declared Atlasfin and fixture scope"
+      ]
     }
   ],
-  "updatedAt": "2026-08-02T12:54:27-06:00",
+  "updatedAt": "2026-08-02T19:45:00-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -217,6 +238,16 @@
         "atlasapply_0208-1254_final.zip",
         "PRISMA_ATLASFIN_VISUAL_APPLICATION_EVIDENCE_BUNDLE_V1.json",
         "BATCH.tb.131ff748bb7c8cf2"
+      ]
+    },
+    {
+      "capabilityId": "visual.atlasfin.tablet_pos_cobrar.evidence_hardening",
+      "status": "VISUAL_CERTIFIED",
+      "runId": "ATLASFIN_COBRAR_VISUAL_EVIDENCE_HARDENING_FINAL_V1",
+      "evidence": [
+        "ATLASFIN_VISUAL_LAYOUT_GATE.json",
+        "COBRAR_STATE_FIXTURE_EVIDENCE.json",
+        "PROTECTED_HASHES_COMPARISON.json"
       ]
     }
   ]

@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "ledgerName": "PRISMA Factory Ledger",
   "purpose": "Single anti-rework source of truth for PRISMA capability status, evidence, next gates, and do-not-rebuild rules.",
-  "canonicalRoot": "F:\\repos\\hitech-os\\PRISMA Factory Ledger",
+  "canonicalRoot": "[REDACTED_ABSOLUTE_PATH]",
   "createdBy": "ChatGPT package generator",
   "rules": {
     "statusFirst": true,
@@ -414,7 +414,45 @@
         "promote source-only V1 booleans",
         "claim console-clean when the identical preexisting dev 404 baseline remains"
       ]
+    },
+    {
+      "id": "visual.atlasfin.tablet_pos_cobrar.evidence_hardening",
+      "displayName": "Atlasfin and Mamastrophic Cobrar visual evidence hardening",
+      "domain": "visual",
+      "surfaces": [
+        "atlasfin",
+        "mamastrophic",
+        "tablet_pos_cobrar_evidence"
+      ],
+      "classification": "FIX",
+      "status": "VISUAL_CERTIFIED",
+      "stateLabel": "ATLASFIN_VISUAL_EVIDENCE_HARDENING_CERTIFIED",
+      "doNotRebuild": true,
+      "nextGate": "Use the fail-closed layout gate and safe state fixture after relevant evidence-owner drift; preserve the certified PR #237 product bytes.",
+      "evidence": [
+        "ATLASFIN_COBRAR_VISUAL_EVIDENCE_HARDENING_FINAL_V1.md",
+        "ATLASFIN_VISUAL_LAYOUT_GATE.json",
+        "COBRAR_STATE_FIXTURE_EVIDENCE.json",
+        "PROTECTED_HASHES_COMPARISON.json"
+      ],
+      "doesNotProve": [
+        "A completed sale or payment mutation",
+        "Hosted runtime behavior",
+        "Enabled states on the real disabled runtime target",
+        "Visual certification outside the Atlasfin layout and isolated Cobrar fixture"
+      ],
+      "allowedActions": [
+        "read-only recertification",
+        "safe isolated state fixture",
+        "fail-closed Atlasfin layout measurement"
+      ],
+      "forbiddenActions": [
+        "modify certified Cobrar product bytes",
+        "call a disabled capture normal",
+        "certify enabled hover from a disabled target",
+        "execute product handlers or operational mutations"
+      ]
     }
   ],
-  "updatedAt": "2026-08-02T12:54:27-06:00"
+  "updatedAt": "2026-08-02T19:45:00-06:00"
 }

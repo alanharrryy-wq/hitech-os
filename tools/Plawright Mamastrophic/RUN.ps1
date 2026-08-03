@@ -1,5 +1,5 @@
 param(
-  [ValidateSet('discovery','quick','full','critical','visualqa','screenshots','screenshotsqa','point-probe')]
+  [ValidateSet('discovery','quick','full','critical','visualqa','screenshots','screenshotsqa','point-probe','state-fixture')]
   [string]$Mode = 'quick',
 
   [ValidateSet('all','7','todo','todos','all-surfaces','all_surfaces','chart-lab','chart_lab','3000','web','eit-web','eit_web','3110','tablet','tablet-pos','tablet_pos','pos','3120','pc','backoffice','pc-backoffice','pc_backoffice','3130','mobile','app','app-mobile','app_mobile','3140','control-center','control_center','prisma-control-center','prisma_control_center','3150')]
@@ -53,6 +53,7 @@ $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $CoreRunner = Join-Path $Here 'core\run-surf8-capture.ps1'
 if (!(Test-Path -LiteralPath $CoreRunner)) { throw "No encontre core runner: $CoreRunner" }
 $PointProbeRunner = Join-Path $Here 'core\run-point-probe.ps1'
+$StateFixtureRunner = Join-Path $Here 'tests\cobrar-state-fixture.cjs'
 
 function Normalize-MamSurface {
   param([string]$Value)
@@ -93,13 +94,13 @@ function New-MamZipFromDir {
 function Move-MamStageToTrash {
   param([string]$StageDir, [string]$RunName)
   if ([string]::IsNullOrWhiteSpace($StageDir) -or -not (Test-Path -LiteralPath $StageDir)) { return }
-  $trashRoot = 'F:\Trash-old'
+  $trashRoot = '[REDACTED_ABSOLUTE_PATH]'
   New-Item -ItemType Directory -Force -Path $trashRoot | Out-Null
   $dest = Join-Path $trashRoot ($RunName + ' stage ' + (Get-Date -Format 'ddMM HHmmss'))
   New-Item -ItemType Directory -Force -Path $dest | Out-Null
   $manifest = [ordered]@{ movedAt=(Get-Date).ToString('o'); reason='Mamastrophic staging moved after final app ZIPs were created'; source=$StageDir; destination=$dest }
   $manifest | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $dest 'manifest.json') -Encoding UTF8
-  Set-Content -LiteralPath (Join-Path $dest 'manifest.md') -Encoding UTF8 -Value "# Moved Mamastrophic stage`r`n`r`n- source: `$StageDir`r`n- destination: `$dest`r`n- reason: final evidence was packaged into per-app ZIPs in F:\descargasf."
+  Set-Content -LiteralPath (Join-Path $dest 'manifest.md') -Encoding UTF8 -Value "# Moved Mamastrophic stage`r`n`r`n- source: `$StageDir`r`n- destination: `$dest`r`n- reason: final evidence was packaged into per-app ZIPs in [REDACTED_ABSOLUTE_PATH]"
   Move-Item -LiteralPath $StageDir -Destination (Join-Path $dest (Split-Path -Leaf $StageDir)) -Force
 }
 
@@ -170,7 +171,7 @@ function Invoke-SingleSurfaceCore {
 
 function Invoke-MamAllSurfacesParallel {
   $surfaces = @(Get-MamSurfaceCatalog)
-  $outRoot = 'F:\descargasf'
+  $outRoot = '[REDACTED_ABSOLUTE_PATH]'
   New-Item -ItemType Directory -Force -Path $outRoot | Out-Null
   $stamp = Get-Date -Format 'ddMM HHmmss'
   $runName = "mamshot all $Mode $stamp"
@@ -293,6 +294,15 @@ Write-Host "DeepScroll: $DeepScroll | FullPageSwitch: $([bool]$FullPage) | MaxPa
 Write-Host "ArtifactRoot: $ArtifactRoot | NoZip: $([bool]$NoZip)" -ForegroundColor DarkCyan
 Write-Host "Policy: no start, no kill, no DB, no deploy" -ForegroundColor DarkCyan
 
+
+if ($Mode -eq 'state-fixture') {
+  if (!(Test-Path -LiteralPath $StateFixtureRunner)) { throw "No encontre state fixture runner: $StateFixtureRunner" }
+  $Node = Get-Command 'node.exe' -ErrorAction SilentlyContinue
+  if (-not $Node) { $Node = Get-Command 'node' -ErrorAction Stop }
+  $fixtureOut = if ([string]::IsNullOrWhiteSpace($ArtifactRoot)) { Join-Path $Here 'reports\cobrar-state-fixture' } else { $ArtifactRoot }
+  & $Node.Source $StateFixtureRunner '--out-dir' $fixtureOut
+  exit $LASTEXITCODE
+}
 
 if ($Mode -eq 'point-probe') {
   if (!(Test-Path -LiteralPath $PointProbeRunner)) { throw "No encontre point-probe runner: $PointProbeRunner" }
