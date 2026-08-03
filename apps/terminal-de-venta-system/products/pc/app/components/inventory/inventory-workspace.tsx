@@ -59,7 +59,25 @@ function uniqueLocations(workspace: InventoryWorkspace) {
 function StockFicha({ snapshot }: { snapshot: StockSnapshotView | null }) {
   if (!snapshot) {
     return (
-      <section className={styles.productFicha} data-pcinv-product-ficha="stock-empty">
+      <section
+        className={styles.productFicha}
+        data-pcinv-product-ficha="stock-empty"
+        data-prisma-surface="pc"
+        data-prisma-route="/stock"
+        data-prisma-owner="StockFicha"
+        data-prisma-region="ZONE.pc.stock.detail"
+        data-prisma-slot="SLOT.pc.stock.detail.primary"
+        data-prisma-component-ui-id="PC-STOCK-FICHA-PANEL-01"
+        data-prisma-recipe="REC.panel.operational.cloudglass"
+        data-prisma-visual-stack="VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1"
+        data-prisma-binding="BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1"
+        data-prisma-adapter="ADP.PC.DENSE.CLOUDGLASS.V1"
+        data-prisma-neutral-layer="LYR.SURFACE.OPERATIONAL.DETAIL"
+        data-prisma-runtime-selector="data-pcinv-product-ficha"
+        data-prisma-source-owner="inventory-workspace.tsx"
+        data-prisma-css-owner="pc-inventory-master-detail.module.css"
+        data-prisma-visual-pilot="pc-stock-ficha-tablet-licenses-v1"
+      >
         <div className={styles.fichaHeader}>
           <div>
             <span className={styles.kicker}>acción rápida</span>
@@ -72,7 +90,25 @@ function StockFicha({ snapshot }: { snapshot: StockSnapshotView | null }) {
   }
 
   return (
-    <section className={styles.productFicha} data-pcinv-product-ficha="stock">
+    <section
+      className={styles.productFicha}
+      data-pcinv-product-ficha="stock"
+      data-prisma-surface="pc"
+      data-prisma-route="/stock"
+      data-prisma-owner="StockFicha"
+      data-prisma-region="ZONE.pc.stock.detail"
+      data-prisma-slot="SLOT.pc.stock.detail.primary"
+      data-prisma-component-ui-id="PC-STOCK-FICHA-PANEL-01"
+      data-prisma-recipe="REC.panel.operational.cloudglass"
+      data-prisma-visual-stack="VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1"
+      data-prisma-binding="BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1"
+      data-prisma-adapter="ADP.PC.DENSE.CLOUDGLASS.V1"
+      data-prisma-neutral-layer="LYR.SURFACE.OPERATIONAL.DETAIL"
+      data-prisma-runtime-selector="data-pcinv-product-ficha"
+      data-prisma-source-owner="inventory-workspace.tsx"
+      data-prisma-css-owner="pc-inventory-master-detail.module.css"
+      data-prisma-visual-pilot="pc-stock-ficha-tablet-licenses-v1"
+    >
       <div className={styles.fichaHeader}>
         <div>
           <span className={styles.kicker}>acción rápida</span>

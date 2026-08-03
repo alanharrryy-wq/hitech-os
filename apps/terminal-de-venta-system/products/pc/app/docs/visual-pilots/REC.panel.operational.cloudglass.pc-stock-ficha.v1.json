@@ -1,0 +1,99 @@
+{
+  "schema": "prisma.identity.full-stack-panel-recipe.v1",
+  "recipeId": "REC.panel.operational.cloudglass",
+  "visualStackId": "VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+  "neutralMeaningId": "SURFACE.operational.detail",
+  "identitySource": "Tablet Licenses",
+  "sourceEvidence": [
+    "apps/terminal-de-venta-system/products/tablet/app/app/settings/license/page.tsx",
+    "apps/terminal-de-venta-system/products/tablet/app/components/license/license-status-card.tsx",
+    "apps/terminal-de-venta-system/products/tablet/app/components/license/license-ui.module.css",
+    "apps/terminal-de-venta-system/products/tablet/app/components/settings/settings-workspace.module.css",
+    "prisma-html/authority/rifat/tablet/runtime-sources/modules/license/license-ui.module.css",
+    "apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/latest/materiality-catalog.registry.json",
+    "prisma-html/authority/rifat/tablet/runtime-sources/modules/settings/settings-workspace.module.css"
+  ],
+  "adapter": {
+    "adapterId": "ADP.PC.DENSE.CLOUDGLASS.V1",
+    "surface": "pc",
+    "density": "dense",
+    "rules": [
+      "preserve scan speed",
+      "transparent material must keep readable contrast",
+      "no panel-inside-panel rows",
+      "one restrained primary action",
+      "no ambient animation",
+      "fallback without backdrop-filter"
+    ]
+  },
+  "units": {
+    "base": [
+      "background",
+      "border",
+      "border-radius",
+      "box-shadow",
+      "backdrop-filter",
+      "color",
+      "overflow",
+      "isolation",
+      "transition"
+    ],
+    "header": [
+      "spacing",
+      "separator",
+      "title contrast"
+    ],
+    "rows": [
+      "transparent background",
+      "separator",
+      "tabular numerals",
+      "label hierarchy"
+    ],
+    "actionRail": [
+      "top separator",
+      "wrap",
+      "density"
+    ],
+    "action": [
+      "glass capsule",
+      "border",
+      "focus-visible",
+      "hover"
+    ],
+    "primaryAction": [
+      "soft daylight emphasis",
+      "single emphasized action"
+    ],
+    "disabledAction": [
+      "dashed border",
+      "muted contrast",
+      "no shadow"
+    ],
+    "focusWithin": [
+      "semantic focus ring",
+      "elevation"
+    ],
+    "hover": [
+      "one pixel lift",
+      "stronger rim",
+      "fine pointer only"
+    ],
+    "noBackdropFallback": [
+      "opaque pearl fallback"
+    ],
+    "responsive": [
+      "20px radius under 1180px"
+    ],
+    "reducedMotion": [
+      "no transition",
+      "no transform"
+    ]
+  },
+  "zeroSemantics": {
+    "glow": "no decorative glow beyond the first operational action",
+    "motion": "none under reduced motion",
+    "webgl": "forbidden",
+    "rawTabletCss": "not copied"
+  },
+  "coverageStatus": "COMPLETE_FOR_DECLARED_PILOT_STACK"
+}

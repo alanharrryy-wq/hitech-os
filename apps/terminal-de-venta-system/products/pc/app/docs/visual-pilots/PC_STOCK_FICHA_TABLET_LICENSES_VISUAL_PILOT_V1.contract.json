@@ -1,0 +1,120 @@
+{
+  "schema": "PRISMA_PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1",
+  "schemaVersion": "1.0.0",
+  "taskId": "PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1",
+  "classification": {
+    "before": "BUILD",
+    "gate": "APPLY",
+    "afterSuccess": "DONE"
+  },
+  "status": "EXACT_TARGET_AUTHORIZED_FOR_GOVERNED_APPLICATION",
+  "preflight": {
+    "zipSha256": "877FAC577A213E85E864861C23BF6E595D59B91DB6A4399EEC7CF3F2E442DDE2",
+    "status": "PASS_READ_ONLY_PREFLIGHT_WITH_BLOCKERS",
+    "resolution": "Eight documentary gaps were closed from exact route, TSX owner, CSS owner, runtime selector and certified materiality evidence; no target was guessed."
+  },
+  "translationChain": [
+    "Tablet Licenses visual identity",
+    "neutral recipe",
+    "PC dense Cloudglass adapter",
+    "exact StockFicha binding",
+    "runtime selector",
+    "evidence",
+    "rollback"
+  ],
+  "sourceReference": {
+    "surfaceId": "SURF.tb.settings",
+    "routeId": "ROUTE.tb.settings.license",
+    "owner": "TabletLicensePage",
+    "mode": "READ_ONLY_SEMANTIC_REFERENCE",
+    "rawCssCopy": false,
+    "evidence": [
+      {
+        "path": "apps/terminal-de-venta-system/products/tablet/app/app/settings/license/page.tsx",
+        "sha256": "5E140D8EF516D10B8033CD83B3BC11EC2A0FD4B8561AC2B97AF91F987569B0CD",
+        "bytes": 2103
+      },
+      {
+        "path": "apps/terminal-de-venta-system/products/tablet/app/components/license/license-status-card.tsx",
+        "sha256": "473CBED0E6A90226642A84352E8EACA190662B4404C635CD3396C2157DA844B9",
+        "bytes": 16485
+      },
+      {
+        "path": "apps/terminal-de-venta-system/products/tablet/app/components/license/license-ui.module.css",
+        "sha256": "6CA6CE0E89E71A7D024AAAD3AA5CC8A145E79F270082DDBF4CC61378872ECECA",
+        "bytes": 13021
+      },
+      {
+        "path": "apps/terminal-de-venta-system/products/tablet/app/components/settings/settings-workspace.module.css",
+        "sha256": "E43D4B0C1CBC66FE65F029B24DF8CBE2170927FD16B0F30775FF2D9FFEFD96BF",
+        "bytes": 12525
+      },
+      {
+        "path": "prisma-html/authority/rifat/tablet/runtime-sources/modules/license/license-ui.module.css",
+        "sha256": "70459BC6B8AF989337352CBC8BC0873B4EAEAE97B4D1AC6EF7541B8E3B97B093",
+        "bytes": 12806
+      },
+      {
+        "path": "apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/latest/materiality-catalog.registry.json",
+        "sha256": "EAB9E2A0AF1518FF65FDAA73EFA2D9960B0D78C7ABEEC816D31A8D98BC4A9149",
+        "bytes": 1460122
+      },
+      {
+        "path": "prisma-html/authority/rifat/tablet/runtime-sources/modules/settings/settings-workspace.module.css",
+        "sha256": "6519F3BF993B45F404CD36640CB6BD6B4729225537CB7C9A5036EFE83BD58DF2",
+        "bytes": 12301
+      }
+    ]
+  },
+  "pilot": {
+    "surfaceId": "SURF.pc.backoffice",
+    "routeId": "ROUTE.pc.stock",
+    "runtimeRoute": "/stock",
+    "filesystemRoute": "/app/stock",
+    "ownerId": "OWN.pc.inventory.stock_ficha",
+    "ownerSymbol": "StockFicha",
+    "regionId": "ZONE.pc.stock.detail",
+    "slotId": "SLOT.pc.stock.detail.primary",
+    "componentUiId": "PC-STOCK-FICHA-PANEL-01",
+    "recipeId": "REC.panel.operational.cloudglass",
+    "visualStackId": "VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+    "bindingId": "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+    "adapterId": "ADP.PC.DENSE.CLOUDGLASS.V1",
+    "neutralLayerId": "LYR.SURFACE.OPERATIONAL.DETAIL",
+    "implementationLayerId": "products.pc.app.components.inventory.pc.inventory.master.detail.module.css.productficha",
+    "runtimeSelector": "[data-pcinv-product-ficha=\"stock\"]",
+    "sourceOwner": "apps/terminal-de-venta-system/products/pc/app/components/inventory/inventory-workspace.tsx",
+    "cssOwner": "apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css"
+  },
+  "recipe": {
+    "material": "G2 Milkglass operational panel",
+    "density": "dense",
+    "rim": "R1 pearl hairline",
+    "glow": "N1 semantic only",
+    "motion": "M1 micro",
+    "background": "transparent pearl gradient with real backdrop blur",
+    "panelNesting": "rows use separators instead of nested cards"
+  },
+  "safety": {
+    "maxProductFileCount": 2,
+    "productFiles": [
+      "apps/terminal-de-venta-system/products/pc/app/components/inventory/inventory-workspace.tsx",
+      "apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css"
+    ],
+    "mutatingHandlersChanged": false,
+    "tabletChanged": false,
+    "cobrarChanged": false,
+    "globalCssChanged": false,
+    "importantAllowed": false,
+    "dependencyInstallAllowed": false
+  },
+  "before": {
+    "sourceOwnerSha256": "921879DBF3171BD43D61D078D252E96CBA126B327124B8949A2B53EC4EE9A849",
+    "cssOwnerSha256": "0289A5730AE370C340583DF5F8BB24DAE10AC395066575B37AE2E3C128D801F1",
+    "routeSha256": "03A8F1B42FC06FF0A372DA0C4A2E08C3BA7E5C187C56B4D135A20B83E315C78D"
+  },
+  "rollback": {
+    "kind": "exact-file backup plus Git revert PR",
+    "backupRequired": true
+  }
+}
