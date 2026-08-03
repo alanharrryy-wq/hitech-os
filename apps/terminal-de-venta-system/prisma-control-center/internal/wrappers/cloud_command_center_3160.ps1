@@ -4,6 +4,7 @@ param(
   [switch]$Detached,
   [switch]$OpenBrowser,
   [switch]$NoBrowser,
+  [string]$OutputDir = "",
   [object]$Code = $null,
   [Parameter(ValueFromRemainingArguments = $true)]
   [object[]]$ForwardArgs
@@ -60,7 +61,15 @@ if ($OpenBrowser) {
   $launcherParams["NoBrowser"] = $true
 }
 
+if (-not [string]::IsNullOrWhiteSpace($OutputDir)) {
+  $launcherParams["OutputDir"] = $OutputDir
+}
+
 $forward = @(ConvertTo-ForwardArgs -ArgsValue $ForwardArgs)
 
-& $Launcher @launcherParams @forward
+if ($forward.Count -gt 0) {
+  $launcherParams["ForwardArgs"] = [object[]]$forward
+}
+
+& $Launcher @launcherParams
 exit $LASTEXITCODE

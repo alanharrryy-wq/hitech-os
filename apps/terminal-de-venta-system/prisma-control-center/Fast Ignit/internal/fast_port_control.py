@@ -17,13 +17,15 @@ import io
 import json
 import os
 import re
+import signal
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import zipfile
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
 
@@ -31,6 +33,8 @@ PRISMA_PORT_COMMANDER_V3 = True
 PRISMA_PORT_COMMANDER_DOT_CHAIN_V1 = True
 PRISMA_PORT_COMMANDER_PARALLEL_PHASES_V1 = True
 PRISMA_PORT_CONTROL_CLOSE_ALL_STRONG_CONFIRM = True
+PRISMA_TABLET_OWNER_BRIDGE_V1 = True
+PRISMA_PORT_COMMANDER_CLEAR_LAUNCH_PROMPT_V1 = True
 
 PORTS = [3000, 3110, 3120, 3130, 3140, 3150, 3160]
 PORT_NAMES = {
@@ -145,6 +149,9 @@ class StartResult:
     log_file: str
     latest_run_zip: str = ""
     error: str = ""
+    owner_pid: Optional[int] = None
+    owner_state: str = ""
+    details: List[Dict] = field(default_factory=list)
 
 
 @dataclass
@@ -171,6 +178,9 @@ class PortControl:
         self.fail_zip = self.base / f"fastignit portctl {self.stamp} fail.zip"
         self.fast_dir = Path(__file__).resolve().parent.parent
         self.fast_ps1 = self.fast_dir / "FastIgnit.ps1"
+        self.tablet_owner_state_path = self.base / "FAST_IGNIT_TABLET_OWNER.json"
+        self.tablet_owner_proc: Optional[subprocess.Popen] = None
+        self.tablet_owner_threads: List[threading.Thread] = []
         self.summary: Dict = {
             "tool": "PRISMA Fast Ignit Port Commander",
             "schemaVersion": "3.0",
@@ -187,6 +197,9 @@ class PortControl:
                 "killsOnlyListeningPidsForSelectedPorts": True,
                 "noGlobalNodeKill": True,
                 "noDetachedConsoles": True,
+                "tablet3120PersistentOwner": True,
+                "tablet3120RequiresHold": True,
+                "tablet3120OwnerState": str(self.tablet_owner_state_path),
                 "port3160MayBeReset": True,
                 "dotSeparatedCommands": True,
                 "parallelByPhase": True,
@@ -295,14 +308,98 @@ class PortControl:
             state = "READY" if st.listening else "CLOSED"
             print(f"{idx:>2} {st.port:>5}  {st.name:<28} {state:<10} {pids:<16} {proc}")
         print("-" * 98)
+        owner = self.refresh_tablet_owner_state()
+        if owner:
+            print(
+                "Tablet owner: "
+                f"{owner.get('status', 'UNKNOWN')} | PID {owner.get('ownerPid', '-')} | "
+                f"alive={owner.get('ownerAlive', False)} | portReady={owner.get('portReady', False)}"
+            )
+
+    def _read_tablet_owner_state(self) -> Dict:
+        if not self.tablet_owner_state_path.is_file():
+            return {}
+        try:
+            data = json.loads(self.tablet_owner_state_path.read_text(encoding="utf-8"))
+            return data if isinstance(data, dict) else {}
+        except Exception:
+            return {}
+
+    def _write_tablet_owner_state(self, data: Dict) -> None:
+        payload = dict(data)
+        payload["updatedAt"] = iso_now()
+        tmp = self.tablet_owner_state_path.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, self.tablet_owner_state_path)
+
+    def _process_alive(self, pid: int) -> bool:
+        if pid <= 0:
+            return False
+        rc, out = self.run_cmd(["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"], timeout=12)
+        return rc == 0 and str(pid) in out and "INFO:" not in out.upper()
+
+    def _validated_tablet_owner(self, pid: int) -> Tuple[bool, str]:
+        if not self._process_alive(pid):
+            return False, "owner process is not alive"
+        info = self.process_info(pid)
+        command = (info.command_line or "").lower()
+        has_engine = "fastignit.ps1" in command or "fast_ignit.py" in command
+        has_port = "3120" in command
+        has_hold = "--hold" in command
+        if not (has_engine and has_port and has_hold):
+            return False, f"owner command mismatch: {info.command_line[:1200]}"
+        return True, ""
+
+    def refresh_tablet_owner_state(self) -> Dict:
+        state = self._read_tablet_owner_state()
+        if not state:
+            return {}
+        pid = int(state.get("ownerPid") or 0)
+        valid, reason = self._validated_tablet_owner(pid)
+        port_ready = self.port_status(3120).listening
+        state["ownerAlive"] = bool(valid)
+        state["portReady"] = bool(port_ready)
+        if valid and port_ready:
+            state["status"] = "READY"
+        elif valid:
+            state["status"] = "OWNER_ALIVE_PORT_NOT_READY"
+        elif state.get("status") not in ("STOPPED", "EXITED"):
+            state["status"] = "STALE"
+            state["validationError"] = reason
+        self._write_tablet_owner_state(state)
+        return state
+
+    def _stop_tablet_owner(self, reason: str) -> Tuple[bool, str]:
+        state = self._read_tablet_owner_state()
+        if not state:
+            return True, ""
+        pid = int(state.get("ownerPid") or 0)
+        if pid <= 0 or not self._process_alive(pid):
+            state.update({"status": "STOPPED", "ownerAlive": False, "stopReason": reason})
+            self._write_tablet_owner_state(state)
+            return True, ""
+        valid, why = self._validated_tablet_owner(pid)
+        if not valid:
+            return False, "TABLET_OWNER_STOP_BLOCKED_UNPROVEN: " + why
+        self.log(f"[PortCmd] Deteniendo owner probado de Tablet 3120: PID {pid} ({reason})")
+        rc, out = self.run_cmd(["taskkill", "/PID", str(pid), "/T", "/F"], timeout=30)
+        time.sleep(1.0)
+        alive = self._process_alive(pid)
+        state.update({
+            "status": "STOPPED" if not alive else "STOP_FAILED",
+            "ownerAlive": alive,
+            "stopReason": reason,
+            "stopOutput": out[-2000:],
+            "stopExitCode": rc,
+        })
+        self._write_tablet_owner_state(state)
+        return (not alive), ("" if not alive else f"owner PID {pid} sigue vivo; taskkill={rc}: {out[-500:]}")
 
     def kill_port(self, port: int) -> KillResult:
         name = PORT_NAMES.get(port, f"Port {port}")
         before = self.port_status(port)
         killed: List[int] = []
         failed: List[str] = []
-        if not before.pids:
-            return KillResult(port=port, name=name, before_pids=[], after_pids=[], killed=[], failed=[], success=True)
         for info in before.pids:
             self.log(f"[PortCmd] Cerrando puerto {port} {name}: PID {info.pid} {info.name}")
             rc, out = self.run_cmd(["taskkill", "/PID", str(info.pid), "/T", "/F"], timeout=20)
@@ -311,12 +408,25 @@ class PortControl:
                 killed.append(info.pid)
             else:
                 failed.append(f"PID {info.pid}: taskkill exit {rc}: {out.strip()[:500]}")
-        time.sleep(1.2)
+        time.sleep(1.2 if before.pids else 0.1)
         after = self.port_status(port)
-        success = not after.pids
         if after.pids:
             failed.append("Puerto sigue ocupado despues de taskkill: " + ",".join(str(p.pid) for p in after.pids))
-        return KillResult(port=port, name=name, before_pids=before.pids, after_pids=after.pids, killed=killed, failed=failed, success=success)
+        owner_ok = True
+        if port == 3120:
+            owner_ok, owner_error = self._stop_tablet_owner("selected-port-close")
+            if owner_error:
+                failed.append(owner_error)
+        success = not after.pids and owner_ok
+        return KillResult(
+            port=port,
+            name=name,
+            before_pids=before.pids,
+            after_pids=after.pids,
+            killed=killed,
+            failed=failed,
+            success=success,
+        )
 
     def close_ports_parallel(self, ports: List[int]) -> List[KillResult]:
         ports = unique_ports(ports)
@@ -345,12 +455,52 @@ class PortControl:
             return ""
         return str(max(zips, key=lambda p: p.stat().st_mtime))
 
-    def start_ports(self, ports: List[int]) -> StartResult:
+    def _tail_owner_log(self, log_file: Path, owner_pid: int, prefix: str) -> None:
+        try:
+            deadline = time.monotonic() + 15.0
+            while not log_file.exists() and time.monotonic() < deadline and self._process_alive(owner_pid):
+                time.sleep(0.2)
+            if not log_file.exists():
+                return
+            with log_file.open("r", encoding="utf-8", errors="replace") as stream:
+                while True:
+                    line = stream.readline()
+                    if line:
+                        print(prefix + line, end="", flush=True)
+                        continue
+                    if not self._process_alive(owner_pid):
+                        rest = stream.read()
+                        if rest:
+                            print(prefix + rest, end="", flush=True)
+                        return
+                    time.sleep(0.25)
+        except Exception:
+            self.log("[PortCmd] tablet owner tail error:\n" + traceback.format_exc())
+
+    def _monitor_tablet_owner(self, proc: subprocess.Popen, owner_log: Path) -> None:
+        code = proc.wait()
+        state = self._read_tablet_owner_state()
+        if int(state.get("ownerPid") or 0) == int(proc.pid):
+            state.update({
+                "status": "EXITED",
+                "ownerAlive": False,
+                "exitCode": int(code),
+                "ownerLog": str(owner_log),
+                "latestRunZip": self.newest_fastignit_run_zip(float(state.get("startedTs") or time.time())),
+            })
+            self._write_tablet_owner_state(state)
+
+    def _latest_tablet_log(self, since_ts: float) -> Optional[Path]:
+        candidates = [
+            path for path in self.base.glob("fastignit run */logs/3120_tablet-3120.log")
+            if path.is_file() and path.stat().st_mtime >= since_ts - 5
+        ]
+        return max(candidates, key=lambda p: p.stat().st_mtime) if candidates else None
+
+    def _run_fastignit_sync(self, ports: List[int]) -> StartResult:
         ports = unique_ports(ports)
         if not ports:
             return StartResult(ports=[], command=[], exit_code=0, success=True, elapsed_sec=0.0, log_file="")
-        if not self.fast_ps1.exists():
-            return StartResult(ports=ports, command=[], exit_code=1, success=False, elapsed_sec=0.0, log_file="", error=f"No existe FastIgnit.ps1: {self.fast_ps1}")
         started_ts = time.time()
         started = time.monotonic()
         log_file = self.run_dir / ("launch_" + "_".join(map(str, ports)) + ".log")
@@ -403,14 +553,223 @@ class PortControl:
             code = 1
         elapsed = round(time.monotonic() - started, 3)
         latest = self.newest_fastignit_run_zip(started_ts)
-        # Trust Fast Ignit exit code, then verify selected ports are listening too.
         selected = self.status_map()
         ready = all(selected.get(p) and selected[p].listening for p in ports)
         success = code == 0 and ready
         if code == 0 and not ready:
             missing = [str(p) for p in ports if not (selected.get(p) and selected[p].listening)]
             err = "Fast Ignit salio 0 pero estos puertos no quedaron READY: " + ",".join(missing)
-        return StartResult(ports=ports, command=cmd, exit_code=code, success=success, elapsed_sec=elapsed, log_file=str(log_file), latest_run_zip=latest, error=err)
+        return StartResult(
+            ports=ports,
+            command=cmd,
+            exit_code=code,
+            success=success,
+            elapsed_sec=elapsed,
+            log_file=str(log_file),
+            latest_run_zip=latest,
+            error=err,
+        )
+
+    def _start_tablet_owner(self) -> StartResult:
+        started_ts = time.time()
+        started = time.monotonic()
+        owner_log = self.run_dir / "launch_3120_owner.log"
+        current_port = self.port_status(3120)
+        current_state = self.refresh_tablet_owner_state()
+        if current_port.listening:
+            if current_state.get("ownerAlive") and current_state.get("portReady"):
+                return StartResult(
+                    ports=[3120], command=[], exit_code=0, success=True,
+                    elapsed_sec=0.0, log_file=str(owner_log),
+                    latest_run_zip=str(current_state.get("latestRunZip") or ""),
+                    owner_pid=int(current_state.get("ownerPid") or 0),
+                    owner_state="REUSED_PROVEN_OWNER",
+                )
+            return StartResult(
+                ports=[3120], command=[], exit_code=1, success=False,
+                elapsed_sec=0.0, log_file=str(owner_log),
+                error="TABLET_3120_OWNER_UNKNOWN: port is listening without a proven Fast Ignit --hold owner",
+                owner_state="OWNER_UNKNOWN",
+            )
+        if current_state.get("ownerAlive"):
+            return StartResult(
+                ports=[3120], command=[], exit_code=1, success=False,
+                elapsed_sec=0.0, log_file=str(owner_log),
+                error="TABLET_3120_OWNER_ALREADY_ALIVE_BUT_PORT_NOT_READY; inspect owner state before retry",
+                owner_pid=int(current_state.get("ownerPid") or 0),
+                owner_state=str(current_state.get("status") or "OWNER_ALIVE_PORT_NOT_READY"),
+            )
+        cmd = [
+            self.which_powershell(), "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass",
+            "-File", str(self.fast_ps1),
+            "--mode", "start",
+            "--ports", "3120",
+            "--reset-ports", "",
+            "--concurrency", "1",
+            "--timeout", "180",
+            "--output-dir", str(self.base),
+            "--stream",
+            "--hold",
+        ]
+        self.log("[PortCmd] Levantando Tablet 3120 con owner persistente: " + " ".join(cmd))
+        creationflags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0) if os.name == "nt" else 0
+        try:
+            with owner_log.open("ab", buffering=0) as output:
+                output.write(("\nCOMMAND:\n" + " ".join(cmd) + "\n\n").encode("utf-8", errors="replace"))
+                proc = subprocess.Popen(
+                    cmd,
+                    cwd=str(self.fast_dir),
+                    stdout=output,
+                    stderr=subprocess.STDOUT,
+                    stdin=subprocess.DEVNULL,
+                    creationflags=creationflags,
+                )
+            self.tablet_owner_proc = proc
+            state = {
+                "schemaVersion": "1.0",
+                "status": "STARTING",
+                "ownerPid": int(proc.pid),
+                "ownerAlive": True,
+                "portReady": False,
+                "startedAt": iso_now(),
+                "startedTs": started_ts,
+                "command": cmd,
+                "ownerLog": str(owner_log),
+                "port": 3120,
+                "policy": {
+                    "provenCommandRequiredForStop": True,
+                    "noDetachedConsole": True,
+                    "fastIgnitHoldOwner": True,
+                },
+            }
+            self._write_tablet_owner_state(state)
+            tail = threading.Thread(
+                target=self._tail_owner_log,
+                args=(owner_log, int(proc.pid), "[3120 owner] "),
+                daemon=True,
+            )
+            monitor = threading.Thread(
+                target=self._monitor_tablet_owner,
+                args=(proc, owner_log),
+                daemon=True,
+            )
+            tail.start()
+            monitor.start()
+            self.tablet_owner_threads.extend([tail, monitor])
+
+            deadline = time.monotonic() + 180.0
+            service_log_started = False
+            while time.monotonic() < deadline:
+                code = proc.poll()
+                if code is not None:
+                    tail_text = ""
+                    try:
+                        tail_text = "\n".join(owner_log.read_text(encoding="utf-8", errors="replace").splitlines()[-60:])
+                    except Exception:
+                        pass
+                    return StartResult(
+                        ports=[3120], command=cmd, exit_code=int(code), success=False,
+                        elapsed_sec=round(time.monotonic() - started, 3),
+                        log_file=str(owner_log),
+                        latest_run_zip=self.newest_fastignit_run_zip(started_ts),
+                        error="TABLET_3120_OWNER_EXITED_BEFORE_READY\n" + tail_text,
+                        owner_pid=int(proc.pid),
+                        owner_state="EXITED_BEFORE_READY",
+                    )
+                status = self.port_status(3120)
+                if status.listening:
+                    tablet_log = self._latest_tablet_log(started_ts)
+                    if tablet_log is not None and not service_log_started:
+                        service_log_started = True
+                        service_tail = threading.Thread(
+                            target=self._tail_owner_log,
+                            args=(tablet_log, int(proc.pid), "[3120 tablet] "),
+                            daemon=True,
+                        )
+                        service_tail.start()
+                        self.tablet_owner_threads.append(service_tail)
+                    state.update({
+                        "status": "READY",
+                        "portReady": True,
+                        "listenerPids": [asdict(p) for p in status.pids],
+                        "serviceLog": str(tablet_log) if tablet_log else "",
+                        "latestRunZip": self.newest_fastignit_run_zip(started_ts),
+                    })
+                    self._write_tablet_owner_state(state)
+                    return StartResult(
+                        ports=[3120], command=cmd, exit_code=0, success=True,
+                        elapsed_sec=round(time.monotonic() - started, 3),
+                        log_file=str(owner_log),
+                        latest_run_zip=str(state.get("latestRunZip") or ""),
+                        owner_pid=int(proc.pid),
+                        owner_state="READY",
+                    )
+                time.sleep(0.5)
+            stopped, stop_error = self._stop_tablet_owner("startup-timeout")
+            return StartResult(
+                ports=[3120], command=cmd, exit_code=124, success=False,
+                elapsed_sec=round(time.monotonic() - started, 3),
+                log_file=str(owner_log),
+                latest_run_zip=self.newest_fastignit_run_zip(started_ts),
+                error="TABLET_3120_START_TIMEOUT" + (": " + stop_error if stop_error else ""),
+                owner_pid=int(proc.pid),
+                owner_state="TIMEOUT_STOPPED" if stopped else "TIMEOUT_STOP_FAILED",
+            )
+        except Exception:
+            return StartResult(
+                ports=[3120], command=cmd, exit_code=1, success=False,
+                elapsed_sec=round(time.monotonic() - started, 3),
+                log_file=str(owner_log),
+                error=traceback.format_exc(),
+                owner_state="START_EXCEPTION",
+            )
+
+    def start_ports(self, ports: List[int]) -> StartResult:
+        ports = unique_ports(ports)
+        if not ports:
+            return StartResult(ports=[], command=[], exit_code=0, success=True, elapsed_sec=0.0, log_file="")
+        if not self.fast_ps1.exists():
+            return StartResult(
+                ports=ports, command=[], exit_code=1, success=False,
+                elapsed_sec=0.0, log_file="", error=f"No existe FastIgnit.ps1: {self.fast_ps1}"
+            )
+        started = time.monotonic()
+        details: List[StartResult] = []
+        other_ports = [port for port in ports if port != 3120]
+        if other_ports:
+            other = self._run_fastignit_sync(other_ports)
+            details.append(other)
+            if not other.success:
+                return StartResult(
+                    ports=ports,
+                    command=["mixed-start"],
+                    exit_code=other.exit_code,
+                    success=False,
+                    elapsed_sec=round(time.monotonic() - started, 3),
+                    log_file=other.log_file,
+                    latest_run_zip=other.latest_run_zip,
+                    error="Non-tablet phase failed; Tablet owner was not started. " + other.error,
+                    details=[asdict(item) for item in details],
+                )
+        if 3120 in ports:
+            tablet = self._start_tablet_owner()
+            details.append(tablet)
+        if len(details) == 1:
+            return details[0]
+        success = bool(details) and all(item.success for item in details)
+        return StartResult(
+            ports=ports,
+            command=["mixed-start"],
+            exit_code=0 if success else 1,
+            success=success,
+            elapsed_sec=round(time.monotonic() - started, 3),
+            log_file=";".join(item.log_file for item in details if item.log_file),
+            latest_run_zip=next((item.latest_run_zip for item in reversed(details) if item.latest_run_zip), ""),
+            error="\n".join(item.error for item in details if item.error),
+            owner_pid=next((item.owner_pid for item in details if item.owner_pid), None),
+            owner_state=next((item.owner_state for item in reversed(details) if item.owner_state), ""),
+            details=[asdict(item) for item in details],
+        )
 
     def parse_command_chain(self, raw: str) -> List[CommandAction]:
         text = (raw or "").strip()
@@ -654,16 +1013,23 @@ class PortControl:
         while True:
             statuses = self.status_all()
             self.print_status_table(statuses)
-            print("Opciones:")
-            print("  C1-C7 / A1-A7   cerrar/apagar ese puerto")
-            print("  L1-L7 / E1-E7   levantar/encender ese puerto")
-            print("  R1-R7           reiniciar ese puerto")
-            print("  C1.C2.L4.A5     ejecutar varios en paralelo por fases al dar Enter")
+            print("\n¿QUE PUERTOS QUIERES LEVANTAR?")
+            print("  L1 = 3000  Chart Lab")
+            print("  L2 = 3110  Web / EIT")
+            print("  L3 = 3120  Tablet")
+            print("  L4 = 3130  PC Backoffice")
+            print("  L5 = 3140  Mobile")
+            print("  L6 = 3150  Control Center")
+            print("  L7 = 3160  Cloud Command Center")
+            print("")
+            print("  Combina varios: L1.L3.L7")
+            print("  C1-C7 / A1-A7   cerrar/apagar")
+            print("  R1-R7           reiniciar")
             print("  LT              levantar todos los CLOSED")
-            print("  S               refrescar status")
-            print("  A               cerrar todos los puertos PRISMA locales (requiere: CERRAR TODO)")
+            print("  S               refrescar estado")
+            print("  A               cerrar todos (exige: CERRAR TODO)")
             print("  Q               salir")
-            choice = input("\nElige opcion/cadena: ").strip()
+            choice = input("\nComando (ejemplo L1 o L1.L3.L7): ").strip()
             if not choice:
                 print("Opcion vacia. Escribe S, Q, C1, L4 o una cadena como C1.C2.L4.A5.")
                 continue

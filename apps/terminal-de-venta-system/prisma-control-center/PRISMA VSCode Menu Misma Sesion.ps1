@@ -1,7 +1,7 @@
 # PRISMA_COMPAT_PS51_PATCHED
 # PRISMA_VSCODE_SAME_SESSION_MENU_V4_FAST_IGNIT_FOLDER_OPEN
 param(
-  [ValidateSet("menu", "all-local", "all", "fast-ignit", "custom", "none", "cloud-command-center-3160")]
+  [ValidateSet("menu", "interactive", "all-local", "all", "fast-ignit", "custom", "none", "cloud-command-center-3160")]
   [string]$Mode = "menu",
   [switch]$NoOpenVSCode,
   [switch]$NoWarmup
@@ -105,8 +105,16 @@ function Show-MainMenu {
   $form.Text = "PRISMA al abrir VS Code"; $form.Size = New-Object System.Drawing.Size(500, 420); $form.StartPosition = "CenterScreen"; $form.TopMost = $true
   $form.FormBorderStyle = "FixedDialog"; $form.MaximizeBox = $false; $form.MinimizeBox = $false
   $title = New-Object System.Windows.Forms.Label; $title.Text = "¿Qué quieres levantar?"; $title.Font = New-Object System.Drawing.Font("Segoe UI",16,[System.Drawing.FontStyle]::Bold); $title.AutoSize = $true; $title.Location = New-Object System.Drawing.Point(24,22); $form.Controls.Add($title)
-  $sub = New-Object System.Windows.Forms.Label; $sub.Text = "Usa la sesión actual de VS Code. El 3160 queda foreground, sin navegador y con reset limpio de puerto."; $sub.Font = New-Object System.Drawing.Font("Segoe UI",9); $sub.AutoSize = $true; $sub.Location = New-Object System.Drawing.Point(27,58); $form.Controls.Add($sub)
-  $choices = @(@("all-local","⚡ Fast Ignit: todos local al abrir VS Code"),@("all","🌩️ Fast Ignit local + Cloudflare"),@("fast-ignit","⚡ Solo Fast Ignit local paralelo"),@("cloud-command-center-3160","🧭 Solo PRISMA Cloud Command Center 3160"),@("custom","🧩 Elegir algunos"),@("none","🛑 No levantar nada"))
+  $sub = New-Object System.Windows.Forms.Label; $sub.Text = "VS Code abrirá una sola consola Port Control. Ningún puerto se levanta hasta que escribas L1-L7."; $sub.Font = New-Object System.Drawing.Font("Segoe UI",9); $sub.AutoSize = $true; $sub.Location = New-Object System.Drawing.Point(27,58); $form.Controls.Add($sub)
+  $choices = @(
+    @("interactive","🎛️ Port Control: elegir puertos al abrir VS Code"),
+    @("all-local","⚡ Todo Local Paralelo (sólo tarea manual)"),
+    @("all","🌩️ Local + Cloudflare (tareas manuales)"),
+    @("fast-ignit","⚡ Fast Ignit completo (sólo tarea manual)"),
+    @("cloud-command-center-3160","🧭 Cloud Command Center 3160 (manual)"),
+    @("custom","🧩 Preparar tareas individuales (manual)"),
+    @("none","🛑 No abrir consola automática")
+  )
   $y = 92
   foreach ($c in $choices) { $b = New-Object System.Windows.Forms.Button; $b.Text=$c[1]; $b.Tag=$c[0]; $b.Size=New-Object System.Drawing.Size(430,38); $b.Location=New-Object System.Drawing.Point(28,$y); $b.Font=New-Object System.Drawing.Font("Segoe UI",10); $b.Add_Click({ $form.Tag=$this.Tag; $form.Close() }); $form.Controls.Add($b); $y += 44 }
   [void]$form.ShowDialog(); return [string]$form.Tag
@@ -240,21 +248,20 @@ function Update-PrismaTasks($SelectedNames, [string]$SelectionMode) {
     }
   }
 
+  # PRISMA_VSCODE_DIRECT_PORT_CONTROL_FOLDEROPEN_V2
+  # Port Control es la tarea automática directa. No hay compound task intermedia.
+  if ($null -ne $fastPortControlTask) {
+    if ($SelectionMode -eq "none") {
+      if ($fastPortControlTask.Contains("runOptions")) { $fastPortControlTask.Remove("runOptions") }
+    } else {
+      $fastPortControlTask["runOptions"]=[ordered]@{ runOn="folderOpen"; instanceLimit=1 }
+    }
+  }
+
   $finalTasks=@()
   $finalTasks += $kept
   $finalTasks += $fastTasks
   $finalTasks += $autoTasks
-
-  if ($selectedLabels.Count -gt 0) {
-    $finalTasks += [ordered]@{
-      label="PRISMA AUTO: SELECCION"
-      dependsOrder="parallel"
-      dependsOn=$selectedLabels
-      problemMatcher=@()
-      runOptions=[ordered]@{ runOn="folderOpen" }
-      presentation=[ordered]@{ reveal="always"; panel="dedicated"; clear=$false; echo=$true; focus=$true }
-    }
-  }
 
   $tasks.tasks=$finalTasks
   Write-JsonFile $TasksPath $tasks
@@ -263,10 +270,10 @@ function Update-PrismaTasks($SelectedNames, [string]$SelectionMode) {
   $settings["terminal.integrated.tabs.enabled"]=$true
   Write-JsonFile $SettingsPath $settings
 
-  if ($useFastIgnit) {
-    Write-Host "[PRISMA] VS Code folderOpen quedo apuntando a Fast Ignit local paralelo." -ForegroundColor Green
-  } elseif ($SelectionMode -eq "all-local" -or $SelectionMode -eq "fast-ignit" -or $SelectionMode -eq "all") {
-    Write-Host "[PRISMA] WARN Fast Ignit no esta disponible; deje fallback con tareas PRISMA AUTO individuales." -ForegroundColor Yellow
+  if ($SelectionMode -eq "none") {
+    Write-Host "[PRISMA] VS Code folderOpen quedo sin consola automatica." -ForegroundColor Yellow
+  } else {
+    Write-Host "[PRISMA] VS Code folderOpen quedo en Port Control interactivo; ningun puerto arranca sin comando." -ForegroundColor Green
   }
 }
 
@@ -279,7 +286,8 @@ $services = @(Get-PrismaMenuServices)
 if ($Mode -eq "menu") { $mode = Show-MainMenu } else { $mode = $Mode }
 if ([string]::IsNullOrWhiteSpace($mode)) { exit 0 }
 $selectedNames=@()
-if ($mode -eq "all-local" -or $mode -eq "fast-ignit") { $selectedNames = @($services | Where-Object { $_.group -eq "local" } | ForEach-Object { $_.name }) }
+if ($mode -eq "interactive") { $selectedNames = @() }
+elseif ($mode -eq "all-local" -or $mode -eq "fast-ignit") { $selectedNames = @($services | Where-Object { $_.group -eq "local" } | ForEach-Object { $_.name }) }
 elseif ($mode -eq "all") { $selectedNames = @($services | Where-Object { $_.group -eq "local" -or $_.group -eq "cloudflare" } | ForEach-Object { $_.name }) }
 elseif ($mode -eq "cloud-command-center-3160") { $selectedNames = @($services | Where-Object { Test-IsCloudCommandCenterService $_ } | ForEach-Object { $_.name }) }
 elseif ($mode -eq "custom") { $selectedNames = @(Show-ServicePicker $services) }
