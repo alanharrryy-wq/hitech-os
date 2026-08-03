@@ -466,8 +466,17 @@ def coverage_metric_schema() -> dict[str, Any]:
     ]
     return {
         "type": "object",
-        "required": count_fields + ratio_fields,
+        "required": count_fields + ratio_fields + ["runtimeDisposition"],
         "properties": {
+            "runtimeDisposition": {
+                "enum": [
+                    "ACTIVE_AGGREGATE",
+                    "ACTIVE_SOURCE_DISCOVERY",
+                    "BLOCKED_BY_MISSING_ROUTE_REGISTRY",
+                    "INTERNAL_NO_ROUTE_REGISTRY",
+                    "SKIPPED_OFFLINE",
+                ]
+            },
             **{field: {"type": "integer", "minimum": 0} for field in count_fields},
             **{
                 field: {"anyOf": [
