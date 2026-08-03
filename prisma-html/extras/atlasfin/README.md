@@ -165,3 +165,12 @@ Regenerate only with an immutable certified UIMAP batch:
 Validate without opening a browser:
 
 `powershell -NoProfile -File RUN.ps1`
+
+Run the fail-closed static browser layout gate without a server:
+
+`powershell -NoProfile -File RUN.ps1 -VisualLayoutGate -EvidenceRoot <output-directory>`
+
+The gate measures card collisions, parent containment, horizontal and vertical
+overflow, and client/scroll dimensions at 1365x768, 1024x768, 900x768, and
+640x900. It also injects long status labels in browser memory to exercise the
+canonical wrapping rules without changing Atlasfin data.

@@ -1,0 +1,37 @@
+:root {
+  color-scheme: light;
+  font-family: Aptos, "Segoe UI", sans-serif;
+  background: #eef3f8;
+  color: #172033;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: #eef3f8; }
+main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 40px; }
+header { margin-bottom: 20px; }
+header p { margin: 0 0 4px; color: #526173; font-size: 12px; font-weight: 700; }
+h1 { margin: 0; font-size: 26px; }
+.fixture-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.fixture-grid article { min-width: 0; padding: 16px; background: #fff; border: 1px solid #cfd9e6; border-radius: 8px; }
+.fixture-grid h2 { margin: 0 0 12px; font-size: 15px; }
+.fixture-button { width: 100%; min-width: 0; }
+.fixture-button :is(.cobrarCopy,.cobrarAmount) { min-width: 0; }
+.fixture-button .cobrarCopy { overflow-wrap: anywhere; }
+.fixture-button:focus-visible { outline: 4px solid #0ea5e9; outline-offset: 3px; }
+.fixture-button[data-prisma-state="loading"] .cobrarIcon::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,.42);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: fixture-spin 720ms linear infinite;
+}
+.fixture-button[data-prisma-state="loading"] .cobrarIcon { font-size: 0; }
+@keyframes fixture-spin { to { transform: rotate(360deg); } }
+@media (max-width: 720px) { .fixture-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) {
+  .fixture-button,
+  .fixture-button::before,
+  .fixture-button .cobrarIcon::after { animation-duration: .001ms; animation-iteration-count: 1; transition-duration: .001ms; }
+}

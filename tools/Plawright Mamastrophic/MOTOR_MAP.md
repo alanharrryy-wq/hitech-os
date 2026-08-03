@@ -4,17 +4,17 @@ Centralized PRISMA Playwright Surfaces motor.
 
 ## Central root
 
-`F:\repos\hitech-os\tools\Plawright Mamastrophic`
+`[REDACTED_ABSOLUTE_PATH]`
 
 ## Main files
 
 | Role | Path |
 |---|---|
-| Launcher | `F:\repos\hitech-os\tools\Plawright Mamastrophic\RUN.ps1` |
-| Core wrapper | `F:\repos\hitech-os\tools\Plawright Mamastrophic\core\run-surf8-capture.ps1` |
-| Discovery engine | `F:\repos\hitech-os\tools\Plawright Mamastrophic\core\surf8_discovery.py` |
-| Central capture engine | `F:\repos\hitech-os\tools\Plawright Mamastrophic\tests\surf8.all-surfaces.engine.cjs` |
-| PC Playwright entry bridge | `F:\repos\hitech-os\apps\terminal-de-venta-system\products\pc\app\tests\prisma-surfaces\surf8.all-surfaces.spec.cjs` |
+| Launcher | `[REDACTED_ABSOLUTE_PATH]` |
+| Core wrapper | `[REDACTED_ABSOLUTE_PATH]` |
+| Discovery engine | `[REDACTED_ABSOLUTE_PATH]` |
+| Central capture engine | `[REDACTED_ABSOLUTE_PATH]` |
+| PC Playwright entry bridge | `[REDACTED_ABSOLUTE_PATH]` |
 
 ## arr5 fixes
 
@@ -25,7 +25,7 @@ Centralized PRISMA Playwright Surfaces motor.
 
 ## arr4 fixes
 
-- Adds `-Surface` selection without returning to the old `F:\PRISMA_CTX` motor.
+- Adds `-Surface` selection without returning to the old `[REDACTED_ABSOLUTE_PATH]` motor.
 - Supports aliases/ports: `pc/3130`, `tablet/3120`, `mobile/app/3140`, `web/3110`, `chart-lab/3000`, `control-center/3150`, `all`.
 - Makes the final status honest:
   - `PASS`: all selected online targets captured with zero skipped/fail/missing.
@@ -38,12 +38,12 @@ Centralized PRISMA Playwright Surfaces motor.
 ## Commands
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Plawright Mamastrophic\RUN.ps1" -Mode discovery -Surface all
-powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Plawright Mamastrophic\RUN.ps1" -Mode quick -Surface pc -Workers 6
-powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Plawright Mamastrophic\RUN.ps1" -Mode full -Surface all -Workers 6
-powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Plawright Mamastrophic\RUN.ps1" -Mode full -Surface all -Workers 6 -Strict
-powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Plawright Mamastrophic\RUN.ps1" -Mode quick -Surface pc -Workers 6 -GpuMode auto
-powershell -NoProfile -ExecutionPolicy Bypass -File "F:\repos\hitech-os\tools\Plawright Mamastrophic\RUN.ps1" -Mode quick -Surface pc -Workers 6 -GpuMode on
+powershell -NoProfile -ExecutionPolicy Bypass -File "[REDACTED_ABSOLUTE_PATH]" -Mode discovery -Surface all
+powershell -NoProfile -ExecutionPolicy Bypass -File "[REDACTED_ABSOLUTE_PATH]" -Mode quick -Surface pc -Workers 6
+powershell -NoProfile -ExecutionPolicy Bypass -File "[REDACTED_ABSOLUTE_PATH]" -Mode full -Surface all -Workers 6
+powershell -NoProfile -ExecutionPolicy Bypass -File "[REDACTED_ABSOLUTE_PATH]" -Mode full -Surface all -Workers 6 -Strict
+powershell -NoProfile -ExecutionPolicy Bypass -File "[REDACTED_ABSOLUTE_PATH]" -Mode quick -Surface pc -Workers 6 -GpuMode auto
+powershell -NoProfile -ExecutionPolicy Bypass -File "[REDACTED_ABSOLUTE_PATH]" -Mode quick -Surface pc -Workers 6 -GpuMode on
 ```
 
 
@@ -68,3 +68,10 @@ existing point probe and emits `reports/exact-target-evidence.json` plus a
 target-only screenshot, computed styles, bounding box, sanitized DOM marker,
 console/network diagnostics, and truthful state dispositions. It never clicks
 the target or fabricates loading/focus/disabled product state.
+
+Disabled exact-target baselines use `REAL_RUNTIME_DISABLED_BASELINE`; they are
+never emitted as normal and a disabled hover observation never certifies enabled
+hover. `RUN.ps1 -Mode state-fixture -ArtifactRoot <output-directory>` opens a
+script-free local fixture and certifies enabled normal, enabled hover, keyboard
+focus-visible, loading, reduced-motion, and disabled without product handlers,
+navigation, sale, payment, API, or database work.
