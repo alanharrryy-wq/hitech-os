@@ -1,18 +1,49 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""PRISMA Smart AllMesh controller v6.
+
+Streams child progress live, gives every run a private collision-proof workspace,
+normalizes nested AutoMesh evidence into one final ZIP, and packages cancellation
+or failure fail-closed. Read-only against the repository.
+"""
 from __future__ import annotations
 
 import argparse
 import datetime as dt
-import hashlib
 import json
 import os
 import shutil
-import subprocess
 import sys
-import zipfile
+import tempfile
 from pathlib import Path
 from typing import Any
+
+try:
+    from .prisma_automesh_runtime import (
+        ProgressReporter,
+        atomic_zip_dir,
+        capture_exception,
+        extract_zip_verified,
+        make_run_id,
+        safe_rmtree,
+        sha256,
+        short_run_id,
+        stream_command,
+        write_json_atomic,
+    )
+except ImportError:
+    from prisma_automesh_runtime import (
+        ProgressReporter,
+        atomic_zip_dir,
+        capture_exception,
+        extract_zip_verified,
+        make_run_id,
+        safe_rmtree,
+        sha256,
+        short_run_id,
+        stream_command,
+        write_json_atomic,
+    )
 
 INTENT_TASKS = {
     "auto": (
@@ -74,123 +105,126 @@ SURFACE_ARGS = {
 }
 
 
-def progress(done: int, total: int, label: str) -> None:
-    pct = int(done * 100 / max(total, 1))
-    fill = int(34 * pct / 100)
-    print(f"[{'█' * fill}{'░' * (34 - fill)}] {pct:3d}% | falta {100 - pct:3d}% | {label}", flush=True)
-
-
-def sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
-def zip_dir(src: Path, dst: Path) -> None:
-    if dst.exists():
-        dst.unlink()
-    with zipfile.ZipFile(dst, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=8) as z:
-        for p in sorted(src.rglob("*")):
-            if p.is_file():
-                z.write(p, p.relative_to(src).as_posix())
-
-
-def run(cmd: list[str], cwd: Path | None, log_path: Path) -> dict[str, Any]:
-    with log_path.open("a", encoding="utf-8", errors="replace") as log:
-        log.write("\n\n$ " + " ".join(map(str, cmd)) + "\n")
-        log.flush()
-        try:
-            p = subprocess.run(
-                cmd,
-                cwd=str(cwd) if cwd else None,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                shell=False,
-            )
-            log.write(p.stdout)
-            if p.stderr:
-                log.write("\n[stderr]\n" + p.stderr)
-            log.write(f"\n[returncode] {p.returncode}\n")
-            return {"returncode": p.returncode, "stdout": p.stdout, "stderr": p.stderr, "cmd": cmd}
-        except Exception as exc:
-            log.write("\n[exception] " + repr(exc) + "\n")
-            return {"returncode": 999, "stdout": "", "stderr": repr(exc), "cmd": cmd}
-
-
 def find_repo(root_path: str | None, fallback: str | None) -> Path:
     candidates: list[Path] = []
     if root_path:
-        p = Path(root_path)
-        if p.is_file():
-            p = p.parent
-        candidates.append(p)
+        candidate = Path(root_path)
+        if candidate.is_file():
+            candidate = candidate.parent
+        candidates.append(candidate)
     if fallback:
         candidates.append(Path(fallback))
-    candidates.append(Path(r"F:\repos\hitech-os"))
-    candidates.append(Path.cwd())
+    candidates.extend([Path(r"F:\repos\hitech-os"), Path.cwd()])
+
     seen: set[str] = set()
-    for c in candidates:
+    for candidate in candidates:
         try:
-            c = c.expanduser().resolve()
+            candidate = candidate.expanduser().resolve()
         except Exception:
             continue
-        for p in [c] + list(c.parents):
-            key = str(p).lower()
+        for path in [candidate] + list(candidate.parents):
+            key = str(path).lower()
             if key in seen:
                 continue
             seen.add(key)
-            if (p / ".git").exists():
-                return p
-    for c in candidates:
+            if (path / ".git").exists():
+                return path
+    for candidate in candidates:
         try:
-            if c.exists():
-                return c.resolve()
+            if candidate.exists():
+                return candidate.resolve()
         except Exception:
             pass
-    return Path(r"F:\repos\hitech-os")
+    raise RuntimeError("NO_REPO: no encontré repo Git")
 
 
-def newest_zip(folder: Path, status: str) -> Path | None:
-    candidates = [p for p in folder.rglob("*.zip") if p.name.lower().endswith(f" {status}.zip")]
-    return max(candidates, key=lambda p: p.stat().st_mtime) if candidates else None
+def copy_if_exists(source: Path, destination: Path) -> bool:
+    if not source.exists() or not source.is_file():
+        return False
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+    return True
+
+
+def controller_self_test() -> int:
+    first = make_run_id("allmesh")
+    second = make_run_id("allmesh")
+    assert first != second
+    with tempfile.TemporaryDirectory(prefix="smart_allmesh_selftest_") as temporary:
+        root = Path(temporary)
+        source = root / "source"
+        source.mkdir()
+        (source / "hello.txt").write_text("hola\n", encoding="utf-8")
+        target = root / "result.zip"
+        result = atomic_zip_dir(source, target)
+        assert target.exists()
+        assert result["entries"] == 1
+    print("SMART ALLMESH CONTROLLER V6 SELFTEST OK: unique-run atomic-zip live-stream-ready")
+    return 0
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Code Atlas Smart AllMesh controller")
+    parser = argparse.ArgumentParser(description="Code Atlas Smart AllMesh controller v6")
     parser.add_argument("--root-path", default="")
     parser.add_argument("--surface", default="auto")
     parser.add_argument("--intent", default="auto", choices=sorted(INTENT_TASKS))
     parser.add_argument("--repo", default=os.environ.get("ALLMESH_REPO", r"F:\repos\hitech-os"))
     parser.add_argument("--out-root", default=os.environ.get("ALLMESH_OUT_ROOT", r"F:\descargasf"))
-    parser.add_argument("--workers", default="18")
-    parser.add_argument("--shards", default="72")
-    parser.add_argument("--max-files", default="360")
-    parser.add_argument("--max-mb", default="140")
+    parser.add_argument("--workers", type=int, default=18)
+    parser.add_argument("--shards", type=int, default=72)
+    parser.add_argument("--max-files", type=int, default=360)
+    parser.add_argument("--max-mb", type=int, default=140)
+    parser.add_argument("--run-id", default="")
+    parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
+
+    if args.self_test:
+        return controller_self_test()
+
+    args.workers = max(1, min(18, int(args.workers)))
+    args.shards = max(args.workers, min(216, int(args.shards)))
+    args.max_files = max(1, int(args.max_files))
+    args.max_mb = max(1, int(args.max_mb))
 
     out_root = Path(args.out_root)
     out_root.mkdir(parents=True, exist_ok=True)
     repo = find_repo(args.root_path, args.repo)
-    stamp = dt.datetime.now().strftime("%d%m %H%M")
-    stage = out_root / f"allmesh {stamp} staging"
-    if stage.exists():
-        shutil.rmtree(stage)
-    stage.mkdir(parents=True, exist_ok=True)
+    run_id = args.run_id.strip() or make_run_id("allmesh")
+    short_id = short_run_id(run_id)
+    human_stamp = dt.datetime.now().strftime("%d%m %H%M%S")
+
+    work_root = out_root / ".allmesh_work" / run_id
+    stage = work_root / "staging"
+    final_payload = work_root / "final_payload"
+    automesh_out = stage / "automesh_out"
     log_path = stage / "smart_allmesh.log"
+    progress_jsonl = stage / "controller_progress.jsonl"
+    child_progress_jsonl = stage / "automesh_progress.jsonl"
+    stage.mkdir(parents=True, exist_ok=False)
+    final_payload.mkdir(parents=True, exist_ok=False)
+    automesh_out.mkdir(parents=True, exist_ok=False)
+
+    reporter = ProgressReporter(
+        run_id=run_id,
+        jsonl_path=progress_jsonl,
+        width=34,
+        component="smart-allmesh-controller",
+    )
+    reporter.start_heartbeat(5.0)
 
     surface_key = (args.surface or "auto").strip().lower()
-    surface_arg = SURFACE_ARGS.get(surface_key, surface_key if surface_key not in {"auto", "all", "global"} else "")
+    surface_arg = SURFACE_ARGS.get(
+        surface_key,
+        surface_key if surface_key not in {"auto", "all", "global"} else "",
+    )
     surface_label = SURFACE_LABELS.get(surface_key, args.surface or "superficie inferida")
     task = INTENT_TASKS[args.intent].format(surface_label=surface_label)
 
     report: dict[str, Any] = {
         "kind": "CODE_ATLAS_SMART_ALLMESH_CONTROLLER",
+        "version": "v6",
         "created_at": dt.datetime.now().isoformat(),
+        "run_id": run_id,
         "status": "PENDING",
         "root_path": args.root_path,
         "repo": str(repo),
@@ -199,6 +233,8 @@ def main() -> int:
         "surface_arg": surface_arg,
         "intent": args.intent,
         "task": task,
+        "workers_local_cap": args.workers,
+        "shards": args.shards,
         "rules": {
             "read_only": True,
             "no_patch": True,
@@ -206,89 +242,189 @@ def main() -> int:
             "no_port_free": True,
             "no_dev_server_start": True,
             "no_hot_prisma": True,
-            "auto_filter_context": True,
-            "one_dropdown_one_button": True,
+            "one_loose_final_zip": True,
+            "atomic_zip_publication": True,
+            "live_child_output": True,
+            "collision_proof_private_stage": True,
+            "global_worker_budget": 18,
         },
     }
 
-    progress(0, 5, "preflight Smart AllMesh")
-    if not repo.exists():
-        raise SystemExit(f"NO_REPO: {repo}")
+    final_zip: Path | None = None
+    exit_code = 1
+    try:
+        reporter.emit(2, "preflight Smart AllMesh", details={"repo": str(repo)})
+        automesh = Path(__file__).resolve().with_name("smart_allmesh_automesh.py")
+        if not automesh.exists():
+            raise RuntimeError(f"NO_AUTOMESH: {automesh}")
 
-    automesh = Path(__file__).resolve().with_name("smart_allmesh_automesh.py")
-    if not automesh.exists():
-        raise SystemExit(f"NO_AUTOMESH: {automesh}")
+        reporter.emit(8, "automesh self-test")
+        self_test = stream_command(
+            [sys.executable, str(automesh), "--self-test"],
+            cwd=None,
+            log_path=log_path,
+            reporter=reporter,
+            heartbeat_label="self-test AutoMesh trabajando",
+        )
+        report["self_test"] = self_test
+        if self_test["returncode"] != 0:
+            raise RuntimeError("FAIL_AUTOMESH_SELF_TEST")
 
-    progress(1, 5, "automesh self-test")
-    p = run([sys.executable, str(automesh), "--self-test"], None, log_path)
-    if p["returncode"] != 0:
-        report["status"] = "FAIL_SELF_TEST"
-        report["self_test"] = p
-        final_dir = stage / f"allmesh {stamp} fail"
-        final_dir.mkdir(parents=True, exist_ok=True)
-        (final_dir / "SMART_ALLMESH_REPORT.json").write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
-        shutil.copy2(log_path, final_dir / "smart_allmesh.log")
-        final_zip = out_root / f"allmesh {stamp} fail.zip"
-        zip_dir(final_dir, final_zip)
-        print(f"FINAL_FAIL_ZIP={final_zip}", flush=True)
-        return 1
+        reporter.emit(15, "generando mesh inteligente con salida viva")
+        command = [
+            sys.executable,
+            str(automesh),
+            "--task",
+            task,
+            "--repo",
+            str(repo),
+            "--out",
+            str(automesh_out),
+            "--workers",
+            str(args.workers),
+            "--shards",
+            str(args.shards),
+            "--max-files",
+            str(args.max_files),
+            "--max-mb",
+            str(args.max_mb),
+            "--run-id",
+            run_id,
+            "--progress-jsonl",
+            str(child_progress_jsonl),
+        ]
+        if surface_arg:
+            command += ["--surface", surface_arg]
 
-    progress(2, 5, "generando mesh inteligente")
-    automesh_out = stage / "automesh_out"
-    automesh_out.mkdir(parents=True, exist_ok=True)
-    cmd = [
-        sys.executable,
-        str(automesh),
-        "--task",
-        task,
-        "--repo",
-        str(repo),
-        "--out",
-        str(automesh_out),
-        "--workers",
-        str(args.workers),
-        "--shards",
-        str(args.shards),
-        "--max-files",
-        str(args.max_files),
-        "--max-mb",
-        str(args.max_mb),
-    ]
-    if surface_arg:
-        cmd += ["--surface", surface_arg]
-    p = run(cmd, None, log_path)
-    status = "result" if p["returncode"] == 0 else "fail"
-    src = newest_zip(automesh_out, status)
+        child = stream_command(
+            command,
+            cwd=None,
+            log_path=log_path,
+            reporter=reporter,
+            heartbeat_label="AutoMesh sigue vivo; esperando siguiente evento",
+        )
+        report["automesh_returncode"] = child["returncode"]
+        report["automesh_markers"] = child["markers"]
+        report["automesh_tail"] = child["tail"]
 
-    progress(3, 5, "normalizando evidencia")
-    final_dir = stage / f"allmesh {stamp} {status}"
-    final_dir.mkdir(parents=True, exist_ok=True)
-    report["status"] = "PASS" if status == "result" else "FAIL"
-    report["automesh_returncode"] = p["returncode"]
-    report["automesh_zip"] = str(src) if src else None
-    if src and src.exists():
-        report["automesh_sha256"] = sha256(src)
-        shutil.copy2(src, final_dir / src.name)
-    else:
-        (final_dir / "ERROR.txt").write_text("AutoMesh did not produce expected zip. See smart_allmesh.log.\n", encoding="utf-8")
-    (final_dir / "SMART_ALLMESH_REPORT.json").write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
-    (final_dir / "SMART_ALLMESH_REPORT.md").write_text(
-        "# Smart AllMesh\n\n"
-        f"- Status: `{report['status']}`\n"
-        f"- Surface: `{args.surface}`\n"
-        f"- Intent: `{args.intent}`\n"
-        f"- Repo: `{repo}`\n\n"
-        "## Task\n\n"
-        f"{task}\n",
-        encoding="utf-8",
-    )
-    shutil.copy2(log_path, final_dir / "smart_allmesh.log")
-    progress(4, 5, "empaquetando zip final")
-    final_zip = out_root / f"allmesh {stamp} {status}.zip"
-    zip_dir(final_dir, final_zip)
-    progress(5, 5, "listo")
-    print((f"FINAL_RESULT_ZIP={final_zip}" if status == "result" else f"FINAL_FAIL_ZIP={final_zip}"), flush=True)
-    return 0 if status == "result" else 1
+        marker_name = "OK_RESULT_ZIP" if child["returncode"] == 0 else "FAIL_ZIP"
+        marker_path = child["markers"].get(marker_name)
+        if not marker_path:
+            raise RuntimeError(
+                f"AUTOMESH_DID_NOT_REPORT_EXACT_ZIP: expected {marker_name}"
+            )
+        child_zip = Path(marker_path)
+        if not child_zip.exists():
+            raise RuntimeError(f"AUTOMESH_ZIP_MISSING: {child_zip}")
+
+        reporter.emit(82, "normalizando evidencia sin ZIP anidado")
+        extraction = extract_zip_verified(child_zip, final_payload / "authority_mesh")
+        report["automesh_zip_source"] = extraction
+        report["automesh_zip_name"] = child_zip.name
+
+        report["status"] = "PASS" if child["returncode"] == 0 else "FAIL"
+        copy_if_exists(log_path, final_payload / "smart_allmesh.log")
+        copy_if_exists(progress_jsonl, final_payload / "controller_progress.jsonl")
+        copy_if_exists(child_progress_jsonl, final_payload / "automesh_progress.jsonl")
+        write_json_atomic(final_payload / "SMART_ALLMESH_REPORT.json", report)
+        (final_payload / "SMART_ALLMESH_REPORT.md").write_text(
+            "# Smart AllMesh v6\n\n"
+            f"- Status: `{report['status']}`\n"
+            f"- Run ID: `{run_id}`\n"
+            f"- Surface: `{args.surface}`\n"
+            f"- Intent: `{args.intent}`\n"
+            f"- Repo: `{repo}`\n"
+            f"- Global worker budget: `18`\n"
+            f"- Local worker cap: `{args.workers}`\n\n"
+            "## Task\n\n"
+            f"{task}\n",
+            encoding="utf-8",
+        )
+        (final_payload / "CONTINUATION.md").write_text(
+            "# Smart AllMesh continuation\n\n"
+            f"Status: {report['status']}\n"
+            f"Run ID: {run_id}\n"
+            "The child AutoMesh output was streamed live and normalized into this single ZIP.\n",
+            encoding="utf-8",
+        )
+
+        status_word = "result" if child["returncode"] == 0 else "fail"
+        final_zip = out_root / f"allmesh {human_stamp} {short_id} {status_word}.zip"
+        report["final_zip_path"] = str(final_zip)
+        write_json_atomic(final_payload / "SMART_ALLMESH_REPORT.json", report)
+        reporter.emit(94, "publicando ZIP final atómico")
+        zip_report = atomic_zip_dir(final_payload, final_zip)
+
+        exit_code = 0 if child["returncode"] == 0 else 1
+        reporter.emit(
+            100,
+            "Smart AllMesh terminado",
+            status="PASS" if exit_code == 0 else "FAIL",
+            details={"zip": str(final_zip)},
+        )
+        if exit_code == 0:
+            print(f"FINAL_RESULT_ZIP={final_zip}", flush=True)
+        else:
+            print(f"FINAL_FAIL_ZIP={final_zip}", flush=True)
+        return exit_code
+
+    except KeyboardInterrupt as exc:
+        exit_code = 130
+        report["status"] = "CANCELLED"
+        report["error"] = capture_exception(exc)
+    except Exception as exc:
+        exit_code = 1
+        report["status"] = "FAIL"
+        report["error"] = capture_exception(exc)
+    finally:
+        if exit_code != 0 and report.get("status") in {"FAIL", "CANCELLED"}:
+            try:
+                reporter.emit(
+                    96,
+                    "empaquetando diagnóstico fail-closed",
+                    status=report["status"],
+                )
+                diagnostics = final_payload / "diagnostics"
+                diagnostics.mkdir(parents=True, exist_ok=True)
+                copy_if_exists(log_path, diagnostics / "smart_allmesh.log")
+                copy_if_exists(progress_jsonl, diagnostics / "controller_progress.jsonl")
+                copy_if_exists(child_progress_jsonl, diagnostics / "automesh_progress.jsonl")
+                if automesh_out.exists():
+                    partial = diagnostics / "partial_automesh_out"
+                    shutil.copytree(automesh_out, partial, dirs_exist_ok=True)
+                write_json_atomic(final_payload / "SMART_ALLMESH_REPORT.json", report)
+                (final_payload / "ERROR.txt").write_text(
+                    json.dumps(report.get("error", {}), indent=2, ensure_ascii=False),
+                    encoding="utf-8",
+                )
+                (final_payload / "CONTINUATION.md").write_text(
+                    "# Smart AllMesh fail continuation\n\n"
+                    f"Status: {report.get('status')}\n"
+                    f"Run ID: {run_id}\n"
+                    "Review ERROR.txt, logs, progress JSONL and partial AutoMesh evidence.\n",
+                    encoding="utf-8",
+                )
+                final_zip = out_root / f"allmesh {human_stamp} {short_id} fail.zip"
+                atomic_zip_dir(final_payload, final_zip)
+                reporter.emit(
+                    100,
+                    "diagnóstico fail-closed listo",
+                    status=report.get("status", "FAIL"),
+                    details={"zip": str(final_zip)},
+                )
+                print(f"FINAL_FAIL_ZIP={final_zip}", flush=True)
+            except Exception as packaging_exc:
+                print(
+                    "SMART_ALLMESH_FATAL_PACKAGING_ERROR="
+                    + json.dumps(capture_exception(packaging_exc), ensure_ascii=False),
+                    flush=True,
+                )
+                print(f"SMART_ALLMESH_WORK_ROOT_PRESERVED={work_root}", flush=True)
+        reporter.stop_heartbeat()
+        if final_zip is not None and final_zip.exists():
+            safe_rmtree(work_root)
+
+    return exit_code
 
 
 if __name__ == "__main__":
