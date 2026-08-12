@@ -21,6 +21,7 @@ import random
 import shutil
 import signal
 import subprocess
+import sys
 import threading
 import time
 import traceback
@@ -75,6 +76,16 @@ def _duration(seconds: float | None) -> str:
     if hours:
         return f"{hours:02d}:{minutes:02d}:{secs:02d}"
     return f"{minutes:02d}:{secs:02d}"
+
+
+def _console_write(text: str, *, end: str = "\n") -> None:
+    """Write progress/output without allowing a legacy console encoding to abort work."""
+    try:
+        print(text, end=end, flush=True)
+    except UnicodeEncodeError:
+        encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+        safe = text.encode(encoding, errors="replace").decode(encoding, errors="replace")
+        print(safe, end=end, flush=True)
 
 
 class ProgressReporter:
@@ -169,10 +180,9 @@ class ProgressReporter:
                 if total is not None:
                     count += f"/{total}"
             suffix = " | heartbeat" if heartbeat else ""
-            print(
+            _console_write(
                 f"[{bar}] {pct:3d}% | lleva {_duration(elapsed)} | "
-                f"falta {_duration(eta)} | {label}{count}{suffix}",
-                flush=True,
+                f"falta {_duration(eta)} | {label}{count}{suffix}"
             )
 
             if self.jsonl_path is not None:
@@ -214,7 +224,6 @@ class ProgressReporter:
         self._stop_event.set()
         if self._heartbeat_thread is not None:
             self._heartbeat_thread.join(timeout=2.0)
-
 
 
 
@@ -289,7 +298,7 @@ class GlobalWorkerBudget:
                 str(self.root.resolve()).lower().encode("utf-8", errors="replace")
             ).hexdigest()[:20]
             for index in range(self.slots):
-                name = f"Local\\PRISMA_AUTOMESH_{budget_key}_SLOT_{index:02d}"
+                name = f"Global\\PRISMA_AUTOMESH_{budget_key}_SLOT_{index:02d}"
                 handle = kernel32.CreateMutexW(None, False, name)
                 if not handle:
                     error_code = ctypes.get_last_error()
@@ -681,7 +690,7 @@ def stream_command(
                     reader_done = True
                 elif item:
                     last_output = time.monotonic()
-                    print(item, end="", flush=True)
+                    _console_write(item, end="")
                     log.write(item)
                     log.flush()
                     stripped = item.strip()
