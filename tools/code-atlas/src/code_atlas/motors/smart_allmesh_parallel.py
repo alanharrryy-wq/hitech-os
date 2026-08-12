@@ -227,8 +227,14 @@ def parse_tasks(task_values: list[str], task_spec: str) -> list[MeshTask]:
 def worker_caps(task_count: int, parallel: int, requested_workers: int) -> list[int]:
     active = max(1, min(GLOBAL_WORKER_LIMIT, parallel, task_count))
     requested = max(1, min(GLOBAL_WORKER_LIMIT, requested_workers))
-    base, remainder = divmod(GLOBAL_WORKER_LIMIT, active)
-    caps = [min(requested, base + (1 if index < remainder else 0)) for index in range(active)]
+    # Use one uniform cap for every concurrently schedulable task. ThreadPoolExecutor
+    # does not guarantee queued task N will replace the same worker slot that task
+    # N-parallel used, so distributing the remainder (for example 5,5,4,4) could
+    # transiently produce 5+5+5+4. Uniform caps make the <=18 invariant independent
+    # of completion order. The runtime global budget remains the second safety net.
+    per_task = max(1, GLOBAL_WORKER_LIMIT // active)
+    cap = min(requested, per_task)
+    caps = [cap for _ in range(active)]
     if sum(caps) > GLOBAL_WORKER_LIMIT:
         raise RuntimeError("PARALLEL_WORKER_CAP_INVARIANT_BROKEN")
     return caps
