@@ -1,0 +1,53 @@
+name: AutoMesh Parallel Certification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
+      - '.github/workflows/automesh-parallel-cert.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
+      - '.github/workflows/automesh-parallel-cert.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  automesh-parallel-cert:
+    name: ${{ matrix.os }} / py${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.11']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile AutoMesh tooling
+        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+      - name: Run cross-process and real AutoMesh parallel certification tests
+        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
