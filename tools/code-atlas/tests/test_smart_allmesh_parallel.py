@@ -13,12 +13,15 @@ import zipfile
 from pathlib import Path
 
 CODE_ATLAS_ROOT = Path(__file__).resolve().parents[1]
-SRC = CODE_ATLAS_ROOT / "src"
-if str(SRC) not in sys.path:
-    sys.path.insert(0, str(SRC))
+MOTORS = CODE_ATLAS_ROOT / "src/code_atlas/motors"
+if str(MOTORS) not in sys.path:
+    sys.path.insert(0, str(MOTORS))
 
-from code_atlas.motors.prisma_automesh_runtime import GlobalWorkerBudget
-from code_atlas.motors.smart_allmesh_parallel import compare_snapshots, repo_snapshot, worker_caps
+# Import the headless motor files directly. Importing code_atlas.motors executes
+# its GUI-oriented package __init__, which pulls PySide6 even though these
+# runtime/supervisor tests do not need Qt.
+from prisma_automesh_runtime import GlobalWorkerBudget
+from smart_allmesh_parallel import compare_snapshots, repo_snapshot, worker_caps
 
 
 def _budget_probe(
