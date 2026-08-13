@@ -30,12 +30,13 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $Task = 'AutoMesh Parallel v2 Tooling/Code Atlas: improve multi-task parallel execution with elastic utilization of the existing global 18-worker budget, cooperative fail-fast cancellation limited strictly to supervisor-owned child AutoMesh processes, stronger child manifest/evidence provenance validation, faster deterministic repository snapshotting, and adversarial Linux/Windows CI. Preserve read-only repo behavior. Exclude Tablet, PC, Mobile, Web, Chart Lab, Shared UI, product runtime, databases, Prisma generation, ports, dev servers, deployments, and unrelated governance.'
+          $Task = 'AutoMesh Parallel v2 Tooling/Code Atlas: improve multi-task parallel execution with elastic utilization of the existing global 18-worker budget, cooperative fail-fast cancellation limited strictly to supervisor-owned child AutoMesh processes, stronger child manifest/evidence provenance validation, faster deterministic repository snapshotting, and adversarial Linux/Windows CI while preserving read-only repository behavior.'
           $Out = Join-Path $env:RUNNER_TEMP 'automesh-v2-authority'
           $Budget = Join-Path $env:RUNNER_TEMP 'automesh-v2-budget'
           New-Item -ItemType Directory -Force -Path $Out, $Budget | Out-Null
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py `
             --task $Task `
+            --surface tooling `
             --repo $PWD.Path `
             --out $Out `
             --workers 18 `
@@ -50,6 +51,20 @@ jobs:
           if (-not $Zip) { throw 'Authority result ZIP not found.' }
           $Extract = Join-Path $env:RUNNER_TEMP 'automesh-v2-authority-extracted'
           Expand-Archive -LiteralPath $Zip.FullName -DestinationPath $Extract -Force
+
+          $Readset = Get-ChildItem -LiteralPath $Extract -Recurse -File -Filter 'AUTHORITY_READSET.lock.json' | Where-Object { $_.FullName -match '[\\/]\.governance[\\/]current[\\/]' } | Select-Object -First 1
+          if (-not $Readset) { throw 'Fresh .governance/current/AUTHORITY_READSET.lock.json missing.' }
+          $ReadsetJson = Get-Content -LiteralPath $Readset.FullName -Raw | ConvertFrom-Json
+          if ($ReadsetJson.task -ne $Task) { throw 'Authority readset task mismatch.' }
+          if ($ReadsetJson.surface_argument -ne 'tooling') { throw 'Authority readset surface mismatch.' }
+
+          $Impact = Get-ChildItem -LiteralPath $Extract -Recurse -File -Filter 'APP_IMPACT_MATRIX.md' | Select-Object -First 1
+          if (-not $Impact) { throw 'APP_IMPACT_MATRIX.md missing.' }
+          $ImpactText = Get-Content -LiteralPath $Impact.FullName -Raw
+          if ($ImpactText -notmatch '(?m)^- tooling\s*$') { throw 'Tooling not included by authority matrix.' }
+          foreach ($ForbiddenSurface in @('tablet','pc','mobile','chart_lab','shared_ui')) {
+            if ($ImpactText -notmatch "(?m)^- $ForbiddenSurface\s*$") { throw "Expected excluded surface missing from matrix: $ForbiddenSurface" }
+          }
 
           $Required = @(
             'AUTHORITY_READSET.lock.json',
@@ -77,3 +92,4 @@ jobs:
           name: automesh-v2-authority-evidence
           path: ${{ env.AUTHORITY_EXTRACT }}
           if-no-files-found: error
+          include-hidden-files: true
