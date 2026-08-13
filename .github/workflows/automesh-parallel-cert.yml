@@ -37,6 +37,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         python-version: ['3.11']
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
         with:
@@ -49,5 +50,8 @@ jobs:
       - name: Compile AutoMesh tooling
         run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
 
-      - name: Run cross-process and real AutoMesh parallel certification tests
+      - name: Run legacy AutoMesh self-test
+        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+
+      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
