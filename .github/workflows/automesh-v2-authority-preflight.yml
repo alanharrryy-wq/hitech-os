@@ -1,0 +1,79 @@
+name: AutoMesh v2 Authority Preflight
+
+on:
+  push:
+    branches:
+      - preflight/automesh-v2-authority-1208
+    paths:
+      - '.github/workflows/automesh-v2-authority-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  authority-mesh:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run exact task AutoMesh authority preflight
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Task = 'AutoMesh Parallel v2 Tooling/Code Atlas: improve multi-task parallel execution with elastic utilization of the existing global 18-worker budget, cooperative fail-fast cancellation limited strictly to supervisor-owned child AutoMesh processes, stronger child manifest/evidence provenance validation, faster deterministic repository snapshotting, and adversarial Linux/Windows CI. Preserve read-only repo behavior. Exclude Tablet, PC, Mobile, Web, Chart Lab, Shared UI, product runtime, databases, Prisma generation, ports, dev servers, deployments, and unrelated governance.'
+          $Out = Join-Path $env:RUNNER_TEMP 'automesh-v2-authority'
+          $Budget = Join-Path $env:RUNNER_TEMP 'automesh-v2-budget'
+          New-Item -ItemType Directory -Force -Path $Out, $Budget | Out-Null
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py `
+            --task $Task `
+            --repo $PWD.Path `
+            --out $Out `
+            --workers 18 `
+            --shards 54 `
+            --max-files 180 `
+            --max-mb 60 `
+            --run-id "automesh-v2-authority-$env:GITHUB_RUN_ID" `
+            --budget-root $Budget
+          if ($LASTEXITCODE -ne 0) { throw "Authority AutoMesh failed with exit $LASTEXITCODE" }
+
+          $Zip = Get-ChildItem -LiteralPath $Out -Filter '*result.zip' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $Zip) { throw 'Authority result ZIP not found.' }
+          $Extract = Join-Path $env:RUNNER_TEMP 'automesh-v2-authority-extracted'
+          Expand-Archive -LiteralPath $Zip.FullName -DestinationPath $Extract -Force
+
+          $Required = @(
+            'AUTHORITY_READSET.lock.json',
+            'APP_IMPACT_MATRIX.md',
+            'CONTRACT_AND_GATE_MATRIX.json',
+            'MISSING_OR_UNMAPPED_RISK.md',
+            'AGENT_PROMPT_ENVELOPE.md',
+            'AUTHORITY_MESH_REPORT.md'
+          )
+          foreach ($Name in $Required) {
+            $Found = Get-ChildItem -LiteralPath $Extract -Recurse -File -Filter $Name | Select-Object -First 1
+            if (-not $Found) { throw "Required authority artifact missing: $Name" }
+          }
+
+          $Status = git status --porcelain=v1 --untracked-files=all
+          if ($LASTEXITCODE -ne 0) { throw 'git status failed' }
+          if ($Status) { throw "Authority preflight mutated checkout: $Status" }
+
+          "AUTHORITY_ZIP=$($Zip.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "AUTHORITY_EXTRACT=$Extract" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Upload exact authority evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: automesh-v2-authority-evidence
+          path: ${{ env.AUTHORITY_EXTRACT }}
+          if-no-files-found: error
