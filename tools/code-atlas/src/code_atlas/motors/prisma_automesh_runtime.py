@@ -626,6 +626,7 @@ def stream_command(
     reporter: ProgressReporter | None = None,
     heartbeat_label: str = "motor hijo trabajando",
     env: Mapping[str, str] | None = None,
+    cancel_event: threading.Event | None = None,
 ) -> dict[str, Any]:
     """Run a child process while streaming merged stdout/stderr live."""
 
@@ -679,8 +680,14 @@ def stream_command(
 
         last_output = time.monotonic()
         reader_done = False
+        cancelled = False
         try:
             while True:
+                if cancel_event is not None and cancel_event.is_set() and proc.poll() is None and not cancelled:
+                    cancelled = True
+                    log.write("\n[runtime] cooperative cancellation requested for owned child\n")
+                    log.flush()
+                    _terminate_process_tree(proc)
                 try:
                     item = line_queue.get(timeout=0.25)
                 except queue.Empty:
@@ -728,6 +735,11 @@ def stream_command(
             reader_thread.join(timeout=2.0)
 
         returncode = proc.wait()
+        try:
+            if proc.stdout is not None:
+                proc.stdout.close()
+        except Exception:
+            pass
         log.write(f"\n[returncode] {returncode}\n")
         log.flush()
 
@@ -737,6 +749,7 @@ def stream_command(
         "tail": tail,
         "cmd": list(command),
         "pid": proc.pid,
+        "cancelled": cancelled,
     }
 
 
