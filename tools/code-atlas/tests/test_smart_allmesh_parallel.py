@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import hashlib
 import json
 import multiprocessing as mp
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import unittest
 import uuid
@@ -17,11 +19,18 @@ MOTORS = CODE_ATLAS_ROOT / "src/code_atlas/motors"
 if str(MOTORS) not in sys.path:
     sys.path.insert(0, str(MOTORS))
 
-# Import the headless motor files directly. Importing code_atlas.motors executes
-# its GUI-oriented package __init__, which pulls PySide6 even though these
-# runtime/supervisor tests do not need Qt.
-from prisma_automesh_runtime import GlobalWorkerBudget
-from smart_allmesh_parallel import compare_snapshots, repo_snapshot, worker_caps
+# Import headless motor files directly. Importing code_atlas.motors executes its
+# GUI-oriented package __init__, which pulls PySide6 although these tests need no Qt.
+from prisma_automesh_runtime import GlobalWorkerBudget, stream_command
+from smart_allmesh_parallel import (
+    REQUIRED_CHILD_EVIDENCE,
+    MeshTask,
+    compare_snapshots,
+    repo_snapshot,
+    run_lane_scheduler,
+    validate_child_provenance,
+    worker_caps,
+)
 
 
 def _budget_probe(
@@ -46,6 +55,10 @@ def _budget_probe(
     budget.close()
 
 
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
 class SmartAllMeshParallelTests(unittest.TestCase):
     def setUp(self) -> None:
         self.test_root = Path.cwd() / f".automesh_parallel_test_{uuid.uuid4().hex[:10]}"
@@ -54,12 +67,17 @@ class SmartAllMeshParallelTests(unittest.TestCase):
     def tearDown(self) -> None:
         shutil.rmtree(self.test_root, ignore_errors=True)
 
-    def test_worker_caps_never_exceed_global_contract(self) -> None:
-        for task_count in (2, 4, 6, 18, 30):
+    def test_worker_caps_never_exceed_global_contract_and_fill_remainder(self) -> None:
+        for task_count in (2, 4, 6, 7, 18, 30):
             for parallel in (1, 2, 4, 7, 18, 30):
                 caps = worker_caps(task_count, parallel, 18)
                 self.assertLessEqual(sum(caps), 18)
                 self.assertTrue(all(1 <= value <= 18 for value in caps))
+                self.assertLessEqual(max(caps) - min(caps), 1)
+
+        self.assertEqual(sum(worker_caps(4, 4, 18)), 18)
+        self.assertEqual(sum(worker_caps(7, 7, 18)), 18)
+        self.assertEqual(worker_caps(4, 4, 2), [2, 2, 2, 2])
 
     def test_global_worker_budget_is_cross_process(self) -> None:
         ctx = mp.get_context("spawn")
@@ -99,6 +117,51 @@ class SmartAllMeshParallelTests(unittest.TestCase):
         self.assertEqual(list(budget_root.glob("slot_*.lock")), [])
         self.assertEqual(list(budget_root.glob("active_*.json")), [])
 
+    def test_stream_command_cancels_only_owned_child_cooperatively(self) -> None:
+        cancel_event = threading.Event()
+        log_path = self.test_root / "cancel-child.log"
+        timer = threading.Timer(0.35, cancel_event.set)
+        timer.start()
+        started = time.monotonic()
+        try:
+            result = stream_command(
+                [sys.executable, "-c", "import time; time.sleep(30)"],
+                cwd=None,
+                log_path=log_path,
+                cancel_event=cancel_event,
+            )
+        finally:
+            timer.cancel()
+        elapsed = time.monotonic() - started
+        self.assertTrue(result.get("cancelled"), result)
+        self.assertNotEqual(result["returncode"], 0)
+        self.assertLess(elapsed, 10.0)
+        self.assertTrue(log_path.exists())
+
+    def test_lane_scheduler_fail_fast_does_not_start_queued_tasks(self) -> None:
+        tasks = [MeshTask(task_id=f"task-{index}", task=f"task {index}") for index in range(8)]
+        caps = worker_caps(len(tasks), 4, 18)
+        started: list[int] = []
+        lock = threading.Lock()
+
+        def runner(index: int, _task: MeshTask, _lane: int, _cap: int, cancel_event: threading.Event) -> dict[str, object]:
+            with lock:
+                started.append(index)
+            if index == 0:
+                time.sleep(0.05)
+                raise RuntimeError("synthetic first failure")
+            cancel_event.wait(3.0)
+            if cancel_event.is_set():
+                raise RuntimeError("synthetic cancellation")
+            return {"index": index}
+
+        with self.assertRaises(RuntimeError):
+            run_lane_scheduler(tasks, caps, runner)
+
+        self.assertTrue(set(started).issubset({0, 1, 2, 3}), started)
+        self.assertNotIn(4, started)
+        self.assertNotIn(7, started)
+
     def _git(self, repo: Path, *args: str) -> None:
         subprocess.run(
             ["git", *args],
@@ -136,17 +199,80 @@ class SmartAllMeshParallelTests(unittest.TestCase):
         self._git(repo, "commit", "-m", "fixture")
         return repo
 
-    def test_repo_snapshot_detects_drift(self) -> None:
+    def test_repo_snapshot_parallel_is_deterministic_and_detects_drift(self) -> None:
         repo = self._make_fixture_repo()
-        before = repo_snapshot(repo)
+        sequential = repo_snapshot(repo, workers=1)
+        parallel = repo_snapshot(
+            repo,
+            workers=4,
+            budget_root=self.test_root / "snapshot-budget",
+            run_id="snapshot-test",
+        )
+        self.assertTrue(sequential["stable_capture"])
+        self.assertTrue(parallel["stable_capture"])
+        self.assertEqual(sequential["fingerprint"], parallel["fingerprint"])
+
         css = repo / "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css"
         css.write_text(css.read_text(encoding="utf-8") + ".drift { opacity: .8; }\n", encoding="utf-8")
-        after = repo_snapshot(repo)
-        comparison = compare_snapshots(before, after)
+        after = repo_snapshot(repo, workers=4)
+        comparison = compare_snapshots(parallel, after)
         self.assertFalse(comparison["stable"])
         self.assertGreaterEqual(comparison["changed_count"], 1)
 
-    def test_two_real_automesh_tasks_run_in_parallel_and_publish_one_zip(self) -> None:
+    def test_child_provenance_validates_all_required_hashes(self) -> None:
+        repo = self._make_fixture_repo()
+        extracted = self.test_root / "child-extracted"
+        hashes: dict[str, str] = {}
+        for rel in REQUIRED_CHILD_EVIDENCE:
+            path = extracted / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(f"evidence:{rel}\n", encoding="utf-8")
+            hashes[rel] = _file_sha256(path)
+        head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(repo), text=True).strip()
+        budget_root = self.test_root / "budget-root"
+        manifest = {
+            "kind": "PRISMA_AUTOMESH_RUN",
+            "version": "v6",
+            "status": "PASS",
+            "run_id": "child-run",
+            "task": "task exact",
+            "surface_argument": "tooling",
+            "repo": str(repo),
+            "workers_local_cap": 4,
+            "global_worker_budget": 18,
+            "budget_root": str(budget_root),
+            "repo_git_head": head,
+            "evidence_hashes": hashes,
+        }
+        verified = validate_child_provenance(
+            extracted,
+            manifest,
+            expected_run_id="child-run",
+            expected_task="task exact",
+            expected_surface="tooling",
+            expected_repo=repo,
+            expected_budget_root=budget_root,
+            expected_worker_cap=4,
+            expected_git_head=head,
+        )
+        self.assertTrue(verified["verified"])
+        self.assertEqual(verified["required_evidence_count"], len(REQUIRED_CHILD_EVIDENCE))
+
+        manifest["task"] = "wrong task"
+        with self.assertRaisesRegex(RuntimeError, "CHILD_PROVENANCE_MISMATCH"):
+            validate_child_provenance(
+                extracted,
+                manifest,
+                expected_run_id="child-run",
+                expected_task="task exact",
+                expected_surface="tooling",
+                expected_repo=repo,
+                expected_budget_root=budget_root,
+                expected_worker_cap=4,
+                expected_git_head=head,
+            )
+
+    def test_four_real_automesh_tasks_run_in_parallel_and_publish_one_zip(self) -> None:
         repo = self._make_fixture_repo()
         out_root = self.test_root / "out"
         budget_root = self.test_root / "shared-budget"
@@ -159,9 +285,11 @@ class SmartAllMeshParallelTests(unittest.TestCase):
             "--budget-root", str(budget_root),
             "--task", "Tablet POS pay button exact owner and layer",
             "--task", "Tablet POS cart panel exact owner and layer",
-            "--parallel", "2",
-            "--workers", "2",
-            "--shards", "4",
+            "--task", "Tablet POS page component exact owner",
+            "--task", "Fixture manual Tablet POS authority",
+            "--parallel", "4",
+            "--workers", "18",
+            "--shards", "6",
             "--max-files", "30",
             "--max-mb", "10",
         ]
@@ -173,7 +301,7 @@ class SmartAllMeshParallelTests(unittest.TestCase):
             errors="replace",
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            timeout=180,
+            timeout=240,
             shell=False,
         )
         if proc.returncode != 0:
@@ -197,15 +325,17 @@ class SmartAllMeshParallelTests(unittest.TestCase):
         self.assertEqual(certification["status"], "PASS")
         self.assertEqual(
             certification["certification"],
-            "PASS_AUTOMESH_MULTI_TASK_CROSS_PROCESS_PARALLEL_SAFE",
+            "PASS_AUTOMESH_MULTI_TASK_CROSS_PROCESS_PARALLEL_SAFE_V2",
         )
-        self.assertEqual(certification["task_count"], 2)
-        self.assertEqual(len(certification["children"]), 2)
+        self.assertEqual(certification["task_count"], 4)
+        self.assertEqual(len(certification["children"]), 4)
         self.assertTrue(certification["unique_child_run_ids"])
-        self.assertLessEqual(certification["wave_worker_sum_cap"], 18)
+        self.assertTrue(certification["provenance_verified"])
+        self.assertEqual(sum(certification["lane_worker_caps"]), 18)
+        self.assertLessEqual(certification["lane_worker_sum_cap"], 18)
         self.assertTrue(drift["stable"])
-        self.assertIn("tasks/task-1/authority_mesh/RUN_MANIFEST.json", names)
-        self.assertIn("tasks/task-2/authority_mesh/RUN_MANIFEST.json", names)
+        for index in range(1, 5):
+            self.assertIn(f"tasks/task-{index}/authority_mesh/RUN_MANIFEST.json", names)
 
 
 if __name__ == "__main__":

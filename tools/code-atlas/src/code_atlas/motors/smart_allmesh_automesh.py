@@ -576,6 +576,8 @@ def run_mesh(args: argparse.Namespace) -> int:
     exit_code = 1
     final_zip: Path | None = None
     executor: cf.ThreadPoolExecutor | None = None
+    repo: Path | None = None
+    git_state: Dict[str, Any] = {}
 
     try:
         _REPORTER.emit(3, "detectando repo")
@@ -639,13 +641,35 @@ def run_mesh(args: argparse.Namespace) -> int:
 
         _REPORTER.emit(89, "escribiendo matrices y reportes", done=len(layers))
         write_reports(out_dir, repo, args, surfaces, hits, selected, layers, git_state)
+        required_evidence = [
+            ".governance/current/AUTHORITY_READSET.lock.json",
+            "reports/APP_IMPACT_MATRIX.md",
+            "reports/CONTRACT_AND_GATE_MATRIX.json",
+            "reports/MISSING_OR_UNMAPPED_RISK.md",
+            "reports/AGENT_PROMPT_ENVELOPE.md",
+            "reports/AUTHORITY_MESH_REPORT.md",
+            "reports/LAYERS_MAP.json",
+            "reports/LAYERS_MAP.md",
+        ]
+        evidence_hashes: Dict[str, str] = {}
+        for evidence_rel in required_evidence:
+            evidence_path = out_dir / evidence_rel
+            if not evidence_path.exists() or not evidence_path.is_file():
+                raise RuntimeError(f"REQUIRED_EVIDENCE_MISSING:{evidence_rel}")
+            evidence_hashes[evidence_rel] = sha256(evidence_path).upper()
         run_manifest = {
             "kind": "PRISMA_AUTOMESH_RUN",
             "version": "v6",
             "status": "PASS",
             "run_id": run_id,
             "generated_at": _dt.datetime.now().isoformat(),
+            "task": args.task,
+            "surface_argument": args.surface,
             "repo": str(repo),
+            "repo_git_head": git_state.get("head", {}).get("stdout", "").strip(),
+            "repo_git_status_sha256": hashlib.sha256(
+                git_state.get("status_short", {}).get("stdout", "").encode("utf-8", errors="replace")
+            ).hexdigest().upper(),
             "workers_local_cap": args.workers,
             "global_worker_budget": 18,
             "shards": args.shards,
@@ -653,9 +677,10 @@ def run_mesh(args: argparse.Namespace) -> int:
             "hits": len(hits),
             "selected": len(selected),
             "layers": len(layers),
-            "budget_root": str(args.budget_root),
+            "budget_root": str(Path(args.budget_root).expanduser().resolve()),
             "collision_proof_workspace": str(work_root),
             "atomic_zip_publication": True,
+            "evidence_hashes": evidence_hashes,
         }
         write_json_atomic(out_dir / "RUN_MANIFEST.json", run_manifest)
         if progress_path.exists():
@@ -695,10 +720,14 @@ def run_mesh(args: argparse.Namespace) -> int:
                         "status": status,
                         "run_id": run_id,
                         "generated_at": _dt.datetime.now().isoformat(),
+                        "task": args.task,
+                        "surface_argument": args.surface,
+                        "repo": str(repo) if repo is not None else "",
+                        "repo_git_head": git_state.get("head", {}).get("stdout", "").strip(),
                         "workers_local_cap": args.workers,
                         "global_worker_budget": 18,
                         "shards": args.shards,
-                        "budget_root": str(args.budget_root),
+                        "budget_root": str(Path(args.budget_root).expanduser().resolve()),
                         "error": error,
                     },
                 )
