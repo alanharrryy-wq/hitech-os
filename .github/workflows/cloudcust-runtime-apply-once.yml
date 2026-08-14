@@ -33,20 +33,32 @@ jobs:
       - name: Reassemble and preflight exact patch
         shell: python
         run: |
-          import base64, zlib
+          import base64, hashlib, zlib
           from pathlib import Path
-          parts = [Path(f'apps/terminal-de-venta-system/tools/_cloudcust_patch_part{i}.txt') for i in range(1, 6)]
-          missing = [str(path) for path in parts if not path.exists()]
-          if missing:
-              raise SystemExit('PATCH_PARTS_MISSING:' + ','.join(missing))
-          encoded = b''.join(b''.join(path.read_bytes().split()) for path in parts)
+          expected = {
+              1: '26c7dc2e78f69afd0dd914eba8004fe8cf319c00a75a698ea4d98809b9e1afbf',
+              2: '55f0a00b32bed0fba6ce0416260f6677d45e07a26e67540fcdc848a37abac1d4',
+              3: 'df8d121265ec85104611421e859386be09a85099130dc5058c9c78136b4bfce0',
+              4: '4512e0ff7bf461812429f2e950262cc59376d460c58662a53f0bd389e66137a6',
+              5: '6192d836bf05c19d60380e4fd5f9c07e54397ef10a68fd4adcbe65c23abc1116',
+          }
+          chunks = []
+          for index in range(1, 6):
+              path = Path(f'apps/terminal-de-venta-system/tools/_cloudcust_patch_part{index}.txt')
+              if not path.exists():
+                  raise SystemExit(f'PATCH_PART_MISSING:{index}')
+              data = b''.join(path.read_bytes().split())
+              digest = hashlib.sha256(data).hexdigest()
+              print(f'PART_{index}_BYTES={len(data)} SHA256={digest}')
+              if digest != expected[index]:
+                  raise SystemExit(f'PATCH_PART_HASH_MISMATCH:{index}:{digest}')
+              chunks.append(data)
+          encoded = b''.join(chunks)
           raw = base64.b64decode(encoded, validate=True)
           patch = zlib.decompress(raw)
           if not patch.startswith(b'--- a/apps/terminal-de-venta-system/'):
               raise SystemExit('PATCH_HEADER_INVALID')
           Path('/tmp/cloudcust.patch').write_bytes(patch)
-          print(f'PATCH_PARTS={len(parts)}')
-          print(f'ENCODED_BYTES={len(encoded)}')
           print(f'PATCH_BYTES={len(patch)}')
 
       - name: Apply exact patch with anchors
