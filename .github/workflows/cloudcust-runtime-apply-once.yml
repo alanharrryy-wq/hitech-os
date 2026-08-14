@@ -5,7 +5,7 @@ on:
     branches: ['cloudcust-runtime-20260814']
     paths:
       - '.github/workflows/cloudcust-runtime-apply-once.yml'
-      - 'apps/terminal-de-venta-system/tools/_cloudcust_runtime_patch.zb64'
+      - 'apps/terminal-de-venta-system/tools/_cloudcust_patch_part*.txt'
 
 permissions:
   contents: write
@@ -23,36 +23,31 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Decode and preflight exact patch
+      - name: Reassemble and preflight exact patch
         shell: python
         run: |
           import base64, zlib
           from pathlib import Path
-          src = Path('apps/terminal-de-venta-system/tools/_cloudcust_runtime_patch.zb64')
-          encoded = b''.join(src.read_bytes().split())
+          parts = [Path(f'apps/terminal-de-venta-system/tools/_cloudcust_patch_part{i}.txt') for i in (1,2,3)]
+          encoded = b''.join(b''.join(p.read_bytes().split()) for p in parts)
           raw = base64.b64decode(encoded, validate=True)
           patch = zlib.decompress(raw)
           if not patch.startswith(b'--- a/apps/terminal-de-venta-system/'):
               raise SystemExit('PATCH_HEADER_INVALID')
           Path('/tmp/cloudcust.patch').write_bytes(patch)
           print(f'PATCH_BYTES={len(patch)}')
-
       - name: Apply exact patch with anchors
         shell: bash
         run: |
           set -euo pipefail
           git apply --check /tmp/cloudcust.patch
           git apply /tmp/cloudcust.patch
-
       - name: Require exact patch scope
         shell: python
         run: |
@@ -68,95 +63,60 @@ jobs:
           changed = set(subprocess.check_output(['git','diff','--name-only'], text=True).splitlines())
           if changed != expected:
               raise SystemExit(f'PATCH_SCOPE_DRIFT:{sorted(changed ^ expected)}')
-          if any(path.lower().endswith('.css') for path in changed):
-              raise SystemExit('CSS_MUTATION_FORBIDDEN')
+          if any(p.lower().endswith('.css') for p in changed): raise SystemExit('CSS_MUTATION_FORBIDDEN')
           print('PASS_EXACT_PATCH_SCOPE')
-
       - name: Validate catalogs and compile runtime
         shell: bash
         run: |
           set -euo pipefail
           python -m json.tool "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json" >/dev/null
-          python -m py_compile \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py" \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" \
-            apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py \
-            apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
+          python -m py_compile "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
           node --check "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"
           git diff --check
-
       - name: Guard authority duplication and legacy semantics
         shell: python
         run: |
           from pathlib import Path
-          store = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py').read_text(encoding='utf-8')
-          js = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js').read_text(encoding='utf-8')
-          html = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html').read_text(encoding='utf-8')
-          forbidden = ['FALLBACK_CATALOGS', '"suggestedPlan":"starter"', '"suggestedPlan":"business"', '"suggestedPlan":"enterprise"']
-          for token in forbidden:
-              if token in js or token in store:
-                  raise SystemExit('LEGACY_AUTHORITY_REMAINS:' + token)
-          if '<html lang="es-MX">' not in html or 'data-surface="billing">Cobranza<' not in html:
-              raise SystemExit('NAVIGATION_HOMOLOGATION_MISSING')
-          if 'cityZone' in js[js.find('function clientWizard'):js.find('function deviceWizard')]:
-              raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
+          store=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py').read_text(encoding='utf-8')
+          js=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js').read_text(encoding='utf-8')
+          html=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html').read_text(encoding='utf-8')
+          for token in ['FALLBACK_CATALOGS','"suggestedPlan":"starter"','"suggestedPlan":"business"','"suggestedPlan":"enterprise"']:
+              if token in js or token in store: raise SystemExit('LEGACY_AUTHORITY_REMAINS:'+token)
+          if '<html lang="es-MX">' not in html or 'data-surface="billing">Cobranza<' not in html: raise SystemExit('NAVIGATION_HOMOLOGATION_MISSING')
+          if 'cityZone' in js[js.find('function clientWizard'):js.find('function deviceWizard')]: raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
           print('PASS_AUTHORITY_DEDUP_AND_NAV')
-
       - name: Run behavioral customer registration verifier
-        run: >-
-          python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py
-          --out-dir apps/terminal-de-venta-system/.governance/customer-runtime
-
+        run: python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py --out-dir apps/terminal-de-venta-system/.governance/customer-runtime
       - name: Prepare browser runtime verifier
         shell: bash
         run: |
           set -euo pipefail
           google-chrome --version || chromium-browser --version || chromium --version
           python -m pip install --disable-pip-version-check --no-input 'playwright==1.54.0'
-
       - name: Run isolated Cloud Center browser/runtime verification
-        run: >-
-          python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
-          --out-dir apps/terminal-de-venta-system/.governance/customer-runtime
-
+        run: python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py --out-dir apps/terminal-de-venta-system/.governance/customer-runtime
       - name: Final no-cross-surface guard
         shell: python
         run: |
           import subprocess
-          changed = subprocess.check_output(['git','diff','--name-only'], text=True).splitlines()
-          forbidden = (
-            'apps/terminal-de-venta-system/products/tablet/',
-            'apps/terminal-de-venta-system/products/pc/',
-            'apps/terminal-de-venta-system/products/mobile/',
-            'apps/terminal-de-venta-system/prisma/',
-            'apps/terminal-de-venta-system/cloudflare/',
-          )
-          bad = [p for p in changed if p.startswith(forbidden)]
-          if bad:
-              raise SystemExit('FORBIDDEN_SCOPE:' + ','.join(bad))
+          changed=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
+          forbidden=('apps/terminal-de-venta-system/products/tablet/','apps/terminal-de-venta-system/products/pc/','apps/terminal-de-venta-system/products/mobile/','apps/terminal-de-venta-system/prisma/','apps/terminal-de-venta-system/cloudflare/')
+          bad=[p for p in changed if p.startswith(forbidden)]
+          if bad: raise SystemExit('FORBIDDEN_SCOPE:'+','.join(bad))
           print('PASS_CLOUD_CENTER_CUSTOMER_SCOPE')
-
       - name: Upload runtime evidence
         uses: actions/upload-artifact@v4
         with:
           name: cloud-center-customer-runtime
           if-no-files-found: error
           path: apps/terminal-de-venta-system/.governance/customer-runtime/**
-
       - name: Commit verified product patch only
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'PRISMA Customer Runtime Gate'
           git config user.email 'actions@users.noreply.github.com'
-          git add -- \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html" \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js" \
-            apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py \
-            apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
+          git add -- "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js" apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
           git diff --cached --check
           git commit -m 'Cloud Center: homologate customer registration runtime'
           git push origin HEAD:cloudcust-runtime-20260814
