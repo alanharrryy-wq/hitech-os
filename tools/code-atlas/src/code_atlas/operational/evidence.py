@@ -1,5 +1,17 @@
-from .suite50 import run_operational_evidence, run_operational_evidence_atlas, run
-__all__=["run_operational_evidence","run_operational_evidence_atlas","run"]
+from __future__ import annotations
+
+from .final_runner import run_operational_atlas
+
+run_operational_evidence = run_operational_atlas
+run_operational_evidence_atlas = run_operational_atlas
+run = run_operational_atlas
+
+__all__ = [
+    "run_operational_atlas",
+    "run_operational_evidence",
+    "run_operational_evidence_atlas",
+    "run",
+]
 
 # DBEVLINK_LICSCOPE_BRIDGE_AUTOPATCH_START
 def _dbevlink_bridge_wrap(fn):
@@ -20,11 +32,13 @@ def _dbevlink_bridge_wrap(fn):
                 _apply_bridge(_Path(_repo), _Path(_out))
         except Exception as _exc:
             try:
-                if isinstance(result, dict): result.setdefault('licscopeBridgeWarning', str(_exc))
+                if isinstance(result, dict):
+                    result.setdefault('licscopeBridgeWarning', str(_exc))
             except Exception:
                 pass
         return result
     return _wrapped
+
 for _dbevlink_name in ('run', 'run_operational_atlas', 'generate', 'generate_operational_atlas', 'build_operational_atlas'):
     try:
         if _dbevlink_name in globals() and callable(globals()[_dbevlink_name]) and not getattr(globals()[_dbevlink_name], '_dbevlink_wrapped', False):
