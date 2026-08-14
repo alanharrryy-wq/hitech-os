@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "code_atlas_neutrality_contract.v5",
+  "schemaVersion": "code_atlas_neutrality_contract.v6",
   "status": "ENFORCED_FAIL_CLOSED_FULL_SOURCE",
   "rule": "All reusable Code Atlas source under src/code_atlas must be machine-neutral, repository-neutral and product-neutral. Product-specific behavior may exist only behind explicit profiles or named adapter boundaries and must never be selected implicitly.",
   "neutralRoots": [
@@ -23,6 +23,9 @@
     "src/code_atlas/operational/verify_support_finalizer.py",
     "src/code_atlas/operational/licscope_bridge.py",
     "src/code_atlas/operational/verify_licscope_bridge.py",
+    "src/code_atlas/operational/suite50.py",
+    "src/code_atlas/operational/exports.py",
+    "src/code_atlas/operational/security.py",
     "src/code_atlas/motors/prisma_automesh_runtime.py",
     "src/code_atlas/motors/smart_allmesh_automesh.py",
     "src/code_atlas/motors/smart_allmesh_parallel.py",
@@ -37,6 +40,8 @@
     "src/code_atlas/app_map/verify_app_map_strict.py",
     "src/code_atlas/app_map/verify_visual_safety_contracts.py",
     "src/code_atlas/app_map/verify_visual_diff_counter.py",
+    "src/code_atlas/app_map/target_readiness.py",
+    "src/code_atlas/app_map/verify_target_readiness.py",
     "src/code_atlas/evidence_ingestion/gate_reconcile.py",
     "src/code_atlas/evidence_ingestion/licscope_evidence_adapter.py",
     "src/code_atlas/evidence_ingestion/verify_licscope_evidence_adapter.py",
@@ -50,8 +55,13 @@
     "src/code_atlas/appbrain_batch_packager": "Legacy tri-surface product batch packager; external projects provide their own app inventory through profiles.",
     "src/code_atlas/app_map/uimap": "Product UI-component atlas compatibility implementation; default App Map uses the generic profile-driven runner.",
     "src/code_atlas/legal_readiness": "Existing legal/investor-readiness orchestration is a product integration bound to product authority artifacts and external evidence adapters. It is not part of the neutral default execution path.",
+    "src/code_atlas/operational/suite50.py": "Legacy all-in-one operational compatibility suite with product-specific verifier discovery; the neutral default path uses the hardened profile-driven runner.",
+    "src/code_atlas/operational/exports.py": "Compatibility export facade coupled to the legacy operational suite; not selected by the neutral default runner.",
+    "src/code_atlas/operational/security.py": "Compatibility security facade coupled to the legacy operational suite; not selected by the neutral default runner.",
     "src/code_atlas/ui/motor_hub.py": "Existing premium product Motor Hub retained for compatibility; default UI export uses generic_motor_hub.py.",
     "src/code_atlas/app_map/runner.py": "Existing product App Map retained for compatibility; default App Map export and CLI use the generic profile-driven runner.",
+    "src/code_atlas/app_map/target_readiness.py": "Legacy product runtime-probe readiness extension with named external product tooling; generic App Map execution does not select it implicitly.",
+    "src/code_atlas/app_map/verify_target_readiness.py": "Verifier for the explicit legacy target-readiness adapter.",
     "src/code_atlas/app_map/verify_visual_diff_counter.py": "Verifier for the explicit product App Map safety-contract adapter.",
     "src/code_atlas/evidence_ingestion/gate_reconcile.py": "Product Factory-Ledger/evidence reconciliation adapter.",
     "src/code_atlas/evidence_ingestion/licscope_evidence_adapter.py": "Explicit product licensing-scope evidence adapter.",
@@ -59,6 +69,9 @@
     "src/code_atlas/evidence_ingestion/triad_close.py": "Legacy product evidence triad closer that writes product registers; never selected by neutral execution."
   },
   "forbiddenNeutralLiterals": [
+    "hitech-os",
+    "terminal-de-venta-system",
+    "app.hitechrts.com",
     "Mamastrophic",
     "PRISMA_CTX",
     "Factory Ledger",
@@ -66,7 +79,16 @@
     "AutoMesh",
     "AllMesh",
     "motor_legal_evidence.py",
-    "LEGAL_RUN.ps1"
+    "LEGAL_RUN.ps1",
+    "PRISMA Operational",
+    "PRISMA Code Atlas",
+    "PRISMA Surface",
+    "PRISMA UI Bridge",
+    "PRISMA UI Component",
+    "PRISMA Data",
+    "Motores PRISMA",
+    "Todo PRISMA",
+    "Global PRISMA"
   ],
   "adapterSelectionRule": "Explicit opt-in only through CODE_ATLAS_PROFILE/profile metadata, an adapter-specific entrypoint, or an explicitly selected adapter CLI command. Generic imports and entrypoints must not select an adapter implicitly.",
   "forbiddenInNeutralPath": [
