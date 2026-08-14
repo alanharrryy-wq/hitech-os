@@ -7,6 +7,7 @@ on:
       - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.ts'
       - 'apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md'
       - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_contracts.py'
       - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
       - 'apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs'
       - 'apps/terminal-de-venta-system/tools/verify-cloud-center-commercial-contract-01.py'
@@ -18,6 +19,7 @@ on:
       - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.ts'
       - 'apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md'
       - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_contracts.py'
       - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
       - 'apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs'
       - 'apps/terminal-de-venta-system/tools/verify-cloud-center-commercial-contract-01.py'
@@ -103,17 +105,41 @@ jobs:
               lines.append(f'| `{path}` | {reason} |')
           (root / 'PRICING_LAYERS_MAP.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
-      - name: Verify commercial pricing contract
+      - name: Verify commercial pricing canon
         run: node apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs
 
-      - name: Guard against product-pricing confusion
+      - name: Compile Cloud Center commercial projection
+        run: >-
+          python -m py_compile
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_contracts.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py"
+
+      - name: Check Cloud Center JavaScript syntax
+        run: node --check "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"
+
+      - name: Verify Cloud Center commercial contract behavior
+        run: python apps/terminal-de-venta-system/tools/verify-cloud-center-commercial-contract-01.py
+
+      - name: Guard visual scope and product-pricing boundary
         shell: python
         run: |
+          import subprocess
           from pathlib import Path
+
           doc = Path('apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md').read_text(encoding='utf-8')
           assert 'pricing-policy' in doc
           assert 'No confundir pricing de licencia PRISMA con pricing de mercancia del comercio.' in doc
+
+          changed = subprocess.check_output(['git','diff','--name-only','origin/main...HEAD'], text=True).splitlines()
+          style_mutations = [p for p in changed if p.lower().endswith(('.css','.scss','.sass','.less'))]
+          forbidden_surface_mutations = [p for p in changed if '/products/tablet/' in p or '/products/mobile/' in p or '/products/pc/' in p]
+          if style_mutations:
+              raise SystemExit('Pricing operations PR must not mutate styles: ' + ', '.join(style_mutations))
+          if forbidden_surface_mutations:
+              raise SystemExit('Pricing operations PR must not mutate Tablet/PC/Mobile product surfaces: ' + ', '.join(forbidden_surface_mutations))
           print('PASS_LICENSE_VS_MERCHANDISE_PRICING_BOUNDARY')
+          print('PASS_PRICING_OPS_NO_STYLE_OR_PRODUCT_SURFACE_MUTATION')
+          print('VISUAL_RUNTIME_STATUS=PENDING_OPERATOR_RUNTIME_SCREENSHOT')
 
       - name: Upload governance evidence
         uses: actions/upload-artifact@v4
