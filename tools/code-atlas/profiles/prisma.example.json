@@ -7,51 +7,40 @@
     {
       "id": "tablet",
       "label": "Tablet",
-      "root": "products/tablet",
-      "routes": [
-        "/pos",
-        "/tablet-lab"
-      ],
+      "root": "apps/terminal-de-venta-system/products/tablet",
+      "routes": ["/pos", "/tablet-lab"],
       "defaultUrl": "${PRISMA_TABLET_URL}",
       "kind": "tablet"
     },
     {
       "id": "pc",
       "label": "PC Backoffice",
-      "root": "products/pc",
-      "routes": [
-        "/backoffice"
-      ],
+      "root": "apps/terminal-de-venta-system/products/pc",
+      "routes": ["/backoffice"],
       "defaultUrl": "${PRISMA_PC_URL}",
       "kind": "pc"
     },
     {
       "id": "mobile",
       "label": "Mobile",
-      "root": "products/mobile",
-      "routes": [
-        "/mobile"
-      ],
+      "root": "apps/terminal-de-venta-system/products/mobile",
+      "routes": ["/mobile"],
       "defaultUrl": "${PRISMA_MOBILE_URL}",
       "kind": "mobile"
     },
     {
       "id": "cloud-center",
       "label": "Cloud Center",
-      "root": "Prisma Cloud Ctr",
-      "routes": [
-        "/"
-      ],
+      "root": "apps/terminal-de-venta-system/Prisma Cloud Ctr",
+      "routes": ["/"],
       "defaultUrl": "${PRISMA_CLOUD_CENTER_URL}",
       "kind": "cloud"
     },
     {
       "id": "chart-lab",
       "label": "Chart Lab",
-      "root": "products/chart-lab",
-      "routes": [
-        "/"
-      ],
+      "root": "apps/terminal-de-venta-system/products/chart-lab",
+      "routes": ["/"],
       "defaultUrl": "${PRISMA_CHART_LAB_URL}",
       "kind": "visual-lab"
     }
@@ -66,6 +55,10 @@
   ],
   "metadata": {
     "example": true,
-    "scope": "Project-specific values live here, not in Code Atlas core."
+    "scope": "Project-specific values live in this explicit adapter profile and never in neutral core defaults.",
+    "scanRoots": ["apps/terminal-de-venta-system"],
+    "evidenceRoots": ["apps/terminal-de-venta-system/docs/ops"],
+    "supportResolverEnabled": true,
+    "supportResolverRoots": ["apps/terminal-de-venta-system/prisma-support-resolver"]
   }
 }
