@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "code_atlas_neutrality_contract.v1",
+  "status": "ENFORCED_FAIL_CLOSED",
+  "rule": "Reusable Code Atlas execution must be machine-neutral, repository-neutral and product-neutral. Product-specific behavior may exist only behind explicit profiles or adapters and must never be selected implicitly.",
+  "neutralRoots": [
+    "src/code_atlas/core",
+    "src/code_atlas/operational"
+  ],
+  "neutralFiles": [
+    "src/code_atlas/cli/operational.py",
+    "src/code_atlas/motors/results.py",
+    "src/code_atlas/legal_readiness/paths.py",
+    "src/code_atlas/legal_readiness/contracts.py"
+  ],
+  "adapterRoots": [
+    "profiles",
+    "docs"
+  ],
+  "adapterFiles": [
+    "src/code_atlas/operational/support_resolver.py",
+    "src/code_atlas/operational/verify_support_resolver.py",
+    "src/code_atlas/operational/licscope_bridge.py",
+    "src/code_atlas/motors/prisma_automesh_runtime.py",
+    "src/code_atlas/motors/smart_allmesh_automesh.py",
+    "src/code_atlas/motors/smart_allmesh_parallel.py",
+    "src/code_atlas/legal_readiness/registry.py",
+    "src/code_atlas/ui/motor_hub.py",
+    "src/code_atlas/ui/legal_readiness.py",
+    "src/code_atlas/operational/suite50.py",
+    "src/code_atlas/appbrain_workbench/runner.py",
+    "src/code_atlas/appbrain_workbench/cli.py"
+  ],
+  "adapterSelectionRule": "Explicit opt-in only through CODE_ATLAS_PROFILE/profile metadata or an adapter-specific entrypoint.",
+  "forbiddenInNeutralPath": [
+    "developer or user home paths",
+    "absolute drive-specific work roots",
+    "fixed repository names",
+    "fixed product application paths",
+    "product domains or product labels",
+    "fixed localhost ports",
+    "fixed product surface taxonomy"
+  ],
+  "certifiable": false,
+  "productionCertified": false
+}
