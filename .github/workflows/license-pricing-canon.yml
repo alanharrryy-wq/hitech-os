@@ -6,7 +6,10 @@ on:
       - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.canonical.json'
       - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.ts'
       - 'apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
       - 'apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs'
+      - 'apps/terminal-de-venta-system/tools/verify-cloud-center-commercial-contract-01.py'
       - '.github/workflows/license-pricing-canon.yml'
   push:
     branches: ['main']
@@ -14,7 +17,10 @@ on:
       - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.canonical.json'
       - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.ts'
       - 'apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
       - 'apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs'
+      - 'apps/terminal-de-venta-system/tools/verify-cloud-center-commercial-contract-01.py'
       - '.github/workflows/license-pricing-canon.yml'
   workflow_dispatch:
 
@@ -50,7 +56,7 @@ jobs:
           --repo apps/terminal-de-venta-system
           --output .governance/current
           --full
-          --task "HOMOLOGAR PRICING COMERCIAL Y CONTRATO TECNICO PRISMA: TABLET_SOLO, TABLET_PRO Y TABLET_PC_MANAGED; integrar precios MXN mas IVA mensual/trimestral/semestral/anual en la autoridad canonica de licensing; preservar entitlements y limites; no reconstruir LICFLOW3/Customer Setup; no mezclar con pricing de mercancia del comercio; Mobile sin SKU independiente hasta entitlement canonico; reconocer posicionamiento visual premium sin mutacion visual."
+          --task "OPERACIONALIZAR PRICING CANONICO PRISMA EN PRISMA CLOUD CENTER Y CONTRATO COMERCIAL LOCAL: hacer que Cloud Center consuma y muestre los precios canonicos TABLET_SOLO, TABLET_PRO y TABLET_PC_MANAGED en MXN mas IVA para mensual/trimestral/semestral/anual; al preparar licencia registrar contrato comercial trazable con plan, billingPeriod, listPriceMxn, agreedPriceMxn, priceVersion, taxTreatment, validFrom, validUntil, renewalOn y grandfathering sin inferir precio historico del primer cliente; preservar LICFLOW3, Customer Setup, entitlements, limites, pricing-policy de mercancia, Prisma DB, Cloudflare/D1 y superficies Tablet/PC/Mobile; UI limitada a proyeccion de datos en Prisma Cloud Center sin cambio de estilo, CSS ni Visual OS; exigir layer map y evidencia, sin fake green."
 
       - name: Require Authority Mesh outputs and pricing layers map
         shell: python
@@ -81,12 +87,12 @@ jobs:
               raise SystemExit('No visual/layer authority found in fresh readset')
 
           lines = [
-              '# PRISMA Pricing Layers Map',
+              '# PRISMA Pricing Operations Layers Map',
               '',
-              '- Change class: commercial pricing + licensing contract.',
-              '- UI mutation: none.',
-              '- Visual positioning: premium governed multi-surface; commercial value only.',
-              '- Rule: this pricing change does not authorize visual source changes.',
+              '- Change class: commercial pricing projection + local commercial contract.',
+              '- UI mutation: bounded content/data projection in Prisma Cloud Center only.',
+              '- Style mutation: none; no CSS, Visual OS, Tablet, PC or Mobile surface mutation.',
+              '- Visual positioning remains governed commercial context, not an entitlement.',
               '',
               '| Authority path | Reason |',
               '|---|---|',
