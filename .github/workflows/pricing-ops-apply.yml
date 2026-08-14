@@ -1,0 +1,280 @@
+name: Pricing Ops Apply Once
+
+on:
+  push:
+    branches: ['pricing-ops-20260814']
+    paths:
+      - '.github/workflows/pricing-ops-apply.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: pricing-ops-20260814
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply guarded source projection
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          store_path = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py')
+          web_path = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js')
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected exactly 1 literal match, got {count}')
+              return text.replace(old, new, 1)
+
+          def sub_once(text, pattern, replacement, label):
+              updated, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
+              if count != 1:
+                  raise SystemExit(f'{label}: expected exactly 1 regex match, got {count}')
+              return updated
+
+          # ---------------- backend ----------------
+          store = store_path.read_text(encoding='utf-8')
+          store = replace_once(
+              store,
+              'from urllib.parse import urlparse, parse_qs\n',
+              'from urllib.parse import urlparse, parse_qs\n\nfrom commercial_contracts import (\n    CommercialContractError,\n    count_commercial_contracts,\n    ensure_commercial_schema,\n    insert_commercial_contract,\n    list_commercial_contracts,\n    resolve_commercial_terms,\n)\n',
+              'backend commercial_contracts import',
+          )
+          store = replace_once(
+              store,
+              '            features = plan.get("features") if isinstance(plan.get("features"), list) else []\n            options.append(\n',
+              '            features = plan.get("features") if isinstance(plan.get("features"), list) else []\n            commercial = plan.get("commercial") if isinstance(plan.get("commercial"), dict) else {}\n            policy = payload.get("commercialPolicy") if isinstance(payload.get("commercialPolicy"), dict) else {}\n            options.append(\n',
+              'backend canonical commercial metadata locals',
+          )
+          store = replace_once(
+              store,
+              '                        "tier": int(plan.get("rank") or 100),\n',
+              '                        "tier": int(plan.get("rank") or 100),\n                        "commercial": commercial,\n                        "commercialPolicy": {\n                            "effectiveFrom": policy.get("effectiveFrom"),\n                            "market": policy.get("market"),\n                            "currency": policy.get("currency"),\n                            "taxTreatment": policy.get("taxTreatment"),\n                            "billingScope": policy.get("billingScope"),\n                            "periods": policy.get("periods") if isinstance(policy.get("periods"), dict) else {},\n                            "grandfathering": policy.get("grandfathering") if isinstance(policy.get("grandfathering"), dict) else {},\n                        },\n',
+              'backend canonical commercial metadata payload',
+          )
+          store = replace_once(
+              store,
+              '    for sql in statements:\n        con.execute(sql)\n',
+              '    for sql in statements:\n        con.execute(sql)\n    ensure_commercial_schema(con)\n',
+              'backend commercial schema hook',
+          )
+          store = replace_once(
+              store,
+              '        "auditEvents": con.execute("SELECT COUNT(*) FROM CommandAuditEvent").fetchone()[0],\n',
+              '        "auditEvents": con.execute("SELECT COUNT(*) FROM CommandAuditEvent").fetchone()[0],\n        "contracts": count_commercial_contracts(con),\n',
+              'backend contract count',
+          )
+          store = replace_once(
+              store,
+              '    drafts = _rows(con, "SELECT id,internalId,humanCode,clientId,kind,status,createdAt FROM ProvisioningDraft ORDER BY createdAt DESC LIMIT 50")\n',
+              '    drafts = _rows(con, "SELECT id,internalId,humanCode,clientId,kind,status,createdAt FROM ProvisioningDraft ORDER BY createdAt DESC LIMIT 50")\n    contracts = list_commercial_contracts(con)\n',
+              'backend contract rows',
+          )
+          store = replace_once(
+              store,
+              '    return {"clients": clients, "licenses": licenses, "devices": devices, "deactivations": deactivations, "drafts": drafts, "othersPending": others, "events": events}\n',
+              '    return {"clients": clients, "licenses": licenses, "contracts": contracts, "devices": devices, "deactivations": deactivations, "drafts": drafts, "othersPending": others, "events": events}\n',
+              'backend local payload contracts',
+          )
+          store = replace_once(
+              store,
+              '            "rules": jl(r.get("rules")),\n            "active": bool(r.get("active")),\n',
+              '            "rules": jl(r.get("rules")),\n            "commercial": (jl(r.get("rules")) or {}).get("commercial") or {},\n            "commercialPolicy": (jl(r.get("rules")) or {}).get("commercialPolicy") or {},\n            "active": bool(r.get("active")),\n',
+              'backend bootstrap commercial projection',
+          )
+          store = replace_once(store, '        "schemaVersion": 2,\n', '        "schemaVersion": 3,\n', 'backend schema version')
+
+          new_draft_license = '''def draft_license(con, b):
+              client = _client_by_code(con, b.get("clientCode"))
+              if not client:
+                  return {"ok": False, "error": "Primero prepara o selecciona un cliente para asignar licencia."}
+              rec = reco(catalogs(con), b)
+              plan_code = b.get("plan") or rec["suggestedPlan"]
+              plan = _plan_by_code(con, plan_code)
+              modules = b.get("modules") or jl(plan.get("modules")) or rec["suggestedModules"]
+              ids = {"license": gen(con, "license", {"plan": plan["code"], "clientCode": client["humanCode"]}), "contract": gen(con, "contract", {"clientCode": client["humanCode"], "plan": plan["code"]})}
+              try:
+                  terms = resolve_commercial_terms(
+                      PLAN_CATALOG_PATH,
+                      plan["code"],
+                      billing_period=b.get("billingPeriod") or "monthly",
+                      agreed_price_mxn=b.get("agreedPriceMxn"),
+                      price_treatment=b.get("priceTreatment") or "canonical_list",
+                      price_evidence_ref=b.get("priceEvidenceRef"),
+                      commercial_note=b.get("commercialNote"),
+                      valid_from=b.get("validFrom"),
+                  )
+              except CommercialContractError as exc:
+                  return {"ok": False, "resultCode": exc.code, "error": str(exc), "commercial": {"plan": plan["code"]}}
+              plan_rules = jl(plan.get("rules")) or {}
+              limits = {
+                  "maxDevices": plan.get("maxDevices"),
+                  "maxBranches": plan.get("maxBranches"),
+                  "maxStores": plan_rules.get("maxStores"),
+              }
+              license_assignment_id = uid()
+              con.execute(
+                  "INSERT INTO LicenseAssignment(id,internalId,humanCode,clientId,planId,status,validFrom,validUntil,modules,limits) VALUES(?,?,?,?,?,?,?,?,?,?)",
+                  (license_assignment_id, ids["license"]["internalId"], ids["license"]["humanCode"], client["id"], plan["id"], "prepared", terms["validFrom"], terms["validUntil"], jd(modules), jd(limits)),
+              )
+              contract = insert_commercial_contract(
+                  con,
+                  identity=ids["contract"],
+                  client_id=client["id"],
+                  license_assignment_id=license_assignment_id,
+                  terms=terms,
+              )
+              payload = {
+                  "client": {"dbId": client["id"], "humanCode": client["humanCode"], "displayName": client["displayName"]},
+                  "license": {**ids["license"], "dbId": license_assignment_id, "plan": plan["code"], "planLabel": plan["label"], "modules": modules, "limits": limits, "status": "prepared", "validFrom": terms["validFrom"], "validUntil": terms["validUntil"]},
+                  "contract": contract,
+                  "source": "local_prepared_not_cloud_licensed",
+              }
+              con.execute(
+                  "INSERT INTO ProvisioningDraft(id,internalId,humanCode,clientId,kind,status,payload) VALUES(?,?,?,?,?,?,?)",
+                  (uid(), ids["contract"]["internalId"], ids["contract"]["humanCode"], client["id"], "license_assignment", "prepared", jd(payload)),
+              )
+              add_event(
+                  con,
+                  "license_prepared",
+                  "license",
+                  ids["license"]["humanCode"],
+                  f"Licencia {plan['label']} {terms['billingPeriod']} por ${terms['agreedPriceMxn']} MXN + IVA preparada para {client['displayName']}",
+                  payload,
+              )
+              return {"ok": True, "mode": "prepared", "message": "Licencia y contrato comercial preparados localmente; pendiente activación cloud real.", **payload, "counts": _counts(con)}
+          '''
+          new_draft_license = '\n'.join(line[10:] if line.startswith('          ') else line for line in new_draft_license.splitlines()) + '\n'
+          store = sub_once(
+              store,
+              r'def draft_license\(con, b\):\n.*?(?=def draft_deactivation\(con, b\):)',
+              new_draft_license + '\n',
+              'backend draft_license replacement',
+          )
+          store_path.write_text(store, encoding='utf-8')
+
+          # ---------------- frontend ----------------
+          web = web_path.read_text(encoding='utf-8')
+          commercial_helpers = '''  const BILLING_PERIOD_LABELS = { monthly: "Mensual", quarterly: "Trimestral", semiannual: "Semestral", annual: "Anual" };
+            function moneyMxn(value){ const n=Number(value); if(!Number.isFinite(n)) return "-"; return new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0}).format(n); }
+            function planCommercial(code){ const meta=planMeta(code); return meta.commercial || (ccStore().licensePlans||[]).find((item)=>item.code===code)?.commercial || {}; }
+            function planCommercialPolicy(code){ const meta=planMeta(code); return meta.commercialPolicy || (ccStore().licensePlans||[]).find((item)=>item.code===code)?.commercialPolicy || {}; }
+            function planListPrice(code,period){ return planCommercial(code)?.listPriceMxn?.[period] ?? null; }
+            function billingPeriodField(){ const selected=flowValue("billingPeriod","monthly"); return `<label class="cc-field"><span>Periodicidad</span><select data-flow-field="billingPeriod">${Object.entries(BILLING_PERIOD_LABELS).map(([code,label])=>`<option value="${esc(code)}" ${selected===code?"selected":""}>${esc(label)}</option>`).join("")}</select></label>`; }
+            function priceTreatmentField(){ const selected=flowValue("priceTreatment","canonical_list"); const opts=[["canonical_list","Precio de lista"],["signed_contract_override","Precio firmado excepcional"],["grandfathered_contract","Contrato anterior / grandfathered"]]; return `<label class="cc-field"><span>Tratamiento del precio</span><select data-flow-field="priceTreatment">${opts.map(([code,label])=>`<option value="${esc(code)}" ${selected===code?"selected":""}>${esc(label)}</option>`).join("")}</select></label>`; }
+          '''
+          commercial_helpers = '\n'.join(line[2:] if line.startswith('  ') else line for line in commercial_helpers.splitlines()) + '\n'
+          web = replace_once(
+              web,
+              '  function planMeta(code){ return catalogOptions("license_plan").find((item)=>item.code===code)?.metadata || {}; }\n',
+              '  function planMeta(code){ return catalogOptions("license_plan").find((item)=>item.code===code)?.metadata || {}; }\n' + commercial_helpers,
+              'frontend commercial helpers',
+          )
+
+          new_license_wizard = '''  function licenseWizard(){
+              const r=currentRecommendation();
+              const plan=flowValue("plan",r.plan);
+              const m=planMeta(plan);
+              const period=flowValue("billingPeriod","monthly");
+              const listPrice=planListPrice(plan,period);
+              const agreedRaw=flowValue("agreedPriceMxn","");
+              const agreedDisplay=agreedRaw || listPrice;
+              const policy=planCommercialPolicy(plan);
+              return `<div class="cc-flow-grid">${selectField("clientCode","Cliente destino","client",flowValue("clientCode"),{})}${selectField("plan","Tipo de licencia","license_plan",plan,{required:true})}${billingPeriodField()}${priceTreatmentField()}${textField("agreedPriceMxn","Precio acordado MXN",agreedRaw,{placeholder:listPrice!=null?String(listPrice):"precio antes de IVA"})}${textField("priceEvidenceRef","Contrato / recibo / evidencia",flowValue("priceEvidenceRef"),{placeholder:"Obligatorio si el precio difiere del canon"})}${textField("validFrom","Inicio YYYY-MM-DD",flowValue("validFrom"),{placeholder:"Vacío = hoy"})}${textField("commercialNote","Nota comercial",flowValue("commercialNote"),{placeholder:"Opcional"})}</div>${kvGrid([["Precio lista",listPrice!=null?`${moneyMxn(listPrice)} + IVA`:"sin precio canonico"],["Precio a preparar",agreedDisplay!=null&&agreedDisplay!==""?`${moneyMxn(agreedDisplay)} + IVA`:"precio de lista"],["Versión",m.commercial?.priceVersion||"-"],["Periodicidad",BILLING_PERIOD_LABELS[period]||period],["Impuesto",policy.taxTreatment==="PLUS_APPLICABLE_IVA"?"+ IVA aplicable":policy.taxTreatment||"según contrato"],["Máximo dispositivos",m.maxDevices||"según contrato"],["Máximo sucursales",m.maxBranches||"según contrato"],["Módulos",(m.modules||r.modules).join(", ")]])}${actions([actionButton("prepare-license","Preparar licencia + contrato","primary"),actionButton("compare-license-contract","Comparar con contrato"),surfaceButton("customers","Ver cliente")])}${details("Licencias preparadas", { licenses: localRows("licenses"), contracts: localRows("contracts") }, false)}`;
+            }
+          '''
+          new_license_wizard = '\n'.join(line[2:] if line.startswith('  ') else line for line in new_license_wizard.splitlines()) + '\n'
+          web = sub_once(
+              web,
+              r'  function licenseWizard\(\)\{.*?(?=  function deactivationWizard\(\))',
+              new_license_wizard,
+              'frontend license wizard replacement',
+          )
+
+          new_plan_catalog = '''  function planCatalogDesk(){
+              const plans = ccStore().licensePlans || [];
+              if (!plans.length) return `<div class="cc-desk-empty"><strong>Sin planes cargados</strong><span>El catálogo local o fallback todavía no devolvió planes.</span></div>`;
+              return `<div class="cc-plan-grid">${plans.map((p)=>{ const prices=p.commercial?.listPriceMxn || p.rules?.commercial?.listPriceMxn || {}; const priceLine=Object.entries(BILLING_PERIOD_LABELS).map(([period,label])=>`${label}: ${prices[period]!=null?moneyMxn(prices[period]):"-"}`).join(" · "); return `<article class="cc-plan-card"><div><strong>${esc(p.label || p.code)}</strong><small>${esc(p.code || "plan")}</small></div><p>${esc(priceLine)} · + IVA</p><p>${esc((p.modules || []).join(" · ") || "Módulos pendientes")}</p><footer>${chip("READY", `${p.maxDevices || "N"} disp.`)}${chip("READY", `${p.maxBranches || "N"} suc.`)}</footer></article>`; }).join("")}</div>`;
+            }
+          '''
+          new_plan_catalog = '\n'.join(line[2:] if line.startswith('  ') else line for line in new_plan_catalog.splitlines()) + '\n'
+          web = sub_once(
+              web,
+              r'  function planCatalogDesk\(\)\{.*?(?=  function localSummaryText\(\))',
+              new_plan_catalog,
+              'frontend plan catalog replacement',
+          )
+
+          web = replace_once(
+              web,
+              '    if (kind === "devices") return [\n',
+              '    if (kind === "contracts") return [\n      row.humanCode || "-",\n      row.clientName || row.clientCode || "Sin cliente",\n      `${row.planCode || "Plan"} · ${BILLING_PERIOD_LABELS[row.billingPeriod] || row.billingPeriod || "periodo"}`,\n      row.agreedPriceMxn != null ? `${moneyMxn(row.agreedPriceMxn)} + IVA` : "-",\n      row.renewalOn || statusText(row.status)\n    ];\n    if (kind === "devices") return [\n',
+              'frontend contract desk cells',
+          )
+          web = replace_once(
+              web,
+              '      licenses: ["Folio", "Cliente", "Plan", "Estado", "Fecha"],\n',
+              '      licenses: ["Folio", "Cliente", "Plan", "Estado", "Fecha"],\n      contracts: ["Contrato", "Cliente", "Plan / periodo", "Precio", "Renovación"],\n',
+              'frontend contract desk headers',
+          )
+          web = replace_once(
+              web,
+              '      licenses: "Licencias preparadas",\n',
+              '      licenses: "Licencias preparadas",\n      contracts: "Contratos comerciales",\n',
+              'frontend contract desk title',
+          )
+          web = replace_once(
+              web,
+              '      ["Licencias", c.licenses || 0, "Listas"],\n',
+              '      ["Licencias", c.licenses || 0, "Listas"],\n      ["Contratos", c.contracts || 0, "Comerciales"],\n',
+              'frontend contracts dashboard metric',
+          )
+          web = replace_once(
+              web,
+              '      `Licencias: ${c.licenses || 0}`,\n',
+              '      `Licencias: ${c.licenses || 0}`,\n      `Contratos comerciales: ${c.contracts || 0}`,\n',
+              'frontend contracts summary',
+          )
+          web = replace_once(
+              web,
+              '    panel("Mesa de licencias","Asignaciones preparadas con folio LIC y contrato CTR.",localDesk("licenses","Todavía no hay licencias preparadas."),{span:12,tag:`${c.licenses||0} local`}),\n',
+              '    panel("Mesa de licencias","Asignaciones preparadas con folio LIC vinculadas a contrato comercial.",localDesk("licenses","Todavía no hay licencias preparadas."),{span:12,tag:`${c.licenses||0} local`}),\n    panel("Contratos comerciales","Cada CTR conserva plan, periodicidad, precio de lista, precio acordado, versión, IVA, vigencia, renovación y evidencia cuando existe excepción.",localDesk("contracts","Todavía no hay contratos comerciales preparados."),{span:12,tag:`${c.contracts||0} CTR`}),\n',
+              'frontend entitlements contract panel',
+          )
+          web_path.write_text(web, encoding='utf-8')
+
+          print('PASS_PRICING_OPS_GUARDED_SOURCE_PATCH')
+
+      - name: Syntax and diff checks
+        run: |
+          python -m py_compile "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_contracts.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py"
+          node --check "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"
+          git diff --check
+
+      - name: Remove one-shot workflow and commit patch
+        run: |
+          rm .github/workflows/pricing-ops-apply.yml
+          git config user.name "prisma-pricing-ops-bot"
+          git config user.email "prisma-pricing-ops-bot@users.noreply.github.com"
+          git add "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js" .github/workflows/pricing-ops-apply.yml
+          git commit -m "feat(cloud-center): operationalize canonical commercial pricing"
+          git push origin HEAD:pricing-ops-20260814
