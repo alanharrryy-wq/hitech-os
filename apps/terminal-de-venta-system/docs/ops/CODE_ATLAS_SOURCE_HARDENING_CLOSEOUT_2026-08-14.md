@@ -51,7 +51,7 @@ The legacy HTML text filter and first-row preview are explicitly de-claimed and 
 - PR #255: Evidence / Temporal / Lineage foundations and negative tests.
 - PR #257: governance cleanup only; consumed one-shot writer removed, read-only Mesh gateway preserved.
 - Remote Authority Mesh run `31799663059`: final current-main source-hardening authority.
-- Final hardening PR #258: required `Code Atlas Operational Hardening` workflow runs the complete `test_operational_*.py` suite.
+- Final hardening PR #259: required `Code Atlas Operational Hardening` workflow runs the complete `test_operational_*.py` suite.
 
 ## Next allowed gates
 
