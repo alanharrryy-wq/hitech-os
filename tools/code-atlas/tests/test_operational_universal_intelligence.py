@@ -183,8 +183,11 @@ class UniversalIntelligenceTests(unittest.TestCase):
             snapshot = build_snapshot(repo, inv, auth, profile_id="generic", profile_version="1", request_digest=auth["requestDigest"])
             index = base/"index.sqlite"
             build_derived_index(index, inv, auth, graphs, snapshot)
-            with sqlite3.connect(index) as con:
+            con = sqlite3.connect(index)
+            try:
                 meta = dict(con.execute("SELECT key,value FROM meta").fetchall())
+            finally:
+                con.close()
             self.assertEqual(meta["authoritative"], "false")
             self.assertEqual(meta["rebuildable"], "true")
             result = query_derived_index(index, "schema")
