@@ -556,6 +556,13 @@
   function catalogLabel(code,value){ return catalogOptions(code).find((opt)=>opt.code===value)?.label || value || "-"; }
   function flowValue(key,fallback){ return state.flow[key] || fallback || ""; }
   function planMeta(code){ return catalogOptions("license_plan").find((item)=>item.code===code)?.metadata || {}; }
+const BILLING_PERIOD_LABELS = { monthly: "Mensual", quarterly: "Trimestral", semiannual: "Semestral", annual: "Anual" };
+function moneyMxn(value){ const n=Number(value); if(!Number.isFinite(n)) return "-"; return new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN",maximumFractionDigits:0}).format(n); }
+function planCommercial(code){ const meta=planMeta(code); return meta.commercial || (ccStore().licensePlans||[]).find((item)=>item.code===code)?.commercial || {}; }
+function planCommercialPolicy(code){ const meta=planMeta(code); return meta.commercialPolicy || (ccStore().licensePlans||[]).find((item)=>item.code===code)?.commercialPolicy || {}; }
+function planListPrice(code,period){ return planCommercial(code)?.listPriceMxn?.[period] ?? null; }
+function billingPeriodField(){ const selected=flowValue("billingPeriod","monthly"); return `<label class="cc-field"><span>Periodicidad</span><select data-flow-field="billingPeriod">${Object.entries(BILLING_PERIOD_LABELS).map(([code,label])=>`<option value="${esc(code)}" ${selected===code?"selected":""}>${esc(label)}</option>`).join("")}</select></label>`; }
+function priceTreatmentField(){ const selected=flowValue("priceTreatment","canonical_list"); const opts=[["canonical_list","Precio de lista"],["signed_contract_override","Precio firmado excepcional"],["grandfathered_contract","Contrato anterior / grandfathered"]]; return `<label class="cc-field"><span>Tratamiento del precio</span><select data-flow-field="priceTreatment">${opts.map(([code,label])=>`<option value="${esc(code)}" ${selected===code?"selected":""}>${esc(label)}</option>`).join("")}</select></label>`; }
   function catalogMetaSummary(item){
     const meta = item?.metadata || {};
     const parts = [];
@@ -595,7 +602,17 @@
   function flowSummary(){ const r=currentRecommendation(); return kvGrid([["Vertical",catalogLabel("vertical",flowValue("vertical","abarrotes"))],["Operación",catalogLabel("operation_mode",flowValue("operationMode","counter"))],["Plan sugerido",catalogLabel("license_plan",flowValue("plan",r.plan))],["Dispositivo sugerido",catalogLabel("device_type",flowValue("deviceType",r.device))]]); }
   function clientWizard(){ const r=currentRecommendation(); return `<div class="cc-flow-grid">${textField("displayName","Nombre comercial",flowValue("displayName"),{required:true,placeholder:"Ej. Abarrotes Don Pepe"})}${textField("contactName","Contacto",flowValue("contactName"),{placeholder:"Nombre de contacto"})}${textField("phone","Teléfono",flowValue("phone"),{})}${textField("email","Correo",flowValue("email"),{})}${selectField("vertical","Giro / vertical","vertical",flowValue("vertical","abarrotes"),{required:true})}${selectField("subvertical","Subvertical","subvertical",flowValue("subvertical"),{})}${selectField("businessSize","Tamaño","business_size",flowValue("businessSize","small"),{})}${selectField("operationMode","Tipo de operación","operation_mode",flowValue("operationMode","counter"),{})}${selectField("cityZone","Ciudad / zona","city_zone",flowValue("cityZone"),{})}${selectField("plan","Plan sugerido","license_plan",flowValue("plan",r.plan),{})}</div>${actions([actionButton("prepare-client","Preparar alta con IDs","primary"),actionButton("save-other-values","Guardar otros pendientes"),surfaceButton("entitlements","Ver planes"),surfaceButton("fleet","Agregar dispositivo")])}`; }
   function deviceWizard(){ const r=currentRecommendation(); return `<div class="cc-flow-grid">${selectField("clientCode","Cliente destino","client",flowValue("clientCode"),{})}${selectField("deviceType","Tipo de dispositivo","device_type",flowValue("deviceType",r.device),{required:true})}${selectField("operationMode","Uso principal","operation_mode",flowValue("operationMode","counter"),{})}${textField("deviceAlias","Alias visible",flowValue("deviceAlias"),{placeholder:"Ej. Caja principal"})}${selectField("cityZone","Sucursal / zona","city_zone",flowValue("cityZone"),{})}</div>${actions([actionButton("prepare-device","Generar dispositivo + código","primary"),actionButton("device-smoke","Registrar prueba cloud"),actionButton("receipt-smoke","Enviar receipt de prueba"),actionButton("save-other-values","Guardar otros pendientes")])}${details("Dispositivos preparados", { devices: localRows("devices") }, false)}`; }
-  function licenseWizard(){ const r=currentRecommendation(); const plan=flowValue("plan",r.plan); const m=planMeta(plan); return `<div class="cc-flow-grid">${selectField("clientCode","Cliente destino","client",flowValue("clientCode"),{})}${selectField("plan","Tipo de licencia","license_plan",plan,{required:true})}${selectField("vertical","Vertical del cliente","vertical",flowValue("vertical","abarrotes"),{})}${selectField("businessSize","Tamaño","business_size",flowValue("businessSize","small"),{})}${selectField("operationMode","Operación","operation_mode",flowValue("operationMode","counter"),{})}</div>${kvGrid([["Máximo dispositivos",m.maxDevices||"según contrato"],["Máximo sucursales",m.maxBranches||"según contrato"],["Módulos",(m.modules||r.modules).join(", ")]])}${actions([actionButton("prepare-license","Preparar licencia + folio","primary"),actionButton("compare-license-contract","Comparar con contrato"),surfaceButton("customers","Ver cliente")])}${details("Licencias preparadas", { licenses: localRows("licenses") }, false)}`; }
+function licenseWizard(){
+  const r=currentRecommendation();
+  const plan=flowValue("plan",r.plan);
+  const m=planMeta(plan);
+  const period=flowValue("billingPeriod","monthly");
+  const listPrice=planListPrice(plan,period);
+  const agreedRaw=flowValue("agreedPriceMxn","");
+  const agreedDisplay=agreedRaw || listPrice;
+  const policy=planCommercialPolicy(plan);
+  return `<div class="cc-flow-grid">${selectField("clientCode","Cliente destino","client",flowValue("clientCode"),{})}${selectField("plan","Tipo de licencia","license_plan",plan,{required:true})}${billingPeriodField()}${priceTreatmentField()}${textField("agreedPriceMxn","Precio acordado MXN",agreedRaw,{placeholder:listPrice!=null?String(listPrice):"precio antes de IVA"})}${textField("priceEvidenceRef","Contrato / recibo / evidencia",flowValue("priceEvidenceRef"),{placeholder:"Obligatorio si el precio difiere del canon"})}${textField("validFrom","Inicio YYYY-MM-DD",flowValue("validFrom"),{placeholder:"Vacío = hoy"})}${textField("commercialNote","Nota comercial",flowValue("commercialNote"),{placeholder:"Opcional"})}</div>${kvGrid([["Precio lista",listPrice!=null?`${moneyMxn(listPrice)} + IVA`:"sin precio canonico"],["Precio a preparar",agreedDisplay!=null&&agreedDisplay!==""?`${moneyMxn(agreedDisplay)} + IVA`:"precio de lista"],["Versión",m.commercial?.priceVersion||"-"],["Periodicidad",BILLING_PERIOD_LABELS[period]||period],["Impuesto",policy.taxTreatment==="PLUS_APPLICABLE_IVA"?"+ IVA aplicable":policy.taxTreatment||"según contrato"],["Máximo dispositivos",m.maxDevices||"según contrato"],["Máximo sucursales",m.maxBranches||"según contrato"],["Módulos",(m.modules||r.modules).join(", ")]])}${actions([actionButton("prepare-license","Preparar licencia + contrato","primary"),actionButton("compare-license-contract","Comparar con contrato"),surfaceButton("customers","Ver cliente")])}${details("Licencias preparadas", { licenses: localRows("licenses"), contracts: localRows("contracts") }, false)}`;
+}
   function deactivationWizard(){ return `<div class="cc-flow-grid"><label class="cc-field"><span>Qué se dará de baja</span><select data-flow-field="targetKind"><option value="client" ${flowValue("targetKind","client")==="client"?"selected":""}>Cliente</option><option value="license" ${flowValue("targetKind")==="license"?"selected":""}>Licencia</option><option value="device" ${flowValue("targetKind")==="device"?"selected":""}>Dispositivo</option></select></label>${selectField("clientCode","Cliente / referencia local","client",flowValue("clientCode"),{})}${textField("targetCode","Folio / referencia manual",flowValue("targetCode"),{placeholder:"Opcional si eliges cliente"})}${selectField("reason","Motivo","deactivation_reason",flowValue("reason","cancellation"),{required:true})}</div><div class="cc-impact"><strong>Impacto antes de confirmar</strong><span>Historial se conserva · cloud no se toca todavía · se genera folio de baja local</span></div>${actions([actionButton("prepare-deactivation","Preparar baja segura","primary"),actionButton("save-other-values","Guardar otros pendientes"),surfaceButton("system","Ver técnico")])}${details("Bajas preparadas", { deactivations: localRows("deactivations") }, false)}`; }
 
 
@@ -645,6 +662,13 @@
       statusText(row.status),
       prettyDate(row.createdAt)
     ];
+    if (kind === "contracts") return [
+      row.humanCode || "-",
+      row.clientName || row.clientCode || "Sin cliente",
+      `${row.planCode || "Plan"} · ${BILLING_PERIOD_LABELS[row.billingPeriod] || row.billingPeriod || "periodo"}`,
+      row.agreedPriceMxn != null ? `${moneyMxn(row.agreedPriceMxn)} + IVA` : "-",
+      row.renewalOn || statusText(row.status)
+    ];
     if (kind === "devices") return [
       row.humanCode || "-",
       row.clientName || row.clientCode || "Sin cliente",
@@ -686,6 +710,7 @@
     return {
       clients: ["Folio", "Cliente", "Vertical", "Estado", "Fecha"],
       licenses: ["Folio", "Cliente", "Plan", "Estado", "Fecha"],
+      contracts: ["Contrato", "Cliente", "Plan / periodo", "Precio", "Renovación"],
       devices: ["Folio", "Cliente", "Tipo", "Registro", "Estado"],
       deactivations: ["Folio", "Objetivo", "Motivo", "Estado", "Fecha"],
       drafts: ["Folio", "Tipo", "Estado", "Cliente", "Fecha"],
@@ -697,6 +722,7 @@
     return {
       clients: "Clientes locales",
       licenses: "Licencias preparadas",
+      contracts: "Contratos comerciales",
       devices: "Dispositivos preparados",
       deactivations: "Bajas preparadas",
       drafts: "Borradores de operación",
@@ -721,17 +747,18 @@
     return `<div class="cc-desk-dashboard">${[
       ["Clientes", c.clients || 0, "Preparados"],
       ["Licencias", c.licenses || 0, "Listas"],
+      ["Contratos", c.contracts || 0, "Comerciales"],
       ["Dispositivos", c.devices || 0, "Pendientes"],
       ["Bajas", c.deactivations || 0, "Seguras"],
       ["Otros", c.othersPending || 0, "Catálogo"],
       ["Auditoría", c.auditEvents || 0, "Eventos"]
     ].map(([a,b,cx])=>`<div class="cc-desk-metric"><small>${esc(a)}</small><strong>${esc(b)}</strong><span>${esc(cx)}</span></div>`).join("")}</div>`;
   }
-  function planCatalogDesk(){
-    const plans = ccStore().licensePlans || [];
-    if (!plans.length) return `<div class="cc-desk-empty"><strong>Sin planes cargados</strong><span>El catálogo local o fallback todavía no devolvió planes.</span></div>`;
-    return `<div class="cc-plan-grid">${plans.map((p)=>`<article class="cc-plan-card"><div><strong>${esc(p.label || p.code)}</strong><small>${esc(p.code || "plan")}</small></div><p>${esc((p.modules || []).join(" · ") || "Módulos pendientes")}</p><footer>${chip("READY", `${p.maxDevices || "N"} disp.`)}${chip("READY", `${p.maxBranches || "N"} suc.`)}</footer></article>`).join("")}</div>`;
-  }
+function planCatalogDesk(){
+  const plans = ccStore().licensePlans || [];
+  if (!plans.length) return `<div class="cc-desk-empty"><strong>Sin planes cargados</strong><span>El catálogo local o fallback todavía no devolvió planes.</span></div>`;
+  return `<div class="cc-plan-grid">${plans.map((p)=>{ const prices=p.commercial?.listPriceMxn || p.rules?.commercial?.listPriceMxn || {}; const priceLine=Object.entries(BILLING_PERIOD_LABELS).map(([period,label])=>`${label}: ${prices[period]!=null?moneyMxn(prices[period]):"-"}`).join(" · "); return `<article class="cc-plan-card"><div><strong>${esc(p.label || p.code)}</strong><small>${esc(p.code || "plan")}</small></div><p>${esc(priceLine)} · + IVA</p><p>${esc((p.modules || []).join(" · ") || "Módulos pendientes")}</p><footer>${chip("READY", `${p.maxDevices || "N"} disp.`)}${chip("READY", `${p.maxBranches || "N"} suc.`)}</footer></article>`; }).join("")}</div>`;
+}
   function localSummaryText(){
     const c = localCounts();
     const last = localRows("events").slice(0, 8).map((e)=>`- ${e.createdAt || ""} ${e.entityCode || e.entityKind || "evento"}: ${e.summary || e.eventType || ""}`).join("\n") || "- Sin eventos locales.";
@@ -739,6 +766,7 @@
       "Prisma Cloud Center - escritorio local",
       `Clientes: ${c.clients || 0}`,
       `Licencias: ${c.licenses || 0}`,
+      `Contratos comerciales: ${c.contracts || 0}`,
       `Dispositivos: ${c.devices || 0}`,
       `Bajas: ${c.deactivations || 0}`,
       `Borradores preparados: ${c.preparedDrafts || 0}`,
@@ -859,7 +887,8 @@
     panel("Asignar licencia","Elige cliente y plan desde catálogo. Límites y módulos vienen gobernados.",licenseWizard(),{span:8,tag:"LICENCIA"}),
     panel("Catálogo de planes","Tipos disponibles, límites y módulos incluidos.",planCatalogDesk(),{span:4,tag:`${(ccStore().licensePlans||[]).length} planes`}),
     panel("License Admin Bridge","Puente local seguro para activate, refresh y revoke sin exponer credencial privilegiada server-side al frontend.",bridgePanel(),{span:12,tag:licflow4Bridge().bridgeAvailable ? "BRIDGE" : "REVIEW"}),
-    panel("Mesa de licencias","Asignaciones preparadas con folio LIC y contrato CTR.",localDesk("licenses","Todavía no hay licencias preparadas."),{span:12,tag:`${c.licenses||0} local`}),
+    panel("Mesa de licencias","Asignaciones preparadas con folio LIC vinculadas a contrato comercial.",localDesk("licenses","Todavía no hay licencias preparadas."),{span:12,tag:`${c.licenses||0} local`}),
+    panel("Contratos comerciales","Cada CTR conserva plan, periodicidad, precio de lista, precio acordado, versión, IVA, vigencia, renovación y evidencia cuando existe excepción.",localDesk("contracts","Todavía no hay contratos comerciales preparados."),{span:12,tag:`${c.contracts||0} CTR`}),
     panel("Reglas","Las licencias locales quedan preparadas; activate/refresh/revoke sólo pasan por License Admin Bridge con confirmación.",list([["Estado","pending_cloud_activation / prepared"],["Folio","LIC-YYYY-000001"],["Contrato","CTR-YYYY-000001"],["Cloud","Confirmed License Operation protected by bridge"],["Revoke","requiere REVOKE_LICENSE"]]),{span:12,tag:"REGLAS"}),
     resultPanel()
   ].join(""); }

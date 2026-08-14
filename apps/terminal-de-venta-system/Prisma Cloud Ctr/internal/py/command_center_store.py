@@ -10,6 +10,15 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
+from commercial_contracts import (
+    CommercialContractError,
+    count_commercial_contracts,
+    ensure_commercial_schema,
+    insert_commercial_contract,
+    list_commercial_contracts,
+    resolve_commercial_terms,
+)
+
 LAB_ROOT = Path(__file__).resolve().parents[2]
 TERMINAL_ROOT = LAB_ROOT.parent
 DATA_DIR = LAB_ROOT / "internal" / "data"
@@ -58,6 +67,8 @@ def _canonical_license_plan_options():
                 continue
             limits = plan.get("limits") if isinstance(plan.get("limits"), dict) else {}
             features = plan.get("features") if isinstance(plan.get("features"), list) else []
+            commercial = plan.get("commercial") if isinstance(plan.get("commercial"), dict) else {}
+            policy = payload.get("commercialPolicy") if isinstance(payload.get("commercialPolicy"), dict) else {}
             options.append(
                 (
                     code,
@@ -71,6 +82,16 @@ def _canonical_license_plan_options():
                         "canonicalPlan": code,
                         "source": "shared/licensing/plan-catalog.canonical.json",
                         "tier": int(plan.get("rank") or 100),
+                        "commercial": commercial,
+                        "commercialPolicy": {
+                            "effectiveFrom": policy.get("effectiveFrom"),
+                            "market": policy.get("market"),
+                            "currency": policy.get("currency"),
+                            "taxTreatment": policy.get("taxTreatment"),
+                            "billingScope": policy.get("billingScope"),
+                            "periods": policy.get("periods") if isinstance(policy.get("periods"), dict) else {},
+                            "grandfathering": policy.get("grandfathering") if isinstance(policy.get("grandfathering"), dict) else {},
+                        },
                     },
                 )
             )
@@ -150,6 +171,7 @@ def _exec_schema(con):
     ]
     for sql in statements:
         con.execute(sql)
+    ensure_commercial_schema(con)
 
 def _seed_first_customer(con):
     payload = {
@@ -412,6 +434,7 @@ def _counts(con):
         "othersPending": con.execute("SELECT COUNT(*) FROM CatalogOtherSubmission WHERE status='pending_catalog_review'").fetchone()[0],
         "identities": con.execute("SELECT COUNT(*) FROM GeneratedIdentity").fetchone()[0],
         "auditEvents": con.execute("SELECT COUNT(*) FROM CommandAuditEvent").fetchone()[0],
+        "contracts": count_commercial_contracts(con),
     }
 
 def _rows(con, sql, args=()):
@@ -428,11 +451,12 @@ def _local_payload(con):
                             FROM ManagedDevice d LEFT JOIN CommandClient c ON c.id=d.clientId ORDER BY d.createdAt DESC LIMIT 50""")
     deactivations = _rows(con, "SELECT id,internalId,humanCode,targetKind,targetCode,reasonCode,reasonOther,status,createdAt FROM DeactivationRequest ORDER BY createdAt DESC LIMIT 50")
     drafts = _rows(con, "SELECT id,internalId,humanCode,clientId,kind,status,createdAt FROM ProvisioningDraft ORDER BY createdAt DESC LIMIT 50")
+    contracts = list_commercial_contracts(con)
     others = _rows(con, """SELECT o.id,c.code AS catalogKey,c.label AS catalogLabel,o.manualText,o.status,o.createdAt
                            FROM CatalogOtherSubmission o LEFT JOIN Catalog c ON c.id=o.catalogId
                            ORDER BY o.createdAt DESC LIMIT 50""")
     events = _rows(con, "SELECT eventType,entityKind,entityCode,summary,createdAt FROM CommandAuditEvent ORDER BY createdAt DESC LIMIT 24")
-    return {"clients": clients, "licenses": licenses, "devices": devices, "deactivations": deactivations, "drafts": drafts, "othersPending": others, "events": events}
+    return {"clients": clients, "licenses": licenses, "contracts": contracts, "devices": devices, "deactivations": deactivations, "drafts": drafts, "othersPending": others, "events": events}
 
 def _plan_by_code(con, plan_code):
     plan_code = plan_code or "TABLET_PC_MANAGED"
@@ -463,6 +487,8 @@ def bootstrap(con):
             "maxBranches": r.get("maxBranches"),
             "modules": jl(r.get("modules")),
             "rules": jl(r.get("rules")),
+            "commercial": (jl(r.get("rules")) or {}).get("commercial") or {},
+            "commercialPolicy": (jl(r.get("rules")) or {}).get("commercialPolicy") or {},
             "active": bool(r.get("active")),
         })
     bridge = con.execute("SELECT * FROM CloudBridgeStatus WHERE id='bridge_local'").fetchone()
@@ -471,7 +497,7 @@ def bootstrap(con):
         "mode": "local_catalogs",
         "workflowMode": "local_prepared_not_cloud_created",
         "dbPath": str(DB_PATH),
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "catalogs": cats,
         "licensePlans": plans,
         "counts": _counts(con),
@@ -554,21 +580,57 @@ def draft_license(con, b):
     plan_code = b.get("plan") or rec["suggestedPlan"]
     plan = _plan_by_code(con, plan_code)
     modules = b.get("modules") or jl(plan.get("modules")) or rec["suggestedModules"]
-    ids = {"license": gen(con, "license", {"plan": plan["code"], "clientCode": client["humanCode"]}), "contract": gen(con, "contract", {"clientCode": client["humanCode"]})}
-    valid_from = datetime.now(timezone.utc).date().isoformat()
-    valid_until = (datetime.now(timezone.utc).date() + timedelta(days=365)).isoformat()
-    limits = {"maxDevices": plan.get("maxDevices"), "maxBranches": plan.get("maxBranches")}
+    ids = {"license": gen(con, "license", {"plan": plan["code"], "clientCode": client["humanCode"]}), "contract": gen(con, "contract", {"clientCode": client["humanCode"], "plan": plan["code"]})}
+    try:
+        terms = resolve_commercial_terms(
+  PLAN_CATALOG_PATH,
+  plan["code"],
+  billing_period=b.get("billingPeriod") or "monthly",
+  agreed_price_mxn=b.get("agreedPriceMxn"),
+  price_treatment=b.get("priceTreatment") or "canonical_list",
+  price_evidence_ref=b.get("priceEvidenceRef"),
+  commercial_note=b.get("commercialNote"),
+  valid_from=b.get("validFrom"),
+        )
+    except CommercialContractError as exc:
+        return {"ok": False, "resultCode": exc.code, "error": str(exc), "commercial": {"plan": plan["code"]}}
+    plan_rules = jl(plan.get("rules")) or {}
+    limits = {
+        "maxDevices": plan.get("maxDevices"),
+        "maxBranches": plan.get("maxBranches"),
+        "maxStores": plan_rules.get("maxStores"),
+    }
+    license_assignment_id = uid()
     con.execute(
         "INSERT INTO LicenseAssignment(id,internalId,humanCode,clientId,planId,status,validFrom,validUntil,modules,limits) VALUES(?,?,?,?,?,?,?,?,?,?)",
-        (uid(), ids["license"]["internalId"], ids["license"]["humanCode"], client["id"], plan["id"], "prepared", valid_from, valid_until, jd(modules), jd(limits)),
+        (license_assignment_id, ids["license"]["internalId"], ids["license"]["humanCode"], client["id"], plan["id"], "prepared", terms["validFrom"], terms["validUntil"], jd(modules), jd(limits)),
     )
-    payload = {"client": {"dbId": client["id"], "humanCode": client["humanCode"], "displayName": client["displayName"]}, "license": {**ids["license"], "plan": plan["code"], "planLabel": plan["label"], "modules": modules, "limits": limits, "status": "prepared", "validFrom": valid_from, "validUntil": valid_until}, "contract": ids["contract"], "source": "local_prepared_not_cloud_licensed"}
+    contract = insert_commercial_contract(
+        con,
+        identity=ids["contract"],
+        client_id=client["id"],
+        license_assignment_id=license_assignment_id,
+        terms=terms,
+    )
+    payload = {
+        "client": {"dbId": client["id"], "humanCode": client["humanCode"], "displayName": client["displayName"]},
+        "license": {**ids["license"], "dbId": license_assignment_id, "plan": plan["code"], "planLabel": plan["label"], "modules": modules, "limits": limits, "status": "prepared", "validFrom": terms["validFrom"], "validUntil": terms["validUntil"]},
+        "contract": contract,
+        "source": "local_prepared_not_cloud_licensed",
+    }
     con.execute(
         "INSERT INTO ProvisioningDraft(id,internalId,humanCode,clientId,kind,status,payload) VALUES(?,?,?,?,?,?,?)",
         (uid(), ids["contract"]["internalId"], ids["contract"]["humanCode"], client["id"], "license_assignment", "prepared", jd(payload)),
     )
-    add_event(con, "license_prepared", "license", ids["license"]["humanCode"], f"Licencia {plan['label']} preparada para {client['displayName']}", payload)
-    return {"ok": True, "mode": "prepared", "message": "Licencia preparada localmente; pendiente activación cloud real.", **payload, "counts": _counts(con)}
+    add_event(
+        con,
+        "license_prepared",
+        "license",
+        ids["license"]["humanCode"],
+        f"Licencia {plan['label']} {terms['billingPeriod']} por ${terms['agreedPriceMxn']} MXN + IVA preparada para {client['displayName']}",
+        payload,
+    )
+    return {"ok": True, "mode": "prepared", "message": "Licencia y contrato comercial preparados localmente; pendiente activación cloud real.", **payload, "counts": _counts(con)}
 
 def draft_deactivation(con, b):
     target_kind = norm_code(b.get("targetKind") or "client", "client")
