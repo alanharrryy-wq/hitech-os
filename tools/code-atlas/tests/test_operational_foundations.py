@@ -67,6 +67,7 @@ class OperationalFoundationTests(unittest.TestCase):
         missing = compare_semantic_snapshots(None, current)
         self.assertEqual(missing["status"], "BLOCKED_MISSING_BASELINE")
         self.assertFalse(missing["comparable"])
+
         changed = compare_semantic_snapshots(base, current)
         self.assertEqual(changed["status"], "CHANGE_DETECTED")
         self.assertEqual(changed["changedSections"], ["clients"])
@@ -135,6 +136,22 @@ class OperationalFoundationTests(unittest.TestCase):
         self.assertEqual(timeline["status"], "BLOCKED_DUPLICATE_TIMELINE_EVIDENCE")
         self.assertEqual(timeline["duplicateEvidenceIds"], ["e1"])
 
+    def test_blocked_timeline_propagates_to_capability_hard_blocker(self) -> None:
+        reconciled = hardened_runner._reconcile_foundation_capabilities(
+            [{
+                "capabilityId": "operational_timeline",
+                "maturity": "CONTRACT_BACKED",
+                "hardBlockers": [],
+                "certifiable": False,
+                "productionCertified": False,
+            }],
+            {"operationalTimeline": [{"status": "BLOCKED_DUPLICATE_TIMELINE_EVIDENCE"}]},
+            {"blockers": ["operational_timeline_integrity"]},
+        )
+        timeline = reconciled[0]
+        self.assertIn("foundation:operational_timeline_integrity", timeline["hardBlockers"])
+        self.assertFalse(timeline["certifiable"])
+
     def test_freshness_without_governed_policy_fails_closed(self) -> None:
         result = assess_freshness(
             "2026-08-14T11:00:00Z",
@@ -157,6 +174,7 @@ class OperationalFoundationTests(unittest.TestCase):
         self.assertEqual(policies["operational_row"].ttl_seconds, 600)
         self.assertEqual(rows[0]["status"], "PASS_FRESHNESS_POLICY_VALID")
         self.assertEqual(len(rows[0]["policyDigest"]), 64)
+
         invalid, invalid_rows = parse_freshness_policies({
             "operational_row": {"policyId": "bad", "ttlSeconds": 0}
         })
@@ -167,24 +185,28 @@ class OperationalFoundationTests(unittest.TestCase):
         required = ["license.revoke"]
         no_scope = assess_audit_completeness(required, [])
         self.assertEqual(no_scope["status"], "BLOCKED_AUDIT_SCOPE_CONTRACT_MISSING")
+
         wrong = assess_audit_completeness(
             required,
             [{"eventId": "e1", "action": "license.revoke", "scope": {"tenantId": "tenant-B"}}],
             required_scope={"tenantId": "tenant-A"},
         )
         self.assertEqual(wrong["status"], "BLOCKED_WRONG_SCOPE_AUDIT_EVENTS")
+
         no_identity = assess_audit_completeness(
             required,
             [{"action": "license.revoke", "scope": {"tenantId": "tenant-A"}}],
             required_scope={"tenantId": "tenant-A"},
         )
         self.assertEqual(no_identity["status"], "BLOCKED_AUDIT_EVENT_PROVENANCE_INVALID")
+
         good = assess_audit_completeness(
             required,
             [{"eventId": "e1", "action": "license.revoke", "scope": {"tenantId": "tenant-A"}}],
             required_scope={"tenantId": "tenant-A"},
         )
         self.assertEqual(good["status"], "PASS_AUDIT_COVERAGE")
+
         duplicate = assess_audit_completeness(
             required,
             [
@@ -217,11 +239,7 @@ class OperationalFoundationTests(unittest.TestCase):
                 "entityId": "device-1",
                 "sourceDb": "local.db",
                 "sourceTable": "devices",
-                "fields": {
-                    "id": "device-1",
-                    "clientId": "client-1",
-                    "tenantId": "tenant-B",
-                },
+                "fields": {"id": "device-1", "clientId": "client-1", "tenantId": "tenant-B"},
             }],
             "licenses": [],
             "sales": [],
@@ -239,11 +257,7 @@ class OperationalFoundationTests(unittest.TestCase):
             "clients": [],
             "devices": [{
                 "entityId": "device-1",
-                "fields": {
-                    "id": "device-1",
-                    "clientId": "missing-client",
-                    "businessId": "business-1",
-                },
+                "fields": {"id": "device-1", "clientId": "missing-client", "businessId": "business-1"},
             }],
             "licenses": [],
             "sales": [],
@@ -261,6 +275,7 @@ class OperationalFoundationTests(unittest.TestCase):
             self.assertEqual(identity["status"], "PASS_REPOSITORY_IDENTITY_RESOLVED")
             self.assertTrue(identity["repositoryIdentity"].startswith("repo-sha256:"))
             self.assertNotIn("private-repo", json.dumps(identity))
+
             result = apply_operational_foundations(
                 {"clients": [], "licenses": [], "devices": [], "sales": []},
                 {"tool": "code_atlas_operational_v3"},
@@ -280,6 +295,7 @@ class OperationalFoundationTests(unittest.TestCase):
             _init_git_origin(root)
             out = root / "out"
             out.mkdir()
+
             base_manifest = {
                 "tool": "code_atlas_operational_v3",
                 "createdAt": "2026-08-14T11:00:00Z",
@@ -305,21 +321,10 @@ class OperationalFoundationTests(unittest.TestCase):
             def fake_base(repo_root: str, output_dir: str, result_root=None):
                 destination = Path(output_dir)
                 destination.mkdir(parents=True, exist_ok=True)
-                (destination / "ATLAS_MANIFEST_PLUS.json").write_text(
-                    json.dumps(base_manifest), encoding="utf-8"
-                )
-                (destination / "operational_evidence_atlas.json").write_text(
-                    json.dumps(base_payload), encoding="utf-8"
-                )
-                (destination / "SMOKE.json").write_text(
-                    json.dumps({"status": "PASS", "requiredFiles": []}), encoding="utf-8"
-                )
-                for name in (
-                    "WHY_THIS_IS_RED.md",
-                    "HUMAN_OPERATOR_SUMMARY.md",
-                    "CONTINUATION_SUPREME.md",
-                    "CAN_PATCH_DECISION.md",
-                ):
+                (destination / "ATLAS_MANIFEST_PLUS.json").write_text(json.dumps(base_manifest), encoding="utf-8")
+                (destination / "operational_evidence_atlas.json").write_text(json.dumps(base_payload), encoding="utf-8")
+                (destination / "SMOKE.json").write_text(json.dumps({"status": "PASS", "requiredFiles": []}), encoding="utf-8")
+                for name in ("WHY_THIS_IS_RED.md", "HUMAN_OPERATOR_SUMMARY.md", "CONTINUATION_SUPREME.md", "CAN_PATCH_DECISION.md"):
                     (destination / name).write_text(name, encoding="utf-8")
                 return dict(base_manifest)
 
@@ -328,10 +333,7 @@ class OperationalFoundationTests(unittest.TestCase):
 
             self.assertFalse(manifest["productionCertified"])
             self.assertEqual(manifest["hardeningCertifiableCount"], 0)
-            self.assertEqual(
-                manifest["foundationHardeningStatus"],
-                "SOURCE_FOUNDATIONS_READY_WITH_BLOCKERS",
-            )
+            self.assertEqual(manifest["foundationHardeningStatus"], "SOURCE_FOUNDATIONS_READY_WITH_BLOCKERS")
             for name in (
                 "FOUNDATION_HARDENING_SUMMARY.json",
                 "REPOSITORY_IDENTITY.json",
@@ -348,31 +350,17 @@ class OperationalFoundationTests(unittest.TestCase):
 
             diff = json.loads((out / "SNAPSHOT_DIFF_ENGINE.json").read_text(encoding="utf-8"))
             self.assertEqual(diff["status"], "BLOCKED_MISSING_BASELINE")
-            trend = json.loads(
-                (out / "HISTORICAL_TREND_MINI_ATLAS.json").read_text(encoding="utf-8")
-            )
+
+            trend = json.loads((out / "HISTORICAL_TREND_MINI_ATLAS.json").read_text(encoding="utf-8"))
             self.assertTrue(trend)
-            self.assertTrue(
-                all(row["status"] == "BLOCKED_INSUFFICIENT_COMPARABLE_RUNS" for row in trend)
-            )
-            ledger = json.loads(
-                (out / "CAPABILITY_HARDENING_LEDGER.json").read_text(encoding="utf-8")
-            )
-            historical = next(
-                row for row in ledger if row["capabilityId"] == "historical_trend_mini_atlas"
-            )
+            self.assertTrue(all(row["status"] == "BLOCKED_INSUFFICIENT_COMPARABLE_RUNS" for row in trend))
+
+            ledger = json.loads((out / "CAPABILITY_HARDENING_LEDGER.json").read_text(encoding="utf-8"))
+            historical = next(row for row in ledger if row["capabilityId"] == "historical_trend_mini_atlas")
             self.assertTrue(historical["runtimeOutputObserved"])
             self.assertEqual(historical["maturity"], "CONTRACT_BACKED")
             self.assertFalse(historical["certifiable"])
-            self.assertIn(
-                "foundation:historical_trend_insufficient_history",
-                historical["hardBlockers"],
-            )
-            timeline = next(
-                row for row in ledger if row["capabilityId"] == "operational_timeline"
-            )
-            self.assertIn("foundation:operational_timeline_integrity", timeline["hardBlockers"])
-            self.assertFalse(timeline["certifiable"])
+            self.assertIn("foundation:historical_trend_insufficient_history", historical["hardBlockers"])
 
 
 if __name__ == "__main__":
