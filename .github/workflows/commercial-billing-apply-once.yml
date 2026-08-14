@@ -66,9 +66,9 @@ jobs:
           print('PASS_ONE_SHOT_SCOPE')
           PY
 
-      - name: Remove one-shot tooling and commit verified source
+      - name: Commit verified product code without workflow mutation
         run: |
-          rm -f .github/workflows/commercial-billing-apply-once.yml
+          git restore -- .github/workflows/commercial-billing-authority.yml
           rm -f apps/terminal-de-venta-system/tools/_apply_commercial_billing_once.py
           rm -f apps/terminal-de-venta-system/tools/_apply_commercial_billing_once_v2.py
           rm -f apps/terminal-de-venta-system/tools/_apply_commercial_billing_once_v3.py
@@ -76,5 +76,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git diff --cached --check
+          python - <<'PY'
+          import subprocess
+          staged = subprocess.check_output(['git','diff','--cached','--name-only'], text=True).splitlines()
+          workflow_changes = [p for p in staged if p.startswith('.github/workflows/')]
+          if workflow_changes:
+              raise SystemExit('Workflow changes must be committed by authorized connector: ' + ', '.join(workflow_changes))
+          print('PASS_NO_WORKFLOW_MUTATION_IN_ACTION_COMMIT')
+          PY
           git commit -m "commercial: integrate collections and CFDI-ready billing"
           git push origin HEAD:billing-cfdi-20260814
