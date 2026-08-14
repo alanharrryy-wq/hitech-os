@@ -218,8 +218,8 @@ def ensure_billing_schema(con: sqlite3.Connection) -> None:
         "uuid TEXT UNIQUE, provider TEXT, providerEvidenceRef TEXT, xmlSha256 TEXT, pdfRef TEXT, stampedAt TEXT, parentUuid TEXT, "
         "cancellationReason TEXT, replacementUuid TEXT, cancellationEvidenceRef TEXT, cancelRequestedAt TEXT, cancelledAt TEXT, "
         "lastErrorCode TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP)",
-        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_income_active_idx ON CommercialFiscalDocument(chargeId,kind) WHERE kind='CFDI_INGRESO'",
-        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_payment_active_idx ON CommercialFiscalDocument(paymentId,kind) WHERE kind='CFDI_PAGO'",
+        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_income_active_idx ON CommercialFiscalDocument(chargeId,kind) WHERE kind='CFDI_INGRESO' AND status!='cancelled'",
+        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_payment_active_idx ON CommercialFiscalDocument(paymentId,kind) WHERE kind='CFDI_PAGO' AND status!='cancelled'",
         "CREATE INDEX IF NOT EXISTS CommercialFiscalDocument_client_status_idx ON CommercialFiscalDocument(clientId,status,kind)",
         "CREATE TABLE IF NOT EXISTS CommercialBillingEvent("
         "id TEXT PRIMARY KEY, eventType TEXT NOT NULL, entityKind TEXT NOT NULL, entityCode TEXT, clientId TEXT, correlationId TEXT NOT NULL, "
@@ -492,13 +492,13 @@ def register_external_payment(con: sqlite3.Connection, body: dict[str, Any], id_
     evidence_ref = str(body.get("evidenceRef") or "").strip()[:240] or None
     if not external_ref and not evidence_ref:
         raise BillingError("BILLING_PAYMENT_EVIDENCE_REQUIRED", "Registrar un pago externo requiere referencia o evidencia; PRISMA no valida el movimiento bancario.")
-    received_at = str(body.get("receivedAt") or _now_iso()).strip()
+    existing = con.execute("SELECT * FROM CommercialPayment WHERE idempotencyKey=?", (idem,)).fetchone()
+    received_at = str(body.get("receivedAt") or (existing["receivedAt"] if existing else _now_iso())).strip()
     try:
         datetime.fromisoformat(received_at.replace("Z", "+00:00"))
     except ValueError as exc:
         raise BillingError("BILLING_PAYMENT_DATE_INVALID", "receivedAt debe ser fecha/hora ISO valida.") from exc
     digest = _payment_request_digest({**body, "receivedAt": received_at}, charge, amount, payment_form)
-    existing = con.execute("SELECT * FROM CommercialPayment WHERE idempotencyKey=?", (idem,)).fetchone()
     if existing:
         item = dict(existing)
         if item.get("requestDigest") != digest:
@@ -597,7 +597,7 @@ def prepare_income_cfdi(con: sqlite3.Connection, body: dict[str, Any], id_factor
     charge = _refresh_charge(con, charge["id"], as_of=body.get("asOf"))
     prepared = build_income_cfdi_draft(charge=charge, contract=contract, issuer=issuer, receiver=receiver, posted_allocations=allocations, payment_rows=payments)
     status = "ready_to_stamp" if prepared["ready"] else "draft_blocked"
-    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO'", (charge["id"],)).fetchone()
+    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO' AND status!='cancelled' ORDER BY createdAt DESC,id DESC LIMIT 1", (charge["id"],)).fetchone()
     if existing and existing["status"] in {"external_stamped", "cancel_requested", "cancellation_rejected"}:
         return {"ok": True, "idempotent": True, "document": _fiscal_document(con, existing["id"]), "gateway": gateway_status(issuer), "message": "El cargo ya tiene CFDI externo registrado; no se reemplazo."}
     identity = None
@@ -680,8 +680,12 @@ def prepare_payment_complement(con: sqlite3.Connection, body: dict[str, Any], id
     issuer = issuer_profile(con)
     receiver = receiver_profile(con, payment["clientId"]) or {}
     prepared = build_payment_complement_draft(payment=payment, allocations=allocations, charges=charges, income_documents=income_docs, issuer=issuer, receiver=receiver)
+    if int(payment.get("unappliedCents") or 0) > 0:
+        prepared["missingPrerequisites"].append("payment.unappliedCents=0")
+        prepared["ready"] = False
+    prepared["missingPrerequisites"] = sorted(set(prepared["missingPrerequisites"]))
     status = "ready_to_stamp" if prepared["ready"] else "draft_blocked"
-    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE paymentId=? AND kind='CFDI_PAGO'", (payment["id"],)).fetchone()
+    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE paymentId=? AND kind='CFDI_PAGO' AND status!='cancelled' ORDER BY createdAt DESC,id DESC LIMIT 1", (payment["id"],)).fetchone()
     if existing and existing["status"] in {"external_stamped", "cancel_requested", "cancellation_rejected"}:
         return {"ok": True, "idempotent": True, "document": _fiscal_document(con, existing["id"]), "gateway": gateway_status(issuer), "message": "El pago ya tiene Complemento timbrado registrado."}
     if existing:

@@ -281,7 +281,8 @@ def verify() -> dict:
             "idempotencyKey": "pay-quarterly-0001",
         }
         partial = register_external_payment(con, partial_body, ids)
-        require(partial["charge"]["status"] == "partially_paid", f"Charge should be partially paid, got {partial['charge']['status']}")
+        require(partial["charge"]["status"] == "past_due", f"Overdue partially paid charge should remain past_due, got {partial['charge']['status']}")
+        require(partial["charge"]["paidCents"] == 100000, f"Expected paidCents 100000, got {partial['charge']['paidCents']}")
         require(partial["charge"]["balanceCents"] == 97084, f"Expected balance 97084, got {partial['charge']['balanceCents']}")
         require(partial["receipt"]["nonFiscal"] == 1, "Receipt must be explicitly non-fiscal")
         require("NO FISCAL" in partial["receipt"]["disclaimer"], "Receipt disclaimer missing NO FISCAL")

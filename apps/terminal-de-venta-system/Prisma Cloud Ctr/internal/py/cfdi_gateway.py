@@ -304,7 +304,7 @@ def build_payment_complement_draft(
         "standard": "SAT_CFDI_4_0_PAGOS_2_0_DRAFT_NOT_XML",
         "Version": CFDI_VERSION,
         "TipoDeComprobante": "P",
-        "Exportacion": issuer.get("exportCode") or "01",
+        "Exportacion": "01",
         "Moneda": "XXX",
         "SubTotal": "0.00",
         "Total": "0.00",
@@ -319,7 +319,7 @@ def build_payment_complement_draft(
             "Nombre": receiver.get("legalName"),
             "DomicilioFiscalReceptor": receiver.get("postalCode"),
             "RegimenFiscalReceptor": receiver.get("fiscalRegime"),
-            "UsoCFDI": receiver.get("cfdiUse"),
+            "UsoCFDI": "CP01",
         },
         "Conceptos": [{
             "ClaveProdServ": "84111506",
