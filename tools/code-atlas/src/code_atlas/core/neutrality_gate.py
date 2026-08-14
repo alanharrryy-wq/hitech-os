@@ -1,34 +1,37 @@
-"""Neutrality gate for Code Atlas core.
+"""Neutrality gate for Code Atlas.
 
-Scans Code Atlas source/report files for hardcoded local environment values.
-It classifies findings instead of rewriting source blindly.
+The detector intentionally contains examples of forbidden coupling patterns. Its own
+source file is therefore excluded from findings; that exclusion applies only to the
+detector definition, never to runtime modules.
 """
 from __future__ import annotations
+
 import re
 from pathlib import Path
 from typing import Dict, List
 
 PATTERNS = {
-    "WINDOWS_REPO_ROOT": re.compile(r"F:\\repos\\hitech-os|F:/repos/hitech-os", re.I),
-    "WINDOWS_OUTPUT_ROOT": re.compile(r"F:\\descargasf|F:/descargasf", re.I),
-    "USER_HOME": re.compile(r"C:\\Users\\alanh|C:/Users/alanh", re.I),
-    "PROJECT_SPECIFIC_APP_PATH": re.compile(r"apps[/\\]terminal-de-venta-system|terminal-de-venta-system", re.I),
-    "PROJECT_DOMAIN": re.compile(r"app\.hitechrts\.com", re.I),
-    "LOCAL_PORT_DEFAULT": re.compile(r"127\.0\.0\.1:(?:3000|3110|3120|3130|3140|3150|3160)|localhost:(?:3000|3110|3120|3130|3140|3150|3160)", re.I),
+    "WINDOWS_FIXED_DRIVE_REPO": re.compile(r"[A-Z]:[\\/]repos[\\/][A-Za-z0-9_.-]+", re.I),
+    "WINDOWS_FIXED_OUTPUT_ROOT": re.compile(r"[A-Z]:[\\/](?:downloads?|output|artifacts?|results?)[A-Za-z0-9_.\\/-]*", re.I),
+    "WINDOWS_USER_HOME": re.compile(r"[A-Z]:[\\/]Users[\\/][^\\/]+", re.I),
+    "FIXED_LOCAL_URL": re.compile(r"(?:127\.0\.0\.1|localhost):\d{2,5}", re.I),
 }
 TEXT_SUFFIXES = {".py", ".json", ".jsonc", ".md", ".txt", ".csv", ".ts", ".tsx", ".js", ".mjs", ".mts", ".html", ".css", ".ps1", ".yaml", ".yml"}
 EXCLUDED_PARTS = {"node_modules", ".git", "__pycache__", ".next", "dist", "build", "coverage"}
+SELF_PATH = "src/code_atlas/core/neutrality_gate.py"
 
 
 def classify(rel: str) -> str:
-    rel = rel.replace("\\", "/")
-    if rel.startswith("profiles/") or rel.endswith("NEUTRALITY_POLICY.md"):
+    normalized = rel.replace("\\", "/")
+    if normalized == SELF_PATH:
+        return "DETECTOR_PATTERN_DEFINITION"
+    if normalized.startswith("profiles/") or normalized.endswith("NEUTRALITY_POLICY.md"):
         return "PROFILE_ALLOWED"
-    if rel.startswith("src/code_atlas/") or rel.endswith("code-atlas.py"):
+    if normalized.startswith("src/code_atlas/") or normalized.endswith("code-atlas.py"):
         return "CORE_SHOULD_NOT_HAVE_THIS"
-    if "/reports/" in rel or rel.endswith(".md"):
+    if "/reports/" in normalized or normalized.endswith(".md"):
         return "REPORT_CONTEXT_ONLY"
-    if "fixture" in rel.lower() or "example" in rel.lower() or "/tests/" in rel:
+    if "fixture" in normalized.lower() or "example" in normalized.lower() or "/tests/" in normalized:
         return "TEST_OR_EXAMPLE_ALLOWED"
     return "NEEDS_REVIEW"
 
@@ -43,6 +46,8 @@ def scan_code_atlas(root: str | Path) -> Dict[str, object]:
             continue
         try:
             rel = path.relative_to(root).as_posix()
+            if rel == SELF_PATH:
+                continue
             text = path.read_text(encoding="utf-8", errors="replace")
         except Exception:
             continue
@@ -56,9 +61,9 @@ def scan_code_atlas(root: str | Path) -> Dict[str, object]:
                         "classification": classify(rel),
                         "excerpt": line.strip()[:220],
                     })
-    hard_core = [f for f in findings if f["classification"] == "CORE_SHOULD_NOT_HAVE_THIS"]
+    hard_core = [item for item in findings if item["classification"] == "CORE_SHOULD_NOT_HAVE_THIS"]
     return {
-        "status": "PASS_CODE_ATLAS_CORE_ENVIRONMENT_NEUTRAL" if not hard_core else "WARN_CODE_ATLAS_CORE_HAS_LOCAL_ENV_REFERENCES",
+        "status": "PASS_CODE_ATLAS_CORE_ENVIRONMENT_NEUTRAL" if not hard_core else "FAIL_CODE_ATLAS_CORE_HAS_LOCAL_ENV_REFERENCES",
         "hardCoreCount": len(hard_core),
         "findingCount": len(findings),
         "findings": findings,
