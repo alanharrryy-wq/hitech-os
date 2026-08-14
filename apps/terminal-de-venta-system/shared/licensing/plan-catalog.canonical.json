@@ -1,6 +1,33 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "source": "shared/licensing",
+  "commercialPolicy": {
+    "status": "CANONICAL_LIST_PRICE_V1",
+    "effectiveFrom": "2026-08-14",
+    "market": "MX",
+    "currency": "MXN",
+    "taxTreatment": "PLUS_APPLICABLE_IVA",
+    "billingScope": "PER_LICENSE_ASSIGNMENT_WITH_PLAN_LIMITS",
+    "periods": {
+      "monthly": 1,
+      "quarterly": 3,
+      "semiannual": 6,
+      "annual": 12
+    },
+    "grandfathering": {
+      "existingSignedContracts": "PRESERVE_CONTRACTED_PRICE_UNTIL_RENEWAL",
+      "firstCustomerPriceMustNotBeInferred": true
+    },
+    "mobile": {
+      "standaloneSku": false,
+      "policy": "DO_NOT_PRICE_SEPARATELY_UNTIL_EXPLICIT_CANONICAL_MOBILE_ENTITLEMENT_EXISTS"
+    },
+    "positioning": {
+      "visualExperience": "PREMIUM_GOVERNED_MULTI_SURFACE",
+      "visualExperienceAffectsEntitlements": false,
+      "statement": "La calidad visual y la coherencia multi-surface forman parte del posicionamiento comercial de PRISMA, pero no sustituyen ni alteran los entitlements tecnicos del plan."
+    }
+  },
   "plans": [
     {
       "plan": "TABLET_SOLO",
@@ -9,6 +36,15 @@
       "vendible": true,
       "internal": false,
       "description": "POS autonomo con venta, ticket, stock local, corte y exportacion basica.",
+      "commercial": {
+        "priceVersion": "2026-08-14.v1",
+        "listPriceMxn": {
+          "monthly": 399,
+          "quarterly": 1149,
+          "semiannual": 2199,
+          "annual": 3999
+        }
+      },
       "features": [
         "pos.open",
         "pos.product.search",
@@ -33,6 +69,15 @@
       "vendible": true,
       "internal": false,
       "description": "Tablet con turnos, devoluciones, outbox visible, reportes operativos y export avanzado.",
+      "commercial": {
+        "priceVersion": "2026-08-14.v1",
+        "listPriceMxn": {
+          "monthly": 599,
+          "quarterly": 1699,
+          "semiannual": 3299,
+          "annual": 5999
+        }
+      },
       "features": [
         "pos.open",
         "pos.product.search",
@@ -65,6 +110,15 @@
       "vendible": true,
       "internal": false,
       "description": "Operacion administrada con backoffice, sync, auditoria e inventario avanzado.",
+      "commercial": {
+        "priceVersion": "2026-08-14.v1",
+        "listPriceMxn": {
+          "monthly": 999,
+          "quarterly": 2849,
+          "semiannual": 5499,
+          "annual": 9999
+        }
+      },
       "features": [
         "pos.open",
         "pos.product.search",
