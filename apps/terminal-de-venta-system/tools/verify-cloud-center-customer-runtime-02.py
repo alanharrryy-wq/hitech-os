@@ -68,6 +68,10 @@ def main():
                 page.on('request',lambda req: api_requests.append({'method':req.method,'url':req.url}) if '/api/' in req.url else None)
                 page.on('response',lambda res: draft_responses.append(res) if '/api/command-center/draft-client' in res.url else None)
                 page.goto(base+'/',wait_until='domcontentloaded',timeout=30000)
+                # Initial boot performs asynchronous API fan-out after DOMContentLoaded. Wait for
+                # that bootstrap to settle before starting operator interaction, avoiding a test-only
+                # race with the first loadAll() render.
+                page.wait_for_load_state('networkidle',timeout=20000)
                 page.wait_for_selector('[data-surface="provisioning"]',timeout=15000)
                 require(page.locator('html').get_attribute('lang')=='es-MX','HTML_LANGUAGE_NOT_HOMOLOGATED')
                 require(page.locator('[data-surface="billing"]').count()==1,'BILLING_NAV_MISSING')
