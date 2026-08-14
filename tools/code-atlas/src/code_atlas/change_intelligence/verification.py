@@ -57,6 +57,20 @@ def verify_change(
             blocking = True
             findings.append({"code": "STALE_SNAPSHOT", "field": key, "expected": pack[pack_field], "actual": actual})
 
+    compatibility_locks = pack.get("compatibilityLocks", {}) or {}
+    for lock_name in ("authorityDigest", "policyDigest", "evidenceDigest"):
+        expected_lock = compatibility_locks.get(lock_name)
+        if expected_lock is not None:
+            actual_lock = current_snapshot.get(lock_name)
+            if actual_lock != expected_lock:
+                blocking = True
+                findings.append({"code": "COMPATIBILITY_LOCK_MISMATCH", "field": lock_name, "expected": expected_lock, "actual": actual_lock})
+
+    for version_name, pack_field in (("toolVersion", "toolVersion"), ("profileVersion", "profileVersion")):
+        if version_name in current_snapshot and current_snapshot.get(version_name) != pack.get(pack_field):
+            blocking = True
+            findings.append({"code": "VERSION_MISMATCH", "field": version_name, "expected": pack.get(pack_field), "actual": current_snapshot.get(version_name)})
+
     changed_raw = change_manifest.get("changedPaths", [])
     if not isinstance(changed_raw, list):
         raise ContractError("change_manifest.changedPaths must be a list")
