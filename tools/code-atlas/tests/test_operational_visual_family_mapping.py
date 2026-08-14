@@ -151,7 +151,21 @@ class VisualFamilyMappingTests(unittest.TestCase):
             mapped = report["rows"][0]
             self.assertFalse(mapped["sourceResolvedVisualBinding"])
             self.assertIn("VISUAL_TARGET_SOURCE_HASH_DRIFT:0", mapped["blockingReasons"])
-            self.assertEqual(control["surfaces"], {})
+            self.assertEqual(set(control["surfaces"]), {"pc"})
+            blocked_surface = control["surfaces"]["pc"]
+            self.assertEqual(blocked_surface["routeOwnerEdges"], [])
+            self.assertEqual(blocked_surface["regionOwnerEdges"], [])
+            self.assertEqual(blocked_surface["editableSlotEdges"], [])
+            self.assertEqual(blocked_surface["layers"], [])
+            self.assertEqual(
+                blocked_surface["counts"],
+                {
+                    "routeOwnerEdges": 0,
+                    "regionOwnerEdges": 0,
+                    "editableSlotEdges": 0,
+                    "layers": 0,
+                },
+            )
 
     def test_generated_ids_are_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
