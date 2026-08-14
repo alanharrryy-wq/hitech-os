@@ -1,0 +1,54 @@
+name: Code Atlas Operational Hardening
+
+on:
+  pull_request:
+    paths:
+      - "tools/code-atlas/src/code_atlas/operational/**"
+      - "tools/code-atlas/tests/test_operational_hardening.py"
+      - ".github/workflows/code-atlas-operational-hardening.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "tools/code-atlas/src/code_atlas/operational/**"
+      - "tools/code-atlas/tests/test_operational_hardening.py"
+      - ".github/workflows/code-atlas-operational-hardening.yml"
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+jobs:
+  operational-hardening:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile hardening modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/operational/features50.py \
+            tools/code-atlas/src/code_atlas/operational/capability_contracts.py \
+            tools/code-atlas/src/code_atlas/operational/hardened_runner.py \
+            tools/code-atlas/src/code_atlas/operational/cli.py \
+            tools/code-atlas/src/code_atlas/operational/evidence.py \
+            tools/code-atlas/tests/test_operational_hardening.py
+
+      - name: Run no-fake-green hardening tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v tools/code-atlas/tests/test_operational_hardening.py
