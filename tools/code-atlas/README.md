@@ -236,7 +236,6 @@ prepared = prepare_change(
     "/path/to/repository",
     change_request="Harden authentication without touching payments",
     target_paths=["src/auth.py"],
-    policy=customer_policy,
 )
 
 # A human or external coding agent performs the authorized work.
@@ -245,10 +244,10 @@ verification = verify_prepared_change(
     prepared,
     "/path/to/repository",
     changed_paths=["src/auth.py"],
-    produced_evidence=["test:auth", "evidence:auth"],
-    policy=customer_policy,
 )
 ```
+
+Customer Policy Packs and produced evidence can be added when the workflow requires them. The minimal example above intentionally avoids an undefined project-specific policy object.
 
 Change Intelligence is **agent-neutral**. The Authority Pack can govern a human workflow or an external coding agent. Code Atlas does not need to become the coding agent to control the change boundary.
 
