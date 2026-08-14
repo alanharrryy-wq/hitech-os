@@ -34,16 +34,12 @@ jobs:
           import base64, hashlib, zlib
           from pathlib import Path
           parts = [Path(f'.cloudcust-tmp/part{i:02d}.txt') for i in range(1, 6)]
-          for part in parts:
-              if not part.is_file():
-                  raise SystemExit(f'MISSING_PAYLOAD_PART:{part}')
-          encoded = ''.join(p.read_text(encoding='utf-8').strip() for p in parts)
-          raw = zlib.decompress(base64.b64decode(encoded))
+          if not all(p.is_file() for p in parts): raise SystemExit('MISSING_PAYLOAD_PART')
+          raw = zlib.decompress(base64.b64decode(''.join(p.read_text(encoding='utf-8').strip() for p in parts)))
           digest = hashlib.sha256(raw).hexdigest()
-          if digest != '136636d696c6a92d721f248c3480751d48afcb144f454aef1adb55b2096eff42':
-              raise SystemExit(f'PATCH_DIGEST_MISMATCH:{digest}')
+          if digest != '136636d696c6a92d721f248c3480751d48afcb144f454aef1adb55b2096eff42': raise SystemExit('PATCH_DIGEST_MISMATCH:'+digest)
           Path('/tmp/cloudcust-final.patch').write_bytes(raw)
-          print('PATCH_DIGEST_OK=' + digest)
+          print('PATCH_DIGEST_OK='+digest)
           PY
           test "$(git rev-parse 'HEAD:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py')" = 'dfec957562bf548ac6b4c9133d089fa7a8a31e8f'
           test "$(git rev-parse 'HEAD:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py')" = 'b8ba736c5ed2e1074332d3713b167d39d906e2f6'
@@ -59,89 +55,64 @@ jobs:
       - name: Apply exact product patch
         run: git apply /tmp/cloudcust-final.patch
 
-      - name: Restore canonical dispatcher and harden runtime verifier
+      - name: Restore dispatcher and harden browser E2E
         shell: python
         run: |
-          import re
-          import subprocess
+          import re, subprocess
           from pathlib import Path
-
-          js_path = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js')
-          original = subprocess.check_output(['git', 'show', f'HEAD:{js_path.as_posix()}'], text=True)
+          js = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js')
+          original = subprocess.check_output(['git','show',f'HEAD:{js.as_posix()}'], text=True)
           start = original.find('  async function handleAction(action, button) {')
           end = original.find('\n  function boot() {', start)
-          if start < 0 or end < 0:
-              raise SystemExit('CANONICAL_HANDLE_ACTION_NOT_FOUND_IN_PREIMAGE')
+          if start < 0 or end < 0: raise SystemExit('CANONICAL_HANDLE_ACTION_NOT_FOUND')
           handler = original[start:end]
-          handler, removed = re.subn(
-              r'\n      \} else if \(action === "save-other-values"\) \{.*?(?=\n      \} else if \(action === "copy-local-desk"\) \{)',
-              '',
-              handler,
-              count=1,
-              flags=re.S,
-          )
-          if removed != 1:
-              raise SystemExit('OBSOLETE_SAVE_OTHER_BRANCH_NOT_REMOVED_EXACTLY_ONCE')
-          patched = js_path.read_text(encoding='utf-8')
-          if 'async function handleAction(action, button)' in patched:
-              raise SystemExit('PATCH_ALREADY_CONTAINS_HANDLE_ACTION_UNEXPECTEDLY')
-          anchor = '\n  function boot() {'
-          if patched.count(anchor) != 1:
-              raise SystemExit('BOOT_ANCHOR_NOT_UNIQUE')
-          patched = patched.replace(anchor, '\n\n' + handler + anchor, 1)
-          js_path.write_text(patched, encoding='utf-8')
+          handler, n = re.subn(r'\n      \} else if \(action === "save-other-values"\) \{.*?(?=\n      \} else if \(action === "copy-local-desk"\) \{)', '', handler, count=1, flags=re.S)
+          if n != 1: raise SystemExit('SAVE_OTHER_BRANCH_DRIFT')
+          text = js.read_text(encoding='utf-8')
+          if 'async function handleAction(action, button)' in text: raise SystemExit('HANDLE_ACTION_ALREADY_PRESENT')
+          if text.count('\n  function boot() {') != 1: raise SystemExit('BOOT_ANCHOR_DRIFT')
+          js.write_text(text.replace('\n  function boot() {','\n\n'+handler+'\n  function boot() {',1), encoding='utf-8')
 
           verifier = Path('apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py')
-          lines = verifier.read_text(encoding='utf-8').splitlines()
-          output = []
-          available_replaced = 0
-          draft_replaced = 0
-          for line in lines:
+          out=[]; av=dr=0
+          for line in verifier.read_text(encoding='utf-8').splitlines():
+              indent=line[:len(line)-len(line.lstrip())]
               if "page.select_option('select[data-flow-field=\"vertical\"]','convenience')" in line:
-                  indent = line[:len(line) - len(line.lstrip())]
-                  output.extend([
-                      indent + "page.select_option('select[data-flow-field=\"vertical\"]','convenience'); page.select_option('select[data-flow-field=\"businessProfile\"]','minisuper'); page.fill('[data-flow-field=\"displayName\"]','Cliente Runtime UI'); page.fill('[data-flow-field=\"email\"]','runtime-ui@example.test'); page.select_option('select[data-flow-field=\"businessSize\"]','small'); page.select_option('select[data-flow-field=\"operationMode\"]','counter'); page.select_option('select[data-flow-field=\"acquisitionChannel\"]','referral'); page.select_option('select[data-flow-field=\"country\"]','MX'); page.select_option('select[data-flow-field=\"state\"]','jalisco'); page.fill('[data-flow-field=\"city\"]','Guadalajara')",
-                      indent + "with page.expect_response(lambda r: r.request.method == 'POST' and r.url.endswith('/api/command-center/draft-client'), timeout=15000) as response_info:",
-                      indent + "    page.click('[data-action=\"prepare-client\"]')",
-                      indent + "response = response_info.value; payload = response.json(); require(response.ok and payload.get('ok') is True, f\"AVAILABLE_CUSTOMER_POST_FAILED:{response.status}:{payload}\"); require((payload.get('client') or {}).get('displayName') == 'Cliente Runtime UI','AVAILABLE_CUSTOMER_RESPONSE_IDENTITY_DRIFT'); require((payload.get('client') or {}).get('status') == 'pending_cloud_activation','AVAILABLE_CUSTOMER_STATUS_DRIFT'); checks.append('ui_customer_create_available'); page.screenshot(path=str(out/'cloud-center-customer-provisioning.png'),full_page=True)",
-                  ])
-                  available_replaced += 1
+                  out += [
+                    indent+"page.select_option('select[data-flow-field=\"vertical\"]','convenience'); page.select_option('select[data-flow-field=\"businessProfile\"]','minisuper'); page.fill('[data-flow-field=\"displayName\"]','Cliente Runtime UI'); page.fill('[data-flow-field=\"email\"]','runtime-ui@example.test'); page.select_option('select[data-flow-field=\"businessSize\"]','small'); page.select_option('select[data-flow-field=\"operationMode\"]','counter'); page.select_option('select[data-flow-field=\"acquisitionChannel\"]','referral'); page.select_option('select[data-flow-field=\"country\"]','MX'); page.select_option('select[data-flow-field=\"state\"]','jalisco'); page.fill('[data-flow-field=\"city\"]','Guadalajara')",
+                    indent+"with page.expect_response(lambda r: r.request.method == 'POST' and r.url.endswith('/api/command-center/draft-client'), timeout=15000) as response_info:",
+                    indent+"    page.click('[data-action=\"prepare-client\"]')",
+                    indent+"response=response_info.value; payload=response.json(); require(response.ok and payload.get('ok') is True,f'AVAILABLE_CUSTOMER_POST_FAILED:{response.status}:{payload}'); require((payload.get('client') or {}).get('displayName')=='Cliente Runtime UI','AVAILABLE_CUSTOMER_RESPONSE_IDENTITY_DRIFT'); require((payload.get('client') or {}).get('status')=='pending_cloud_activation','AVAILABLE_CUSTOMER_STATUS_DRIFT'); checks.append('ui_customer_create_available'); page.screenshot(path=str(out/'cloud-center-customer-provisioning.png'),full_page=True)",
+                  ]; av+=1
               elif "page.select_option('select[data-flow-field=\"vertical\"]','apparel')" in line:
-                  indent = line[:len(line) - len(line.lstrip())]
-                  output.extend([
-                      indent + "page.select_option('select[data-flow-field=\"vertical\"]','apparel'); page.select_option('select[data-flow-field=\"businessProfile\"]','apparel_boutique'); page.fill('[data-flow-field=\"displayName\"]','Boutique Draft Runtime'); page.fill('[data-flow-field=\"email\"]','draft-runtime@example.test'); page.select_option('select[data-flow-field=\"businessSize\"]','small'); page.select_option('select[data-flow-field=\"operationMode\"]','counter'); page.select_option('select[data-flow-field=\"acquisitionChannel\"]','outbound')",
-                      indent + "with page.expect_response(lambda r: r.request.method == 'POST' and r.url.endswith('/api/command-center/draft-client'), timeout=15000) as response_info:",
-                      indent + "    page.click('[data-action=\"prepare-client\"]')",
-                      indent + "response = response_info.value; payload = response.json(); require(response.ok and payload.get('ok') is True, f\"DRAFT_CUSTOMER_POST_FAILED:{response.status}:{payload}\"); require(payload.get('mode') == 'review_required','DRAFT_CUSTOMER_MODE_DRIFT'); require((payload.get('client') or {}).get('status') == 'pending_commercial_review','DRAFT_CUSTOMER_STATUS_DRIFT'); page.wait_for_function(\"()=>document.body.innerText.toLowerCase().includes('revisión comercial')\",timeout=15000); checks.append('draft_vertical_review_ui')",
-                  ])
-                  draft_replaced += 1
-              else:
-                  output.append(line)
-          if available_replaced != 1 or draft_replaced != 1:
-              raise SystemExit(f'RUNTIME_VERIFIER_HARDENING_ANCHOR_DRIFT available={available_replaced} draft={draft_replaced}')
-          verifier.write_text('\n'.join(output) + '\n', encoding='utf-8')
+                  out += [
+                    indent+"page.wait_for_selector('[data-action=\"prepare-client\"]',timeout=15000)",
+                    indent+"page.select_option('select[data-flow-field=\"vertical\"]','apparel'); page.select_option('select[data-flow-field=\"businessProfile\"]','apparel_boutique'); page.fill('[data-flow-field=\"displayName\"]','Boutique Draft Runtime'); page.fill('[data-flow-field=\"email\"]','draft-runtime@example.test'); page.select_option('select[data-flow-field=\"businessSize\"]','small'); page.select_option('select[data-flow-field=\"operationMode\"]','counter'); page.select_option('select[data-flow-field=\"acquisitionChannel\"]','outbound')",
+                    indent+"with page.expect_response(lambda r: r.request.method == 'POST' and r.url.endswith('/api/command-center/draft-client'), timeout=15000) as response_info:",
+                    indent+"    page.click('[data-action=\"prepare-client\"]')",
+                    indent+"response=response_info.value; payload=response.json(); require(response.ok and payload.get('ok') is True,f'DRAFT_CUSTOMER_POST_FAILED:{response.status}:{payload}'); require(payload.get('mode')=='review_required','DRAFT_CUSTOMER_MODE_DRIFT'); require((payload.get('client') or {}).get('status')=='pending_commercial_review','DRAFT_CUSTOMER_STATUS_DRIFT'); page.wait_for_function(\"()=>document.body.innerText.toLowerCase().includes('revisión comercial')\",timeout=15000); checks.append('draft_vertical_review_ui')",
+                  ]; dr+=1
+              else: out.append(line)
+          if av != 1 or dr != 1: raise SystemExit(f'RUNTIME_VERIFIER_ANCHOR_DRIFT:{av}:{dr}')
+          verifier.write_text('\n'.join(out)+'\n',encoding='utf-8')
           print('PASS_CANONICAL_ACTION_DISPATCHER_RESTORED')
-          print('PASS_RUNTIME_HTTP_ASSERTIONS_HARDENED')
+          print('PASS_RUNTIME_HTTP_AND_NAVIGATION_ASSERTIONS_HARDENED')
 
       - name: Guard exact mutation scope
         shell: python
         run: |
           import subprocess
-          expected = {
-              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json',
-              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
-              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py',
-              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
-              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html',
-              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js',
-              'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py',
-              'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py',
-          }
-          tracked = subprocess.check_output(['git','diff','--name-only'], text=True).splitlines()
-          untracked = subprocess.check_output(['git','ls-files','--others','--exclude-standard'], text=True).splitlines()
-          actual = set(tracked + untracked)
-          if actual != expected:
-              raise SystemExit(f'MUTATION_SCOPE_MISMATCH expected={sorted(expected)} actual={sorted(actual)}')
+          expected={
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json',
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py',
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html',
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js',
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py',
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'}
+          actual=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()+subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True).splitlines())
+          if actual != expected: raise SystemExit(f'MUTATION_SCOPE_MISMATCH expected={sorted(expected)} actual={sorted(actual)}')
           print('PASS_EXACT_CLOUD_CENTER_SCOPE')
 
       - name: Compile and static validation
@@ -149,21 +120,14 @@ jobs:
         run: |
           set -euo pipefail
           python -m json.tool 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json' >/dev/null
-          python -m py_compile \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py' \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py' \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py' \
-            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py' \
-            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
+          python -m py_compile 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py' 'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py' 'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
           node --check 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
           git diff --check
           grep -q 'async function handleAction(action, button)' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
           ! grep -q 'action === "save-other-values"' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
 
-      - name: Verify registration, catalogs, dedup and metrics on temporary DB
-        run: >-
-          python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py
-          --out-dir "$RUNNER_TEMP/cloudcust-evidence"
+      - name: Verify registration on temporary DB
+        run: python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py --out-dir "$RUNNER_TEMP/cloudcust-evidence"
 
       - name: Install browser harness
         run: |
@@ -171,9 +135,7 @@ jobs:
           google-chrome --version || chromium --version || true
 
       - name: Verify sandbox runtime UI and dropdown behavior
-        run: >-
-          python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
-          --out-dir "$RUNNER_TEMP/cloudcust-evidence"
+        run: python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py --out-dir "$RUNNER_TEMP/cloudcust-evidence"
 
       - name: Upload verification evidence
         if: always()
@@ -190,14 +152,6 @@ jobs:
           set -euo pipefail
           git config user.name 'chatgpt-codex-connector[bot]'
           git config user.email 'chatgpt-codex-connector[bot]@users.noreply.github.com'
-          git add -- \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json' \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py' \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py' \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py' \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html' \
-            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js' \
-            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py' \
-            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
+          git add -- 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html' 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js' 'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py' 'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
           git commit -m 'Cloud Center: govern customer registration and measurable dropdowns'
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
