@@ -86,13 +86,13 @@ jobs:
           if t.count(anchor)!=1: raise SystemExit(f'FLOW_SYNC_HELPER_ANCHOR_DRIFT:{t.count(anchor)}')
           t=t.replace(anchor,helper,1)
 
-          change='''    document.addEventListener("change", (event) => {\n      const field = event.target.closest("[data-flow-field]");\n      if (field) {\n        state.flow[field.dataset.flowField] = field.value;\n        render();\n      }\n    });'''
-          change_new='''    document.addEventListener("change", (event) => {\n      const field = event.target.closest("[data-flow-field]");\n      if (field) {\n        syncFlowFromDom();\n        state.flow[field.dataset.flowField] = field.value;\n        render();\n      }\n    });'''
+          change='''    document.addEventListener("change", (event) => { const field=event.target.closest("[data-flow-field]"); if(field){ const key=field.dataset.flowField; state.flow[key]=field.value; if(key==="vertical") state.flow.subvertical=""; if(key==="country" && field.value!=="MX") state.flow.state=""; if(key==="deviceType") state.flow.deviceRole=""; if(key==="targetKind") state.flow.targetCode=""; render(); } });'''
+          change_new='''    document.addEventListener("change", (event) => { const field=event.target.closest("[data-flow-field]"); if(field){ syncFlowFromDom(); const key=field.dataset.flowField; state.flow[key]=field.value; if(key==="vertical") state.flow.subvertical=""; if(key==="country" && field.value!=="MX") state.flow.state=""; if(key==="deviceType") state.flow.deviceRole=""; if(key==="targetKind") state.flow.targetCode=""; render(); } });'''
           if t.count(change)!=1: raise SystemExit(f'FLOW_CHANGE_ANCHOR_DRIFT:{t.count(change)}')
           t=t.replace(change,change_new,1)
 
-          pick='''      const field = pickFlowNode.dataset.pickFlow;\n      const value = pickFlowNode.dataset.value || "";\n      if (field === "vertical") {'''
-          pick_new='''      const field = pickFlowNode.dataset.pickFlow;\n      const value = pickFlowNode.dataset.value || "";\n      syncFlowFromDom();\n      if (field === "vertical") {'''
+          pick='''      const pickNode = event.target.closest("[data-pick-flow]");\n      if (pickNode) {\n        const field = pickNode.dataset.pickFlow;\n        const value = pickNode.dataset.value || "";\n        if (field) {'''
+          pick_new='''      const pickNode = event.target.closest("[data-pick-flow]");\n      if (pickNode) {\n        const field = pickNode.dataset.pickFlow;\n        const value = pickNode.dataset.value || "";\n        syncFlowFromDom();\n        if (field) {'''
           if t.count(pick)!=1: raise SystemExit(f'FLOW_PICK_ANCHOR_DRIFT:{t.count(pick)}')
           t=t.replace(pick,pick_new,1)
 
@@ -101,8 +101,8 @@ jobs:
           if t.count(action)!=1: raise SystemExit(f'FLOW_ACTION_ANCHOR_DRIFT:{t.count(action)}')
           t=t.replace(action,action_new,1)
 
-          if t.count('function syncFlowFromDom()')!=1 or t.count('syncFlowFromDom();')<3:
-              raise SystemExit('FLOW_SYNC_GUARD_INVALID')
+          if t.count('function syncFlowFromDom()')!=1 or t.count('syncFlowFromDom();')!=3:
+              raise SystemExit(f'FLOW_SYNC_GUARD_INVALID:{t.count("syncFlowFromDom();")}')
           p.write_text(t,encoding='utf-8')
           print('PASS_FLOW_SNAPSHOT_BEFORE_RENDER_AND_ACTION')
 
