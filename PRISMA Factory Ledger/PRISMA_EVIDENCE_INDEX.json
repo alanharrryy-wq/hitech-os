@@ -232,7 +232,8 @@
         "Aging, past-due, partial payment, paid, void, idempotency and non-fiscal receipt behaviors are verified",
         "Payments are recorded as external facts and do not mutate licensing",
         "No real database, bank, card, SPEI, Prisma schema, Tablet, PC or Mobile surface was mutated",
-        "Behavioral verifier completed 21 checks"
+        "Behavioral verifier completed all declared local checks (22 on PR #245 final suite)",
+        "Command Center store E2E completed 9 additional temporary-DB integration checks"
       ],
       "doesNotProve": [
         "Runtime visual certification",
@@ -267,7 +268,7 @@
       ]
     }
   ],
-  "updatedAt": "2026-08-14T03:45:09-06:00",
+  "updatedAt": "2026-08-14T04:01:50-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -307,7 +308,8 @@
       "evidence": [
         "PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
         "verify-commercial-billing-cfdi-01.py",
-        "COMMERCIAL_BILLING_VERIFY.json"
+        "COMMERCIAL_BILLING_VERIFY.json",
+        "COMMERCIAL_BILLING_COMMAND_CENTER_E2E.json"
       ]
     },
     {
