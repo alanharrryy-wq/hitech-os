@@ -253,6 +253,8 @@ def verify() -> dict:
         require(income_q["document"]["status"] == "ready_to_stamp", f"Income CFDI not ready after profiles: {income_q['document']['status']}")
         require(income_q["document"]["methodCode"] == "PPD", "Unpaid invoice must prepare as PPD")
         require(income_q["document"]["paymentForm"] == "99", "PPD invoice must prepare with form 99")
+        require(income_q["document"]["draftPayload"].get("Fecha"), "Income CFDI draft missing Fecha")
+        require(income_q["document"]["draftPayload"].get("Impuestos", {}).get("TotalImpuestosTrasladados") == "271.84", "Income CFDI top tax summary incorrect")
         ok("income_cfdi_ppd_99_before_payment")
 
         income_uuid = "123E4567-E89B-42D3-A456-426614174000"
@@ -301,6 +303,7 @@ def verify() -> dict:
         require(complement["document"]["status"] == "ready_to_stamp", f"Payment complement not ready: {complement['missingPrerequisites']}")
         complement_payload = complement["document"]["draftPayload"]
         require(complement_payload["TipoDeComprobante"] == "P", "Payment complement top CFDI type must be P")
+        require(complement_payload.get("Fecha"), "Payment complement draft missing Fecha")
         require(complement_payload["Total"] == "0.00" and complement_payload["SubTotal"] == "0.00", "Payment CFDI top totals must be zero")
         require("MetodoPago" not in complement_payload and "FormaPago" not in complement_payload, "Payment CFDI must not use top-level MetodoPago/FormaPago")
         require(complement_payload["Receptor"]["UsoCFDI"] == "CP01", f"Payment complement must use CP01, got {complement_payload['Receptor'].get('UsoCFDI')}")
@@ -386,12 +389,29 @@ def verify() -> dict:
                 "providerEvidenceRef": "sandbox://stamp/income-pue",
             },
         )["document"]
+        expect_billing_error(
+            "BILLING_PAYMENT_REVERSE_BLOCKED_BY_PUE_CFDI",
+            reverse_external_payment,
+            con,
+            {"paymentCode": full_payment["payment"]["humanCode"], "confirmReverse": True, "reason": "must cancel PUE first"},
+        )
         request_cfdi_cancellation(con, {"documentCode": income_pue_stamp["humanCode"], "reason": "02", "confirmCancellationRequest": True})
         register_external_cancellation_result(con, {"documentCode": income_pue_stamp["humanCode"], "cancelled": True, "evidenceRef": "sandbox://cancel/income-pue"})
         replacement = prepare_income_cfdi(con, {"chargeCode": charge_pue["humanCode"]}, ids)["document"]
         require(replacement["humanCode"] != income_pue_stamp["humanCode"], "Cancelled CFDI history was overwritten instead of creating replacement attempt")
-        require(con.execute("SELECT COUNT(*) FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO'", (charge_pue["id"],)).fetchone()[0] == 2, "Cancelled fiscal document history not preserved")
-        ok("cancelled_cfdi_is_immutable_and_replacement_is_new_document")
+        reversed_pue_payment = reverse_external_payment(
+            con,
+            {"paymentCode": full_payment["payment"]["humanCode"], "confirmReverse": True, "reason": "sandbox reversal after PUE cancellation"},
+        )
+        require(reversed_pue_payment["payment"]["status"] == "reversed", "PUE payment could not be reversed after CFDI cancellation")
+        discarded_replacement = con.execute("SELECT status,lastErrorCode FROM CommercialFiscalDocument WHERE id=?", (replacement["id"],)).fetchone()
+        require(discarded_replacement["status"] == "discarded", "Unstamped replacement draft was not discarded when source payment reversed")
+        require(discarded_replacement["lastErrorCode"] == "PAYMENT_REVERSED_BEFORE_EXTERNAL_STAMP", "Discard reason missing for reversed-payment fiscal draft")
+        post_reverse = prepare_income_cfdi(con, {"chargeCode": charge_pue["humanCode"]}, ids)["document"]
+        require(post_reverse["humanCode"] not in {income_pue_stamp["humanCode"], replacement["humanCode"]}, "New fiscal draft did not get immutable new identity after cancellation/discard")
+        require(post_reverse["methodCode"] == "PPD" and post_reverse["paymentForm"] == "99", "Post-reversal income draft must return to PPD/99")
+        require(con.execute("SELECT COUNT(*) FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO'", (charge_pue["id"],)).fetchone()[0] == 3, "Cancelled/discarded fiscal document history not preserved")
+        ok("pue_reversal_requires_cancellation_and_discards_stale_draft")
 
         contract_over = make_contract(con, "TABLET_SOLO", "monthly", 3, 3, "2026-08-12")
         charge_over = create_charge(con, {"contractCode": contract_over["humanCode"], "taxRateBps": 1600, "confirmTax": True}, ids)["charge"]
@@ -415,9 +435,19 @@ def verify() -> dict:
 
         contract_void = make_contract(con, "TABLET_SOLO", "monthly", 4, 4, "2026-08-20")
         charge_void = create_charge(con, {"contractCode": contract_void["humanCode"], "taxRateBps": 1600, "confirmTax": True}, ids)["charge"]
+        void_draft = prepare_income_cfdi(con, {"chargeCode": charge_void["humanCode"]}, ids)["document"]
+        require(void_draft["status"] == "ready_to_stamp", "Void scenario expected a ready draft before void")
         voided = void_charge(con, {"chargeCode": charge_void["humanCode"], "confirmVoid": True, "reason": "sandbox void without payment"})["charge"]
         require(voided["status"] == "void", "Unpaid charge void failed")
-        ok("void_preserves_history")
+        void_doc = con.execute("SELECT status,lastErrorCode FROM CommercialFiscalDocument WHERE id=?", (void_draft["id"],)).fetchone()
+        require(void_doc["status"] == "discarded", "Voided charge did not discard unstamped CFDI draft")
+        expect_billing_error(
+            "BILLING_CFDI_NOT_READY",
+            register_external_stamp,
+            con,
+            {"documentCode": void_draft["humanCode"], "uuid": "623E4567-E89B-42D3-A456-426614174005", "provider": "PAC_SANDBOX_EXTERNAL", "providerEvidenceRef": "sandbox://must-not-stamp"},
+        )
+        ok("void_discards_unstamped_fiscal_draft_and_prevents_late_stamp")
 
         snap = billing_snapshot(con, as_of="2026-09-05")
         for key in ("moneyProcessing", "bankValidation", "cardCapture", "speiValidation", "automaticBankReconciliation", "licenseAutoSuspension"):
@@ -441,6 +471,10 @@ def verify() -> dict:
         ok("productization_contract_boundaries")
 
         js = JS_PATH.read_text(encoding="utf-8")
+        http_source = (ROOT / "Prisma Cloud Ctr" / "internal" / "py" / "prisma_unified_lab_v3.py").read_text(encoding="utf-8")
+        require('payload.pop("_httpStatus"' in http_source, "Command Center HTTP handler does not propagate structured billing status codes")
+        ok("command_center_http_status_propagation")
+
         for marker in (
             '["billing", "Cobranza"',
             'function renderBilling()',

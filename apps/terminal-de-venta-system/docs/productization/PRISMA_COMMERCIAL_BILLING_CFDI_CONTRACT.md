@@ -572,3 +572,20 @@ cancelled
 ```
 
 La diferencia entre esos estados es parte del producto.
+
+<!-- PRISMA:BILLING_INTEGRITY_HARDENING:BEGIN -->
+## 23. Integridad entre pago, cargo y evidencia fiscal
+
+Reglas adicionales fail-closed:
+
+- Un pago que soporta un CFDI de ingreso `PUE` timbrado/no cancelado no puede revertirse hasta resolver la cancelacion fiscal externa.
+- Revertir un pago descarta cualquier borrador `CFDI_PAGO` no timbrado asociado; nunca queda disponible para registrar UUID despues de invalidar su pago fuente.
+- Anular un cargo descarta cualquier borrador `CFDI_INGRESO` no timbrado asociado.
+- `register-external-stamp` vuelve a comprobar que el cargo no este `void` y que el pago siga `posted`; un borrador stale no puede recibir UUID.
+- `discarded` es un estado local, no equivale a cancelacion SAT/PAC. Mantiene identidad e historia pero deja de participar en el indice fiscal activo.
+- Un CFDI `cancelled` o un borrador `discarded` nunca se reescribe. Una nueva preparacion recibe nueva identidad `CFD-...`.
+- Solicitudes de cancelacion identicas son idempotentes. Un rechazo externo permite reintento; una solicitud pendiente con datos distintos produce conflicto.
+- Complemento de Pagos selecciona solamente CFDI de ingreso `external_stamped` vigente.
+- Si un pago abarca documentos con tasas distintas, la preparacion local queda bloqueada y exige resolucion fiscal externa; PRISMA no mezcla tasas con una formula inventada.
+- El borrador conceptual incluye `Fecha` y estructura `Impuestos` de nivel comprobante, pero sigue siendo `DRAFT_NOT_XML`; XSD, catalogos, sellado y timbrado pertenecen al SAT/PAC externo.
+<!-- PRISMA:BILLING_INTEGRITY_HARDENING:END -->

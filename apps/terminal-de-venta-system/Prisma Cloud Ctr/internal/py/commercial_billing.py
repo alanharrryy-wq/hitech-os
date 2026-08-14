@@ -218,8 +218,8 @@ def ensure_billing_schema(con: sqlite3.Connection) -> None:
         "uuid TEXT UNIQUE, provider TEXT, providerEvidenceRef TEXT, xmlSha256 TEXT, pdfRef TEXT, stampedAt TEXT, parentUuid TEXT, "
         "cancellationReason TEXT, replacementUuid TEXT, cancellationEvidenceRef TEXT, cancelRequestedAt TEXT, cancelledAt TEXT, "
         "lastErrorCode TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP)",
-        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_income_active_idx ON CommercialFiscalDocument(chargeId,kind) WHERE kind='CFDI_INGRESO' AND status!='cancelled'",
-        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_payment_active_idx ON CommercialFiscalDocument(paymentId,kind) WHERE kind='CFDI_PAGO' AND status!='cancelled'",
+        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_income_active_idx ON CommercialFiscalDocument(chargeId,kind) WHERE kind='CFDI_INGRESO' AND status NOT IN ('cancelled','discarded')",
+        "CREATE UNIQUE INDEX IF NOT EXISTS CommercialFiscalDocument_payment_active_idx ON CommercialFiscalDocument(paymentId,kind) WHERE kind='CFDI_PAGO' AND status NOT IN ('cancelled','discarded')",
         "CREATE INDEX IF NOT EXISTS CommercialFiscalDocument_client_status_idx ON CommercialFiscalDocument(clientId,status,kind)",
         "CREATE TABLE IF NOT EXISTS CommercialBillingEvent("
         "id TEXT PRIMARY KEY, eventType TEXT NOT NULL, entityKind TEXT NOT NULL, entityCode TEXT, clientId TEXT, correlationId TEXT NOT NULL, "
@@ -453,8 +453,13 @@ def void_charge(con: sqlite3.Connection, body: dict[str, Any]) -> dict[str, Any]
     ).fetchone()
     if fiscal:
         raise BillingError("BILLING_VOID_BLOCKED_BY_CFDI", "El cargo tiene CFDI timbrado/no cancelado; usa primero la ruta fiscal de cancelacion.", details=dict(fiscal))
+    discarded_drafts = con.execute(
+        "UPDATE CommercialFiscalDocument SET status='discarded',lastErrorCode='CHARGE_VOIDED_BEFORE_EXTERNAL_STAMP',updatedAt=CURRENT_TIMESTAMP "
+        "WHERE chargeId=? AND kind='CFDI_INGRESO' AND status IN ('draft_blocked','ready_to_stamp')",
+        (charge["id"],),
+    ).rowcount
     con.execute("UPDATE CommercialCharge SET status='void',voidReason=?,balanceCents=0,updatedAt=CURRENT_TIMESTAMP WHERE id=?", (reason, charge["id"]))
-    _event(con, "billing.charge_voided", "charge", charge["humanCode"], charge["clientId"], f"Cargo anulado: {charge['humanCode']}", {"reason": reason})
+    _event(con, "billing.charge_voided", "charge", charge["humanCode"], charge["clientId"], f"Cargo anulado: {charge['humanCode']}", {"reason": reason, "discardedFiscalDrafts": discarded_drafts})
     return {"ok": True, "charge": _charge(con, charge["id"]), "message": "Cargo anulado administrativamente; no elimina evidencia."}
 
 
@@ -559,7 +564,30 @@ def reverse_external_payment(con: sqlite3.Connection, body: dict[str, Any]) -> d
     ).fetchone()
     if stamped:
         raise BillingError("BILLING_PAYMENT_REVERSE_BLOCKED_BY_CFDI", "Hay Complemento de Pagos timbrado/no cancelado; cancela fiscalmente antes de revertir el registro.", details=dict(stamped))
+    pue_income = con.execute(
+        "SELECT d.humanCode,d.status,d.uuid,c.humanCode AS chargeCode FROM CommercialPaymentAllocation a "
+        "JOIN CommercialCharge c ON c.id=a.chargeId "
+        "JOIN CommercialFiscalDocument d ON d.chargeId=a.chargeId "
+        "WHERE a.paymentId=? AND a.status='posted' AND d.kind='CFDI_INGRESO' AND d.methodCode='PUE' "
+        "AND d.status IN ('external_stamped','cancel_requested','cancellation_rejected') LIMIT 1",
+        (payment["id"],),
+    ).fetchone()
+    if pue_income:
+        raise BillingError("BILLING_PAYMENT_REVERSE_BLOCKED_BY_PUE_CFDI", "El pago soporta un CFDI PUE timbrado/no cancelado; cancela fiscalmente ese CFDI antes de revertir el registro.", details=dict(pue_income))
     allocations = [dict(r) for r in con.execute("SELECT * FROM CommercialPaymentAllocation WHERE paymentId=? AND status='posted'", (payment["id"],))]
+    discarded_payment_drafts = con.execute(
+        "UPDATE CommercialFiscalDocument SET status='discarded',lastErrorCode='PAYMENT_REVERSED_BEFORE_EXTERNAL_STAMP',updatedAt=CURRENT_TIMESTAMP "
+        "WHERE paymentId=? AND kind='CFDI_PAGO' AND status IN ('draft_blocked','ready_to_stamp')",
+        (payment["id"],),
+    ).rowcount
+    discarded_income_drafts = 0
+    for allocation in allocations:
+        discarded_income_drafts += con.execute(
+            "UPDATE CommercialFiscalDocument SET status='discarded',lastErrorCode='PAYMENT_REVERSED_BEFORE_EXTERNAL_STAMP',updatedAt=CURRENT_TIMESTAMP "
+            "WHERE chargeId=? AND kind='CFDI_INGRESO' AND status IN ('draft_blocked','ready_to_stamp')",
+            (allocation["chargeId"],),
+        ).rowcount
+    discarded_drafts = discarded_payment_drafts + discarded_income_drafts
     con.execute("UPDATE CommercialPaymentAllocation SET status='reversed',updatedAt=CURRENT_TIMESTAMP WHERE paymentId=? AND status='posted'", (payment["id"],))
     con.execute("UPDATE CommercialPayment SET status='reversed',allocatedCents=0,unappliedCents=0,reversalReason=?,reversedAt=?,updatedAt=CURRENT_TIMESTAMP WHERE id=?", (reason, _now_iso(), payment["id"]))
     con.execute("UPDATE CommercialReceipt SET status='void',voidedAt=?,updatedAt=CURRENT_TIMESTAMP WHERE paymentId=?", (_now_iso(), payment["id"]))
@@ -567,7 +595,7 @@ def reverse_external_payment(con: sqlite3.Connection, body: dict[str, Any]) -> d
     for allocation in allocations:
         charges.append(_refresh_charge(con, allocation["chargeId"]))
     after = _payment(con, payment["id"])
-    _event(con, "billing.external_payment_reversed", "payment", payment["humanCode"], payment["clientId"], f"Registro de pago revertido: {payment['humanCode']}", {"reason": reason, "fiscalComplementStamped": False})
+    _event(con, "billing.external_payment_reversed", "payment", payment["humanCode"], payment["clientId"], f"Registro de pago revertido: {payment['humanCode']}", {"reason": reason, "fiscalComplementStamped": False, "discardedFiscalDrafts": discarded_drafts})
     return {"ok": True, "idempotent": False, "payment": after, "charges": charges, "message": "Registro de pago externo revertido sin borrar historial."}
 
 
@@ -597,7 +625,7 @@ def prepare_income_cfdi(con: sqlite3.Connection, body: dict[str, Any], id_factor
     charge = _refresh_charge(con, charge["id"], as_of=body.get("asOf"))
     prepared = build_income_cfdi_draft(charge=charge, contract=contract, issuer=issuer, receiver=receiver, posted_allocations=allocations, payment_rows=payments)
     status = "ready_to_stamp" if prepared["ready"] else "draft_blocked"
-    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO' AND status!='cancelled' ORDER BY createdAt DESC,id DESC LIMIT 1", (charge["id"],)).fetchone()
+    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO' AND status NOT IN ('cancelled','discarded') ORDER BY createdAt DESC,id DESC LIMIT 1", (charge["id"],)).fetchone()
     if existing and existing["status"] in {"external_stamped", "cancel_requested", "cancellation_rejected"}:
         return {"ok": True, "idempotent": True, "document": _fiscal_document(con, existing["id"]), "gateway": gateway_status(issuer), "message": "El cargo ya tiene CFDI externo registrado; no se reemplazo."}
     identity = None
@@ -640,6 +668,14 @@ def register_external_stamp(con: sqlite3.Connection, body: dict[str, Any]) -> di
         return {"ok": True, "idempotent": True, "document": doc, "message": "UUID externo ya registrado."}
     if doc.get("status") != "ready_to_stamp":
         raise BillingError("BILLING_CFDI_NOT_READY", "El documento no cumple prerequisitos locales para registrar timbrado externo.", details={"status": doc.get("status"), "lastErrorCode": doc.get("lastErrorCode")})
+    if doc.get("kind") == "CFDI_INGRESO" and doc.get("chargeId"):
+        source = con.execute("SELECT status FROM CommercialCharge WHERE id=?", (doc["chargeId"],)).fetchone()
+        if not source or source["status"] == "void":
+            raise BillingError("BILLING_CFDI_STAMP_SOURCE_INVALIDATED", "El cargo origen fue anulado o ya no existe; el borrador fiscal no puede recibir timbrado externo.")
+    if doc.get("kind") == "CFDI_PAGO" and doc.get("paymentId"):
+        source = con.execute("SELECT status FROM CommercialPayment WHERE id=?", (doc["paymentId"],)).fetchone()
+        if not source or source["status"] != "posted":
+            raise BillingError("BILLING_CFDI_STAMP_SOURCE_INVALIDATED", "El pago origen fue revertido o ya no existe; el borrador fiscal no puede recibir timbrado externo.")
     try:
         cfdi_uuid = validate_cfdi_uuid(body.get("uuid"))
         xml_sha = validate_sha256(body.get("xmlSha256"))
@@ -672,7 +708,7 @@ def prepare_payment_complement(con: sqlite3.Connection, body: dict[str, Any], id
         ch = _charge(con, allocation["chargeId"])
         charges[ch["id"]] = ch
         client_ids.add(ch["clientId"])
-        doc_row = con.execute("SELECT * FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO'", (ch["id"],)).fetchone()
+        doc_row = con.execute("SELECT * FROM CommercialFiscalDocument WHERE chargeId=? AND kind='CFDI_INGRESO' AND status='external_stamped' ORDER BY stampedAt DESC,createdAt DESC,id DESC LIMIT 1", (ch["id"],)).fetchone()
         if doc_row:
             income_docs[ch["id"]] = _fiscal_document(con, doc_row["id"])
     if len(client_ids) != 1 or payment["clientId"] not in client_ids:
@@ -685,7 +721,7 @@ def prepare_payment_complement(con: sqlite3.Connection, body: dict[str, Any], id
         prepared["ready"] = False
     prepared["missingPrerequisites"] = sorted(set(prepared["missingPrerequisites"]))
     status = "ready_to_stamp" if prepared["ready"] else "draft_blocked"
-    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE paymentId=? AND kind='CFDI_PAGO' AND status!='cancelled' ORDER BY createdAt DESC,id DESC LIMIT 1", (payment["id"],)).fetchone()
+    existing = con.execute("SELECT * FROM CommercialFiscalDocument WHERE paymentId=? AND kind='CFDI_PAGO' AND status NOT IN ('cancelled','discarded') ORDER BY createdAt DESC,id DESC LIMIT 1", (payment["id"],)).fetchone()
     if existing and existing["status"] in {"external_stamped", "cancel_requested", "cancellation_rejected"}:
         return {"ok": True, "idempotent": True, "document": _fiscal_document(con, existing["id"]), "gateway": gateway_status(issuer), "message": "El pago ya tiene Complemento timbrado registrado."}
     if existing:
@@ -719,14 +755,18 @@ def request_cfdi_cancellation(con: sqlite3.Connection, body: dict[str, Any]) -> 
     doc = _fiscal_document(con, body.get("documentCode") or body.get("documentId"))
     if doc.get("status") == "cancelled":
         return {"ok": True, "idempotent": True, "document": doc, "message": "El CFDI ya figura como cancelado externamente."}
-    if doc.get("status") != "external_stamped":
-        raise BillingError("BILLING_CFDI_CANCEL_NOT_STAMPED", "Solo se solicita cancelacion para CFDI con UUID timbrado registrado.")
     if body.get("confirmCancellationRequest") is not True:
         raise BillingError("BILLING_CFDI_CANCEL_CONFIRMATION_REQUIRED", "La solicitud de cancelacion requiere confirmacion explicita.")
     try:
         reason, replacement = validate_cancellation_request(body.get("reason"), body.get("replacementUuid"))
     except FiscalGatewayError as exc:
         raise BillingError(exc.code, str(exc)) from exc
+    if doc.get("status") == "cancel_requested":
+        if doc.get("cancellationReason") == reason and (doc.get("replacementUuid") or None) == replacement:
+            return {"ok": True, "idempotent": True, "document": doc, "gateway": gateway_status(issuer_profile(con)), "message": "La misma solicitud de cancelacion ya estaba registrada."}
+        raise BillingError("BILLING_CFDI_CANCEL_REQUEST_CONFLICT", "Ya existe una solicitud de cancelacion pendiente con datos distintos.", http_status=409)
+    if doc.get("status") not in {"external_stamped", "cancellation_rejected"}:
+        raise BillingError("BILLING_CFDI_CANCEL_NOT_STAMPED", "Solo se solicita/reintenta cancelacion para CFDI timbrado vigente o con rechazo previo.")
     con.execute(
         "UPDATE CommercialFiscalDocument SET status='cancel_requested',cancellationReason=?,replacementUuid=?,cancelRequestedAt=?,updatedAt=CURRENT_TIMESTAMP WHERE id=?",
         (reason, replacement, _now_iso(), doc["id"]),

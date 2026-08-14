@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+from datetime import datetime
 from typing import Any
 
 
@@ -40,6 +41,10 @@ def money_text(cents: int) -> str:
 
 def tax_rate_text(rate_bps: int) -> str:
     return f"{int(rate_bps or 0) / 10000:.6f}"
+
+
+def cfdi_draft_datetime() -> str:
+    return datetime.now().replace(microsecond=0).isoformat(timespec="seconds")
 
 
 def normalize_payment_form(value: Any, *, allow_undefined: bool = False) -> str:
@@ -165,6 +170,7 @@ def build_income_cfdi_draft(
     draft = {
         "standard": "SAT_CFDI_4_0_DRAFT_NOT_XML",
         "Version": CFDI_VERSION,
+        "Fecha": cfdi_draft_datetime(),
         "TipoDeComprobante": "I",
         "Exportacion": issuer.get("exportCode") or "01",
         "Moneda": charge.get("currency") or "MXN",
@@ -186,11 +192,16 @@ def build_income_cfdi_draft(
             "UsoCFDI": receiver.get("cfdiUse"),
         },
         "Conceptos": [concept],
-        "Taxes": {
+        "Impuestos": ({
             "TotalImpuestosTrasladados": money_text(tax),
-            "rateBps": rate_bps,
-            "taxCode": issuer.get("taxCode") or "002",
-        },
+            "Traslados": [{
+                "Base": money_text(subtotal),
+                "Impuesto": issuer.get("taxCode") or "002",
+                "TipoFactor": "Tasa",
+                "TasaOCuota": tax_rate_text(rate_bps),
+                "Importe": money_text(tax),
+            }],
+        } if tax > 0 else None),
         "commercialTrace": {
             "contractCode": contract.get("humanCode"),
             "chargeCode": charge.get("humanCode"),
@@ -238,6 +249,9 @@ def build_payment_complement_draft(
         missing.append("payment.posted")
     if not allocations:
         missing.append("payment.allocations")
+    tax_rates = {int((charges.get(str(item.get("chargeId"))) or {}).get("taxRateBps") or 0) for item in allocations}
+    if len(tax_rates) > 1:
+        missing.append("payment.multipleTaxRatesRequiresExternalFiscalResolver")
 
     docs: list[dict[str, Any]] = []
     payment_tax_base = 0
@@ -288,8 +302,8 @@ def build_payment_complement_draft(
         "Monto": money_text(int(payment.get("amountCents") or 0)),
         "DoctoRelacionado": docs,
     }
-    if payment_tax > 0:
-        rate_bps = max((int((charges.get(str(a.get('chargeId'))) or {}).get('taxRateBps') or 0) for a in allocations), default=0)
+    if payment_tax > 0 and len(tax_rates) <= 1:
+        rate_bps = next(iter(tax_rates), 0)
         payment_node["ImpuestosP"] = {
             "TrasladosP": [{
                 "BaseP": money_text(payment_tax_base),
@@ -303,6 +317,7 @@ def build_payment_complement_draft(
     draft = {
         "standard": "SAT_CFDI_4_0_PAGOS_2_0_DRAFT_NOT_XML",
         "Version": CFDI_VERSION,
+        "Fecha": cfdi_draft_datetime(),
         "TipoDeComprobante": "P",
         "Exportacion": "01",
         "Moneda": "XXX",

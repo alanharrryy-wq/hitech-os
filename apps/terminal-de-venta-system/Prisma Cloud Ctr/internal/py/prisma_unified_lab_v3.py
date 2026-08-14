@@ -796,7 +796,8 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             try:
                 body = self.read_json_body()
                 payload = command_center_store.command_center_payload(self.path, method="POST", body=body)
-                self.json_response(payload, code=200 if payload.get("ok") else 409)
+                code = int(payload.pop("_httpStatus", 200 if payload.get("ok") else 409))
+                self.json_response(payload, code=code)
             except Exception as exc:
                 self.json_response({"ok": False, "error": str(exc)}, code=400)
             return
@@ -860,7 +861,8 @@ class PrismaLabHandler(SimpleHTTPRequestHandler):
             return
         if path.startswith("/api/command-center"):
             payload = command_center_store.command_center_payload(self.path, method="GET")
-            self.json_response(payload, code=200 if payload.get("ok") else 409)
+            code = int(payload.pop("_httpStatus", 200 if payload.get("ok") else 409))
+            self.json_response(payload, code=code)
             return
         if path.startswith("/api/licflow4/bridge"):
             payload = licflow4_admin_bridge.bridge_payload(self.path, method="GET", local_request=self.is_local_operator_request())
