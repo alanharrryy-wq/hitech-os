@@ -100,6 +100,8 @@ class UniversalCustomerWowBindingTests(unittest.TestCase):
         self.assertEqual(prepared["authorityPack"]["allowedScope"], ["src/auth.py"])
         self.assertIn("src/consumer.py", prepared["changeModel"]["impactRadius"]["impacted"])
         self.assertNotIn("src/consumer.py", prepared["authorityPack"]["allowedScope"])
+        self.assertEqual(prepared["domain"], "security")
+        self.assertEqual(prepared["repositorySnapshot"]["evidenceLockExcludedScope"], ["src/auth.py"])
         pending = {row["id"]: row["status"] for row in prepared["changeModel"]["requiredEvidence"]}
         self.assertEqual(pending["test:auth"], "PENDING")
         self.assertEqual(pending["evidence:auth"], "PENDING")
@@ -132,6 +134,26 @@ class UniversalCustomerWowBindingTests(unittest.TestCase):
         self.assertEqual(report["decision"], "PASS")
         self.assertEqual(report["outOfScopeMutations"], [])
         self.assertEqual(report["protectedBoundaryViolations"], [])
+        self.assertEqual(report["universalContext"]["evidenceLockExcludedScope"], ["src/auth.py"])
+
+    def test_evidence_drift_outside_allowed_scope_still_blocks(self) -> None:
+        prepared = self._prepare()
+        (self.repo / "tests" / "test_auth.py").write_text(
+            "from src.auth import authenticate\n\ndef test_auth():\n    assert authenticate('changed-evidence')\n",
+            encoding="utf-8",
+        )
+        report = verify_prepared_change(
+            prepared,
+            self.repo,
+            changed_paths=["src/auth.py"],
+            produced_evidence=["test:auth", "evidence:auth"],
+            policy=self.policy,
+        )
+        self.assertEqual(report["decision"], "BLOCKED")
+        self.assertTrue(any(
+            row.get("code") == "COMPATIBILITY_LOCK_MISMATCH" and row.get("field") == "evidenceDigest"
+            for row in report["findings"]
+        ))
 
     def test_out_of_scope_and_protected_change_is_blocked(self) -> None:
         prepared = self._prepare()

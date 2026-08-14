@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -31,7 +32,48 @@ def _validated_policy(policy: Mapping[str, Any] | None) -> dict[str, Any] | None
     return validate_policy_pack(policy)
 
 
-def _repository_snapshot(context: Mapping[str, Any], policy_digest: str | None) -> dict[str, Any]:
+def _is_mutable_graph_path(value: Any, mutable_scope: Sequence[str]) -> bool:
+    if not mutable_scope or not isinstance(value, str) or not value.strip() or value.startswith("reason:"):
+        return False
+    try:
+        return path_matches_scope(value, mutable_scope)
+    except ContractError:
+        return False
+
+
+def _stable_evidence_digest(context: Mapping[str, Any], mutable_scope: Sequence[str]) -> str:
+    """Lock evidence outside the explicitly authorized mutable scope.
+
+    A legitimate edit to an allowed target must not invalidate its own authority
+    pack merely because that file also appears as repository evidence. Everything
+    outside allowedScope remains locked and any drift there fails closed.
+    """
+    graph = deepcopy((context.get("graphs") or {}).get("evidenceGraph") or {})
+    nodes = [
+        node for node in graph.get("nodes") or []
+        if not _is_mutable_graph_path(node.get("id") if isinstance(node, Mapping) else None, mutable_scope)
+    ]
+    edges = [
+        edge for edge in graph.get("edges") or []
+        if isinstance(edge, Mapping)
+        and not _is_mutable_graph_path(edge.get("from"), mutable_scope)
+        and not _is_mutable_graph_path(edge.get("to"), mutable_scope)
+    ]
+    stable_graph = {
+        "nodes": nodes,
+        "edges": edges,
+        "edgeCount": len(edges),
+        "mutableScopeExcluded": sorted(set(mutable_scope)),
+        "rule": "LOCK_EVIDENCE_OUTSIDE_EXPLICIT_ALLOWED_SCOPE",
+    }
+    return sha256_json(stable_graph)
+
+
+def _repository_snapshot(
+    context: Mapping[str, Any],
+    policy_digest: str | None,
+    mutable_scope: Sequence[str] | None = None,
+) -> dict[str, Any]:
     portable = context.get("snapshot") or {}
     repository = portable.get("repository") or {}
     remote = repository.get("remote")
@@ -43,6 +85,7 @@ def _repository_snapshot(context: Mapping[str, Any], policy_digest: str | None) 
     profile = context.get("profile") or {}
     profile_version = str(profile.get("version") or profile.get("id") or "generic-v1")
     scanner_version = str(portable.get("scannerVersion") or "code_atlas_universal_intelligence.v1")
+    mutable = tuple(dict.fromkeys(normalize_repo_path(path) for path in (mutable_scope or [])))
     return {
         "repositoryIdentity": repository_identity,
         "commitIdentity": str(head or ("snapshot:" + str(portable.get("snapshotDigest") or "unknown"))),
@@ -50,7 +93,8 @@ def _repository_snapshot(context: Mapping[str, Any], policy_digest: str | None) 
         "gitCommitTreeAvailable": bool(head and tree),
         "authorityDigest": _sha_lock(portable.get("authorityDigest")),
         "policyDigest": policy_digest,
-        "evidenceDigest": sha256_json((context.get("graphs") or {}).get("evidenceGraph") or {}),
+        "evidenceDigest": _stable_evidence_digest(context, mutable),
+        "evidenceLockExcludedScope": list(mutable),
         "toolVersion": scanner_version,
         "profileVersion": profile_version,
         "snapshotDigest": portable.get("snapshotDigest"),
@@ -135,7 +179,13 @@ def _required_evidence(policy: Mapping[str, Any] | None) -> tuple[list[str], lis
     return checks, evidence, rows
 
 
-def _blocked_without_pack(*, decision: str, reason_codes: list[str], context: Mapping[str, Any] | None = None, error: str | None = None) -> dict[str, Any]:
+def _blocked_without_pack(
+    *,
+    decision: str,
+    reason_codes: list[str],
+    context: Mapping[str, Any] | None = None,
+    error: str | None = None,
+) -> dict[str, Any]:
     return {
         "schemaVersion": PREPARATION_SCHEMA,
         "decision": decision,
@@ -170,6 +220,7 @@ def prepare_change(
     required_authorities = tuple((normalized_policy or {}).get("requiredAuthorities") or [])
     targets = tuple(dict.fromkeys(normalize_repo_path(path) for path in (target_paths or [])))
     explicit_extra_scope = tuple(dict.fromkeys(normalize_repo_path(path) for path in (additional_allowed_scope or [])))
+    allowed_scope = list(dict.fromkeys([*targets, *explicit_extra_scope]))
 
     request = IntelligenceRequest(
         intent=intent,
@@ -188,14 +239,17 @@ def prepare_change(
             request=request,
         )
     except AuthorityRequirementError as exc:
-        return _blocked_without_pack(
+        result = _blocked_without_pack(
             decision="BLOCKED",
             reason_codes=["REQUIRED_AUTHORITY_MISSING"],
             error=str(exc),
         )
+        result["domain"] = domain
+        result["intent"] = intent
+        return result
 
     policy_digest = (normalized_policy or {}).get("policyDigest")
-    repository_snapshot = _repository_snapshot(context, policy_digest)
+    repository_snapshot = _repository_snapshot(context, policy_digest, allowed_scope)
     if not targets:
         result = _blocked_without_pack(
             decision="UNKNOWN",
@@ -203,11 +257,12 @@ def prepare_change(
             context=context,
         )
         result["repositorySnapshot"] = repository_snapshot
+        result["domain"] = domain
+        result["intent"] = intent
         return result
 
     primary_targets, blockers, unknowns = _target_rows(context, targets)
     protected_scope = list((normalized_policy or {}).get("protectedPaths") or [])
-    allowed_scope = list(dict.fromkeys([*targets, *explicit_extra_scope]))
     protected_overlap = sorted(
         path for path in allowed_scope if any(path_matches_scope(path, [protected]) for protected in protected_scope)
     )
@@ -248,6 +303,7 @@ def prepare_change(
         "requestDigest": authorities.get("requestDigest"),
         "authorityDigest": repository_snapshot.get("authorityDigest"),
         "evidenceDigest": repository_snapshot.get("evidenceDigest"),
+        "evidenceLockExcludedScope": repository_snapshot.get("evidenceLockExcludedScope"),
         "semanticRetrievalIsProof": False,
         "derivedIndexAuthoritative": False,
     }]
@@ -300,7 +356,7 @@ def prepare_change(
             forbidden_operations=list((normalized_policy or {}).get("forbiddenOperations") or []),
             stop_conditions=[
                 "required authority becomes missing or conflicted",
-                "authority/policy/evidence compatibility lock changes",
+                "authority/policy/evidence compatibility lock changes outside allowed scope",
                 "protected scope mutation",
                 "out-of-scope mutation",
             ],
@@ -321,6 +377,8 @@ def prepare_change(
         "schemaVersion": PREPARATION_SCHEMA,
         "decision": change_model["decision"],
         "reasonCodes": list(change_model.get("blockers") or []) + list(change_model.get("unknowns") or []),
+        "domain": domain,
+        "intent": intent,
         "repositorySnapshot": repository_snapshot,
         "portableSnapshot": context.get("snapshot"),
         "coverage": context.get("coverage"),
@@ -363,6 +421,7 @@ def verify_prepared_change(
     normalized_policy = _validated_policy(policy)
     request = IntelligenceRequest(
         intent="VERIFY",
+        domain=str(preparation.get("domain") or ""),
         required_authorities=tuple(preparation.get("requiredAuthorities") or []),
         changed_paths=tuple(normalize_repo_path(path) for path in changed_paths),
         fail_on_missing_authority=True,
@@ -385,7 +444,11 @@ def verify_prepared_change(
             "productionCertified": False,
         }
 
-    current_snapshot = _repository_snapshot(context, (normalized_policy or {}).get("policyDigest"))
+    current_snapshot = _repository_snapshot(
+        context,
+        (normalized_policy or {}).get("policyDigest"),
+        list(pack.get("allowedScope") or []),
+    )
     report = verify_change(
         authority_pack=pack,
         change_manifest={"changedPaths": [normalize_repo_path(path) for path in changed_paths]},
@@ -399,6 +462,7 @@ def verify_prepared_change(
         "schemaVersion": context.get("schemaVersion"),
         "snapshotDigest": (context.get("snapshot") or {}).get("snapshotDigest"),
         "coverage": context.get("coverage"),
+        "evidenceLockExcludedScope": current_snapshot.get("evidenceLockExcludedScope"),
         "semanticRetrievalIsProof": False,
         "derivedIndexAuthoritative": False,
     }
