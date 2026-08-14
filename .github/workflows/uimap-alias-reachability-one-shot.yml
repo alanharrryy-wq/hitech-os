@@ -1,0 +1,325 @@
+name: UIMAP Alias Reachability One Shot
+
+on:
+  push:
+    branches:
+      - agent/prisma-html-three-app-visual-closure
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact preimages
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "agent/prisma-html-three-app-visual-closure"
+          test "$(git hash-object tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py)" = "f027139e34ea919c9ad4f17dafd76992b9ec4b45"
+          test "$(git hash-object .github/workflows/prisma-three-app-visual-map.yml)" = "e91cf559dccc6dd3dcb0233267659750d994fc24"
+          test ! -e tools/code-atlas/tests/test_operational_uimap_alias_reachability.py
+
+      - name: Apply alias-aware reachability patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          discovery = Path('tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py')
+          text = discovery.read_text(encoding='utf-8')
+          old = '''def resolve_import(source: Path, spec: str, root: Path) -> Path | None:\n    if not spec.startswith("."):\n        return None\n    base = (source.parent / spec).resolve()\n    candidates = [base]\n    for ext in SOURCE_EXTS | STYLE_EXTS | {".json"}:\n        candidates.append(Path(str(base) + ext))\n    for ext in SOURCE_EXTS | STYLE_EXTS:\n        candidates.append(base / ("index" + ext))\n    for candidate in candidates:\n        try:\n            candidate.relative_to(root.resolve())\n        except Exception:\n            continue\n        if candidate.exists() and candidate.is_file():\n            return candidate\n    return None\n'''
+          new = '''RESOLUTION_EXTS = (\n    ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte",\n    ".json", ".css", ".scss", ".sass", ".less",\n)\n\n\ndef load_tsconfig_path_aliases(root: Path) -> list[dict[str, Any]]:\n    """Load deterministic in-runtime TypeScript/JavaScript path aliases.\n\n    Aliases are evidence for source reachability only. Targets outside the runtime\n    root are deliberately rejected by ``resolve_import`` so shared/external\n    packages cannot silently become product owners.\n    """\n    config = next(\n        (candidate for candidate in (root / "tsconfig.json", root / "jsconfig.json") if candidate.is_file()),\n        None,\n    )\n    if config is None:\n        return []\n    try:\n        payload = json.loads(read_text(config))\n    except Exception:\n        return []\n    paths = (payload.get("compilerOptions") or {}).get("paths") or {}\n    if not isinstance(paths, dict):\n        return []\n    rules: list[dict[str, Any]] = []\n    for pattern, raw_targets in paths.items():\n        if not isinstance(pattern, str) or pattern.count("*") > 1:\n            continue\n        targets = raw_targets if isinstance(raw_targets, list) else [raw_targets]\n        targets = [str(value) for value in targets if isinstance(value, str) and value.strip()]\n        if not targets:\n            continue\n        if "*" in pattern:\n            prefix, suffix = pattern.split("*", 1)\n            exact = False\n        else:\n            prefix, suffix = pattern, ""\n            exact = True\n        rules.append({\n            "pattern": pattern,\n            "prefix": prefix,\n            "suffix": suffix,\n            "exact": exact,\n            "targets": targets,\n            "baseDir": config.parent.resolve(),\n        })\n    return sorted(\n        rules,\n        key=lambda row: (\n            -int(bool(row["exact"])),\n            -len(str(row["prefix"])),\n            -len(str(row["suffix"])),\n            str(row["pattern"]),\n        ),\n    )\n\n\ndef _resolve_file_base(base: Path, root: Path) -> Path | None:\n    root_resolved = root.resolve()\n    candidates = [base.resolve()]\n    candidates.extend(Path(str(base) + ext).resolve() for ext in RESOLUTION_EXTS)\n    candidates.extend((base / ("index" + ext)).resolve() for ext in RESOLUTION_EXTS)\n    seen: set[Path] = set()\n    for candidate in candidates:\n        if candidate in seen:\n            continue\n        seen.add(candidate)\n        try:\n            candidate.relative_to(root_resolved)\n        except Exception:\n            continue\n        if candidate.exists() and candidate.is_file():\n            return candidate\n    return None\n\n\ndef _alias_match(rule: dict[str, Any], spec: str) -> str | None:\n    pattern = str(rule["pattern"])\n    if rule["exact"]:\n        return "" if spec == pattern else None\n    prefix = str(rule["prefix"])\n    suffix = str(rule["suffix"])\n    if not spec.startswith(prefix) or (suffix and not spec.endswith(suffix)):\n        return None\n    end = len(spec) - len(suffix) if suffix else len(spec)\n    if end < len(prefix):\n        return None\n    return spec[len(prefix):end]\n\n\ndef resolve_import(\n    source: Path,\n    spec: str,\n    root: Path,\n    alias_rules: list[dict[str, Any]] | None = None,\n) -> Path | None:\n    if spec.startswith("."):\n        return _resolve_file_base((source.parent / spec).resolve(), root)\n\n    rules = alias_rules if alias_rules is not None else load_tsconfig_path_aliases(root)\n    matches: list[tuple[tuple[int, int, int], dict[str, Any], str]] = []\n    for rule in rules:\n        wildcard = _alias_match(rule, spec)\n        if wildcard is None:\n            continue\n        score = (\n            int(bool(rule["exact"])),\n            len(str(rule["prefix"])),\n            len(str(rule["suffix"])),\n        )\n        matches.append((score, rule, wildcard))\n    if not matches:\n        return None\n\n    best_score = max(score for score, _, _ in matches)\n    best = [(rule, wildcard) for score, rule, wildcard in matches if score == best_score]\n    resolved: set[Path] = set()\n    for rule, wildcard in sorted(best, key=lambda item: str(item[0]["pattern"])):\n        chosen: Path | None = None\n        for target_pattern in rule["targets"]:\n            if target_pattern.count("*") > 1:\n                continue\n            substituted = target_pattern.replace("*", wildcard) if "*" in target_pattern else target_pattern\n            chosen = _resolve_file_base((Path(rule["baseDir"]) / substituted).resolve(), root)\n            if chosen is not None:\n                break\n        if chosen is not None:\n            resolved.add(chosen.resolve())\n    return next(iter(resolved)) if len(resolved) == 1 else None\n'''
+          if old not in text:
+              raise SystemExit('RESOLVE_IMPORT_PREIMAGE_NOT_FOUND')
+          text = text.replace(old, new, 1)
+          old_reach = '''def build_route_reachability(root: Path, product_root: Path, routes: list[RouteRecord]) -> dict[str, list[RouteRecord]]:\n    rel_to_path: dict[str, Path] = {}\n'''
+          new_reach = '''def build_route_reachability(root: Path, product_root: Path, routes: list[RouteRecord]) -> dict[str, list[RouteRecord]]:\n    alias_rules = load_tsconfig_path_aliases(root)\n    rel_to_path: dict[str, Path] = {}\n'''
+          if old_reach not in text:
+              raise SystemExit('REACHABILITY_PREIMAGE_NOT_FOUND')
+          text = text.replace(old_reach, new_reach, 1)
+          old_call = '                target = resolve_import(current, spec, root)\n'
+          new_call = '                target = resolve_import(current, spec, root, alias_rules)\n'
+          if text.count(old_call) != 1:
+              raise SystemExit(f'RESOLVE_CALL_COUNT:{text.count(old_call)}')
+          text = text.replace(old_call, new_call, 1)
+          discovery.write_text(text, encoding='utf-8', newline='\n')
+
+          workflow = Path('.github/workflows/prisma-three-app-visual-map.yml')
+          wf = workflow.read_text(encoding='utf-8')
+          replacements = [
+              (
+                  '      - "tools/code-atlas/tests/test_operational_ui_bridge_*.py"\n',
+                  '      - "tools/code-atlas/tests/test_operational_ui_bridge_*.py"\n      - "tools/code-atlas/tests/test_operational_uimap_*.py"\n',
+              ),
+              (
+                  '            tools/code-atlas/src/code_atlas/ui_bridge/cli.py \\\n            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \\\n',
+                  '            tools/code-atlas/src/code_atlas/ui_bridge/cli.py \\\n            tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py \\\n            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \\\n',
+              ),
+              (
+                  '            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \\\n            tools/code-atlas/tests/test_operational_ui_bridge_projection.py\n',
+                  '            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \\\n            tools/code-atlas/tests/test_operational_ui_bridge_projection.py \\\n            tools/code-atlas/tests/test_operational_uimap_alias_reachability.py\n',
+              ),
+              (
+                  '            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \\\n            tools/code-atlas/tests/test_operational_ui_bridge_projection.py\n\n      - name: Capture repo state before refresh\n',
+                  '            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \\\n            tools/code-atlas/tests/test_operational_ui_bridge_projection.py \\\n            tools/code-atlas/tests/test_operational_uimap_alias_reachability.py\n\n      - name: Capture repo state before refresh\n',
+              ),
+          ]
+          # The compile and unittest blocks share similar suffixes. Apply only
+          # replacements whose exact preimage is still present, and require the
+          # resulting test path to appear in paths + compile + unittest.
+          for before, after in replacements:
+              if before in wf:
+                  wf = wf.replace(before, after, 1)
+          if wf.count('test_operational_uimap_alias_reachability.py') < 3:
+              raise SystemExit('THREE_APP_WORKFLOW_ALIAS_TEST_ENROLLMENT_INCOMPLETE')
+          workflow.write_text(wf, encoding='utf-8', newline='\n')
+          PY
+
+          cat > tools/code-atlas/tests/test_operational_uimap_alias_reachability.py <<'PYTEST'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import tempfile
+          import unittest
+          from pathlib import Path
+
+          from code_atlas.app_map.uimap.discovery import (
+              build_route_reachability,
+              discover_routes,
+              extract_ui_candidates_from_file,
+              load_tsconfig_path_aliases,
+              resolve_import,
+          )
+
+
+          def _write(path: Path, text: str) -> Path:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(text, encoding="utf-8")
+              return path
+
+
+          def _hash(path: Path) -> str:
+              return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+          def _tsconfig(root: Path, paths: dict[str, list[str]]) -> None:
+              _write(
+                  root / "tsconfig.json",
+                  json.dumps({"compilerOptions": {"paths": paths}}, indent=2) + "\n",
+              )
+
+
+          class UimapAliasReachabilityTests(unittest.TestCase):
+              def test_relative_import_still_resolves(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp) / "app"
+                      source = _write(root / "src/a.ts", 'import "./b";\n')
+                      target = _write(root / "src/b.ts", "export const b = 1;\n")
+                      self.assertEqual(resolve_import(source, "./b", root), target.resolve())
+
+              def test_specific_alias_wins_over_broad_alias(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp) / "app"
+                      _tsconfig(root, {"@/*": ["./src/*"], "@components/*": ["./components/*"]})
+                      source = _write(root / "app/page.tsx", 'import X from "@components/widget";\n')
+                      _write(root / "src/components/widget.ts", "export default 1;\n")
+                      expected = _write(root / "components/widget.ts", "export default 2;\n")
+                      rules = load_tsconfig_path_aliases(root)
+                      self.assertEqual(
+                          resolve_import(source, "@components/widget", root, rules),
+                          expected.resolve(),
+                      )
+
+              def test_at_root_alias_resolves_inside_runtime(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp) / "app"
+                      _tsconfig(root, {"@/*": ["./src/*"]})
+                      source = _write(root / "app/page.tsx", 'import X from "@/server/service";\n')
+                      expected = _write(root / "src/server/service.ts", "export default 1;\n")
+                      self.assertEqual(resolve_import(source, "@/server/service", root), expected.resolve())
+
+              def test_unresolved_and_external_packages_remain_unresolved(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp) / "app"
+                      _tsconfig(root, {"@/*": ["./src/*"]})
+                      source = _write(root / "app/page.tsx", 'import React from "react";\n')
+                      self.assertIsNone(resolve_import(source, "react", root))
+                      self.assertIsNone(resolve_import(source, "@/missing", root))
+
+              def test_alias_target_outside_runtime_root_is_rejected(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      base = Path(tmp)
+                      root = base / "app"
+                      _tsconfig(root, {"@shared/*": ["../shared/*"]})
+                      source = _write(root / "app/page.tsx", 'import X from "@shared/widget";\n')
+                      _write(base / "shared/widget.ts", "export default 1;\n")
+                      self.assertIsNone(resolve_import(source, "@shared/widget", root))
+
+              def test_alias_cycle_is_safe_and_route_reachability_is_deterministic(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp) / "runtime"
+                      _tsconfig(root, {"@components/*": ["./components/*"]})
+                      page = _write(root / "app/home/page.tsx", 'import A from "@components/a";\nexport default A;\n')
+                      a = _write(root / "components/a.tsx", 'import B from "./b";\nexport default B;\n')
+                      b = _write(root / "components/b.tsx", 'import A from "./a";\nexport default A;\n')
+                      hashes = {path: _hash(path) for path in (page, a, b)}
+                      routes = discover_routes("pc", root, root, hashes)
+                      first = build_route_reachability(root, root, routes)
+                      second = build_route_reachability(root, root, routes)
+                      self.assertEqual(sorted(first), sorted(second))
+                      self.assertIn("components/a.tsx", first)
+                      self.assertIn("components/b.tsx", first)
+                      self.assertEqual(first["components/a.tsx"][0].route_path, "/home")
+
+              def test_stockficha_marker_survives_alias_reachability(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp) / "runtime"
+                      _tsconfig(root, {"@components/*": ["./components/*"]})
+                      page = _write(
+                          root / "app/stock/page.tsx",
+                          'import { InventoryWorkspaceView } from "@components/inventory/inventory-workspace";\n'
+                          'export default function Page(){ return <InventoryWorkspaceView />; }\n',
+                      )
+                      workspace = _write(
+                          root / "components/inventory/inventory-workspace.tsx",
+                          'export function InventoryWorkspaceView(){ return (\n'
+                          '  <section className={styles.productFicha} '
+                          'data-prisma-component-ui-id="PC-STOCK-FICHA-PANEL-01" '
+                          'data-prisma-binding="BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1" />\n'
+                          '); }\n',
+                      )
+                      hashes = {path: _hash(path) for path in (page, workspace)}
+                      routes = discover_routes("pc", root, root, hashes)
+                      reach = build_route_reachability(root, root, routes)
+                      key = "components/inventory/inventory-workspace.tsx"
+                      self.assertIn(key, reach)
+                      candidates = extract_ui_candidates_from_file(
+                          "pc", workspace, root, reach[key], hashes[workspace]
+                      )
+                      stock = [candidate for candidate in candidates if candidate.class_name == "productFicha"]
+                      self.assertTrue(stock)
+                      self.assertEqual(stock[0].route_path, "/stock")
+                      self.assertEqual(
+                          stock[0].data_attributes.get("data-prisma-component-ui-id"),
+                          "PC-STOCK-FICHA-PANEL-01",
+                      )
+                      self.assertEqual(
+                          stock[0].data_attributes.get("data-prisma-binding"),
+                          "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+                      )
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          PYTEST
+
+      - name: Compile and run focused alias tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py \
+            tools/code-atlas/tests/test_operational_uimap_alias_reachability.py
+          python -m unittest -v tools/code-atlas/tests/test_operational_uimap_alias_reachability.py
+
+      - name: Generate real three-app mapping evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/prisma-three-app-map-alias"
+          python -m code_atlas.cli.main ui-bridge refresh-three-app-map \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-root "$RUNNER_TEMP/prisma-three-app-map-alias" \
+            --binding-registry "$GITHUB_WORKSPACE/prisma-html/authority/rifat/identity/registries/element-bindings.registry.json" \
+            --pilot-contract "$GITHUB_WORKSPACE/apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots/PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json" \
+            --workers 18
+
+      - name: Gate StockFicha reachability and Cobrar preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'prisma-three-app-map-alias'
+          refresh = json.loads((root / 'PRISMA_THREE_APP_VISUAL_MAPPING_REFRESH.json').read_text(encoding='utf-8'))
+          if refresh.get('status') == 'BLOCKED_BY_UIMAP':
+              raise SystemExit('ALIAS_PATCH_BLOCKED_UIMAP')
+          validation = refresh.get('uimap', {}).get('validation', {})
+          if validation.get('ok') is not True:
+              raise SystemExit('UIMAP_VALIDATION_NOT_OK')
+          gates = validation.get('gates', {})
+          if gates.get('goldenCobrarPreserved') is not True:
+              raise SystemExit('COBRAR_GOLDEN_REGRESSION')
+          if gates.get('governorByteForByteIntact') is not True or gates.get('productByteForByteIntact') is not True:
+              raise SystemExit('READ_ONLY_BOUNDARY_REGRESSION')
+
+          pc = json.loads((root / 'uimap/batches/02_pc.json').read_text(encoding='utf-8'))
+          stock = [
+              row for row in pc.get('components', [])
+              if row.get('routePath') == '/stock'
+              and str(row.get('ownerFile', '')).endswith('products/pc/app/components/inventory/inventory-workspace.tsx')
+          ]
+          if not stock:
+              raise SystemExit('STOCKFICHA_ALIAS_REACHABILITY_NOT_PROVEN')
+          if not any(
+              any('productFicha' in str(target.get('selector', '')) for target in row.get('visualTargets', []))
+              for row in stock
+          ):
+              raise SystemExit('STOCKFICHA_STYLE_TARGET_NOT_REACHED')
+          print(json.dumps({
+              'status': 'PASS_ALIAS_REACHABILITY_SOURCE_ONLY',
+              'stockRouteReachableInventoryWorkspaceComponents': len(stock),
+              'uimapComponentCount': refresh.get('uimap', {}).get('componentCount'),
+              'uimapRouteCount': refresh.get('uimap', {}).get('routeCount'),
+              'refreshStatus': refresh.get('status'),
+              'goldenCobrarPreserved': gates.get('goldenCobrarPreserved'),
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Commit exact source-only patch and self-delete
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --porcelain=v1 --untracked-files=all
+          git config user.name "prisma-uimap-bot"
+          git config user.email "prisma-uimap-bot@users.noreply.github.com"
+          git add \
+            tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py \
+            tools/code-atlas/tests/test_operational_uimap_alias_reachability.py \
+            .github/workflows/prisma-three-app-visual-map.yml
+          git rm .github/workflows/uimap-alias-reachability-one-shot.yml
+          staged="$(git diff --cached --name-only | sort)"
+          expected="$(printf '%s\n' \
+            '.github/workflows/prisma-three-app-visual-map.yml' \
+            '.github/workflows/uimap-alias-reachability-one-shot.yml' \
+            'tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py' \
+            'tools/code-atlas/tests/test_operational_uimap_alias_reachability.py' | sort)"
+          test "$staged" = "$expected"
+          git diff --cached --check
+          git commit -m "fix(uimap): resolve governed tsconfig path aliases"
+          git push origin HEAD:agent/prisma-html-three-app-visual-closure
