@@ -17,4 +17,4 @@ IDBIND1 resolves portable identity meaning into governed target coordinates with
 5. Shared UI is neutral source authority, not a product location.
 6. Binding envelopes are instruction-only. They never mutate runtime or product files.
 7. No owner, route, region, slot, component or layer may be inferred merely from naming convention.
-8. The current Tablet `Cobrar` candidate remains blocked because the compact layer index does not publish an exact `layerId`.
+8. The Tablet `Cobrar` binding is `RESOLVED` only because the canonical Visual Control generator certified the exact layer `LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE`; that certification is target-specific, remains instruction-only, and does not authorize runtime or product application.
