@@ -7,11 +7,7 @@ on:
       - "tools/code-atlas/CODE_ATLAS_NEUTRALITY_MODE.json"
       - "tools/code-atlas/NEUTRALITY_POLICY.md"
       - "tools/code-atlas/profiles/**"
-      - "tools/code-atlas/src/code_atlas/core/**"
-      - "tools/code-atlas/src/code_atlas/operational/**"
-      - "tools/code-atlas/src/code_atlas/appbrain_workbench/**"
-      - "tools/code-atlas/src/code_atlas/legal_readiness/**"
-      - "tools/code-atlas/src/code_atlas/motors/results.py"
+      - "tools/code-atlas/src/code_atlas/**"
       - "tools/code-atlas/tests/test_operational_*.py"
       - ".github/workflows/code-atlas-operational-hardening.yml"
   push:
@@ -21,11 +17,7 @@ on:
       - "tools/code-atlas/CODE_ATLAS_NEUTRALITY_MODE.json"
       - "tools/code-atlas/NEUTRALITY_POLICY.md"
       - "tools/code-atlas/profiles/**"
-      - "tools/code-atlas/src/code_atlas/core/**"
-      - "tools/code-atlas/src/code_atlas/operational/**"
-      - "tools/code-atlas/src/code_atlas/appbrain_workbench/**"
-      - "tools/code-atlas/src/code_atlas/legal_readiness/**"
-      - "tools/code-atlas/src/code_atlas/motors/results.py"
+      - "tools/code-atlas/src/code_atlas/**"
       - "tools/code-atlas/tests/test_operational_*.py"
       - ".github/workflows/code-atlas-operational-hardening.yml"
 
@@ -51,16 +43,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Compile operational and neutrality stack
+      - name: Compile full Code Atlas source tree
         shell: bash
         run: |
           set -euo pipefail
-          python -m compileall -q tools/code-atlas/src/code_atlas/core
-          python -m compileall -q tools/code-atlas/src/code_atlas/operational
-          python -m py_compile tools/code-atlas/src/code_atlas/appbrain_workbench/cli.py
-          python -m py_compile tools/code-atlas/src/code_atlas/legal_readiness/paths.py
-          python -m py_compile tools/code-atlas/src/code_atlas/legal_readiness/contracts.py
-          python -m py_compile tools/code-atlas/src/code_atlas/motors/results.py
+          python -m compileall -q tools/code-atlas/src/code_atlas
           python -m py_compile tools/code-atlas/tests/test_operational_*.py
 
       - name: Enforce total neutrality boundary
@@ -69,9 +56,13 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           import json
-          from code_atlas.core.neutrality_gate import assert_neutral
-          result = assert_neutral("tools/code-atlas")
+          from code_atlas.core.neutrality_gate import scan_code_atlas
+          result = scan_code_atlas("tools/code-atlas")
           print(json.dumps(result, indent=2, sort_keys=True))
+          if not result.get("fullReusableSourceBoundary"):
+              raise SystemExit("FULL_REUSABLE_SOURCE_BOUNDARY_NOT_SCANNED")
+          if result.get("blockingCount"):
+              raise SystemExit("CODE_ATLAS_NEUTRALITY_BLOCKED")
           PY
 
       - name: Run all operational hardening negative tests
