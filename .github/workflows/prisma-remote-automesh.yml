@@ -1,0 +1,159 @@
+name: PRISMA Remote AutoMesh
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+concurrency:
+  group: prisma-remote-automesh-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  code-atlas-phase0-v1:
+    if: >-
+      github.event.issue.pull_request != null &&
+      (github.actor == 'chatgpt-codex-connector[bot]' || github.actor == 'alanharrryy-wq') &&
+      github.event.comment.body == '/prisma-automesh code-atlas-phase0-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout exact default-branch state
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile and self-test AutoMesh tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+
+      - name: Build exact Phase 0 task specification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          tasks = [
+              {
+                  "id": "capability-census",
+                  "surface": "governance",
+                  "task": "CODE_ATLAS_PHASE0_V1 capability census. Audit the current Code Atlas 50-capability Operational Evidence registry on main. Determine exact status, owner, source files, inputs, outputs, tests, evidence, heuristics, dependencies, blockers, doesNotProve, maturity and next gate for all 35 implemented_v1, 14 placeholder_v1 and 1 placeholder_blocked. Include Factory Ledger, operational manual, current authority artifacts and no-fake-green quality contracts. Read-only. No implementation.",
+              },
+              {
+                  "id": "governance-quality",
+                  "surface": "governance",
+                  "task": "CODE_ATLAS_PHASE0_V1 governance and quality lane. Audit Authority Mesh, Factory Ledger, Code Atlas manifests/registries, quality contracts, gates, evidence packaging, rollback rules, neutrality/profile architecture, no-fake-green protections and current .governance authority state relevant to completing Code Atlas. Read-only. No implementation.",
+              },
+              {
+                  "id": "data-sync-contracts",
+                  "surface": "",
+                  "task": "CODE_ATLAS_PHASE0_V1 data and sync lane. Audit database reality/glass, Prisma/schema sources, D1/SQL where present, sync/outbox, canonical projection, provenance and runtime-evidence sources. Resolve what contracts exist or are missing for tenant, business, client, license, device, store, terminal, cashier/user, sale, sale line, tender, outbox, sync, canonical projection, pc_scope and mobile_scope. Read-only. No database or Prisma mutation.",
+              },
+              {
+                  "id": "tablet-surface",
+                  "surface": "tablet",
+                  "task": "CODE_ATLAS_PHASE0_V1 Tablet lane. Audit Code Atlas relationships to Tablet surface targets, UI map/app map, runtime evidence, owners, route/component bindings, evidence links and contracts needed by Operational Evidence Atlas. Read-only. Do not modify Tablet.",
+              },
+              {
+                  "id": "pc-surface",
+                  "surface": "pc",
+                  "task": "CODE_ATLAS_PHASE0_V1 PC lane. Audit Code Atlas relationships to PC surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify PC.",
+              },
+              {
+                  "id": "mobile-surface",
+                  "surface": "mobile",
+                  "task": "CODE_ATLAS_PHASE0_V1 Mobile lane. Audit Code Atlas relationships to Mobile surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify Mobile.",
+              },
+              {
+                  "id": "chart-lab",
+                  "surface": "chart_lab",
+                  "task": "CODE_ATLAS_PHASE0_V1 Chart Lab lane. Audit Code Atlas surface-target/UI-map dependencies, runtime evidence, visualization ownership and contracts relevant to the 50-capability completion. Read-only. Do not modify Chart Lab.",
+              },
+              {
+                  "id": "shared-ui",
+                  "surface": "shared_ui",
+                  "task": "CODE_ATLAS_PHASE0_V1 Shared UI lane. Audit neutral/shared UI dependencies, surface adapters, bindings, runtime evidence and ownership relevant to Code Atlas investigator UI and query/detail capabilities. Read-only. Do not modify Shared UI.",
+              },
+              {
+                  "id": "bridges-motors",
+                  "surface": "governance",
+                  "task": "CODE_ATLAS_PHASE0_V1 tooling lane. Audit AppBrain Workbench, AppBrain Batch Packager, Motors/Smart AllMesh, Evidence Ingestion, Legal Readiness, UI Bridge, Surface Target Atlas, Coverage, Important Files Gate and continuation/portable evidence tooling. Identify source-ready pieces, placeholders, coupling risks and next gates. Read-only. No runtime application.",
+              },
+              {
+                  "id": "runtime-web-control",
+                  "surface": "",
+                  "task": "CODE_ATLAS_PHASE0_V1 cross-surface runtime lane. Audit Web, Control Center, Cloud Command Center, support/resolver and other non-Tablet/PC/Mobile runtime evidence or scope sources that Code Atlas may consume. Identify owners, contracts, evidence links and unmapped risks without mutating any surface. Read-only.",
+              },
+          ]
+
+          path = Path(os.environ["RUNNER_TEMP"]) / "code-atlas-phase0-v1.tasks.json"
+          path.write_text(json.dumps({"tasks": tasks}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(path)
+          PY
+
+      - name: Run task-exact parallel Authority Mesh
+        id: mesh
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --out-root "$RUNNER_TEMP/prisma-automesh-out" \
+            --budget-root "$RUNNER_TEMP/prisma-automesh-budget" \
+            --task-spec "$RUNNER_TEMP/code-atlas-phase0-v1.tasks.json" \
+            --parallel 6 \
+            --workers 18 \
+            --shards 54 \
+            --max-files 120 \
+            --max-mb 40
+
+      - name: Stage result or fail evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .remote-automesh-artifacts
+          cp "$RUNNER_TEMP/code-atlas-phase0-v1.tasks.json" .remote-automesh-artifacts/
+          if [ -d "$RUNNER_TEMP/prisma-automesh-out" ]; then
+            find "$RUNNER_TEMP/prisma-automesh-out" -maxdepth 1 -type f \
+              \( -name '*_result.zip' -o -name '*_fail.zip' \) \
+              -exec cp {} .remote-automesh-artifacts/ \;
+          fi
+          find .remote-automesh-artifacts -maxdepth 1 -type f -print
+
+      - name: Upload Authority Mesh evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: code-atlas-phase0-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 14
+          path: .remote-automesh-artifacts/**
+
+      - name: Fail closed when AutoMesh did not pass
+        if: always() && steps.mesh.outcome != 'success'
+        shell: bash
+        run: exit 1
