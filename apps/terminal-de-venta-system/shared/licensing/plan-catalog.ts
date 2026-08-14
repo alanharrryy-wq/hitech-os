@@ -1,6 +1,14 @@
 import { BASIC_POS_FEATURES, PC_BACKOFFICE_FEATURES, TABLET_PRO_FEATURES } from "./feature-keys";
 import type { LicensePlan } from "./license-types";
 
+/**
+ * Runtime entitlement catalog.
+ *
+ * Commercial list pricing is intentionally NOT duplicated here. The single
+ * machine-readable authority for vendible plans, limits and commercial prices is
+ * `shared/licensing/plan-catalog.canonical.json`. Keep this module focused on
+ * feature entitlements so price changes cannot drift from Cloud Center/productization.
+ */
 export type PlanDefinition = {
   plan: LicensePlan;
   label: string;
@@ -30,7 +38,7 @@ export const PLAN_CATALOG: Record<LicensePlan, PlanDefinition> = {
   },
   TABLET_PC_MANAGED: {
     plan: "TABLET_PC_MANAGED",
-    label: "Tablet + PC",
+    label: "Tablet + PC Managed",
     rank: 30,
     description: "Operación administrada con backoffice, sync, auditoría e inventario avanzado.",
     features: union(BASIC_POS_FEATURES, TABLET_PRO_FEATURES, PC_BACKOFFICE_FEATURES)
