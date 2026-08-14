@@ -38,7 +38,8 @@ jobs:
           import base64, zlib
           from pathlib import Path
           src = Path('apps/terminal-de-venta-system/tools/_cloudcust_runtime_patch.zb64')
-          raw = base64.b64decode(src.read_bytes(), validate=True)
+          encoded = b''.join(src.read_bytes().split())
+          raw = base64.b64decode(encoded, validate=True)
           patch = zlib.decompress(raw)
           if not patch.startswith(b'--- a/apps/terminal-de-venta-system/'):
               raise SystemExit('PATCH_HEADER_INVALID')
