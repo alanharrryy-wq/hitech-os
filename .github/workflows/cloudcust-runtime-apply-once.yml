@@ -67,6 +67,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Verifiers are versioned separately; this patch mutates only the four runtime owners.
           EX1='apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py'
           EX2='apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
           git apply --check --exclude="$EX1" --exclude="$EX2" /tmp/cloudcust.patch
