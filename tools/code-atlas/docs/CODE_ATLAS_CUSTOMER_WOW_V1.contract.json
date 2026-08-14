@@ -1,6 +1,6 @@
 {
   "schemaVersion": "code_atlas_customer_wow.v1",
-  "status": "CONSUMER_CONTRACT_SOURCE_DESIGN",
+  "status": "PARALLEL_CONSUMER_SLICE_IMPLEMENTED_AWAITING_UNIVERSAL_CORE_BINDING",
   "certifiable": false,
   "productionCertified": false,
   "authority": {
@@ -35,200 +35,65 @@
     "secretValuesNotRequired": true,
     "explainabilityRequired": true,
     "unknownRemainsUnknown": true,
-    "prismaIsExplicitAdapter": true
+    "productSemanticsAreExplicitAdapters": true
   },
-  "decisionStates": [
-    "PASS",
-    "BLOCKED",
-    "UNKNOWN"
+  "decisionStates": ["PASS", "BLOCKED", "UNKNOWN"],
+  "implementedParallelSlice": [
+    "change studio composition over normalized evidence-bearing inputs",
+    "portable agent authority pack with canonical checksum",
+    "repository commit tree and compatibility digest locks",
+    "verify agent scope protected evidence drift and session checks",
+    "evidence Q&A support-level enforcement",
+    "customer policy pack validation",
+    "architecture delta normalization",
+    "external evidence envelopes",
+    "JUnit parser",
+    "SARIF parser",
+    "coverage summary parser",
+    "CODEOWNERS-style ownership parser",
+    "CI result normalizer",
+    "agent session evidence normalization",
+    "raw ROI instrumentation and explicitly derived financial estimates",
+    "human-readable change and verification reports",
+    "portable evidence bundle manifest",
+    "customer runner local-only and portable-evidence contracts",
+    "neutral CLI for pack validation change verification and evidence parsing"
   ],
-  "modules": {
-    "changeStudio": {
-      "inputs": [
-        "changeRequest",
-        "repositorySnapshot",
-        "optionalPolicyProfile",
-        "optionalNominatedTargets"
-      ],
-      "outputs": [
-        "normalizedIntent",
-        "primaryTargets",
-        "relatedTargets",
-        "impactRadius",
-        "protectedScope",
-        "ownershipAndAuthorityReferences",
-        "facts",
-        "inferences",
-        "unknowns",
-        "contradictions",
-        "requiredEvidence",
-        "decision",
-        "doesNotProve",
-        "provenance"
-      ]
-    },
-    "agentAuthorityPack": {
-      "portable": true,
-      "requiredFields": [
-        "packId",
-        "repositoryIdentity",
-        "commitIdentity",
-        "treeIdentity",
-        "requestDigest",
-        "normalizedTask",
-        "allowedScope",
-        "protectedScope",
-        "requiredChecks",
-        "requiredEvidence",
-        "forbiddenOperations",
-        "stopConditions",
-        "unknowns",
-        "evidenceReferences",
-        "toolVersion",
-        "profileVersion",
-        "schemaVersion",
-        "generatedAt",
-        "checksum"
-      ]
-    },
-    "verifyAgent": {
-      "inputs": [
-        "authorityPack",
-        "actualDiffOrChangeManifest",
-        "optionalAgentSessionEvidence",
-        "currentRepositorySnapshot",
-        "producedEvidence"
-      ],
-      "mustCheck": [
-        "packRepositoryCompatibility",
-        "snapshotFreshness",
-        "allowedScopeCompliance",
-        "protectedScopeCompliance",
-        "requiredChecksExecution",
-        "evidenceCompleteness",
-        "contradictions",
-        "newUnknowns",
-        "unrequestedChanges",
-        "provenance"
-      ]
-    },
-    "evidenceQA": {
-      "answerMustInclude": [
-        "claim",
-        "supportLevel",
-        "evidenceReferences",
-        "inferenceIfAny",
-        "contradictions",
-        "confidenceBasis",
-        "doesNotProve"
-      ],
-      "semanticSimilarityMayProveClaim": false
-    },
-    "policyPacks": {
-      "versioned": true,
-      "mayDeclare": [
-        "protectedPaths",
-        "requiredAuthorities",
-        "requiredTests",
-        "requiredReviews",
-        "forbiddenOperations",
-        "impactThresholds",
-        "securityPrivacyRules",
-        "domainEvidenceRequirements"
-      ],
-      "configurationBecomesEvidence": false
-    },
-    "architectureDelta": {
-      "compares": [
-        "appsServicesPackages",
-        "architectureLayers",
-        "dependencyEdges",
-        "dataSchemaRelationships",
-        "authorityOwnership",
-        "ciTestGates",
-        "protectedSensitiveScope",
-        "unknownContradictoryAreas"
-      ],
-      "statuses": [
-        "added",
-        "removed",
-        "changed",
-        "stale",
-        "unknown",
-        "unchanged"
-      ]
-    },
-    "evidenceConnectors": {
-      "initialClasses": [
-        "git-pr-diff",
-        "github-actions-style-ci",
-        "sarif",
-        "junit",
-        "coverage-summary",
-        "codeowners-style-ownership",
-        "generic-command-evidence"
-      ],
-      "externalOutputIsAutomaticAuthority": false
-    },
-    "agentSessionIntelligence": {
-      "recordsOnlyObservedOrDeclaredEvidence": true,
-      "mustNotInferHiddenReasoning": true
-    },
-    "roiInstrumentation": {
-      "rawMetrics": [
-        "contextDiscoveryTime",
-        "changeScopeIdentificationTime",
-        "humanSupervisionTime",
-        "outOfScopeChangeRate",
-        "reopenedWorkRate",
-        "evidenceAssemblyTime",
-        "changeReadinessThroughput",
-        "blockedBeforeChangeCount",
-        "evidenceCompletenessRate"
-      ],
-      "financialInputsMustBeCustomerProvidedOrExplicitAssumptions": true
-    },
-    "customerRunner": {
-      "futureBoundary": true,
-      "leastPrivilege": true,
-      "readOnlyByDefault": true,
-      "localOnlyMode": true,
-      "customerControlsEvidenceEgress": true,
-      "productionReadyClaim": false
-    }
-  },
-  "universalCoreSemanticRequirements": [
-    "resolve repository snapshot",
-    "resolve change targets",
-    "query authority",
-    "query dependencies",
-    "query ownership",
-    "query protected scope",
-    "query evidence",
-    "compare snapshots",
-    "validate snapshot freshness",
-    "explain selection"
+  "pendingUniversalCoreBinding": [
+    "repository snapshot provider",
+    "change target resolver",
+    "authority resolver",
+    "dependency graph provider",
+    "ownership graph provider",
+    "protected scope provider",
+    "evidence graph provider",
+    "snapshot comparison provider",
+    "freshness and drift provider",
+    "selection explainability provider"
   ],
-  "negativeTestsRequired": [
+  "negativeTestsCovered": [
     "stale commit or tree",
-    "authority changed after pack generation",
+    "authority digest drift",
     "missing required authority",
     "out-of-scope modified file",
     "protected file mutation",
-    "missing required test evidence",
+    "missing required evidence or checks",
     "contradictory evidence",
     "semantic result without supporting evidence",
-    "policy requires nonexistent source",
     "unsafe path traversal",
     "spaces unicode and long paths",
-    "malformed connector payload",
+    "malformed JUnit and CI input",
     "stale connector provenance",
     "secret value ingestion attempt",
-    "unknown repository profile",
     "cross-repository evidence contamination",
-    "agent session mismatches authority pack",
-    "incompatible tool profile or schema version"
+    "agent session pack mismatch",
+    "profile version mismatch",
+    "cross-repository architecture delta",
+    "customer runner mutation attempt",
+    "local-only evidence egress attempt"
   ],
+  "localIsolatedTestCount": 41,
+  "localIsolatedTestResult": "PASS",
   "excludedSurfaces": [
     "tablet",
     "pc",
@@ -241,5 +106,5 @@
     "ports",
     "live product processes"
   ],
-  "integrationRule": "Before final integration, run a fresh task-exact Authority Mesh against then-current main and bind this consumer contract to the canonical Universal Intelligence Core APIs without duplicating them."
+  "integrationRule": "Before final integration, run a fresh task-exact Authority Mesh against then-current main and bind this consumer layer to the canonical Universal Intelligence Core APIs without duplicating them."
 }
