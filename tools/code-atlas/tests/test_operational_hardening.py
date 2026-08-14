@@ -7,7 +7,15 @@ from pathlib import Path
 from unittest import mock
 
 from code_atlas.operational import hardened_runner
-from code_atlas.operational import breakage, client_followup, device_claims, flow_health, gates, sales_lineage
+from code_atlas.operational import (
+    breakage,
+    client_followup,
+    device_claims,
+    flow_health,
+    gates,
+    html_tabs,
+    sales_lineage,
+)
 from code_atlas.operational.capability_contracts import (
     FORMER_PLACEHOLDERS,
     build_capability_specs,
@@ -33,12 +41,14 @@ class OperationalHardeningTests(unittest.TestCase):
         self.assertTrue(all(row["productionCertified"] is False for row in hardened))
         self.assertTrue(all(row["doesNotProve"] for row in hardened))
 
-    def test_historical_trend_is_not_promoted_without_runtime_output(self) -> None:
+    def test_historical_trend_foundation_is_not_certified_without_runtime_output(self) -> None:
         specs = build_capability_specs(FEATURE_SPECS)
         observed = observe_runtime_bindings(specs, payload={})
         trend = next(row for row in observed if row["capabilityId"] == "historical_trend_mini_atlas")
-        self.assertEqual(trend["implementationState"], "registry_only_no_runtime_output")
+        self.assertEqual(trend["implementationState"], "semantic_trend_foundation_v1")
+        self.assertEqual(trend["maturity"], "CONTRACT_BACKED")
         self.assertFalse(trend["runtimeOutputObserved"])
+        self.assertIn("comparable_snapshot_history_required", trend["hardBlockers"])
         self.assertFalse(trend["certifiable"])
 
     def test_multi_tenant_contract_requires_negative_isolation_tests(self) -> None:
@@ -60,7 +70,15 @@ class OperationalHardeningTests(unittest.TestCase):
 
     def test_legacy_run_shims_route_through_hardened_runner(self) -> None:
         expected = hardened_runner.run_operational_atlas
-        for module in (breakage, client_followup, device_claims, flow_health, gates, sales_lineage):
+        for module in (
+            breakage,
+            client_followup,
+            device_claims,
+            flow_health,
+            gates,
+            html_tabs,
+            sales_lineage,
+        ):
             self.assertIs(module.run_operational_evidence, expected, module.__name__)
 
     def test_wrapper_blocks_scope_presence_from_becoming_leakage_green(self) -> None:
@@ -134,12 +152,18 @@ class OperationalHardeningTests(unittest.TestCase):
             self.assertEqual(manifest["legacyRegistryPlaceholderCount"], len(FORMER_PLACEHOLDERS))
             self.assertTrue((out / "CAPABILITY_HARDENING_LEDGER.json").exists())
             self.assertTrue((out / "CAPABILITY_MATURITY_SUMMARY.json").exists())
+            self.assertTrue((out / "FOUNDATION_HARDENING_SUMMARY.json").exists())
+            self.assertTrue((out / "SEMANTIC_SNAPSHOT.json").exists())
             self.assertTrue((out / "HARDENING_SUMMARY.md").exists())
 
             legacy = json.loads((out / "placeholder_ledger.json").read_text(encoding="utf-8"))
             self.assertEqual(len(legacy), 15)
             self.assertTrue(all(row["legacyPlaceholder"] is True for row in legacy))
             self.assertTrue(all(row["certifiable"] is False for row in legacy))
+
+            trend = next(row for row in legacy if row["feature"] == "historical_trend_mini_atlas")
+            self.assertTrue(trend["runtimeOutputObserved"])
+            self.assertEqual(trend["maturity"], "CONTRACT_BACKED")
 
 
 if __name__ == "__main__":
