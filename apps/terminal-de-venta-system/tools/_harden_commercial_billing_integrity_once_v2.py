@@ -15,5 +15,11 @@ new = '''    discarded_payment_drafts = con.execute(\\n        \"UPDATE Commerci
 count = text.count(old)
 if count != 1:
     raise SystemExit(f"v2 reverse invalidation anchor expected once, found {count}")
-V1.write_text(text.replace(old, new, 1), encoding="utf-8")
+text = text.replace(old, new, 1)
+old_eof = '    DOC.write_text(text.rstrip() + block + "\\n", encoding="utf-8")\n'
+new_eof = '    DOC.write_text(text.rstrip() + block.rstrip() + "\\n", encoding="utf-8")\n'
+count = text.count(old_eof)
+if count != 1:
+    raise SystemExit(f"v2 doc EOF anchor expected once, found {count}")
+V1.write_text(text.replace(old_eof, new_eof, 1), encoding="utf-8")
 subprocess.check_call([sys.executable, str(V1)])
