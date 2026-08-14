@@ -1,0 +1,245 @@
+{
+  "schemaVersion": "code_atlas_customer_wow.v1",
+  "status": "CONSUMER_CONTRACT_SOURCE_DESIGN",
+  "certifiable": false,
+  "productionCertified": false,
+  "authority": {
+    "requestId": "21dd25667cc8f5dd",
+    "workflowRunId": 31816725320,
+    "artifact": "prisma-automesh-21dd25667cc8f5dd-31816725320-1",
+    "artifactDigest": "sha256:2c06fd785fdf137a647a13dbb7122707b9f2a9aaca1cc2d19595da3cc063a285",
+    "head": "ab0b1b966d1d4f34525bdf571e7652df557f1a2a"
+  },
+  "layer": "customer-facing neutral composition",
+  "mustNotRebuild": [
+    "repository discovery",
+    "authority discovery and resolution",
+    "dependency graph",
+    "ownership graph",
+    "evidence graph",
+    "architecture graph",
+    "snapshot and commit/tree locking",
+    "universal query/index substrate",
+    "drift detection",
+    "profile loading"
+  ],
+  "invariants": {
+    "evidenceBeforeGreen": true,
+    "retrievalIsNotProof": true,
+    "profileAddsExpectationsNotFacts": true,
+    "derivedIndexIsNotAuthority": true,
+    "commitLocked": true,
+    "materialDriftExpiresDecision": true,
+    "agentNeutral": true,
+    "readOnlyByDefault": true,
+    "secretValuesNotRequired": true,
+    "explainabilityRequired": true,
+    "unknownRemainsUnknown": true,
+    "prismaIsExplicitAdapter": true
+  },
+  "decisionStates": [
+    "PASS",
+    "BLOCKED",
+    "UNKNOWN"
+  ],
+  "modules": {
+    "changeStudio": {
+      "inputs": [
+        "changeRequest",
+        "repositorySnapshot",
+        "optionalPolicyProfile",
+        "optionalNominatedTargets"
+      ],
+      "outputs": [
+        "normalizedIntent",
+        "primaryTargets",
+        "relatedTargets",
+        "impactRadius",
+        "protectedScope",
+        "ownershipAndAuthorityReferences",
+        "facts",
+        "inferences",
+        "unknowns",
+        "contradictions",
+        "requiredEvidence",
+        "decision",
+        "doesNotProve",
+        "provenance"
+      ]
+    },
+    "agentAuthorityPack": {
+      "portable": true,
+      "requiredFields": [
+        "packId",
+        "repositoryIdentity",
+        "commitIdentity",
+        "treeIdentity",
+        "requestDigest",
+        "normalizedTask",
+        "allowedScope",
+        "protectedScope",
+        "requiredChecks",
+        "requiredEvidence",
+        "forbiddenOperations",
+        "stopConditions",
+        "unknowns",
+        "evidenceReferences",
+        "toolVersion",
+        "profileVersion",
+        "schemaVersion",
+        "generatedAt",
+        "checksum"
+      ]
+    },
+    "verifyAgent": {
+      "inputs": [
+        "authorityPack",
+        "actualDiffOrChangeManifest",
+        "optionalAgentSessionEvidence",
+        "currentRepositorySnapshot",
+        "producedEvidence"
+      ],
+      "mustCheck": [
+        "packRepositoryCompatibility",
+        "snapshotFreshness",
+        "allowedScopeCompliance",
+        "protectedScopeCompliance",
+        "requiredChecksExecution",
+        "evidenceCompleteness",
+        "contradictions",
+        "newUnknowns",
+        "unrequestedChanges",
+        "provenance"
+      ]
+    },
+    "evidenceQA": {
+      "answerMustInclude": [
+        "claim",
+        "supportLevel",
+        "evidenceReferences",
+        "inferenceIfAny",
+        "contradictions",
+        "confidenceBasis",
+        "doesNotProve"
+      ],
+      "semanticSimilarityMayProveClaim": false
+    },
+    "policyPacks": {
+      "versioned": true,
+      "mayDeclare": [
+        "protectedPaths",
+        "requiredAuthorities",
+        "requiredTests",
+        "requiredReviews",
+        "forbiddenOperations",
+        "impactThresholds",
+        "securityPrivacyRules",
+        "domainEvidenceRequirements"
+      ],
+      "configurationBecomesEvidence": false
+    },
+    "architectureDelta": {
+      "compares": [
+        "appsServicesPackages",
+        "architectureLayers",
+        "dependencyEdges",
+        "dataSchemaRelationships",
+        "authorityOwnership",
+        "ciTestGates",
+        "protectedSensitiveScope",
+        "unknownContradictoryAreas"
+      ],
+      "statuses": [
+        "added",
+        "removed",
+        "changed",
+        "stale",
+        "unknown",
+        "unchanged"
+      ]
+    },
+    "evidenceConnectors": {
+      "initialClasses": [
+        "git-pr-diff",
+        "github-actions-style-ci",
+        "sarif",
+        "junit",
+        "coverage-summary",
+        "codeowners-style-ownership",
+        "generic-command-evidence"
+      ],
+      "externalOutputIsAutomaticAuthority": false
+    },
+    "agentSessionIntelligence": {
+      "recordsOnlyObservedOrDeclaredEvidence": true,
+      "mustNotInferHiddenReasoning": true
+    },
+    "roiInstrumentation": {
+      "rawMetrics": [
+        "contextDiscoveryTime",
+        "changeScopeIdentificationTime",
+        "humanSupervisionTime",
+        "outOfScopeChangeRate",
+        "reopenedWorkRate",
+        "evidenceAssemblyTime",
+        "changeReadinessThroughput",
+        "blockedBeforeChangeCount",
+        "evidenceCompletenessRate"
+      ],
+      "financialInputsMustBeCustomerProvidedOrExplicitAssumptions": true
+    },
+    "customerRunner": {
+      "futureBoundary": true,
+      "leastPrivilege": true,
+      "readOnlyByDefault": true,
+      "localOnlyMode": true,
+      "customerControlsEvidenceEgress": true,
+      "productionReadyClaim": false
+    }
+  },
+  "universalCoreSemanticRequirements": [
+    "resolve repository snapshot",
+    "resolve change targets",
+    "query authority",
+    "query dependencies",
+    "query ownership",
+    "query protected scope",
+    "query evidence",
+    "compare snapshots",
+    "validate snapshot freshness",
+    "explain selection"
+  ],
+  "negativeTestsRequired": [
+    "stale commit or tree",
+    "authority changed after pack generation",
+    "missing required authority",
+    "out-of-scope modified file",
+    "protected file mutation",
+    "missing required test evidence",
+    "contradictory evidence",
+    "semantic result without supporting evidence",
+    "policy requires nonexistent source",
+    "unsafe path traversal",
+    "spaces unicode and long paths",
+    "malformed connector payload",
+    "stale connector provenance",
+    "secret value ingestion attempt",
+    "unknown repository profile",
+    "cross-repository evidence contamination",
+    "agent session mismatches authority pack",
+    "incompatible tool profile or schema version"
+  ],
+  "excludedSurfaces": [
+    "tablet",
+    "pc",
+    "mobile",
+    "chart_lab",
+    "shared_ui",
+    "database mutation",
+    "prisma generation",
+    "deployments",
+    "ports",
+    "live product processes"
+  ],
+  "integrationRule": "Before final integration, run a fresh task-exact Authority Mesh against then-current main and bind this consumer contract to the canonical Universal Intelligence Core APIs without duplicating them."
+}
