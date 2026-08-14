@@ -75,6 +75,37 @@ jobs:
           p.write_text(t,encoding='utf-8')
           print('PASS_OPERATOR_SAFE_REFRESH')
 
+      - name: Preserve all captured customer fields across governed renders
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js')
+          t=p.read_text(encoding='utf-8')
+          anchor='''  function operatorIsInteracting() {\n    const root = $("surfaceRoot");'''
+          helper='''  function syncFlowFromDom() {\n    const root = $("surfaceRoot");\n    if (!root) return;\n    root.querySelectorAll("[data-flow-field]").forEach((field) => {\n      const key = field.dataset.flowField || "";\n      if (key) state.flow[key] = field.value;\n    });\n  }\n\n  function operatorIsInteracting() {\n    const root = $("surfaceRoot");'''
+          if t.count(anchor)!=1: raise SystemExit(f'FLOW_SYNC_HELPER_ANCHOR_DRIFT:{t.count(anchor)}')
+          t=t.replace(anchor,helper,1)
+
+          change='''    document.addEventListener("change", (event) => {\n      const field = event.target.closest("[data-flow-field]");\n      if (field) {\n        state.flow[field.dataset.flowField] = field.value;\n        render();\n      }\n    });'''
+          change_new='''    document.addEventListener("change", (event) => {\n      const field = event.target.closest("[data-flow-field]");\n      if (field) {\n        syncFlowFromDom();\n        state.flow[field.dataset.flowField] = field.value;\n        render();\n      }\n    });'''
+          if t.count(change)!=1: raise SystemExit(f'FLOW_CHANGE_ANCHOR_DRIFT:{t.count(change)}')
+          t=t.replace(change,change_new,1)
+
+          pick='''      const field = pickFlowNode.dataset.pickFlow;\n      const value = pickFlowNode.dataset.value || "";\n      if (field === "vertical") {'''
+          pick_new='''      const field = pickFlowNode.dataset.pickFlow;\n      const value = pickFlowNode.dataset.value || "";\n      syncFlowFromDom();\n      if (field === "vertical") {'''
+          if t.count(pick)!=1: raise SystemExit(f'FLOW_PICK_ANCHOR_DRIFT:{t.count(pick)}')
+          t=t.replace(pick,pick_new,1)
+
+          action='''  async function handleAction(action, button) {\n    if (state.busy) return;'''
+          action_new='''  async function handleAction(action, button) {\n    syncFlowFromDom();\n    if (state.busy) return;'''
+          if t.count(action)!=1: raise SystemExit(f'FLOW_ACTION_ANCHOR_DRIFT:{t.count(action)}')
+          t=t.replace(action,action_new,1)
+
+          if t.count('function syncFlowFromDom()')!=1 or t.count('syncFlowFromDom();')<3:
+              raise SystemExit('FLOW_SYNC_GUARD_INVALID')
+          p.write_text(t,encoding='utf-8')
+          print('PASS_FLOW_SNAPSHOT_BEFORE_RENDER_AND_ACTION')
+
       - name: Validate scope authority and syntax
         shell: bash
         run: |
@@ -94,7 +125,8 @@ jobs:
           if 'cityZone' in js[js.find('function clientWizard'):js.find('function deviceWizard')]: raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
           if js.count('const actionButtonNode = event.target.closest("[data-action]")') != 1: raise SystemExit('ACTION_DELEGATION_DRIFT')
           if js.count('action === "prepare-client"') != 1: raise SystemExit('PREPARE_CLIENT_ACTION_DRIFT')
-          print('PASS_EXACT_SCOPE_AUTHORITY_NAV_AND_ACTION')
+          if js.count('function syncFlowFromDom()') != 1: raise SystemExit('FLOW_SNAPSHOT_MISSING')
+          print('PASS_EXACT_SCOPE_AUTHORITY_NAV_ACTION_AND_FLOW')
           PY
           python -m json.tool "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json" >/dev/null
           python -m py_compile "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
