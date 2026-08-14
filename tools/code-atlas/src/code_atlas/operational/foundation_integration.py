@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -9,17 +8,19 @@ from .assurance_foundation import (
     build_staleness_rows,
     harden_runtime_evidence_links,
 )
-from .evidence_foundation import make_evidence_record, parse_timestamp
+from .evidence_foundation import make_evidence_record, normalize_timestamp, parse_freshness_policies, parse_timestamp
 from .lineage_foundation import build_lineage_graph
 from .temporal_foundation import (
+    SNAPSHOT_SCHEMA_VERSION,
     build_timeline,
     compare_semantic_snapshots,
     discover_prior_snapshots,
     historical_trend,
     make_semantic_snapshot,
+    resolve_repository_identity,
 )
 
-FOUNDATION_VERSION = "code_atlas_operational_foundations.v1"
+FOUNDATION_VERSION = "code_atlas_operational_foundations.v1.1"
 
 ENTITY_CAPABILITY = {
     "clients": "client_followup_atlas",
@@ -45,16 +46,17 @@ TREND_METRICS = (
 )
 
 
-def _observed_at(manifest: Mapping[str, Any]) -> str:
-    for key in ("createdAt", "created_at", "generatedAt", "generated_at"):
+def _observed_at(manifest: Mapping[str, Any]) -> str | None:
+    for key in ("observedAt", "observed_at", "createdAt", "created_at", "generatedAt", "generated_at"):
         value = manifest.get(key)
         if parse_timestamp(value) is not None:
-            return str(value)
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+            return normalize_timestamp(value)
+    return None
 
 
-def _evidence_records(payload: Mapping[str, Any], manifest: Mapping[str, Any]) -> list[dict[str, Any]]:
-    observed = _observed_at(manifest)
+def _evidence_records(payload: Mapping[str, Any], observed: str | None) -> list[dict[str, Any]]:
+    if observed is None:
+        return []
     records = []
     for section, capability in ENTITY_CAPABILITY.items():
         rows = payload.get(section)
@@ -98,39 +100,95 @@ def _evidence_records(payload: Mapping[str, Any], manifest: Mapping[str, Any]) -
     return sorted(records, key=lambda row: (str(row.get("observedAt")), str(row.get("recordId"))))
 
 
+def _blocked_snapshot(status: str, *, repository_identity: str | None = None) -> dict[str, Any]:
+    return {
+        "schemaVersion": SNAPSHOT_SCHEMA_VERSION,
+        "status": status,
+        "repositoryIdentity": repository_identity,
+        "certifiable": False,
+        "productionCertified": False,
+    }
+
+
 def apply_operational_foundations(
     payload: dict[str, Any],
     manifest: Mapping[str, Any],
     *,
+    repo_root: str | Path | None = None,
     result_root: str | Path | None = None,
 ) -> dict[str, Any]:
     observed = _observed_at(manifest)
     source_ref = str(manifest.get("tool") or "code_atlas_operational")
-    evidence_records = _evidence_records(payload, manifest)
+    repository = resolve_repository_identity(repo_root, manifest)
+    repository_identity = repository.get("repositoryIdentity")
+    evidence_records = _evidence_records(payload, observed)
 
-    # Snapshot collector outputs before replacing any legacy heuristic sections.
-    current_snapshot = make_semantic_snapshot(
-        payload,
-        observed_at=observed,
-        source_ref=source_ref,
-    )
-    prior_snapshots = discover_prior_snapshots(result_root)
-    base_snapshot = prior_snapshots[-1] if prior_snapshots else None
-    snapshot_diff = compare_semantic_snapshots(base_snapshot, current_snapshot)
-    trend_snapshots = [*prior_snapshots, current_snapshot]
-    trend_rows = [historical_trend(trend_snapshots, metric) for metric in TREND_METRICS]
+    prior_snapshots: list[dict[str, Any]] = []
+    if observed is None:
+        current_snapshot = _blocked_snapshot(
+            "BLOCKED_MISSING_OBSERVED_AT",
+            repository_identity=str(repository_identity) if repository_identity else None,
+        )
+        snapshot_diff = {
+            "status": "BLOCKED_MISSING_OBSERVED_AT",
+            "comparable": False,
+            "productionCertified": False,
+        }
+        trend_rows = [
+            {
+                "status": "BLOCKED_CURRENT_SNAPSHOT_UNAVAILABLE",
+                "reason": "MISSING_OBSERVED_AT",
+                "metric": metric,
+                "points": [],
+                "productionCertified": False,
+            }
+            for metric in TREND_METRICS
+        ]
+    elif not repository_identity:
+        current_snapshot = _blocked_snapshot("BLOCKED_REPOSITORY_IDENTITY_UNAVAILABLE")
+        snapshot_diff = {
+            "status": "BLOCKED_REPOSITORY_IDENTITY_UNAVAILABLE",
+            "comparable": False,
+            "productionCertified": False,
+        }
+        trend_rows = [
+            {
+                "status": "BLOCKED_REPOSITORY_IDENTITY_UNAVAILABLE",
+                "metric": metric,
+                "points": [],
+                "productionCertified": False,
+            }
+            for metric in TREND_METRICS
+        ]
+    else:
+        current_snapshot = make_semantic_snapshot(
+            payload,
+            observed_at=observed,
+            source_ref=source_ref,
+            repository_identity=str(repository_identity),
+        )
+        prior_snapshots = discover_prior_snapshots(
+            result_root,
+            expected_repository_identity=str(repository_identity),
+        )
+        base_snapshot = prior_snapshots[-1] if prior_snapshots else None
+        snapshot_diff = compare_semantic_snapshots(base_snapshot, current_snapshot)
+        trend_snapshots = [*prior_snapshots, current_snapshot]
+        trend_rows = [historical_trend(trend_snapshots, metric) for metric in TREND_METRICS]
 
     timeline = build_timeline(evidence_records)
     graph = build_lineage_graph(payload)
     runtime_links = harden_runtime_evidence_links(payload.get("runtimeEvidenceLinks"))
 
-    policies = payload.get("freshnessPolicies")
-    if not isinstance(policies, Mapping):
-        policies = {}
-    # Policies must arrive as governed FreshnessPolicy instances. Dict-shaped
-    # guesses are deliberately not promoted to policy authority.
-    typed_policies = {key: value for key, value in policies.items() if hasattr(value, "ttl_seconds")}
-    staleness = build_staleness_rows(evidence_records, typed_policies, now=observed)
+    typed_policies, policy_validation = parse_freshness_policies(payload.get("freshnessPolicies"))
+    if observed is None:
+        staleness = [{
+            "status": "BLOCKED_MISSING_OBSERVED_AT",
+            "fresh": False,
+            "productionCertified": False,
+        }]
+    else:
+        staleness = build_staleness_rows(evidence_records, typed_policies, now=observed)
 
     required_actions = payload.get("auditActionCatalog")
     if not isinstance(required_actions, list):
@@ -138,8 +196,12 @@ def apply_operational_foundations(
     audit_events = payload.get("auditEvents")
     if not isinstance(audit_events, list):
         audit_events = []
-    audit = build_audit_completeness(required_actions, audit_events)
+    audit_scope = payload.get("auditRequiredScope")
+    if not isinstance(audit_scope, Mapping):
+        audit_scope = payload.get("auditScope") if isinstance(payload.get("auditScope"), Mapping) else None
+    audit = build_audit_completeness(required_actions, audit_events, required_scope=audit_scope)
 
+    payload["repositoryIdentity"] = repository
     payload["evidenceRecords"] = evidence_records
     payload["snapshotDiffEngine"] = [snapshot_diff]
     payload["historicalTrendMiniAtlas"] = trend_rows
@@ -159,11 +221,13 @@ def apply_operational_foundations(
     }
     payload["lineageNodes"] = graph["nodes"]
     payload["orphans"] = graph["orphans"]
+    payload["freshnessPolicyValidation"] = policy_validation
     payload["stalenessMonitor"] = staleness
     payload["auditCompleteness"] = audit
     payload["runtimeEvidenceLinks"] = runtime_links
 
     outputs = {
+        "REPOSITORY_IDENTITY.json": repository,
         "EVIDENCE_RECORDS.json": evidence_records,
         "SEMANTIC_SNAPSHOT.json": current_snapshot,
         "SNAPSHOT_DIFF_ENGINE.json": snapshot_diff,
@@ -171,19 +235,37 @@ def apply_operational_foundations(
         "OPERATIONAL_TIMELINE.json": timeline,
         "DATA_LINEAGE_GRAPH.json": graph,
         "ORPHAN_ENTITY_MATRIX.json": graph["orphans"],
+        "FRESHNESS_POLICY_VALIDATION.json": policy_validation,
         "STALE_DATA_MATRIX.json": staleness,
         "AUDIT_COMPLETENESS_MATRIX.json": audit,
         "RUNTIME_EVIDENCE_LINKS.json": runtime_links,
     }
 
-    blockers = []
-    if snapshot_diff.get("status") == "BLOCKED_MISSING_BASELINE":
+    blockers: list[str] = []
+    if observed is None:
+        blockers.append("evidence_observed_at_missing_or_invalid")
+    if not repository_identity:
+        blockers.append("snapshot_repository_identity_unavailable")
+    snapshot_status = str(snapshot_diff.get("status", ""))
+    if snapshot_status == "BLOCKED_MISSING_BASELINE":
         blockers.append("snapshot_baseline_missing")
-    if any(str(row.get("status", "")).startswith("BLOCKED") for row in trend_rows):
+    elif snapshot_status.startswith("BLOCKED") and snapshot_status not in {
+        "BLOCKED_MISSING_OBSERVED_AT",
+        "BLOCKED_REPOSITORY_IDENTITY_UNAVAILABLE",
+    }:
+        blockers.append("snapshot_integrity_blocked")
+    trend_statuses = [str(row.get("status", "")) for row in trend_rows]
+    if any(status == "BLOCKED_INSUFFICIENT_COMPARABLE_RUNS" for status in trend_statuses):
         blockers.append("historical_trend_insufficient_history")
+    if any(status.startswith("BLOCKED") and status != "BLOCKED_INSUFFICIENT_COMPARABLE_RUNS" for status in trend_statuses):
+        blockers.append("historical_trend_integrity_blocked")
+    if str(timeline.get("status", "")).startswith("BLOCKED"):
+        blockers.append("operational_timeline_integrity")
+    if any(str(row.get("status", "")).startswith("BLOCKED") for row in policy_validation):
+        blockers.append("freshness_policy_contract_invalid")
     if any(str(row.get("status", "")).startswith("BLOCKED") for row in staleness):
         blockers.append("freshness_policy_or_evidence_missing")
-    if audit and str(audit[0].get("status", "")).startswith("BLOCKED"):
+    if audit and str(audit[0].get("status", "")) != "PASS_AUDIT_COVERAGE":
         blockers.append("audit_catalog_or_events_incomplete")
     if graph.get("blockers"):
         blockers.extend(f"lineage:{item}" for item in graph["blockers"])
@@ -193,16 +275,20 @@ def apply_operational_foundations(
     summary = {
         "foundationVersion": FOUNDATION_VERSION,
         "status": "SOURCE_FOUNDATIONS_READY_WITH_BLOCKERS" if blockers else "SOURCE_FOUNDATIONS_READY",
+        "repositoryIdentityStatus": repository.get("status"),
+        "evidenceObservedAtStatus": "PASS_OBSERVED_AT_VALID" if observed else "BLOCKED_MISSING_OR_INVALID_OBSERVED_AT",
         "evidenceRecordCount": len(evidence_records),
         "priorSnapshotCount": len(prior_snapshots),
         "lineageNodeCount": len(graph["nodes"]),
         "lineageEdgeCount": len(graph["edges"]),
+        "timelineStatus": timeline.get("status"),
         "blockers": sorted(set(blockers)),
         "certifiable": False,
         "productionCertified": False,
         "doesNotProve": [
             "Production readiness from source-only foundation tests.",
             "Tenant isolation without negative cross-tenant runtime evidence.",
+            "Historical comparability across repositories without a stable repository identity.",
         ],
     }
     outputs["FOUNDATION_HARDENING_SUMMARY.json"] = summary
