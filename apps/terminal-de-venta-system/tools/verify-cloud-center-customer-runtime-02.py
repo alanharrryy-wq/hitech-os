@@ -45,7 +45,7 @@ def main():
     app=Path(__file__).resolve().parents[1]
     cloud=app/'Prisma Cloud Ctr'
     server=cloud/'internal'/'py'/'prisma_unified_lab_v3.py'
-    checks=[]; console_errors=[]; request_failures=[]
+    checks=[]; console_errors=[]; request_failures=[]; api_requests=[]; draft_responses=[]
     with tempfile.TemporaryDirectory(prefix='prisma-cloud-runtime-') as td:
         td=Path(td); port=free_port(); base=f'http://127.0.0.1:{port}'
         env=os.environ.copy(); env['PRISMA_COMMAND_CENTER_DB_PATH']=str(td/'runtime.db'); env['PRISMA_CLOUD_CENTER_RUNTIME_DIR']=str(td/'runtime-contracts')
@@ -65,6 +65,8 @@ def main():
                 page=browser.new_page(viewport={'width':1440,'height':1000})
                 page.on('console',lambda msg: console_errors.append(msg.text) if msg.type=='error' else None)
                 page.on('requestfailed',lambda req: request_failures.append(req.url) if req.url.startswith(base) else None)
+                page.on('request',lambda req: api_requests.append({'method':req.method,'url':req.url}) if '/api/' in req.url else None)
+                page.on('response',lambda res: draft_responses.append(res) if '/api/command-center/draft-client' in res.url else None)
                 page.goto(base+'/',wait_until='domcontentloaded',timeout=30000)
                 page.wait_for_selector('[data-surface="provisioning"]',timeout=15000)
                 require(page.locator('html').get_attribute('lang')=='es-MX','HTML_LANGUAGE_NOT_HOMOLOGATED')
@@ -111,9 +113,18 @@ def main():
                 page.select_option('select[data-flow-field="country"]','MX')
                 page.select_option('select[data-flow-field="state"]','jalisco')
                 page.fill('[data-flow-field="city"]','Guadalajara')
-                with page.expect_response(lambda response: '/api/command-center/draft-client' in response.url, timeout=10000) as response_info:
-                    page.click('[data-action="prepare-client"]')
-                draft_response=response_info.value
+
+                create_before=page.evaluate("""()=>{const button=document.querySelector('[data-action="prepare-client"]'); const fields={}; document.querySelectorAll('[data-flow-field]').forEach(el=>fields[el.dataset.flowField]=el.value); return {button:{exists:!!button,disabled:!!button?.disabled,outerHTML:button?.outerHTML||null},fields,activeTag:document.activeElement?.tagName||null,activeField:document.activeElement?.dataset?.flowField||null};}""")
+                print('CREATE_DIAG_BEFORE='+json.dumps(create_before,ensure_ascii=False))
+                start_request_count=len(api_requests)
+                page.click('[data-action="prepare-client"]')
+                page.wait_for_timeout(2000)
+                create_after=page.evaluate("""()=>({bodyTail:(document.body?.innerText||'').slice(-5000),buttonDisabled:!!document.querySelector('[data-action="prepare-client"]')?.disabled,activeTag:document.activeElement?.tagName||null,activeField:document.activeElement?.dataset?.flowField||null})""")
+                create_diag={'before':create_before,'after':create_after,'newApiRequests':api_requests[start_request_count:],'consoleErrors':list(console_errors),'requestFailures':list(request_failures)}
+                print('CREATE_DIAG_AFTER='+json.dumps(create_diag,ensure_ascii=False))
+                (out/'CREATE_CLIENT_DIAGNOSTIC.json').write_text(json.dumps(create_diag,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+                require(draft_responses, f'UI_CLIENT_CREATE_NO_DRAFT_RESPONSE:{create_diag}')
+                draft_response=draft_responses[-1]
                 try:
                     draft_payload=draft_response.json()
                 except Exception:
@@ -153,7 +164,7 @@ def main():
             output=(proc.stdout.read() if proc.stdout else '')
             (out/'cloud-center-runtime-server.log').write_text(output,encoding='utf-8')
 
-    report={'status':'PASS','result':'PASS_CLOUD_CENTER_CUSTOMER_RUNTIME_VISUAL_VERIFIED','checkCount':len(checks),'checks':checks,'consoleErrors':console_errors,'localRequestFailures':request_failures,'realDatabaseTouched':False,'liveProcessesTouched':False,'screenshots':['cloud-center-customer-provisioning.png','cloud-center-customers.png'],'diagnostics':['PICKER_DIAGNOSTIC.json','DRAFT_CLIENT_RESPONSE.json'],'doesNotProve':['live cloud customer creation','real customer data correctness','Tablet/PC/Mobile visual state']}
+    report={'status':'PASS','result':'PASS_CLOUD_CENTER_CUSTOMER_RUNTIME_VISUAL_VERIFIED','checkCount':len(checks),'checks':checks,'consoleErrors':console_errors,'localRequestFailures':request_failures,'realDatabaseTouched':False,'liveProcessesTouched':False,'screenshots':['cloud-center-customer-provisioning.png','cloud-center-customers.png'],'diagnostics':['PICKER_DIAGNOSTIC.json','CREATE_CLIENT_DIAGNOSTIC.json','DRAFT_CLIENT_RESPONSE.json'],'doesNotProve':['live cloud customer creation','real customer data correctness','Tablet/PC/Mobile visual state']}
     (out/'CLOUD_CENTER_CUSTOMER_RUNTIME_VERIFY.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(report['result']); print(f"checks={len(checks)}")
 
