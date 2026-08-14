@@ -141,20 +141,32 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f \
-            '.github/workflows/cloudcust-click-inspect.yml' '.github/workflows/cloudcust-runtime-apply-once.yml' \
-            '.github/workflows/cloudcust-source-finalize.yml' '.github/workflows/cloudcust-source-finalize-v2.yml' \
-            '.github/workflows/cloudcust-source-finalize-v3.yml' '.github/workflows/cloudcust-source-finalize-v4.yml' \
-            '.github/workflows/cloudcust-source-finalize-v5.yml' '.github/workflows/cloudcust-runtime-diagnose-v6.yml' \
-            '.github/workflows/cloudcust-source-finalize-v7.yml' '.github/workflows/cloudcust-source-finalize-v8.yml' \
-            '.github/workflows/cloudcust-final-v9.yml' '.github/workflows/cloudcust-close-v10.yml' \
-            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part1.txt' 'apps/terminal-de-venta-system/tools/_cloudcust_patch_part2.txt' \
-            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part3.txt' 'apps/terminal-de-venta-system/tools/_cloudcust_patch_part4.txt' \
-            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part5.txt' 'apps/terminal-de-venta-system/tools/_cloudcust_runtime_patch.zb64' \
+          TEMP_PATHS=(
+            '.github/workflows/cloudcust-click-inspect.yml'
+            '.github/workflows/cloudcust-runtime-apply-once.yml'
+            '.github/workflows/cloudcust-source-finalize.yml'
+            '.github/workflows/cloudcust-source-finalize-v2.yml'
+            '.github/workflows/cloudcust-source-finalize-v3.yml'
+            '.github/workflows/cloudcust-source-finalize-v4.yml'
+            '.github/workflows/cloudcust-source-finalize-v5.yml'
+            '.github/workflows/cloudcust-runtime-diagnose-v6.yml'
+            '.github/workflows/cloudcust-source-finalize-v7.yml'
+            '.github/workflows/cloudcust-source-finalize-v8.yml'
+            '.github/workflows/cloudcust-final-v9.yml'
+            '.github/workflows/cloudcust-close-v10.yml'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part1.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part2.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part3.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part4.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part5.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_runtime_patch.zb64'
             'apps/terminal-de-venta-system/tools/_cloudcust_finalize_source_v2.py'
+          )
+          rm -f "${TEMP_PATHS[@]}"
+          for p in "${TEMP_PATHS[@]}"; do
+            test ! -e "$p" || { echo "TEMP_STILL_EXISTS:$p"; exit 1; }
+          done
           git diff --check
-          bad=$(git status --short | grep -E '(_cloudcust_|cloudcust-source-finalize|cloudcust-runtime-diagnose|cloudcust-click-inspect|cloudcust-runtime-apply-once|cloudcust-final-v9|cloudcust-close-v10)' || true)
-          if [ -n "$bad" ]; then echo "$bad"; echo TEMP_TRANSPORT_REMAINS; exit 1; fi
           echo PASS_ZERO_TEMP_TRANSPORT
 
       - name: Upload evidence
@@ -170,13 +182,41 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          TEMP_PATHS=(
+            '.github/workflows/cloudcust-click-inspect.yml'
+            '.github/workflows/cloudcust-runtime-apply-once.yml'
+            '.github/workflows/cloudcust-source-finalize.yml'
+            '.github/workflows/cloudcust-source-finalize-v2.yml'
+            '.github/workflows/cloudcust-source-finalize-v3.yml'
+            '.github/workflows/cloudcust-source-finalize-v4.yml'
+            '.github/workflows/cloudcust-source-finalize-v5.yml'
+            '.github/workflows/cloudcust-runtime-diagnose-v6.yml'
+            '.github/workflows/cloudcust-source-finalize-v7.yml'
+            '.github/workflows/cloudcust-source-finalize-v8.yml'
+            '.github/workflows/cloudcust-final-v9.yml'
+            '.github/workflows/cloudcust-close-v10.yml'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part1.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part2.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part3.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part4.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_patch_part5.txt'
+            'apps/terminal-de-venta-system/tools/_cloudcust_runtime_patch.zb64'
+            'apps/terminal-de-venta-system/tools/_cloudcust_finalize_source_v2.py'
+          )
           git config user.name 'PRISMA Cloud Center Bot'
           git config user.email 'prisma-cloud-center-bot@users.noreply.github.com'
           rm -rf .cloudcust-evidence
           git add -A
           git diff --cached --check
-          bad=$(git diff --cached --name-only | grep -E '(_cloudcust_|cloudcust-source-finalize|cloudcust-runtime-diagnose|cloudcust-click-inspect|cloudcust-runtime-apply-once|cloudcust-final-v9|cloudcust-close-v10)' || true)
-          if [ -n "$bad" ]; then echo "$bad"; echo TEMP_FILE_STAGED; exit 1; fi
+          for p in "${TEMP_PATHS[@]}"; do
+            test ! -e "$p" || { echo "TEMP_REAPPEARED:$p"; exit 1; }
+          done
+          tracked_temp=$(git ls-files -- "${TEMP_PATHS[@]}" || true)
+          if [ -n "$tracked_temp" ]; then
+            echo "$tracked_temp"
+            echo TEMP_PATH_STILL_IN_FINAL_INDEX
+            exit 1
+          fi
           git diff --cached --quiet && { echo NO_FINAL_DIFF; exit 1; }
           git diff --cached --stat
           git commit -m 'fix(cloud-center): finalize governed customer registration runtime'
