@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/commercial-billing-integrity-apply-once.yml'
       - 'apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py'
+      - 'apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once_v2.py'
 
 permissions:
   contents: write
@@ -33,7 +34,7 @@ jobs:
           node-version: '22'
 
       - name: Apply exact fiscal integrity hardening
-        run: python apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py
+        run: python apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once_v2.py
 
       - name: Compile Python
         run: >-
@@ -74,6 +75,7 @@ jobs:
       - name: Commit verified hardening without workflow mutation
         run: |
           rm -f apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py
+          rm -f apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once_v2.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
@@ -91,6 +93,7 @@ jobs:
               'apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py',
               'apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md',
               'apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py',
+              'apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once_v2.py',
           }
           unexpected = [p for p in staged if p not in allowed]
           if unexpected:
