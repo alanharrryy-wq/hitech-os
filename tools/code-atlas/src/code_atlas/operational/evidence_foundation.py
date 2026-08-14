@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Iterable, Mapping, Optional
 
 EVIDENCE_SCHEMA_VERSION = "code_atlas_evidence_record.v1"
+FRESHNESS_POLICY_SCHEMA_VERSION = "code_atlas_freshness_policy.v1"
 TRUST_LEVELS = (
     "PLACEHOLDER",
     "HEURISTIC",
@@ -224,10 +225,132 @@ class FreshnessPolicy:
     def __post_init__(self) -> None:
         if not self.policy_id.strip():
             raise ValueError("policy_id is required")
-        if self.ttl_seconds <= 0:
-            raise ValueError("ttl_seconds must be > 0")
-        if self.max_future_skew_seconds < 0:
-            raise ValueError("max_future_skew_seconds must be >= 0")
+        if isinstance(self.ttl_seconds, bool) or not isinstance(self.ttl_seconds, int) or self.ttl_seconds <= 0:
+            raise ValueError("ttl_seconds must be a positive integer")
+        if (
+            isinstance(self.max_future_skew_seconds, bool)
+            or not isinstance(self.max_future_skew_seconds, int)
+            or self.max_future_skew_seconds < 0
+        ):
+            raise ValueError("max_future_skew_seconds must be a non-negative integer")
+
+    def as_dict(self) -> dict[str, Any]:
+        core = {
+            "schemaVersion": FRESHNESS_POLICY_SCHEMA_VERSION,
+            "policyId": self.policy_id,
+            "ttlSeconds": self.ttl_seconds,
+            "maxFutureSkewSeconds": self.max_future_skew_seconds,
+        }
+        return {**core, "policyDigest": canonical_digest(core)}
+
+
+def _alias_value(value: Mapping[str, Any], camel: str, snake: str) -> tuple[Any, str | None]:
+    camel_present = camel in value
+    snake_present = snake in value
+    if camel_present and snake_present and value[camel] != value[snake]:
+        return None, f"CONFLICTING_ALIASES:{camel}:{snake}"
+    if camel_present:
+        return value[camel], None
+    if snake_present:
+        return value[snake], None
+    return None, None
+
+
+def parse_freshness_policy(value: Any) -> tuple[FreshnessPolicy | None, dict[str, Any]]:
+    if isinstance(value, FreshnessPolicy):
+        return value, {
+            "status": "PASS_FRESHNESS_POLICY_VALID",
+            **value.as_dict(),
+            "productionCertified": False,
+        }
+    if not isinstance(value, Mapping):
+        return None, {
+            "status": "BLOCKED_INVALID_FRESHNESS_POLICY",
+            "reason": "POLICY_MUST_BE_OBJECT",
+            "productionCertified": False,
+        }
+    allowed = {
+        "schemaVersion",
+        "policyId",
+        "policy_id",
+        "ttlSeconds",
+        "ttl_seconds",
+        "maxFutureSkewSeconds",
+        "max_future_skew_seconds",
+    }
+    unknown = sorted(str(key) for key in value if str(key) not in allowed)
+    if unknown:
+        return None, {
+            "status": "BLOCKED_INVALID_FRESHNESS_POLICY",
+            "reason": "UNKNOWN_FIELDS",
+            "unknownFields": unknown,
+            "productionCertified": False,
+        }
+    schema = value.get("schemaVersion")
+    if schema not in (None, "", FRESHNESS_POLICY_SCHEMA_VERSION):
+        return None, {
+            "status": "BLOCKED_INVALID_FRESHNESS_POLICY",
+            "reason": "UNSUPPORTED_SCHEMA",
+            "schemaVersion": schema,
+            "productionCertified": False,
+        }
+    policy_id, alias_error = _alias_value(value, "policyId", "policy_id")
+    if alias_error:
+        return None, {"status": "BLOCKED_INVALID_FRESHNESS_POLICY", "reason": alias_error, "productionCertified": False}
+    ttl, alias_error = _alias_value(value, "ttlSeconds", "ttl_seconds")
+    if alias_error:
+        return None, {"status": "BLOCKED_INVALID_FRESHNESS_POLICY", "reason": alias_error, "productionCertified": False}
+    skew, alias_error = _alias_value(value, "maxFutureSkewSeconds", "max_future_skew_seconds")
+    if alias_error:
+        return None, {"status": "BLOCKED_INVALID_FRESHNESS_POLICY", "reason": alias_error, "productionCertified": False}
+    if skew is None:
+        skew = 300
+    try:
+        if policy_id in (None, ""):
+            raise ValueError("policyId is required")
+        policy = FreshnessPolicy(str(policy_id), ttl, skew)
+    except ValueError as exc:
+        return None, {
+            "status": "BLOCKED_INVALID_FRESHNESS_POLICY",
+            "reason": str(exc),
+            "productionCertified": False,
+        }
+    return policy, {
+        "status": "PASS_FRESHNESS_POLICY_VALID",
+        **policy.as_dict(),
+        "productionCertified": False,
+    }
+
+
+def parse_freshness_policies(value: Any) -> tuple[dict[str, FreshnessPolicy], list[dict[str, Any]]]:
+    if not isinstance(value, Mapping):
+        return {}, [{
+            "status": "BLOCKED_FRESHNESS_POLICY_REGISTRY_MISSING",
+            "sourceKind": None,
+            "productionCertified": False,
+        }]
+    policies: dict[str, FreshnessPolicy] = {}
+    rows: list[dict[str, Any]] = []
+    for raw_key in sorted(value, key=lambda item: str(item)):
+        source_kind = str(raw_key).strip()
+        if not source_kind:
+            rows.append({
+                "status": "BLOCKED_INVALID_FRESHNESS_POLICY_KEY",
+                "sourceKind": source_kind,
+                "productionCertified": False,
+            })
+            continue
+        policy, result = parse_freshness_policy(value[raw_key])
+        rows.append({"sourceKind": source_kind, **result})
+        if policy is not None:
+            policies[source_kind] = policy
+    if not rows:
+        rows.append({
+            "status": "BLOCKED_FRESHNESS_POLICY_REGISTRY_EMPTY",
+            "sourceKind": None,
+            "productionCertified": False,
+        })
+    return policies, rows
 
 
 def assess_freshness(
@@ -274,9 +397,17 @@ def assess_freshness(
     }
 
 
+def _event_scope(event: Mapping[str, Any]) -> dict[str, str]:
+    nested = event.get("scope")
+    source = nested if isinstance(nested, Mapping) else event
+    return ScopeIdentity.from_mapping(source).as_dict()
+
+
 def assess_audit_completeness(
     required_actions: Iterable[str] | None,
     events: Iterable[Mapping[str, Any]],
+    *,
+    required_scope: Mapping[str, Any] | ScopeIdentity | None = None,
 ) -> dict[str, Any]:
     required = sorted({str(item).strip() for item in (required_actions or []) if str(item).strip()})
     if not required:
@@ -286,20 +417,75 @@ def assess_audit_completeness(
             "requiredActions": [],
             "missingActions": [],
             "doesNotProve": ["Audit completeness without an authoritative action catalog."],
+            "productionCertified": False,
         }
-    counts: dict[str, int] = {}
-    for event in events:
+    scope_identity = required_scope if isinstance(required_scope, ScopeIdentity) else ScopeIdentity.from_mapping(required_scope)
+    scope = scope_identity.as_dict()
+    if not scope:
+        return {
+            "status": "BLOCKED_AUDIT_SCOPE_CONTRACT_MISSING",
+            "complete": False,
+            "requiredActions": required,
+            "requiredScope": {},
+            "missingActions": required,
+            "doesNotProve": ["Audit completeness without an explicit governed scope identity."],
+            "productionCertified": False,
+        }
+
+    matched: dict[str, list[str]] = {action: [] for action in required}
+    wrong_scope: list[dict[str, Any]] = []
+    invalid_provenance: list[dict[str, Any]] = []
+    observed_counts: dict[str, int] = {action: 0 for action in required}
+
+    for index, event in enumerate(events):
+        if not isinstance(event, Mapping):
+            continue
         action = str(event.get("action") or event.get("eventType") or event.get("type") or "").strip()
-        if action:
-            counts[action] = counts.get(action, 0) + 1
-    missing = [action for action in required if counts.get(action, 0) == 0]
-    duplicates = {action: count for action, count in counts.items() if count > 1 and action in required}
+        if action not in matched:
+            continue
+        event_scope = _event_scope(event)
+        missing_scope_keys = [key for key in scope if key not in event_scope]
+        conflicts = [key for key in scope if key in event_scope and event_scope[key] != scope[key]]
+        event_ref = str(event.get("eventId") or event.get("recordId") or event.get("id") or "").strip()
+        if missing_scope_keys or conflicts:
+            wrong_scope.append({
+                "action": action,
+                "eventRef": event_ref or f"event-index:{index}",
+                "missingScopeKeys": missing_scope_keys,
+                "conflictingScopeKeys": conflicts,
+            })
+            continue
+        if not event_ref:
+            invalid_provenance.append({"action": action, "eventIndex": index, "reason": "MISSING_EVENT_IDENTITY"})
+            continue
+        matched[action].append(event_ref)
+        observed_counts[action] += 1
+
+    missing = [action for action in required if not matched[action]]
+    duplicates = {action: len(refs) for action, refs in matched.items() if len(refs) > 1}
+    if wrong_scope:
+        status = "BLOCKED_WRONG_SCOPE_AUDIT_EVENTS"
+    elif invalid_provenance:
+        status = "BLOCKED_AUDIT_EVENT_PROVENANCE_INVALID"
+    elif missing:
+        status = "BLOCKED_MISSING_AUDIT_EVENTS"
+    elif duplicates:
+        status = "BLOCKED_DUPLICATE_AUDIT_EVENTS"
+    else:
+        status = "PASS_AUDIT_COVERAGE"
     return {
-        "status": "PASS_AUDIT_COVERAGE" if not missing else "BLOCKED_MISSING_AUDIT_EVENTS",
-        "complete": not missing,
+        "status": status,
+        "complete": status == "PASS_AUDIT_COVERAGE",
         "requiredActions": required,
-        "observedCounts": {action: counts.get(action, 0) for action in required},
+        "requiredScope": scope,
+        "observedCounts": observed_counts,
         "missingActions": missing,
         "duplicateActionCounts": duplicates,
+        "wrongScopeEvents": wrong_scope,
+        "invalidProvenanceEvents": invalid_provenance,
         "productionCertified": False,
+        "doesNotProve": [
+            "Tenant isolation outside the exact audited scope.",
+            "Runtime completeness beyond the supplied authoritative action catalog and events.",
+        ],
     }

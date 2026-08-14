@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -30,9 +31,27 @@ FOUNDATION_CAPABILITY_BINDINGS = {
 }
 
 FOUNDATION_BLOCKERS_BY_CAPABILITY = {
-    "snapshot_diff_engine": {"snapshot_baseline_missing"},
-    "historical_trend_mini_atlas": {"historical_trend_insufficient_history"},
-    "staleness_monitor": {"freshness_policy_or_evidence_missing"},
+    "snapshot_diff_engine": {
+        "snapshot_baseline_missing",
+        "snapshot_repository_identity_unavailable",
+        "snapshot_integrity_blocked",
+        "evidence_observed_at_missing_or_invalid",
+    },
+    "historical_trend_mini_atlas": {
+        "historical_trend_insufficient_history",
+        "historical_trend_integrity_blocked",
+        "snapshot_repository_identity_unavailable",
+        "evidence_observed_at_missing_or_invalid",
+    },
+    "operational_timeline": {
+        "operational_timeline_integrity",
+        "evidence_observed_at_missing_or_invalid",
+    },
+    "staleness_monitor": {
+        "freshness_policy_or_evidence_missing",
+        "freshness_policy_contract_invalid",
+        "evidence_observed_at_missing_or_invalid",
+    },
     "audit_completeness_matrix": {"audit_catalog_or_events_incomplete"},
     "data_lineage_graph": {"lineage"},
     "orphan_detector": {"lineage"},
@@ -116,11 +135,7 @@ def _write_hardening_summary(
                 maturity=row["maturity"],
             )
         )
-    lines.extend([
-        "",
-        "## Foundation blockers",
-        "",
-    ])
+    lines.extend(["", "## Foundation blockers", ""])
     blockers = foundation_summary.get("blockers") or []
     lines.extend(f"- `{item}`" for item in blockers)
     if not blockers:
@@ -134,6 +149,7 @@ def _write_hardening_summary(
         "- A viewer text filter is not a typed query engine.",
         "- A generated detector row is not automatically contract-backed evidence.",
         "- A contract-backed foundation output may still be blocked by missing runtime evidence or policy.",
+        "- Snapshot/trend comparability requires the same stable repository identity.",
         "",
     ])
     path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
@@ -190,16 +206,14 @@ def run_operational_atlas(
     output_dir: str,
     result_root: Optional[str] = None,
 ) -> dict[str, Any]:
-    """Run the existing collector, foundations, then no-fake-green hardening.
+    """Run the existing collector, foundations, then no-fake-green hardening."""
 
-    The base runner remains the data collector for backward compatibility.
-    Foundations replace selected heuristic outputs with deterministic,
-    contract-backed and fail-closed evidence/temporal/lineage outputs. The
-    capability layer then reconciles runtime observation and maturity without
-    granting certification.
-    """
-
+    collection_observed_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     manifest = dict(_run_base_operational_atlas(repo_root, output_dir, result_root))
+    # This is the collector's own observation timestamp, not a guessed source timestamp.
+    # Direct foundation callers without any authoritative timestamp still fail closed.
+    manifest["observedAt"] = collection_observed_at
+    manifest["observedAtSource"] = "hardened_runner_collection_start"
     out = Path(output_dir).resolve()
     payload_path = out / "operational_evidence_atlas.json"
     manifest_path = out / "ATLAS_MANIFEST_PLUS.json"
@@ -210,6 +224,7 @@ def run_operational_atlas(
     foundation_result = apply_operational_foundations(
         payload,
         manifest,
+        repo_root=repo_root,
         result_root=result_root,
     )
     payload = foundation_result["payload"]
@@ -217,7 +232,6 @@ def run_operational_atlas(
     for name, value in foundation_result["outputs"].items():
         _write_json(out / name, value)
 
-    # Hard rule: a scope detector is not a leakage certification.
     payload["multiTenantLeakageGuard"] = harden_multi_tenant_guard(
         payload.get("multiTenantLeakageGuard")
     )
@@ -281,11 +295,15 @@ def run_operational_atlas(
             "CAPABILITY_MATURITY_SUMMARY.json",
             "HARDENING_SUMMARY.md",
             "FOUNDATION_HARDENING_SUMMARY.json",
+            "REPOSITORY_IDENTITY.json",
             "EVIDENCE_RECORDS.json",
             "SEMANTIC_SNAPSHOT.json",
             "SNAPSHOT_DIFF_ENGINE.json",
             "HISTORICAL_TREND_MINI_ATLAS.json",
+            "OPERATIONAL_TIMELINE.json",
             "DATA_LINEAGE_GRAPH.json",
+            "FRESHNESS_POLICY_VALIDATION.json",
+            "AUDIT_COMPLETENESS_MATRIX.json",
         ):
             if name not in required:
                 required.append(name)

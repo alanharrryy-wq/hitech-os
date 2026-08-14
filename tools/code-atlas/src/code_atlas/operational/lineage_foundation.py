@@ -163,8 +163,6 @@ def build_edges(nodes: Sequence[LineageNode], payload: Mapping[str, Any]) -> lis
                 evidence_ref=source_node.source_ref,
             ))
 
-    # Scope references are explicit references only. They are not promoted into
-    # authoritative entity nodes and therefore cannot masquerade as parent proof.
     for kind, rows in rows_by_kind.items():
         for row in rows:
             source_id = _entity_id(row)
@@ -284,15 +282,23 @@ def build_lineage_graph(payload: Mapping[str, Any]) -> dict[str, Any]:
     cross_scope = [edge.edge_id for edge in edges if edge.status == "CROSS_SCOPE_CONFLICT"]
     cycles = _find_cycles(edges)
     orphans = detect_orphans(nodes, edges, payload)
+    orphan_blocked = [
+        row for row in orphans
+        if isinstance(row, Mapping) and row.get("status") == "ORPHAN_OR_SCOPE_BLOCKED"
+    ]
     blockers = []
     if invalid_nodes:
         blockers.append("invalid_or_duplicate_nodes")
     if duplicate_edges:
         blockers.append("duplicate_edges")
+    if unresolved:
+        blockers.append("unresolved_targets")
     if cross_scope:
         blockers.append("cross_scope_conflicts")
     if cycles:
         blockers.append("cycles_detected")
+    if orphan_blocked:
+        blockers.append("orphan_or_scope_blocked")
     status = "GRAPH_CONTRACT_BACKED_WITH_BLOCKERS" if blockers else "GRAPH_CONTRACT_BACKED"
     return {
         "schemaVersion": GRAPH_SCHEMA_VERSION,

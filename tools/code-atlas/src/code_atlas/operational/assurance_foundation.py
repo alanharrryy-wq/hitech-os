@@ -150,5 +150,7 @@ def build_staleness_rows(
 def build_audit_completeness(
     required_actions: Iterable[str] | None,
     events: Iterable[Mapping[str, Any]],
+    *,
+    required_scope: Mapping[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
-    return [assess_audit_completeness(required_actions, events)]
+    return [assess_audit_completeness(required_actions, events, required_scope=required_scope)]
