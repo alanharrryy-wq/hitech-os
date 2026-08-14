@@ -26,7 +26,10 @@ class OperationalNeutralityTests(unittest.TestCase):
         result = scan_code_atlas(code_atlas_root)
         self.assertEqual(result["status"], "PASS_CODE_ATLAS_TOTAL_NEUTRALITY", result["findings"][:10])
         self.assertEqual(result["blockingCount"], 0)
-        self.assertGreater(result["scannedFileCount"], 5)
+        self.assertEqual(result["implicitAdapterImportCount"], 0)
+        self.assertEqual(result["semanticNeutralityBlockerCount"], 0)
+        self.assertTrue(result["fullReusableSourceBoundary"])
+        self.assertGreater(result["neutralScannedFileCount"], 5)
         self.assertFalse(result["productionCertified"])
 
     def test_gate_blocks_machine_specific_value_in_neutral_source(self) -> None:
@@ -34,12 +37,41 @@ class OperationalNeutralityTests(unittest.TestCase):
             root = Path(tmp)
             (root / "src").mkdir()
             (root / "CODE_ATLAS_NEUTRALITY_CONTRACT.json").write_text(json.dumps({
-                "neutralRoots": ["src"], "neutralFiles": [], "adapterRoots": [], "adapterFiles": []
+                "neutralRoots": ["src"], "neutralFiles": [], "adapterRoots": [], "adapterFiles": [],
+                "forbiddenNeutralLiterals": []
             }), encoding="utf-8")
             (root / "src" / "bad.py").write_text('ROOT = "C:\\\\Users\\\\developer\\\\project"\n', encoding="utf-8")
             result = scan_code_atlas(root)
             self.assertEqual(result["status"], "BLOCKED_CODE_ATLAS_NEUTRALITY_VIOLATION")
             self.assertGreater(result["blockingCount"], 0)
+
+    def test_gate_blocks_semantic_product_literal_in_neutral_source(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "src").mkdir()
+            (root / "CODE_ATLAS_NEUTRALITY_CONTRACT.json").write_text(json.dumps({
+                "neutralRoots": ["src"], "neutralFiles": [], "adapterRoots": [], "adapterFiles": [],
+                "forbiddenNeutralLiterals": ["Acme Internal Engine"]
+            }), encoding="utf-8")
+            (root / "src" / "bad.py").write_text('ENGINE = "Acme Internal Engine"\n', encoding="utf-8")
+            result = scan_code_atlas(root)
+            self.assertGreater(result["semanticNeutralityBlockerCount"], 0)
+            self.assertTrue(any(row["classification"] == "BLOCKING_SEMANTIC_NEUTRALITY_VIOLATION" for row in result["findings"]))
+
+    def test_gate_blocks_implicit_adapter_import(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            package = root / "src" / "code_atlas"
+            package.mkdir(parents=True)
+            (root / "CODE_ATLAS_NEUTRALITY_CONTRACT.json").write_text(json.dumps({
+                "neutralRoots": ["src/code_atlas"], "neutralFiles": [], "adapterRoots": [],
+                "adapterFiles": ["src/code_atlas/product_adapter.py"], "forbiddenNeutralLiterals": []
+            }), encoding="utf-8")
+            (package / "product_adapter.py").write_text("VALUE = 1\n", encoding="utf-8")
+            (package / "core.py").write_text("from code_atlas.product_adapter import VALUE\n", encoding="utf-8")
+            result = scan_code_atlas(root)
+            self.assertEqual(result["implicitAdapterImportCount"], 1)
+            self.assertTrue(any(row["pattern"] == "IMPLICIT_ADAPTER_IMPORT" for row in result["findings"]))
 
     def test_generic_repository_run_is_profile_driven_read_only_and_product_neutral(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -57,15 +89,8 @@ class OperationalNeutralityTests(unittest.TestCase):
                 "projectName": "External Neutral Trial",
                 "projectRoot": "${CODE_ATLAS_PROJECT_ROOT}",
                 "outputRoot": "${CODE_ATLAS_OUTPUT_ROOT}",
-                "apps": [{
-                    "id": "service",
-                    "label": "Service",
-                    "root": "src",
-                    "routes": [],
-                    "kind": "service"
-                }],
-                "protectedGlobs": [],
-                "metadata": {"trial": True}
+                "apps": [{"id": "service", "label": "Service", "root": "src", "routes": [], "kind": "service"}],
+                "protectedGlobs": [], "metadata": {"trial": True}
             }), encoding="utf-8")
             before = _tree_digest(repo)
             env = {
