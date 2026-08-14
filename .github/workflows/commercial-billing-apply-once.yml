@@ -1,0 +1,76 @@
+name: Commercial Billing Apply Once
+
+on:
+  push:
+    branches:
+      - billing-cfdi-20260814
+    paths:
+      - '.github/workflows/commercial-billing-apply-once.yml'
+      - 'apps/terminal-de-venta-system/tools/_apply_commercial_billing_once.py'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: billing-cfdi-20260814
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply exact guarded integration
+        run: python apps/terminal-de-venta-system/tools/_apply_commercial_billing_once.py
+
+      - name: Compile Python
+        run: >-
+          python -m py_compile
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/cfdi_gateway.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_billing.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_contracts.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py"
+          apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py
+
+      - name: Check JavaScript
+        run: node --check "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"
+
+      - name: Behavioral verifier on temporary SQLite
+        run: >-
+          python apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py
+          --out-dir /tmp/prisma-commercial-billing-verify
+
+      - name: Diff safety
+        run: |
+          git diff --check
+          python - <<'PY'
+          import subprocess
+          changed = subprocess.check_output(['git','diff','--name-only'], text=True).splitlines()
+          forbidden = [p for p in changed if p.lower().endswith('.css') or '/products/tablet/' in p or '/products/pc/' in p or '/products/mobile/' in p or '/prisma/' in p]
+          if forbidden:
+              raise SystemExit('Forbidden files changed: ' + ', '.join(forbidden))
+          print('PASS_ONE_SHOT_SCOPE')
+          PY
+
+      - name: Remove one-shot tooling and commit verified source
+        run: |
+          rm -f .github/workflows/commercial-billing-apply-once.yml
+          rm -f apps/terminal-de-venta-system/tools/_apply_commercial_billing_once.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "commercial: integrate collections and CFDI-ready billing"
+          git push origin HEAD:billing-cfdi-20260814
