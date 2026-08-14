@@ -452,6 +452,91 @@
         "certify enabled hover from a disabled target",
         "execute product handlers or operational mutations"
       ]
+    },
+    {
+      "id": "commercial.billing.collections",
+      "displayName": "PRISMA commercial collections and accounts receivable ledger",
+      "domain": "commercial",
+      "surfaces": [
+        "cloud_center",
+        "commercial_contract",
+        "billing",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_COMMERCIAL_BILLING_CFDI_LOCAL_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "Runtime operator verification in Prisma Cloud Center with sandbox/test customer data, then supervised real-client operational use. Do not rebuild the collections ledger.",
+      "evidence": [
+        "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+        "apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py",
+        "PR #245 Commercial Billing Authority + behavioral verification"
+      ],
+      "doesNotProve": [
+        "Bank payment processing or bank reconciliation",
+        "Live SAT/PAC stamping or cancellation",
+        "Runtime/visual certification of Cloud Center",
+        "Tax/legal compliance for a specific taxpayer",
+        "Historical fiscal data for Prisma Original Customer"
+      ],
+      "allowedActions": [
+        "read-only evidence review",
+        "runtime operator verification",
+        "sandbox billing exercises",
+        "fix demonstrated drift",
+        "advance to external fiscal gateway"
+      ],
+      "forbiddenActions": [
+        "rebuild collections ledger from scratch",
+        "move payment processing into licensing",
+        "auto-suspend licenses from past-due state",
+        "store banking/card credentials"
+      ]
+    },
+    {
+      "id": "commercial.billing.cfdi_external_gateway",
+      "displayName": "PRISMA CFDI 4.0 and Payment Complement 2.0 external gateway boundary",
+      "domain": "commercial",
+      "surfaces": [
+        "cloud_center",
+        "billing",
+        "fiscal_gateway",
+        "governance",
+        "quality"
+      ],
+      "classification": "EXTERNAL",
+      "status": "EXTERNAL_BLOCKED",
+      "stateLabel": "SOURCE_READY_LOCAL_DRAFTS_EXTERNAL_SAT_PAC_REQUIRED",
+      "doNotRebuild": true,
+      "nextGate": "Configure real issuer fiscal identity and SAT/PAC integration with CSD/secrets managed outside repo/ledger, then run explicitly authorized live stamping and cancellation E2E with secret-safe evidence.",
+      "evidence": [
+        "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+        "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/cfdi_gateway.py",
+        "apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py",
+        "PR #245 Commercial Billing Authority + behavioral verification"
+      ],
+      "doesNotProve": [
+        "XML XSD validation by SAT/PAC",
+        "Real CSD validity",
+        "Live UUID issuance",
+        "Live SAT/PAC cancellation",
+        "Fiscal catalog compatibility for a real taxpayer",
+        "Legal/accounting certification"
+      ],
+      "allowedActions": [
+        "prepare external provider ceremony",
+        "validate source locally",
+        "register external UUID/cancellation evidence",
+        "run live fiscal E2E only with explicit authorization"
+      ],
+      "forbiddenActions": [
+        "store CSD private key or password in repo/database/logs",
+        "store PAC token in repo/database/logs",
+        "claim live stamping from local draft verification",
+        "claim cancellation from cancel_requested"
+      ]
     }
   ],
   "updatedAt": "2026-08-02T19:45:00-06:00"

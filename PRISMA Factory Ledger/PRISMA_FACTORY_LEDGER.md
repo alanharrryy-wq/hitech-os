@@ -37,3 +37,15 @@ If the ledger says `doNotRebuild: true`, the next agent must not rebuild that ca
 - Do not rebuild the doctrine. Advance to runtime data-egress and support-bundle certification.
 - This does not prove zero network egress or legal compliance.
 <!-- PRISMA:LOCAL_FIRST_DATA_CUSTODY:END -->
+
+<!-- PRISMA:COMMERCIAL_BILLING:BEGIN -->
+## Commercial billing and CFDI
+
+- `commercial.billing.collections`: `DONE / LOCAL_VERIFIED / doNotRebuild=true`.
+- State: `PASS_COMMERCIAL_BILLING_CFDI_LOCAL_VERIFIED`.
+- Next gate: runtime operator verification, not a rebuild.
+- `commercial.billing.cfdi_external_gateway`: `EXTERNAL / EXTERNAL_BLOCKED / doNotRebuild=true`.
+- State: `SOURCE_READY_LOCAL_DRAFTS_EXTERNAL_SAT_PAC_REQUIRED`.
+- Next gate: explicitly authorized SAT/PAC live fiscal E2E with secrets managed outside repo/ledger.
+- Local PASS does **not** mean bank processing, live CFDI stamping, live cancellation, or legal/tax certification.
+<!-- PRISMA:COMMERCIAL_BILLING:END -->

@@ -215,9 +215,59 @@
         "Enabled state behavior on the real disabled runtime target",
         "Visual certification outside the declared Atlasfin and fixture scope"
       ]
+    },
+    {
+      "artifact": "PR #245 Commercial Billing local verification",
+      "type": "commercial_collections_local_verification",
+      "scope": [
+        "commercial",
+        "cloud_center",
+        "collections",
+        "billing",
+        "quality"
+      ],
+      "status": "PASS_LOCAL_VERIFIED",
+      "proves": [
+        "CommercialContract-to-charge projection works in temporary SQLite",
+        "Aging, past-due, partial payment, paid, void, idempotency and non-fiscal receipt behaviors are verified",
+        "Payments are recorded as external facts and do not mutate licensing",
+        "No real database, bank, card, SPEI, Prisma schema, Tablet, PC or Mobile surface was mutated",
+        "Behavioral verifier completed 21 checks"
+      ],
+      "doesNotProve": [
+        "Runtime visual certification",
+        "Bank payment processing",
+        "Live fiscal stamping/cancellation",
+        "Tax/legal compliance for a real taxpayer"
+      ]
+    },
+    {
+      "artifact": "PR #245 CFDI external gateway source verification",
+      "type": "cfdi_external_gateway_source_verification",
+      "scope": [
+        "commercial",
+        "cfdi_4_0",
+        "pagos_2_0",
+        "external_sat_pac"
+      ],
+      "status": "SOURCE_READY_EXTERNAL_BLOCKED",
+      "proves": [
+        "CFDI 4.0 income drafts fail closed on missing fiscal prerequisites",
+        "PUE/PPD and Payment Complement 2.0 local behavior is verified",
+        "External UUID and cancellation-result registration is auditable",
+        "Live stamping and cancellation flags remain false",
+        "Secrets are not part of the billing schema"
+      ],
+      "doesNotProve": [
+        "SAT/PAC XML acceptance",
+        "Real UUID issuance",
+        "CSD validity",
+        "Live cancellation",
+        "Legal/accounting certification"
+      ]
     }
   ],
-  "updatedAt": "2026-08-02T19:45:00-06:00",
+  "updatedAt": "2026-08-14T03:45:09-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -248,6 +298,26 @@
         "ATLASFIN_VISUAL_LAYOUT_GATE.json",
         "COBRAR_STATE_FIXTURE_EVIDENCE.json",
         "PROTECTED_HASHES_COMPARISON.json"
+      ]
+    },
+    {
+      "capabilityId": "commercial.billing.collections",
+      "status": "LOCAL_VERIFIED",
+      "runId": "PR245_COMMERCIAL_BILLING_LOCAL_VERIFIED",
+      "evidence": [
+        "PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+        "verify-commercial-billing-cfdi-01.py",
+        "COMMERCIAL_BILLING_VERIFY.json"
+      ]
+    },
+    {
+      "capabilityId": "commercial.billing.cfdi_external_gateway",
+      "status": "EXTERNAL_BLOCKED",
+      "runId": "PR245_CFDI_EXTERNAL_GATEWAY_SOURCE_READY",
+      "evidence": [
+        "PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+        "cfdi_gateway.py",
+        "COMMERCIAL_BILLING_VERIFY.json"
       ]
     }
   ]
