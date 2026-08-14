@@ -3,6 +3,8 @@
 Every reusable module under the contract's neutral roots must be machine-neutral,
 repository-neutral and product-neutral. Product compatibility is permitted only in
 explicitly named profile/adapter boundaries and may never be selected implicitly.
+Product-specific semantic literals belong in the external neutrality contract, not
+in this reusable scanner.
 """
 from __future__ import annotations
 
@@ -15,23 +17,9 @@ from typing import Any
 TEXT_SUFFIXES = {".py", ".json", ".jsonc", ".md", ".txt", ".csv", ".ts", ".tsx", ".js", ".mjs", ".mts", ".html", ".css", ".ps1", ".yaml", ".yml", ".toml"}
 EXCLUDED_PARTS = {"node_modules", ".git", "__pycache__", ".next", "dist", "build", "coverage", ".pytest_cache"}
 
-_PRODUCT_REPO = "hitech" + "-os"
-_PRODUCT_APP = "terminal" + "-de-venta-system"
-_PRODUCT_WORD = "PRI" + "SMA"
-_PRODUCT_DOMAIN = "app." + "hitechrts" + ".com"
-_PRODUCT_MARKERS = (
-    rf"\b{_PRODUCT_WORD}[_ -]CTX\b",
-    rf"\b{_PRODUCT_WORD}\s+(?:Factory\s+Ledger|Operational|Code\s+Atlas|Surface|UI\s+Bridge|UI\s+Component|Smart\s+AllMesh|Data)\b",
-    rf"\b(?:Motores|Todo|Global)\s+{_PRODUCT_WORD}\b",
-)
-
 PATTERNS: dict[str, re.Pattern[str]] = {
     "WINDOWS_ABSOLUTE_PATH": re.compile(r"(?i)(?<![A-Za-z0-9_])[A-Za-z]:(?:[\\/])+[^\s'\"`]+"),
     "POSIX_USER_HOME_PATH": re.compile(r"(?i)(?:['\"`])/(?:home|Users)/[^\s'\"`]+"),
-    "PRODUCT_REPOSITORY": re.compile(re.escape(_PRODUCT_REPO), re.I),
-    "PRODUCT_APP_PATH": re.compile(re.escape(_PRODUCT_APP), re.I),
-    "PRODUCT_DOMAIN": re.compile(re.escape(_PRODUCT_DOMAIN), re.I),
-    "PRODUCT_MARKER": re.compile("|".join(_PRODUCT_MARKERS), re.I),
     "FIXED_LOCAL_PORT": re.compile(r"(?i)\b(?:localhost|127\.0\.0\.1):\d{2,5}\b"),
 }
 
@@ -181,7 +169,7 @@ def scan_code_atlas(root: str | Path, contract_path: str | Path | None = None) -
 
     status = "PASS_CODE_ATLAS_TOTAL_NEUTRALITY" if not findings else "BLOCKED_CODE_ATLAS_NEUTRALITY_VIOLATION"
     return {
-        "schemaVersion": "code_atlas_neutrality_gate.v6",
+        "schemaVersion": "code_atlas_neutrality_gate.v7",
         "status": status,
         "scannedFileCount": scanned,
         "neutralScannedFileCount": neutral_scanned,
