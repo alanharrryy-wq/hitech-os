@@ -33,46 +33,34 @@ jobs:
               chunks.append(b''.join(p.read_bytes().split()))
           patch=zlib.decompress(base64.b64decode(b''.join(chunks),validate=True))
           Path('/tmp/cloudcust.patch').write_bytes(patch)
-          subprocess.run([
-              'git','apply','--check',
+          exclusions=[
               '--exclude=apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py',
               '--exclude=apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py',
-              '/tmp/cloudcust.patch'
-          ],check=True)
-          subprocess.run([
-              'git','apply',
-              '--exclude=apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py',
-              '--exclude=apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py',
-              '/tmp/cloudcust.patch'
-          ],check=True)
+          ]
+          subprocess.run(['git','apply','--check',*exclusions,'/tmp/cloudcust.patch'],check=True)
+          subprocess.run(['git','apply',*exclusions,'/tmp/cloudcust.patch'],check=True)
 
-      - name: Inspect patched click/action ownership
+      - name: Inspect exact flow/action anchors
         shell: python
         run: |
           from pathlib import Path
-          path=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js')
-          text=path.read_text(encoding='utf-8')
+          text=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js').read_text(encoding='utf-8')
           probes={
-            'document_click':'document.addEventListener("click", (event) => {',
-            'action_lookup':'const actionButtonNode = event.target.closest("[data-action]")',
-            'action_dispatch':'handleAction(actionButtonNode.dataset.action',
+            'change':'document.addEventListener("change"',
+            'pick_flow':'const pickFlowNode',
+            'handle_action':'async function handleAction',
+            'flow_input':'const field=event.target.closest("[data-flow-field]")',
             'prepare_branch':'action === "prepare-client"',
-            'collect_other':'collectOtherValues()',
-            'post_draft':'/api/command-center/draft-client',
           }
           for name,token in probes.items():
               print(f'COUNT {name}={text.count(token)}')
-          for name in ('action_lookup','prepare_branch','collect_other'):
-              token=probes[name]; pos=text.find(token)
+              pos=text.find(token)
               print(f'POSITION {name}={pos}')
               if pos>=0:
-                  lo=max(0,pos-1800); hi=min(len(text),pos+4200)
+                  lo=max(0,pos-900); hi=min(len(text),pos+2200)
                   print(f'--- {name} CONTEXT START ---')
                   print(text[lo:hi])
                   print(f'--- {name} CONTEXT END ---')
-          if text.count(probes['action_lookup']) != 1:
-              raise SystemExit('ACTION_DELEGATION_COUNT_INVALID')
-          if text.count(probes['prepare_branch']) != 1:
-              raise SystemExit('PREPARE_CLIENT_BRANCH_COUNT_INVALID')
-          if text.count(probes['post_draft']) != 1:
-              raise SystemExit('DRAFT_ENDPOINT_COUNT_INVALID')
+          if text.count(probes['change']) != 1: raise SystemExit('CHANGE_HANDLER_COUNT_INVALID')
+          if text.count(probes['pick_flow']) != 1: raise SystemExit('PICK_FLOW_COUNT_INVALID')
+          if text.count(probes['handle_action']) != 1: raise SystemExit('HANDLE_ACTION_COUNT_INVALID')
