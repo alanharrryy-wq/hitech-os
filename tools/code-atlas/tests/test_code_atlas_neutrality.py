@@ -10,7 +10,9 @@ from pathlib import Path
 from unittest import mock
 
 from code_atlas.core.neutrality_gate import scan_code_atlas
+from code_atlas.db_glass.reality_check import run_reality_check, save_reality_check
 from code_atlas.legal_readiness.contracts import LegalPipelineConfig
+from code_atlas.manifest.todo_el_show_plus import run_todo_plus
 from code_atlas.operational import runner as operational_runner
 from code_atlas.operational.runtime_profile import public_path, resolve_runtime_profile
 from code_atlas.surface_target_atlas.runner import run_surface_target_atlas
@@ -53,8 +55,6 @@ def _all_neutral_python_files() -> list[Path]:
     for root in NEUTRAL_SOURCE_ROOTS:
         if root.exists():
             files.extend(root.rglob("*.py"))
-    # The detector intentionally contains regex examples of forbidden coupling.
-    # It is tested separately by behavior and cannot be treated as a runtime default.
     return sorted(path for path in set(files) if path.resolve() != DETECTOR_DEFINITION.resolve())
 
 
@@ -78,6 +78,14 @@ def _write_fixture_repo(root: Path) -> Path:
     conn.commit()
     conn.close()
     return repo
+
+
+def _text_outputs(root: Path) -> str:
+    chunks: list[str] = []
+    for path in root.rglob("*"):
+        if path.is_file() and path.suffix.lower() in {".json", ".md", ".html", ".csv", ".txt"}:
+            chunks.append(path.read_text(encoding="utf-8", errors="replace"))
+    return "\n".join(chunks)
 
 
 class CodeAtlasNeutralityTests(unittest.TestCase):
@@ -119,10 +127,7 @@ class CodeAtlasNeutralityTests(unittest.TestCase):
             repo = _write_fixture_repo(tmp_path)
             out = tmp_path / "outputs" / "operational"
             source_before = {path.relative_to(repo).as_posix(): path.read_bytes() for path in repo.rglob("*") if path.is_file()}
-            env = {
-                "CODE_ATLAS_PROJECT_ROOT": str(repo),
-                "CODE_ATLAS_OUTPUT_ROOT": str(out),
-            }
+            env = {"CODE_ATLAS_PROJECT_ROOT": str(repo), "CODE_ATLAS_OUTPUT_ROOT": str(out)}
             with mock.patch.dict(os.environ, env, clear=True):
                 manifest = operational_runner.run_operational_atlas(str(repo), str(out), str(tmp_path / "evidence"))
             source_after = {path.relative_to(repo).as_posix(): path.read_bytes() for path in repo.rglob("*") if path.is_file()}
@@ -132,12 +137,29 @@ class CodeAtlasNeutralityTests(unittest.TestCase):
             self.assertEqual(manifest["repoRootName"], repo.name)
             self.assertNotIn("repo", manifest)
             self.assertEqual(manifest["supportResolverStatus"], "NOT_CONFIGURED")
-            payload_text = "\n".join(path.read_text(encoding="utf-8", errors="replace") for path in out.rglob("*") if path.is_file() and path.suffix.lower() in {".json", ".md", ".html", ".csv"})
+            payload_text = _text_outputs(out)
             self.assertNotIn(str(repo), payload_text)
             self.assertNotIn(str(tmp_path), payload_text)
             lowered = payload_text.lower()
             for banned in ("terminal-de-venta-system", "prisma operational evidence", "f:\\", "f:/"):
                 self.assertNotIn(banned, lowered)
+
+    def test_db_reality_is_read_only_and_never_exports_absolute_project_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            repo = _write_fixture_repo(tmp_path)
+            out = tmp_path / "db-output"
+            source_before = {path.relative_to(repo).as_posix(): path.read_bytes() for path in repo.rglob("*") if path.is_file()}
+            report = run_reality_check(repo)
+            save_reality_check(report, out)
+            source_after = {path.relative_to(repo).as_posix(): path.read_bytes() for path in repo.rglob("*") if path.is_file()}
+            self.assertEqual(source_before, source_after)
+            self.assertTrue(report["environment_neutral"])
+            self.assertNotIn("project_root", report)
+            self.assertFalse(any("absolute_path" in row for row in report.get("sqlite", [])))
+            output_text = _text_outputs(out)
+            self.assertNotIn(str(repo), output_text)
+            self.assertNotIn(str(tmp_path), output_text)
 
     def test_surface_target_atlas_discovers_generic_surface_and_emits_no_absolute_repo_path(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -167,6 +189,23 @@ class CodeAtlasNeutralityTests(unittest.TestCase):
             serialized = json.dumps({"manifest": manifest, "atlas": atlas}, ensure_ascii=False)
             self.assertNotIn(str(repo), serialized)
             self.assertNotIn(str(tmp_path), serialized)
+
+    def test_todo_plus_bundle_is_path_safe_and_repo_read_only(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            repo = _write_fixture_repo(tmp_path)
+            out = tmp_path / "todo-output"
+            source_before = {path.relative_to(repo).as_posix(): path.read_bytes() for path in repo.rglob("*") if path.is_file()}
+            with mock.patch.dict(os.environ, {"CODE_ATLAS_PROJECT_ROOT": str(repo), "CODE_ATLAS_OUTPUT_ROOT": str(out)}, clear=True):
+                manifest = run_todo_plus(repo, out)
+            source_after = {path.relative_to(repo).as_posix(): path.read_bytes() for path in repo.rglob("*") if path.is_file()}
+            self.assertEqual(source_before, source_after)
+            self.assertTrue(manifest["environment_neutral"])
+            self.assertFalse(manifest["productionCertified"])
+            self.assertNotIn("project_root", manifest)
+            output_text = _text_outputs(out)
+            self.assertNotIn(str(repo), output_text)
+            self.assertNotIn(str(tmp_path), output_text)
 
     def test_legal_readiness_defaults_are_platform_neutral_and_runtime_adapter_is_explicit(self) -> None:
         with mock.patch.dict(os.environ, {}, clear=True):
