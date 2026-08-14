@@ -36,6 +36,12 @@
       "reason": "CFDI local draft/external-result gateway source is ready; the next gate is external SAT/PAC, not source rebuild.",
       "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
       "updatedAt": "2026-08-14T03:45:09-06:00"
+    },
+    "cloud_center.customer_registration_runtime": {
+      "value": true,
+      "reason": "PR #254 customer registration runtime is merged and runtime-verified; advance to cloud activation instead of rebuilding.",
+      "evidence": "apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py",
+      "updatedAt": "2026-08-14T08:48:10-06:00"
     }
   },
   "verifyOrFix": {
@@ -50,5 +56,5 @@
       "updatedAt": "2026-07-20T15:30:00-06:00"
     }
   },
-  "updatedAt": "2026-08-14T03:45:09-06:00"
+  "updatedAt": "2026-08-14T08:48:10-06:00"
 }

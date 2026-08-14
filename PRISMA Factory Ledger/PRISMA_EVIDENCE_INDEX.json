@@ -266,9 +266,35 @@
         "Live cancellation",
         "Legal/accounting certification"
       ]
+    },
+    {
+      "artifact": "PR #254 Cloud Center customer registration runtime certification",
+      "type": "cloud_center_customer_registration_runtime",
+      "scope": [
+        "cloud_center",
+        "customer_registration",
+        "governance",
+        "quality"
+      ],
+      "status": "PASS_RUNTIME_VERIFIED",
+      "proves": [
+        "Customer registration focused verifier completed 24/24 declared checks",
+        "Chrome Playwright E2E completed 11/11 declared checks",
+        "draft-client request returned HTTP 200 in certified browser flow",
+        "Certified browser flow recorded zero console errors and zero failed requests",
+        "PR #254 final CI, ForgeOS Quality Gate, Zero Priority Gate, License Pricing Canon, Commercial Billing Authority, repo-analyzer-self-test and CLA Check passed",
+        "PR #254 merged as 2557f4e0efa5204a5cad650e71382ff21bcb1b84",
+        "Closure Authority Mesh passed with productization + quality only, zero change types, zero missing authority, explicit layer exclusions and exact source hashes"
+      ],
+      "doesNotProve": [
+        "Real cloud customer activation or hosted production provisioning",
+        "External admin/token mutation or licensing activation",
+        "Future runtime behavior after source drift",
+        "Readiness of unrelated Tablet, PC, Mobile, Web, Chart Lab or Shared UI surfaces"
+      ]
     }
   ],
-  "updatedAt": "2026-08-14T04:01:50-06:00",
+  "updatedAt": "2026-08-14T08:48:10-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -320,6 +346,19 @@
         "PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
         "cfdi_gateway.py",
         "COMMERCIAL_BILLING_VERIFY.json"
+      ]
+    },
+    {
+      "capabilityId": "cloud_center.customer_registration_runtime",
+      "status": "RUNTIME_VERIFIED",
+      "runId": "PR254_CLOUD_CENTER_CUSTOMER_REGISTRATION_RUNTIME",
+      "evidence": [
+        "PR #254",
+        "merge commit 2557f4e0efa5204a5cad650e71382ff21bcb1b84",
+        "verify-cloud-center-customer-registration-01.py",
+        "verify-cloud-center-customer-runtime-02.py",
+        "cloudcust-1408-final-v10",
+        "cloudcust-ledger-mesh sha256:b17dcac8a3f1dabf504e02297d33b879e4c45a8ab5b87d50c2c61d78cd58c886"
       ]
     }
   ]
