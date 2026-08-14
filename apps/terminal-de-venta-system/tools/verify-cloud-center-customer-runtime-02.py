@@ -82,14 +82,13 @@ def main():
                     require(page.locator(f'select[data-flow-field="{field}"][required]').count()==1,f'REQUIRED_FIELD_MISSING:{field}')
                 checks.append('customer_form_homologated')
 
-                # Keyboard picker behavior remains a strict requirement. Diagnostics are emitted
-                # before and after Enter so failures identify focus/event/render/visibility drift.
+                # Keyboard picker behavior remains strict. Locator.press targets the governed
+                # control itself, avoiding ambiguity from an unrelated global activeElement.
                 vertical_button=page.locator('[data-picker-toggle="vertical"]')
                 vertical_button.wait_for(state='visible',timeout=10000)
-                vertical_button.focus()
                 before=page.evaluate("""()=>{const b=document.querySelector('[data-picker-toggle="vertical"]'); const p=document.querySelector('[data-picker-panel="vertical"]'); return {activeTag:document.activeElement?.tagName||null,activePicker:document.activeElement?.dataset?.pickerToggle||null,buttonConnected:!!b?.isConnected,aria:b?.getAttribute('aria-expanded')||null,panelConnected:!!p?.isConnected,panelClass:p?.className||null};}""")
                 print('PICKER_DIAG_BEFORE='+json.dumps(before,ensure_ascii=False))
-                page.keyboard.press('Enter')
+                vertical_button.press('Enter')
                 page.wait_for_timeout(250)
                 after=page.evaluate("""()=>{const b=document.querySelector('[data-picker-toggle="vertical"]'); const p=document.querySelector('[data-picker-panel="vertical"]'); const cs=p?getComputedStyle(p):null; const r=p?p.getBoundingClientRect():null; return {activeTag:document.activeElement?.tagName||null,activePicker:document.activeElement?.dataset?.pickerToggle||null,buttonConnected:!!b?.isConnected,aria:b?.getAttribute('aria-expanded')||null,panelConnected:!!p?.isConnected,panelClass:p?.className||null,display:cs?.display||null,visibility:cs?.visibility||null,opacity:cs?.opacity||null,rect:r?{x:r.x,y:r.y,w:r.width,h:r.height}:null};}""")
                 print('PICKER_DIAG_AFTER='+json.dumps(after,ensure_ascii=False))
