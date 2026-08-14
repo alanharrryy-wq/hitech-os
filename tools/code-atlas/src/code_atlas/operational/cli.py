@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from .hardened_runner import run_operational_atlas
+from .final_runner import run_operational_atlas
 
 
 def main(argv=None):
