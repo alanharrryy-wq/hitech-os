@@ -26,6 +26,29 @@ def _unique_components(repository: BridgeRepository) -> list[dict[str, Any]]:
     return [rows[key] for key in sorted(rows)]
 
 
+def _effective_recipe_paths(governor: Path, configured: Iterable[str | Path]) -> list[Path]:
+    rows: list[Path] = []
+    seen: set[str] = set()
+    for raw in configured:
+        path = Path(raw)
+        if path.exists():
+            key = str(path.resolve())
+            if key not in seen:
+                seen.add(key)
+                rows.append(path)
+    for rel in (
+        "authority/rifat/identity/recipes",
+        "authority/rifat/identity/portable/v2",
+    ):
+        path = governor / rel
+        if path.exists():
+            key = str(path.resolve())
+            if key not in seen:
+                seen.add(key)
+                rows.append(path)
+    return rows
+
+
 def build_three_app_readiness(repository: BridgeRepository, promotion_report: dict[str, Any]) -> dict[str, Any]:
     components = [row for row in _unique_components(repository) if row.get("runtimeAlias") in CORE_RUNTIME_ALIASES]
     promotion_by_ui = {
@@ -163,7 +186,8 @@ def refresh_three_app_mapping(
     readiness = build_three_app_readiness(repository, promotion)
     write_json(output / "PRISMA_THREE_APP_VISUAL_MAPPING_READINESS.json", readiness)
 
-    recipes = RecipeRepository.load(recipe_paths)
+    effective_recipe_paths = _effective_recipe_paths(governor, recipe_paths)
+    recipes = RecipeRepository.load(effective_recipe_paths)
     projection, projection_blockers = build_projection_map(
         repository,
         recipes,
@@ -185,6 +209,7 @@ def refresh_three_app_mapping(
 
     stable = {
         "uimapSourceSnapshotHash": uimap_result.get("sourceSnapshotHash"),
+        "effectiveRecipePaths": [path.as_posix() for path in effective_recipe_paths],
         "consistencyChecksum": consistency.get("reportChecksum"),
         "bindingPromotionCounts": {
             "promotable": promotion.get("promotableCount"),
@@ -210,6 +235,7 @@ def refresh_three_app_mapping(
         "status": "READY_FOR_SOURCE_REVIEW" if not blockers else "SOURCE_GAPS_EXPLICIT",
         "mode": "READ_ONLY",
         "uimap": uimap_result,
+        "effectiveRecipePaths": [path.as_posix() for path in effective_recipe_paths],
         "bindingPromotionReport": "PRISMA_UI_BRIDGE_BINDING_PROMOTION.json",
         "bindingGapMatrix": "PRISMA_UI_BRIDGE_BINDING_GAP_MATRIX.json",
         "consistencyReport": "PRISMA_UI_BRIDGE_VISUAL_AUTHORITY_CONSISTENCY.json",
