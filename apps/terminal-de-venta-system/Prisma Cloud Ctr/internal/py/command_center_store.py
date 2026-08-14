@@ -19,13 +19,20 @@ from commercial_contracts import (
     resolve_commercial_terms,
 )
 
+from commercial_billing import (
+    BillingError,
+    billing_command,
+    billing_snapshot,
+    ensure_billing_schema,
+)
+
 LAB_ROOT = Path(__file__).resolve().parents[2]
 TERMINAL_ROOT = LAB_ROOT.parent
 DATA_DIR = LAB_ROOT / "internal" / "data"
 DB_PATH = DATA_DIR / "prisma-command-center.db"
 PLAN_CATALOG_PATH = TERMINAL_ROOT / "shared" / "licensing" / "plan-catalog.canonical.json"
 
-PREFIX = {"client":"CLI","device":"DEV","license":"LIC","contract":"CTR","provisioning":"ALT","deactivation":"BAJ","note":"NTE","receipt":"RCP","case":"CAS","evidence":"EVD","backup":"BKP","rollback":"RBK","item":"ID"}
+PREFIX = {"client":"CLI","device":"DEV","license":"LIC","contract":"CTR","charge":"COB","payment":"PAY","fiscal":"CFD","provisioning":"ALT","deactivation":"BAJ","note":"NTE","receipt":"RCP","case":"CAS","evidence":"EVD","backup":"BKP","rollback":"RBK","item":"ID"}
 FIRST_CUSTOMER = {
     "displayName": "Prisma Original Customer",
     "tenantSlug": "prisma-original-customer",
@@ -172,6 +179,7 @@ def _exec_schema(con):
     for sql in statements:
         con.execute(sql)
     ensure_commercial_schema(con)
+    ensure_billing_schema(con)
 
 def _seed_first_customer(con):
     payload = {
@@ -497,9 +505,10 @@ def bootstrap(con):
         "mode": "local_catalogs",
         "workflowMode": "local_prepared_not_cloud_created",
         "dbPath": str(DB_PATH),
-        "schemaVersion": 3,
+        "schemaVersion": 4,
         "catalogs": cats,
         "licensePlans": plans,
+        "billing": billing_snapshot(con),
         "counts": _counts(con),
         "local": _local_payload(con),
         "cloudBridge": dict(bridge) if bridge else None,
@@ -881,6 +890,15 @@ def command_center_payload(raw_path, method="GET", body=None):
     path = urlparse(raw_path).path
     if path.startswith("/api/command-center/support"):
         return support_store_payload(raw_path, method=method, body=body)
+    if path.startswith("/api/command-center/billing"):
+        with db() as con:
+            try:
+                out = billing_command(con, path, method, body or {}, gen)
+            except BillingError as exc:
+                return {"ok": False, "resultCode": exc.code, "error": str(exc), "details": exc.details, "_httpStatus": exc.http_status}
+            if method == "POST" and out.get("ok"):
+                con.commit()
+            return out
     with db() as con:
         if method == "GET" and path in ("/api/command-center", "/api/command-center/bootstrap"):
             return bootstrap(con)

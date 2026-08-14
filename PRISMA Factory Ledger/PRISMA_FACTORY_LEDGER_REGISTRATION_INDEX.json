@@ -43,7 +43,25 @@
       "sourceEvidenceSha256": "06EC52F9727343349670956AF4008046879FDCD2E2C7CB1F7BA0955109D2DB23",
       "doNotRebuild": true,
       "nextGate": "RUNTIME_DATA_EGRESS_AND_SUPPORT_BUNDLE_CERTIFICATION"
+    },
+    "commercial.billing.collections": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-14T03:45:09-06:00",
+      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+      "sourceEvidenceSha256": "C5728F4D3B241747D88519533BAE7D641F50E4E398F1F3E90B7F65B90A1B3657",
+      "verifierSha256": "AA464595208BFA03C8278202BA63C010408975C7D17DB7440B4A064D3063258A",
+      "doNotRebuild": true,
+      "nextGate": "RUNTIME_OPERATOR_VERIFICATION"
+    },
+    "commercial.billing.cfdi_external_gateway": {
+      "status": "EXTERNAL_BLOCKED_SOURCE_READY",
+      "updatedAt": "2026-08-14T03:45:09-06:00",
+      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+      "sourceEvidenceSha256": "C5728F4D3B241747D88519533BAE7D641F50E4E398F1F3E90B7F65B90A1B3657",
+      "verifierSha256": "AA464595208BFA03C8278202BA63C010408975C7D17DB7440B4A064D3063258A",
+      "doNotRebuild": true,
+      "nextGate": "EXPLICIT_SAT_PAC_LIVE_FISCAL_E2E"
     }
   },
-  "updatedAt": "2026-07-17T19:27:40.449684-06:00"
+  "updatedAt": "2026-08-14T03:45:09-06:00"
 }

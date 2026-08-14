@@ -24,6 +24,18 @@
       "reason": "Canonical local-first custody source contract installed",
       "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md",
       "updatedAt": "2026-07-17T19:27:40.449684-06:00"
+    },
+    "commercial.billing.collections": {
+      "value": true,
+      "reason": "Collections ledger passed 21 behavioral checks in temporary SQLite; advance to runtime verification, do not rebuild.",
+      "evidence": "apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py",
+      "updatedAt": "2026-08-14T03:45:09-06:00"
+    },
+    "commercial.billing.cfdi_external_gateway": {
+      "value": true,
+      "reason": "CFDI local draft/external-result gateway source is ready; the next gate is external SAT/PAC, not source rebuild.",
+      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+      "updatedAt": "2026-08-14T03:45:09-06:00"
     }
   },
   "verifyOrFix": {
@@ -38,5 +50,5 @@
       "updatedAt": "2026-07-20T15:30:00-06:00"
     }
   },
-  "updatedAt": "2026-07-20T15:30:00-06:00"
+  "updatedAt": "2026-08-14T03:45:09-06:00"
 }
