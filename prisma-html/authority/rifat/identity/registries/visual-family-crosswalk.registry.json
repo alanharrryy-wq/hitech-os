@@ -1,0 +1,51 @@
+{
+  "schema": "prisma.visual-family-crosswalk.v1",
+  "version": "1.0.0",
+  "status": "SOURCE_READY_EXPLICIT_VISUAL_AUTHORITY",
+  "purpose": "Map explicit UIMAP visual widget families to governed VISREC2 recipe families without populating business/data neutralMeaningId.",
+  "meaningBoundary": {
+    "visualFamilyIdIsBusinessMeaning": false,
+    "visualFamilyIdMayPopulateNeutralMeaningId": false,
+    "neutralMeaningIdRemainsNdcBusinessAuthority": true,
+    "mappingIsNeverInferredFromNamingAlone": true
+  },
+  "governedMappings": [
+    {"widgetTypeId":"WID.button","visualFamilyId":"VISFAM.button.v1","familyKind":"button","recipeId":"REC.button.governed.v2","basis":"EXPLICIT_VISUAL_FAMILY_AUTHORITY"},
+    {"widgetTypeId":"WID.action","visualFamilyId":"VISFAM.button.v1","familyKind":"button","recipeId":"REC.button.governed.v2","basis":"EXPLICIT_COMPONENT_CATALOG_ACTION_BUTTON_TO_BUTTON_RECIPE"},
+    {"widgetTypeId":"WID.card","visualFamilyId":"VISFAM.card.v1","familyKind":"card","recipeId":"REC.card.governed.v2","basis":"EXPLICIT_COMPONENT_CATALOG_CARD_FAMILY"},
+    {"widgetTypeId":"WID.panel","visualFamilyId":"VISFAM.panel.v1","familyKind":"panel","recipeId":"REC.panel.governed.v2","basis":"EXPLICIT_COMPONENT_CATALOG_PANEL_FAMILY"},
+    {"widgetTypeId":"WID.input","visualFamilyId":"VISFAM.input.v1","familyKind":"input","recipeId":"REC.input.governed.v2","basis":"EXPLICIT_VISUAL_FAMILY_AUTHORITY"},
+    {"widgetTypeId":"WID.select","visualFamilyId":"VISFAM.input.v1","familyKind":"input","recipeId":"REC.input.governed.v2","basis":"EXPLICIT_FORM_CONTROL_ADAPTATION_AUTHORITY"},
+    {"widgetTypeId":"WID.form","visualFamilyId":"VISFAM.input.v1","familyKind":"input","recipeId":"REC.input.governed.v2","basis":"EXPLICIT_FORM_CONTROL_ADAPTATION_AUTHORITY"},
+    {"widgetTypeId":"WID.navigation","visualFamilyId":"VISFAM.navigation.v1","familyKind":"navigation","recipeId":"REC.navigation.governed.v2","basis":"EXPLICIT_VISUAL_FAMILY_AUTHORITY"},
+    {"widgetTypeId":"WID.menu","visualFamilyId":"VISFAM.navigation.v1","familyKind":"navigation","recipeId":"REC.navigation.governed.v2","basis":"EXPLICIT_NAVIGATION_COMPOSITION_AUTHORITY"},
+    {"widgetTypeId":"WID.tab","visualFamilyId":"VISFAM.navigation.v1","familyKind":"navigation","recipeId":"REC.navigation.governed.v2","basis":"EXPLICIT_NAVIGATION_COMPOSITION_AUTHORITY"},
+    {"widgetTypeId":"WID.toolbar","visualFamilyId":"VISFAM.navigation.v1","familyKind":"navigation","recipeId":"REC.navigation.governed.v2","basis":"EXPLICIT_NAVIGATION_COMPOSITION_AUTHORITY"},
+    {"widgetTypeId":"WID.modal","visualFamilyId":"VISFAM.overlay.v1","familyKind":"overlay","recipeId":"REC.overlay.governed.v2","basis":"EXPLICIT_OVERLAY_COMPOSITION_AUTHORITY"},
+    {"widgetTypeId":"WID.drawer","visualFamilyId":"VISFAM.overlay.v1","familyKind":"overlay","recipeId":"REC.overlay.governed.v2","basis":"EXPLICIT_OVERLAY_COMPOSITION_AUTHORITY"},
+    {"widgetTypeId":"WID.overlay","visualFamilyId":"VISFAM.overlay.v1","familyKind":"overlay","recipeId":"REC.overlay.governed.v2","basis":"EXPLICIT_VISUAL_FAMILY_AUTHORITY"},
+    {"widgetTypeId":"WID.tooltip","visualFamilyId":"VISFAM.overlay.v1","familyKind":"overlay","recipeId":"REC.overlay.governed.v2","basis":"EXPLICIT_OVERLAY_COMPOSITION_AUTHORITY"},
+    {"widgetTypeId":"WID.list","visualFamilyId":"VISFAM.table.v1","familyKind":"table","recipeId":"REC.table.governed.v2","basis":"EXPLICIT_STRUCTURED_COLLECTION_AUTHORITY"},
+    {"widgetTypeId":"WID.row","visualFamilyId":"VISFAM.table.v1","familyKind":"table","recipeId":"REC.table.governed.v2","basis":"EXPLICIT_STRUCTURED_COLLECTION_AUTHORITY"},
+    {"widgetTypeId":"WID.table","visualFamilyId":"VISFAM.table.v1","familyKind":"table","recipeId":"REC.table.governed.v2","basis":"EXPLICIT_VISUAL_FAMILY_AUTHORITY"}
+  ],
+  "blockedWidgetTypes": [
+    {"widgetTypeId":"WID.control","reason":"GENERIC_CONTROL_REQUIRES_EXPLICIT_FAMILY_EVIDENCE"},
+    {"widgetTypeId":"WID.kpi","reason":"KPI_REQUIRES_EXPLICIT_VISUAL_FAMILY_AUTHORITY"},
+    {"widgetTypeId":"WID.chart","reason":"CHART_REQUIRES_CHART_SPECIFIC_VISUAL_AUTHORITY"},
+    {"widgetTypeId":"WID.alert","reason":"ALERT_STATE_AND_CONTAINER_SEMANTICS_REQUIRE_EXPLICIT_AUTHORITY"},
+    {"widgetTypeId":"WID.error","reason":"ERROR_STATE_IS_NOT_AUTOMATICALLY_A_VISUAL_COMPONENT_FAMILY"},
+    {"widgetTypeId":"WID.loading","reason":"LOADING_STATE_IS_NOT_AUTOMATICALLY_A_VISUAL_COMPONENT_FAMILY"},
+    {"widgetTypeId":"WID.empty","reason":"EMPTY_STATE_IS_NOT_AUTOMATICALLY_A_VISUAL_COMPONENT_FAMILY"},
+    {"widgetTypeId":"WID.icon","reason":"ICON_REQUIRES_EXPLICIT_ICON_FAMILY_CONTRACT"},
+    {"widgetTypeId":"WID.image","reason":"IMAGE_REQUIRES_ASSET_SPECIFIC_VISUAL_AUTHORITY"}
+  ],
+  "authorityEvidence": [
+    "apps/terminal-de-venta-system/config/prisma-visual/component-catalog.json",
+    "prisma-html/extras/atlasfin/assets/data/visual-recipe.registry.json",
+    "prisma-html/extras/atlasfin/assets/data/surface-adapter.registry.json",
+    "tools/code-atlas/src/code_atlas/app_map/uimap/contracts.py"
+  ],
+  "runtimeMutationAllowed": false,
+  "productApplicationAllowed": false
+}

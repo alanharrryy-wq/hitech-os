@@ -6,7 +6,7 @@ on:
     paths:
       - "tools/code-atlas/src/code_atlas/ui_bridge/**"
       - "tools/code-atlas/src/code_atlas/app_map/uimap/**"
-      - "tools/code-atlas/tests/test_operational_ui_bridge_*.py"
+      - "tools/code-atlas/tests/test_operational_*.py"
       - "tools/code-atlas/profiles/prisma-ui-bridge.v1.json"
       - "prisma-html/authority/rifat/**"
       - "prisma-html/extras/atlasfin/**"
@@ -47,10 +47,12 @@ jobs:
             tools/code-atlas/src/code_atlas/ui_bridge/binding_promotion.py \
             tools/code-atlas/src/code_atlas/ui_bridge/consistency.py \
             tools/code-atlas/src/code_atlas/ui_bridge/projection.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/visual_family.py \
             tools/code-atlas/src/code_atlas/ui_bridge/closure.py \
             tools/code-atlas/src/code_atlas/ui_bridge/cli.py \
             tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \
-            tools/code-atlas/tests/test_operational_ui_bridge_projection.py
+            tools/code-atlas/tests/test_operational_ui_bridge_projection.py \
+            tools/code-atlas/tests/test_operational_visual_family_mapping.py
 
       - name: Run focused operational tests
         shell: bash
@@ -58,7 +60,8 @@ jobs:
           set -euo pipefail
           python -m unittest -v \
             tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \
-            tools/code-atlas/tests/test_operational_ui_bridge_projection.py
+            tools/code-atlas/tests/test_operational_ui_bridge_projection.py \
+            tools/code-atlas/tests/test_operational_visual_family_mapping.py
 
       - name: Capture repo state before refresh
         shell: bash
@@ -99,6 +102,8 @@ jobs:
               'PRISMA_UI_MULTI_SURFACE_PROJECTION.json',
               'PRISMA_UI_MULTI_SURFACE_BLOCKERS.json',
               'PRISMA_UI_MULTI_SURFACE_SUMMARY.md',
+              'PRISMA_VISUAL_FAMILY_MAPPING.json',
+              'PRISMA_GENERATED_VISUAL_CONTROL_PROJECTION.json',
           ]
           missing = [name for name in required if not (root / name).is_file()]
           if missing:
@@ -111,18 +116,32 @@ jobs:
           consistency = json.loads((root / required[4]).read_text(encoding='utf-8'))
           projection = json.loads((root / required[5]).read_text(encoding='utf-8'))
           projection_blockers = json.loads((root / required[6]).read_text(encoding='utf-8'))
+          visual_family = json.loads((root / required[8]).read_text(encoding='utf-8'))
+          visual_control = json.loads((root / required[9]).read_text(encoding='utf-8'))
 
           if refresh.get('status') == 'BLOCKED_BY_UIMAP':
               raise SystemExit('THREE_APP_MAPPING_BLOCKED_BY_UIMAP')
-          for payload, label in [(refresh, 'refresh'), (projection, 'projection')]:
+          for payload, label in [
+              (refresh, 'refresh'),
+              (projection, 'business_projection'),
+              (visual_family, 'visual_family'),
+          ]:
               if payload.get('applicationEnabled') is not False:
                   raise SystemExit(f'{label}:GENERIC_APPLICATION_MUST_REMAIN_DISABLED')
+          if consistency.get('status') != 'PASS':
+              raise SystemExit('VISUAL_AUTHORITY_CONSISTENCY_MUST_PASS_AFTER_CONTRACT_RECONCILIATION')
           if refresh.get('sourceMutationPerformed') is not False:
               raise SystemExit('SOURCE_MUTATION_FLAG_MUST_REMAIN_FALSE')
           if refresh.get('runtimeMutationPerformed') is not False:
               raise SystemExit('RUNTIME_MUTATION_FLAG_MUST_REMAIN_FALSE')
           if refresh.get('productMutationPerformed') is not False:
               raise SystemExit('PRODUCT_MUTATION_FLAG_MUST_REMAIN_FALSE')
+          if visual_family.get('totalSourceResolvedVisualBindingCount', 0) <= 0:
+              raise SystemExit('NO_SOURCE_RESOLVED_VISUAL_BINDINGS')
+          if visual_family.get('totalVisualRecipeProjectionReadyCount', 0) <= 0:
+              raise SystemExit('NO_GOVERNED_VISUAL_RECIPE_TARGETS')
+          if visual_control.get('status') != 'SOURCE_READY_GENERATED_PROJECTION':
+              raise SystemExit('GENERATED_VISUAL_CONTROL_PROJECTION_NOT_SOURCE_READY')
 
           summary = {
               'refreshStatus': refresh.get('status'),
@@ -140,8 +159,7 @@ jobs:
               'gapCounts': gaps.get('counts', {}),
               'consistencyStatus': consistency.get('status'),
               'consistencyBlockingIssueCount': consistency.get('blockingIssueCount'),
-              'consistencyIssues': consistency.get('issues', []),
-              'projection': {
+              'businessProjection': {
                   'status': projection.get('status'),
                   'projectionId': projection.get('projectionId'),
                   'componentCount': projection.get('componentCount'),
@@ -151,6 +169,16 @@ jobs:
                   'surfaceSummary': projection.get('surfaceSummary', {}),
                   'globalBlockers': projection.get('globalBlockers', []),
                   'blockerStatus': projection_blockers.get('status'),
+              },
+              'visualFamilyProjection': {
+                  'totalVisualCandidateCount': visual_family.get('totalVisualCandidateCount'),
+                  'totalSourceResolvedVisualBindingCount': visual_family.get('totalSourceResolvedVisualBindingCount'),
+                  'totalVisualRecipeProjectionReadyCount': visual_family.get('totalVisualRecipeProjectionReadyCount'),
+                  'counts': visual_family.get('counts', {}),
+                  'visualControlSurfaceCounts': {
+                      runtime: payload.get('counts', {})
+                      for runtime, payload in (visual_control.get('surfaces') or {}).items()
+                  },
               },
           }
           (root / 'SUMMARY_FOR_CHAT.json').write_text(

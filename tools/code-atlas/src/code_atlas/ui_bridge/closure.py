@@ -11,6 +11,11 @@ from .consistency import audit_visual_authority, write_visual_authority_audit
 from .projection import build_projection_map, write_projection_map
 from .recipes import RecipeRepository
 from .repository import BridgeRepository
+from .visual_family import (
+    build_visual_family_mapping,
+    load_visual_family_crosswalk,
+    write_visual_family_mapping,
+)
 
 CORE_RUNTIME_ALIASES = ("tb", "pc", "mb")
 
@@ -39,6 +44,7 @@ def _effective_recipe_paths(governor: Path, configured: Iterable[str | Path]) ->
     for rel in (
         "authority/rifat/identity/recipes",
         "authority/rifat/identity/portable/v2",
+        "extras/atlasfin/assets/data/visual-recipe.registry.json",
     ):
         path = governor / rel
         if path.exists():
@@ -144,6 +150,7 @@ def refresh_three_app_mapping(
     binding_registry_path: str | Path | None = None,
     pilot_contract_paths: Iterable[str | Path] = (),
     recipe_paths: Iterable[str | Path] = (),
+    visual_family_crosswalk_path: str | Path | None = None,
     previous_batches_source: str | None = None,
     workers: int = 18,
 ) -> dict[str, Any]:
@@ -197,19 +204,32 @@ def refresh_three_app_mapping(
     )
     write_projection_map(output, projection, projection_blockers)
 
+    crosswalk_path = Path(visual_family_crosswalk_path) if visual_family_crosswalk_path else governor / "authority/rifat/identity/registries/visual-family-crosswalk.registry.json"
+    crosswalk = load_visual_family_crosswalk(crosswalk_path)
+    visual_family, visual_control = build_visual_family_mapping(
+        repository,
+        recipes,
+        crosswalk,
+        runtime_aliases=CORE_RUNTIME_ALIASES,
+    )
+    write_visual_family_mapping(output, visual_family, visual_control)
+
     blockers = []
     if consistency.get("status") != "PASS":
         blockers.append("VISUAL_AUTHORITY_CONSISTENCY_BLOCKED")
     if gaps.get("status") == "GAPS_PRESENT":
-        blockers.append("EXACT_BINDING_GAPS_PRESENT")
+        blockers.append("EXACT_BUSINESS_BINDING_GAPS_PRESENT")
     if readiness.get("threeAppTransferReadyNeutralMeaningCount", 0) == 0:
-        blockers.append("NO_NEUTRAL_MEANING_READY_ACROSS_ALL_THREE_APPS")
+        blockers.append("NO_BUSINESS_NEUTRAL_MEANING_READY_ACROSS_ALL_THREE_APPS")
     if projection.get("status") == "BLOCKED_BY_GLOBAL_AUTHORITY_GAP":
-        blockers.append("MULTI_SURFACE_PROJECTION_GLOBAL_AUTHORITY_BLOCKED")
+        blockers.append("MULTI_SURFACE_BUSINESS_PROJECTION_GLOBAL_AUTHORITY_BLOCKED")
+    if visual_family.get("totalVisualRecipeProjectionReadyCount", 0) == 0:
+        blockers.append("NO_GOVERNED_VISUAL_FAMILY_TARGET_READY")
 
     stable = {
         "uimapSourceSnapshotHash": uimap_result.get("sourceSnapshotHash"),
         "effectiveRecipePaths": [path.as_posix() for path in effective_recipe_paths],
+        "visualFamilyCrosswalk": crosswalk_path.as_posix(),
         "consistencyChecksum": consistency.get("reportChecksum"),
         "bindingPromotionCounts": {
             "promotable": promotion.get("promotableCount"),
@@ -227,22 +247,29 @@ def refresh_three_app_mapping(
             "authorityPreflightReadyCount": projection.get("authorityPreflightReadyCount"),
             "blockedComponentCount": projection.get("blockedComponentCount"),
         },
+        "visualFamily": {
+            "candidateCount": visual_family.get("totalVisualCandidateCount"),
+            "sourceResolvedCount": visual_family.get("totalSourceResolvedVisualBindingCount"),
+            "recipeReadyCount": visual_family.get("totalVisualRecipeProjectionReadyCount"),
+        },
         "blockers": blockers,
     }
     manifest = {
         "schema": "prisma.ui.bridge.three-app-mapping-refresh.v1",
-        "schemaVersion": "1.0.0",
+        "schemaVersion": "1.1.0",
         "status": "READY_FOR_SOURCE_REVIEW" if not blockers else "SOURCE_GAPS_EXPLICIT",
         "mode": "READ_ONLY",
         "uimap": uimap_result,
         "effectiveRecipePaths": [path.as_posix() for path in effective_recipe_paths],
+        "visualFamilyCrosswalk": crosswalk_path.as_posix(),
         "bindingPromotionReport": "PRISMA_UI_BRIDGE_BINDING_PROMOTION.json",
         "bindingGapMatrix": "PRISMA_UI_BRIDGE_BINDING_GAP_MATRIX.json",
         "consistencyReport": "PRISMA_UI_BRIDGE_VISUAL_AUTHORITY_CONSISTENCY.json",
         "readinessReport": "PRISMA_THREE_APP_VISUAL_MAPPING_READINESS.json",
-        "projectionReport": "PRISMA_UI_MULTI_SURFACE_PROJECTION.json",
-        "projectionBlockersReport": "PRISMA_UI_MULTI_SURFACE_BLOCKERS.json",
-        "projectionSummary": "PRISMA_UI_MULTI_SURFACE_SUMMARY.md",
+        "businessProjectionReport": "PRISMA_UI_MULTI_SURFACE_PROJECTION.json",
+        "businessProjectionBlockersReport": "PRISMA_UI_MULTI_SURFACE_BLOCKERS.json",
+        "visualFamilyMappingReport": "PRISMA_VISUAL_FAMILY_MAPPING.json",
+        "generatedVisualControlProjection": "PRISMA_GENERATED_VISUAL_CONTROL_PROJECTION.json",
         "blockers": blockers,
         "checksum": canonical_sha256(stable),
         "applicationEnabled": False,
