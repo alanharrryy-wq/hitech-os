@@ -1,19 +1,20 @@
 from __future__ import annotations
 
 import json
+import os
 import zipfile
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from .io_utils import sha256_file
 
 
-AUTHORITY_REQUIREMENTS = {
-    "legmesh1": "PASS_AUTHORITY_READY_FOR_PACKAGE_DESIGN",
-    "ndclgl1": "PASS_NDC_LEGAL_EXTENSION_INSTALLED",
-    "motlgl1": "PASS_MOTOR_LEGAL_ADAPTER_INSTALLED",
-    "mamlegal1": "PASS_MAM_LEGAL_ADAPTER_INSTALLED",
-}
+DEFAULT_MANIFEST_CANDIDATES = (
+    "RUN_MANIFEST.json",
+    "LEGAL_RUN_MANIFEST.json",
+    "INSTALL_STATE.json",
+    "MANIFEST.json",
+)
 
 
 def _read_json_member(archive: zipfile.ZipFile, candidates: tuple[str, ...]) -> tuple[str | None, dict[str, Any] | None]:
@@ -32,7 +33,6 @@ def _read_json_member(archive: zipfile.ZipFile, candidates: tuple[str, ...]) -> 
 
 def inspect_result_zip(path: Path) -> dict[str, Any]:
     row: dict[str, Any] = {
-        "path": str(path),
         "name": path.name,
         "sha256": sha256_file(path),
         "size_bytes": path.stat().st_size,
@@ -40,15 +40,7 @@ def inspect_result_zip(path: Path) -> dict[str, Any]:
     }
     try:
         with zipfile.ZipFile(path, "r") as archive:
-            member, manifest = _read_json_member(
-                archive,
-                (
-                    "RUN_MANIFEST.json",
-                    "LEGAL_RUN_MANIFEST.json",
-                    "MAM_LEGAL1_INSTALL_STATE.json",
-                    "MOTOR_LEGAL1_INSTALL_STATE.json",
-                ),
-            )
+            member, manifest = _read_json_member(archive, DEFAULT_MANIFEST_CANDIDATES)
             row["manifest_member"] = member
             row["manifest"] = manifest
             row["entry_count"] = len(archive.namelist())
@@ -72,25 +64,41 @@ def find_latest_authority(output_root: Path, prefix: str, expected_status: str) 
     return None
 
 
-def validate_authority_chain(output_root: str | Path, *, require_mamastrophic: bool = True) -> dict[str, Any]:
+def _requirements_from_env() -> dict[str, str]:
+    raw = str(os.environ.get("CODE_ATLAS_AUTHORITY_REQUIREMENTS_JSON", "")).strip()
+    if not raw:
+        return {}
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise ValueError("INVALID_CODE_ATLAS_AUTHORITY_REQUIREMENTS_JSON") from exc
+    if not isinstance(value, dict):
+        raise ValueError("CODE_ATLAS_AUTHORITY_REQUIREMENTS_JSON_MUST_BE_OBJECT")
+    return {str(key): str(status) for key, status in value.items() if str(key).strip() and str(status).strip()}
+
+
+def validate_authority_chain(
+    output_root: str | Path,
+    *,
+    requirements: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
     root = Path(output_root)
+    configured = dict(requirements) if requirements is not None else _requirements_from_env()
     errors: list[str] = []
-    warnings: list[str] = []
     chain: dict[str, Any] = {}
-    for prefix, expected in AUTHORITY_REQUIREMENTS.items():
-        if prefix == "mamlegal1" and not require_mamastrophic:
-            continue
-        row = find_latest_authority(root, prefix, expected)
+    for prefix, expected in configured.items():
+        row = find_latest_authority(root, str(prefix), str(expected))
         if row is None:
             errors.append(f"MISSING_AUTHORITY:{prefix}:{expected}")
         else:
-            chain[prefix] = row
+            chain[str(prefix)] = row
 
     return {
-        "schema": "CODE_ATLAS_LEGAL_AUTHORITY_CHAIN_V1",
+        "schema": "CODE_ATLAS_LEGAL_AUTHORITY_CHAIN_V2",
         "status": "PASS" if not errors else "FAIL",
-        "output_root": str(root),
+        "configuration": "CALLER_CONFIGURED" if configured else "NOT_REQUIRED_BY_NEUTRAL_DEFAULT",
+        "requirement_count": len(configured),
         "chain": chain,
-        "warnings": warnings,
+        "warnings": [],
         "errors": errors,
     }
