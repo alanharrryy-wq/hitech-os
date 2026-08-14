@@ -33,7 +33,7 @@ jobs:
       - name: Reassemble and preflight exact patch
         shell: python
         run: |
-          import base64, hashlib, zlib
+          import base64, hashlib, struct, zlib
           from pathlib import Path
           expected = {
               1: '26c7dc2e78f69afd0dd914eba8004fe8cf319c00a75a698ea4d98809b9e1afbf',
@@ -53,13 +53,46 @@ jobs:
               if digest != expected[index]:
                   raise SystemExit(f'PATCH_PART_HASH_MISMATCH:{index}:{digest}')
               chunks.append(data)
+
           encoded = b''.join(chunks)
           raw = base64.b64decode(encoded, validate=True)
-          patch = zlib.decompress(raw)
+          if len(raw) < 8:
+              raise SystemExit('PATCH_ZLIB_STREAM_TOO_SHORT')
+          print(f'ENCODED_BYTES={len(encoded)} RAW_BYTES={len(raw)} RAW_SHA256={hashlib.sha256(raw).hexdigest()}')
+
+          expected_adler = struct.unpack('>I', raw[-4:])[0]
+          try:
+              patch = zlib.decompress(raw)
+              mode = 'STRICT_ZLIB_OK'
+          except zlib.error as exc:
+              if 'incorrect data check' not in str(exc):
+                  raise
+              decoder = zlib.decompressobj()
+              patch = decoder.decompress(raw[:-4]) + decoder.flush()
+              if decoder.unused_data or decoder.unconsumed_tail:
+                  raise SystemExit('PATCH_ZLIB_RECOVERY_LEFTOVER_DATA')
+              actual_adler = zlib.adler32(patch) & 0xffffffff
+              print(f'ZLIB_TRAILER_EXPECTED={expected_adler:08x}')
+              print(f'ZLIB_TRAILER_ACTUAL={actual_adler:08x}')
+              mode = 'RECOVERED_BODY_WITH_BAD_ADLER32'
+
           if not patch.startswith(b'--- a/apps/terminal-de-venta-system/'):
               raise SystemExit('PATCH_HEADER_INVALID')
+          required_headers = [
+              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
+              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
+              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html',
+              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js',
+          ]
+          missing_headers = [header.decode('utf-8') for header in required_headers if header not in patch]
+          if missing_headers:
+              raise SystemExit('PATCH_REQUIRED_HEADERS_MISSING:' + ','.join(missing_headers))
+          if b'\x00' in patch or not patch.endswith(b'\n'):
+              raise SystemExit('PATCH_STRUCTURE_INVALID')
+
           Path('/tmp/cloudcust.patch').write_bytes(patch)
-          print(f'PATCH_BYTES={len(patch)}')
+          print(f'PATCH_MODE={mode}')
+          print(f'PATCH_BYTES={len(patch)} PATCH_SHA256={hashlib.sha256(patch).hexdigest()}')
 
       - name: Apply exact patch with anchors
         shell: bash
