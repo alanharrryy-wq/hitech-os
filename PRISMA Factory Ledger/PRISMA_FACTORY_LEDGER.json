@@ -578,7 +578,56 @@
         "claim real cloud activation from the local prepared state",
         "touch unrelated product surfaces as part of this capability"
       ]
+    },
+    {
+      "id": "code_atlas.change_intelligence.customer_wow_v1",
+      "displayName": "Code Atlas Customer Wow V1 Universal Intelligence binding",
+      "domain": "tooling",
+      "surfaces": [
+        "code_atlas",
+        "change_intelligence"
+      ],
+      "classification": "VERIFY",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_CUSTOMER_WOW_UNIVERSAL_BINDING_LOCAL_VERIFIED",
+      "doNotRebuild": true,
+      "evidence": [
+        "PR #269",
+        "merge commit 2a39bf2e819c49c978f66b4bb351402918d4fa41",
+        "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md",
+        "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json",
+        "tools/code-atlas/tests/test_operational_change_intelligence_binding.py",
+        "prisma-automesh-8d8cbd595e9da7ab-31837217415-1",
+        "prisma-automesh-0477e4a6cd383fbb-31839501404-1"
+      ],
+      "allowedActions": [
+        "read-only verification on unrelated external repositories",
+        "evidence review and recertification after material source or authority drift",
+        "collect customer usefulness, repeatability, privacy-boundary and ROI evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild Universal Intelligence primitives already merged in PR #270",
+        "rebuild Customer Wow source without a concrete evidence-backed defect",
+        "mutate external customer repositories during default analysis",
+        "treat Impact Radius as authorization to edit",
+        "promote semantic retrieval or derived indexes to authority"
+      ],
+      "forbiddenClaims": [
+        "Do not claim arbitrary external-repository compatibility from synthetic fixtures.",
+        "Do not claim paid-pilot, enterprise, hosted multi-tenant, legal/privacy or production certification from LOCAL_VERIFIED evidence."
+      ],
+      "doesNotProve": [
+        "Correct behavior across arbitrary real external repositories or technology stacks",
+        "Production runtime readiness",
+        "Hosted multi-tenant isolation",
+        "Enterprise IAM or security certification",
+        "Customer data-egress certification beyond the source runner contract",
+        "Paid-pilot readiness by itself",
+        "Legal or privacy compliance",
+        "Production certification"
+      ],
+      "nextGate": "VERIFY on unrelated external repositories using the complete read-only Change Studio -> Authority Pack -> actual change/session -> Verify -> Evidence Report -> ROI loop. Preserve Universal Intelligence and Customer Wow source as do-not-rebuild unless external evidence exposes a concrete defect."
     }
   ],
-  "updatedAt": "2026-08-14T08:48:10-06:00"
+  "updatedAt": "2026-08-14T14:48:38-06:00"
 }
