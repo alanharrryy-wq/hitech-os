@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "code_atlas_neutrality_contract.v4",
+  "schemaVersion": "code_atlas_neutrality_contract.v5",
   "status": "ENFORCED_FAIL_CLOSED_FULL_SOURCE",
   "rule": "All reusable Code Atlas source under src/code_atlas must be machine-neutral, repository-neutral and product-neutral. Product-specific behavior may exist only behind explicit profiles or named adapter boundaries and must never be selected implicitly.",
   "neutralRoots": [
@@ -13,7 +13,8 @@
     "src/code_atlas/tablet_map",
     "src/code_atlas/surface_target_atlas",
     "src/code_atlas/appbrain_batch_packager",
-    "src/code_atlas/app_map/uimap"
+    "src/code_atlas/app_map/uimap",
+    "src/code_atlas/legal_readiness"
   ],
   "adapterFiles": [
     "src/code_atlas/operational/support_resolver.py",
@@ -48,6 +49,7 @@
     "src/code_atlas/surface_target_atlas": "Legacy product surface-target implementation with fixed product surface semantics; generic target discovery is profile-driven elsewhere.",
     "src/code_atlas/appbrain_batch_packager": "Legacy tri-surface product batch packager; external projects provide their own app inventory through profiles.",
     "src/code_atlas/app_map/uimap": "Product UI-component atlas compatibility implementation; default App Map uses the generic profile-driven runner.",
+    "src/code_atlas/legal_readiness": "Existing legal/investor-readiness orchestration is a product integration bound to product authority artifacts and external evidence adapters. It is not part of the neutral default execution path.",
     "src/code_atlas/ui/motor_hub.py": "Existing premium product Motor Hub retained for compatibility; default UI export uses generic_motor_hub.py.",
     "src/code_atlas/app_map/runner.py": "Existing product App Map retained for compatibility; default App Map export and CLI use the generic profile-driven runner.",
     "src/code_atlas/app_map/verify_visual_diff_counter.py": "Verifier for the explicit product App Map safety-contract adapter.",
@@ -56,6 +58,16 @@
     "src/code_atlas/operational/verify_licscope_bridge.py": "Verifier for the explicit licensing-scope compatibility adapter.",
     "src/code_atlas/evidence_ingestion/triad_close.py": "Legacy product evidence triad closer that writes product registers; never selected by neutral execution."
   },
+  "forbiddenNeutralLiterals": [
+    "Mamastrophic",
+    "PRISMA_CTX",
+    "Factory Ledger",
+    "RIFAT",
+    "AutoMesh",
+    "AllMesh",
+    "motor_legal_evidence.py",
+    "LEGAL_RUN.ps1"
+  ],
   "adapterSelectionRule": "Explicit opt-in only through CODE_ATLAS_PROFILE/profile metadata, an adapter-specific entrypoint, or an explicitly selected adapter CLI command. Generic imports and entrypoints must not select an adapter implicitly.",
   "forbiddenInNeutralPath": [
     "any absolute Windows work path",
@@ -65,6 +77,7 @@
     "product domains or product-only labels",
     "fixed localhost ports",
     "fixed product surface taxonomy",
+    "fixed product/external integration names",
     "implicit product adapter selection"
   ],
   "certifiable": false,
