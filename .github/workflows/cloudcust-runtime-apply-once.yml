@@ -1,12 +1,12 @@
 name: Cloud Center Customer Runtime Apply Once
 
-# Retriggered after adding strict picker diagnostics to the permanent runtime verifier.
 on:
   push:
     branches: ['cloudcust-runtime-20260814']
     paths:
       - '.github/workflows/cloudcust-runtime-apply-once.yml'
       - 'apps/terminal-de-venta-system/tools/_cloudcust_patch_part*.txt'
+      - 'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
 
 permissions:
   contents: write
