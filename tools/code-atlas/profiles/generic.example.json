@@ -8,9 +8,7 @@
       "id": "web",
       "label": "Web App",
       "root": "apps/web",
-      "routes": [
-        "/"
-      ],
+      "routes": ["/"],
       "defaultUrl": "${CODE_ATLAS_WEB_URL}",
       "kind": "web"
     },
@@ -18,9 +16,7 @@
       "id": "admin",
       "label": "Admin App",
       "root": "apps/admin",
-      "routes": [
-        "/admin"
-      ],
+      "routes": ["/admin"],
       "defaultUrl": "${CODE_ATLAS_ADMIN_URL}",
       "kind": "admin"
     }
@@ -33,6 +29,10 @@
   ],
   "metadata": {
     "example": true,
-    "description": "Neutral profile template. Replace env vars outside Code Atlas core."
+    "description": "Neutral profile template. Project-specific values belong in a caller-provided profile or environment variables.",
+    "scanRoots": ["."],
+    "evidenceRoots": [],
+    "supportResolverEnabled": false,
+    "supportResolverRoots": []
   }
 }
