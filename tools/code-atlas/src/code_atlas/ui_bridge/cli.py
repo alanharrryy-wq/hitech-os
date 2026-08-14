@@ -9,6 +9,7 @@ from .canonical import write_json
 from .errors import ApplicationDisabledError, BridgeError
 from .planner import build_plan, write_plan
 from .profile import load_profile
+from .projection import build_projection_map, write_projection_map
 from .recipes import RecipeRepository
 from .repository import BridgeRepository
 from .resolver import resolve_component
@@ -40,6 +41,21 @@ def main(argv: Sequence[str] | None = None) -> int:
     p_plan.add_argument("--recipe", action="append", default=[])
     p_plan.add_argument("--profile")
     p_plan.add_argument("--output-root")
+    p_projection = sub.add_parser(
+        "projection-map",
+        help="Build deterministic read-only Tablet/PC/Mobile projection coverage from certified UIMAP inputs",
+    )
+    p_projection.add_argument("inputs", nargs="+")
+    p_projection.add_argument(
+        "--surface",
+        action="append",
+        choices=("tablet", "pc", "mobile"),
+        default=[],
+        help="Surface to include. Repeatable; defaults to tablet, pc and mobile.",
+    )
+    p_projection.add_argument("--recipe", action="append", default=[])
+    p_projection.add_argument("--profile")
+    p_projection.add_argument("--output-root")
     sub.add_parser("apply-status")
     p_apply = sub.add_parser("apply")
     p_apply.add_argument("plan")
@@ -77,6 +93,34 @@ def main(argv: Sequence[str] | None = None) -> int:
             paths = write_plan(output_root, plan, diff)
             print(json.dumps({"status":plan["status"],"planId":plan["planId"],"outputs":paths}, ensure_ascii=False, indent=2, sort_keys=True))
             return 0 if plan["status"] == "PLAN_READY_FOR_REVIEW" else 3
+        if args.command == "projection-map":
+            surfaces = args.surface or ["tablet", "pc", "mobile"]
+            projection, blockers = build_projection_map(
+                repo,
+                recipes,
+                profile.product_root,
+                profile.governor_root,
+                surfaces,
+            )
+            output_root = args.output_root or profile.output_root
+            paths = write_projection_map(output_root, projection, blockers)
+            print(
+                json.dumps(
+                    {
+                        "status": projection["status"],
+                        "projectionId": projection["projectionId"],
+                        "componentCount": projection["componentCount"],
+                        "authorityPreflightReadyCount": projection["authorityPreflightReadyCount"],
+                        "blockedComponentCount": projection["blockedComponentCount"],
+                        "applicationEnabled": projection["applicationEnabled"],
+                        "outputs": paths,
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                    sort_keys=True,
+                )
+            )
+            return 0 if projection["status"] != "BLOCKED_BY_GLOBAL_AUTHORITY_GAP" else 3
     except ApplicationDisabledError as exc:
         print(json.dumps({"status":exc.code,"error":str(exc)}, ensure_ascii=False, indent=2), flush=True)
         return 4
