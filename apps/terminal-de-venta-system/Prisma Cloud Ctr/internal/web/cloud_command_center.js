@@ -72,7 +72,8 @@
     supportDiagnosis: null,
     supportSimulation: null,
     flow: {},
-    openPicker: null
+    openPicker: null,
+    refreshRenderPending: false
   };
 
   const $ = (id) => document.getElementById(id);
@@ -553,7 +554,19 @@
     });
     return merged;
   }
-  function catalogOptions(code){ return (catalogs()[code]?.options || []).filter((item)=>item.active !== false); }
+  function catalogOptions(code){
+    let options = (catalogs()[code]?.options || []).filter((item)=>item.active !== false);
+    if (code === "subvertical") {
+      const vertical = flowValue("vertical", "");
+      options = options.filter((item) => { const parents=(item.metadata||{}).parentVerticals||[]; return item.code==="other" || !parents.length || !vertical || parents.includes(vertical); });
+    }
+    if (code === "device_role") {
+      const type = flowValue("deviceType", "");
+      options = options.filter((item) => { const types=(item.metadata||{}).deviceTypes||[]; return !types.length || !type || types.includes(type); });
+    }
+    if (code === "state_mx" && flowValue("country", "") !== "MX") return [];
+    return options;
+  }
   function catalogLabel(code,value){ return catalogOptions(code).find((opt)=>opt.code===value)?.label || value || "-"; }
   function flowValue(key,fallback){ return state.flow[key] || fallback || ""; }
   function planMeta(code){ return catalogOptions("license_plan").find((item)=>item.code===code)?.metadata || {}; }
@@ -588,7 +601,7 @@ function priceTreatmentField(){ const selected=flowValue("priceTreatment","canon
   function selectField(id,label,catalogCode,selected,opts){
     const options=catalogOptions(catalogCode);
     const allowOther=!!catalogs()[catalogCode]?.allowOther;
-    const effectiveSelected=selected || opts?.defaultValue || options[0]?.code || "";
+    const effectiveSelected=selected || opts?.defaultValue || (opts?.noDefault ? "" : (options[0]?.code || ""));
     const selectedLabel=catalogLabel(catalogCode,effectiveSelected) || "Selecciona";
     const rows=[`<option value="">Selecciona...</option>`].concat(options.map((item)=>`<option value="${esc(item.code)}" ${item.code===effectiveSelected?"selected":""}>${esc(item.label)}</option>`));
     if(allowOther && !options.some((item)=>item.code==="other")) rows.push(`<option value="other" ${effectiveSelected==="other"?"selected":""}>Otro</option>`);
@@ -601,8 +614,44 @@ function priceTreatmentField(){ const selected=flowValue("priceTreatment","canon
   function currentRecommendation(){ const vertical=flowValue("vertical","abarrotes"); const op=flowValue("operationMode","counter"); const size=flowValue("businessSize","small"); const meta=catalogOptions("vertical").find((item)=>item.code===vertical)?.metadata || {}; const validPlans=new Set(catalogOptions("license_plan").map((item)=>item.code)); let plan=meta.suggestedPlan || "TABLET_PC_MANAGED"; if(!validPlans.has(plan)) plan="TABLET_PC_MANAGED"; const modules=new Set(meta.modules || ["pos.open","pos.sale.complete","event.outbox.view"]); if(op==="inventory") modules.add("inventory.local.adjust"); if(size==="enterprise"||size==="multi_branch"){ plan="TABLET_PC_MANAGED"; modules.add("sync.managed"); } const device=op==="tables"?"pc_register":"tablet_pos"; return { plan, modules:Array.from(modules), device }; }
   function generatedPreview(){ const c=ccStore().counts || {}; return list([["Clientes preparados",c.clients||0],["Licencias preparadas",c.licenses||0],["Dispositivos preparados",c.devices||0],["Bajas preparadas",c.deactivations||0],["Borradores",c.preparedDrafts||0],["Otros por revisar",c.othersPending||0],["IDs generados",c.identities||0]]); }
   function flowSummary(){ const r=currentRecommendation(); return kvGrid([["Vertical",catalogLabel("vertical",flowValue("vertical","abarrotes"))],["Operación",catalogLabel("operation_mode",flowValue("operationMode","counter"))],["Plan sugerido",catalogLabel("license_plan",flowValue("plan",r.plan))],["Dispositivo sugerido",catalogLabel("device_type",flowValue("deviceType",r.device))]]); }
-  function clientWizard(){ const r=currentRecommendation(); return `<div class="cc-flow-grid">${textField("displayName","Nombre comercial",flowValue("displayName"),{required:true,placeholder:"Ej. Abarrotes Don Pepe"})}${textField("contactName","Contacto",flowValue("contactName"),{placeholder:"Nombre de contacto"})}${textField("phone","Teléfono",flowValue("phone"),{})}${textField("email","Correo",flowValue("email"),{})}${selectField("vertical","Giro / vertical","vertical",flowValue("vertical","abarrotes"),{required:true})}${selectField("subvertical","Subvertical","subvertical",flowValue("subvertical"),{})}${selectField("businessSize","Tamaño","business_size",flowValue("businessSize","small"),{})}${selectField("operationMode","Tipo de operación","operation_mode",flowValue("operationMode","counter"),{})}${selectField("cityZone","Ciudad / zona","city_zone",flowValue("cityZone"),{})}${selectField("plan","Plan sugerido","license_plan",flowValue("plan",r.plan),{})}</div>${actions([actionButton("prepare-client","Preparar alta con IDs","primary"),actionButton("save-other-values","Guardar otros pendientes"),surfaceButton("entitlements","Ver planes"),surfaceButton("fleet","Agregar dispositivo")])}`; }
-  function deviceWizard(){ const r=currentRecommendation(); return `<div class="cc-flow-grid">${selectField("clientCode","Cliente destino","client",flowValue("clientCode"),{})}${selectField("deviceType","Tipo de dispositivo","device_type",flowValue("deviceType",r.device),{required:true})}${selectField("operationMode","Uso principal","operation_mode",flowValue("operationMode","counter"),{})}${textField("deviceAlias","Alias visible",flowValue("deviceAlias"),{placeholder:"Ej. Caja principal"})}${selectField("cityZone","Sucursal / zona","city_zone",flowValue("cityZone"),{})}</div>${actions([actionButton("prepare-device","Generar dispositivo + código","primary"),actionButton("device-smoke","Registrar prueba cloud"),actionButton("receipt-smoke","Enviar receipt de prueba"),actionButton("save-other-values","Guardar otros pendientes")])}${details("Dispositivos preparados", { devices: localRows("devices") }, false)}`; }
+  function clientWizard(){
+    const r=currentRecommendation();
+    const country=flowValue("country","");
+    const requestId=flowValue("clientRequestId","");
+    return `<div class="cc-flow-grid" data-customer-registration-form="v2">
+      ${textField("displayName","Nombre comercial",flowValue("displayName"),{required:true,placeholder:"Ej. Abarrotes Don Pepe"})}
+      ${textField("legalName","Razón social",flowValue("legalName"),{placeholder:"Opcional; no se infiere"})}
+      ${textField("contactName","Contacto",flowValue("contactName"),{placeholder:"Nombre de contacto"})}
+      ${selectField("contactRole","Rol del contacto","contact_role",flowValue("contactRole"),{noDefault:true})}
+      ${textField("phone","Teléfono",flowValue("phone"),{placeholder:"Teléfono o correo obligatorio"})}
+      ${textField("email","Correo",flowValue("email"),{placeholder:"correo@negocio.mx"})}
+      ${selectField("vertical","Giro / vertical","vertical",flowValue("vertical"),{required:true,noDefault:true})}
+      ${selectField("subvertical","Subvertical","subvertical",flowValue("subvertical"),{noDefault:true})}
+      ${selectField("businessSize","Tamaño operativo","business_size",flowValue("businessSize"),{required:true,noDefault:true})}
+      ${selectField("operationMode","Tipo de operación","operation_mode",flowValue("operationMode"),{required:true,noDefault:true})}
+      ${selectField("acquisitionChannel","Cómo llegó el cliente","acquisition_channel",flowValue("acquisitionChannel"),{required:true,noDefault:true})}
+      ${selectField("country","País","country",country,{noDefault:true})}
+      ${country==="MX"?selectField("state","Estado","state_mx",flowValue("state"),{noDefault:true}):""}
+      ${textField("city","Ciudad",flowValue("city"),{placeholder:"Dato manual verificable"})}
+      ${textField("zone","Zona / colonia",flowValue("zone"),{placeholder:"Opcional"})}
+      <input type="hidden" data-flow-field="clientRequestId" value="${esc(requestId)}" />
+    </div>
+    <div class="cc-impact"><strong>Recomendación automática</strong><span>${esc(catalogLabel("license_plan",r.plan))} · ${esc(catalogLabel("device_type",r.device))}. El plan no se captura dos veces.</span></div>
+    ${actions([actionButton("prepare-client","Preparar alta","primary"),surfaceButton("entitlements","Ver recomendación / licencia"),surfaceButton("fleet","Agregar dispositivo")])}`;
+  }
+  function deviceWizard(){
+    const r=currentRecommendation();
+    const type=flowValue("deviceType",r.device);
+    return `<div class="cc-flow-grid">
+      ${selectField("clientCode","Cliente destino","client",flowValue("clientCode"),{required:true,noDefault:true})}
+      ${selectField("deviceType","Tipo de dispositivo","device_type",type,{required:true})}
+      ${selectField("deviceRole","Rol del dispositivo","device_role",flowValue("deviceRole"),{required:true,noDefault:true})}
+      ${textField("deviceAlias","Alias visible",flowValue("deviceAlias"),{placeholder:"Ej. Caja principal"})}
+    </div>
+    <div class="cc-impact"><strong>Alcance</strong><span>Se deriva del contrato/licencia. La sucursal o zona ya no se duplica manualmente en el dispositivo.</span></div>
+    ${actions([actionButton("prepare-device","Generar dispositivo + código","primary"),actionButton("device-smoke","Registrar prueba cloud"),actionButton("receipt-smoke","Enviar receipt de prueba")])}
+    ${details("Dispositivos preparados", { devices: localRows("devices") }, false)}`;
+  }
 function licenseWizard(){
   const r=currentRecommendation();
   const plan=flowValue("plan",r.plan);
@@ -614,8 +663,18 @@ function licenseWizard(){
   const policy=planCommercialPolicy(plan);
   return `<div class="cc-flow-grid">${selectField("clientCode","Cliente destino","client",flowValue("clientCode"),{})}${selectField("plan","Tipo de licencia","license_plan",plan,{required:true})}${billingPeriodField()}${priceTreatmentField()}${textField("agreedPriceMxn","Precio acordado MXN",agreedRaw,{placeholder:listPrice!=null?String(listPrice):"precio antes de IVA"})}${textField("priceEvidenceRef","Contrato / recibo / evidencia",flowValue("priceEvidenceRef"),{placeholder:"Obligatorio si el precio difiere del canon"})}${textField("validFrom","Inicio YYYY-MM-DD",flowValue("validFrom"),{placeholder:"Vacío = hoy"})}${textField("commercialNote","Nota comercial",flowValue("commercialNote"),{placeholder:"Opcional"})}</div>${kvGrid([["Precio lista",listPrice!=null?`${moneyMxn(listPrice)} + IVA`:"sin precio canonico"],["Precio a preparar",agreedDisplay!=null&&agreedDisplay!==""?`${moneyMxn(agreedDisplay)} + IVA`:"precio de lista"],["Versión",m.commercial?.priceVersion||"-"],["Periodicidad",BILLING_PERIOD_LABELS[period]||period],["Impuesto",policy.taxTreatment==="PLUS_APPLICABLE_IVA"?"+ IVA aplicable":policy.taxTreatment||"según contrato"],["Máximo dispositivos",m.maxDevices||"según contrato"],["Máximo sucursales",m.maxBranches||"según contrato"],["Módulos",(m.modules||r.modules).join(", ")]])}${actions([actionButton("prepare-license","Preparar licencia + contrato","primary"),actionButton("compare-license-contract","Comparar con contrato"),surfaceButton("customers","Ver cliente")])}${details("Licencias preparadas", { licenses: localRows("licenses"), contracts: localRows("contracts") }, false)}`;
 }
-  function deactivationWizard(){ return `<div class="cc-flow-grid"><label class="cc-field"><span>Qué se dará de baja</span><select data-flow-field="targetKind"><option value="client" ${flowValue("targetKind","client")==="client"?"selected":""}>Cliente</option><option value="license" ${flowValue("targetKind")==="license"?"selected":""}>Licencia</option><option value="device" ${flowValue("targetKind")==="device"?"selected":""}>Dispositivo</option></select></label>${selectField("clientCode","Cliente / referencia local","client",flowValue("clientCode"),{})}${textField("targetCode","Folio / referencia manual",flowValue("targetCode"),{placeholder:"Opcional si eliges cliente"})}${selectField("reason","Motivo","deactivation_reason",flowValue("reason","cancellation"),{required:true})}</div><div class="cc-impact"><strong>Impacto antes de confirmar</strong><span>Historial se conserva · cloud no se toca todavía · se genera folio de baja local</span></div>${actions([actionButton("prepare-deactivation","Preparar baja segura","primary"),actionButton("save-other-values","Guardar otros pendientes"),surfaceButton("system","Ver técnico")])}${details("Bajas preparadas", { deactivations: localRows("deactivations") }, false)}`; }
-
+  function deactivationWizard(){
+    const kind=flowValue("targetKind","client");
+    const targetCatalog={client:"client",license:"license_assignment",device:"managed_device"}[kind]||"client";
+    return `<div class="cc-flow-grid">
+      ${selectField("targetKind","Qué se dará de baja","deactivation_target_kind",kind,{required:true})}
+      ${selectField("targetCode","Objetivo exacto",targetCatalog,flowValue("targetCode"),{required:true,noDefault:true})}
+      ${selectField("reason","Motivo","deactivation_reason",flowValue("reason","cancellation"),{required:true})}
+    </div>
+    <div class="cc-impact"><strong>Impacto antes de confirmar</strong><span>Historial se conserva · cloud no se toca todavía · objetivo exacto, sin texto libre</span></div>
+    ${actions([actionButton("prepare-deactivation","Preparar baja segura","primary"),surfaceButton("system","Ver técnico")])}
+    ${details("Bajas preparadas", { deactivations: localRows("deactivations") }, false)}`;
+  }
 
   function jsonValue(value, fallback) {
     if (value === null || value === undefined || value === "") return fallback || null;
@@ -806,9 +865,21 @@ function planCatalogDesk(){
       resultPanel()
     ].join("");
   }
+  function customerMetricsPanel(){
+    const metrics=ccStore().customerMetrics||{};
+    const q=metrics.dataQuality||{};
+    const acquisition=(metrics.byAcquisition||[]).map((row)=>[catalogLabel("acquisition_channel",row.code)||row.code,row.count]);
+    const relationship=(metrics.byRelationshipStage||[]).map((row)=>[catalogLabel("relationship_stage",row.code)||row.code,row.count]);
+    return [
+      kvGrid([["Perfiles medidos",metrics.profiles||0],["Clasificación legacy del seed",q.seedLegacyClassificationNeedsReview?"Revisar":"Sin inferencias"],["city_zone legacy",q.legacyCityZoneValues||0],["Modo",q.measurementMode||"manual + derivado"]]),
+      acquisition.length?list(acquisition):`<div class="cc-empty">Aún no hay adquisición medida. Se llenará con altas verificadas.</div>`,
+      relationship.length?list(relationship):""
+    ].join("");
+  }
   function renderCustomers() { const d=derived(); const c=localCounts(); return [
     panel("Clientes activos","Clientes preparados localmente + cliente observado en cloud.",kvGrid([["Clientes preparados",c.clients||0],["Activos/preparados",c.activeClients||0],["Cliente cloud",d.tenant?.displayName||d.tenant?.slug||FIRST_CUSTOMER_NAME],["Otros por revisar",c.othersPending||0]]),{span:5,tag:"CLIENTES"}),
     panel("Acciones","Operación centrada en cliente, no en módulos técnicos.",actions([surfaceButton("provisioning","+ Nuevo cliente"),actionButton("copy-clients-local","Copiar clientes locales"),surfaceButton("entitlements","Asignar licencia"),surfaceButton("fleet","Agregar dispositivo"),surfaceButton("security","Dar baja")]),{span:7,tag:"ACCIONES"}),
+    panel("Medición homologada","Adquisición, relación y calidad de datos sin inventar atributos del cliente semilla.",customerMetricsPanel(),{span:12,tag:"MEDICIÓN"}),
     panel("Mesa de clientes","Abrir filas, revisar vertical/estado y decidir siguiente acción.",localDesk("clients","Todavía no hay clientes preparados."),{span:12,tag:`${c.clients||0} local`}),
     panel("Auditoría del cliente","Últimos eventos del motor de catálogos/IDs.",localDesk("events","Todavía no hay eventos locales."),{span:12,tag:"AUDIT"}),
     resultPanel()
@@ -1386,6 +1457,28 @@ function planCatalogDesk(){
     const renderer = renderers[state.surface] || renderCommand;
     $("surfaceRoot").innerHTML = renderer();
   }
+  function syncFlowFromDom(){
+    const root=$("surfaceRoot");
+    if(!root) return;
+    root.querySelectorAll("[data-flow-field]").forEach((field)=>{ const key=field.dataset.flowField; if(key) state.flow[key]=field.value; });
+    root.querySelectorAll("[data-other-for]").forEach((field)=>{ const key=field.dataset.otherFor; if(key) state.flow[key+"Other"]=field.value; });
+  }
+  function operatorIsInteracting(){
+    const root=$("surfaceRoot"), active=document.activeElement;
+    const focused=!!(root&&active&&root.contains(active)&&active.matches("input,select,textarea,[contenteditable='true']"));
+    return focused || !!state.openPicker;
+  }
+  function renderAfterRefresh(){
+    if(operatorIsInteracting()){ state.refreshRenderPending=true; return; }
+    state.refreshRenderPending=false;
+    render();
+  }
+  function reconcileDependencies(changed){
+    if(changed==="vertical"){ const valid=new Set(catalogOptions("subvertical").map((x)=>x.code)); if(state.flow.subvertical&&!valid.has(state.flow.subvertical)) state.flow.subvertical=""; }
+    if(changed==="deviceType"){ const valid=new Set(catalogOptions("device_role").map((x)=>x.code)); if(state.flow.deviceRole&&!valid.has(state.flow.deviceRole)) state.flow.deviceRole=""; }
+    if(changed==="targetKind") state.flow.targetCode="";
+    if(changed==="country" && state.flow.country!=="MX") state.flow.state="";
+  }
 
   async function loadAll() {
     const [data, license, health, runtime, contract, commandCenter, bridge, supportCatalogPayload, supportSearchPayload] = await Promise.all([
@@ -1409,7 +1502,7 @@ function planCatalogDesk(){
     state.supportCatalog = supportCatalogPayload;
     state.supportSearch = supportSearchPayload;
     state.lastLoadedAt = new Date().toLocaleString();
-    render();
+    renderAfterRefresh();
   }
 
   async function postAction(path, body) {
@@ -1434,6 +1527,7 @@ function planCatalogDesk(){
   async function saveOtherValues(){ const map={vertical:"vertical",subvertical:"subvertical",operationMode:"operation_mode",deviceType:"device_type",reason:"deactivation_reason",cityZone:"city_zone"}; const other=collectOtherValues(); const saved=[]; for(const [field,manualText] of Object.entries(other)){ const catalog=map[field]; if(!catalog) continue; saved.push(await postAction("/api/command-center/other",{catalog,manualText,context:{field,surface:state.surface}})); } return {ok:saved.every((x)=>x.ok), saved:saved.length, items:saved}; }
 
   async function handleAction(action, button) {
+    syncFlowFromDom();
     if (state.busy) return;
     state.busy = true;
     if (button) button.disabled = true;
@@ -1585,7 +1679,12 @@ function planCatalogDesk(){
         setResult("Cobranza & CFDI", result.message || (result.ok ? "Operación comercial registrada." : `${result.resultCode||"REVIEW"}: ${result.error||"Revisar datos"}`), result, { kind: result.ok ? "ok" : "warn", surface: "billing" });
         toast(result.ok ? "Cobranza actualizada" : "Cobranza a revisar");
         if (result.ok) await loadAll();
-      } else if (action === "prepare-client") { result = await postAction("/api/command-center/draft-client", { ...state.flow, other: collectOtherValues() }); setResult("Alta preparada", result.message || "Cliente preparado localmente.", result, { kind: result.ok ? "ok" : "warn" }); toast(result.ok ? "Alta preparada" : "Alta a revisar"); await loadAll();
+      } else if (action === "prepare-client") {
+        if (!state.flow.clientRequestId) state.flow.clientRequestId = `customer-${Date.now()}-${globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)}`;
+        result = await safePost("/api/command-center/draft-client", { ...state.flow, other: collectOtherValues() });
+        setResult("Alta preparada", result.message || `${result.resultCode||"REVIEW"}: ${result.error||"Revisar datos"}`, result, { kind: result.ok ? "ok" : "warn" });
+        toast(result.ok ? (result.idempotent ? "Alta ya existente" : "Alta preparada") : "Alta a revisar");
+        if (result.ok) await loadAll();
       } else if (action === "prepare-device") { result = await postAction("/api/command-center/draft-device", { ...state.flow, other: collectOtherValues() }); setResult("Dispositivo preparado", result.message || "Dispositivo preparado localmente.", result, { kind: result.ok ? "ok" : "warn" }); toast(result.ok ? "Dispositivo preparado" : "Dispositivo a revisar"); await loadAll();
       } else if (action === "prepare-license") { result = await postAction("/api/command-center/draft-license", { ...state.flow, other: collectOtherValues() }); setResult("Licencia preparada", result.message || "Licencia preparada localmente.", result, { kind: result.ok ? "ok" : "warn" }); toast(result.ok ? "Licencia preparada" : "Licencia a revisar"); await loadAll();
       } else if (action === "prepare-deactivation") { result = await postAction("/api/command-center/draft-deactivation", { ...state.flow, other: collectOtherValues() }); setResult("Baja preparada", result.message || "Baja preparada localmente.", result, { kind: result.ok ? "ok" : "warn" }); toast(result.ok ? "Baja preparada" : "Baja a revisar"); await loadAll();
@@ -1625,25 +1724,40 @@ function planCatalogDesk(){
       render();
     });
     document.addEventListener("input", (event) => {
-      const filter = event.target.closest("[data-picker-filter]");
-      if (filter) {
-        const panel = filter.closest("[data-picker-panel]");
-        const q = String(filter.value || "").trim().toLowerCase();
-        if (panel) panel.querySelectorAll("[data-picker-search]").forEach((row) => { row.hidden = q && !String(row.dataset.pickerSearch || "").includes(q); });
+      const filter=event.target.closest("[data-picker-filter]");
+      if(filter){
+        const panel=filter.closest("[data-picker-panel]");
+        const q=String(filter.value||"").trim().toLowerCase();
+        if(panel) panel.querySelectorAll("[data-picker-search]").forEach((row)=>{row.hidden=!!q&&!String(row.dataset.pickerSearch||"").includes(q);});
         return;
       }
       const field=event.target.closest("[data-flow-field]");
-      if(field){ state.flow[field.dataset.flowField]=field.value; render(); return; }
+      if(field){
+        state.flow[field.dataset.flowField]=field.value;
+        if(field.dataset.flowField!=="clientRequestId") state.flow.clientRequestId="";
+        return;
+      }
       const other=event.target.closest("[data-other-for]");
-      if(other){ state.flow[other.dataset.otherFor+"Other"]=other.value; }
+      if(other){ state.flow[other.dataset.otherFor+"Other"]=other.value; state.flow.clientRequestId=""; }
     });
-    document.addEventListener("change", (event) => { const field=event.target.closest("[data-flow-field]"); if(field){ state.flow[field.dataset.flowField]=field.value; render(); } });
+    document.addEventListener("change", (event) => {
+      const field=event.target.closest("[data-flow-field]");
+      if(!field) return;
+      syncFlowFromDom();
+      const key=field.dataset.flowField;
+      state.flow[key]=field.value;
+      if(key!=="clientRequestId") state.flow.clientRequestId="";
+      reconcileDependencies(key);
+      if(field.tagName==="SELECT") render();
+    });
     document.addEventListener("click", (event) => {
       const pickerToggleNode = event.target.closest("[data-picker-toggle]");
       if (pickerToggleNode) {
+        syncFlowFromDom();
         const pickerId = pickerToggleNode.dataset.pickerToggle || "";
         state.openPicker = state.openPicker === pickerId ? null : pickerId;
         render();
+        if(state.openPicker) setTimeout(()=>document.querySelector(`[data-picker-filter="${CSS.escape(pickerId)}"]`)?.focus(),0);
         return;
       }
       const actionButtonNode = event.target.closest("[data-action]");
@@ -1656,7 +1770,10 @@ function planCatalogDesk(){
         const field = pickNode.dataset.pickFlow;
         const value = pickNode.dataset.value || "";
         if (field) {
+          syncFlowFromDom();
           state.flow[field] = value;
+          state.flow.clientRequestId = "";
+          reconcileDependencies(field);
           state.openPicker = null;
           render();
         }
@@ -1676,6 +1793,13 @@ function planCatalogDesk(){
       const goButtonNode = event.target.closest("[data-go]");
       if (goButtonNode) {
         go(goButtonNode.dataset.go || "command");
+      }
+    });
+    document.addEventListener("keydown",(event)=>{ if(event.key==="Escape"&&state.openPicker){ state.openPicker=null; render(); } });
+    document.addEventListener("focusout",()=>{ setTimeout(()=>{ if(state.refreshRenderPending&&!operatorIsInteracting()) renderAfterRefresh(); },0); });
+    document.addEventListener("click",(event)=>{
+      if(state.openPicker && !event.target.closest("[data-picker-toggle],[data-picker-panel],[data-action]")){
+        syncFlowFromDom(); state.openPicker=null; render();
       }
     });
     loadAll();

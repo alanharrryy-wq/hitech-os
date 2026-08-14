@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import os
 import re
 import sqlite3
 import uuid
@@ -29,7 +30,7 @@ from commercial_billing import (
 LAB_ROOT = Path(__file__).resolve().parents[2]
 TERMINAL_ROOT = LAB_ROOT.parent
 DATA_DIR = LAB_ROOT / "internal" / "data"
-DB_PATH = DATA_DIR / "prisma-command-center.db"
+DB_PATH = Path(os.environ.get("PRISMA_COMMAND_CENTER_DB_PATH") or (DATA_DIR / "prisma-command-center.db"))
 PLAN_CATALOG_PATH = TERMINAL_ROOT / "shared" / "licensing" / "plan-catalog.canonical.json"
 
 PREFIX = {"client":"CLI","device":"DEV","license":"LIC","contract":"CTR","charge":"COB","payment":"PAY","fiscal":"CFD","provisioning":"ALT","deactivation":"BAJ","note":"NTE","receipt":"RCP","case":"CAS","evidence":"EVD","backup":"BKP","rollback":"RBK","item":"ID"}
@@ -919,6 +920,11 @@ def command_center_payload(raw_path, method="GET", body=None):
             con.commit()
             return out
     return {"ok": False, "error": "Unknown command-center route", "path": path, "method": method}
+
+# Governed customer-registration runtime adapter. Installed last so unrelated
+# billing/support/licensing behavior remains owned by the original store.
+from customer_registration_runtime import install_runtime as _install_customer_registration_runtime
+_install_customer_registration_runtime(globals())
 
 if __name__ == "__main__":
     ensure_initialized()
