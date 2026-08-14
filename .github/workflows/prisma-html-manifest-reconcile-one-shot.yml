@@ -1,0 +1,128 @@
+name: PRISMA HTML Manifest Reconcile One Shot
+
+on:
+  push:
+    branches:
+      - agent/prisma-html-binding-contract-consistency-v1
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact preimage and regenerate manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF_NAME}" = "agent/prisma-html-binding-contract-consistency-v1"
+          test "$(git hash-object prisma-html/FILES_MANIFEST.json)" = "fda9503ce93f070480ae2e5a0e4e74b798bd39da"
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+
+          root = Path('prisma-html')
+          manifest_path = root / 'FILES_MANIFEST.json'
+          contract_rel = 'authority/rifat/identity/contract/PRISMA_IDENTITY_BINDING_CONTRACT.md'
+          contract_path = root / contract_rel
+          expected_contract_sha = 'CE1AD57D3B028AECCF0FE95C8E832F32799A951181122B8B8822225D575B96C3'
+          expected_contract_bytes = 1289
+
+          contract_bytes = contract_path.read_bytes()
+          actual_contract_sha = hashlib.sha256(contract_bytes).hexdigest().upper()
+          if actual_contract_sha != expected_contract_sha or len(contract_bytes) != expected_contract_bytes:
+              raise SystemExit('CONTRACT_PREIMAGE_OR_ENCODING_DRIFT')
+
+          old = json.loads(manifest_path.read_text(encoding='utf-8'))
+          old_by_path = {item['path']: item for item in old.get('files', [])}
+
+          ignored_dirs = {'__pycache__', '.wrangler', 'cloudflare-results', 'dist', 'node_modules'}
+          ignored_names = {'.DS_Store', 'Thumbs.db'}
+          ignored_suffixes = ('.fail.zip', '.partial.zip', '.pyc', '.result.zip')
+
+          entries = []
+          for path in sorted(root.rglob('*'), key=lambda p: p.relative_to(root).as_posix()):
+              if not path.is_file() or path == manifest_path:
+                  continue
+              rel = path.relative_to(root)
+              if any(part in ignored_dirs for part in rel.parts):
+                  continue
+              if path.name in ignored_names or path.name.endswith(ignored_suffixes):
+                  continue
+              data = path.read_bytes()
+              entries.append({
+                  'bytes': len(data),
+                  'path': rel.as_posix(),
+                  'sha256': hashlib.sha256(data).hexdigest().upper(),
+              })
+
+          new_by_path = {item['path']: item for item in entries}
+          if set(new_by_path) != set(old_by_path):
+              missing = sorted(set(old_by_path) - set(new_by_path))
+              added = sorted(set(new_by_path) - set(old_by_path))
+              raise SystemExit(f'MANIFEST_PATH_SET_DRIFT missing={missing[:10]} added={added[:10]}')
+
+          changed = sorted(path for path in old_by_path if old_by_path[path] != new_by_path[path])
+          if changed != [contract_rel]:
+              raise SystemExit(f'UNEXPECTED_MANIFEST_ENTRY_DRIFT:{changed}')
+          if len(entries) != 611:
+              raise SystemExit(f'UNEXPECTED_MANIFEST_COUNT:{len(entries)}')
+
+          payload = {
+              'file_count_excluding_manifest': len(entries),
+              'files': entries,
+          }
+          manifest_path.write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print('MANIFEST_REGENERATED count=611 changed=1')
+          PY
+
+      - name: Validate full prisma-html project
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check -q tinycss2
+          python prisma-html/tools/validate_project.py --root prisma-html --report "$RUNNER_TEMP/prisma-html-validation.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads(Path(os.environ['RUNNER_TEMP']).joinpath('prisma-html-validation.json').read_text(encoding='utf-8'))
+          if not report.get('ok'):
+              raise SystemExit('PRISMA_HTML_VALIDATION_FAILED')
+          print('PRISMA_HTML_VALIDATION_PASS')
+          PY
+
+      - name: Commit only manifest and self-delete workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          test "$changed" = "prisma-html/FILES_MANIFEST.json"
+          git config user.name "prisma-manifest-bot"
+          git config user.email "prisma-manifest-bot@users.noreply.github.com"
+          git add prisma-html/FILES_MANIFEST.json
+          git rm .github/workflows/prisma-html-manifest-reconcile-one-shot.yml
+          staged="$(git diff --cached --name-only | sort)"
+          expected="$(printf '%s\n%s\n' '.github/workflows/prisma-html-manifest-reconcile-one-shot.yml' 'prisma-html/FILES_MANIFEST.json' | sort)"
+          test "$staged" = "$expected"
+          git commit -m "chore(prisma-html): reconcile files manifest"
+          git push origin HEAD:agent/prisma-html-binding-contract-consistency-v1
