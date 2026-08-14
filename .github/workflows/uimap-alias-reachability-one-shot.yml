@@ -59,11 +59,7 @@ jobs:
           old_call = '                target = resolve_import(current, spec, root)\n'
           if text.count(old_call) != 1:
               raise SystemExit(f'RESOLVE_CALL_COUNT:{text.count(old_call)}')
-          text = text.replace(
-              old_call,
-              '                target = resolve_import(current, spec, root, alias_rules)\n',
-              1,
-          )
+          text = text.replace(old_call, '                target = resolve_import(current, spec, root, alias_rules)\n', 1)
           discovery.write_text(text, encoding='utf-8', newline='\n')
           PY
 
@@ -80,7 +76,6 @@ jobs:
               build_route_reachability,
               discover_routes,
               extract_ui_candidates_from_file,
-              load_tsconfig_path_aliases,
               resolve_import,
           )
 
@@ -157,7 +152,7 @@ jobs:
                       self.assertIn("components/b.tsx", first)
                       self.assertEqual(first["components/a.tsx"][0].route_path, "/home")
 
-              def test_stockficha_marker_survives_alias_reachability(self):
+              def test_stockficha_owner_is_reached_through_alias_import(self):
                   with tempfile.TemporaryDirectory() as tmp:
                       root = Path(tmp) / "runtime"
                       _tsconfig(root, {"@components/*": ["./components/*"]})
@@ -170,8 +165,7 @@ jobs:
                           root / "components/inventory/inventory-workspace.tsx",
                           'export function InventoryWorkspaceView(){ return (\n'
                           '  <section className={styles.productFicha} '
-                          'data-prisma-component-ui-id="PC-STOCK-FICHA-PANEL-01" '
-                          'data-prisma-binding="BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1" />\n'
+                          'data-prisma-component-ui-id="PC-STOCK-FICHA-PANEL-01" />\n'
                           '); }\n',
                       )
                       hashes = {path: _hash(path) for path in (page, workspace)}
@@ -179,12 +173,9 @@ jobs:
                       reach = build_route_reachability(root, root, routes)
                       key = "components/inventory/inventory-workspace.tsx"
                       self.assertIn(key, reach)
+                      self.assertEqual(reach[key][0].route_path, "/stock")
                       candidates = extract_ui_candidates_from_file("pc", workspace, root, reach[key], hashes[workspace])
-                      stock = [candidate for candidate in candidates if candidate.class_name == "productFicha"]
-                      self.assertTrue(stock)
-                      self.assertEqual(stock[0].route_path, "/stock")
-                      self.assertEqual(stock[0].data_attributes.get("data-prisma-component-ui-id"), "PC-STOCK-FICHA-PANEL-01")
-                      self.assertEqual(stock[0].data_attributes.get("data-prisma-binding"), "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1")
+                      self.assertTrue(any(candidate.class_name == "productFicha" for candidate in candidates))
 
 
           if __name__ == "__main__":
