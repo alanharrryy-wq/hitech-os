@@ -11,6 +11,7 @@ from .contracts import (
     normalize_scope,
     require_nonempty_string,
     require_string_list,
+    require_exact_digest,
     sha256_json,
     utc_now_iso,
 )
@@ -63,6 +64,15 @@ def validate_authority_pack(pack: Mapping[str, Any], *, verify_checksum: bool = 
     if overlap:
         raise ContractError(f"allowedScope overlaps protectedScope: {overlap}")
 
+    compatibility_locks = pack.get("compatibilityLocks", {})
+    if compatibility_locks is not None:
+        if not isinstance(compatibility_locks, Mapping):
+            raise ContractError("compatibilityLocks must be an object")
+        for lock_name in ("authorityDigest", "policyDigest", "evidenceDigest"):
+            value = compatibility_locks.get(lock_name)
+            if value is not None:
+                require_exact_digest(value, f"compatibilityLocks.{lock_name}")
+
     authority_resolution = pack.get("authorityResolution", {})
     if authority_resolution is not None:
         if not isinstance(authority_resolution, Mapping):
@@ -101,6 +111,9 @@ def build_authority_pack(
     profile_version: str,
     authority_resolution: Mapping[str, Any] | None = None,
     generated_at: str | None = None,
+    authority_digest: str | None = None,
+    policy_digest: str | None = None,
+    evidence_digest: str | None = None,
 ) -> dict[str, Any]:
     seed = {
         "repositoryIdentity": require_nonempty_string(repository_identity, "repository_identity"),
@@ -123,6 +136,11 @@ def build_authority_pack(
         "authorityResolution": dict(authority_resolution or {"missing": [], "conflicted": []}),
         "certifiable": False,
         "productionCertified": False,
+        "compatibilityLocks": {
+            "authorityDigest": require_exact_digest(authority_digest, "authority_digest") if authority_digest else None,
+            "policyDigest": require_exact_digest(policy_digest, "policy_digest") if policy_digest else None,
+            "evidenceDigest": require_exact_digest(evidence_digest, "evidence_digest") if evidence_digest else None,
+        },
     }
     ensure_no_raw_secret_values(seed)
     pack_seed = canonical_json(seed)
