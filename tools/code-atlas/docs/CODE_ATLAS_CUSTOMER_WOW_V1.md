@@ -1,10 +1,10 @@
 # Code Atlas Customer Wow V1
 
-Status: `CONSUMER_CONTRACT_SOURCE_DESIGN`
+Status: `PARALLEL_CONSUMER_SLICE_IMPLEMENTED_AWAITING_UNIVERSAL_CORE_BINDING`
 
 Authority basis:
 
-- task-exact PRISMA Remote AutoMesh request `21dd25667cc8f5dd`
+- task-exact Remote AutoMesh request `21dd25667cc8f5dd`
 - workflow run `31816725320`
 - artifact `prisma-automesh-21dd25667cc8f5dd-31816725320-1`
 - artifact digest `sha256:2c06fd785fdf137a647a13dbb7122707b9f2a9aaca1cc2d19595da3cc063a285`
@@ -48,7 +48,7 @@ PASS / BLOCKED / UNKNOWN
 EVIDENCE REPORT + ROI SIGNALS + CONTINUATION
 ```
 
-The customer buys the ability to understand and govern a change. The customer does not need access to Code Atlas internal motors or PRISMA-specific governance.
+The customer buys the ability to understand and govern a change. The customer does not need access to internal motors or product-specific governance.
 
 ## 2. Non-overlap rule
 
@@ -80,207 +80,29 @@ If another branch introduces a canonical implementation for any of these, Custom
 9. **Secrets remain secret.** Sensitive-path discovery may record existence/classification but must not require ingesting secret values.
 10. **Explainability is mandatory.** Every target, protected path, requirement and decision exposes why it exists and which evidence supports it.
 11. **Unknown stays unknown.** Missing/contradictory evidence becomes `UNKNOWN` or `BLOCKED`, never inferred green.
-12. **PRISMA is an adapter.** PRISMA-specific Factory Ledger, AutoMesh, NDC, surfaces and gates remain opt-in product semantics, not neutral assumptions.
+12. **Product semantics are adapters.** Project-specific ledgers, meshes, surfaces and gates remain opt-in semantics, not neutral assumptions.
 
-## 4. Customer-facing capabilities
+## 4. Parallel slice implemented on the Customer Wow branch
 
-### 4.1 Change Studio
+The following neutral consumer pieces are source-implemented without binding to private Universal Core implementation details:
 
-Input:
+- fail-closed Change Studio composition over normalized evidence-bearing inputs;
+- portable Agent Authority Pack generation and checksum validation;
+- repository/commit/tree compatibility and authority/policy/evidence digest locks;
+- Verify Agent scope, protected-boundary, evidence, drift and agent-session checks;
+- Evidence Q&A support-level validation where retrieval is never proof;
+- versioned Customer Policy Pack validation where configuration is not evidence;
+- Architecture Delta normalization over two governed snapshots;
+- neutral external evidence envelopes;
+- parsers for JUnit, SARIF, coverage summaries, CODEOWNERS-style ownership and CI results;
+- Agent Session evidence normalization without hidden-reasoning inference;
+- raw ROI instrumentation with financial estimates kept explicitly derived;
+- human-readable Markdown rendering for Change and Verification reports;
+- portable evidence bundle manifest with repository-relative safe artifact names and checksums;
+- Customer Runner contract with `LOCAL_ONLY` and `PORTABLE_EVIDENCE` modes, least privilege, mandatory read-only operation and no source-code egress in V1;
+- neutral CLI for validating packs, verifying changes and parsing supported evidence formats.
 
-- natural-language or structured change request;
-- repository snapshot identity;
-- optional customer policy/profile;
-- optional nominated targets or constraints.
-
-Output MUST include:
-
-- normalized change intent;
-- primary targets;
-- related/secondary targets;
-- impact radius;
-- protected/do-not-touch scope;
-- owners/authority references when supported;
-- known facts;
-- inferences clearly marked as inferences;
-- unknowns;
-- contradictions;
-- required evidence/tests/gates;
-- readiness decision: `PASS | BLOCKED | UNKNOWN`;
-- explicit `doesNotProve` boundary.
-
-A Change Studio result without evidence provenance is invalid.
-
-### 4.2 Agent Authority Pack
-
-Portable instruction artifact for a human or coding agent.
-
-Minimum fields:
-
-- `packId`;
-- repository identity;
-- exact commit/tree identity;
-- request digest;
-- normalized task;
-- allowed files/directories/scopes;
-- protected files/directories/scopes;
-- required checks;
-- required evidence;
-- forbidden operations;
-- stop conditions;
-- unresolved unknowns;
-- authority/evidence references;
-- tool/profile/schema versions;
-- generated timestamp;
-- canonical checksum.
-
-A pack MUST fail closed if its repository state is stale or required authorities are unresolved.
-
-### 4.3 Verify Agent
-
-Input:
-
-- original Agent Authority Pack;
-- actual diff/change manifest and, when available, agent-session evidence;
-- current repository snapshot;
-- produced test/CI/evidence results.
-
-Checks:
-
-- exact pack/repo compatibility;
-- stale snapshot/drift;
-- actual changes inside allowed scope;
-- protected scope untouched unless separately authorized;
-- required checks executed;
-- evidence complete and current;
-- contradictions and newly introduced unknowns;
-- unrequested changes;
-- result provenance.
-
-Output:
-
-- `PASS`, `BLOCKED` or `UNKNOWN`;
-- per-file/per-scope compliance;
-- missing evidence;
-- out-of-scope mutations;
-- protected-boundary violations;
-- stale authority/drift findings;
-- `doesNotProve` statement;
-- portable verification report.
-
-### 4.4 Evidence Q&A
-
-Customer asks questions such as:
-
-- Who appears to own authentication?
-- What depends on pricing?
-- Which tests support checkout?
-- Which authority changed since the previous snapshot?
-
-Every answer MUST separate:
-
-- answer/claim;
-- support level;
-- evidence references;
-- inference, if any;
-- contradictions;
-- confidence basis;
-- `doesNotProve`.
-
-No answer may cite semantic similarity alone as proof.
-
-### 4.5 Customer Policy Packs
-
-A policy pack may declare customer expectations such as:
-
-- protected paths;
-- required authorities;
-- required tests/reviews;
-- forbidden operations;
-- maximum acceptable impact/risk thresholds;
-- security/privacy handling rules;
-- domain-specific evidence requirements.
-
-Policy packs MUST be versioned and explicit. They do not mutate the neutral core and do not become evidence merely because the customer configured them.
-
-### 4.6 Architecture Delta
-
-Compare two governed snapshots and explain material changes in:
-
-- applications/services/packages;
-- architecture layers;
-- dependency edges;
-- data/schema relationships;
-- authority/ownership;
-- CI/test gates;
-- protected/sensitive scope;
-- unknown/contradictory areas.
-
-Output distinguishes `added`, `removed`, `changed`, `stale`, `unknown` and `unchanged`.
-
-### 4.7 Evidence Connectors
-
-Adapters consume external evidence without rebuilding the external tool.
-
-Initial neutral connector classes:
-
-- Git/PR/diff metadata;
-- GitHub Actions-style CI results;
-- SARIF;
-- JUnit-compatible test results;
-- coverage summaries;
-- CODEOWNERS-style ownership;
-- generic build/test command evidence.
-
-Future connectors may include Sonar, Semgrep or other customer tools, but external tool output remains evidence with provenance, not automatic authority.
-
-### 4.8 Agent Session Intelligence
-
-When session information is available, record:
-
-- requested task;
-- authority pack used;
-- agent/tool identity as declared by the evidence source;
-- files inspected/changed;
-- allowed vs out-of-scope changes;
-- checks requested/executed;
-- evidence completeness;
-- human interventions;
-- result.
-
-Do not infer hidden agent reasoning.
-
-### 4.9 ROI instrumentation
-
-Measure operational outcomes without fabricating monetary value.
-
-Raw metrics may include:
-
-- context discovery time;
-- change-scope identification time;
-- human supervision time;
-- out-of-scope change rate;
-- reopened-work rate;
-- evidence assembly time;
-- change readiness throughput;
-- blocked-before-change count;
-- evidence completeness rate.
-
-Loaded engineering cost and monetary ROI remain customer-provided or explicitly modeled assumptions. Keep raw observed metrics separate from derived financial estimates.
-
-### 4.10 Customer Runner boundary
-
-Future runner contract:
-
-- executes inside customer-controlled infrastructure;
-- least privilege and read-only by default;
-- deterministic/redactable outputs;
-- no production credentials required by default;
-- customer controls what evidence leaves its environment;
-- supports local-only mode;
-- emits provenance-locked portable bundles.
-
-This document does not claim the runner is production-ready.
+The slice remains a consumer layer. It does not claim that repository discovery, authority resolution, graph generation, snapshot generation or semantic indexing are implemented here.
 
 ## 5. Decision semantics
 
@@ -317,7 +139,7 @@ explain_selection(entity_or_evidence)
 
 Each response must be evidence-bearing and distinguish fact/inference/unknown/conflict. Binding to actual Universal Core APIs occurs only after the canonical implementation lands.
 
-## 7. Compatibility with existing Code Atlas capability baseline
+## 7. Compatibility with existing capability baseline
 
 Customer Wow is a composition layer. It should preferentially consume existing hardened capabilities including, where applicable:
 
@@ -335,32 +157,35 @@ Customer Wow is a composition layer. It should preferentially consume existing h
 
 Legacy registry labels are not certification. Existing source must be reconciled through current hardened contracts before reuse.
 
-## 8. Negative-test minimum
+## 8. Negative-test baseline
 
-Customer Wow implementation is incomplete without tests that prove fail-closed behavior for at least:
+The parallel slice includes fail-closed coverage for:
 
 - stale commit/tree;
-- changed authority after pack generation;
+- authority digest drift after pack generation;
 - missing required authority;
 - out-of-scope modified file;
 - protected file mutation;
-- missing required test evidence;
+- missing required evidence/checks;
 - contradictory evidence;
-- semantic-search result with no supporting evidence;
-- customer policy requiring nonexistent source;
-- path traversal / unsafe path;
+- semantic result without supporting evidence;
+- path traversal / unsafe paths;
 - spaces, Unicode and long paths;
-- malformed external connector payload;
-- SARIF/JUnit/coverage evidence with stale provenance;
+- malformed JUnit/CI inputs;
+- stale connector provenance;
 - secret-value ingestion attempt;
-- unknown/unsupported repository profile;
 - cross-repository evidence contamination;
 - agent session not matching the authority pack;
-- changed tool/profile/schema version that invalidates compatibility.
+- incompatible profile version;
+- cross-repository architecture delta;
+- Customer Runner mutation attempts;
+- prohibited egress in `LOCAL_ONLY` mode.
+
+The remaining integration-specific negatives, including required-authority existence resolution against the Universal Core and real material graph drift, must be bound and tested after the Universal Core lands.
 
 ## 9. Cross-platform requirement
 
-Customer-facing neutral code must preserve the current neutrality boundary and remain portable across Linux, Windows and macOS. It must not assume drive letters, developer homes, fixed ports or PRISMA product names.
+Customer-facing neutral code must preserve the current neutrality boundary and remain portable across Linux, Windows and macOS. It must not assume drive letters, developer homes, fixed ports or product names.
 
 ## 10. Parallel-development rule
 
@@ -384,4 +209,4 @@ The first commercially meaningful loop is complete only when a neutral external 
 7. record ROI raw metrics without fabricating economic claims;
 8. preserve source privacy and neutrality constraints.
 
-Everything beyond this loop is secondary until the loop is demonstrated on unrelated external repositories.
+The parallel slice implements the consumer-side contracts and enforcement needed for this loop. Final completion waits only on binding those contracts to the canonical Universal Intelligence Core and proving the loop on unrelated external repositories.
