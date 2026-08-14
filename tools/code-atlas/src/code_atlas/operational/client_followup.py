@@ -1,1 +1,1 @@
-from .suite50 import run_operational_evidence
+from .hardened_runner import run_operational_atlas as run_operational_evidence
