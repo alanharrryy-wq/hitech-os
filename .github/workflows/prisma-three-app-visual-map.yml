@@ -1,0 +1,158 @@
+name: PRISMA Three-App Visual Map
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "tools/code-atlas/src/code_atlas/ui_bridge/**"
+      - "tools/code-atlas/src/code_atlas/app_map/uimap/**"
+      - "tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py"
+      - "tools/code-atlas/profiles/prisma-ui-bridge.v1.json"
+      - "prisma-html/authority/rifat/**"
+      - "prisma-html/extras/atlasfin/**"
+      - "apps/terminal-de-venta-system/products/tablet/**"
+      - "apps/terminal-de-venta-system/products/pc/**"
+      - "apps/terminal-de-venta-system/products/mobile/**"
+      - ".github/workflows/prisma-three-app-visual-map.yml"
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+jobs:
+  refresh-three-app-map:
+    name: refresh-three-app-map
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile mapping tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/ui_bridge/multisurface.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/binding_promotion.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/consistency.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/closure.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/cli.py \
+            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py
+
+      - name: Run focused operational tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py
+
+      - name: Capture repo state before refresh
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > "$RUNNER_TEMP/head-before.txt"
+          git status --porcelain=v1 --untracked-files=all > "$RUNNER_TEMP/status-before.txt"
+
+      - name: Generate current three-app visual mapping evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/prisma-three-app-map"
+          python -m code_atlas.cli.main ui-bridge refresh-three-app-map \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-root "$RUNNER_TEMP/prisma-three-app-map" \
+            --binding-registry "$GITHUB_WORKSPACE/prisma-html/authority/rifat/identity/registries/element-bindings.registry.json" \
+            --pilot-contract "$GITHUB_WORKSPACE/apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots/PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json" \
+            --workers 18
+
+      - name: Validate evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'prisma-three-app-map'
+          required = [
+              'PRISMA_THREE_APP_VISUAL_MAPPING_REFRESH.json',
+              'PRISMA_THREE_APP_VISUAL_MAPPING_READINESS.json',
+              'PRISMA_UI_BRIDGE_BINDING_PROMOTION.json',
+              'PRISMA_UI_BRIDGE_BINDING_GAP_MATRIX.json',
+              'PRISMA_UI_BRIDGE_VISUAL_AUTHORITY_CONSISTENCY.json',
+          ]
+          missing = [name for name in required if not (root / name).is_file()]
+          if missing:
+              raise SystemExit('MISSING_THREE_APP_MAPPING_OUTPUTS:' + ','.join(missing))
+
+          refresh = json.loads((root / required[0]).read_text(encoding='utf-8'))
+          readiness = json.loads((root / required[1]).read_text(encoding='utf-8'))
+          promotion = json.loads((root / required[2]).read_text(encoding='utf-8'))
+          gaps = json.loads((root / required[3]).read_text(encoding='utf-8'))
+          consistency = json.loads((root / required[4]).read_text(encoding='utf-8'))
+
+          if refresh.get('status') == 'BLOCKED_BY_UIMAP':
+              raise SystemExit('THREE_APP_MAPPING_BLOCKED_BY_UIMAP')
+          if refresh.get('applicationEnabled') is not False:
+              raise SystemExit('GENERIC_APPLICATION_MUST_REMAIN_DISABLED')
+          if refresh.get('sourceMutationPerformed') is not False:
+              raise SystemExit('SOURCE_MUTATION_FLAG_MUST_REMAIN_FALSE')
+          if refresh.get('runtimeMutationPerformed') is not False:
+              raise SystemExit('RUNTIME_MUTATION_FLAG_MUST_REMAIN_FALSE')
+          if refresh.get('productMutationPerformed') is not False:
+              raise SystemExit('PRODUCT_MUTATION_FLAG_MUST_REMAIN_FALSE')
+
+          summary = {
+              'refreshStatus': refresh.get('status'),
+              'blockers': refresh.get('blockers', []),
+              'surfaceCounts': readiness.get('surfaceCounts', {}),
+              'neutralMeaningCount': readiness.get('neutralMeaningCount'),
+              'threeAppTransferReadyNeutralMeaningCount': readiness.get('threeAppTransferReadyNeutralMeaningCount'),
+              'promotion': {
+                  'componentCount': promotion.get('componentCount'),
+                  'promotableCount': promotion.get('promotableCount'),
+                  'newPromotionCandidateCount': promotion.get('newPromotionCandidateCount'),
+                  'blockedCount': promotion.get('blockedCount'),
+              },
+              'gapStatus': gaps.get('status'),
+              'gapCounts': gaps.get('counts', {}),
+              'consistencyStatus': consistency.get('status'),
+              'consistencyBlockingIssueCount': consistency.get('blockingIssueCount'),
+              'consistencyIssues': consistency.get('issues', []),
+          }
+          (root / 'SUMMARY_FOR_CHAT.json').write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True))
+          PY
+
+      - name: Prove refresh was read-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > "$RUNNER_TEMP/head-after.txt"
+          git status --porcelain=v1 --untracked-files=all > "$RUNNER_TEMP/status-after.txt"
+          diff -u "$RUNNER_TEMP/head-before.txt" "$RUNNER_TEMP/head-after.txt"
+          diff -u "$RUNNER_TEMP/status-before.txt" "$RUNNER_TEMP/status-after.txt"
+          test ! -s "$RUNNER_TEMP/status-after.txt"
+
+      - name: Upload three-app visual mapping evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: prisma-three-app-visual-map-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/prisma-three-app-map
+          if-no-files-found: error
+          retention-days: 14
