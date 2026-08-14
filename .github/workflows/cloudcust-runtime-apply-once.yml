@@ -70,7 +70,7 @@ jobs:
           t=t.replace(a,'''      const field=event.target.closest("[data-flow-field]");\n      if(field){ state.flow[field.dataset.flowField]=field.value; return; }''',1)
           a='''    document.addEventListener("click", (event) => {\n      const pickerToggleNode = event.target.closest("[data-picker-toggle]");'''
           if t.count(a)!=1: raise SystemExit(f'CLICK_ANCHOR_DRIFT:{t.count(a)}')
-          t=t.replace(a,'''    document.addEventListener("focusout", () => {\n      setTimeout(() => {\n        if (state.refreshRenderPending && !operatorIsInteracting()) { state.refreshRenderPending = false; render(); }\n      }, 0);\n    });\n    document.addEventListener("click", (event) => {\n      const pickerToggleNode = event.target.closest("[data-picker-toggle]");''',1)
+          t=t.replace(a,'''    document.addEventListener("focusout", (event) => {\n      const root = $("surfaceRoot");\n      const next = event.relatedTarget;\n      if (root && next && root.contains(next)) return;\n      setTimeout(() => {\n        if (state.refreshRenderPending && !operatorIsInteracting()) { state.refreshRenderPending = false; render(); }\n      }, 80);\n    });\n    document.addEventListener("click", (event) => {\n      const pickerToggleNode = event.target.closest("[data-picker-toggle]");''',1)
           if t.count('function operatorIsInteracting()')!=1 or t.count('renderAfterRefresh();')!=1: raise SystemExit('OPERATOR_SAFE_REFRESH_INVALID')
           p.write_text(t,encoding='utf-8')
           print('PASS_OPERATOR_SAFE_REFRESH')
@@ -92,7 +92,9 @@ jobs:
               if token in js or token in store: raise SystemExit('LEGACY_AUTHORITY_REMAINS:'+token)
           if '<html lang="es-MX">' not in html or 'data-surface="billing">Cobranza<' not in html: raise SystemExit('NAVIGATION_HOMOLOGATION_MISSING')
           if 'cityZone' in js[js.find('function clientWizard'):js.find('function deviceWizard')]: raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
-          print('PASS_EXACT_SCOPE_AUTHORITY_AND_NAV')
+          if js.count('const actionButtonNode = event.target.closest("[data-action]")') != 1: raise SystemExit('ACTION_DELEGATION_DRIFT')
+          if js.count('action === "prepare-client"') != 1: raise SystemExit('PREPARE_CLIENT_ACTION_DRIFT')
+          print('PASS_EXACT_SCOPE_AUTHORITY_NAV_AND_ACTION')
           PY
           python -m json.tool "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json" >/dev/null
           python -m py_compile "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
