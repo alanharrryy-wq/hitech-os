@@ -4,24 +4,27 @@ import os
 from pathlib import Path
 
 
-DEFAULT_REPO_ROOT = Path(os.environ.get("CODE_ATLAS_REPO_ROOT", r"F:\repos\hitech-os"))
-DEFAULT_CODE_ATLAS_ROOT = Path(os.environ.get("CODE_ATLAS_APP_ROOT", str(DEFAULT_REPO_ROOT / "tools" / "code-atlas")))
-DEFAULT_MOTORS_ROOT = Path(os.environ.get("PRISMA_CTX_MOTORS_ROOT", r"F:\PRISMA_CTX\MOTORES"))
-DEFAULT_NDC_ROOT = Path(os.environ.get("PRISMA_NDC_ROOT", r"F:\PRISMA_CTX\NDC"))
-DEFAULT_MAMASTROPHIC_ROOT = Path(
-    os.environ.get("PRISMA_MAMASTROPHIC_ROOT", str(DEFAULT_REPO_ROOT / "tools" / "Plawright Mamastrophic"))
-)
-DEFAULT_OUTPUT_ROOT = Path(os.environ.get("CODE_ATLAS_DOWNLOADS_ROOT", r"F:\descargasf"))
-DEFAULT_TRASH_ROOT = Path(os.environ.get("PRISMA_TRASH_ROOT", r"F:\Trash-old"))
+def _env_path(name: str, default: str = "") -> Path:
+    value = str(os.environ.get(name, default)).strip()
+    return Path(value or ".")
+
+
+DEFAULT_REPO_ROOT = _env_path("CODE_ATLAS_PROJECT_ROOT", ".")
+DEFAULT_CODE_ATLAS_ROOT = _env_path("CODE_ATLAS_ROOT", ".")
+DEFAULT_MOTORS_ROOT = _env_path("CODE_ATLAS_MOTORS_ROOT", "")
+DEFAULT_NDC_ROOT = _env_path("CODE_ATLAS_NDC_ROOT", "")
+DEFAULT_RUNTIME_ROOT = _env_path("CODE_ATLAS_RUNTIME_ROOT", "")
+DEFAULT_OUTPUT_ROOT = _env_path("CODE_ATLAS_OUTPUT_ROOT", "./code-atlas-out")
+DEFAULT_ARCHIVE_ROOT = _env_path("CODE_ATLAS_ARCHIVE_ROOT", "")
 
 
 def canonical_paths() -> dict[str, str]:
     return {
         "repo_root": str(DEFAULT_REPO_ROOT),
         "code_atlas_root": str(DEFAULT_CODE_ATLAS_ROOT),
-        "motors_root": str(DEFAULT_MOTORS_ROOT),
-        "ndc_root": str(DEFAULT_NDC_ROOT),
-        "mamastrophic_root": str(DEFAULT_MAMASTROPHIC_ROOT),
+        "motors_root": "" if str(DEFAULT_MOTORS_ROOT) == "." and not os.environ.get("CODE_ATLAS_MOTORS_ROOT") else str(DEFAULT_MOTORS_ROOT),
+        "ndc_root": "" if str(DEFAULT_NDC_ROOT) == "." and not os.environ.get("CODE_ATLAS_NDC_ROOT") else str(DEFAULT_NDC_ROOT),
+        "runtime_root": "" if str(DEFAULT_RUNTIME_ROOT) == "." and not os.environ.get("CODE_ATLAS_RUNTIME_ROOT") else str(DEFAULT_RUNTIME_ROOT),
         "output_root": str(DEFAULT_OUTPUT_ROOT),
-        "trash_root": str(DEFAULT_TRASH_ROOT),
+        "archive_root": "" if str(DEFAULT_ARCHIVE_ROOT) == "." and not os.environ.get("CODE_ATLAS_ARCHIVE_ROOT") else str(DEFAULT_ARCHIVE_ROOT),
     }
