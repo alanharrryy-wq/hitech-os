@@ -1,20 +1,23 @@
-# -*- coding: utf-8 -*-
 from __future__ import annotations
+
 import argparse
-from pathlib import Path
-try:
-    from .licscope_bridge import verify_bridge, json_dumps
-except Exception:
-    from licscope_bridge import verify_bridge, json_dumps
+import json
+
 
 def main(argv=None):
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--repo-root', default='.')
-    ap.add_argument('--dbevid-zip', default='')
-    ns = ap.parse_args(argv)
-    result = verify_bridge(Path(ns.repo_root), Path(ns.dbevid_zip) if ns.dbevid_zip else None)
-    print(json_dumps(result))
-    return 0 if result.get('ok') else 1
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--evidence-zip", default="")
+    parser.parse_args(argv)
+    result = {
+        "ok": False,
+        "status": "BLOCKED_PROJECT_SCOPE_ADAPTER_REQUIRED",
+        "productionCertified": False,
+        "message": "Historical implicit project scope verification is disabled. Configure and verify an explicit adapter.",
+    }
+    print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+    return 1
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     raise SystemExit(main())
