@@ -1,4 +1,4 @@
-name: UIMAP Alias Reachability Diagnostic
+name: UIMAP Alias Reachability Diagnostic 2
 
 on:
   push:
@@ -17,227 +17,127 @@ env:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
-      - name: Checkout exact branch
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-
-      - name: Diagnose alias reachability through real UIMAP pipeline
+      - name: Isolate reachability versus extraction
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from __future__ import annotations
-
-          import json
-          import os
-          import tempfile
+          import json, os
           from pathlib import Path
-
-          import code_atlas.app_map.uimap.discovery as discovery
-          from code_atlas.app_map.uimap.runner import run_uimap
+          import code_atlas.app_map.uimap.discovery as d
 
           repo = Path(os.environ['GITHUB_WORKSPACE']).resolve()
-          governor = repo / 'prisma-html'
-          roots = discovery.resolve_runtime_roots(repo)
-          pc_roots = roots.get('pc') or []
-          if len(pc_roots) != 1:
-              raise SystemExit(f'PC_RUNTIME_ROOT_COUNT:{len(pc_roots)}:{pc_roots}')
-          pc_root = pc_roots[0]
-          tsconfig = pc_root / 'tsconfig.json'
+          pc_root = d.resolve_runtime_roots(repo)['pc'][0]
           stock_page = pc_root / 'app/stock/page.tsx'
           workspace = pc_root / 'components/inventory/inventory-workspace.tsx'
-          if not tsconfig.is_file() or not stock_page.is_file() or not workspace.is_file():
-              raise SystemExit('PC_DIAGNOSTIC_PREIMAGE_MISSING')
+          workspace_rel = d.norm_rel(repo, workspace)
 
-          cfg = json.loads(tsconfig.read_text(encoding='utf-8'))
-          raw_paths = (cfg.get('compilerOptions') or {}).get('paths') or {}
-
-          def load_rules(root: Path):
-              rows = []
-              config = root / 'tsconfig.json'
-              payload = json.loads(config.read_text(encoding='utf-8'))
-              paths = (payload.get('compilerOptions') or {}).get('paths') or {}
-              for pattern, raw_targets in paths.items():
-                  if not isinstance(pattern, str) or pattern.count('*') > 1:
-                      continue
-                  targets = raw_targets if isinstance(raw_targets, list) else [raw_targets]
-                  targets = [str(x) for x in targets if isinstance(x, str) and x.strip()]
-                  if not targets:
-                      continue
-                  if '*' in pattern:
-                      prefix, suffix = pattern.split('*', 1)
-                      exact = False
-                  else:
-                      prefix, suffix, exact = pattern, '', True
-                  rows.append({
-                      'pattern': pattern,
-                      'prefix': prefix,
-                      'suffix': suffix,
-                      'exact': exact,
-                      'targets': targets,
-                      'baseDir': config.parent.resolve(),
-                  })
-              return sorted(rows, key=lambda r: (-int(bool(r['exact'])), -len(r['prefix']), -len(r['suffix']), r['pattern']))
-
+          cfg = json.loads((pc_root / 'tsconfig.json').read_text(encoding='utf-8'))
+          paths_cfg = (cfg.get('compilerOptions') or {}).get('paths') or {}
           exts = ('.ts','.tsx','.js','.jsx','.mjs','.cjs','.vue','.svelte','.json','.css','.scss','.sass','.less')
 
           def resolve_base(base: Path, root: Path):
-              candidates = [base.resolve()]
-              candidates += [Path(str(base) + ext).resolve() for ext in exts]
-              candidates += [(base / ('index' + ext)).resolve() for ext in exts]
-              seen = set()
-              for candidate in candidates:
-                  if candidate in seen:
-                      continue
-                  seen.add(candidate)
-                  try:
-                      candidate.relative_to(root.resolve())
-                  except Exception:
-                      continue
-                  if candidate.is_file():
-                      return candidate
+              for candidate in [base.resolve(), *[Path(str(base)+ext).resolve() for ext in exts], *[(base/('index'+ext)).resolve() for ext in exts]]:
+                  try: candidate.relative_to(root.resolve())
+                  except Exception: continue
+                  if candidate.is_file(): return candidate
               return None
 
-          rules_cache = {}
-          def patched_resolve_import(source: Path, spec: str, root: Path):
+          def rules(root: Path):
+              out=[]
+              for pattern, targets in paths_cfg.items():
+                  if pattern.count('*') > 1: continue
+                  if '*' in pattern: prefix,suffix=pattern.split('*',1); exact=False
+                  else: prefix,suffix,exact=pattern,'',True
+                  out.append((exact,prefix,suffix,pattern,[str(x) for x in targets]))
+              return sorted(out, key=lambda r:(-int(r[0]),-len(r[1]),-len(r[2]),r[3]))
+
+          alias_rules = rules(pc_root)
+          def patched(source: Path, spec: str, root: Path):
               if spec.startswith('.'):
-                  return resolve_base((source.parent / spec).resolve(), root)
-              key = root.resolve()
-              rules = rules_cache.setdefault(key, load_rules(root))
-              matches = []
-              for rule in rules:
-                  if rule['exact']:
-                      wildcard = '' if spec == rule['pattern'] else None
+                  return resolve_base((source.parent/spec).resolve(), root)
+              matches=[]
+              for exact,prefix,suffix,pattern,targets in alias_rules:
+                  if exact:
+                      wildcard='' if spec==pattern else None
+                  elif spec.startswith(prefix) and (not suffix or spec.endswith(suffix)):
+                      end=len(spec)-len(suffix) if suffix else len(spec)
+                      wildcard=spec[len(prefix):end] if end>=len(prefix) else None
                   else:
-                      prefix, suffix = rule['prefix'], rule['suffix']
-                      if not spec.startswith(prefix) or (suffix and not spec.endswith(suffix)):
-                          wildcard = None
-                      else:
-                          end = len(spec) - len(suffix) if suffix else len(spec)
-                          wildcard = spec[len(prefix):end] if end >= len(prefix) else None
-                  if wildcard is None:
-                      continue
-                  score = (int(bool(rule['exact'])), len(rule['prefix']), len(rule['suffix']))
-                  matches.append((score, rule, wildcard))
-              if not matches:
-                  return None
-              best_score = max(score for score, _, _ in matches)
-              best = [(rule, wildcard) for score, rule, wildcard in matches if score == best_score]
-              resolved = set()
-              for rule, wildcard in sorted(best, key=lambda x: x[0]['pattern']):
-                  chosen = None
-                  for target_pattern in rule['targets']:
-                      if target_pattern.count('*') > 1:
-                          continue
-                      substituted = target_pattern.replace('*', wildcard) if '*' in target_pattern else target_pattern
-                      chosen = resolve_base((Path(rule['baseDir']) / substituted).resolve(), root)
-                      if chosen is not None:
-                          break
-                  if chosen is not None:
-                      resolved.add(chosen.resolve())
-              return next(iter(resolved)) if len(resolved) == 1 else None
+                      wildcard=None
+                  if wildcard is not None:
+                      matches.append(((int(exact),len(prefix),len(suffix)),pattern,targets,wildcard))
+              if not matches: return None
+              score=max(x[0] for x in matches)
+              resolved=set()
+              for _,pattern,targets,wildcard in [x for x in matches if x[0]==score]:
+                  for target_pattern in targets:
+                      sub=target_pattern.replace('*',wildcard) if '*' in target_pattern else target_pattern
+                      found=resolve_base((pc_root/sub).resolve(), root)
+                      if found is not None:
+                          resolved.add(found.resolve()); break
+              return next(iter(resolved)) if len(resolved)==1 else None
 
-          discovery.resolve_import = patched_resolve_import
+          d.resolve_import = patched
+          files = sorted(d.iter_files(pc_root), key=lambda p:str(p).lower())
+          hashes = d.parallel_hash(files, workers=18)
+          routes = d.discover_routes('pc', pc_root, repo, hashes)
+          stock_routes = [r for r in routes if r.route_path == '/stock']
+          reach = d.build_route_reachability(pc_root, repo, routes)
+          workspace_routes = reach.get(workspace_rel, [])
 
-          stock_text = stock_page.read_text(encoding='utf-8')
-          stock_imports = discovery.parse_imports(stock_text)
-          direct = {spec: str(patched_resolve_import(stock_page, spec, pc_root)) for spec in stock_imports}
+          extraction_error = None
+          manual_candidates = []
+          try:
+              manual_candidates = d.extract_ui_candidates_from_file('pc', workspace, repo, workspace_routes, hashes.get(workspace,''))
+          except Exception as exc:
+              extraction_error = f'{type(exc).__name__}: {exc}'
 
-          runtime = discovery.discover_runtime('pc', pc_root, repo, workers=18)
-          workspace_rel = discovery.norm_rel(repo, workspace)
-          candidate_rows = [
-              {
-                  'routePath': c.route_path,
-                  'routeId': c.route_id,
-                  'renderSourceFile': c.render_source_file,
-                  'ownerFile': c.owner_file,
-                  'ownerSymbol': c.owner_symbol,
-                  'className': c.class_name,
-                  'tagName': c.tag_name,
-                  'widgetKind': c.widget_kind,
-                  'dataAttributes': c.data_attributes,
-              }
-              for c in runtime.get('candidates', [])
-              if c.route_path == '/stock'
-              and (c.render_source_file == workspace_rel or c.owner_file == workspace_rel)
-          ]
-          stock_route = next((r for r in runtime.get('routes', []) if r.route_path == '/stock' and r.kind == 'page'), None)
+          runtime = d.discover_runtime('pc', pc_root, repo, workers=18)
+          runtime_workspace = [c for c in runtime['candidates'] if c.render_source_file == workspace_rel or c.owner_file == workspace_rel]
+          manual_stock = [c for c in manual_candidates if c.route_path == '/stock']
 
-          with tempfile.TemporaryDirectory() as tmp:
-              out = Path(tmp) / 'uimap'
-              result = run_uimap(
-                  product_root=str(repo),
-                  governor_root=str(governor),
-                  output_dir=str(out),
-                  workers=18,
-              )
-              pc_batch_path = out / 'batches/02_pc.json'
-              if not pc_batch_path.is_file():
-                  raise SystemExit('PC_BATCH_MISSING')
-              pc_batch = json.loads(pc_batch_path.read_text(encoding='utf-8'))
-              emitted_stock = [
-                  {
-                      'componentId': row.get('componentId'),
-                      'componentUiId': row.get('componentUiId'),
-                      'routePath': row.get('routePath'),
-                      'ownerFile': row.get('ownerFile'),
-                      'renderSourceFile': row.get('renderSourceFile'),
-                      'ownerSymbol': row.get('ownerSymbol'),
-                      'targetResolutionStatus': row.get('targetResolutionStatus'),
-                      'visualSelectors': [t.get('selector') for t in row.get('visualTargets', [])],
-                  }
-                  for row in pc_batch.get('components', [])
-                  if row.get('routePath') == '/stock'
-              ]
-              emitted_workspace = [row for row in emitted_stock if row.get('ownerFile') == workspace_rel or row.get('renderSourceFile') == workspace_rel]
-
-              report = {
-                  'status': 'DIAGNOSTIC_ONLY_NO_SOURCE_MUTATION',
-                  'pcRuntimeRoot': discovery.norm_rel(repo, pc_root),
-                  'tsconfig': discovery.norm_rel(repo, tsconfig),
-                  'tsconfigPaths': raw_paths,
-                  'stockPage': discovery.norm_rel(repo, stock_page),
-                  'stockImports': stock_imports,
-                  'directResolvedImports': direct,
-                  'workspaceExpected': workspace_rel,
-                  'stockRouteRecord': {
-                      'routeId': stock_route.route_id if stock_route else None,
-                      'sourceFile': stock_route.source_file if stock_route else None,
-                      'imports': stock_route.imports if stock_route else None,
-                  },
-                  'discoverRuntimeWorkspaceCandidateCount': len(candidate_rows),
-                  'discoverRuntimeWorkspaceCandidatesSample': candidate_rows[:20],
-                  'runUimapOk': result.get('ok'),
-                  'runUimapFinalStatus': result.get('finalStatus'),
-                  'runUimapComponentCount': result.get('componentCount'),
-                  'pcBatchStockComponentCount': len(emitted_stock),
-                  'pcBatchWorkspaceComponentCount': len(emitted_workspace),
-                  'pcBatchWorkspaceSample': emitted_workspace[:20],
-                  'pcBatchStockOwnerFiles': sorted({str(row.get('ownerFile')) for row in emitted_stock}),
-                  'pcBatchStockRenderFiles': sorted({str(row.get('renderSourceFile')) for row in emitted_stock}),
-              }
-              print('PRISMA_UIMAP_ALIAS_DIAGNOSTIC_BEGIN')
-              print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
-              print('PRISMA_UIMAP_ALIAS_DIAGNOSTIC_END')
-
-              if direct.get('@components/inventory/inventory-workspace') != str(workspace.resolve()):
-                  raise SystemExit('DIRECT_ALIAS_RESOLUTION_FAILED')
-              if not candidate_rows:
-                  raise SystemExit('DISCOVER_RUNTIME_DID_NOT_REACH_WORKSPACE')
-              if not emitted_workspace:
-                  raise SystemExit('RUN_UIMAP_DROPPED_REACHED_WORKSPACE')
+          report = {
+              'status':'DIAGNOSTIC_ONLY_NO_SOURCE_MUTATION',
+              'pcRoot':d.norm_rel(repo,pc_root),
+              'workspaceRel':workspace_rel,
+              'workspaceInIterFiles':workspace in files,
+              'workspaceHashPresent':workspace in hashes,
+              'stockRouteCount':len(stock_routes),
+              'stockRouteImports':[r.imports for r in stock_routes],
+              'directAliasResolution':str(patched(stock_page,'@components/inventory/inventory-workspace',pc_root)),
+              'workspaceInReach':workspace_rel in reach,
+              'workspaceReachRoutes':[{'routePath':r.route_path,'kind':r.kind,'sourceFile':r.source_file} for r in workspace_routes],
+              'manualExtractionError':extraction_error,
+              'manualCandidateCount':len(manual_candidates),
+              'manualStockCandidateCount':len(manual_stock),
+              'manualStockSample':[{'className':c.class_name,'tagName':c.tag_name,'widgetKind':c.widget_kind,'data':c.data_attributes,'routePath':c.route_path} for c in manual_stock[:20]],
+              'discoverRuntimeWorkspaceCandidateCount':len(runtime_workspace),
+              'discoverRuntimeWorkspaceSample':[{'className':c.class_name,'tagName':c.tag_name,'widgetKind':c.widget_kind,'data':c.data_attributes,'routePath':c.route_path} for c in runtime_workspace[:20]],
+          }
+          print('PRISMA_UIMAP_REACH_EXTRACTION_DIAGNOSTIC_BEGIN')
+          print(json.dumps(report,ensure_ascii=False,indent=2,sort_keys=True))
+          print('PRISMA_UIMAP_REACH_EXTRACTION_DIAGNOSTIC_END')
+          if str(patched(stock_page,'@components/inventory/inventory-workspace',pc_root)) != str(workspace.resolve()):
+              raise SystemExit('DIRECT_ALIAS_RESOLUTION_FAILED')
+          if not report['workspaceInIterFiles']:
+              raise SystemExit('WORKSPACE_EXCLUDED_FROM_FILE_INVENTORY')
+          if not report['workspaceInReach']:
+              raise SystemExit('WORKSPACE_NOT_PROPAGATED_IN_REACHABILITY')
+          if extraction_error:
+              raise SystemExit('WORKSPACE_EXTRACTION_EXCEPTION')
+          if not runtime_workspace:
+              raise SystemExit('DISCOVER_RUNTIME_DROPPED_EXTRACTED_WORKSPACE')
           PY
-
-      - name: Prove repository source remains untouched
+      - name: Prove source untouched
         shell: bash
-        run: |
-          set -euo pipefail
-          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
