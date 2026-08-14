@@ -1,0 +1,123 @@
+name: License Pricing Canon
+
+on:
+  pull_request:
+    paths:
+      - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.canonical.json'
+      - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.ts'
+      - 'apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md'
+      - 'apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs'
+      - '.github/workflows/license-pricing-canon.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.canonical.json'
+      - 'apps/terminal-de-venta-system/shared/licensing/plan-catalog.ts'
+      - 'apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md'
+      - 'apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs'
+      - '.github/workflows/license-pricing-canon.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  license-pricing-canon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate canonical JSON
+        run: python -m json.tool apps/terminal-de-venta-system/shared/licensing/plan-catalog.canonical.json > /dev/null
+
+      - name: Run exact Authority Mesh preflight
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --full
+          --task "HOMOLOGAR PRICING COMERCIAL Y CONTRATO TECNICO PRISMA: TABLET_SOLO, TABLET_PRO Y TABLET_PC_MANAGED; integrar precios MXN mas IVA mensual/trimestral/semestral/anual en la autoridad canonica de licensing; preservar entitlements y limites; no reconstruir LICFLOW3/Customer Setup; no mezclar con pricing de mercancia del comercio; Mobile sin SKU independiente hasta entitlement canonico; reconocer posicionamiento visual premium sin mutacion visual."
+
+      - name: Require Authority Mesh outputs and pricing layers map
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json',
+              'APP_IMPACT_MATRIX.md',
+              'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md',
+              'AGENT_PROMPT_ENVELOPE.md',
+              'AUTHORITY_MESH_REPORT.md',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          visual_tokens = ('visual', 'layer', 'recipe', 'glass', 'background', 'surface-adapter', 'authority-map')
+          entries = [
+              item for item in lock.get('readset', [])
+              if any(token in str(item.get('path', '')).lower() for token in visual_tokens)
+          ]
+          if not entries:
+              raise SystemExit('No visual/layer authority found in fresh readset')
+
+          lines = [
+              '# PRISMA Pricing Layers Map',
+              '',
+              '- Change class: commercial pricing + licensing contract.',
+              '- UI mutation: none.',
+              '- Visual positioning: premium governed multi-surface; commercial value only.',
+              '- Rule: this pricing change does not authorize visual source changes.',
+              '',
+              '| Authority path | Reason |',
+              '|---|---|',
+          ]
+          for item in entries[:80]:
+              path = str(item.get('path', '')).replace('|', '/')
+              reason = str(item.get('reason', '')).replace('|', '/')
+              lines.append(f'| `{path}` | {reason} |')
+          (root / 'PRICING_LAYERS_MAP.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+
+      - name: Verify commercial pricing contract
+        run: node apps/terminal-de-venta-system/tools/verify-license-commercial-pricing-01.mjs
+
+      - name: Guard against product-pricing confusion
+        shell: python
+        run: |
+          from pathlib import Path
+          doc = Path('apps/terminal-de-venta-system/docs/productization/PRISMA_PLAN_CATALOG_CONTRACT.md').read_text(encoding='utf-8')
+          assert 'pricing-policy' in doc
+          assert 'No confundir pricing de licencia PRISMA con pricing de mercancia del comercio.' in doc
+          print('PASS_LICENSE_VS_MERCHANDISE_PRICING_BOUNDARY')
+
+      - name: Upload governance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-pricing-canon-governance
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/PRICING_LAYERS_MAP.md
