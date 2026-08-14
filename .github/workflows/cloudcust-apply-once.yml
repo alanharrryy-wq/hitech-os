@@ -1,0 +1,135 @@
+name: Cloud Center Customer Runtime Apply Once
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/cloudcust-apply-once.yml'
+      - '.cloudcust-tmp/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cloudcust-apply-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  apply-verified-runtime:
+    if: github.event.pull_request.head.ref == 'cloudcust-governed-20260814'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Verify preimages and reconstruct exact patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, hashlib, zlib
+          from pathlib import Path
+          parts = [Path(f'.cloudcust-tmp/part{i:02d}.txt') for i in range(1, 6)]
+          for part in parts:
+              if not part.is_file():
+                  raise SystemExit(f'MISSING_PAYLOAD_PART:{part}')
+          encoded = ''.join(p.read_text(encoding='utf-8').strip() for p in parts)
+          raw = zlib.decompress(base64.b64decode(encoded))
+          digest = hashlib.sha256(raw).hexdigest()
+          if digest != '136636d696c6a92d721f248c3480751d48afcb144f454aef1adb55b2096eff42':
+              raise SystemExit(f'PATCH_DIGEST_MISMATCH:{digest}')
+          Path('/tmp/cloudcust-final.patch').write_bytes(raw)
+          print('PATCH_DIGEST_OK=' + digest)
+          PY
+          test "$(git rev-parse 'HEAD:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py')" = 'dfec957562bf548ac6b4c9133d089fa7a8a31e8f'
+          test "$(git rev-parse 'HEAD:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py')" = 'b8ba736c5ed2e1074332d3713b167d39d906e2f6'
+          test "$(git rev-parse 'HEAD:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js')" = 'a3d460029a8cfd38ec0664527add991fb0c9c415'
+          test "$(git rev-parse 'HEAD:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html')" = '919b2d72807e5af9709ff5e0a1815ab11349ba87'
+          test ! -e 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json'
+          test ! -e 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py'
+          test ! -e 'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py'
+          test ! -e 'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
+          git apply --check /tmp/cloudcust-final.patch
+          echo PASS_CLOUDCUST_PREIMAGE_AND_PATCH
+
+      - name: Apply exact product patch
+        run: git apply /tmp/cloudcust-final.patch
+
+      - name: Guard exact mutation scope
+        shell: python
+        run: |
+          import subprocess
+          expected = {
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json',
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py',
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html',
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js',
+              'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py',
+              'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py',
+          }
+          actual = set(subprocess.check_output(['git','diff','--name-only'], text=True).splitlines())
+          if actual != expected:
+              raise SystemExit(f'MUTATION_SCOPE_MISMATCH expected={sorted(expected)} actual={sorted(actual)}')
+          print('PASS_EXACT_CLOUD_CENTER_SCOPE')
+
+      - name: Compile and static validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m json.tool 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json' >/dev/null
+          python -m py_compile \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py' \
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py' \
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
+          node --check 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js'
+          git diff --check
+
+      - name: Verify registration, catalogs, dedup and metrics on temporary DB
+        run: >-
+          python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py
+          --out-dir "$RUNNER_TEMP/cloudcust-evidence"
+
+      - name: Install browser harness
+        run: |
+          python -m pip install --disable-pip-version-check playwright
+          google-chrome --version || chromium --version || true
+
+      - name: Verify sandbox runtime UI and dropdown behavior
+        run: >-
+          python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
+          --out-dir "$RUNNER_TEMP/cloudcust-evidence"
+
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cloud-center-customer-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: ${{ runner.temp }}/cloudcust-evidence/**
+
+      - name: Commit only verified product changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'chatgpt-codex-connector[bot]'
+          git config user.email 'chatgpt-codex-connector[bot]@users.noreply.github.com'
+          git add -- \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/customer_registration.py' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js' \
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py' \
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
+          git commit -m 'Cloud Center: govern customer registration and measurable dropdowns'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
