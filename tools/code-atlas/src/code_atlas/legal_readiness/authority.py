@@ -81,6 +81,7 @@ def validate_authority_chain(
     output_root: str | Path,
     *,
     requirements: Mapping[str, str] | None = None,
+    **_legacy_options: Any,
 ) -> dict[str, Any]:
     root = Path(output_root)
     configured = dict(requirements) if requirements is not None else _requirements_from_env()
