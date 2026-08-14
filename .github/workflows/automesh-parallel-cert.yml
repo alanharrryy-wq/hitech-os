@@ -55,3 +55,99 @@ jobs:
 
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+  cloudcust-ledger-mesh:
+    name: Cloud Center customer registration ledger mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate task-exact Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output apps/terminal-de-venta-system/.governance/current
+          --full
+          --task "REGISTRAR EL CIERRE POST-MERGE Y LA EVIDENCIA ANTI-RETRABAJO DE PR #254 PARA EL RUNTIME GOBERNADO DE ALTA DE CLIENTES DE PRISMA CLOUD CTR: tratar Prisma Cloud Ctr como capacidad ya certificada y consultar su source/runtime únicamente como autoridad read-only; autorizar como writes posteriores solamente PRISMA Factory Ledger, PRISMA_EVIDENCE_INDEX, PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX, PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP y, si corresponde, una entrada documental de cierre operativo; registrar como evidencia histórica el merge commit 2557f4e0efa5204a5cad650e71382ff21bcb1b84, verificador local customer registration 24/24 PASS, Chrome/Playwright E2E 11/11 PASS, POST /api/command-center/draft-client HTTP 200, cero console errors, cero failed requests y gates finales PASS CI, ForgeOS Quality Gate, Zero Priority Gate, License Pricing Canon, Commercial Billing Authority, repo-analyzer-self-test y CLA Check; clasificar el trabajo como FIX de metadatos anti-retrabajo, no BUILD; registrar capability cloud_center.customer_registration_runtime como DONE / RUNTIME_VERIFIED / doNotRebuild=true; siguiente gate CUSTOMER_CLOUD_ACTIVATION, no reconstrucción del alta local ya mergeada; incluir Prisma Cloud Ctr read-only, Governance, Quality y Factory Ledger; excluir Tablet, PC, Mobile, Chart Lab, Shared UI, Web, Control Center, Support Resolver, database-sync, shared-kernel, Prisma schema, Cloudflare y D1; no modificar runtime, UI, CSS, source de producto, procesos, puertos ni dev servers; exigir Layer Map, auditoría, no fake green, evidencia trazable y delimitación explícita de lo que esta certificación no prueba."
+
+      - name: Require canonical Mesh outputs and build closure layers map
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json',
+              'APP_IMPACT_MATRIX.md',
+              'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md',
+              'AGENT_PROMPT_ENVELOPE.md',
+              'AUTHORITY_MESH_REPORT.md',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit('Authority Mesh status is not PASS')
+          task = str(lock.get('task', ''))
+          if 'PR #254' not in task or 'cloud_center.customer_registration_runtime' not in task:
+              raise SystemExit('Task-exact Authority Mesh identity missing')
+          tokens = ('cloud', 'customer', 'governance', 'quality', 'factory', 'authority', 'commercial', 'billing', 'licens')
+          entries = [item for item in lock.get('readset', []) if any(token in str(item.get('path', '')).lower() for token in tokens)]
+          if not entries:
+              raise SystemExit('No relevant authority/layer entries found in fresh readset')
+          lines = [
+              '# PRISMA Cloud Center Customer Registration Ledger Layers Map',
+              '',
+              '- Change class: post-merge anti-rework metadata registration only.',
+              '- Product capability: Cloud Center customer-registration runtime is read-only and already certified by PR #254.',
+              '- Intended future writes: Factory Ledger and evidence/governance registration only.',
+              '- Excluded product surfaces: Tablet, PC, Mobile, Chart Lab, Shared UI, Web, Control Center, Support Resolver.',
+              '- Excluded infrastructure: Prisma schema, Cloudflare, D1, processes, ports, dev servers.',
+              '- Next product gate: CUSTOMER_CLOUD_ACTIVATION.',
+              '',
+              '| Authority path | Reason |',
+              '|---|---|',
+          ]
+          for item in entries[:120]:
+              path = str(item.get('path', '')).replace('|', '/')
+              reason = str(item.get('reason', '')).replace('|', '/')
+              lines.append(f'| `{path}` | {reason} |')
+          (root / 'CLOUDCUST_LEDGER_LAYERS_MAP.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          print('PASS_CLOUDCUST_TASK_EXACT_AUTHORITY_MESH')
+
+      - name: Verify mesh is read-only relative to repository source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          expected='.github/workflows/automesh-parallel-cert.yml'
+          if [ "$changed" != "$expected" ]; then
+            echo "Unexpected bootstrap diff:"
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          echo 'PASS_BOOTSTRAP_SCOPE_ONLY'
+
+      - name: Upload task-exact Authority Mesh artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: cloudcust-ledger-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CLOUDCUST_LEDGER_LAYERS_MAP.md
