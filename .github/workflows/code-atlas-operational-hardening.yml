@@ -77,3 +77,52 @@ jobs:
           python -m unittest discover -v \
             -s tools/code-atlas/tests \
             -p 'test_operational_*.py'
+
+  neutrality-portability:
+    name: neutrality-portability (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile full Code Atlas source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q tools/code-atlas/src/code_atlas
+          python -m py_compile tools/code-atlas/tests/test_operational_*.py
+
+      - name: Enforce total neutrality boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import platform
+          from code_atlas.core.neutrality_gate import scan_code_atlas
+          result = scan_code_atlas("tools/code-atlas")
+          result["verificationPlatform"] = platform.platform()
+          print(json.dumps(result, indent=2, sort_keys=True))
+          if not result.get("fullReusableSourceBoundary"):
+              raise SystemExit("FULL_REUSABLE_SOURCE_BOUNDARY_NOT_SCANNED")
+          if result.get("blockingCount"):
+              raise SystemExit("CODE_ATLAS_NEUTRALITY_BLOCKED")
+          PY
+
+      - name: Run all operational hardening negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -v \
+            -s tools/code-atlas/tests \
+            -p 'test_operational_*.py'
