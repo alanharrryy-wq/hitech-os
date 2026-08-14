@@ -8,10 +8,7 @@
       "id": "tablet",
       "label": "Tablet",
       "root": "products/tablet",
-      "routes": [
-        "/pos",
-        "/tablet-lab"
-      ],
+      "routes": ["/pos", "/tablet-lab"],
       "defaultUrl": "${PRISMA_TABLET_URL}",
       "kind": "tablet"
     },
@@ -19,9 +16,7 @@
       "id": "pc",
       "label": "PC Backoffice",
       "root": "products/pc",
-      "routes": [
-        "/backoffice"
-      ],
+      "routes": ["/backoffice"],
       "defaultUrl": "${PRISMA_PC_URL}",
       "kind": "pc"
     },
@@ -29,9 +24,7 @@
       "id": "mobile",
       "label": "Mobile",
       "root": "products/mobile",
-      "routes": [
-        "/mobile"
-      ],
+      "routes": ["/mobile"],
       "defaultUrl": "${PRISMA_MOBILE_URL}",
       "kind": "mobile"
     },
@@ -39,9 +32,7 @@
       "id": "cloud-center",
       "label": "Cloud Center",
       "root": "Prisma Cloud Ctr",
-      "routes": [
-        "/"
-      ],
+      "routes": ["/"],
       "defaultUrl": "${PRISMA_CLOUD_CENTER_URL}",
       "kind": "cloud"
     },
@@ -49,9 +40,7 @@
       "id": "chart-lab",
       "label": "Chart Lab",
       "root": "products/chart-lab",
-      "routes": [
-        "/"
-      ],
+      "routes": ["/"],
       "defaultUrl": "${PRISMA_CHART_LAB_URL}",
       "kind": "visual-lab"
     }
@@ -66,6 +55,14 @@
   ],
   "metadata": {
     "example": true,
-    "scope": "Project-specific values live here, not in Code Atlas core."
+    "scope": "Project-specific values live here, not in Code Atlas reusable core.",
+    "motorRegistry": "prisma.motors.example.json",
+    "operationalAdapters": [
+      {
+        "id": "support-resolver",
+        "module": "code_atlas.operational.support_resolver",
+        "callable": "run_support_resolver_atlas"
+      }
+    ]
   }
 }

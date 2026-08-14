@@ -1,143 +1,116 @@
-# CODE_ATLAS_MOTOR_HUB_MODULE_V01
-"""Declarative registry for Atlas, Playwright Mamastrophic and PRISMA_CTX motors."""
+# CODE_ATLAS_MOTOR_HUB_MODULE_V02
+"""Environment-neutral declarative registry for Code Atlas Motor Hub.
 
+The reusable hub has no product, OS, repository or external-tool inventory baked
+into source. Motors are loaded only from an explicit JSON registry selected by
+``CODE_ATLAS_MOTOR_REGISTRY`` or by the active project profile's ``motorRegistry``
+metadata field.
+"""
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
+from typing import Any
 
+from code_atlas.core.project_profile import load_project_profile
 from .specs import MotorSpec
 
 
-def _repo_root() -> Path:
-    return Path(os.environ.get("CODE_ATLAS_REPO_ROOT", r"F:\repos\hitech-os"))
+def _expand(value: object) -> str:
+    return os.path.expandvars(str(value or ""))
 
 
-def _code_atlas_root() -> Path:
-    fallback = _repo_root() / "tools" / "code-atlas"
-    return Path(os.environ.get("CODE_ATLAS_APP_ROOT", str(fallback)))
+def _project_root(explicit: str | Path | None = None) -> Path:
+    raw = explicit or os.environ.get("CODE_ATLAS_PROJECT_ROOT") or Path.cwd()
+    return Path(raw).expanduser().resolve()
 
 
-def _playwright_root() -> Path:
-    return _repo_root() / "tools" / "Plawright Mamastrophic"
+def _registry_path(explicit: str | Path | None = None) -> Path | None:
+    if explicit:
+        return Path(explicit).expanduser().resolve()
+    env_path = os.environ.get("CODE_ATLAS_MOTOR_REGISTRY")
+    if env_path:
+        return Path(env_path).expanduser().resolve()
+
+    profile_path = os.environ.get("CODE_ATLAS_PROFILE")
+    profile = load_project_profile(profile_path)
+    configured = profile.metadata.get("motorRegistry")
+    if not configured:
+        return None
+    candidate = Path(_expand(configured)).expanduser()
+    if candidate.is_absolute():
+        return candidate.resolve()
+    if profile_path:
+        return (Path(profile_path).expanduser().resolve().parent / candidate).resolve()
+    return (_project_root() / candidate).resolve()
 
 
-def _prisma_ctx_root() -> Path:
-    return Path(os.environ.get("PRISMA_CTX_ROOT", r"F:\PRISMA_CTX"))
+def _load_rows(path: Path) -> list[dict[str, Any]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    rows = payload.get("motors") if isinstance(payload, dict) else payload
+    if not isinstance(rows, list):
+        raise ValueError("CODE_ATLAS_MOTOR_REGISTRY_MUST_CONTAIN_LIST")
+    if any(not isinstance(row, dict) for row in rows):
+        raise ValueError("CODE_ATLAS_MOTOR_REGISTRY_ROWS_MUST_BE_OBJECTS")
+    return rows
 
 
-def _powershell_script(root: Path, script: Path, args: tuple[str, ...] = ()) -> MotorSpecCommand:
-    return MotorSpecCommand(
+def _resolve_root(raw: object, project_root: Path) -> Path:
+    text = _expand(raw).strip() or "."
+    candidate = Path(text).expanduser()
+    return candidate.resolve() if candidate.is_absolute() else (project_root / candidate).resolve()
+
+
+def _to_spec(row: dict[str, Any], project_root: Path) -> MotorSpec:
+    motor_id = str(row.get("motorId") or row.get("motor_id") or "").strip()
+    group = str(row.get("group") or "External").strip() or "External"
+    label = str(row.get("label") or motor_id).strip()
+    description = str(row.get("description") or "").strip()
+    program = _expand(row.get("program")).strip()
+    args_raw = row.get("args") or []
+    if not motor_id:
+        raise ValueError("MOTOR_ID_REQUIRED")
+    if not program:
+        raise ValueError(f"MOTOR_PROGRAM_REQUIRED:{motor_id}")
+    if not isinstance(args_raw, list):
+        raise ValueError(f"MOTOR_ARGS_MUST_BE_LIST:{motor_id}")
+    root = _resolve_root(row.get("root"), project_root)
+    return MotorSpec(
+        motor_id=motor_id,
+        group=group,
+        label=label,
+        description=description,
         root=str(root),
-        program="powershell.exe",
-        args=("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(script), *args),
+        program=program,
+        args=tuple(_expand(value) for value in args_raw),
     )
 
 
-def _cmd_script(root: Path, script: Path) -> MotorSpecCommand:
-    return MotorSpecCommand(
-        root=str(root),
-        program="cmd.exe",
-        args=("/d", "/s", "/c", str(script)),
-    )
-
-
-class MotorSpecCommand:
-    def __init__(self, *, root: str, program: str, args: tuple[str, ...]) -> None:
-        self.root = root
-        self.program = program
-        self.args = args
-
-
-def build_motor_registry() -> list[MotorSpec]:
-    atlas = _code_atlas_root()
-    playwright = _playwright_root()
-    prisma = _prisma_ctx_root()
-
-    specs: list[MotorSpec] = []
-
-    atlas_cmd = _powershell_script(
-        atlas,
-        atlas / "scripts" / "RUN_TODO_EL_SHOW_PLUS.ps1",
-    )
-    specs.append(
-        MotorSpec(
-            motor_id="atlas.todo_el_show_plus",
-            group="Atlas",
-            label="Todo El Show Plus",
-            description="Ejecuta el paquete modular existente de Code Atlas y deja reportes en reports\\todo_el_show_plus.",
-            root=atlas_cmd.root,
-            program=atlas_cmd.program,
-            args=atlas_cmd.args,
-        )
-    )
-
-
-    # CATLAS3_APPBRAIN_WORKBENCH_MOTOR_BEGIN
-    appbrain_cmd = _powershell_script(
-        atlas,
-        atlas / "scripts" / "RUN_APPBRAIN_WORKBENCH.ps1",
-    )
-    specs.append(
-        MotorSpec(
-            motor_id="atlas.appbrain_workbench",
-            group="Atlas",
-            label="AppBrain Workbench",
-            description="Importa el último appbrain1 tri-app result.zip y genera dashboard, batch explorer, mesh requests y next package plan read-only.",
-            root=appbrain_cmd.root,
-            program=appbrain_cmd.program,
-            args=appbrain_cmd.args,
-        )
-    )
-    # CATLAS3_APPBRAIN_WORKBENCH_MOTOR_END
-
-    playwright_run = playwright / "RUN.ps1"
-    for mode, label in (
-        ("discovery", "Discovery"),
-        ("critical", "Critical"),
-        ("quick", "Quick"),
-        ("full", "Full"),
-    ):
-        cmd = _powershell_script(playwright, playwright_run, ("-Mode", mode))
-        specs.append(
-            MotorSpec(
-                motor_id="playwright." + mode,
-                group="Playwright",
-                label=label,
-                description="Ejecuta Playwright Mamastrophic en modo {0} sin auto-start ni auto-kill desde el hub.".format(mode),
-                root=cmd.root,
-                program=cmd.program,
-                args=cmd.args,
-            )
-        )
-
-    ctx_commands = (
-        ("prisma_ctx.todo", "CTX Todo", "00_ALL.cmd"),
-        ("prisma_ctx.tablet", "CTX Tablet", "03_TABLET.cmd"),
-        ("prisma_ctx.pc", "CTX PC", "04_PC.cmd"),
-        ("prisma_ctx.control", "CTX Control", "06_CONTROL_CENTER.cmd"),
-        ("prisma_ctx.gobierno", "CTX Gobierno", "07_GOBIERNO.cmd"),
-        ("prisma_ctx.verify", "CTX Verificar", "11_VERIFY_PACKAGE.cmd"),
-    )
-    for motor_id, label, cmd_name in ctx_commands:
-        cmd = _cmd_script(prisma, prisma / cmd_name)
-        specs.append(
-            MotorSpec(
-                motor_id=motor_id,
-                group="PRISMA_CTX",
-                label=label,
-                description="Ejecuta {0} desde F:\\PRISMA_CTX.".format(cmd_name),
-                root=cmd.root,
-                program=cmd.program,
-                args=cmd.args,
-            )
-        )
-
+def build_motor_registry(
+    registry_path: str | Path | None = None,
+    *,
+    project_root: str | Path | None = None,
+) -> list[MotorSpec]:
+    path = _registry_path(registry_path)
+    if path is None:
+        return []
+    if not path.exists() or not path.is_file():
+        raise FileNotFoundError(f"CODE_ATLAS_MOTOR_REGISTRY_NOT_FOUND:{path}")
+    root = _project_root(project_root)
+    specs = [_to_spec(row, root) for row in _load_rows(path)]
+    ids = [spec.motor_id for spec in specs]
+    if len(ids) != len(set(ids)):
+        raise ValueError("CODE_ATLAS_MOTOR_REGISTRY_DUPLICATE_IDS")
     return specs
 
 
-def grouped_motor_registry() -> dict[str, list[MotorSpec]]:
-    grouped: dict[str, list[MotorSpec]] = {"Atlas": [], "Playwright": [], "PRISMA_CTX": []}
-    for spec in build_motor_registry():
+def grouped_motor_registry(
+    registry_path: str | Path | None = None,
+    *,
+    project_root: str | Path | None = None,
+) -> dict[str, list[MotorSpec]]:
+    grouped: dict[str, list[MotorSpec]] = {}
+    for spec in build_motor_registry(registry_path, project_root=project_root):
         grouped.setdefault(spec.group, []).append(spec)
     return grouped

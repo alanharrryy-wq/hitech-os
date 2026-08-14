@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "code_atlas_motor_registry.v1",
+  "profileId": "prisma-example",
+  "requiredEnvironment": [
+    "CODE_ATLAS_APP_ROOT",
+    "PRISMA_PLAYWRIGHT_ROOT",
+    "PRISMA_CTX_ROOT"
+  ],
+  "motors": [
+    {
+      "motorId": "atlas.todo_el_show_plus",
+      "group": "Atlas",
+      "label": "Todo El Show Plus",
+      "description": "Run the Code Atlas modular forensic bundle.",
+      "root": "${CODE_ATLAS_APP_ROOT}",
+      "program": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${CODE_ATLAS_APP_ROOT}\\scripts\\RUN_TODO_EL_SHOW_PLUS.ps1"]
+    },
+    {
+      "motorId": "atlas.appbrain_workbench",
+      "group": "Atlas",
+      "label": "AppBrain Workbench",
+      "description": "Run the explicit PRISMA AppBrain compatibility workbench.",
+      "root": "${CODE_ATLAS_APP_ROOT}",
+      "program": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${CODE_ATLAS_APP_ROOT}\\scripts\\RUN_APPBRAIN_WORKBENCH.ps1"]
+    },
+    {
+      "motorId": "playwright.discovery",
+      "group": "Playwright",
+      "label": "Discovery",
+      "description": "Run the configured external Playwright evidence adapter in discovery mode.",
+      "root": "${PRISMA_PLAYWRIGHT_ROOT}",
+      "program": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${PRISMA_PLAYWRIGHT_ROOT}\\RUN.ps1", "-Mode", "discovery"]
+    },
+    {
+      "motorId": "playwright.critical",
+      "group": "Playwright",
+      "label": "Critical",
+      "description": "Run the configured external Playwright evidence adapter in critical mode.",
+      "root": "${PRISMA_PLAYWRIGHT_ROOT}",
+      "program": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${PRISMA_PLAYWRIGHT_ROOT}\\RUN.ps1", "-Mode", "critical"]
+    },
+    {
+      "motorId": "playwright.quick",
+      "group": "Playwright",
+      "label": "Quick",
+      "description": "Run the configured external Playwright evidence adapter in quick mode.",
+      "root": "${PRISMA_PLAYWRIGHT_ROOT}",
+      "program": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${PRISMA_PLAYWRIGHT_ROOT}\\RUN.ps1", "-Mode", "quick"]
+    },
+    {
+      "motorId": "playwright.full",
+      "group": "Playwright",
+      "label": "Full",
+      "description": "Run the configured external Playwright evidence adapter in full mode.",
+      "root": "${PRISMA_PLAYWRIGHT_ROOT}",
+      "program": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${PRISMA_PLAYWRIGHT_ROOT}\\RUN.ps1", "-Mode", "full"]
+    },
+    {
+      "motorId": "prisma_ctx.todo",
+      "group": "PRISMA_CTX",
+      "label": "CTX Todo",
+      "description": "Run the explicitly configured PRISMA context adapter.",
+      "root": "${PRISMA_CTX_ROOT}",
+      "program": "cmd.exe",
+      "args": ["/d", "/s", "/c", "${PRISMA_CTX_ROOT}\\00_ALL.cmd"]
+    },
+    {
+      "motorId": "prisma_ctx.tablet",
+      "group": "PRISMA_CTX",
+      "label": "CTX Tablet",
+      "description": "Run the explicitly configured Tablet context adapter.",
+      "root": "${PRISMA_CTX_ROOT}",
+      "program": "cmd.exe",
+      "args": ["/d", "/s", "/c", "${PRISMA_CTX_ROOT}\\03_TABLET.cmd"]
+    },
+    {
+      "motorId": "prisma_ctx.pc",
+      "group": "PRISMA_CTX",
+      "label": "CTX PC",
+      "description": "Run the explicitly configured PC context adapter.",
+      "root": "${PRISMA_CTX_ROOT}",
+      "program": "cmd.exe",
+      "args": ["/d", "/s", "/c", "${PRISMA_CTX_ROOT}\\04_PC.cmd"]
+    },
+    {
+      "motorId": "prisma_ctx.control",
+      "group": "PRISMA_CTX",
+      "label": "CTX Control",
+      "description": "Run the explicitly configured Control Center context adapter.",
+      "root": "${PRISMA_CTX_ROOT}",
+      "program": "cmd.exe",
+      "args": ["/d", "/s", "/c", "${PRISMA_CTX_ROOT}\\06_CONTROL_CENTER.cmd"]
+    },
+    {
+      "motorId": "prisma_ctx.governance",
+      "group": "PRISMA_CTX",
+      "label": "CTX Governance",
+      "description": "Run the explicitly configured governance context adapter.",
+      "root": "${PRISMA_CTX_ROOT}",
+      "program": "cmd.exe",
+      "args": ["/d", "/s", "/c", "${PRISMA_CTX_ROOT}\\07_GOBIERNO.cmd"]
+    },
+    {
+      "motorId": "prisma_ctx.verify",
+      "group": "PRISMA_CTX",
+      "label": "CTX Verify",
+      "description": "Run the explicitly configured context verification adapter.",
+      "root": "${PRISMA_CTX_ROOT}",
+      "program": "cmd.exe",
+      "args": ["/d", "/s", "/c", "${PRISMA_CTX_ROOT}\\11_VERIFY_PACKAGE.cmd"]
+    }
+  ]
+}
