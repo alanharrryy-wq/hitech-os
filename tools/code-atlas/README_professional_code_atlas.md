@@ -1,371 +1,102 @@
 # 💎 Code Atlas
 
-> Root-compatible architecture atlas, dependency explorer, database reality checker, and forensic project bundle generator for serious codebase work.
+> Repository-neutral architecture atlas, dependency explorer, database reality checker, surface target mapper, and forensic evidence generator.
 
-Code Atlas is a visual and forensic analysis workspace for large Python / Prisma / SQLite / full-stack repositories. It keeps the original PySide6 console workflow alive while adding modular growth slots under `src/code_atlas` so new capabilities can be added without inflating the legacy monolith into a cursed piñata.
+Code Atlas is a read-oriented analysis workspace for Python, JavaScript/TypeScript, Prisma, SQLite, and mixed full-stack repositories. Its neutral core accepts an explicit repository root and output root, records uncertainty instead of inventing green status, and keeps project-specific knowledge outside default execution paths.
 
-It is built for one job: **understand what exists, what matters, what is missing, and what should be trusted before touching the codebase.**
+## Neutrality contract
 
----
+The default Code Atlas execution model is environment-neutral:
 
-## ✨ What Code Atlas Does
+- no fixed drive letters, user-home paths, repository names, ports, domains, products, or operating-system executables;
+- repository and output roots come from CLI arguments, caller configuration, or `CODE_ATLAS_*` environment variables;
+- surfaces come from a caller profile or generic repository discovery;
+- external evidence locations are explicit and path-redacted in exported evidence;
+- optional project integrations are opt-in profiles or adapters and are never activated implicitly;
+- missing policy, scope, provenance, runtime evidence, or adapters fail closed or remain explicitly unconfigured;
+- neutral core is continuously certified on Linux and Windows by `.github/workflows/code-atlas-neutrality.yml`.
 
-Code Atlas combines several layers of project intelligence:
+The reference neutral profile is `profiles/generic.example.json`. A project-specific example may coexist under `profiles/` to demonstrate explicit adapter configuration, but it does not change neutral defaults.
 
-| Capability | Purpose |
-|---|---|
-| **Visual Atlas** | Render dependency maps and navigable tree reports. |
-| **Black Glass Atlas** | Generate polished visual dependency reports. |
-| **DB Glass / Reality Check** | Inspect SQLite, Prisma, migrations, seeds, `.env`, API routes, and inferred relations. |
-| **Atlas Coverage Audit** | Compare atlas expectations against real project/package contents. |
-| **Important Files Gate** | Block or warn when important entrypoints or critical files are missing. |
-| **Todo El Show Plus** | Run the full monster pipeline and package everything into one final ZIP. |
+## Operational Evidence CLI
 
----
+Set `PYTHONPATH` to `tools/code-atlas/src` or install the package in your preferred environment, then run:
 
-## 🚀 Quick Start
-
-From the project root:
-
-```powershell
-cd F:\repos\hitech-os\tools\code-atlas
-py -3 .\code-atlas.py
+```text
+python -m code_atlas.operational --repo <PROJECT_ROOT> --out <OUTPUT_ROOT>
 ```
 
-Or run the full forensic bundle:
+Optional prior evidence can be supplied explicitly:
 
-```powershell
-& .\scripts\RUN_TODO_EL_SHOW_PLUS.ps1
+```text
+python -m code_atlas.operational --repo <PROJECT_ROOT> --out <OUTPUT_ROOT> --result-root <EVIDENCE_ROOT>
 ```
 
-The recommended output policy for the full run is:
+The operational runner emits a manifest, sanitized database/schema observations, scope/provenance evidence, capability hardening ledgers, fail-closed blockers, and investigator outputs. `productionCertified` remains false unless a separate evidence-backed gate proves otherwise.
 
-```txt
-F:\descargasf\<one final Todo El Show Plus zip>.zip
+## Surface Target Atlas
+
+Surface mapping is also repository-neutral:
+
+```text
+python -m code_atlas.surface_target_atlas.runner --selected-path <PROJECT_ROOT> --target-app all --output-root <OUTPUT_ROOT>
 ```
 
-One ZIP. One artifact. No report confetti all over `descargasf`.
+When no app profile is provided, Code Atlas discovers conventional `apps/`, `services/`, `packages/`, or `products/` directories. A profile can define arbitrary surface IDs and roots. The atlas is read-only and never authorizes a patch by itself.
 
----
+## Project profiles
 
-## 🧭 Main Entrypoints
+Code Atlas reads `CODE_ATLAS_PROFILE` when supplied. Important profile fields include:
 
-| Entrypoint | Description |
-|---|---|
-| `code-atlas.py` | Compatible original PySide6 console / monolith entrypoint. |
-| `visualgdeep.py` | Original visual companion entrypoint. |
-| `scripts\RUN_TODO_EL_SHOW_PLUS.ps1` | Runs the full expanded forensic pipeline. |
-| `scripts\RUN_DB_REALITY_CHECK.ps1` | Runs database and schema reality inspection. |
-| `scripts\RUN_ATLAS_COVERAGE.ps1` | Runs atlas/package coverage comparison. |
-| `scripts\RUN_IMPORTANT_FILES_GATE.ps1` | Runs important-file validation gate. |
+```json
+{
+  "profileId": "example",
+  "projectName": "Example Project",
+  "projectRoot": "${CODE_ATLAS_PROJECT_ROOT}",
+  "outputRoot": "${CODE_ATLAS_OUTPUT_ROOT}",
+  "apps": [
+    {"id": "web", "label": "Web", "root": "apps/web", "kind": "web"}
+  ],
+  "metadata": {
+    "scanRoots": ["."],
+    "evidenceRoots": [],
+    "supportResolverEnabled": false,
+    "supportResolverRoots": []
+  }
+}
+```
 
----
+Project-specific paths, URLs, names, evidence roots, support catalogs, or runtime adapters belong in a profile or caller environment, never in neutral core defaults.
 
-## 🧩 Project Layout
+## Main modules
 
-```txt
+```text
 tools/code-atlas/
-├─ code-atlas.py                  # Compatible PySide6 monolith entrypoint
-├─ visualgdeep.py                 # Visual companion
-├─ forgeos/                       # Local vendored runtime support
-├─ tools/                         # Existing helper tools
-├─ capatch_system/                # Capatch / dependency-map assets
-├─ scripts/                       # Operational runners
-├─ src/
-│  └─ code_atlas/
-│     ├─ coverage/
-│     │  ├─ atlas_audit.py        # Atlas Coverage Audit
-│     │  └─ important_gate.py     # Important Files Gate
-│     ├─ db_glass/
-│     │  └─ reality_check.py      # DB Reality Check + Ghost Relations
-│     ├─ manifest/
-│     │  └─ todo_el_show_plus.py  # Todo El Show Manifest Plus
-│     ├─ core/                    # Future shared logic
-│     ├─ renderers/               # Future visual/render output modules
-│     ├─ themes/                  # Future theme modules
-│     └─ ui/                      # Future PySide6 UI modules
-├─ legacy/                        # Transitional / compatibility material
-├─ dist/                          # Rebuilt single-file outputs
-├─ docs/                          # Architecture and generated tree docs
-├─ tests/                         # Smoke and validation tests
-├─ reports/                       # Local reports generated by tool runs
-├─ evidence/                      # Captured inputs / diagnostics
-├─ AGENTS.md                      # Agent rules for this workspace
-├─ pyproject.toml                 # Package metadata / dependency declaration
-└─ README.md
+├─ src/code_atlas/core/                 # project profile and shared neutral primitives
+├─ src/code_atlas/operational/          # fail-closed operational evidence engine
+├─ src/code_atlas/surface_target_atlas/ # generic surface/target discovery
+├─ src/code_atlas/legal_readiness/      # adapter-driven diligence evidence coordinator
+├─ src/code_atlas/coverage/             # coverage and important-file gates
+├─ src/code_atlas/db_glass/             # database/schema reality inspection
+├─ src/code_atlas/manifest/             # evidence packaging metadata
+├─ profiles/generic.example.json        # neutral profile template
+└─ tests/test_code_atlas_neutrality.py  # cross-platform neutrality certification
 ```
 
----
+## Safety model
 
-## 🦾 Todo El Show Plus
+Code Atlas neutral core follows these invariants:
 
-**Todo El Show Plus** is the “run the whole beast” pipeline.
+- database inspection is read-only;
+- source repositories are not modified by evidence collection;
+- no Git write is required by neutral analysis;
+- no process kill, port release, server startup, dependency installation, or Prisma generation is part of neutral analysis;
+- raw secret-like values are redacted or hashed where evidence is sampled;
+- missing evidence is not converted into a positive claim;
+- structure, runtime evidence, and production certification are separate layers of truth.
 
-It is intended to replace the old Todo El Show behavior and produce a single final artifact containing the useful output.
+## Validation
 
-### Expected Pipeline
+The neutrality workflow compiles the neutral stack and runs the neutrality tests plus operational fail-closed regressions on both Linux and Windows. The certification intentionally fails if neutral source reintroduces machine-specific paths, project repository names, implicit product surfaces, fixed PowerShell execution, or other banned coupling.
 
-```txt
-Tree HTML Premium
-+ Black Glass Atlas
-+ DB Glass ERD
-+ Atlas Coverage Audit
-+ Important Files Gate
-+ DB Reality Check
-+ Ghost Relations
-+ Manifest Plus
-= one final ZIP
-```
-
-Run it with:
-
-```powershell
-& .\scripts\RUN_TODO_EL_SHOW_PLUS.ps1
-```
-
-Expected final behavior:
-
-```txt
-F:\descargasf\
-└─ prisma_todo_el_show_plus_<project>_<timestamp>.zip
-```
-
-The full run should avoid leaving loose generated artifacts in `F:\descargasf`. Any internal HTML, JSON, Markdown, logs, manifests, and diagnostics should be captured inside the final ZIP.
-
----
-
-## 🔍 Atlas Coverage Audit
-
-Atlas Coverage Audit compares what the atlas expects against what physically exists in a package or project snapshot.
-
-It is useful for answering:
-
-- Are all important entrypoints present?
-- Are critical files missing?
-- Are there extra package metadata files?
-- Are missing nodes actual problems or virtual/tooling noise?
-- Can this context bundle be trusted before work begins?
-
-Run:
-
-```powershell
-& .\scripts\RUN_ATLAS_COVERAGE.ps1
-```
-
-Primary module:
-
-```txt
-src\code_atlas\coverage\atlas_audit.py
-```
-
----
-
-## 🚦 Important Files Gate
-
-Important Files Gate is the bouncer at the repo nightclub.
-
-It checks whether important atlas nodes and entrypoints are present before allowing deeper work to proceed.
-
-Suggested severity model:
-
-| Condition | Severity |
-|---|---|
-| Missing important entrypoint | Block |
-| Missing schema / migration / DB-critical file | Strong warning |
-| Missing generated cache like `.next` | Ignore / informational |
-| Missing virtual/tooling marker | Noise classification |
-
-Run:
-
-```powershell
-& .\scripts\RUN_IMPORTANT_FILES_GATE.ps1
-```
-
-Primary module:
-
-```txt
-src\code_atlas\coverage\important_gate.py
-```
-
----
-
-## 🧪 DB Reality Check
-
-DB Reality Check inspects database and schema reality without mutating project data.
-
-It is designed to help answer:
-
-- Which SQLite databases exist?
-- Which tables, views, indexes, and foreign keys exist?
-- Which tables have data?
-- Which Prisma schemas and datasources exist?
-- Which migrations, seeds, and API routes appear DB-related?
-- Which relationships are declared, missing, or only inferred?
-
-Run:
-
-```powershell
-& .\scripts\RUN_DB_REALITY_CHECK.ps1
-```
-
-Primary module:
-
-```txt
-src\code_atlas\db_glass\reality_check.py
-```
-
-### Ghost Relations
-
-Ghost Relations are inferred relationships that look real from naming conventions but are not declared as actual database constraints.
-
-Example:
-
-```txt
-orders.customer_id -> customers.id
-```
-
-That relation may be semantically true in application code, but if SQLite has no foreign key, Code Atlas should treat it as a **risk-bearing inferred relation**, not as a guaranteed constraint.
-
----
-
-## 🧾 Manifest Plus
-
-Manifest Plus exists to make runs portable, reviewable, and safe to hand off.
-
-It should capture:
-
-- selected project/root path
-- generated artifacts
-- coverage summary
-- DB reality summary
-- important gate status
-- warnings and blockers
-- environment details
-- timestamps
-- continuation notes
-- final ZIP contents
-
-Primary module:
-
-```txt
-src\code_atlas\manifest\todo_el_show_plus.py
-```
-
----
-
-## 🪟 PySide6 Console
-
-The original console remains available through:
-
-```powershell
-py -3 .\code-atlas.py
-```
-
-The PySide6 console is still the compatibility shell. New capabilities should be added under `src/code_atlas/*` and then wired into the console only after they are stable.
-
-Preferred UI direction:
-
-- keep the old GUI alive
-- replace the old **Todo El Show** button with **Todo El Show Plus**
-- keep “quick audit” functions scriptable from PowerShell
-- avoid stuffing new logic directly into the monolith unless it is just a thin bridge
-
----
-
-## 💎 Optional Taskbar Launcher
-
-A Windows launcher can be created with a custom `atlitas.png` icon.
-
-Expected icon path:
-
-```txt
-F:\descargasf\atlitas.png
-```
-
-Expected launcher zone:
-
-```txt
-F:\repos\hitech-os\tools\code-atlas\_launcher
-```
-
-If the taskbar icon breaks after replacing the project folder, recreate the launcher because pinned shortcuts may still point to an old `_launcher\Launch-CodeAtlas.vbs`.
-
----
-
-## 🧱 Development Rules
-
-New development should follow this rule:
-
-> **Do not grow the monolith. Grow the modules. Bridge only what is needed.**
-
-### Preferred Add Locations
-
-| New Feature | Place it in |
-|---|---|
-| Atlas/package comparison | `src/code_atlas/coverage/` |
-| Important file validation | `src/code_atlas/coverage/` |
-| SQLite inspection | `src/code_atlas/db_glass/` |
-| Prisma parsing | `src/code_atlas/db_glass/` |
-| Visual renderers | `src/code_atlas/renderers/` |
-| Themes | `src/code_atlas/themes/` |
-| PySide6 UI wrappers | `src/code_atlas/ui/` |
-| CLI/PowerShell runners | `scripts/` |
-| Compatibility snapshots | `legacy/` |
-
-### Safety Expectations
-
-- Never permanently delete old material.
-- Move replaced folders to `F:\Trash-old`.
-- Generate rollback when replacing project files.
-- Generate diagnostics if validation fails.
-- Do not produce fake green.
-- Keep final user-facing artifacts in `F:\descargasf`.
-- For Todo El Show Plus, leave **one final ZIP only** in `F:\descargasf`.
-
----
-
-## ✅ Validation
-
-Recommended smoke checks:
-
-```powershell
-cd F:\repos\hitech-os\tools\code-atlas
-py -3 .\tests\smoke\compile_all.py
-```
-
-Run Todo El Show Plus:
-
-```powershell
-& .\scripts\RUN_TODO_EL_SHOW_PLUS.ps1
-```
-
-Expected:
-
-```txt
-PASS
-F:\descargasf\<single final zip>.zip
-```
-
-If a run fails, the diagnostic ZIP should include enough context to continue without screenshots or guessing.
-
----
-
-## 🧠 Philosophy
-
-Code Atlas is not just a pretty dependency viewer.
-
-It is a **trust machine** for a codebase: part map, part metal detector, part x-ray, part customs checkpoint.
-
-Before modifying a serious repo, Code Atlas should help prove:
-
-1. what exists,
-2. what matters,
-3. what is missing,
-4. what is generated noise,
-5. what the database actually says,
-6. what the schema claims,
-7. and whether the working bundle is safe enough to touch.
-
-In short:
-
-> **Map the monster before wrestling it.**
+Code Atlas is a trust machine for unfamiliar repositories: map the system, expose the unknowns, and only then decide what can safely be claimed or changed.
