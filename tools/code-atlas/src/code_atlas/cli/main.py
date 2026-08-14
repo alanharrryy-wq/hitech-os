@@ -8,49 +8,34 @@ from code_atlas.coverage.important_gate import main as gate_main
 from code_atlas.db_glass.reality_check import main as db_main
 from code_atlas.manifest.todo_el_show_plus import main as todo_main
 from code_atlas.operational.main import main as operational_main
-from code_atlas.ui_bridge.cli import main as ui_bridge_main
+from code_atlas.surface_target_atlas.runner import main as surface_target_main
 
-
-# UIMAP1_CLI_INTEGRATION_START
-from code_atlas.app_map.uimap.cli import main as uimap_main
-# UIMAP1_CLI_INTEGRATION_END
+COMMANDS = {
+    "coverage": coverage_main,
+    "gate": gate_main,
+    "db": db_main,
+    "todo-plus": todo_main,
+    "operational": operational_main,
+    "surface-target": surface_target_main,
+}
 
 
 def main(argv: list[str] | None = None) -> int:
-    argv = list(sys.argv[1:] if argv is None else argv)
-    parser = argparse.ArgumentParser(prog="code-atlas-plus", description="Code Atlas modular feature CLI")
+    args = list(sys.argv[1:] if argv is None else argv)
+    parser = argparse.ArgumentParser(
+        prog="code-atlas",
+        description="Repository-neutral Code Atlas CLI. Optional project adapters are not imported by the base command surface.",
+    )
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("coverage")
-    sub.add_parser("gate")
-    sub.add_parser("db")
-    sub.add_parser("todo-plus")
-    sub.add_parser("operational")
-    sub.add_parser("uimap")
-    sub.add_parser("ui-bridge")
-    ns, rest = parser.parse_known_args(argv)
-    if ns.command == "coverage":
-        return coverage_main(rest)
-    if ns.command == "gate":
-        return gate_main(rest)
-    if ns.command == "db":
-        return db_main(rest)
-    if ns.command == "todo-plus":
-        return todo_main(rest)
-    if ns.command == "operational":
-        return operational_main(rest)
-    if ns.command == "uimap":
-        return uimap_main(rest)
-    if ns.command == "ui-bridge":
-        return ui_bridge_main(rest)
-    parser.error("unknown command")
-    return 2
+    for command in COMMANDS:
+        sub.add_parser(command)
+    namespace, rest = parser.parse_known_args(args)
+    handler = COMMANDS.get(namespace.command)
+    if handler is None:
+        parser.error("unknown command")
+        return 2
+    return int(handler(rest))
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-# CATLAS_OPERATIONAL_V3_BRIDGE_BEGIN
-def _catlas_operational_v3_main(argv=None):
-    from code_atlas.operational.cli import main as _main
-    return _main(argv)
-# CATLAS_OPERATIONAL_V3_BRIDGE_END
