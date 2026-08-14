@@ -14,6 +14,7 @@ from .evidence import normalize_evidence_answer
 from .policy import validate_policy_pack
 from .reporting import render_change_model_markdown, render_verification_markdown
 from .roi import build_roi_event, derive_financial_estimate
+from .runner_contract import build_runner_plan, validate_runner_egress
 from .sessions import normalize_agent_session
 from .verification import verify_change
 
@@ -36,6 +37,8 @@ __all__ = [
     "build_portable_bundle_manifest",
     "build_roi_event",
     "derive_financial_estimate",
+    "build_runner_plan",
+    "validate_runner_egress",
     "normalize_agent_session",
     "verify_change",
 ]
