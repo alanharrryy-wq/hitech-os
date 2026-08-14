@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .hardened_runner import run_operational_atlas
+from .final_runner import run_operational_atlas
 
 run_operational_evidence = run_operational_atlas
 run_operational_evidence_atlas = run_operational_atlas
