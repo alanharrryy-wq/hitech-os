@@ -1,7 +1,11 @@
-# CODE_ATLAS_UI_MODULE_V02
-"""UI modules for Code Atlas."""
+# CODE_ATLAS_UI_MODULE_V03
+"""Neutral default UI exports for Code Atlas.
 
-from .legal_readiness import LegalReadinessDialog
-from .motor_hub import MotorHubDialog
+Product-specific dialogs remain available only through their explicit module or
+an adapter selected by the active product profile. Importing ``code_atlas.ui``
+never selects a product adapter implicitly.
+"""
 
-__all__ = ["LegalReadinessDialog", "MotorHubDialog"]
+from .generic_motor_hub import MotorHubDialog
+
+__all__ = ["MotorHubDialog"]
