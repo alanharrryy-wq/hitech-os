@@ -74,7 +74,6 @@ def main():
                 checks.append('navigation_homologated')
                 page.click('[data-surface="provisioning"]')
                 page.wait_for_selector('[data-action="prepare-client"]')
-                # Customer form has one authority-driven field set and no duplicated plan/city-zone/operator other action.
                 require(page.locator('[data-flow-field="vertical"]').count()==1,'VERTICAL_FIELD_DUPLICATED')
                 require(page.locator('[data-flow-field="cityZone"]').count()==0,'LEGACY_CITY_ZONE_FIELD_VISIBLE')
                 require(page.locator('[data-flow-field="plan"]').count()==0,'PLAN_DUPLICATED_IN_CUSTOMER_REGISTRATION')
@@ -83,9 +82,19 @@ def main():
                     require(page.locator(f'select[data-flow-field="{field}"][required]').count()==1,f'REQUIRED_FIELD_MISSING:{field}')
                 checks.append('customer_form_homologated')
 
-                # Mouse + keyboard picker behavior and option snapshot.
-                vertical_button=page.locator('[data-picker-toggle="vertical"]'); vertical_button.focus(); page.keyboard.press('Enter')
-                page.wait_for_selector('[data-picker-panel="vertical"].show')
+                # Keyboard picker behavior remains a strict requirement. Diagnostics are emitted
+                # before and after Enter so failures identify focus/event/render/visibility drift.
+                vertical_button=page.locator('[data-picker-toggle="vertical"]')
+                vertical_button.wait_for(state='visible',timeout=10000)
+                vertical_button.focus()
+                before=page.evaluate("""()=>{const b=document.querySelector('[data-picker-toggle="vertical"]'); const p=document.querySelector('[data-picker-panel="vertical"]'); return {activeTag:document.activeElement?.tagName||null,activePicker:document.activeElement?.dataset?.pickerToggle||null,buttonConnected:!!b?.isConnected,aria:b?.getAttribute('aria-expanded')||null,panelConnected:!!p?.isConnected,panelClass:p?.className||null};}""")
+                print('PICKER_DIAG_BEFORE='+json.dumps(before,ensure_ascii=False))
+                page.keyboard.press('Enter')
+                page.wait_for_timeout(250)
+                after=page.evaluate("""()=>{const b=document.querySelector('[data-picker-toggle="vertical"]'); const p=document.querySelector('[data-picker-panel="vertical"]'); const cs=p?getComputedStyle(p):null; const r=p?p.getBoundingClientRect():null; return {activeTag:document.activeElement?.tagName||null,activePicker:document.activeElement?.dataset?.pickerToggle||null,buttonConnected:!!b?.isConnected,aria:b?.getAttribute('aria-expanded')||null,panelConnected:!!p?.isConnected,panelClass:p?.className||null,display:cs?.display||null,visibility:cs?.visibility||null,opacity:cs?.opacity||null,rect:r?{x:r.x,y:r.y,w:r.width,h:r.height}:null};}""")
+                print('PICKER_DIAG_AFTER='+json.dumps(after,ensure_ascii=False))
+                (out/'PICKER_DIAGNOSTIC.json').write_text(json.dumps({'before':before,'after':after},indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+                page.wait_for_selector('[data-picker-panel="vertical"].show',state='visible',timeout=10000)
                 vertical_codes=page.locator('[data-pick-flow="vertical"]').evaluate_all('(els)=>els.map(e=>e.dataset.value)')
                 require('multi_branch' not in vertical_codes and 'abarrotes' in vertical_codes,'VERTICAL_DROPDOWN_DRIFT')
                 require(len(vertical_codes)==len(set(vertical_codes)),'VERTICAL_DUPLICATE_OPTIONS')
@@ -95,7 +104,6 @@ def main():
                 require('restaurant_tables' in sub_codes and 'minisuper' not in sub_codes,'SUBVERTICAL_DEPENDENCY_DRIFT')
                 checks.append('dropdown_dependency_and_keyboard')
 
-                # Build a customer through the real UI on a temporary DB.
                 page.fill('[data-flow-field="displayName"]','Cliente Runtime UI')
                 page.fill('[data-flow-field="email"]','runtime-ui@example.test')
                 page.select_option('select[data-flow-field="vertical"]','abarrotes')
@@ -138,7 +146,7 @@ def main():
             output=(proc.stdout.read() if proc.stdout else '')
             (out/'cloud-center-runtime-server.log').write_text(output,encoding='utf-8')
 
-    report={'status':'PASS','result':'PASS_CLOUD_CENTER_CUSTOMER_RUNTIME_VISUAL_VERIFIED','checkCount':len(checks),'checks':checks,'consoleErrors':console_errors,'localRequestFailures':request_failures,'realDatabaseTouched':False,'liveProcessesTouched':False,'screenshots':['cloud-center-customer-provisioning.png','cloud-center-customers.png'],'doesNotProve':['live cloud customer creation','real customer data correctness','Tablet/PC/Mobile visual state']}
+    report={'status':'PASS','result':'PASS_CLOUD_CENTER_CUSTOMER_RUNTIME_VISUAL_VERIFIED','checkCount':len(checks),'checks':checks,'consoleErrors':console_errors,'localRequestFailures':request_failures,'realDatabaseTouched':False,'liveProcessesTouched':False,'screenshots':['cloud-center-customer-provisioning.png','cloud-center-customers.png'],'diagnostics':['PICKER_DIAGNOSTIC.json'],'doesNotProve':['live cloud customer creation','real customer data correctness','Tablet/PC/Mobile visual state']}
     (out/'CLOUD_CENTER_CUSTOMER_RUNTIME_VERIFY.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(report['result']); print(f"checks={len(checks)}")
 
