@@ -6,7 +6,7 @@ on:
     paths:
       - "tools/code-atlas/src/code_atlas/ui_bridge/**"
       - "tools/code-atlas/src/code_atlas/app_map/uimap/**"
-      - "tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py"
+      - "tools/code-atlas/tests/test_operational_ui_bridge_*.py"
       - "tools/code-atlas/profiles/prisma-ui-bridge.v1.json"
       - "prisma-html/authority/rifat/**"
       - "prisma-html/extras/atlasfin/**"
@@ -46,15 +46,19 @@ jobs:
             tools/code-atlas/src/code_atlas/ui_bridge/multisurface.py \
             tools/code-atlas/src/code_atlas/ui_bridge/binding_promotion.py \
             tools/code-atlas/src/code_atlas/ui_bridge/consistency.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/projection.py \
             tools/code-atlas/src/code_atlas/ui_bridge/closure.py \
             tools/code-atlas/src/code_atlas/ui_bridge/cli.py \
-            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py
+            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \
+            tools/code-atlas/tests/test_operational_ui_bridge_projection.py
 
       - name: Run focused operational tests
         shell: bash
         run: |
           set -euo pipefail
-          python -m unittest -v tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py
+          python -m unittest -v \
+            tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \
+            tools/code-atlas/tests/test_operational_ui_bridge_projection.py
 
       - name: Capture repo state before refresh
         shell: bash
@@ -92,6 +96,9 @@ jobs:
               'PRISMA_UI_BRIDGE_BINDING_PROMOTION.json',
               'PRISMA_UI_BRIDGE_BINDING_GAP_MATRIX.json',
               'PRISMA_UI_BRIDGE_VISUAL_AUTHORITY_CONSISTENCY.json',
+              'PRISMA_UI_MULTI_SURFACE_PROJECTION.json',
+              'PRISMA_UI_MULTI_SURFACE_BLOCKERS.json',
+              'PRISMA_UI_MULTI_SURFACE_SUMMARY.md',
           ]
           missing = [name for name in required if not (root / name).is_file()]
           if missing:
@@ -102,11 +109,14 @@ jobs:
           promotion = json.loads((root / required[2]).read_text(encoding='utf-8'))
           gaps = json.loads((root / required[3]).read_text(encoding='utf-8'))
           consistency = json.loads((root / required[4]).read_text(encoding='utf-8'))
+          projection = json.loads((root / required[5]).read_text(encoding='utf-8'))
+          projection_blockers = json.loads((root / required[6]).read_text(encoding='utf-8'))
 
           if refresh.get('status') == 'BLOCKED_BY_UIMAP':
               raise SystemExit('THREE_APP_MAPPING_BLOCKED_BY_UIMAP')
-          if refresh.get('applicationEnabled') is not False:
-              raise SystemExit('GENERIC_APPLICATION_MUST_REMAIN_DISABLED')
+          for payload, label in [(refresh, 'refresh'), (projection, 'projection')]:
+              if payload.get('applicationEnabled') is not False:
+                  raise SystemExit(f'{label}:GENERIC_APPLICATION_MUST_REMAIN_DISABLED')
           if refresh.get('sourceMutationPerformed') is not False:
               raise SystemExit('SOURCE_MUTATION_FLAG_MUST_REMAIN_FALSE')
           if refresh.get('runtimeMutationPerformed') is not False:
@@ -131,6 +141,17 @@ jobs:
               'consistencyStatus': consistency.get('status'),
               'consistencyBlockingIssueCount': consistency.get('blockingIssueCount'),
               'consistencyIssues': consistency.get('issues', []),
+              'projection': {
+                  'status': projection.get('status'),
+                  'projectionId': projection.get('projectionId'),
+                  'componentCount': projection.get('componentCount'),
+                  'exactTraceCompleteCount': projection.get('exactTraceCompleteCount'),
+                  'authorityPreflightReadyCount': projection.get('authorityPreflightReadyCount'),
+                  'blockedComponentCount': projection.get('blockedComponentCount'),
+                  'surfaceSummary': projection.get('surfaceSummary', {}),
+                  'globalBlockers': projection.get('globalBlockers', []),
+                  'blockerStatus': projection_blockers.get('status'),
+              },
           }
           (root / 'SUMMARY_FOR_CHAT.json').write_text(
               json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True) + '\n',

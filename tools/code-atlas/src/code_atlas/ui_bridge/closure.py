@@ -5,12 +5,11 @@ from typing import Any, Iterable
 
 from code_atlas.app_map.uimap.runner import run_uimap
 
-from .binding_promotion import (
-    build_binding_promotion_report,
-    write_binding_promotion_report,
-)
+from .binding_promotion import build_binding_promotion_report, write_binding_promotion_report
 from .canonical import canonical_sha256, write_json
 from .consistency import audit_visual_authority, write_visual_authority_audit
+from .projection import build_projection_map, write_projection_map
+from .recipes import RecipeRepository
 from .repository import BridgeRepository
 
 CORE_RUNTIME_ALIASES = ("tb", "pc", "mb")
@@ -27,21 +26,11 @@ def _unique_components(repository: BridgeRepository) -> list[dict[str, Any]]:
     return [rows[key] for key in sorted(rows)]
 
 
-def build_three_app_readiness(
-    repository: BridgeRepository,
-    promotion_report: dict[str, Any],
-) -> dict[str, Any]:
-    components = [
-        row
-        for row in _unique_components(repository)
-        if row.get("runtimeAlias") in CORE_RUNTIME_ALIASES
-    ]
+def build_three_app_readiness(repository: BridgeRepository, promotion_report: dict[str, Any]) -> dict[str, Any]:
+    components = [row for row in _unique_components(repository) if row.get("runtimeAlias") in CORE_RUNTIME_ALIASES]
     promotion_by_ui = {
         str(row.get("componentUiId")): row
-        for row in [
-            *promotion_report.get("candidates", []),
-            *promotion_report.get("alreadyRegistered", []),
-        ]
+        for row in [*promotion_report.get("candidates", []), *promotion_report.get("alreadyRegistered", [])]
         if row.get("componentUiId")
     }
     by_neutral: dict[str, dict[str, Any]] = {}
@@ -52,10 +41,7 @@ def build_three_app_readiness(
         runtime = str(component.get("runtimeAlias") or "")
         group = by_neutral.setdefault(
             neutral,
-            {
-                "neutralMeaningId": neutral,
-                "surfaces": {alias: [] for alias in CORE_RUNTIME_ALIASES},
-            },
+            {"neutralMeaningId": neutral, "surfaces": {alias: [] for alias in CORE_RUNTIME_ALIASES}},
         )
         group["surfaces"][runtime].append(
             {
@@ -63,20 +49,14 @@ def build_three_app_readiness(
                 "componentUiId": component.get("componentUiId"),
                 "targetResolutionStatus": component.get("targetResolutionStatus"),
                 "applicationReadiness": component.get("applicationReadiness"),
-                "promotionStatus": (
-                    promotion_by_ui.get(str(component.get("componentUiId"))) or {}
-                ).get("status"),
+                "promotionStatus": (promotion_by_ui.get(str(component.get("componentUiId"))) or {}).get("status"),
             }
         )
 
     neutral_rows = []
     for neutral in sorted(by_neutral):
         row = by_neutral[neutral]
-        present = [
-            alias
-            for alias, items in row["surfaces"].items()
-            if items
-        ]
+        present = [alias for alias, items in row["surfaces"].items() if items]
         all_surfaces_present = set(present) == set(CORE_RUNTIME_ALIASES)
         all_targets_source_resolved = all(
             item.get("targetResolutionStatus") == "SOURCE_RESOLVED"
@@ -84,49 +64,31 @@ def build_three_app_readiness(
             for item in items
         ) and any(row["surfaces"].values())
         all_targets_promotable = all(
-            item.get("promotionStatus")
-            in {"ALREADY_REGISTERED", "CENTRAL_REGISTRY_PROMOTION_CANDIDATE"}
+            item.get("promotionStatus") in {"ALREADY_REGISTERED", "CENTRAL_REGISTRY_PROMOTION_CANDIDATE"}
             for items in row["surfaces"].values()
             for item in items
         ) and any(row["surfaces"].values())
         row.update(
             {
                 "presentRuntimeAliases": present,
-                "missingRuntimeAliases": [
-                    alias for alias in CORE_RUNTIME_ALIASES if alias not in present
-                ],
+                "missingRuntimeAliases": [alias for alias in CORE_RUNTIME_ALIASES if alias not in present],
                 "allCoreSurfacesPresent": all_surfaces_present,
                 "allTargetsSourceResolved": all_targets_source_resolved,
                 "allTargetsPromotable": all_targets_promotable,
-                "threeAppTransferReady": (
-                    all_surfaces_present
-                    and all_targets_source_resolved
-                    and all_targets_promotable
-                ),
+                "threeAppTransferReady": all_surfaces_present and all_targets_source_resolved and all_targets_promotable,
             }
         )
         neutral_rows.append(row)
 
     surface_counts = {}
     for runtime in CORE_RUNTIME_ALIASES:
-        runtime_components = [
-            row for row in components if row.get("runtimeAlias") == runtime
-        ]
+        runtime_components = [row for row in components if row.get("runtimeAlias") == runtime]
         surface_counts[runtime] = {
             "components": len(runtime_components),
-            "withNeutralMeaning": sum(
-                1 for row in runtime_components if row.get("neutralMeaningId")
-            ),
-            "sourceResolved": sum(
-                1
-                for row in runtime_components
-                if row.get("targetResolutionStatus") == "SOURCE_RESOLVED"
-            ),
+            "withNeutralMeaning": sum(1 for row in runtime_components if row.get("neutralMeaningId")),
+            "sourceResolved": sum(1 for row in runtime_components if row.get("targetResolutionStatus") == "SOURCE_RESOLVED"),
             "authorityPreflightEligible": sum(
-                1
-                for row in runtime_components
-                if row.get("applicationReadiness")
-                == "ELIGIBLE_FOR_AUTHORITY_PREFLIGHT"
+                1 for row in runtime_components if row.get("applicationReadiness") == "ELIGIBLE_FOR_AUTHORITY_PREFLIGHT"
             ),
         }
 
@@ -137,9 +99,7 @@ def build_three_app_readiness(
         "runtimeAliases": list(CORE_RUNTIME_ALIASES),
         "surfaceCounts": surface_counts,
         "neutralMeaningCount": len(neutral_rows),
-        "threeAppTransferReadyNeutralMeaningCount": sum(
-            1 for row in neutral_rows if row["threeAppTransferReady"]
-        ),
+        "threeAppTransferReadyNeutralMeaningCount": sum(1 for row in neutral_rows if row["threeAppTransferReady"]),
         "neutralMeanings": neutral_rows,
         "applicationEnabled": False,
         "runtimeMutationAllowed": False,
@@ -160,6 +120,7 @@ def refresh_three_app_mapping(
     output_root: str | Path,
     binding_registry_path: str | Path | None = None,
     pilot_contract_paths: Iterable[str | Path] = (),
+    recipe_paths: Iterable[str | Path] = (),
     previous_batches_source: str | None = None,
     workers: int = 18,
 ) -> dict[str, Any]:
@@ -188,12 +149,7 @@ def refresh_three_app_mapping(
         return manifest
 
     repository = BridgeRepository.load([uimap_root / "batches"])
-    central_registry = (
-        Path(binding_registry_path)
-        if binding_registry_path
-        else governor
-        / "authority/rifat/identity/registries/element-bindings.registry.json"
-    )
+    central_registry = Path(binding_registry_path) if binding_registry_path else governor / "authority/rifat/identity/registries/element-bindings.registry.json"
     promotion, gaps = build_binding_promotion_report(
         repository,
         binding_registry_path=central_registry,
@@ -207,6 +163,16 @@ def refresh_three_app_mapping(
     readiness = build_three_app_readiness(repository, promotion)
     write_json(output / "PRISMA_THREE_APP_VISUAL_MAPPING_READINESS.json", readiness)
 
+    recipes = RecipeRepository.load(recipe_paths)
+    projection, projection_blockers = build_projection_map(
+        repository,
+        recipes,
+        str(product),
+        str(governor),
+        ("tablet", "pc", "mobile"),
+    )
+    write_projection_map(output, projection, projection_blockers)
+
     blockers = []
     if consistency.get("status") != "PASS":
         blockers.append("VISUAL_AUTHORITY_CONSISTENCY_BLOCKED")
@@ -214,6 +180,9 @@ def refresh_three_app_mapping(
         blockers.append("EXACT_BINDING_GAPS_PRESENT")
     if readiness.get("threeAppTransferReadyNeutralMeaningCount", 0) == 0:
         blockers.append("NO_NEUTRAL_MEANING_READY_ACROSS_ALL_THREE_APPS")
+    if projection.get("status") == "BLOCKED_BY_GLOBAL_AUTHORITY_GAP":
+        blockers.append("MULTI_SURFACE_PROJECTION_GLOBAL_AUTHORITY_BLOCKED")
+
     stable = {
         "uimapSourceSnapshotHash": uimap_result.get("sourceSnapshotHash"),
         "consistencyChecksum": consistency.get("reportChecksum"),
@@ -224,9 +193,14 @@ def refresh_three_app_mapping(
         },
         "readiness": {
             "neutralMeaningCount": readiness.get("neutralMeaningCount"),
-            "threeAppTransferReadyNeutralMeaningCount": readiness.get(
-                "threeAppTransferReadyNeutralMeaningCount"
-            ),
+            "threeAppTransferReadyNeutralMeaningCount": readiness.get("threeAppTransferReadyNeutralMeaningCount"),
+        },
+        "projection": {
+            "projectionId": projection.get("projectionId"),
+            "status": projection.get("status"),
+            "componentCount": projection.get("componentCount"),
+            "authorityPreflightReadyCount": projection.get("authorityPreflightReadyCount"),
+            "blockedComponentCount": projection.get("blockedComponentCount"),
         },
         "blockers": blockers,
     }
@@ -240,6 +214,9 @@ def refresh_three_app_mapping(
         "bindingGapMatrix": "PRISMA_UI_BRIDGE_BINDING_GAP_MATRIX.json",
         "consistencyReport": "PRISMA_UI_BRIDGE_VISUAL_AUTHORITY_CONSISTENCY.json",
         "readinessReport": "PRISMA_THREE_APP_VISUAL_MAPPING_READINESS.json",
+        "projectionReport": "PRISMA_UI_MULTI_SURFACE_PROJECTION.json",
+        "projectionBlockersReport": "PRISMA_UI_MULTI_SURFACE_BLOCKERS.json",
+        "projectionSummary": "PRISMA_UI_MULTI_SURFACE_SUMMARY.md",
         "blockers": blockers,
         "checksum": canonical_sha256(stable),
         "applicationEnabled": False,
