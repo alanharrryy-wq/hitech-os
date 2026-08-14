@@ -137,12 +137,14 @@ def main():
                 (out/'DRAFT_CLIENT_RESPONSE.json').write_text(json.dumps({'status':draft_response.status,'payload':draft_payload},indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
                 require(draft_response.ok and draft_payload.get('ok') is not False, f'UI_CLIENT_CREATE_API_FAILED:{draft_response.status}:{draft_payload}')
                 checks.append('ui_customer_create_api')
-                page.wait_for_function("()=>document.body.innerText.includes('Cliente Runtime UI')",timeout=15000)
-                checks.append('ui_customer_create_projection')
+                # The provisioning surface confirms the action/result. The created customer row is
+                # intentionally projected on the Customers desk, so verify it there rather than
+                # requiring the customer name to be duplicated into the provisioning screen.
                 page.screenshot(path=str(out/'cloud-center-customer-provisioning.png'),full_page=True)
-
-                page.click('[data-surface="customers"]'); page.wait_for_function("()=>document.body.innerText.includes('Medición homologada')")
+                page.click('[data-surface="customers"]')
+                page.wait_for_function("()=>document.body.innerText.includes('Medición homologada') && document.body.innerText.includes('Cliente Runtime UI')",timeout=15000)
                 require(page.get_by_text('Cliente Runtime UI').count()>=1,'CUSTOMER_NOT_VISIBLE_IN_CUSTOMER_DESK')
+                checks.append('ui_customer_create_projection')
                 page.screenshot(path=str(out/'cloud-center-customers.png'),full_page=True)
                 checks.append('customer_metrics_ui')
 
