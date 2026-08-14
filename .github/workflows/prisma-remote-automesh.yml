@@ -135,14 +135,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p .remote-automesh-artifacts
-          cp "$RUNNER_TEMP/code-atlas-phase0-v1.tasks.json" .remote-automesh-artifacts/
+          mkdir -p remote-automesh-artifacts
+          cp "$RUNNER_TEMP/code-atlas-phase0-v1.tasks.json" remote-automesh-artifacts/
           if [ -d "$RUNNER_TEMP/prisma-automesh-out" ]; then
             find "$RUNNER_TEMP/prisma-automesh-out" -maxdepth 1 -type f \
               \( -name '*_result.zip' -o -name '*_fail.zip' \) \
-              -exec cp {} .remote-automesh-artifacts/ \;
+              -exec cp {} remote-automesh-artifacts/ \;
           fi
-          find .remote-automesh-artifacts -maxdepth 1 -type f -print
+          find remote-automesh-artifacts -maxdepth 1 -type f -print
 
       - name: Upload Authority Mesh evidence
         if: always()
@@ -151,7 +151,7 @@ jobs:
           name: code-atlas-phase0-v1-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: error
           retention-days: 14
-          path: .remote-automesh-artifacts/**
+          path: remote-automesh-artifacts/**
 
       - name: Fail closed when AutoMesh did not pass
         if: always() && steps.mesh.outcome != 'success'
