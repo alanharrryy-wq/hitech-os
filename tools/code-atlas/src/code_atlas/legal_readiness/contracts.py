@@ -1,8 +1,25 @@
 from __future__ import annotations
 
+import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
+
+
+def _env(name: str, fallback: str) -> str:
+    return os.environ.get(name, fallback)
+
+
+def _repo_default() -> str:
+    return _env("CODE_ATLAS_PROJECT_ROOT", str(Path.cwd()))
+
+
+def _output_default() -> str:
+    return _env("CODE_ATLAS_OUTPUT_ROOT", str(Path(_repo_default()) / "code-atlas-out"))
+
+
+def _atlas_default() -> str:
+    return _env("CODE_ATLAS_APP_ROOT", str(Path(_repo_default()) / "tools" / "code-atlas"))
 
 
 @dataclass(frozen=True)
@@ -42,12 +59,12 @@ class LegalPipelineConfig:
     surface: str = "all"
     include_runtime: bool = False
     allow_partial: bool = True
-    output_root: str = r"F:\descargasf"
-    repo_root: str = r"F:\repos\hitech-os"
-    code_atlas_root: str = r"F:\repos\hitech-os\tools\code-atlas"
-    motors_root: str = r"F:\PRISMA_CTX\MOTORES"
-    ndc_root: str = r"F:\PRISMA_CTX\NDC"
-    mamastrophic_root: str = r"F:\repos\hitech-os\tools\Plawright Mamastrophic"
+    output_root: str = field(default_factory=_output_default)
+    repo_root: str = field(default_factory=_repo_default)
+    code_atlas_root: str = field(default_factory=_atlas_default)
+    motors_root: str = field(default_factory=lambda: _env("CODE_ATLAS_MOTORS_ROOT", str(Path(_atlas_default()) / "motors")))
+    ndc_root: str = field(default_factory=lambda: _env("CODE_ATLAS_NDC_ROOT", str(Path(_atlas_default()) / "ndc")))
+    mamastrophic_root: str = field(default_factory=lambda: _env("CODE_ATLAS_RUNTIME_EVIDENCE_ROOT", str(Path(_atlas_default()) / "runtime-evidence")))
     run_id: str = ""
     cancel_file: str = ""
 
@@ -58,8 +75,8 @@ class LegalPipelineConfig:
         if profile not in {"static", "full", "runtime-only", "plan"}:
             raise ValueError(f"UNKNOWN_LEGAL_PROFILE:{profile}")
         surface = str(self.surface or "all").strip().lower()
-        if surface not in {"all", "chart-lab", "web", "tablet", "pc", "mobile", "control-center"}:
-            raise ValueError(f"UNKNOWN_SURFACE:{surface}")
+        if not surface or any(ch.isspace() for ch in surface):
+            raise ValueError(f"INVALID_SURFACE_ID:{surface!r}")
         return LegalPipelineConfig(
             profile=profile,
             workers=workers,
