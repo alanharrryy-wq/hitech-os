@@ -12,7 +12,8 @@ on:
       - "tools/code-atlas/src/code_atlas/manifest/**"
       - "tools/code-atlas/src/code_atlas/cli/**"
       - "tools/code-atlas/profiles/**"
-      - "tools/code-atlas/tests/test_code_atlas_neutrality.py"
+      - "tools/code-atlas/tests/test_code_atlas_neutral*.py"
+      - "tools/code-atlas/NEUTRALITY_CONTRACT.md"
       - ".github/workflows/code-atlas-neutrality.yml"
   push:
     branches: ["main"]
@@ -26,7 +27,8 @@ on:
       - "tools/code-atlas/src/code_atlas/manifest/**"
       - "tools/code-atlas/src/code_atlas/cli/**"
       - "tools/code-atlas/profiles/**"
-      - "tools/code-atlas/tests/test_code_atlas_neutrality.py"
+      - "tools/code-atlas/tests/test_code_atlas_neutral*.py"
+      - "tools/code-atlas/NEUTRALITY_CONTRACT.md"
       - ".github/workflows/code-atlas-neutrality.yml"
 
 permissions:
@@ -62,11 +64,18 @@ jobs:
           python -m compileall -q tools/code-atlas/src/code_atlas/operational
           python -m compileall -q tools/code-atlas/src/code_atlas/surface_target_atlas
           python -m compileall -q tools/code-atlas/src/code_atlas/legal_readiness
-          python -m py_compile tools/code-atlas/tests/test_code_atlas_neutrality.py
+          python -m compileall -q tools/code-atlas/src/code_atlas/coverage
+          python -m compileall -q tools/code-atlas/src/code_atlas/db_glass
+          python -m compileall -q tools/code-atlas/src/code_atlas/manifest
+          python -m compileall -q tools/code-atlas/src/code_atlas/cli
+          python -m py_compile tools/code-atlas/tests/test_code_atlas_neutrality.py tools/code-atlas/tests/test_code_atlas_neutral_boundary.py
 
       - name: Run neutrality certification
         shell: bash
-        run: python tools/code-atlas/tests/test_code_atlas_neutrality.py
+        run: |
+          python -m unittest discover -v \
+            -s tools/code-atlas/tests \
+            -p 'test_code_atlas_neutral*.py'
 
       - name: Run operational fail-closed regression suite
         shell: bash
