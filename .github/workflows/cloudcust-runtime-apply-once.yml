@@ -30,40 +30,26 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Reassemble and preflight exact patch
+      - name: Reassemble exact patch
         shell: python
         run: |
-          import base64, hashlib, struct, zlib
+          import base64, hashlib, zlib
           from pathlib import Path
           chunks=[]
           for index in range(1,6):
               path=Path(f'apps/terminal-de-venta-system/tools/_cloudcust_patch_part{index}.txt')
               if not path.exists(): raise SystemExit(f'PATCH_PART_MISSING:{index}')
-              data=b''.join(path.read_bytes().split()); print(f'PART_{index}_BYTES={len(data)} SHA256={hashlib.sha256(data).hexdigest()}'); chunks.append(data)
-          encoded=b''.join(chunks); raw=base64.b64decode(encoded,validate=True)
-          if len(raw)<8: raise SystemExit('PATCH_ZLIB_STREAM_TOO_SHORT')
-          print(f'ENCODED_BYTES={len(encoded)} RAW_BYTES={len(raw)} RAW_SHA256={hashlib.sha256(raw).hexdigest()}')
-          expected_adler=struct.unpack('>I',raw[-4:])[0]
-          try:
-              patch=zlib.decompress(raw); mode='STRICT_ZLIB_OK'
-          except zlib.error as exc:
-              if 'incorrect data check' not in str(exc): raise
-              decoder=zlib.decompressobj(); patch=decoder.decompress(raw[:-4])+decoder.flush()
-              if decoder.unused_data or decoder.unconsumed_tail: raise SystemExit('PATCH_ZLIB_RECOVERY_LEFTOVER_DATA')
-              actual_adler=zlib.adler32(patch)&0xffffffff; print(f'ZLIB_TRAILER_EXPECTED={expected_adler:08x}'); print(f'ZLIB_TRAILER_ACTUAL={actual_adler:08x}'); mode='RECOVERED_BODY_WITH_BAD_ADLER32'
-          required_headers=[
-              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
-              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
-              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html',
-              b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js',
-          ]
-          if not patch.startswith(b'--- a/apps/terminal-de-venta-system/'): raise SystemExit('PATCH_HEADER_INVALID')
-          missing=[h.decode('utf-8') for h in required_headers if h not in patch]
-          if missing: raise SystemExit('PATCH_REQUIRED_HEADERS_MISSING:'+','.join(missing))
-          if b'\x00' in patch or not patch.endswith(b'\n'): raise SystemExit('PATCH_STRUCTURE_INVALID')
-          Path('/tmp/cloudcust.patch').write_bytes(patch); print(f'PATCH_MODE={mode}'); print(f'PATCH_BYTES={len(patch)} PATCH_SHA256={hashlib.sha256(patch).hexdigest()}')
+              data=b''.join(path.read_bytes().split())
+              print(f'PART_{index}_SHA256={hashlib.sha256(data).hexdigest()}')
+              chunks.append(data)
+          raw=base64.b64decode(b''.join(chunks),validate=True)
+          patch=zlib.decompress(raw)
+          if not patch.startswith(b'--- a/apps/terminal-de-venta-system/') or b'\x00' in patch or not patch.endswith(b'\n'):
+              raise SystemExit('PATCH_STRUCTURE_INVALID')
+          Path('/tmp/cloudcust.patch').write_bytes(patch)
+          print(f'PATCH_BYTES={len(patch)} PATCH_SHA256={hashlib.sha256(patch).hexdigest()}')
 
-      - name: Apply exact runtime patch with anchors
+      - name: Apply exact runtime patch
         shell: bash
         run: |
           set -euo pipefail
@@ -72,32 +58,45 @@ jobs:
           git apply --check --exclude="$EX1" --exclude="$EX2" /tmp/cloudcust.patch
           git apply --exclude="$EX1" --exclude="$EX2" /tmp/cloudcust.patch
 
-      - name: Harden governed picker keyboard access
+      - name: Make background refresh operator-safe
         shell: python
         run: |
           from pathlib import Path
           path=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js')
           text=path.read_text(encoding='utf-8')
-          marker='// Governed picker keyboard access: Enter/Space mirrors pointer activation.'
-          click_anchor='''      if (pickerToggleNode) {\n        const pickerId = pickerToggleNode.dataset.pickerToggle || "";\n        state.openPicker = state.openPicker === pickerId ? null : pickerId;\n        render();\n        return;\n      }'''
-          if text.count(click_anchor)!=1:
-              raise SystemExit(f'PICKER_CLICK_BLOCK_DRIFT:{text.count(click_anchor)}')
-          guarded_click='''      if (pickerToggleNode) {\n        const pickerId = pickerToggleNode.dataset.pickerToggle || "";\n        if (event.detail === 0 && state.keyboardPickerClick === pickerId) {\n          state.keyboardPickerClick = null;\n          return;\n        }\n        state.keyboardPickerClick = null;\n        state.openPicker = state.openPicker === pickerId ? null : pickerId;\n        render();\n        return;\n      }'''
-          text=text.replace(click_anchor,guarded_click,1)
-          key_anchor='    document.addEventListener("click", (event) => {\n      const pickerToggleNode = event.target.closest("[data-picker-toggle]");'
-          if text.count(key_anchor)!=1:
-              raise SystemExit(f'PICKER_CLICK_ANCHOR_DRIFT:{text.count(key_anchor)}')
-          handler='''    // Governed picker keyboard access: Enter/Space mirrors pointer activation.\n    document.addEventListener("keydown", (event) => {\n      const eventNode = event.target && event.target.closest ? event.target.closest("[data-picker-toggle]") : null;\n      const activeNode = document.activeElement && document.activeElement.closest ? document.activeElement.closest("[data-picker-toggle]") : null;\n      const pickerToggleNode = eventNode || activeNode;\n      if (!pickerToggleNode || (event.key !== "Enter" && event.key !== " ")) return;\n      event.preventDefault();\n      event.stopPropagation();\n      const pickerId = pickerToggleNode.dataset.pickerToggle || "";\n      state.keyboardPickerClick = pickerId;\n      state.openPicker = state.openPicker === pickerId ? null : pickerId;\n      render();\n    });\n'''
-          text=text.replace(key_anchor,handler+key_anchor,1)
-          if text.count(marker)!=1 or text.count('state.keyboardPickerClick')!=4:
-              raise SystemExit('PICKER_KEYBOARD_HANDLER_INVALID')
-          path.write_text(text,encoding='utf-8')
-          print('PASS_PICKER_KEYBOARD_SINGLE_ACTIVATION')
 
-      - name: Require exact patch scope
+          render_anchor='''  function render() {\n    updateChrome();\n    updateSurfaceHeader();\n    const renderer = renderers[state.surface] || renderCommand;\n    $("surfaceRoot").innerHTML = renderer();\n  }\n\n  async function loadAll() {'''
+          if text.count(render_anchor)!=1:
+              raise SystemExit(f'RENDER_LOAD_ANCHOR_DRIFT:{text.count(render_anchor)}')
+          render_block='''  function render() {\n    updateChrome();\n    updateSurfaceHeader();\n    const renderer = renderers[state.surface] || renderCommand;\n    $("surfaceRoot").innerHTML = renderer();\n  }\n\n  // Background refresh must never replace the form underneath an operator.\n  function operatorIsInteracting() {\n    const root = $("surfaceRoot");\n    const active = document.activeElement;\n    const focusedControl = !!(root && active && root.contains(active) && active.matches("input, select, textarea, button, [contenteditable='true']"));\n    return focusedControl || !!state.openPicker;\n  }\n\n  function renderAfterRefresh() {\n    if (operatorIsInteracting()) {\n      state.refreshRenderPending = true;\n      return;\n    }\n    state.refreshRenderPending = false;\n    render();\n  }\n\n  async function loadAll() {'''
+          text=text.replace(render_anchor,render_block,1)
+
+          load_anchor='''    state.supportCatalog = supportCatalogPayload;\n    state.supportSearch = supportSearchPayload;\n    state.lastLoadedAt = new Date().toLocaleString();\n    render();\n  }'''
+          if text.count(load_anchor)!=1:
+              raise SystemExit(f'LOAD_RENDER_ANCHOR_DRIFT:{text.count(load_anchor)}')
+          text=text.replace(load_anchor,'''    state.supportCatalog = supportCatalogPayload;\n    state.supportSearch = supportSearchPayload;\n    state.lastLoadedAt = new Date().toLocaleString();\n    renderAfterRefresh();\n  }''',1)
+
+          input_anchor='''      const field=event.target.closest("[data-flow-field]");\n      if(field){ state.flow[field.dataset.flowField]=field.value; render(); return; }'''
+          if text.count(input_anchor)!=1:
+              raise SystemExit(f'INPUT_RENDER_ANCHOR_DRIFT:{text.count(input_anchor)}')
+          text=text.replace(input_anchor,'''      const field=event.target.closest("[data-flow-field]");\n      if(field){ state.flow[field.dataset.flowField]=field.value; return; }''',1)
+
+          focus_anchor='''    document.addEventListener("change", (event) => { const field=event.target.closest("[data-flow-field]"); if(field){ state.flow[field.dataset.flowField]=field.value; render(); } });\n    document.addEventListener("click", (event) => {'''
+          if text.count(focus_anchor)!=1:
+              raise SystemExit(f'FOCUSOUT_ANCHOR_DRIFT:{text.count(focus_anchor)}')
+          focus_handler='''    document.addEventListener("change", (event) => { const field=event.target.closest("[data-flow-field]"); if(field){ state.flow[field.dataset.flowField]=field.value; render(); } });\n    document.addEventListener("focusout", () => {\n      setTimeout(() => {\n        if (state.refreshRenderPending && !operatorIsInteracting()) {\n          state.refreshRenderPending = false;\n          render();\n        }\n      }, 0);\n    });\n    document.addEventListener("click", (event) => {'''
+          text=text.replace(focus_anchor,focus_handler,1)
+
+          if text.count('function operatorIsInteracting()')!=1 or text.count('renderAfterRefresh();')!=1:
+              raise SystemExit('OPERATOR_SAFE_REFRESH_GUARD_INVALID')
+          path.write_text(text,encoding='utf-8')
+          print('PASS_OPERATOR_SAFE_REFRESH')
+
+      - name: Require exact scope and no duplicate authority
         shell: python
         run: |
           import subprocess
+          from pathlib import Path
           expected={
             'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
             'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
@@ -106,10 +105,16 @@ jobs:
           }
           changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
           if changed!=expected: raise SystemExit(f'PATCH_SCOPE_DRIFT:{sorted(changed ^ expected)}')
-          if any(path.lower().endswith('.css') for path in changed): raise SystemExit('CSS_MUTATION_FORBIDDEN')
-          print('PASS_EXACT_PATCH_SCOPE')
+          js=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js').read_text(encoding='utf-8')
+          store=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py').read_text(encoding='utf-8')
+          html=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html').read_text(encoding='utf-8')
+          for token in ['FALLBACK_CATALOGS','"suggestedPlan":"starter"','"suggestedPlan":"business"','"suggestedPlan":"enterprise"']:
+              if token in js or token in store: raise SystemExit('LEGACY_AUTHORITY_REMAINS:'+token)
+          if '<html lang="es-MX">' not in html or 'data-surface="billing">Cobranza<' not in html: raise SystemExit('NAVIGATION_HOMOLOGATION_MISSING')
+          if 'cityZone' in js[js.find('function clientWizard'):js.find('function deviceWizard')]: raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
+          print('PASS_EXACT_SCOPE_AUTHORITY_AND_NAV')
 
-      - name: Validate catalogs and compile runtime
+      - name: Compile runtime
         shell: bash
         run: |
           set -euo pipefail
@@ -123,22 +128,7 @@ jobs:
           node --check "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"
           git diff --check
 
-      - name: Guard authority duplication and legacy semantics
-        shell: python
-        run: |
-          from pathlib import Path
-          store=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py').read_text(encoding='utf-8')
-          js=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js').read_text(encoding='utf-8')
-          html=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html').read_text(encoding='utf-8')
-          for token in ['FALLBACK_CATALOGS','"suggestedPlan":"starter"','"suggestedPlan":"business"','"suggestedPlan":"enterprise"']:
-              if token in js or token in store: raise SystemExit('LEGACY_AUTHORITY_REMAINS:'+token)
-          if '<html lang="es-MX">' not in html or 'data-surface="billing">Cobranza<' not in html: raise SystemExit('NAVIGATION_HOMOLOGATION_MISSING')
-          client_slice=js[js.find('function clientWizard'):js.find('function deviceWizard')]
-          if 'cityZone' in client_slice: raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
-          if js.count('// Governed picker keyboard access: Enter/Space mirrors pointer activation.') != 1: raise SystemExit('PICKER_KEYBOARD_GUARD_MISSING')
-          print('PASS_AUTHORITY_DEDUP_NAV_AND_KEYBOARD')
-
-      - name: Run behavioral customer registration verifier
+      - name: Run customer registration behavior suite
         run: >-
           python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py
           --out-dir apps/terminal-de-venta-system/.governance/customer-runtime
@@ -147,21 +137,21 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          google-chrome --version || chromium-browser --version || chromium --version
+          google-chrome --version
           python -m pip install --disable-pip-version-check --no-input 'playwright==1.54.0'
 
-      - name: Run isolated Cloud Center browser/runtime verification
+      - name: Run isolated Cloud Center browser runtime
         run: >-
           python apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
           --out-dir apps/terminal-de-venta-system/.governance/customer-runtime
 
-      - name: Final no-cross-surface guard
+      - name: Final cross-surface guard
         shell: python
         run: |
           import subprocess
           changed=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
           forbidden=('apps/terminal-de-venta-system/products/tablet/','apps/terminal-de-venta-system/products/pc/','apps/terminal-de-venta-system/products/mobile/','apps/terminal-de-venta-system/prisma/','apps/terminal-de-venta-system/cloudflare/')
-          bad=[path for path in changed if path.startswith(forbidden)]
+          bad=[p for p in changed if p.startswith(forbidden) or p.lower().endswith('.css')]
           if bad: raise SystemExit('FORBIDDEN_SCOPE:'+','.join(bad))
           print('PASS_CLOUD_CENTER_CUSTOMER_SCOPE')
 
@@ -172,7 +162,7 @@ jobs:
           if-no-files-found: error
           path: apps/terminal-de-venta-system/.governance/customer-runtime/**
 
-      - name: Commit verified product patch only
+      - name: Commit verified runtime only
         shell: bash
         run: |
           set -euo pipefail
