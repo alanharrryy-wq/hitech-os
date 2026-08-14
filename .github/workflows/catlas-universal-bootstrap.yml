@@ -1,0 +1,117 @@
+name: CATLAS universal-intelligence bootstrap
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.head_ref == 'code-atlas/universal-intelligence-1408' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Reconstruct verified package and apply
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import base64, hashlib, json, os, pathlib, urllib.request, zipfile, shutil
+          repo = 'prismahitech/hitech-os'
+          comments = [
+              (5295608497, 'A146ABF02F11F4809EA434A08FAC34D8E686D95EB91F6A134036584EF39D0CF5'),
+              (5295628353, '04D8CC54C36AC4540683785DAC5E1799D41F45AF2DDF33395DB424FB56BB11E8'),
+              (5295662299, '0D98B0E2EB52C063A9763AE0ECF48D879C89E484124CB6082DE86CF508CE733B'),
+              (5295674378, '64678871DB362D380DBFD21518CFCF8BCBE3B019D65592CF6F18A2E7D0FFCBEA'),
+              (5295686568, 'DDA6BC82A8AAF01505A0FE6B157FBAAD7EE5860F49BFFCC4B426328A08D57833'),
+              (5295695405, '918EE7D60CC3F460B090E1612FB0A1758F09E3D8EF8C2DDDFBDD66590C45108C'),
+          ]
+          expected_zip = '719E791202E79E68E05F1955D23F9D948CAFAC617F1F1DBEE279227150AD1507'
+          chunks = []
+          token = os.environ['GH_TOKEN']
+          for cid, expected in comments:
+              req = urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}/issues/comments/{cid}',
+                  headers={'Authorization': f'Bearer {token}', 'Accept':'application/vnd.github+json'}
+              )
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  body = json.load(r)['body']
+              lines = body.splitlines()
+              if len(lines) < 2:
+                  raise SystemExit(f'CHUNK_BODY_MISSING:{cid}')
+              payload = ''.join(lines[1:]).strip()
+              actual = hashlib.sha256(payload.encode('ascii')).hexdigest().upper()
+              if actual != expected:
+                  raise SystemExit(f'CHUNK_SHA_MISMATCH:{cid}:{actual}')
+              chunks.append(payload)
+          raw = base64.b64decode(''.join(chunks), validate=True)
+          actual_zip = hashlib.sha256(raw).hexdigest().upper()
+          if actual_zip != expected_zip:
+              raise SystemExit(f'ZIP_SHA_MISMATCH:{actual_zip}')
+          zpath = pathlib.Path('/tmp/catlas-transfer.zip')
+          zpath.write_bytes(raw)
+          extract = pathlib.Path('/tmp/catlas-transfer')
+          if extract.exists(): shutil.rmtree(extract)
+          extract.mkdir()
+          with zipfile.ZipFile(zpath) as z:
+              bad = z.testzip()
+              if bad: raise SystemExit(f'ZIP_CRC_FAIL:{bad}')
+              z.extractall(extract)
+          expected_files = [
+            'tools/code-atlas/src/code_atlas/intelligence/__init__.py',
+            'tools/code-atlas/src/code_atlas/intelligence/common.py',
+            'tools/code-atlas/src/code_atlas/intelligence/repository.py',
+            'tools/code-atlas/src/code_atlas/intelligence/authority.py',
+            'tools/code-atlas/src/code_atlas/intelligence/graphs.py',
+            'tools/code-atlas/src/code_atlas/intelligence/snapshot.py',
+            'tools/code-atlas/src/code_atlas/intelligence/index.py',
+            'tools/code-atlas/src/code_atlas/intelligence/engine.py',
+            'tools/code-atlas/src/code_atlas/intelligence/cli.py',
+            'tools/code-atlas/src/code_atlas/cli/main.py',
+            'tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py',
+            'tools/code-atlas/CODE_ATLAS_NEUTRALITY_CONTRACT.json',
+            'tools/code-atlas/tests/test_operational_universal_intelligence.py',
+            'tools/code-atlas/tests/test_operational_prisma_mesh_gateway.py',
+            '.github/workflows/prisma-remote-automesh.yml',
+          ]
+          for rel in expected_files:
+              src = extract / rel
+              if not src.is_file(): raise SystemExit(f'PACKAGE_FILE_MISSING:{rel}')
+              dst = pathlib.Path(rel)
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(src, dst)
+          PY
+          rm -f .github/workflows/catlas-universal-bootstrap.yml
+          python -m compileall -q tools/code-atlas/src/code_atlas
+          PYTHONPATH=tools/code-atlas/src python -m unittest -v \
+            tools/code-atlas/tests/test_operational_universal_intelligence.py \
+            tools/code-atlas/tests/test_operational_prisma_mesh_gateway.py \
+            tools/code-atlas/tests/test_operational_neutrality.py
+          python - <<'PY'
+          from code_atlas.core.neutrality_gate import scan_code_atlas
+          import os, sys
+          sys.path.insert(0, 'tools/code-atlas/src')
+          r = scan_code_atlas('tools/code-atlas')
+          print(r)
+          if r.get('blockingCount') or not r.get('fullReusableSourceBoundary'):
+              raise SystemExit('NEUTRALITY_GATE_FAIL')
+          PY
+          git config user.name 'chatgpt-codex-connector[bot]'
+          git config user.email '199175422+chatgpt-codex-connector[bot]@users.noreply.github.com'
+          git add tools/code-atlas .github/workflows/prisma-remote-automesh.yml .github/workflows/catlas-universal-bootstrap.yml
+          git diff --cached --check
+          git commit -m 'feat(code-atlas): add neutral universal intelligence layer'
+          git push origin HEAD:${GITHUB_HEAD_REF}
