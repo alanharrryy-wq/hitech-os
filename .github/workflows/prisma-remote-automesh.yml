@@ -17,11 +17,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  code-atlas-phase0-v1:
+  authority-mesh:
     if: >-
       github.event.issue.pull_request != null &&
       (github.actor == 'chatgpt-codex-connector[bot]' || github.actor == 'alanharrryy-wq') &&
-      github.event.comment.body == '/prisma-automesh code-atlas-phase0-v1'
+      (
+        github.event.comment.body == '/prisma-automesh code-atlas-phase0-v1' ||
+        startsWith(github.event.comment.body, '/prisma-automesh task ')
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -46,71 +49,132 @@ jobs:
             tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
 
-      - name: Build exact Phase 0 task specification
+      - name: Validate request and build task specification
+        id: spec
         shell: bash
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
           python - <<'PY'
+          import base64
+          import hashlib
           import json
           import os
+          import re
           from pathlib import Path
 
-          tasks = [
+          comment = os.environ.get('COMMENT_BODY', '').strip()
+          exact = '/prisma-automesh code-atlas-phase0-v1'
+          prefix = '/prisma-automesh task '
+          allowed_surfaces = {'', 'governance', 'tablet', 'pc', 'mobile', 'chart_lab', 'shared_ui'}
+
+          phase0_tasks = [
               {
-                  "id": "capability-census",
-                  "surface": "governance",
-                  "task": "CODE_ATLAS_PHASE0_V1 capability census. Audit the current Code Atlas 50-capability Operational Evidence registry on main. Determine exact status, owner, source files, inputs, outputs, tests, evidence, heuristics, dependencies, blockers, doesNotProve, maturity and next gate for all 35 implemented_v1, 14 placeholder_v1 and 1 placeholder_blocked. Include Factory Ledger, operational manual, current authority artifacts and no-fake-green quality contracts. Read-only. No implementation.",
+                  'id': 'capability-census',
+                  'surface': 'governance',
+                  'task': 'CODE_ATLAS_PHASE0_V1 capability census. Audit the current Code Atlas 50-capability Operational Evidence registry on main. Determine exact status, owner, source files, inputs, outputs, tests, evidence, heuristics, dependencies, blockers, doesNotProve, maturity and next gate for all 35 implemented_v1, 14 placeholder_v1 and 1 placeholder_blocked. Include Factory Ledger, operational manual, current authority artifacts and no-fake-green quality contracts. Read-only. No implementation.',
               },
               {
-                  "id": "governance-quality",
-                  "surface": "governance",
-                  "task": "CODE_ATLAS_PHASE0_V1 governance and quality lane. Audit Authority Mesh, Factory Ledger, Code Atlas manifests/registries, quality contracts, gates, evidence packaging, rollback rules, neutrality/profile architecture, no-fake-green protections and current .governance authority state relevant to completing Code Atlas. Read-only. No implementation.",
+                  'id': 'governance-quality',
+                  'surface': 'governance',
+                  'task': 'CODE_ATLAS_PHASE0_V1 governance and quality lane. Audit Authority Mesh, Factory Ledger, Code Atlas manifests/registries, quality contracts, gates, evidence packaging, rollback rules, neutrality/profile architecture, no-fake-green protections and current .governance authority state relevant to completing Code Atlas. Read-only. No implementation.',
               },
               {
-                  "id": "data-sync-contracts",
-                  "surface": "",
-                  "task": "CODE_ATLAS_PHASE0_V1 data and sync lane. Audit database reality/glass, Prisma/schema sources, D1/SQL where present, sync/outbox, canonical projection, provenance and runtime-evidence sources. Resolve what contracts exist or are missing for tenant, business, client, license, device, store, terminal, cashier/user, sale, sale line, tender, outbox, sync, canonical projection, pc_scope and mobile_scope. Read-only. No database or Prisma mutation.",
+                  'id': 'data-sync-contracts',
+                  'surface': '',
+                  'task': 'CODE_ATLAS_PHASE0_V1 data and sync lane. Audit database reality/glass, Prisma/schema sources, D1/SQL where present, sync/outbox, canonical projection, provenance and runtime-evidence sources. Resolve what contracts exist or are missing for tenant, business, client, license, device, store, terminal, cashier/user, sale, sale line, tender, outbox, sync, canonical projection, pc_scope and mobile_scope. Read-only. No database or Prisma mutation.',
               },
               {
-                  "id": "tablet-surface",
-                  "surface": "tablet",
-                  "task": "CODE_ATLAS_PHASE0_V1 Tablet lane. Audit Code Atlas relationships to Tablet surface targets, UI map/app map, runtime evidence, owners, route/component bindings, evidence links and contracts needed by Operational Evidence Atlas. Read-only. Do not modify Tablet.",
+                  'id': 'tablet-surface',
+                  'surface': 'tablet',
+                  'task': 'CODE_ATLAS_PHASE0_V1 Tablet lane. Audit Code Atlas relationships to Tablet surface targets, UI map/app map, runtime evidence, owners, route/component bindings, evidence links and contracts needed by Operational Evidence Atlas. Read-only. Do not modify Tablet.',
               },
               {
-                  "id": "pc-surface",
-                  "surface": "pc",
-                  "task": "CODE_ATLAS_PHASE0_V1 PC lane. Audit Code Atlas relationships to PC surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify PC.",
+                  'id': 'pc-surface',
+                  'surface': 'pc',
+                  'task': 'CODE_ATLAS_PHASE0_V1 PC lane. Audit Code Atlas relationships to PC surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify PC.',
               },
               {
-                  "id": "mobile-surface",
-                  "surface": "mobile",
-                  "task": "CODE_ATLAS_PHASE0_V1 Mobile lane. Audit Code Atlas relationships to Mobile surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify Mobile.",
+                  'id': 'mobile-surface',
+                  'surface': 'mobile',
+                  'task': 'CODE_ATLAS_PHASE0_V1 Mobile lane. Audit Code Atlas relationships to Mobile surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify Mobile.',
               },
               {
-                  "id": "chart-lab",
-                  "surface": "chart_lab",
-                  "task": "CODE_ATLAS_PHASE0_V1 Chart Lab lane. Audit Code Atlas surface-target/UI-map dependencies, runtime evidence, visualization ownership and contracts relevant to the 50-capability completion. Read-only. Do not modify Chart Lab.",
+                  'id': 'chart-lab',
+                  'surface': 'chart_lab',
+                  'task': 'CODE_ATLAS_PHASE0_V1 Chart Lab lane. Audit Code Atlas surface-target/UI-map dependencies, runtime evidence, visualization ownership and contracts relevant to the 50-capability completion. Read-only. Do not modify Chart Lab.',
               },
               {
-                  "id": "shared-ui",
-                  "surface": "shared_ui",
-                  "task": "CODE_ATLAS_PHASE0_V1 Shared UI lane. Audit neutral/shared UI dependencies, surface adapters, bindings, runtime evidence and ownership relevant to Code Atlas investigator UI and query/detail capabilities. Read-only. Do not modify Shared UI.",
+                  'id': 'shared-ui',
+                  'surface': 'shared_ui',
+                  'task': 'CODE_ATLAS_PHASE0_V1 Shared UI lane. Audit neutral/shared UI dependencies, surface adapters, bindings, runtime evidence and ownership relevant to Code Atlas investigator UI and query/detail capabilities. Read-only. Do not modify Shared UI.',
               },
               {
-                  "id": "bridges-motors",
-                  "surface": "governance",
-                  "task": "CODE_ATLAS_PHASE0_V1 tooling lane. Audit AppBrain Workbench, AppBrain Batch Packager, Motors/Smart AllMesh, Evidence Ingestion, Legal Readiness, UI Bridge, Surface Target Atlas, Coverage, Important Files Gate and continuation/portable evidence tooling. Identify source-ready pieces, placeholders, coupling risks and next gates. Read-only. No runtime application.",
+                  'id': 'bridges-motors',
+                  'surface': 'governance',
+                  'task': 'CODE_ATLAS_PHASE0_V1 tooling lane. Audit AppBrain Workbench, AppBrain Batch Packager, Motors/Smart AllMesh, Evidence Ingestion, Legal Readiness, UI Bridge, Surface Target Atlas, Coverage, Important Files Gate and continuation/portable evidence tooling. Identify source-ready pieces, placeholders, coupling risks and next gates. Read-only. No runtime application.',
               },
               {
-                  "id": "runtime-web-control",
-                  "surface": "",
-                  "task": "CODE_ATLAS_PHASE0_V1 cross-surface runtime lane. Audit Web, Control Center, Cloud Command Center, support/resolver and other non-Tablet/PC/Mobile runtime evidence or scope sources that Code Atlas may consume. Identify owners, contracts, evidence links and unmapped risks without mutating any surface. Read-only.",
+                  'id': 'runtime-web-control',
+                  'surface': '',
+                  'task': 'CODE_ATLAS_PHASE0_V1 cross-surface runtime lane. Audit Web, Control Center, Cloud Command Center, support/resolver and other non-Tablet/PC/Mobile runtime evidence or scope sources that Code Atlas may consume. Identify owners, contracts, evidence links and unmapped risks without mutating any surface. Read-only.',
               },
           ]
 
-          path = Path(os.environ["RUNNER_TEMP"]) / "code-atlas-phase0-v1.tasks.json"
-          path.write_text(json.dumps({"tasks": tasks}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-          print(path)
+          if comment == exact:
+              payload = {'tasks': phase0_tasks, 'profile': 'code-atlas-phase0-v1'}
+          elif comment.startswith(prefix):
+              token = comment[len(prefix):].strip()
+              if not re.fullmatch(r'[A-Za-z0-9_-]{16,60000}', token):
+                  raise SystemExit('INVALID_AUTOMESH_PAYLOAD_ENCODING')
+              padding = '=' * (-len(token) % 4)
+              try:
+                  decoded = base64.urlsafe_b64decode(token + padding)
+                  payload = json.loads(decoded.decode('utf-8'))
+              except Exception as exc:
+                  raise SystemExit(f'INVALID_AUTOMESH_PAYLOAD:{type(exc).__name__}')
+              if not isinstance(payload, dict) or set(payload) - {'tasks', 'requestId'}:
+                  raise SystemExit('INVALID_AUTOMESH_PAYLOAD_SCHEMA')
+          else:
+              raise SystemExit('UNSUPPORTED_AUTOMESH_COMMAND')
+
+          tasks = payload.get('tasks')
+          if not isinstance(tasks, list) or not (2 <= len(tasks) <= 12):
+              raise SystemExit('AUTOMESH_TASK_COUNT_MUST_BE_2_TO_12')
+
+          seen = set()
+          normalized = []
+          total_chars = 0
+          for index, item in enumerate(tasks):
+              if not isinstance(item, dict) or set(item) - {'id', 'surface', 'task'}:
+                  raise SystemExit(f'INVALID_TASK_SCHEMA:{index}')
+              task_id = str(item.get('id', '')).strip()
+              surface = str(item.get('surface', '')).strip()
+              task = str(item.get('task', '')).strip()
+              if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,62}', task_id):
+                  raise SystemExit(f'INVALID_TASK_ID:{index}')
+              if task_id in seen:
+                  raise SystemExit(f'DUPLICATE_TASK_ID:{task_id}')
+              seen.add(task_id)
+              if surface not in allowed_surfaces:
+                  raise SystemExit(f'INVALID_SURFACE:{task_id}:{surface}')
+              if not (20 <= len(task) <= 6000):
+                  raise SystemExit(f'INVALID_TASK_LENGTH:{task_id}')
+              total_chars += len(task)
+              if total_chars > 36000:
+                  raise SystemExit('AUTOMESH_TOTAL_TASK_TEXT_TOO_LARGE')
+              normalized.append({'id': task_id, 'surface': surface, 'task': task})
+
+          canonical = json.dumps({'tasks': normalized}, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+          request_id = hashlib.sha256(canonical).hexdigest()[:16]
+          spec_path = Path(os.environ['RUNNER_TEMP']) / 'remote-automesh.tasks.json'
+          spec_path.write_text(json.dumps({'tasks': normalized}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as fh:
+              fh.write(f'request_id={request_id}\n')
+          print(f'AUTOMESH_REQUEST_ID={request_id}')
+          print(f'AUTOMESH_TASKS={len(normalized)}')
+          print('AUTOMESH_REQUEST_VALIDATED=true')
           PY
 
       - name: Run task-exact parallel Authority Mesh
@@ -123,7 +187,7 @@ jobs:
             --repo "$GITHUB_WORKSPACE" \
             --out-root "$RUNNER_TEMP/prisma-automesh-out" \
             --budget-root "$RUNNER_TEMP/prisma-automesh-budget" \
-            --task-spec "$RUNNER_TEMP/code-atlas-phase0-v1.tasks.json" \
+            --task-spec "$RUNNER_TEMP/remote-automesh.tasks.json" \
             --parallel 6 \
             --workers 18 \
             --shards 54 \
@@ -136,7 +200,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p remote-automesh-artifacts
-          cp "$RUNNER_TEMP/code-atlas-phase0-v1.tasks.json" remote-automesh-artifacts/
+          if [ -f "$RUNNER_TEMP/remote-automesh.tasks.json" ]; then
+            cp "$RUNNER_TEMP/remote-automesh.tasks.json" remote-automesh-artifacts/
+          fi
           if [ -d "$RUNNER_TEMP/prisma-automesh-out" ]; then
             find "$RUNNER_TEMP/prisma-automesh-out" -maxdepth 1 -type f \
               \( -name '*_result.zip' -o -name '*_fail.zip' \) \
@@ -148,7 +214,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: code-atlas-phase0-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          name: prisma-automesh-${{ steps.spec.outputs.request_id }}-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: error
           retention-days: 14
           path: remote-automesh-artifacts/**
