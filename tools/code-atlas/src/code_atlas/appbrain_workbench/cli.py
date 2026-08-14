@@ -1,16 +1,27 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 from .runner import run_self_test, run_workbench
 
 
+def _default_out() -> Path:
+    raw = os.environ.get("CODE_ATLAS_OUTPUT_ROOT")
+    return Path(raw).expanduser() if raw else Path.cwd() / "code-atlas-out"
+
+
+def _default_repo() -> Path:
+    raw = os.environ.get("CODE_ATLAS_PROJECT_ROOT")
+    return Path(raw).expanduser() if raw else Path.cwd()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="code_atlas.appbrain_workbench", description="Code Atlas AppBrain Workbench importer")
-    parser.add_argument("--source", default=None, help="Path to appbrain1 result.zip. If omitted, the latest appbrain1 result in F:\\descargasf is used.")
-    parser.add_argument("--out", default=r"F:\descargasf", help="Output root for generated workbench ZIP.")
-    parser.add_argument("--repo", default=r"F:\repos\hitech-os", help="Repository root used for reports only.")
+    parser.add_argument("--source", default=None, help="Path to an AppBrain result ZIP. If omitted, the latest compatible result under --out is used.")
+    parser.add_argument("--out", default=str(_default_out()), help="Output root for generated workbench ZIP.")
+    parser.add_argument("--repo", default=str(_default_repo()), help="Repository root used for reports only.")
     parser.add_argument("--label", default="appbrain-workbench", help="Output ZIP label.")
     parser.add_argument("--output-zip", default=None, help="Optional exact output ZIP path, mostly for smoke tests.")
     parser.add_argument("--self-test", action="store_true", help="Run an internal synthetic self-test.")
