@@ -1,8 +1,8 @@
-"""Fail-closed neutrality gate for the reusable Code Atlas execution path.
+"""Fail-closed neutrality gate for reusable Code Atlas source.
 
-Product-specific values are allowed only in explicitly declared profile/adapter files.
-The reusable path must not contain machine, repository, product, fixed-port or fixed-
-surface assumptions.
+Every reusable module under the contract's neutral roots must be machine-neutral,
+repository-neutral and product-neutral. Product compatibility is permitted only in
+explicitly named profile/adapter boundaries and may never be selected implicitly.
 """
 from __future__ import annotations
 
@@ -14,19 +14,16 @@ from typing import Any
 TEXT_SUFFIXES = {".py", ".json", ".jsonc", ".md", ".txt", ".csv", ".ts", ".tsx", ".js", ".mjs", ".mts", ".html", ".css", ".ps1", ".yaml", ".yml", ".toml"}
 EXCLUDED_PARTS = {"node_modules", ".git", "__pycache__", ".next", "dist", "build", "coverage", ".pytest_cache"}
 
-# Assemble known historical literals from fragments so this gate does not self-trigger.
+# Assemble historical product literals from fragments so this gate does not
+# accidentally match its own source while still detecting the real values.
 _PRODUCT_REPO = "hitech" + "-os"
 _PRODUCT_APP = "terminal" + "-de-venta-system"
 _PRODUCT_NAME = "PRI" + "SMA"
 _PRODUCT_DOMAIN = "app." + "hitechrts" + ".com"
-_LOCAL_OUTPUT = "descargas" + "f"
-_LOCAL_CTX = "PRI" + "SMA_CTX"
-_LOCAL_TRASH = "Trash" + "-old"
 
 PATTERNS: dict[str, re.Pattern[str]] = {
-    "WINDOWS_ABSOLUTE_WORK_ROOT": re.compile(
-        rf"(?i)[A-Za-z]:(?:[\\/])+(?:Users|repos|{re.escape(_LOCAL_OUTPUT)}|{re.escape(_LOCAL_CTX)}|{re.escape(_LOCAL_TRASH)})(?:[\\/])+"
-    ),
+    "WINDOWS_ABSOLUTE_PATH": re.compile(r"(?i)(?<![A-Za-z0-9_])[A-Za-z]:(?:[\\/])+[^\s'\"`]+"),
+    "POSIX_USER_HOME_PATH": re.compile(r"(?i)(?:['\"`])/(?:home|Users|mnt)/[^\s'\"`]+"),
     "PRODUCT_REPOSITORY": re.compile(re.escape(_PRODUCT_REPO), re.I),
     "PRODUCT_APP_PATH": re.compile(re.escape(_PRODUCT_APP), re.I),
     "PRODUCT_DOMAIN": re.compile(re.escape(_PRODUCT_DOMAIN), re.I),
@@ -51,7 +48,8 @@ def _load_contract(root: Path, contract_path: str | Path | None = None) -> dict[
 
 def _matches(rel: str, prefixes: list[str], files: list[str]) -> bool:
     rel = rel.replace("\\", "/")
-    if rel in {item.replace("\\", "/") for item in files}:
+    normalized_files = {item.replace("\\", "/") for item in files}
+    if rel in normalized_files:
         return True
     return any(rel.startswith(prefix.replace("\\", "/").rstrip("/") + "/") for prefix in prefixes)
 
@@ -75,6 +73,8 @@ def scan_code_atlas(root: str | Path, contract_path: str | Path | None = None) -
 
     findings: list[dict[str, Any]] = []
     scanned = 0
+    adapter_scanned = 0
+    neutral_scanned = 0
     for path in _iter_text_files(root):
         rel = path.relative_to(root).as_posix()
         is_neutral = _matches(rel, neutral_prefixes, neutral_files)
@@ -82,9 +82,11 @@ def scan_code_atlas(root: str | Path, contract_path: str | Path | None = None) -
         if not is_neutral and not is_adapter:
             continue
         scanned += 1
-        text = path.read_text(encoding="utf-8", errors="replace")
         if is_adapter:
+            adapter_scanned += 1
             continue
+        neutral_scanned += 1
+        text = path.read_text(encoding="utf-8", errors="replace")
         for line_no, line in enumerate(text.splitlines(), start=1):
             for name, rx in PATTERNS.items():
                 if rx.search(line):
@@ -98,24 +100,29 @@ def scan_code_atlas(root: str | Path, contract_path: str | Path | None = None) -
 
     status = "PASS_CODE_ATLAS_TOTAL_NEUTRALITY" if not findings else "BLOCKED_CODE_ATLAS_NEUTRALITY_VIOLATION"
     return {
-        "schemaVersion": "code_atlas_neutrality_gate.v2",
+        "schemaVersion": "code_atlas_neutrality_gate.v3",
         "status": status,
         "scannedFileCount": scanned,
+        "neutralScannedFileCount": neutral_scanned,
+        "explicitAdapterFileCount": adapter_scanned,
         "blockingCount": len(findings),
         "findings": findings,
+        "fullReusableSourceBoundary": "src/code_atlas" in neutral_prefixes,
         "adapterBoundaryExplicit": True,
         "productionCertified": False,
         "doesNotProve": [
             "Production readiness.",
             "Correctness for every external repository stack.",
-            "Legal or privacy compliance.",
+            "Legal or privacy compliance."
         ],
     }
 
 
 def assert_neutral(root: str | Path, contract_path: str | Path | None = None) -> dict[str, Any]:
     result = scan_code_atlas(root, contract_path)
+    if not result.get("fullReusableSourceBoundary"):
+        raise RuntimeError("CODE_ATLAS_NEUTRALITY_BLOCKED:FULL_REUSABLE_SOURCE_BOUNDARY_NOT_SCANNED")
     if result["blockingCount"]:
-        summary = ", ".join(f"{row['file']}:{row['line']}:{row['pattern']}" for row in result["findings"][:8])
+        summary = ", ".join(f"{row['file']}:{row['line']}:{row['pattern']}" for row in result["findings"][:12])
         raise RuntimeError(f"CODE_ATLAS_NEUTRALITY_BLOCKED:{summary}")
     return result
