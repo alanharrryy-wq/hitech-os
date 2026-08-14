@@ -69,10 +69,9 @@ def _iter_text_files(root: Path):
 
 def _module_from_path(rel: str) -> str | None:
     normalized = rel.replace("\\", "/")
-    marker = "src/"
-    if not normalized.startswith(marker) or not normalized.endswith(".py"):
+    if not normalized.startswith("src/") or not normalized.endswith(".py"):
         return None
-    module = normalized[len(marker):-3].replace("/", ".")
+    module = normalized[len("src/"):-3].replace("/", ".")
     if module.endswith(".__init__"):
         module = module[:-9]
     return module
@@ -126,6 +125,18 @@ def _is_adapter_import(module: str, adapter_modules: set[str]) -> bool:
     return any(module == adapter or module.startswith(adapter + ".") for adapter in adapter_modules)
 
 
+def _semantic_patterns(contract: dict[str, Any]) -> list[tuple[str, re.Pattern[str]]]:
+    values = contract.get("forbiddenNeutralLiterals") or []
+    if not isinstance(values, list):
+        raise ValueError("forbiddenNeutralLiterals must be a list")
+    out: list[tuple[str, re.Pattern[str]]] = []
+    for index, value in enumerate(values):
+        literal = str(value or "").strip()
+        if literal:
+            out.append((f"FORBIDDEN_NEUTRAL_LITERAL_{index + 1}", re.compile(re.escape(literal), re.I)))
+    return out
+
+
 def scan_code_atlas(root: str | Path, contract_path: str | Path | None = None) -> dict[str, Any]:
     root = Path(root).resolve()
     contract = _load_contract(root, contract_path)
@@ -134,12 +145,14 @@ def scan_code_atlas(root: str | Path, contract_path: str | Path | None = None) -
     adapter_prefixes = list(contract.get("adapterRoots") or [])
     adapter_files = list(contract.get("adapterFiles") or [])
     adapter_modules = _adapter_modules(adapter_prefixes, adapter_files)
+    semantic_patterns = _semantic_patterns(contract)
 
     findings: list[dict[str, Any]] = []
     scanned = 0
     adapter_scanned = 0
     neutral_scanned = 0
     implicit_adapter_imports = 0
+    semantic_blockers = 0
     for path in _iter_text_files(root):
         rel = path.relative_to(root).as_posix()
         is_neutral = _matches(rel, neutral_prefixes, neutral_files)
@@ -155,44 +168,34 @@ def scan_code_atlas(root: str | Path, contract_path: str | Path | None = None) -
         for line_no, line in enumerate(text.splitlines(), start=1):
             for name, rx in PATTERNS.items():
                 if rx.search(line):
-                    findings.append({
-                        "file": rel,
-                        "line": line_no,
-                        "pattern": name,
-                        "classification": "BLOCKING_NEUTRALITY_VIOLATION",
-                        "excerpt": line.strip()[:220],
-                    })
+                    findings.append({"file": rel, "line": line_no, "pattern": name, "classification": "BLOCKING_NEUTRALITY_VIOLATION", "excerpt": line.strip()[:220]})
+            for name, rx in semantic_patterns:
+                if rx.search(line):
+                    semantic_blockers += 1
+                    findings.append({"file": rel, "line": line_no, "pattern": name, "classification": "BLOCKING_SEMANTIC_NEUTRALITY_VIOLATION", "excerpt": line.strip()[:220]})
         if path.suffix.lower() == ".py":
             for line_no, module in _resolved_imports(rel, text):
                 if _is_adapter_import(module, adapter_modules):
                     implicit_adapter_imports += 1
-                    findings.append({
-                        "file": rel,
-                        "line": line_no,
-                        "pattern": "IMPLICIT_ADAPTER_IMPORT",
-                        "classification": "BLOCKING_NEUTRALITY_VIOLATION",
-                        "excerpt": module,
-                    })
+                    findings.append({"file": rel, "line": line_no, "pattern": "IMPLICIT_ADAPTER_IMPORT", "classification": "BLOCKING_NEUTRALITY_VIOLATION", "excerpt": module})
 
     status = "PASS_CODE_ATLAS_TOTAL_NEUTRALITY" if not findings else "BLOCKED_CODE_ATLAS_NEUTRALITY_VIOLATION"
     return {
-        "schemaVersion": "code_atlas_neutrality_gate.v5",
+        "schemaVersion": "code_atlas_neutrality_gate.v6",
         "status": status,
         "scannedFileCount": scanned,
         "neutralScannedFileCount": neutral_scanned,
         "explicitAdapterFileCount": adapter_scanned,
         "implicitAdapterImportCount": implicit_adapter_imports,
+        "semanticNeutralityBlockerCount": semantic_blockers,
+        "forbiddenNeutralLiteralCount": len(semantic_patterns),
         "blockingCount": len(findings),
         "findings": findings,
         "fullReusableSourceBoundary": "src/code_atlas" in neutral_prefixes,
         "adapterBoundaryExplicit": True,
         "prismaOrmTerminologyAllowed": True,
         "productionCertified": False,
-        "doesNotProve": [
-            "Production readiness.",
-            "Correctness for every external repository stack.",
-            "Legal or privacy compliance."
-        ],
+        "doesNotProve": ["Production readiness.", "Correctness for every external repository stack.", "Legal or privacy compliance."],
     }
 
 
