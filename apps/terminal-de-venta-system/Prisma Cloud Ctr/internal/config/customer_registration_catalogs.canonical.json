@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "effectiveFrom": "2026-08-14",
+  "owner": "Prisma Cloud Center / Customer Registration",
+  "purpose": "Single machine-readable authority for customer-registration and local operator workflow catalogs. License plans remain owned by shared/licensing/plan-catalog.canonical.json.",
+  "measurementPolicy": {
+    "manualFacts": ["vertical", "subvertical", "business_size", "operation_mode", "acquisition_channel", "country", "state_mx", "city", "zone", "contact_role"],
+    "derivedFacts": ["relationship_stage", "recommended_plan", "recommended_device_type", "commercial_review_required"],
+    "neverInferForSeedCustomer": ["vertical", "subvertical", "business_size", "operation_mode", "acquisition_channel", "country", "state_mx", "city", "zone", "contact_role"],
+    "otherPolicy": "Other is accepted only with manual text and is automatically queued for catalog review."
+  },
+  "retiredCatalogs": ["city_zone"],
+  "catalogs": {
+    "vertical": {"label":"Giro / vertical","allowOther":true,"requiredForCustomer":true,"options":[
+      {"code":"retail","label":"Retail / tienda general","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","inventory.local.decrement","ticket.view"]}},
+      {"code":"abarrotes","label":"Abarrotes / minisuper","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","inventory.local.decrement","ticket.view","shift.open"]}},
+      {"code":"restaurant","label":"Restaurante / food service","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","ticket.view","shift.open"]}},
+      {"code":"bar","label":"Bar","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","ticket.view","shift.open"]}},
+      {"code":"pharmacy","label":"Farmacia","metadata":{"suggestedPlan":"TABLET_PC_MANAGED","modules":["pos.open","inventory.local.adjust","audit.view"]}},
+      {"code":"hardware","label":"Ferretería","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","inventory.local.adjust","export.advanced"]}},
+      {"code":"fashion","label":"Moda / boutique","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","inventory.local.decrement","ticket.view"]}},
+      {"code":"butcher","label":"Carnicería","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","inventory.local.adjust","ticket.view"]}},
+      {"code":"tortilla","label":"Tortillería","metadata":{"suggestedPlan":"TABLET_SOLO","modules":["pos.open","ticket.view","report.today.view"]}},
+      {"code":"services","label":"Servicios","metadata":{"suggestedPlan":"TABLET_PRO","modules":["pos.open","ticket.view","export.advanced"]}},
+      {"code":"other","label":"Otro","metadata":{"requiresManualText":true,"suggestedPlan":"TABLET_PRO"}}
+    ]},
+    "subvertical": {"label":"Subvertical","allowOther":true,"requiredForCustomer":false,"options":[
+      {"code":"minisuper","label":"Minisuper","metadata":{"parentVerticals":["abarrotes","retail"]}},
+      {"code":"specialty_store","label":"Tienda especializada","metadata":{"parentVerticals":["retail","fashion","hardware","pharmacy"]}},
+      {"code":"restaurant_tables","label":"Restaurante con mesas","metadata":{"parentVerticals":["restaurant","bar"]}},
+      {"code":"quick_service","label":"Comida rápida","metadata":{"parentVerticals":["restaurant"]}},
+      {"code":"coffee_shop","label":"Cafetería","metadata":{"parentVerticals":["restaurant","bar"]}},
+      {"code":"workshop","label":"Taller","metadata":{"parentVerticals":["services"]}},
+      {"code":"clinic","label":"Consultorio","metadata":{"parentVerticals":["services"]}},
+      {"code":"rental","label":"Renta / servicios","metadata":{"parentVerticals":["services"]}},
+      {"code":"other","label":"Otro","metadata":{"requiresManualText":true}}
+    ]},
+    "business_size": {"label":"Tamaño operativo","allowOther":false,"requiredForCustomer":true,"options":[
+      {"code":"small","label":"Pequeño · una sucursal","metadata":{"minimumPlan":"TABLET_SOLO","commercialReviewRequired":false}},
+      {"code":"medium","label":"Mediano · una sucursal / varias terminales","metadata":{"minimumPlan":"TABLET_PRO","commercialReviewRequired":false}},
+      {"code":"multi_branch","label":"Multi-sucursal","metadata":{"minimumPlan":"TABLET_PC_MANAGED","commercialReviewRequired":true,"reason":"El catálogo de licensing actual limita maxBranches/maxStores; requiere revisión comercial antes de prometer multi-sucursal."}},
+      {"code":"enterprise","label":"Enterprise / operación compleja","metadata":{"minimumPlan":"TABLET_PC_MANAGED","commercialReviewRequired":true,"reason":"Requiere revisión comercial y de límites canónicos antes de contratar."}}
+    ]},
+    "operation_mode": {"label":"Tipo de operación","allowOther":true,"requiredForCustomer":true,"options":[
+      {"code":"counter","label":"Mostrador","metadata":{"minimumPlan":"TABLET_SOLO","suggestedDeviceType":"tablet_pos"}},
+      {"code":"tables","label":"Mesas / atención en piso","metadata":{"minimumPlan":"TABLET_PRO","suggestedDeviceType":"tablet_pos"}},
+      {"code":"inventory","label":"Inventario intensivo","metadata":{"minimumPlan":"TABLET_PRO","suggestedDeviceType":"tablet_pos"}},
+      {"code":"services","label":"Servicios / citas","metadata":{"minimumPlan":"TABLET_PRO","suggestedDeviceType":"tablet_pos"}},
+      {"code":"mixed","label":"Mixto","metadata":{"minimumPlan":"TABLET_PRO","suggestedDeviceType":"tablet_pos"}},
+      {"code":"other","label":"Otro","metadata":{"requiresManualText":true,"minimumPlan":"TABLET_PRO","suggestedDeviceType":"tablet_pos"}}
+    ]},
+    "acquisition_channel": {"label":"Canal de adquisición","allowOther":true,"requiredForCustomer":true,"options":[
+      {"code":"referral","label":"Referido","metadata":{}},{"code":"outbound","label":"Prospección directa / outbound","metadata":{}},{"code":"inbound_web","label":"Web / inbound","metadata":{}},{"code":"partner","label":"Socio / alianza","metadata":{}},{"code":"event","label":"Evento / demostración","metadata":{}},{"code":"marketplace","label":"Marketplace / directorio","metadata":{}},{"code":"existing_network","label":"Red / relación existente","metadata":{}},{"code":"unknown","label":"No registrado todavía","metadata":{"dataQuality":"incomplete"}},{"code":"other","label":"Otro","metadata":{"requiresManualText":true}}
+    ]},
+    "relationship_stage": {"label":"Etapa comercial","allowOther":false,"derived":true,"options":[
+      {"code":"lead","label":"Lead","metadata":{}},{"code":"qualified","label":"Calificado","metadata":{}},{"code":"pilot","label":"Piloto","metadata":{}},{"code":"contracted","label":"Contratado","metadata":{}},{"code":"onboarding","label":"En onboarding","metadata":{}},{"code":"active","label":"Activo","metadata":{}},{"code":"paused","label":"Pausado","metadata":{}},{"code":"churned","label":"Baja / churn","metadata":{}}
+    ]},
+    "contact_role": {"label":"Rol del contacto","allowOther":true,"requiredForCustomer":false,"options":[
+      {"code":"owner","label":"Propietario / socio","metadata":{}},{"code":"manager","label":"Gerencia / encargado","metadata":{}},{"code":"operations","label":"Operaciones","metadata":{}},{"code":"accounting","label":"Contabilidad / fiscal","metadata":{}},{"code":"it","label":"TI / sistemas","metadata":{}},{"code":"admin","label":"Administración","metadata":{}},{"code":"other","label":"Otro","metadata":{"requiresManualText":true}}
+    ]},
+    "country": {"label":"País","allowOther":true,"requiredForCustomer":false,"options":[{"code":"MX","label":"México","metadata":{"stateCatalog":"state_mx"}},{"code":"other","label":"Otro país","metadata":{"requiresManualText":true}}]},
+    "state_mx": {"label":"Estado (México)","allowOther":false,"requiredForCustomer":false,"options":[
+      {"code":"aguascalientes","label":"Aguascalientes","metadata":{}},{"code":"baja_california","label":"Baja California","metadata":{}},{"code":"baja_california_sur","label":"Baja California Sur","metadata":{}},{"code":"campeche","label":"Campeche","metadata":{}},{"code":"chiapas","label":"Chiapas","metadata":{}},{"code":"chihuahua","label":"Chihuahua","metadata":{}},{"code":"ciudad_de_mexico","label":"Ciudad de México","metadata":{}},{"code":"coahuila","label":"Coahuila","metadata":{}},{"code":"colima","label":"Colima","metadata":{}},{"code":"durango","label":"Durango","metadata":{}},{"code":"estado_de_mexico","label":"Estado de México","metadata":{}},{"code":"guanajuato","label":"Guanajuato","metadata":{}},{"code":"guerrero","label":"Guerrero","metadata":{}},{"code":"hidalgo","label":"Hidalgo","metadata":{}},{"code":"jalisco","label":"Jalisco","metadata":{}},{"code":"michoacan","label":"Michoacán","metadata":{}},{"code":"morelos","label":"Morelos","metadata":{}},{"code":"nayarit","label":"Nayarit","metadata":{}},{"code":"nuevo_leon","label":"Nuevo León","metadata":{}},{"code":"oaxaca","label":"Oaxaca","metadata":{}},{"code":"puebla","label":"Puebla","metadata":{}},{"code":"queretaro","label":"Querétaro","metadata":{}},{"code":"quintana_roo","label":"Quintana Roo","metadata":{}},{"code":"san_luis_potosi","label":"San Luis Potosí","metadata":{}},{"code":"sinaloa","label":"Sinaloa","metadata":{}},{"code":"sonora","label":"Sonora","metadata":{}},{"code":"tabasco","label":"Tabasco","metadata":{}},{"code":"tamaulipas","label":"Tamaulipas","metadata":{}},{"code":"tlaxcala","label":"Tlaxcala","metadata":{}},{"code":"veracruz","label":"Veracruz","metadata":{}},{"code":"yucatan","label":"Yucatán","metadata":{}},{"code":"zacatecas","label":"Zacatecas","metadata":{}}
+    ]},
+    "device_type": {"label":"Tipo de dispositivo","allowOther":true,"options":[
+      {"code":"tablet_pos","label":"Tablet POS","metadata":{"defaultRole":"tablet_pos","prefix":"TAB"}},{"code":"pc_register","label":"Caja PC","metadata":{"defaultRole":"pc_register","prefix":"PC"}},{"code":"mobile","label":"Terminal móvil","metadata":{"defaultRole":"mobile_supervisor","prefix":"MOB"}},{"code":"backoffice","label":"Backoffice","metadata":{"defaultRole":"pc_backoffice","prefix":"BO"}},{"code":"kiosk","label":"Kiosko","metadata":{"defaultRole":"kiosk","prefix":"KSK"}},{"code":"peripheral","label":"Periférico","metadata":{"defaultRole":"peripheral","prefix":"PER"}},{"code":"other","label":"Otro","metadata":{"requiresManualText":true,"defaultRole":"other","prefix":"OTH"}}
+    ]},
+    "device_role": {"label":"Rol del dispositivo","allowOther":false,"options":[
+      {"code":"tablet_pos","label":"Tablet POS / caja principal","metadata":{"deviceTypes":["tablet_pos"]}},{"code":"pc_register","label":"Caja PC","metadata":{"deviceTypes":["pc_register"]}},{"code":"pc_backoffice","label":"PC administrativo / backoffice","metadata":{"deviceTypes":["pc_register","backoffice"]}},{"code":"mobile_supervisor","label":"Mobile supervisor","metadata":{"deviceTypes":["mobile"]}},{"code":"kiosk","label":"Kiosko","metadata":{"deviceTypes":["kiosk"]}},{"code":"peripheral","label":"Periférico","metadata":{"deviceTypes":["peripheral"]}},{"code":"other","label":"Otro / revisar","metadata":{"deviceTypes":["other"]}}
+    ]},
+    "deactivation_target_kind": {"label":"Qué se dará de baja","allowOther":false,"options":[{"code":"client","label":"Cliente","metadata":{"targetCatalog":"client"}},{"code":"license","label":"Licencia","metadata":{"targetCatalog":"license_assignment"}},{"code":"device","label":"Dispositivo","metadata":{"targetCatalog":"managed_device"}}]},
+    "deactivation_reason": {"label":"Motivo de baja","allowOther":true,"options":[
+      {"code":"cancellation","label":"Cancelación solicitada","metadata":{}},{"code":"non_payment","label":"Falta de pago","metadata":{}},{"code":"demo_ended","label":"Fin de piloto","metadata":{}},{"code":"device_replacement","label":"Cambio de dispositivo","metadata":{}},{"code":"duplicate_client","label":"Registro duplicado","metadata":{}},{"code":"migration","label":"Migración","metadata":{}},{"code":"fraud_abuse","label":"Fraude / abuso","metadata":{}},{"code":"support","label":"Soporte técnico","metadata":{}},{"code":"other","label":"Otro","metadata":{"requiresManualText":true}}
+    ]}
+  }
+}
