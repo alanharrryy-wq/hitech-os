@@ -64,65 +64,68 @@ jobs:
           zpath = pathlib.Path('/tmp/catlas-transfer.zip')
           zpath.write_bytes(raw)
           extract = pathlib.Path('/tmp/catlas-transfer')
-          if extract.exists(): shutil.rmtree(extract)
+          if extract.exists():
+              shutil.rmtree(extract)
           extract.mkdir()
           with zipfile.ZipFile(zpath) as z:
               bad = z.testzip()
-              if bad: raise SystemExit(f'ZIP_CRC_FAIL:{bad}')
+              if bad:
+                  raise SystemExit(f'ZIP_CRC_FAIL:{bad}')
               z.extractall(extract)
           expected_files = [
-            'tools/code-atlas/src/code_atlas/intelligence/__init__.py',
-            'tools/code-atlas/src/code_atlas/intelligence/common.py',
-            'tools/code-atlas/src/code_atlas/intelligence/repository.py',
-            'tools/code-atlas/src/code_atlas/intelligence/authority.py',
-            'tools/code-atlas/src/code_atlas/intelligence/graphs.py',
-            'tools/code-atlas/src/code_atlas/intelligence/snapshot.py',
-            'tools/code-atlas/src/code_atlas/intelligence/index.py',
-            'tools/code-atlas/src/code_atlas/intelligence/engine.py',
-            'tools/code-atlas/src/code_atlas/intelligence/cli.py',
-            'tools/code-atlas/src/code_atlas/cli/main.py',
-            'tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py',
-            'tools/code-atlas/CODE_ATLAS_NEUTRALITY_CONTRACT.json',
-            'tools/code-atlas/tests/test_operational_universal_intelligence.py',
-            'tools/code-atlas/tests/test_operational_prisma_mesh_gateway.py',
-            '.github/workflows/prisma-remote-automesh.yml',
+              'tools/code-atlas/src/code_atlas/intelligence/__init__.py',
+              'tools/code-atlas/src/code_atlas/intelligence/common.py',
+              'tools/code-atlas/src/code_atlas/intelligence/repository.py',
+              'tools/code-atlas/src/code_atlas/intelligence/authority.py',
+              'tools/code-atlas/src/code_atlas/intelligence/graphs.py',
+              'tools/code-atlas/src/code_atlas/intelligence/snapshot.py',
+              'tools/code-atlas/src/code_atlas/intelligence/index.py',
+              'tools/code-atlas/src/code_atlas/intelligence/engine.py',
+              'tools/code-atlas/src/code_atlas/intelligence/cli.py',
+              'tools/code-atlas/src/code_atlas/cli/main.py',
+              'tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py',
+              'tools/code-atlas/CODE_ATLAS_NEUTRALITY_CONTRACT.json',
+              'tools/code-atlas/tests/test_operational_universal_intelligence.py',
+              'tools/code-atlas/tests/test_operational_prisma_mesh_gateway.py',
+              '.github/workflows/prisma-remote-automesh.yml',
           ]
           for rel in expected_files:
               src = extract / rel
-              if not src.is_file(): raise SystemExit(f'PACKAGE_FILE_MISSING:{rel}')
+              if not src.is_file():
+                  raise SystemExit(f'PACKAGE_FILE_MISSING:{rel}')
               dst = pathlib.Path(rel)
               dst.parent.mkdir(parents=True, exist_ok=True)
               shutil.copy2(src, dst)
 
-          # Keep the motors package importable in headless environments. GUI execution
-          # remains available, but PySide6 is imported only when MotorProcessRunner is requested.
-          pathlib.Path('tools/code-atlas/src/code_atlas/motors/__init__.py').write_text('''# CODE_ATLAS_MOTOR_HUB_MODULE_V01
-"""Motor Hub package for Code Atlas.
-
-External execution stays behind an explicit lazy boundary so headless tooling can
-import motor adapters without requiring the optional GUI runtime.
-"""
-
-from .specs import MotorSpec
-from .registry import build_motor_registry, grouped_motor_registry
-from .results import find_latest_fail_zip, find_latest_result_zip
-
-__all__ = [
-    "MotorSpec",
-    "MotorProcessRunner",
-    "build_motor_registry",
-    "grouped_motor_registry",
-    "find_latest_result_zip",
-    "find_latest_fail_zip",
-]
-
-
-def __getattr__(name: str):
-    if name == "MotorProcessRunner":
-        from .runner import MotorProcessRunner
-        return MotorProcessRunner
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-''', encoding='utf-8')
+          lazy_source = "\n".join([
+              "# CODE_ATLAS_MOTOR_HUB_MODULE_V01",
+              '"""Motor Hub package for Code Atlas.',
+              "",
+              "External execution stays behind an explicit lazy boundary so headless tooling can",
+              "import motor adapters without requiring the optional GUI runtime.",
+              '"""',
+              "",
+              "from .specs import MotorSpec",
+              "from .registry import build_motor_registry, grouped_motor_registry",
+              "from .results import find_latest_fail_zip, find_latest_result_zip",
+              "",
+              "__all__ = [",
+              '    "MotorSpec",',
+              '    "MotorProcessRunner",',
+              '    "build_motor_registry",',
+              '    "grouped_motor_registry",',
+              '    "find_latest_result_zip",',
+              '    "find_latest_fail_zip",',
+              "]",
+              "",
+              "",
+              "def __getattr__(name: str):",
+              '    if name == "MotorProcessRunner":',
+              "        from .runner import MotorProcessRunner",
+              "        return MotorProcessRunner",
+              '    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")',
+          ]) + "\n"
+          pathlib.Path('tools/code-atlas/src/code_atlas/motors/__init__.py').write_text(lazy_source, encoding='utf-8')
           PY
           rm -f .github/workflows/catlas-universal-bootstrap.yml
           python -m compileall -q tools/code-atlas/src/code_atlas
