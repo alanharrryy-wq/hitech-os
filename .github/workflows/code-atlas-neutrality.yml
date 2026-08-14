@@ -1,0 +1,80 @@
+name: Code Atlas Neutrality
+
+on:
+  pull_request:
+    paths:
+      - "tools/code-atlas/src/code_atlas/core/**"
+      - "tools/code-atlas/src/code_atlas/operational/**"
+      - "tools/code-atlas/src/code_atlas/surface_target_atlas/**"
+      - "tools/code-atlas/src/code_atlas/legal_readiness/**"
+      - "tools/code-atlas/src/code_atlas/coverage/**"
+      - "tools/code-atlas/src/code_atlas/db_glass/**"
+      - "tools/code-atlas/src/code_atlas/manifest/**"
+      - "tools/code-atlas/src/code_atlas/cli/**"
+      - "tools/code-atlas/profiles/**"
+      - "tools/code-atlas/tests/test_code_atlas_neutrality.py"
+      - ".github/workflows/code-atlas-neutrality.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "tools/code-atlas/src/code_atlas/core/**"
+      - "tools/code-atlas/src/code_atlas/operational/**"
+      - "tools/code-atlas/src/code_atlas/surface_target_atlas/**"
+      - "tools/code-atlas/src/code_atlas/legal_readiness/**"
+      - "tools/code-atlas/src/code_atlas/coverage/**"
+      - "tools/code-atlas/src/code_atlas/db_glass/**"
+      - "tools/code-atlas/src/code_atlas/manifest/**"
+      - "tools/code-atlas/src/code_atlas/cli/**"
+      - "tools/code-atlas/profiles/**"
+      - "tools/code-atlas/tests/test_code_atlas_neutrality.py"
+      - ".github/workflows/code-atlas-neutrality.yml"
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+jobs:
+  neutrality:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile neutral Code Atlas stack
+        shell: bash
+        run: |
+          python -m compileall -q tools/code-atlas/src/code_atlas/core
+          python -m compileall -q tools/code-atlas/src/code_atlas/operational
+          python -m compileall -q tools/code-atlas/src/code_atlas/surface_target_atlas
+          python -m compileall -q tools/code-atlas/src/code_atlas/legal_readiness
+          python -m py_compile tools/code-atlas/tests/test_code_atlas_neutrality.py
+
+      - name: Run neutrality certification
+        shell: bash
+        run: python -m unittest -v tools.code-atlas.tests.test_code_atlas_neutrality
+
+      - name: Run operational fail-closed regression suite
+        shell: bash
+        run: |
+          python -m unittest discover -v \
+            -s tools/code-atlas/tests \
+            -p 'test_operational_*.py'
+
+      - name: Run legal backend neutral selftest
+        shell: bash
+        run: python -m code_atlas.legal_readiness.selftest
