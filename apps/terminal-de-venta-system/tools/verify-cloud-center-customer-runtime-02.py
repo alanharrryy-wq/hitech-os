@@ -82,8 +82,6 @@ def main():
                     require(page.locator(f'select[data-flow-field="{field}"][required]').count()==1,f'REQUIRED_FIELD_MISSING:{field}')
                 checks.append('customer_form_homologated')
 
-                # Keyboard picker behavior remains strict. Locator.press targets the governed
-                # control itself, avoiding ambiguity from an unrelated global activeElement.
                 vertical_button=page.locator('[data-picker-toggle="vertical"]')
                 vertical_button.wait_for(state='visible',timeout=10000)
                 before=page.evaluate("""()=>{const b=document.querySelector('[data-picker-toggle="vertical"]'); const p=document.querySelector('[data-picker-panel="vertical"]'); return {activeTag:document.activeElement?.tagName||null,activePicker:document.activeElement?.dataset?.pickerToggle||null,buttonConnected:!!b?.isConnected,aria:b?.getAttribute('aria-expanded')||null,panelConnected:!!p?.isConnected,panelClass:p?.className||null};}""")
@@ -113,9 +111,19 @@ def main():
                 page.select_option('select[data-flow-field="country"]','MX')
                 page.select_option('select[data-flow-field="state"]','jalisco')
                 page.fill('[data-flow-field="city"]','Guadalajara')
-                page.click('[data-action="prepare-client"]')
+                with page.expect_response(lambda response: '/api/command-center/draft-client' in response.url, timeout=10000) as response_info:
+                    page.click('[data-action="prepare-client"]')
+                draft_response=response_info.value
+                try:
+                    draft_payload=draft_response.json()
+                except Exception:
+                    draft_payload={'raw':draft_response.text()}
+                print('DRAFT_CLIENT_RESPONSE='+json.dumps({'status':draft_response.status,'payload':draft_payload},ensure_ascii=False))
+                (out/'DRAFT_CLIENT_RESPONSE.json').write_text(json.dumps({'status':draft_response.status,'payload':draft_payload},indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+                require(draft_response.ok and draft_payload.get('ok') is not False, f'UI_CLIENT_CREATE_API_FAILED:{draft_response.status}:{draft_payload}')
+                checks.append('ui_customer_create_api')
                 page.wait_for_function("()=>document.body.innerText.includes('Cliente Runtime UI')",timeout=15000)
-                checks.append('ui_customer_create')
+                checks.append('ui_customer_create_projection')
                 page.screenshot(path=str(out/'cloud-center-customer-provisioning.png'),full_page=True)
 
                 page.click('[data-surface="customers"]'); page.wait_for_function("()=>document.body.innerText.includes('Medición homologada')")
@@ -145,7 +153,7 @@ def main():
             output=(proc.stdout.read() if proc.stdout else '')
             (out/'cloud-center-runtime-server.log').write_text(output,encoding='utf-8')
 
-    report={'status':'PASS','result':'PASS_CLOUD_CENTER_CUSTOMER_RUNTIME_VISUAL_VERIFIED','checkCount':len(checks),'checks':checks,'consoleErrors':console_errors,'localRequestFailures':request_failures,'realDatabaseTouched':False,'liveProcessesTouched':False,'screenshots':['cloud-center-customer-provisioning.png','cloud-center-customers.png'],'diagnostics':['PICKER_DIAGNOSTIC.json'],'doesNotProve':['live cloud customer creation','real customer data correctness','Tablet/PC/Mobile visual state']}
+    report={'status':'PASS','result':'PASS_CLOUD_CENTER_CUSTOMER_RUNTIME_VISUAL_VERIFIED','checkCount':len(checks),'checks':checks,'consoleErrors':console_errors,'localRequestFailures':request_failures,'realDatabaseTouched':False,'liveProcessesTouched':False,'screenshots':['cloud-center-customer-provisioning.png','cloud-center-customers.png'],'diagnostics':['PICKER_DIAGNOSTIC.json','DRAFT_CLIENT_RESPONSE.json'],'doesNotProve':['live cloud customer creation','real customer data correctness','Tablet/PC/Mobile visual state']}
     (out/'CLOUD_CENTER_CUSTOMER_RUNTIME_VERIFY.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(report['result']); print(f"checks={len(checks)}")
 
