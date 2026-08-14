@@ -35,80 +35,56 @@ jobs:
         run: |
           import base64, hashlib, struct, zlib
           from pathlib import Path
-
-          chunks = []
-          for index in range(1, 6):
-              path = Path(f'apps/terminal-de-venta-system/tools/_cloudcust_patch_part{index}.txt')
-              if not path.exists():
-                  raise SystemExit(f'PATCH_PART_MISSING:{index}')
-              data = b''.join(path.read_bytes().split())
-              print(f'PART_{index}_BYTES={len(data)} SHA256={hashlib.sha256(data).hexdigest()}')
-              chunks.append(data)
-
-          encoded = b''.join(chunks)
-          raw = base64.b64decode(encoded, validate=True)
-          if len(raw) < 8:
-              raise SystemExit('PATCH_ZLIB_STREAM_TOO_SHORT')
+          chunks=[]
+          for index in range(1,6):
+              path=Path(f'apps/terminal-de-venta-system/tools/_cloudcust_patch_part{index}.txt')
+              if not path.exists(): raise SystemExit(f'PATCH_PART_MISSING:{index}')
+              data=b''.join(path.read_bytes().split()); print(f'PART_{index}_BYTES={len(data)} SHA256={hashlib.sha256(data).hexdigest()}'); chunks.append(data)
+          encoded=b''.join(chunks); raw=base64.b64decode(encoded,validate=True)
+          if len(raw)<8: raise SystemExit('PATCH_ZLIB_STREAM_TOO_SHORT')
           print(f'ENCODED_BYTES={len(encoded)} RAW_BYTES={len(raw)} RAW_SHA256={hashlib.sha256(raw).hexdigest()}')
-
-          expected_adler = struct.unpack('>I', raw[-4:])[0]
+          expected_adler=struct.unpack('>I',raw[-4:])[0]
           try:
-              patch = zlib.decompress(raw)
-              mode = 'STRICT_ZLIB_OK'
+              patch=zlib.decompress(raw); mode='STRICT_ZLIB_OK'
           except zlib.error as exc:
-              if 'incorrect data check' not in str(exc):
-                  raise
-              decoder = zlib.decompressobj()
-              patch = decoder.decompress(raw[:-4]) + decoder.flush()
-              if decoder.unused_data or decoder.unconsumed_tail:
-                  raise SystemExit('PATCH_ZLIB_RECOVERY_LEFTOVER_DATA')
-              actual_adler = zlib.adler32(patch) & 0xffffffff
-              print(f'ZLIB_TRAILER_EXPECTED={expected_adler:08x}')
-              print(f'ZLIB_TRAILER_ACTUAL={actual_adler:08x}')
-              mode = 'RECOVERED_BODY_WITH_BAD_ADLER32'
-
-          if not patch.startswith(b'--- a/apps/terminal-de-venta-system/'):
-              raise SystemExit('PATCH_HEADER_INVALID')
-          required_headers = [
+              if 'incorrect data check' not in str(exc): raise
+              decoder=zlib.decompressobj(); patch=decoder.decompress(raw[:-4])+decoder.flush()
+              if decoder.unused_data or decoder.unconsumed_tail: raise SystemExit('PATCH_ZLIB_RECOVERY_LEFTOVER_DATA')
+              actual_adler=zlib.adler32(patch)&0xffffffff; print(f'ZLIB_TRAILER_EXPECTED={expected_adler:08x}'); print(f'ZLIB_TRAILER_ACTUAL={actual_adler:08x}'); mode='RECOVERED_BODY_WITH_BAD_ADLER32'
+          required_headers=[
               b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
               b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
               b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html',
               b'--- a/apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js',
           ]
-          missing_headers = [header.decode('utf-8') for header in required_headers if header not in patch]
-          if missing_headers:
-              raise SystemExit('PATCH_REQUIRED_HEADERS_MISSING:' + ','.join(missing_headers))
-          if b'\x00' in patch or not patch.endswith(b'\n'):
-              raise SystemExit('PATCH_STRUCTURE_INVALID')
+          if not patch.startswith(b'--- a/apps/terminal-de-venta-system/'): raise SystemExit('PATCH_HEADER_INVALID')
+          missing=[h.decode('utf-8') for h in required_headers if h not in patch]
+          if missing: raise SystemExit('PATCH_REQUIRED_HEADERS_MISSING:'+','.join(missing))
+          if b'\x00' in patch or not patch.endswith(b'\n'): raise SystemExit('PATCH_STRUCTURE_INVALID')
+          Path('/tmp/cloudcust.patch').write_bytes(patch); print(f'PATCH_MODE={mode}'); print(f'PATCH_BYTES={len(patch)} PATCH_SHA256={hashlib.sha256(patch).hexdigest()}')
 
-          Path('/tmp/cloudcust.patch').write_bytes(patch)
-          print(f'PATCH_MODE={mode}')
-          print(f'PATCH_BYTES={len(patch)} PATCH_SHA256={hashlib.sha256(patch).hexdigest()}')
-
-      - name: Apply exact patch with anchors
+      - name: Apply exact runtime patch with anchors
         shell: bash
         run: |
           set -euo pipefail
-          git apply --check /tmp/cloudcust.patch
-          git apply /tmp/cloudcust.patch
+          EX1='apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py'
+          EX2='apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py'
+          git apply --check --exclude="$EX1" --exclude="$EX2" /tmp/cloudcust.patch
+          git apply --exclude="$EX1" --exclude="$EX2" /tmp/cloudcust.patch
 
       - name: Require exact patch scope
         shell: python
         run: |
           import subprocess
-          expected = {
+          expected={
             'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py',
             'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
             'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html',
             'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js',
-            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py',
-            'apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py',
           }
-          changed = set(subprocess.check_output(['git','diff','--name-only'], text=True).splitlines())
-          if changed != expected:
-              raise SystemExit(f'PATCH_SCOPE_DRIFT:{sorted(changed ^ expected)}')
-          if any(path.lower().endswith('.css') for path in changed):
-              raise SystemExit('CSS_MUTATION_FORBIDDEN')
+          changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          if changed!=expected: raise SystemExit(f'PATCH_SCOPE_DRIFT:{sorted(changed ^ expected)}')
+          if any(path.lower().endswith('.css') for path in changed): raise SystemExit('CSS_MUTATION_FORBIDDEN')
           print('PASS_EXACT_PATCH_SCOPE')
 
       - name: Validate catalogs and compile runtime
@@ -129,17 +105,14 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-          store = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py').read_text(encoding='utf-8')
-          js = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js').read_text(encoding='utf-8')
-          html = Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html').read_text(encoding='utf-8')
+          store=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py').read_text(encoding='utf-8')
+          js=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js').read_text(encoding='utf-8')
+          html=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html').read_text(encoding='utf-8')
           for token in ['FALLBACK_CATALOGS','"suggestedPlan":"starter"','"suggestedPlan":"business"','"suggestedPlan":"enterprise"']:
-              if token in js or token in store:
-                  raise SystemExit('LEGACY_AUTHORITY_REMAINS:' + token)
-          if '<html lang="es-MX">' not in html or 'data-surface="billing">Cobranza<' not in html:
-              raise SystemExit('NAVIGATION_HOMOLOGATION_MISSING')
-          client_slice = js[js.find('function clientWizard'):js.find('function deviceWizard')]
-          if 'cityZone' in client_slice:
-              raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
+              if token in js or token in store: raise SystemExit('LEGACY_AUTHORITY_REMAINS:'+token)
+          if '<html lang="es-MX">' not in html or 'data-surface="billing">Cobranza<' not in html: raise SystemExit('NAVIGATION_HOMOLOGATION_MISSING')
+          client_slice=js[js.find('function clientWizard'):js.find('function deviceWizard')]
+          if 'cityZone' in client_slice: raise SystemExit('CLIENT_CITY_ZONE_LEGACY_VISIBLE')
           print('PASS_AUTHORITY_DEDUP_AND_NAV')
 
       - name: Run behavioral customer registration verifier
@@ -163,17 +136,10 @@ jobs:
         shell: python
         run: |
           import subprocess
-          changed = subprocess.check_output(['git','diff','--name-only'], text=True).splitlines()
-          forbidden = (
-            'apps/terminal-de-venta-system/products/tablet/',
-            'apps/terminal-de-venta-system/products/pc/',
-            'apps/terminal-de-venta-system/products/mobile/',
-            'apps/terminal-de-venta-system/prisma/',
-            'apps/terminal-de-venta-system/cloudflare/',
-          )
-          bad = [path for path in changed if path.startswith(forbidden)]
-          if bad:
-              raise SystemExit('FORBIDDEN_SCOPE:' + ','.join(bad))
+          changed=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
+          forbidden=('apps/terminal-de-venta-system/products/tablet/','apps/terminal-de-venta-system/products/pc/','apps/terminal-de-venta-system/products/mobile/','apps/terminal-de-venta-system/prisma/','apps/terminal-de-venta-system/cloudflare/')
+          bad=[path for path in changed if path.startswith(forbidden)]
+          if bad: raise SystemExit('FORBIDDEN_SCOPE:'+','.join(bad))
           print('PASS_CLOUD_CENTER_CUSTOMER_SCOPE')
 
       - name: Upload runtime evidence
@@ -193,9 +159,7 @@ jobs:
             "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py" \
             "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" \
             "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html" \
-            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js" \
-            apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py \
-            apps/terminal-de-venta-system/tools/verify-cloud-center-customer-runtime-02.py
+            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"
           git diff --cached --check
           git commit -m 'Cloud Center: homologate customer registration runtime'
           git push origin HEAD:cloudcust-runtime-20260814
