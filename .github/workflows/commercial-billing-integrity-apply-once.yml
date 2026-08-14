@@ -1,0 +1,101 @@
+name: Commercial Billing Integrity Apply Once
+
+on:
+  push:
+    branches:
+      - billing-cfdi-20260814
+    paths:
+      - '.github/workflows/commercial-billing-integrity-apply-once.yml'
+      - 'apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: billing-cfdi-20260814
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply exact fiscal integrity hardening
+        run: python apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py
+
+      - name: Compile Python
+        run: >-
+          python -m py_compile
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/cfdi_gateway.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_billing.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_contracts.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py"
+          "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py"
+          apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py
+
+      - name: Check Cloud Center JavaScript
+        run: node --check "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"
+
+      - name: Run expanded behavioral verifier in temporary SQLite
+        run: >-
+          python apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py
+          --out-dir /tmp/prisma-commercial-billing-integrity
+
+      - name: Diff and scope safety
+        shell: python
+        run: |
+          import subprocess
+          subprocess.run(['git','diff','--check'], check=True)
+          changed = subprocess.check_output(['git','diff','--name-only'], text=True).splitlines()
+          forbidden = [
+              path for path in changed
+              if path.lower().endswith('.css')
+              or '/products/tablet/' in path
+              or '/products/pc/' in path
+              or '/products/mobile/' in path
+              or '/prisma/' in path
+          ]
+          if forbidden:
+              raise SystemExit('Forbidden hardening scope: ' + ', '.join(forbidden))
+          print('PASS_FINAL_BILLING_INTEGRITY_SCOPE')
+
+      - name: Commit verified hardening without workflow mutation
+        run: |
+          rm -f apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          python - <<'PY'
+          import subprocess
+          staged = subprocess.check_output(['git','diff','--cached','--name-only'], text=True).splitlines()
+          workflow_changes = [p for p in staged if p.startswith('.github/workflows/')]
+          if workflow_changes:
+              raise SystemExit('Workflow change leaked into product commit: ' + ', '.join(workflow_changes))
+          allowed = {
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/cfdi_gateway.py',
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/commercial_billing.py',
+              'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py',
+              'apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py',
+              'apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md',
+              'apps/terminal-de-venta-system/tools/_harden_commercial_billing_integrity_once.py',
+          }
+          unexpected = [p for p in staged if p not in allowed]
+          if unexpected:
+              raise SystemExit('Unexpected hardening files: ' + ', '.join(unexpected))
+          print('PASS_FINAL_BILLING_INTEGRITY_COMMIT_SCOPE')
+          PY
+          git commit -m "commercial: harden billing and fiscal evidence integrity"
+          git push origin HEAD:billing-cfdi-20260814
