@@ -5,12 +5,14 @@ on:
     paths:
       - "tools/code-atlas/src/code_atlas/operational/**"
       - "tools/code-atlas/tests/test_operational_hardening.py"
+      - "tools/code-atlas/tests/test_operational_foundations.py"
       - ".github/workflows/code-atlas-operational-hardening.yml"
   push:
     branches: ["main"]
     paths:
       - "tools/code-atlas/src/code_atlas/operational/**"
       - "tools/code-atlas/tests/test_operational_hardening.py"
+      - "tools/code-atlas/tests/test_operational_foundations.py"
       - ".github/workflows/code-atlas-operational-hardening.yml"
 
 permissions:
@@ -35,13 +37,18 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Compile hardening modules and legacy entrypoints
+      - name: Compile hardening modules foundations and legacy entrypoints
         shell: bash
         run: |
           set -euo pipefail
           python -m py_compile \
             tools/code-atlas/src/code_atlas/operational/features50.py \
             tools/code-atlas/src/code_atlas/operational/capability_contracts.py \
+            tools/code-atlas/src/code_atlas/operational/evidence_foundation.py \
+            tools/code-atlas/src/code_atlas/operational/temporal_foundation.py \
+            tools/code-atlas/src/code_atlas/operational/lineage_foundation.py \
+            tools/code-atlas/src/code_atlas/operational/assurance_foundation.py \
+            tools/code-atlas/src/code_atlas/operational/foundation_integration.py \
             tools/code-atlas/src/code_atlas/operational/hardened_runner.py \
             tools/code-atlas/src/code_atlas/operational/cli.py \
             tools/code-atlas/src/code_atlas/operational/evidence.py \
@@ -51,10 +58,14 @@ jobs:
             tools/code-atlas/src/code_atlas/operational/device_claims.py \
             tools/code-atlas/src/code_atlas/operational/client_followup.py \
             tools/code-atlas/src/code_atlas/operational/sales_lineage.py \
-            tools/code-atlas/tests/test_operational_hardening.py
+            tools/code-atlas/src/code_atlas/operational/html_tabs.py \
+            tools/code-atlas/tests/test_operational_hardening.py \
+            tools/code-atlas/tests/test_operational_foundations.py
 
-      - name: Run no-fake-green hardening tests
+      - name: Run no-fake-green hardening and foundation tests
         shell: bash
         run: |
           set -euo pipefail
-          python -m unittest -v tools/code-atlas/tests/test_operational_hardening.py
+          python -m unittest -v \
+            tools/code-atlas/tests/test_operational_hardening.py \
+            tools/code-atlas/tests/test_operational_foundations.py
