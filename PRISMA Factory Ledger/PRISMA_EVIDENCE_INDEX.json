@@ -292,9 +292,39 @@
         "Future runtime behavior after source drift",
         "Readiness of unrelated Tablet, PC, Mobile, Web, Chart Lab or Shared UI surfaces"
       ]
+    },
+    {
+      "artifact": "PR #269 Code Atlas Customer Wow V1 Universal Intelligence binding",
+      "type": "code_atlas_customer_wow_universal_binding",
+      "scope": [
+        "code_atlas",
+        "change_intelligence",
+        "tooling",
+        "governance"
+      ],
+      "status": "PASS_LOCAL_VERIFIED",
+      "proves": [
+        "Customer Wow V1 is merged and bound to the canonical neutral Universal Intelligence Core rather than duplicating repository discovery, authority discovery, graphs, snapshotting, indexing or drift primitives",
+        "Fresh task-exact integration Authority Mesh request 8d8cbd595e9da7ab passed on authority HEAD 2889cc3a6581b4c91adc3a9b7cc626d78756ed64 with 7/7 required authorities resolved and zero missing",
+        "Final PR #269 head 58c6bad392b1ec057dcd77d22aa0c4ccb6260d03 passed CI, ForgeOS Quality Gate, Zero Priority Gate, Code Atlas Operational Hardening, repo-analyzer-self-test and CLA Check",
+        "Operational hardening ran 106 tests successfully and preserved PASS_CODE_ATLAS_TOTAL_NEUTRALITY with zero blocking findings across Ubuntu, Windows and macOS lanes",
+        "Neutral synthetic Git fixture verified explicit target requirement, Impact Radius non-authorization, protected/out-of-scope blocking, stale commit blocking, missing authority blocking, authority drift blocking and outside-allowed-scope evidence drift blocking",
+        "PR #269 merged into main as 2a39bf2e819c49c978f66b4bb351402918d4fa41",
+        "Post-merge governance Authority Mesh run 31839501404 completed successfully on main@2a39bf2e819c49c978f66b4bb351402918d4fa41"
+      ],
+      "doesNotProve": [
+        "Correct behavior across arbitrary real external repositories or technology stacks",
+        "Production runtime readiness",
+        "Hosted multi-tenant isolation",
+        "Enterprise IAM or security certification",
+        "Customer data-egress certification beyond the source runner contract",
+        "Paid-pilot readiness by itself",
+        "Legal or privacy compliance",
+        "Production certification"
+      ]
     }
   ],
-  "updatedAt": "2026-08-14T08:48:10-06:00",
+  "updatedAt": "2026-08-14T14:48:38-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -359,6 +389,25 @@
         "verify-cloud-center-customer-runtime-02.py",
         "cloudcust-1408-final-v10",
         "cloudcust-ledger-mesh sha256:b17dcac8a3f1dabf504e02297d33b879e4c45a8ab5b87d50c2c61d78cd58c886"
+      ]
+    },
+    {
+      "capabilityId": "code_atlas.change_intelligence.customer_wow_v1",
+      "runId": "PR269_CODE_ATLAS_CUSTOMER_WOW_V1_LOCAL_VERIFIED",
+      "status": "LOCAL_VERIFIED",
+      "evidence": [
+        "PR #269",
+        "merge commit 2a39bf2e819c49c978f66b4bb351402918d4fa41",
+        "final head 58c6bad392b1ec057dcd77d22aa0c4ccb6260d03",
+        "integration AutoMesh request 8d8cbd595e9da7ab run 31837217415 artifact sha256:ec23c953cc9d3b42a7c3403e3701e25a279a89f79e77e6b0af3fc6ef32967acb",
+        "post-merge AutoMesh run 31839501404 artifact sha256:4b282eef534a1f206e7c32164f639c9b4c3b82bb619325c650ee4b8dca5be4c7",
+        "Code Atlas Operational Hardening run 31839187809",
+        "CI run 31839187762",
+        "ForgeOS Quality Gate run 31839187817",
+        "Zero Priority Gate run 31839187804",
+        "repo-analyzer-self-test run 31839187841",
+        "CLA Check run 31839187843",
+        "106 operational tests PASS"
       ]
     }
   ]
