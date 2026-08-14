@@ -14,11 +14,7 @@ from .registry import build_legal_stage_registry
 
 
 class LegalPipelineController(QObject):
-    """Sequential QProcess controller used by the future Legal PySide6 panel.
-
-    Only one external stage is active. Each active stage may use its own controlled
-    workers/shards. The controller never kills ports or external services.
-    """
+    """Sequential, adapter-neutral QProcess controller for diligence evidence stages."""
 
     pipeline_started = Signal(object)
     stage_started = Signal(object, int, int)
@@ -47,10 +43,7 @@ class LegalPipelineController(QObject):
         if self.is_running():
             raise RuntimeError("LEGAL_PIPELINE_ALREADY_RUNNING")
         cfg = config.normalized()
-        authority = validate_authority_chain(
-            cfg.output_root,
-            require_mamastrophic=cfg.include_runtime or cfg.profile == "runtime-only",
-        )
+        authority = validate_authority_chain(cfg.output_root)
         if authority["status"] != "PASS":
             raise RuntimeError("AUTHORITY_CHAIN_FAILED:" + ";".join(authority["errors"]))
         self._config = cfg
@@ -77,12 +70,29 @@ class LegalPipelineController(QObject):
             return
 
         spec = self._stages[self._index]
-        root = Path(spec.root)
+        if not spec.enabled:
+            result = LegalStageResult(
+                stage_id=spec.stage_id,
+                label=spec.label,
+                status="SKIPPED_UNCONFIGURED",
+                finished_at=now_iso(),
+                error="UNCONFIGURED_STAGE" if spec.required else "",
+            )
+            self._results.append(result.to_dict())
+            self.stage_finished.emit(result)
+            if spec.required:
+                self.pipeline_finished.emit({"status": "FAIL", "stage_results": self._results})
+                return
+            self._start_next()
+            return
+
+        root = Path(spec.root or ".")
         if not root.exists():
             self.failed_to_start.emit(f"MISSING_STAGE_ROOT:{root}")
             return
 
-        self._before = snapshot_zip_files(self._config.output_root)
+        assert self._config is not None
+        self._before = snapshot_zip_files(Path(self._config.output_root))
         self._stdout = []
         self._stderr = []
         process = QProcess(self)
@@ -108,7 +118,7 @@ class LegalPipelineController(QObject):
         spec = self._stages[self._index]
         self.stage_output.emit(spec.stage_id, "stdout", text)
         for line in text.splitlines():
-            if line.startswith("PRISMA_PROGRESS "):
+            if line.startswith("CODE_ATLAS_LEGAL_PROGRESS "):
                 try:
                     payload = json.loads(line.split(" ", 1)[1])
                     self.progress.emit(int(payload.get("percent", 0)), str(payload.get("label", "")), payload)
@@ -128,8 +138,9 @@ class LegalPipelineController(QObject):
         self._read_stdout()
         self._read_stderr()
         spec = self._stages[self._index]
+        assert self._config is not None
         artifact = discover_stage_artifact(
-            output_root=self._config.output_root,
+            output_root=Path(self._config.output_root),
             before=self._before,
             expected_prefixes=spec.expected_prefixes,
         )
