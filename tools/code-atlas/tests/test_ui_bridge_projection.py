@@ -182,6 +182,161 @@ class ProjectionMapTests(unittest.TestCase):
             self.assertIn("MISSING_TRACE:slotId", payload["components"][0]["blockingReasons"])
             self.assertEqual(blockers["status"], "EXPLICIT_BLOCKERS_PRESENT")
 
+    def test_later_corrective_batch_wins_for_same_component(self):
+        stale = resolved_component()
+        stale["slotId"] = None
+        stale["targetResolutionStatus"] = "PARTIAL"
+        current = resolved_component()
+        with tempfile.TemporaryDirectory() as tmp:
+            governor = Path(tmp) / "prisma-html"
+            governor_fixture(governor)
+            repo = FakeRepository([])
+            repo.batches = [
+                {"batchId": "BATCH.test.old", "components": [stale]},
+                {"batchId": "BATCH.test.new", "components": [current]},
+            ]
+            with patch(
+                "code_atlas.ui_bridge.projection.resolve_component",
+                return_value={"status": "ELIGIBLE_FOR_READ_ONLY_PLAN", "blockingReasons": []},
+            ), patch(
+                "code_atlas.ui_bridge.projection.build_plan",
+                return_value=(
+                    {
+                        "planId": "BRPLAN.corrective",
+                        "status": "PLAN_READY_FOR_REVIEW",
+                        "blockingReasons": [],
+                        "operations": [{"unitId": "root"}],
+                        "applicationEnabled": False,
+                    },
+                    {"checksum": "ghi", "sourceMutationPerformed": False},
+                ),
+            ):
+                payload, _ = build_projection_map(
+                    repo,
+                    FakeRecipes(),
+                    product_root=str(Path(tmp) / "product"),
+                    governor_root=str(governor),
+                    surfaces=["pc"],
+                )
+            self.assertEqual(payload["componentCount"], 1)
+            self.assertEqual(payload["components"][0]["trace"]["slotId"], current["slotId"])
+            self.assertEqual(payload["authorityPreflightReadyCount"], 1)
+
+    def test_missing_authority_registry_fails_closed_globally(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            governor = Path(tmp) / "prisma-html"
+            governor_fixture(governor)
+            (
+                governor
+                / "authority/rifat/identity/registries/element-bindings.registry.json"
+            ).unlink()
+            repo = FakeRepository([resolved_component()])
+            with patch(
+                "code_atlas.ui_bridge.projection.resolve_component",
+                return_value={"status": "ELIGIBLE_FOR_READ_ONLY_PLAN", "blockingReasons": []},
+            ), patch(
+                "code_atlas.ui_bridge.projection.build_plan",
+                return_value=(
+                    {
+                        "planId": "BRPLAN.authority-missing",
+                        "status": "PLAN_READY_FOR_REVIEW",
+                        "blockingReasons": [],
+                        "operations": [{"unitId": "root"}],
+                        "applicationEnabled": False,
+                    },
+                    {"checksum": "jkl", "sourceMutationPerformed": False},
+                ),
+            ):
+                payload, blockers = build_projection_map(
+                    repo,
+                    FakeRecipes(),
+                    product_root=str(Path(tmp) / "product"),
+                    governor_root=str(governor),
+                    surfaces=["pc"],
+                )
+            self.assertEqual(payload["status"], "BLOCKED_BY_GLOBAL_AUTHORITY_GAP")
+            self.assertIn(
+                "AUTHORITY:MISSING_OR_INVALID_ELEMENT_BINDING_REGISTRY",
+                payload["globalBlockers"],
+            )
+            self.assertEqual(blockers["status"], "EXPLICIT_BLOCKERS_PRESENT")
+
+    def test_projection_id_is_machine_path_independent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            governor_a = base / "machine-a" / "prisma-html"
+            governor_b = base / "machine-b" / "nested" / "prisma-html"
+            governor_fixture(governor_a)
+            governor_fixture(governor_b)
+            repo = FakeRepository([resolved_component()])
+            plan = (
+                {
+                    "planId": "BRPLAN.stable",
+                    "status": "PLAN_READY_FOR_REVIEW",
+                    "blockingReasons": [],
+                    "operations": [{"unitId": "root"}],
+                    "applicationEnabled": False,
+                },
+                {"checksum": "mno", "sourceMutationPerformed": False},
+            )
+            with patch(
+                "code_atlas.ui_bridge.projection.resolve_component",
+                return_value={"status": "ELIGIBLE_FOR_READ_ONLY_PLAN", "blockingReasons": []},
+            ), patch("code_atlas.ui_bridge.projection.build_plan", return_value=plan):
+                first, _ = build_projection_map(
+                    repo,
+                    FakeRecipes(),
+                    product_root=str(base / "product-a"),
+                    governor_root=str(governor_a),
+                    surfaces=["pc"],
+                )
+                second, _ = build_projection_map(
+                    repo,
+                    FakeRecipes(),
+                    product_root=str(base / "product-b"),
+                    governor_root=str(governor_b),
+                    surfaces=["pc"],
+                )
+            self.assertEqual(first["projectionId"], second["projectionId"])
+            self.assertEqual(
+                first["authority"]["adapterRegistry"]["path"],
+                "extras/atlasfin/assets/data/surface-adapter.registry.json",
+            )
+
+    def test_surface_blocked_count_includes_non_prefixed_blocked_status(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            governor = Path(tmp) / "prisma-html"
+            governor_fixture(governor)
+            repo = FakeRepository([resolved_component()])
+            with patch(
+                "code_atlas.ui_bridge.projection.resolve_component",
+                return_value={"status": "BLOCKED", "blockingReasons": ["SOURCE_DRIFT_OR_MISSING"]},
+            ), patch(
+                "code_atlas.ui_bridge.projection.build_plan",
+                return_value=(
+                    {
+                        "planId": "BRPLAN.drift",
+                        "status": "PLAN_BLOCKED",
+                        "blockingReasons": ["SOURCE_DRIFT_OR_MISSING"],
+                        "operations": [{"unitId": "root"}],
+                        "applicationEnabled": False,
+                    },
+                    {"checksum": "pqr", "sourceMutationPerformed": False},
+                ),
+            ):
+                payload, _ = build_projection_map(
+                    repo,
+                    FakeRecipes(),
+                    product_root=str(Path(tmp) / "product"),
+                    governor_root=str(governor),
+                    surfaces=["pc"],
+                )
+            self.assertEqual(
+                payload["components"][0]["status"],
+                "SOURCE_RESOLVED_WITH_EXPLICIT_BLOCKERS",
+            )
+            self.assertEqual(payload["surfaceSummary"]["pc"]["blockedCount"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
