@@ -34,8 +34,6 @@ FORMER_PLACEHOLDERS = {
     "golden_path_comparator",
 }
 
-# Runtime keys emitted by the current operational runner. Missing mappings are
-# deliberate: a registry entry must not be promoted merely because it has a name.
 RUNTIME_OUTPUT_KEYS: Mapping[str, str] = {
     "operational_evidence_atlas_row_level": "sales",
     "client_followup_atlas": "clients",
@@ -52,6 +50,7 @@ RUNTIME_OUTPUT_KEYS: Mapping[str, str] = {
     "audit_completeness_matrix": "auditCompleteness",
     "data_lineage_graph": "dataLineageGraph",
     "runtime_evidence_links": "runtimeEvidenceLinks",
+    "historical_trend_mini_atlas": "historicalTrendMiniAtlas",
     "client_setup_journey_map": "clientSetupJourneyMap",
     "multi_tenant_leakage_guard": "multiTenantLeakageGuard",
     "golden_path_comparator": "goldenPathComparator",
@@ -180,6 +179,59 @@ SPECIFIC_OVERRIDES: Mapping[str, Mapping[str, Any]] = {
     },
 }
 
+FOUNDATION_OVERRIDES: Mapping[str, Mapping[str, Any]] = {
+    "snapshot_diff_engine": {
+        "implementationState": "semantic_diff_foundation_v1",
+        "maturity": "NEGATIVE_TESTED",
+        "doesNotProve": [
+            "Runtime behavioral equivalence from semantic source snapshots.",
+            "Production readiness from a source-only diff.",
+        ],
+    },
+    "operational_timeline": {
+        "implementationState": "evidence_timeline_foundation_v1",
+        "maturity": "CONTRACT_BACKED",
+        "doesNotProve": ["Causal ordering beyond timestamped evidence identity."],
+    },
+    "orphan_detector": {
+        "implementationState": "explicit_relationship_orphan_foundation_v1",
+        "maturity": "NEGATIVE_TESTED",
+        "doesNotProve": ["Relationships that are not backed by explicit identity fields."],
+    },
+    "staleness_monitor": {
+        "implementationState": "freshness_contract_foundation_v1",
+        "maturity": "CONTRACT_BACKED",
+        "hardBlockers": ["freshness_policy_registry_required"],
+        "doesNotProve": ["Freshness when no governed TTL and clock policy exists."],
+    },
+    "audit_completeness_matrix": {
+        "implementationState": "audit_coverage_contract_foundation_v1",
+        "maturity": "CONTRACT_BACKED",
+        "hardBlockers": ["auditable_action_catalog_required", "audit_event_source_required"],
+        "doesNotProve": ["Audit completeness without an authoritative action catalog and event source."],
+    },
+    "data_lineage_graph": {
+        "implementationState": "explicit_lineage_graph_foundation_v1",
+        "maturity": "NEGATIVE_TESTED",
+        "doesNotProve": [
+            "Relationships not backed by explicit identity fields.",
+            "Tenant isolation or runtime correctness from graph structure alone.",
+        ],
+    },
+    "runtime_evidence_links": {
+        "implementationState": "artifact_integrity_foundation_v1",
+        "maturity": "NEGATIVE_TESTED",
+        "hardBlockers": ["runtime_evidence_freshness_policy_required"],
+        "doesNotProve": ["The semantic truth or freshness of an artifact from ZIP integrity alone."],
+    },
+    "historical_trend_mini_atlas": {
+        "implementationState": "semantic_trend_foundation_v1",
+        "maturity": "CONTRACT_BACKED",
+        "hardBlockers": ["comparable_snapshot_history_required"],
+        "doesNotProve": ["Causality or production health from trend direction alone."],
+    },
+}
+
 
 def _base_spec(feature: Mapping[str, Any]) -> dict[str, Any]:
     legacy_status = str(feature.get("status", "unknown"))
@@ -213,7 +265,9 @@ def build_capability_specs(features: Sequence[Mapping[str, Any]]) -> list[dict[s
         override = SPECIFIC_OVERRIDES.get(row["capabilityId"])
         if override:
             row.update({key: (list(value) if isinstance(value, tuple) else value) for key, value in override.items()})
-        # Conservative rule: current hardening establishes truthfulness, not certification.
+        foundation = FOUNDATION_OVERRIDES.get(row["capabilityId"])
+        if foundation:
+            row.update({key: (list(value) if isinstance(value, tuple) else value) for key, value in foundation.items()})
         row["certifiable"] = False
         row["productionCertified"] = False
         specs.append(row)
@@ -240,7 +294,7 @@ def validate_capability_specs(specs: Sequence[Mapping[str, Any]]) -> dict[str, A
         if row["maturity"] not in MATURITY_ORDER:
             raise ValueError(f"{row['capabilityId']}: invalid maturity {row['maturity']}")
         if row["certifiable"] or row["productionCertified"]:
-            raise ValueError(f"{row['capabilityId']}: hardening v1 may not certify production")
+            raise ValueError(f"{row['capabilityId']}: hardening may not certify production")
         if not row["doesNotProve"]:
             raise ValueError(f"{row['capabilityId']}: doesNotProve must be explicit")
     return {
