@@ -63,12 +63,18 @@ def main() -> int:
 
             client = store.draft_client(con, {
                 "displayName": "Cliente Pricing Verifier",
+                "email": "pricing-verifier@example.invalid",
                 "vertical": "abarrotes",
+                "subvertical": "minisuper",
                 "businessSize": "small",
                 "operationMode": "counter",
-                "cityZone": "mexico_city",
+                "acquisitionChannel": "unknown",
+                "country": "MX",
+                "state": "ciudad_de_mexico",
+                "city": "Ciudad de México",
+                "clientRequestId": "pricing-verifier-customer-01",
             })
-            require(client.get("ok"), "test client preparation failed")
+            require(client.get("ok"), f"test client preparation failed: {client}")
             client_code = client["client"]["humanCode"]
 
             quarterly = store.draft_license(con, {
