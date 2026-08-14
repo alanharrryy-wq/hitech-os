@@ -2,17 +2,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 
 from .final_runner import run_operational_atlas
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="code-atlas-operational")
-    ap.add_argument("--repo", default=".")
-    ap.add_argument("--out", required=True)
-    ap.add_argument("--result-root", default=None)
-    ns = ap.parse_args(argv)
-    print(json.dumps(run_operational_atlas(ns.repo, ns.out, ns.result_root), ensure_ascii=False, indent=2))
+    parser = argparse.ArgumentParser(prog="code-atlas-operational")
+    parser.add_argument("--repo", default=os.environ.get("CODE_ATLAS_PROJECT_ROOT", "."))
+    parser.add_argument("--out", default=os.environ.get("CODE_ATLAS_OUTPUT_ROOT"), required=os.environ.get("CODE_ATLAS_OUTPUT_ROOT") is None)
+    parser.add_argument("--result-root", default=os.environ.get("CODE_ATLAS_RESULT_ROOT"))
+    parser.add_argument("--profile", default=os.environ.get("CODE_ATLAS_PROFILE"), help="Optional project profile JSON. Product adapters are selected only through explicit profile metadata.")
+    args = parser.parse_args(argv)
+    if args.profile:
+        os.environ["CODE_ATLAS_PROFILE"] = args.profile
+    print(json.dumps(run_operational_atlas(args.repo, args.out, args.result_root), ensure_ascii=False, indent=2))
     return 0
 
 
