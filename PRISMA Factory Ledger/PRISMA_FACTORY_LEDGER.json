@@ -537,7 +537,48 @@
         "claim live stamping from local draft verification",
         "claim cancellation from cancel_requested"
       ]
+    },
+    {
+      "id": "cloud_center.customer_registration_runtime",
+      "displayName": "Prisma Cloud Center governed customer registration runtime",
+      "domain": "commercial",
+      "surfaces": [
+        "cloud_center",
+        "customer_registration",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_CLOUD_CENTER_CUSTOMER_REGISTRATION_RUNTIME_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "CUSTOMER_CLOUD_ACTIVATION as a separate governed task; do not rebuild the merged local customer-registration runtime.",
+      "evidence": [
+        "PR #254 Cloud Center customer registration runtime certification",
+        "merge commit 2557f4e0efa5204a5cad650e71382ff21bcb1b84",
+        "verify-cloud-center-customer-registration-01.py 24/24 PASS",
+        "Chrome Playwright customer registration E2E 11/11 PASS",
+        "cloudcust-1408-final-v10",
+        "cloudcust-ledger-mesh sha256:b17dcac8a3f1dabf504e02297d33b879e4c45a8ab5b87d50c2c61d78cd58c886"
+      ],
+      "doesNotProve": [
+        "Real cloud customer activation or hosted production provisioning",
+        "External admin/token mutation or licensing activation",
+        "Future runtime behavior after source drift",
+        "Readiness of unrelated Tablet, PC, Mobile, Web, Chart Lab or Shared UI surfaces"
+      ],
+      "allowedActions": [
+        "read-only recertification",
+        "fix demonstrated drift",
+        "advance to CUSTOMER_CLOUD_ACTIVATION under a fresh Authority Mesh"
+      ],
+      "forbiddenActions": [
+        "rebuild customer registration from scratch",
+        "weaken canonical contact, location or catalog validation to satisfy legacy fixtures",
+        "claim real cloud activation from the local prepared state",
+        "touch unrelated product surfaces as part of this capability"
+      ]
     }
   ],
-  "updatedAt": "2026-08-02T19:45:00-06:00"
+  "updatedAt": "2026-08-14T08:48:10-06:00"
 }
