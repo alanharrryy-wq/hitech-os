@@ -127,7 +127,6 @@ jobs:
           ]) + "\n"
           pathlib.Path('tools/code-atlas/src/code_atlas/motors/__init__.py').write_text(lazy_source, encoding='utf-8')
           PY
-          rm -f .github/workflows/catlas-universal-bootstrap.yml
           python -m compileall -q tools/code-atlas/src/code_atlas
           PYTHONPATH=tools/code-atlas/src python - <<'PY'
           import code_atlas.motors
@@ -145,9 +144,12 @@ jobs:
           if r.get('blockingCount') or not r.get('fullReusableSourceBoundary'):
               raise SystemExit('NEUTRALITY_GATE_FAIL')
           PY
+          mkdir -p tools/code-atlas/.transfer
+          cp .github/workflows/prisma-remote-automesh.yml tools/code-atlas/.transfer/prisma-remote-automesh.next.yml.txt
+          git checkout -- .github/workflows/prisma-remote-automesh.yml
           git config user.name 'chatgpt-codex-connector[bot]'
           git config user.email '199175422+chatgpt-codex-connector[bot]@users.noreply.github.com'
-          git add tools/code-atlas .github/workflows/prisma-remote-automesh.yml .github/workflows/catlas-universal-bootstrap.yml
+          git add tools/code-atlas
           git diff --cached --check
           git commit -m 'feat(code-atlas): add neutral universal intelligence layer'
           git push origin HEAD:${GITHUB_HEAD_REF}
