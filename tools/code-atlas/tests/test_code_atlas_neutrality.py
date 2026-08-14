@@ -9,6 +9,7 @@ import zipfile
 from pathlib import Path
 from unittest import mock
 
+from code_atlas.core.neutrality_gate import scan_code_atlas
 from code_atlas.legal_readiness.contracts import LegalPipelineConfig
 from code_atlas.operational import runner as operational_runner
 from code_atlas.operational.runtime_profile import public_path, resolve_runtime_profile
@@ -27,6 +28,7 @@ NEUTRAL_SOURCE_ROOTS = (
     CODE_ATLAS_ROOT / "src" / "code_atlas" / "manifest",
     CODE_ATLAS_ROOT / "src" / "code_atlas" / "cli",
 )
+DETECTOR_DEFINITION = CODE_ATLAS_ROOT / "src" / "code_atlas" / "core" / "neutrality_gate.py"
 BANNED_LITERAL_FRAGMENTS = (
     "f:\\",
     "f:/",
@@ -51,7 +53,9 @@ def _all_neutral_python_files() -> list[Path]:
     for root in NEUTRAL_SOURCE_ROOTS:
         if root.exists():
             files.extend(root.rglob("*.py"))
-    return sorted(set(files))
+    # The detector intentionally contains regex examples of forbidden coupling.
+    # It is tested separately by behavior and cannot be treated as a runtime default.
+    return sorted(path for path in set(files) if path.resolve() != DETECTOR_DEFINITION.resolve())
 
 
 def _write_fixture_repo(root: Path) -> Path:
@@ -77,6 +81,8 @@ def _write_fixture_repo(root: Path) -> Path:
 
 
 class CodeAtlasNeutralityTests(unittest.TestCase):
+    maxDiff = None
+
     def test_neutral_source_has_no_machine_or_project_specific_defaults(self) -> None:
         violations: list[str] = []
         for path in _all_neutral_python_files():
@@ -85,6 +91,11 @@ class CodeAtlasNeutralityTests(unittest.TestCase):
                 if banned in text:
                     violations.append(f"{path.relative_to(CODE_ATLAS_ROOT).as_posix()}::{banned}")
         self.assertEqual(violations, [], "Neutral core contains forbidden coupling: " + " | ".join(violations))
+
+    def test_neutrality_detector_does_not_accuse_its_own_pattern_definitions(self) -> None:
+        report = scan_code_atlas(CODE_ATLAS_ROOT)
+        self.assertNotEqual(report["status"], "WARN_CODE_ATLAS_CORE_HAS_LOCAL_ENV_REFERENCES")
+        self.assertFalse(any(row.get("file") == "src/code_atlas/core/neutrality_gate.py" for row in report.get("findings", [])))
 
     def test_runtime_profile_uses_explicit_repo_and_redacts_external_paths(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
