@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from collections import Counter
 from datetime import datetime, timezone
@@ -48,15 +49,13 @@ def _component_key(component: dict[str, Any]) -> str:
 
 
 def _iter_components(repository: BridgeRepository) -> list[dict[str, Any]]:
-    """Return canonical component records once, preserving deterministic batch order."""
+    """Return canonical component records once; later corrective batches win."""
     by_key: dict[str, dict[str, Any]] = {}
     for batch in repository.batches:
         for component in batch.get("components", []):
             if not isinstance(component, dict):
                 continue
-            key = _component_key(component)
-            if key not in by_key:
-                by_key[key] = component
+            by_key[_component_key(component)] = component
     return [by_key[key] for key in sorted(by_key)]
 
 
@@ -76,17 +75,63 @@ def _load_json_object(path: Path) -> dict[str, Any] | None:
     return value if isinstance(value, dict) else None
 
 
+def _sha256_file(path: Path) -> str | None:
+    if not path.is_file():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest().upper()
+
+
 def _authority_snapshot(governor_root: str | Path) -> dict[str, Any]:
     root = Path(governor_root)
-    adapter_path = root / "extras/atlasfin/assets/data/surface-adapter.registry.json"
-    bindings_path = root / "authority/rifat/identity/registries/bindings.registry.json"
-    element_bindings_path = root / "authority/rifat/identity/registries/element-bindings.registry.json"
-    atlas_reference_path = root / "extras/atlasfin/assets/data/visual.recipe.registry.json"
+    adapter_rel = "extras/atlasfin/assets/data/surface-adapter.registry.json"
+    bindings_rel = "authority/rifat/identity/registries/bindings.registry.json"
+    element_bindings_rel = "authority/rifat/identity/registries/element-bindings.registry.json"
+    atlas_reference_rel = "extras/atlasfin/assets/data/visual.recipe.registry.json"
+    adapter_path = root / adapter_rel
+    bindings_path = root / bindings_rel
+    element_bindings_path = root / element_bindings_rel
+    atlas_reference_path = root / atlas_reference_rel
 
-    adapters = _load_json_object(adapter_path) or {}
-    bindings = _load_json_object(bindings_path) or {}
-    element_bindings = _load_json_object(element_bindings_path) or {}
-    atlas_reference = _load_json_object(atlas_reference_path) or {}
+    adapters = _load_json_object(adapter_path)
+    bindings = _load_json_object(bindings_path)
+    element_bindings = _load_json_object(element_bindings_path)
+    atlas_reference = _load_json_object(atlas_reference_path)
+
+    issues: list[str] = []
+    if adapters is None:
+        issues.append("MISSING_OR_INVALID_SURFACE_ADAPTER_REGISTRY")
+        adapters = {}
+    elif adapters.get("schema") != "PRISMA_SURFACE_ADAPTER_REGISTRY_V2":
+        issues.append("SURFACE_ADAPTER_REGISTRY_SCHEMA_MISMATCH")
+
+    if bindings is None:
+        issues.append("MISSING_OR_INVALID_STATIC_BINDING_REGISTRY")
+        bindings = {}
+    elif bindings.get("schema") != "prisma.identity.bindings.registry.v1":
+        issues.append("STATIC_BINDING_REGISTRY_SCHEMA_MISMATCH")
+
+    if element_bindings is None:
+        issues.append("MISSING_OR_INVALID_ELEMENT_BINDING_REGISTRY")
+        element_bindings = {}
+    elif element_bindings.get("schema") != "prisma.identity.element-bindings.registry.v1":
+        issues.append("ELEMENT_BINDING_REGISTRY_SCHEMA_MISMATCH")
+    else:
+        if element_bindings.get("instructionOnly") is not True:
+            issues.append("ELEMENT_BINDING_REGISTRY_NOT_INSTRUCTION_ONLY")
+        if element_bindings.get("runtimeMutationAllowed") is not False:
+            issues.append("ELEMENT_BINDING_REGISTRY_RUNTIME_MUTATION_NOT_DISABLED")
+        if element_bindings.get("productApplicationAllowed") is not False:
+            issues.append("ELEMENT_BINDING_REGISTRY_PRODUCT_APPLICATION_NOT_DISABLED")
+
+    if atlas_reference is None:
+        issues.append("MISSING_OR_INVALID_ATLASFIN_VISUAL_REFERENCE")
+        atlas_reference = {}
+    elif (atlas_reference.get("capabilities") or {}).get("directProductMutation") is not False:
+        issues.append("ATLASFIN_REFERENCE_DIRECT_PRODUCT_MUTATION_NOT_DISABLED")
 
     adapter_ids = {
         str(item.get("id"))
@@ -124,17 +169,26 @@ def _authority_snapshot(governor_root: str | Path) -> dict[str, Any]:
         }
         for surface, adapter_id in required_adapter_ids.items()
     }
+    for surface in required_adapter_ids:
+        if surface not in surface_binding_rows:
+            issues.append(f"MISSING_STATIC_SURFACE_BINDING_ROW:{surface}")
 
     return {
+        "status": "PASS" if not issues else "BLOCKED",
+        "issues": sorted(set(issues)),
         "adapterRegistry": {
-            "path": adapter_path.as_posix(),
+            "path": adapter_rel,
+            "exists": adapter_path.is_file(),
+            "sha256": _sha256_file(adapter_path),
             "schema": adapters.get("schema"),
             "version": adapters.get("version"),
             "adapterCount": len(adapter_ids),
             "requiredSurfaceAdapters": adapter_checks,
         },
         "staticBindingRegistry": {
-            "path": bindings_path.as_posix(),
+            "path": bindings_rel,
+            "exists": bindings_path.is_file(),
+            "sha256": _sha256_file(bindings_path),
             "schema": bindings.get("schema"),
             "version": bindings.get("version"),
             "surfaces": {
@@ -147,7 +201,9 @@ def _authority_snapshot(governor_root: str | Path) -> dict[str, Any]:
             },
         },
         "elementBindingRegistry": {
-            "path": element_bindings_path.as_posix(),
+            "path": element_bindings_rel,
+            "exists": element_bindings_path.is_file(),
+            "sha256": _sha256_file(element_bindings_path),
             "schema": element_bindings.get("schema"),
             "version": element_bindings.get("version"),
             "status": element_bindings.get("status"),
@@ -158,7 +214,9 @@ def _authority_snapshot(governor_root: str | Path) -> dict[str, Any]:
             "productApplicationAllowed": element_bindings.get("productApplicationAllowed"),
         },
         "atlasfinReference": {
-            "path": atlas_reference_path.as_posix(),
+            "path": atlas_reference_rel,
+            "exists": atlas_reference_path.is_file(),
+            "sha256": _sha256_file(atlas_reference_path),
             "version": (atlas_reference.get("bundle") or {}).get("version"),
             "elementCount": len(atlas_elements) if isinstance(atlas_elements, list) else 0,
             "targetBindingStatusCounts": dict(sorted(atlas_target_status_counts.items())),
@@ -286,7 +344,7 @@ def build_projection_map(
             "authorityPreflightReadyCount": sum(
                 row.get("status") == "READY_FOR_EXACT_TARGET_AUTHORITY_PREFLIGHT" for row in rows
             ),
-            "blockedCount": sum(str(row.get("status", "")).startswith("BLOCKED") for row in rows),
+            "blockedCount": sum(bool(row.get("blockingReasons")) for row in rows),
             "statusCounts": dict(sorted(status_counts.items())),
         }
 
@@ -294,6 +352,7 @@ def build_projection_map(
     if not components:
         global_blockers.append("NO_REQUESTED_SURFACE_COMPONENTS_IN_UIMAP")
     authority = _authority_snapshot(governor_root)
+    global_blockers.extend(f"AUTHORITY:{issue}" for issue in authority.get("issues", []))
     adapter_checks = authority["adapterRegistry"]["requiredSurfaceAdapters"]
     for surface in requested:
         if not adapter_checks.get(surface, {}).get("present"):
