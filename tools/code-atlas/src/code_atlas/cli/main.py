@@ -7,6 +7,7 @@ import sys
 from code_atlas.coverage.atlas_audit import main as coverage_main
 from code_atlas.coverage.important_gate import main as gate_main
 from code_atlas.db_glass.reality_check import main as db_main
+from code_atlas.intelligence.cli import main as intelligence_main
 from code_atlas.manifest.todo_el_show_plus import main as todo_main
 from code_atlas.operational.main import main as operational_main
 
@@ -29,6 +30,7 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("db")
     sub.add_parser("todo-plus")
     sub.add_parser("operational")
+    sub.add_parser("intelligence")
     sub.add_parser("uimap")
     sub.add_parser("ui-bridge")
     ns, rest = parser.parse_known_args(argv)
@@ -42,6 +44,8 @@ def main(argv: list[str] | None = None) -> int:
         return todo_main(rest)
     if ns.command == "operational":
         return operational_main(rest)
+    if ns.command == "intelligence":
+        return intelligence_main(rest)
     if ns.command == "uimap":
         return _run_explicit_adapter("code_atlas.app_map.uimap.cli", rest)
     if ns.command == "ui-bridge":

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "code_atlas_neutrality_contract.v7",
+  "schemaVersion": "code_atlas_neutrality_contract.v8",
   "status": "ENFORCED_FAIL_CLOSED_FULL_SOURCE",
   "rule": "All reusable Code Atlas source under src/code_atlas must be machine-neutral, repository-neutral and product-neutral. Product-specific behavior may exist only behind explicit profiles or named adapter boundaries and must never be selected implicitly.",
   "neutralRoots": [
@@ -28,6 +28,7 @@
     "src/code_atlas/motors/smart_allmesh_automesh.py",
     "src/code_atlas/motors/smart_allmesh_parallel.py",
     "src/code_atlas/motors/smart_allmesh_controller.py",
+    "src/code_atlas/motors/prisma_mesh_gateway.py",
     "src/code_atlas/ui/legal_readiness.py",
     "src/code_atlas/ui/motor_hub.py",
     "src/code_atlas/appbrain_workbench/runner.py",
@@ -62,7 +63,8 @@
     "src/code_atlas/evidence_ingestion/gate_reconcile.py": "Product Factory-Ledger/evidence reconciliation adapter.",
     "src/code_atlas/evidence_ingestion/licscope_evidence_adapter.py": "Explicit product licensing-scope evidence adapter.",
     "src/code_atlas/operational/verify_licscope_bridge.py": "Verifier for the explicit licensing-scope compatibility adapter.",
-    "src/code_atlas/evidence_ingestion/triad_close.py": "Legacy product evidence triad closer that writes product registers; never selected by neutral execution."
+    "src/code_atlas/evidence_ingestion/triad_close.py": "Legacy product evidence triad closer that writes product registers; never selected by neutral execution.",
+    "src/code_atlas/motors/prisma_mesh_gateway.py": "Explicit product authority gateway that consumes neutral repository intelligence and composes product-specific authority requirements and legacy surface evidence."
   },
   "forbiddenNeutralLiterals": [
     "hitech-os",

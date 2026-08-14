@@ -11,6 +11,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 concurrency:
   group: prisma-remote-automesh-${{ github.event.issue.number }}
@@ -39,17 +40,24 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Compile and self-test AutoMesh tooling
+      - name: Compile and self-test authority tooling
         shell: bash
         run: |
           set -euo pipefail
+          python -m compileall -q tools/code-atlas/src/code_atlas/intelligence
           python -m py_compile \
             tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
             tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
-            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/tests/test_operational_universal_intelligence.py \
+            tools/code-atlas/tests/test_operational_prisma_mesh_gateway.py
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          python -m unittest -v \
+            tools/code-atlas/tests/test_operational_universal_intelligence.py \
+            tools/code-atlas/tests/test_operational_prisma_mesh_gateway.py
 
-      - name: Validate request and build task specification
+      - name: Decode request
         id: spec
         shell: bash
         env:
@@ -62,70 +70,90 @@ jobs:
           import json
           import os
           import re
+          import subprocess
           from pathlib import Path
 
           comment = os.environ.get('COMMENT_BODY', '').strip()
           exact = '/prisma-automesh code-atlas-phase0-v1'
           prefix = '/prisma-automesh task '
-          allowed_surfaces = {'', 'governance', 'tablet', 'pc', 'mobile', 'chart_lab', 'shared_ui'}
 
           phase0_tasks = [
               {
                   'id': 'capability-census',
                   'surface': 'governance',
-                  'task': 'CODE_ATLAS_PHASE0_V1 capability census. Audit the current Code Atlas 50-capability Operational Evidence registry on main. Determine exact status, owner, source files, inputs, outputs, tests, evidence, heuristics, dependencies, blockers, doesNotProve, maturity and next gate for all 35 implemented_v1, 14 placeholder_v1 and 1 placeholder_blocked. Include Factory Ledger, operational manual, current authority artifacts and no-fake-green quality contracts. Read-only. No implementation.',
+                  'task': 'CODE_ATLAS_PHASE0_V1 capability census. Audit the current Code Atlas 50-capability Operational Evidence registry on main. Determine exact status, owner, source files, inputs, outputs, tests, evidence, heuristics, dependencies, blockers, doesNotProve, maturity and next gate for all current capabilities. Include Factory Ledger, operational manual, current authority artifacts and no-fake-green quality contracts. Read-only. No implementation.',
+                  'intent': 'AUDIT',
+                  'domain': 'governance',
               },
               {
                   'id': 'governance-quality',
                   'surface': 'governance',
-                  'task': 'CODE_ATLAS_PHASE0_V1 governance and quality lane. Audit Authority Mesh, Factory Ledger, Code Atlas manifests/registries, quality contracts, gates, evidence packaging, rollback rules, neutrality/profile architecture, no-fake-green protections and current .governance authority state relevant to completing Code Atlas. Read-only. No implementation.',
+                  'task': 'CODE_ATLAS_PHASE0_V1 governance and quality lane. Audit Authority Mesh, Factory Ledger, Code Atlas manifests/registries, quality contracts, gates, evidence packaging, rollback rules, neutrality/profile architecture, no-fake-green protections and current governance authority state relevant to completing Code Atlas. Read-only. No implementation.',
+                  'intent': 'AUDIT',
+                  'domain': 'governance',
               },
               {
                   'id': 'data-sync-contracts',
                   'surface': '',
-                  'task': 'CODE_ATLAS_PHASE0_V1 data and sync lane. Audit database reality/glass, Prisma/schema sources, D1/SQL where present, sync/outbox, canonical projection, provenance and runtime-evidence sources. Resolve what contracts exist or are missing for tenant, business, client, license, device, store, terminal, cashier/user, sale, sale line, tender, outbox, sync, canonical projection, pc_scope and mobile_scope. Read-only. No database or Prisma mutation.',
+                  'task': 'CODE_ATLAS_PHASE0_V1 data and sync lane. Audit database reality, schemas, migrations, sync/outbox, canonical projection, provenance and runtime-evidence sources. Resolve which scope contracts exist or are missing. Read-only. No database mutation.',
+                  'intent': 'AUDIT',
+                  'domain': 'data',
               },
               {
                   'id': 'tablet-surface',
                   'surface': 'tablet',
-                  'task': 'CODE_ATLAS_PHASE0_V1 Tablet lane. Audit Code Atlas relationships to Tablet surface targets, UI map/app map, runtime evidence, owners, route/component bindings, evidence links and contracts needed by Operational Evidence Atlas. Read-only. Do not modify Tablet.',
+                  'task': 'CODE_ATLAS_PHASE0_V1 Tablet lane. Audit Code Atlas relationships to Tablet surface targets, UI map/app map, runtime evidence, owners, route/component bindings, evidence links and contracts. Read-only. Do not modify Tablet.',
+                  'intent': 'AUDIT',
+                  'domain': 'visual',
               },
               {
                   'id': 'pc-surface',
                   'surface': 'pc',
                   'task': 'CODE_ATLAS_PHASE0_V1 PC lane. Audit Code Atlas relationships to PC surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify PC.',
+                  'intent': 'AUDIT',
+                  'domain': 'visual',
               },
               {
                   'id': 'mobile-surface',
                   'surface': 'mobile',
                   'task': 'CODE_ATLAS_PHASE0_V1 Mobile lane. Audit Code Atlas relationships to Mobile surface targets, UI map/app map, runtime evidence, owners, route/component bindings, scope contracts, evidence links and dependencies. Read-only. Do not modify Mobile.',
+                  'intent': 'AUDIT',
+                  'domain': 'visual',
               },
               {
                   'id': 'chart-lab',
                   'surface': 'chart_lab',
-                  'task': 'CODE_ATLAS_PHASE0_V1 Chart Lab lane. Audit Code Atlas surface-target/UI-map dependencies, runtime evidence, visualization ownership and contracts relevant to the 50-capability completion. Read-only. Do not modify Chart Lab.',
+                  'task': 'CODE_ATLAS_PHASE0_V1 Chart Lab lane. Audit Code Atlas surface-target/UI-map dependencies, runtime evidence, visualization ownership and relevant contracts. Read-only. Do not modify Chart Lab.',
+                  'intent': 'AUDIT',
+                  'domain': 'visual',
               },
               {
                   'id': 'shared-ui',
                   'surface': 'shared_ui',
                   'task': 'CODE_ATLAS_PHASE0_V1 Shared UI lane. Audit neutral/shared UI dependencies, surface adapters, bindings, runtime evidence and ownership relevant to Code Atlas investigator UI and query/detail capabilities. Read-only. Do not modify Shared UI.',
+                  'intent': 'AUDIT',
+                  'domain': 'visual',
               },
               {
                   'id': 'bridges-motors',
                   'surface': 'governance',
-                  'task': 'CODE_ATLAS_PHASE0_V1 tooling lane. Audit AppBrain Workbench, AppBrain Batch Packager, Motors/Smart AllMesh, Evidence Ingestion, Legal Readiness, UI Bridge, Surface Target Atlas, Coverage, Important Files Gate and continuation/portable evidence tooling. Identify source-ready pieces, placeholders, coupling risks and next gates. Read-only. No runtime application.',
+                  'task': 'CODE_ATLAS_PHASE0_V1 tooling lane. Audit workbench, batch packaging, motors, evidence ingestion, legal readiness, UI bridge, surface-target, coverage and portable evidence tooling. Identify source-ready pieces, coupling risks and next gates. Read-only.',
+                  'intent': 'AUDIT',
+                  'domain': 'tooling',
               },
               {
                   'id': 'runtime-web-control',
                   'surface': '',
-                  'task': 'CODE_ATLAS_PHASE0_V1 cross-surface runtime lane. Audit Web, Control Center, Cloud Command Center, support/resolver and other non-Tablet/PC/Mobile runtime evidence or scope sources that Code Atlas may consume. Identify owners, contracts, evidence links and unmapped risks without mutating any surface. Read-only.',
+                  'task': 'CODE_ATLAS_PHASE0_V1 cross-surface runtime lane. Audit Web, control-center and other runtime evidence or scope sources Code Atlas may consume. Identify owners, contracts, evidence links and unmapped risks without mutation.',
+                  'intent': 'AUDIT',
+                  'domain': 'runtime',
               },
           ]
 
           if comment == exact:
-              payload = {'tasks': phase0_tasks, 'profile': 'code-atlas-phase0-v1'}
+              payload = {'schemaVersion': 'v2', 'profile': 'code-atlas-phase0-v1', 'tasks': phase0_tasks}
           elif comment.startswith(prefix):
-              token = comment[len(prefix):].strip()
+              token = re.sub(r'\s+', '', comment[len(prefix):])
               if not re.fullmatch(r'[A-Za-z0-9_-]{16,60000}', token):
                   raise SystemExit('INVALID_AUTOMESH_PAYLOAD_ENCODING')
               padding = '=' * (-len(token) % 4)
@@ -134,51 +162,44 @@ jobs:
                   payload = json.loads(decoded.decode('utf-8'))
               except Exception as exc:
                   raise SystemExit(f'INVALID_AUTOMESH_PAYLOAD:{type(exc).__name__}')
-              if not isinstance(payload, dict) or set(payload) - {'tasks', 'requestId'}:
-                  raise SystemExit('INVALID_AUTOMESH_PAYLOAD_SCHEMA')
           else:
               raise SystemExit('UNSUPPORTED_AUTOMESH_COMMAND')
 
+          if not isinstance(payload, dict):
+              raise SystemExit('INVALID_AUTOMESH_PAYLOAD_SCHEMA')
           tasks = payload.get('tasks')
           if not isinstance(tasks, list) or not (2 <= len(tasks) <= 12):
               raise SystemExit('AUTOMESH_TASK_COUNT_MUST_BE_2_TO_12')
 
-          seen = set()
-          normalized = []
-          total_chars = 0
-          for index, item in enumerate(tasks):
-              if not isinstance(item, dict) or set(item) - {'id', 'surface', 'task'}:
-                  raise SystemExit(f'INVALID_TASK_SCHEMA:{index}')
-              task_id = str(item.get('id', '')).strip()
-              surface = str(item.get('surface', '')).strip()
-              task = str(item.get('task', '')).strip()
-              if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,62}', task_id):
-                  raise SystemExit(f'INVALID_TASK_ID:{index}')
-              if task_id in seen:
-                  raise SystemExit(f'DUPLICATE_TASK_ID:{task_id}')
-              seen.add(task_id)
-              if surface not in allowed_surfaces:
-                  raise SystemExit(f'INVALID_SURFACE:{task_id}:{surface}')
-              if not (20 <= len(task) <= 6000):
-                  raise SystemExit(f'INVALID_TASK_LENGTH:{task_id}')
-              total_chars += len(task)
-              if total_chars > 36000:
-                  raise SystemExit('AUTOMESH_TOTAL_TASK_TEXT_TOO_LARGE')
-              normalized.append({'id': task_id, 'surface': surface, 'task': task})
-
-          canonical = json.dumps({'tasks': normalized}, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          payload.setdefault('schemaVersion', 'v2')
+          payload.setdefault('profile', 'prisma')
+          payload.setdefault('expectedHead', head)
+          canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
           request_id = hashlib.sha256(canonical).hexdigest()[:16]
-          spec_path = Path(os.environ['RUNNER_TEMP']) / 'remote-automesh.tasks.json'
-          spec_path.write_text(json.dumps({'tasks': normalized}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          request_path = Path(os.environ['RUNNER_TEMP']) / 'remote-automesh.request.json'
+          request_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as fh:
               fh.write(f'request_id={request_id}\n')
           print(f'AUTOMESH_REQUEST_ID={request_id}')
-          print(f'AUTOMESH_TASKS={len(normalized)}')
-          print('AUTOMESH_REQUEST_VALIDATED=true')
+          print(f'AUTOMESH_TASKS={len(tasks)}')
+          print(f'AUTOMESH_EXPECTED_HEAD={payload["expectedHead"]}')
           PY
 
-      - name: Run task-exact parallel Authority Mesh
+      - name: Run universal authority preflight
+        id: preflight
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m code_atlas.motors.prisma_mesh_gateway preflight \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$RUNNER_TEMP/remote-automesh.request.json" \
+            --out "$RUNNER_TEMP/prisma-authority-preflight"
+
+      - name: Run task-exact parallel surface mesh
         id: mesh
+        if: steps.preflight.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -187,12 +208,27 @@ jobs:
             --repo "$GITHUB_WORKSPACE" \
             --out-root "$RUNNER_TEMP/prisma-automesh-out" \
             --budget-root "$RUNNER_TEMP/prisma-automesh-budget" \
-            --task-spec "$RUNNER_TEMP/remote-automesh.tasks.json" \
+            --task-spec "$RUNNER_TEMP/prisma-authority-preflight/legacy_tasks.json" \
             --parallel 6 \
             --workers 18 \
             --shards 54 \
             --max-files 120 \
             --max-mb 40
+
+      - name: Compose authority and surface evidence
+        id: compose
+        if: steps.preflight.outcome == 'success' && steps.mesh.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/prisma-composed/payload"
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$RUNNER_TEMP/remote-automesh.request.json" \
+            --preflight "$RUNNER_TEMP/prisma-authority-preflight" \
+            --mesh-result "$RUNNER_TEMP/prisma-automesh-out" \
+            --out "$RUNNER_TEMP/prisma-composed/payload"
 
       - name: Stage result or fail evidence
         if: always()
@@ -200,15 +236,20 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p remote-automesh-artifacts
-          if [ -f "$RUNNER_TEMP/remote-automesh.tasks.json" ]; then
-            cp "$RUNNER_TEMP/remote-automesh.tasks.json" remote-automesh-artifacts/
+          [ ! -f "$RUNNER_TEMP/remote-automesh.request.json" ] || cp "$RUNNER_TEMP/remote-automesh.request.json" remote-automesh-artifacts/
+          if [ -f "$RUNNER_TEMP/prisma-composed/prisma-automesh-composed-result.zip" ]; then
+            cp "$RUNNER_TEMP/prisma-composed/prisma-automesh-composed-result.zip" remote-automesh-artifacts/
+          else
+            if [ -d "$RUNNER_TEMP/prisma-authority-preflight" ]; then
+              cp -R "$RUNNER_TEMP/prisma-authority-preflight" remote-automesh-artifacts/preflight
+            fi
+            if [ -d "$RUNNER_TEMP/prisma-automesh-out" ]; then
+              find "$RUNNER_TEMP/prisma-automesh-out" -maxdepth 1 -type f \
+                \( -name '*_result.zip' -o -name '*_fail.zip' \) \
+                -exec cp {} remote-automesh-artifacts/ \;
+            fi
           fi
-          if [ -d "$RUNNER_TEMP/prisma-automesh-out" ]; then
-            find "$RUNNER_TEMP/prisma-automesh-out" -maxdepth 1 -type f \
-              \( -name '*_result.zip' -o -name '*_fail.zip' \) \
-              -exec cp {} remote-automesh-artifacts/ \;
-          fi
-          find remote-automesh-artifacts -maxdepth 1 -type f -print
+          find remote-automesh-artifacts -maxdepth 3 -type f -print
 
       - name: Upload Authority Mesh evidence
         if: always()
@@ -219,7 +260,7 @@ jobs:
           retention-days: 14
           path: remote-automesh-artifacts/**
 
-      - name: Fail closed when AutoMesh did not pass
-        if: always() && steps.mesh.outcome != 'success'
+      - name: Fail closed when composed authority mesh did not pass
+        if: always() && (steps.preflight.outcome != 'success' || steps.mesh.outcome != 'success' || steps.compose.outcome != 'success')
         shell: bash
         run: exit 1
