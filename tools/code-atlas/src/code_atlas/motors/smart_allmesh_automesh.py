@@ -188,6 +188,75 @@ def tokenize(task: str, surface: str) -> List[str]:
     return out
 
 
+
+def extract_explicit_task_paths(repo: Path, task: str) -> Dict[str, List[str]]:
+    """Return concrete repo-relative text paths explicitly named by the task.
+
+    Existing paths are authority-pinned later. Missing paths are reported as
+    planned/unmapped evidence. Absolute, traversal, or repo-escaping file paths
+    fail closed instead of being reinterpreted as relative paths.
+    """
+    repo_root = repo.resolve()
+    requested: List[str] = []
+    existing: List[str] = []
+    missing: List[str] = []
+    seen: set[str] = set()
+
+    for raw_token in re.findall(r"[^\s`\"'<>]+", task):
+        token = raw_token.strip().strip(",;!?()[]{}")
+        token = re.sub(r":\d+(?::\d+)?$", "", token)
+        token = token.rstrip(".,;!?)]}")
+        if not token or "://" in token:
+            continue
+
+        normalized = token.replace("\\", "/")
+        if "*" in normalized or "?" in normalized:
+            continue
+
+        suffix = Path(normalized).suffix.lower()
+        if suffix not in TEXT_EXTS or "/" not in normalized:
+            continue
+
+        if (
+            normalized.startswith("/")
+            or normalized.startswith("//")
+            or normalized.startswith("~/")
+            or re.match(r"^[A-Za-z]:/", normalized)
+        ):
+            raise RuntimeError(f"UNSAFE_EXPLICIT_TASK_PATH:absolute:{token}")
+
+        while normalized.startswith("./"):
+            normalized = normalized[2:]
+        normalized = re.sub(r"/+", "/", normalized)
+        parts = [part for part in normalized.split("/") if part not in {"", "."}]
+        if not parts or any(part == ".." for part in parts):
+            raise RuntimeError(f"UNSAFE_EXPLICIT_TASK_PATH:traversal:{token}")
+        normalized = "/".join(parts)
+
+        candidate = (repo_root / normalized).resolve(strict=False)
+        try:
+            candidate.relative_to(repo_root)
+        except ValueError as exc:
+            raise RuntimeError(f"UNSAFE_EXPLICIT_TASK_PATH:escape:{token}") from exc
+
+        if normalized in seen:
+            continue
+        seen.add(normalized)
+        requested.append(normalized)
+        if candidate.exists():
+            if not candidate.is_file():
+                raise RuntimeError(f"EXPLICIT_TASK_PATH_NOT_FILE:{normalized}")
+            existing.append(normalized)
+        else:
+            missing.append(normalized)
+
+    return {
+        "requested": requested,
+        "existing": existing,
+        "missing": missing,
+    }
+
+
 def detect_surfaces(task: str, surface: str) -> Dict[str, Any]:
     low = task.lower()
     included = []
@@ -302,15 +371,73 @@ def scan_shard(args: Tuple[Any, ...]) -> List[Dict[str, Any]]:
                 out.append(h)
         return out
 
-def copy_selected(repo: Path, out_dir: Path, hits: List[Dict[str, Any]], max_files: int, max_mb: int) -> List[Dict[str, Any]]:
+def copy_selected(
+    repo: Path,
+    out_dir: Path,
+    hits: List[Dict[str, Any]],
+    max_files: int,
+    max_mb: int,
+    explicit_existing_paths: List[str] | None = None,
+) -> List[Dict[str, Any]]:
     selected: Dict[str, Dict[str, Any]] = {}
     for h in hits:
         selected[h["path"]] = h
+
     for path in REQUIRED_REL + POS_KNOWN_OWNER_HINTS:
         p = repo / path
         if p.exists() and p.is_file():
-            selected[path] = {"path": path, "score": 999, "size": p.stat().st_size, "sha256": sha256(p), "suffix": p.suffix.lower(), "terms": ["required-or-known-owner"], "snippets": []}
-    ranked = sorted(selected.values(), key=lambda x: (-x.get("score", 0), x["path"]))
+            selected[path] = {
+                "path": path,
+                "score": 999,
+                "size": p.stat().st_size,
+                "sha256": sha256(p),
+                "suffix": p.suffix.lower(),
+                "terms": ["required-or-known-owner"],
+                "snippets": [],
+            }
+
+    explicit_existing_paths = list(explicit_existing_paths or [])
+    for path in explicit_existing_paths:
+        p = repo / path
+        if not p.exists() or not p.is_file():
+            raise RuntimeError(f"EXPLICIT_TASK_PATH_DRIFTED_OR_MISSING:{path}")
+        previous = selected.get(path, {})
+        terms = sorted(set(previous.get("terms", [])) | {"explicit-task-path"})
+        selected[path] = {
+            **previous,
+            "path": path,
+            "score": 10_000,
+            "size": p.stat().st_size,
+            "sha256": sha256(p),
+            "suffix": p.suffix.lower(),
+            "terms": terms,
+            "snippets": previous.get("snippets", []),
+        }
+
+    def is_mandatory(item: Dict[str, Any]) -> bool:
+        terms = set(item.get("terms", []))
+        return bool({"required-or-known-owner", "explicit-task-path"} & terms)
+
+    ranked = sorted(
+        selected.values(),
+        key=lambda x: (0 if is_mandatory(x) else 1, -x.get("score", 0), x["path"]),
+    )
+    mandatory = [item for item in ranked if is_mandatory(item)]
+    if len(mandatory) > max_files:
+        raise RuntimeError(
+            f"MANDATORY_SELECTION_EXCEEDS_MAX_FILES:{len(mandatory)}>{max_files}"
+        )
+
+    explicit_bytes = sum(
+        int(selected[path].get("size", 0))
+        for path in explicit_existing_paths
+        if path in selected
+    )
+    if explicit_bytes > max_mb * 1024 * 1024:
+        raise RuntimeError(
+            f"EXPLICIT_SELECTION_EXCEEDS_MAX_MB:{explicit_bytes}>{max_mb * 1024 * 1024}"
+        )
+
     root = out_dir / "repo_files"
     root.mkdir(parents=True, exist_ok=True)
     total = 0
@@ -329,6 +456,13 @@ def copy_selected(repo: Path, out_dir: Path, hits: List[Dict[str, Any]], max_fil
         shutil.copy2(p, dst)
         total += size
         copied.append({k: h[k] for k in ["path", "score", "size", "sha256", "suffix", "terms"] if k in h})
+
+    copied_paths = {item["path"] for item in copied}
+    missing_pinned = [path for path in explicit_existing_paths if path not in copied_paths]
+    if missing_pinned:
+        raise RuntimeError(
+            "EXPLICIT_TASK_PATH_NOT_SELECTED:" + ",".join(sorted(missing_pinned))
+        )
     return copied
 
 
@@ -398,7 +532,7 @@ def build_layers(repo: Path, selected: List[Dict[str, Any]]) -> List[Dict[str, A
 def zip_dir(src: Path, dst: Path) -> None:
     atomic_zip_dir(src, dst, include_root=False, compression_level=8)
 
-def write_reports(out_dir: Path, repo: Path, args: argparse.Namespace, surfaces: Dict[str, Any], hits: List[Dict[str, Any]], selected: List[Dict[str, Any]], layers: List[Dict[str, Any]], git_state: Dict[str, Any]) -> None:
+def write_reports(out_dir: Path, repo: Path, args: argparse.Namespace, surfaces: Dict[str, Any], hits: List[Dict[str, Any]], selected: List[Dict[str, Any]], layers: List[Dict[str, Any]], git_state: Dict[str, Any], explicit_paths: Dict[str, List[str]]) -> None:
     reports = out_dir / "reports"
     auth = out_dir / ".governance" / "current"
     reports.mkdir(parents=True, exist_ok=True)
@@ -427,6 +561,9 @@ def write_reports(out_dir: Path, repo: Path, args: argparse.Namespace, surfaces:
         "hits_count": len(hits),
         "selected_files_count": len(selected),
         "selected_files": selected,
+        "explicit_task_paths": explicit_paths["requested"],
+        "explicit_existing_paths": explicit_paths["existing"],
+        "explicit_missing_paths": explicit_paths["missing"],
         "missing_expected_authority_files": missing,
         "layer_map_required": True,
         "layer_map_count": len(layers),
@@ -472,7 +609,7 @@ def write_reports(out_dir: Path, repo: Path, args: argparse.Namespace, surfaces:
         except Exception:
             pass
     (reports / "CONTRACT_AND_GATE_MATRIX.json").write_text(json.dumps(contract, indent=2, ensure_ascii=False), encoding="utf-8")
-    risk = ["# MISSING_OR_UNMAPPED_RISK", "", "## Missing expected authority files", *([f"- `{m}`" for m in missing] if missing else ["- None detected"]), "", "## Risks", "- Do not patch from screenshot only.", "- Confirm canonical TSX/CSS owners before visual changes.", "- Do not use priority overrides or `!important`.", "- Re-run context after any repo state change before patching."]
+    risk = ["# MISSING_OR_UNMAPPED_RISK", "", "## Missing expected authority files", *([f"- `{m}`" for m in missing] if missing else ["- None detected"]), "", "## Explicit task paths not present in repo", *([f"- `{m}`" for m in explicit_paths["missing"]] if explicit_paths["missing"] else ["- None detected"]), "", "## Risks", "- Explicit existing task paths are authority-pinned and must appear in selected_files.", "- Explicit missing task paths are evidence only; do not treat them as implemented.", "- Do not patch from screenshot only.", "- Confirm canonical TSX/CSS owners before visual changes.", "- Do not use priority overrides or `!important`.", "- Re-run context after any repo state change before patching."]
     (reports / "MISSING_OR_UNMAPPED_RISK.md").write_text("\n".join(risk), encoding="utf-8")
     env = f"""# AGENT_PROMPT_ENVELOPE
 
@@ -495,7 +632,7 @@ Rules:
 - No process kill, no port free, no dev server start, no hot Prisma.
 """
     (reports / "AGENT_PROMPT_ENVELOPE.md").write_text(env, encoding="utf-8")
-    report = ["# AUTHORITY_MESH_REPORT", "", f"Generated: {_dt.datetime.now().isoformat()}", f"Repo: `{repo}`", f"Task: {args.task}", "", "## Summary", f"- Workers: `{args.workers}`", f"- Shards: `{args.shards}`", f"- Hits: `{len(hits)}`", f"- Selected files: `{len(selected)}`", f"- Layer entries: `{len(layers)}`", f"- Git status return code: `{git_state.get('status_short', {}).get('returncode')}`", "", "## Status", "PASS: compact task-scoped Mesh generated with mandatory layer map."]
+    report = ["# AUTHORITY_MESH_REPORT", "", f"Generated: {_dt.datetime.now().isoformat()}", f"Repo: `{repo}`", f"Task: {args.task}", "", "## Summary", f"- Workers: `{args.workers}`", f"- Shards: `{args.shards}`", f"- Hits: `{len(hits)}`", f"- Selected files: `{len(selected)}`", f"- Explicit existing paths: `{len(explicit_paths['existing'])}`", f"- Explicit missing paths: `{len(explicit_paths['missing'])}`", f"- Layer entries: `{len(layers)}`", f"- Git status return code: `{git_state.get('status_short', {}).get('returncode')}`", "", "## Status", "PASS: compact task-scoped Mesh generated with mandatory layer map."]
     (reports / "AUTHORITY_MESH_REPORT.md").write_text("\n".join(report), encoding="utf-8")
     (reports / "hits.json").write_text(json.dumps(hits, indent=2, ensure_ascii=False), encoding="utf-8")
     (out_dir / "CONTINUATION.md").write_text("\n".join(report) + "\n\nUpload this ZIP before patching.\n", encoding="utf-8")
@@ -542,7 +679,83 @@ def self_test() -> int:
         assert result["entries"] == 1
         assert target.exists()
 
-    print(f"AUTOMESH V6 SELFTEST OK: sharders=54 global_worker_peak={peak}/18 atomic_zip=pass unique_run=pass")
+        explicit_repo = root / "explicit_repo"
+        explicit_repo.mkdir()
+        explicit_rel = "tools/code-atlas/src/code_atlas/operational/features50.py"
+        planned_rel = "tools/code-atlas/src/code_atlas/operational/verify_capability_registry.py"
+        explicit_file = explicit_repo / explicit_rel
+        explicit_file.parent.mkdir(parents=True, exist_ok=True)
+        explicit_file.write_text("FEATURE_SPECS = []\n", encoding="utf-8")
+        noise = explicit_repo / "noise" / "high-score.py"
+        noise.parent.mkdir(parents=True, exist_ok=True)
+        noise.write_text("noise = True\n", encoding="utf-8")
+
+        explicit = extract_explicit_task_paths(
+            explicit_repo,
+            f"modify {explicit_rel} and create {planned_rel}",
+        )
+        assert explicit["requested"] == [explicit_rel, planned_rel], explicit
+        assert explicit["existing"] == [explicit_rel], explicit
+        assert explicit["missing"] == [planned_rel], explicit
+
+        selection_out = root / "selection_out"
+        selected = copy_selected(
+            explicit_repo,
+            selection_out,
+            [{
+                "path": "noise/high-score.py",
+                "score": 50_000,
+                "size": noise.stat().st_size,
+                "sha256": sha256(noise),
+                "suffix": ".py",
+                "terms": ["noise"],
+                "snippets": [],
+            }],
+            max_files=1,
+            max_mb=1,
+            explicit_existing_paths=explicit["existing"],
+        )
+        assert [item["path"] for item in selected] == [explicit_rel], selected
+        assert "explicit-task-path" in selected[0]["terms"], selected
+
+        second_rel = "tools/code-atlas/src/code_atlas/operational/runner.py"
+        second_file = explicit_repo / second_rel
+        second_file.parent.mkdir(parents=True, exist_ok=True)
+        second_file.write_text("def run():\n    return None\n", encoding="utf-8")
+        two_explicit = extract_explicit_task_paths(
+            explicit_repo,
+            f"modify {explicit_rel} and {second_rel}",
+        )
+        try:
+            copy_selected(
+                explicit_repo,
+                root / "selection_overflow",
+                [],
+                max_files=1,
+                max_mb=1,
+                explicit_existing_paths=two_explicit["existing"],
+            )
+        except RuntimeError as exc:
+            assert "MANDATORY_SELECTION_EXCEEDS_MAX_FILES" in str(exc)
+        else:
+            raise AssertionError("mandatory explicit paths were silently truncated")
+
+        for unsafe_task in (
+            "../escape/bad.py",
+            r"C:\escape\bad.py",
+            "/escape/bad.py",
+        ):
+            try:
+                extract_explicit_task_paths(explicit_repo, f"inspect {unsafe_task}")
+            except RuntimeError as exc:
+                assert "UNSAFE_EXPLICIT_TASK_PATH" in str(exc)
+            else:
+                raise AssertionError(f"unsafe explicit path accepted: {unsafe_task}")
+
+    print(
+        f"AUTOMESH V6 SELFTEST OK: sharders=54 global_worker_peak={peak}/18 "
+        "atomic_zip=pass unique_run=pass explicit_path_pinning=pass"
+    )
     return 0
 
 
@@ -591,6 +804,16 @@ def run_mesh(args: argparse.Namespace) -> int:
         _REPORTER.emit(18, "detectando superficies y tokens")
         surfaces = detect_surfaces(args.task, args.surface)
         terms = tokenize(args.task, args.surface)
+        explicit_paths = extract_explicit_task_paths(repo, args.task)
+        _REPORTER.emit(
+            22,
+            "resolviendo paths explícitos de autoridad",
+            details={
+                "explicit_requested": len(explicit_paths["requested"]),
+                "explicit_existing": len(explicit_paths["existing"]),
+                "explicit_missing": len(explicit_paths["missing"]),
+            },
+        )
 
         _REPORTER.emit(28, "iniciando inventario secuencial seguro")
         files = iter_files(repo)
@@ -633,14 +856,14 @@ def run_mesh(args: argparse.Namespace) -> int:
             executor = None
 
         _REPORTER.emit(74, "copiando candidatos a workspace privado", details={"hits": len(hits)})
-        selected = copy_selected(repo, out_dir, hits, args.max_files, args.max_mb)
+        selected = copy_selected(repo, out_dir, hits, args.max_files, args.max_mb, explicit_paths["existing"])
         _REPORTER.emit(82, "generando layer map obligatorio", done=len(selected))
         layers = build_layers(repo, selected)
         if not layers:
             raise RuntimeError("LAYER_MAP_EMPTY: Mesh incompleto, ajusta task/surface.")
 
         _REPORTER.emit(89, "escribiendo matrices y reportes", done=len(layers))
-        write_reports(out_dir, repo, args, surfaces, hits, selected, layers, git_state)
+        write_reports(out_dir, repo, args, surfaces, hits, selected, layers, git_state, explicit_paths)
         required_evidence = [
             ".governance/current/AUTHORITY_READSET.lock.json",
             "reports/APP_IMPACT_MATRIX.md",
@@ -676,6 +899,9 @@ def run_mesh(args: argparse.Namespace) -> int:
             "files_inventoried": len(files),
             "hits": len(hits),
             "selected": len(selected),
+            "explicit_task_paths": explicit_paths["requested"],
+            "explicit_existing_paths": explicit_paths["existing"],
+            "explicit_missing_paths": explicit_paths["missing"],
             "layers": len(layers),
             "budget_root": str(Path(args.budget_root).expanduser().resolve()),
             "collision_proof_workspace": str(work_root),
