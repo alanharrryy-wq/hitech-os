@@ -1,14 +1,19 @@
 {
-  "schemaVersion": "code_atlas_neutrality_contract.v2",
+  "schemaVersion": "code_atlas_neutrality_contract.v3",
   "status": "ENFORCED_FAIL_CLOSED_FULL_SOURCE",
-  "rule": "All reusable Code Atlas source under src/code_atlas must be machine-neutral, repository-neutral and product-neutral. Product-specific behavior may exist only behind explicit profiles or named adapter files and must never be selected implicitly.",
+  "rule": "All reusable Code Atlas source under src/code_atlas must be machine-neutral, repository-neutral and product-neutral. Product-specific behavior may exist only behind explicit profiles or named adapter boundaries and must never be selected implicitly.",
   "neutralRoots": [
     "src/code_atlas"
   ],
   "neutralFiles": [],
   "adapterRoots": [
     "profiles",
-    "docs"
+    "docs",
+    "src/code_atlas/ui_bridge",
+    "src/code_atlas/tablet_map",
+    "src/code_atlas/surface_target_atlas",
+    "src/code_atlas/appbrain_batch_packager",
+    "src/code_atlas/app_map/uimap"
   ],
   "adapterFiles": [
     "src/code_atlas/operational/support_resolver.py",
@@ -22,17 +27,40 @@
     "src/code_atlas/motors/smart_allmesh_controller.py",
     "src/code_atlas/legal_readiness/registry.py",
     "src/code_atlas/ui/legal_readiness.py",
+    "src/code_atlas/ui/motor_hub.py",
     "src/code_atlas/operational/suite50.py",
     "src/code_atlas/appbrain_workbench/runner.py",
-    "src/code_atlas/appbrain_workbench/cli.py"
+    "src/code_atlas/appbrain_workbench/cli.py",
+    "src/code_atlas/app_map/runner.py",
+    "src/code_atlas/app_map/safety_contracts.py",
+    "src/code_atlas/app_map/verify_app_map.py",
+    "src/code_atlas/app_map/verify_app_map_strict.py",
+    "src/code_atlas/app_map/verify_visual_safety_contracts.py",
+    "src/code_atlas/evidence_ingestion/gate_reconcile.py",
+    "src/code_atlas/evidence_ingestion/licscope_evidence_adapter.py",
+    "src/code_atlas/evidence_ingestion/verify_licscope_evidence_adapter.py",
+    "src/code_atlas/evidence_ingestion/surface_resolver_verify.py",
+    "src/code_atlas/evidence_ingestion/triad_close.py"
   ],
+  "adapterReasons": {
+    "src/code_atlas/ui_bridge": "Legacy product UI application bridge with product-specific binding contracts.",
+    "src/code_atlas/tablet_map": "Explicit tablet-surface compatibility adapter; a tablet surface is not a universal Code Atlas assumption.",
+    "src/code_atlas/surface_target_atlas": "Legacy product surface-target implementation with fixed product surface semantics; generic target discovery is profile-driven elsewhere.",
+    "src/code_atlas/appbrain_batch_packager": "Legacy tri-surface product batch packager; external projects provide their own app inventory through profiles.",
+    "src/code_atlas/app_map/uimap": "Product UI-component atlas compatibility implementation; default App Map now uses generic_runner.py.",
+    "src/code_atlas/ui/motor_hub.py": "Existing premium product Motor Hub retained for compatibility; default UI export uses generic_motor_hub.py.",
+    "src/code_atlas/app_map/runner.py": "Existing product App Map retained for compatibility; default App Map export and CLI use generic_runner.py.",
+    "src/code_atlas/evidence_ingestion/gate_reconcile.py": "Product Factory-Ledger/evidence reconciliation adapter.",
+    "src/code_atlas/evidence_ingestion/licscope_evidence_adapter.py": "Explicit product licensing-scope evidence adapter.",
+    "src/code_atlas/evidence_ingestion/triad_close.py": "Legacy product evidence triad closer that writes product registers; never selected by neutral execution."
+  },
   "adapterSelectionRule": "Explicit opt-in only through CODE_ATLAS_PROFILE/profile metadata or an adapter-specific entrypoint. Generic imports and entrypoints must not select an adapter implicitly.",
   "forbiddenInNeutralPath": [
     "any absolute Windows work path",
     "developer home paths on POSIX systems",
     "fixed repository names",
     "fixed product application paths",
-    "product domains or product labels",
+    "product domains or product-only labels",
     "fixed localhost ports",
     "fixed product surface taxonomy",
     "implicit product adapter selection"
