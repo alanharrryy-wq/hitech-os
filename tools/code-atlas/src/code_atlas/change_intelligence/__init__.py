@@ -16,6 +16,7 @@ from .reporting import render_change_model_markdown, render_verification_markdow
 from .roi import build_roi_event, derive_financial_estimate
 from .runner_contract import build_runner_plan, validate_runner_egress
 from .sessions import normalize_agent_session
+from .universal_binding import prepare_change, verify_prepared_change
 from .verification import verify_change
 
 __all__ = [
@@ -40,5 +41,7 @@ __all__ = [
     "build_runner_plan",
     "validate_runner_egress",
     "normalize_agent_session",
+    "prepare_change",
+    "verify_prepared_change",
     "verify_change",
 ]

@@ -5,6 +5,8 @@ from typing import Any, Mapping
 
 from .contracts import ContractError, SUPPORT_LEVELS, decision_precedence, normalize_repo_path, sha256_json, utc_now_iso
 
+_EVIDENCE_STATES = {"SATISFIED", "PENDING", "MISSING", "UNKNOWN", "CONFLICTED"}
+
 
 def _normalize_target(item: Mapping[str, Any], field: str) -> dict[str, Any]:
     if not isinstance(item, Mapping):
@@ -69,7 +71,7 @@ def compose_change_model(
         evidence_id = str(item.get("id", "")).strip()
         if not evidence_id:
             raise ContractError(f"required_evidence[{index}].id is required")
-        if item.get("status") not in {"SATISFIED", "MISSING", "UNKNOWN", "CONFLICTED"}:
+        if item.get("status") not in _EVIDENCE_STATES:
             raise ContractError(f"required_evidence[{index}].status is invalid")
         if item.get("status") in {"MISSING", "CONFLICTED"}:
             missing_required.append(evidence_id)
@@ -79,7 +81,12 @@ def compose_change_model(
     if missing_required:
         blocking_items.append("required evidence missing or conflicted")
 
-    uncertain = bool(unknowns or contradictions or unsupported_primary or any(item.get("status") == "UNKNOWN" for item in required))
+    uncertain = bool(
+        unknowns
+        or contradictions
+        or unsupported_primary
+        or any(item.get("status") == "UNKNOWN" for item in required)
+    )
     decision = decision_precedence(
         "BLOCKED" if blocking_items else "PASS",
         "UNKNOWN" if uncertain else "PASS",
