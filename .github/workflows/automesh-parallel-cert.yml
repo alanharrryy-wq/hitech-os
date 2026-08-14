@@ -57,7 +57,7 @@ jobs:
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
 
   cloudcust-ledger-mesh:
-    name: Cloud Center customer registration ledger mesh
+    name: Cloud Ctr customer registration ledger mesh
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -74,15 +74,17 @@ jobs:
           python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
           --repo apps/terminal-de-venta-system
           --output .governance/current
-          --full
-          --task "REGISTRAR EL CIERRE POST-MERGE Y LA EVIDENCIA ANTI-RETRABAJO DE PR #254 PARA EL RUNTIME GOBERNADO DE ALTA DE CLIENTES DE PRISMA CLOUD CTR: tratar Prisma Cloud Ctr como capacidad ya certificada y consultar su source/runtime únicamente como autoridad read-only; autorizar como writes posteriores solamente PRISMA Factory Ledger, PRISMA_EVIDENCE_INDEX, PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX, PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP y, si corresponde, una entrada documental de cierre operativo; registrar como evidencia histórica el merge commit 2557f4e0efa5204a5cad650e71382ff21bcb1b84, verificador local customer registration 24/24 PASS, Chrome/Playwright E2E 11/11 PASS, POST /api/command-center/draft-client HTTP 200, cero console errors, cero failed requests y gates finales PASS CI, ForgeOS Quality Gate, Zero Priority Gate, License Pricing Canon, Commercial Billing Authority, repo-analyzer-self-test y CLA Check; clasificar el trabajo como FIX de metadatos anti-retrabajo, no BUILD; registrar capability cloud_center.customer_registration_runtime como DONE / RUNTIME_VERIFIED / doNotRebuild=true; siguiente gate CUSTOMER_CLOUD_ACTIVATION, no reconstrucción del alta local ya mergeada; incluir Prisma Cloud Ctr read-only, Governance, Quality y Factory Ledger; excluir Tablet, PC, Mobile, Chart Lab, Shared UI, Web, Control Center, Support Resolver, database-sync, shared-kernel, Prisma schema, Cloudflare y D1; no modificar runtime, UI, CSS, source de producto, procesos, puertos ni dev servers; exigir Layer Map, auditoría, no fake green, evidencia trazable y delimitación explícita de lo que esta certificación no prueba."
+          --task "REGISTRAR CIERRE POST-MERGE DE LA CAPACIDAD CUSTOMER REGISTRATION DE CLOUD CTR EN FACTORY LEDGER: usar PR #254 y merge commit 2557f4e0efa5204a5cad650e71382ff21bcb1b84 como evidencia histórica; clasificación FIX de metadatos anti-retrabajo, no BUILD; registrar capability cloud_center.customer_registration_runtime como DONE, RUNTIME_VERIFIED y doNotRebuild=true; evidencia certificada: verifier local 24/24 PASS, Chrome E2E 11/11 PASS, POST draft-client HTTP 200, cero console errors, cero failed requests y gates finales PASS; writes posteriores exclusivamente en Factory Ledger, evidence index, registration index, do-not-rebuild map y nota operativa de cierre si aplica; source y operational runtime quedan read-only; cualquier app, superficie o infraestructura que no sea necesaria para este cierre de ledger queda excluida; siguiente gate CUSTOMER_CLOUD_ACTIVATION; no mutar product source; exigir no fake green, evidencia trazable y layer map."
 
-      - name: Require canonical Mesh outputs and build closure layers map
+      - name: Require exact scope, canonical outputs, hashes and closure layers map
         shell: python
         run: |
+          import hashlib
           import json
           from pathlib import Path
-          root = Path('apps/terminal-de-venta-system/.governance/current')
+
+          repo = Path('apps/terminal-de-venta-system')
+          root = repo / '.governance/current'
           required = [
               'AUTHORITY_READSET.lock.json',
               'APP_IMPACT_MATRIX.md',
@@ -94,35 +96,93 @@ jobs:
           missing = [name for name in required if not (root / name).exists()]
           if missing:
               raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+
           lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
           if lock.get('status') != 'PASS':
               raise SystemExit('Authority Mesh status is not PASS')
+          if lock.get('full_mode') is not False:
+              raise SystemExit('Mesh unexpectedly ran in full mode')
+
           task = str(lock.get('task', ''))
-          if 'PR #254' not in task or 'cloud_center.customer_registration_runtime' not in task:
+          required_identity = ('PR #254', 'cloud_center.customer_registration_runtime', 'CUSTOMER_CLOUD_ACTIVATION')
+          if not all(token in task for token in required_identity):
               raise SystemExit('Task-exact Authority Mesh identity missing')
-          tokens = ('cloud', 'customer', 'governance', 'quality', 'factory', 'authority', 'commercial', 'billing', 'licens')
-          entries = [item for item in lock.get('readset', []) if any(token in str(item.get('path', '')).lower() for token in tokens)]
-          if not entries:
-              raise SystemExit('No relevant authority/layer entries found in fresh readset')
+
+          expected_apps = ['productization', 'quality']
+          actual_apps = sorted(lock.get('apps_detected', []))
+          if actual_apps != expected_apps:
+              raise SystemExit(f'Unexpected app scope: {actual_apps}; expected {expected_apps}')
+          actual_types = sorted(lock.get('change_types_detected', []))
+          if actual_types:
+              raise SystemExit(f'Unexpected change types: {actual_types}; expected []')
+
+          source_refs = [
+              'Prisma Cloud Ctr/internal/config/customer_registration_catalogs.canonical.json',
+              'Prisma Cloud Ctr/internal/py/command_center_store.py',
+              'Prisma Cloud Ctr/internal/py/customer_registration.py',
+              'Prisma Cloud Ctr/internal/py/customer_registration_runtime.py',
+              'Prisma Cloud Ctr/internal/web/cloud_command_center.html',
+              'Prisma Cloud Ctr/internal/web/cloud_command_center.js',
+              'tools/verify-cloud-center-customer-registration-01.py',
+              'tools/verify-cloud-center-customer-runtime-02.py',
+          ]
+          source_hashes = []
+          for rel in source_refs:
+              path = repo / rel
+              if not path.exists():
+                  raise SystemExit('Missing certified Cloud Ctr source reference: ' + rel)
+              raw = path.read_bytes()
+              source_hashes.append({
+                  'path': rel,
+                  'bytes': len(raw),
+                  'sha256': hashlib.sha256(raw).hexdigest(),
+                  'mode': 'READ_ONLY_REFERENCE',
+              })
+          (root / 'CLOUDCUST_LEDGER_SOURCE_HASHES.json').write_text(
+              json.dumps({
+                  'schemaVersion': 'prisma.cloudcust-ledger-source-hashes.v1',
+                  'authorityMeshStatus': lock.get('status'),
+                  'capabilityId': 'cloud_center.customer_registration_runtime',
+                  'mergeCommit': '2557f4e0efa5204a5cad650e71382ff21bcb1b84',
+                  'mutationAllowed': False,
+                  'files': source_hashes,
+              }, indent=2) + '\n',
+              encoding='utf-8',
+          )
+
+          declared_excluded = [
+              'tablet', 'pc', 'mobile', 'chart-lab', 'shared-ui', 'web',
+              'control-center', 'backgrounds', 'database-sync', 'shared-kernel',
+              'prisma-schema', 'cloudflare', 'd1', 'product-runtime',
+          ]
+          readset = lock.get('readset', [])
+          entries = [item for item in readset if item.get('source_id') in ('app:productization', 'app:quality', 'quality:always', 'no_fake_green', 'traceable_operation', 'release_evidence_required')]
           lines = [
-              '# PRISMA Cloud Center Customer Registration Ledger Layers Map',
+              '# Cloud Ctr Customer Registration Ledger Layers Map',
               '',
               '- Change class: post-merge anti-rework metadata registration only.',
-              '- Product capability: Cloud Center customer-registration runtime is read-only and already certified by PR #254.',
-              '- Intended future writes: Factory Ledger and evidence/governance registration only.',
-              '- Excluded product surfaces: Tablet, PC, Mobile, Chart Lab, Shared UI, Web, Control Center, Support Resolver.',
-              '- Excluded infrastructure: Prisma schema, Cloudflare, D1, processes, ports, dev servers.',
-              '- Next product gate: CUSTOMER_CLOUD_ACTIVATION.',
+              '- Capability: `cloud_center.customer_registration_runtime`.',
+              '- Product capability source: read-only historical reference from PR #254.',
+              '- Allowed future mutations: Factory Ledger/evidence registration only.',
+              '- Next product gate: `CUSTOMER_CLOUD_ACTIVATION`.',
+              '- Authority Mesh app scope: `productization`, `quality` only.',
+              '- Change types detected: none.',
+              '- Explicitly excluded: ' + ', '.join(f'`{x}`' for x in declared_excluded) + '.',
               '',
-              '| Authority path | Reason |',
-              '|---|---|',
+              '## Certified Cloud Ctr source references',
+              '',
+              '| Path | SHA-256 | Mode |',
+              '|---|---|---|',
           ]
+          for item in source_hashes:
+              lines.append(f"| `{item['path']}` | `{item['sha256']}` | READ_ONLY_REFERENCE |")
+          lines += ['', '## Authority readset highlights', '', '| Authority path | Reason |', '|---|---|']
           for item in entries[:120]:
               path = str(item.get('path', '')).replace('|', '/')
               reason = str(item.get('reason', '')).replace('|', '/')
               lines.append(f'| `{path}` | {reason} |')
           (root / 'CLOUDCUST_LEDGER_LAYERS_MAP.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
-          print('PASS_CLOUDCUST_TASK_EXACT_AUTHORITY_MESH')
+          print('PASS_CLOUDCUST_NARROW_TASK_EXACT_AUTHORITY_MESH')
 
       - name: Verify mesh is read-only relative to repository source
         shell: bash
@@ -151,3 +211,4 @@ jobs:
             apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
             apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
             apps/terminal-de-venta-system/.governance/current/CLOUDCUST_LEDGER_LAYERS_MAP.md
+            apps/terminal-de-venta-system/.governance/current/CLOUDCUST_LEDGER_SOURCE_HASHES.json
