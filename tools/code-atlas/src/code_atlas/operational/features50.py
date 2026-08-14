@@ -1,10 +1,5 @@
 from __future__ import annotations
 
-# Compatibility registry.
-#
-# IMPORTANT: ``status`` is a legacy registry field retained for older callers.
-# It is not a certification state. Use ``get_hardened_feature_specs()`` for the
-# reconciled implementation/maturity view.
 FEATURE_REGISTRY_VERSION = "2.0.0"
 LEGACY_STATUS_FIELD = "status"
 LEGACY_STATUS_SEMANTICS = (
@@ -12,249 +7,121 @@ LEGACY_STATUS_SEMANTICS = (
     "binding nor contract maturity nor production certification."
 )
 
-FEATURE_SPECS = [{'id': 'operational_evidence_atlas_row_level',
-  'title': 'Operational Evidence Atlas row-level',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'client_followup_atlas',
-  'title': 'Client Follow-up Atlas / CLIENT_OPERATIONS_MATRIX',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'device_claim_crosscheck',
-  'title': 'Device Claim Crosscheck',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'sales_lineage_matrix',
-  'title': 'Sales Lineage Matrix',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'flow_health_map',
-  'title': 'Flow Health Map',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'breakage_radar',
-  'title': 'Breakage Radar',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'snapshot_diff_engine',
-  'title': 'Snapshot Diff Engine',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'contract_coverage_matrix',
-  'title': 'Contract Coverage Matrix',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'customer_visible_scanner',
-  'title': 'Customer Visible Scanner',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'surface_role_matrix',
-  'title': 'Surface Role Matrix',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'operational_timeline',
-  'title': 'Operational Timeline',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'why_this_is_red',
-  'title': 'WHY_THIS_IS_RED',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'client_risk_score',
-  'title': 'Client Risk Score',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'next_best_action_engine',
-  'title': 'Next Best Action Engine',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'orphan_detector',
-  'title': 'Orphan Detector',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'duplicate_detector',
-  'title': 'Duplicate Detector',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'staleness_monitor',
-  'title': 'Staleness Monitor',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'schema_drift_guard',
-  'title': 'Schema Drift Guard',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'fixture_contamination_scanner',
-  'title': 'Fixture Contamination Scanner',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'audit_completeness_matrix',
-  'title': 'Audit Completeness Matrix',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'data_lineage_graph',
-  'title': 'Data Lineage Graph',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'impact_radius_calculator',
-  'title': 'Impact Radius Calculator',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'safe_fix_recommendation_map',
-  'title': 'Safe Fix Recommendation Map',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'verifier_coverage_map',
-  'title': 'Verifier Coverage Map',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'runtime_evidence_links',
-  'title': 'Runtime Evidence Links',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'api_data_map',
-  'title': 'API Data Map',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'secret_exposure_guard',
-  'title': 'Secret Exposure Guard',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'production_gate_readiness',
-  'title': 'Production Gate Readiness',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'human_operator_summary',
-  'title': 'Human Operator Summary',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'machine_continuation_pack',
-  'title': 'Machine Continuation Pack / CONTINUATION_SUPREME',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'atlas_query_console',
-  'title': 'Atlas Query Console',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'entity_detail_drawer',
-  'title': 'Entity Detail Drawer',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'evidence_confidence_score',
-  'title': 'Evidence Confidence Score',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'ownership_map',
-  'title': 'Ownership Map',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'do_not_touch_map',
-  'title': 'Do Not Touch Map',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'safe_scope_guard',
-  'title': 'Safe Scope Guard',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'data_quality_ruleset',
-  'title': 'Data Quality Ruleset',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'reconciliation_recipes',
-  'title': 'Reconciliation Recipes',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'alert_rules_export',
-  'title': 'Alert Rules Export',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'evidence_bundle_index',
-  'title': 'Evidence Bundle Index',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'pii_privacy_classifier',
-  'title': 'PII/Privacy Classifier',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'support_ticket_generator',
-  'title': 'Support Ticket Generator',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'release_readiness_matrix',
-  'title': 'Release Readiness Matrix',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'historical_trend_mini_atlas',
-  'title': 'Historical Trend Mini Atlas',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'trust_source_level_per_datum',
-  'title': 'Trust/source level per datum',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'atlas_manifest_plus',
-  'title': 'ATLAS_MANIFEST_PLUS',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'can_patch_decision',
-  'title': 'CAN_PATCH_DECISION',
-  'status': 'implemented_v1',
-  'note': 'Implemented v1 with safe heuristic evidence; keep improving with real contracts.'},
- {'id': 'client_setup_journey_map',
-  'title': 'Client Setup Journey Map',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'multi_tenant_leakage_guard',
-  'title': 'Multi-Tenant Leakage Guard',
-  'status': 'placeholder_blocked',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'},
- {'id': 'golden_path_comparator',
-  'title': 'Golden Path Comparator',
-  'status': 'placeholder_v1',
-  'note': 'PLACEHOLDER: replace when real evidence/contract exists.'}]
+_PLACEHOLDER_IDS = {
+    "snapshot_diff_engine",
+    "surface_role_matrix",
+    "operational_timeline",
+    "client_risk_score",
+    "orphan_detector",
+    "staleness_monitor",
+    "audit_completeness_matrix",
+    "data_lineage_graph",
+    "runtime_evidence_links",
+    "atlas_query_console",
+    "entity_detail_drawer",
+    "historical_trend_mini_atlas",
+    "client_setup_journey_map",
+    "golden_path_comparator",
+}
+_BLOCKED_ID = "multi_tenant_leakage_guard"
+_FEATURE_IDS = (
+    "operational_evidence_atlas_row_level",
+    "client_followup_atlas",
+    "device_claim_crosscheck",
+    "sales_lineage_matrix",
+    "flow_health_map",
+    "breakage_radar",
+    "snapshot_diff_engine",
+    "contract_coverage_matrix",
+    "customer_visible_scanner",
+    "surface_role_matrix",
+    "operational_timeline",
+    "why_this_is_red",
+    "client_risk_score",
+    "next_best_action_engine",
+    "orphan_detector",
+    "duplicate_detector",
+    "staleness_monitor",
+    "schema_drift_guard",
+    "fixture_contamination_scanner",
+    "audit_completeness_matrix",
+    "data_lineage_graph",
+    "impact_radius_calculator",
+    "safe_fix_recommendation_map",
+    "verifier_coverage_map",
+    "runtime_evidence_links",
+    "api_data_map",
+    "secret_exposure_guard",
+    "production_gate_readiness",
+    "human_operator_summary",
+    "machine_continuation_pack",
+    "atlas_query_console",
+    "entity_detail_drawer",
+    "evidence_confidence_score",
+    "ownership_map",
+    "do_not_touch_map",
+    "safe_scope_guard",
+    "data_quality_ruleset",
+    "reconciliation_recipes",
+    "alert_rules_export",
+    "evidence_bundle_index",
+    "pii_privacy_classifier",
+    "support_ticket_generator",
+    "release_readiness_matrix",
+    "historical_trend_mini_atlas",
+    "trust_source_level_per_datum",
+    "atlas_manifest_plus",
+    "can_patch_decision",
+    "client_setup_journey_map",
+    "multi_tenant_leakage_guard",
+    "golden_path_comparator",
+)
+
+
+def _title(feature_id: str) -> str:
+    return " ".join(word.upper() if word in {"api", "pii"} else word.capitalize() for word in feature_id.split("_"))
+
+
+def _status(feature_id: str) -> str:
+    if feature_id == _BLOCKED_ID:
+        return "placeholder_blocked"
+    if feature_id in _PLACEHOLDER_IDS:
+        return "placeholder_v1"
+    return "implemented_v1"
+
+
+FEATURE_SPECS = [
+    {
+        "id": feature_id,
+        "title": _title(feature_id),
+        "status": _status(feature_id),
+        "note": (
+            "Legacy registry placeholder; current implementation and certification state are resolved by the hardening contract."
+            if feature_id in _PLACEHOLDER_IDS or feature_id == _BLOCKED_ID
+            else "Legacy compatibility entry; current implementation and certification state are resolved by the hardening contract."
+        ),
+    }
+    for feature_id in _FEATURE_IDS
+]
 
 
 def get_hardened_feature_specs():
     from .capability_contracts import build_capability_specs
+
     return build_capability_specs(FEATURE_SPECS)
 
 
 def validate_feature_registry():
     from .capability_contracts import validate_capability_specs
+
     return validate_capability_specs(get_hardened_feature_specs())
 
-# DBEVLINK_LICSCOPE_BRIDGE_AUTOPATCH_START
-def _dbevlink_bridge_wrap(fn):
-    def _wrapped(*args, **kwargs):
-        result = fn(*args, **kwargs)
-        try:
-            from pathlib import Path as _Path
-            from code_atlas.operational.licscope_bridge import apply_bridge_to_output_dir as _apply_bridge
-            _repo = kwargs.get('repo_root') or kwargs.get('repo') or kwargs.get('root')
-            _out = kwargs.get('output_dir') or kwargs.get('out_dir') or kwargs.get('output_root') or kwargs.get('output')
-            if isinstance(result, dict):
-                _repo = _repo or result.get('repo') or result.get('repo_root')
-                _out = _out or result.get('output_dir') or result.get('out_dir') or result.get('output')
-                _html = result.get('html_path') or result.get('viewer_html')
-                if not _out and _html:
-                    _out = str(_Path(_html).parent)
-            if _repo and _out:
-                _apply_bridge(_Path(_repo), _Path(_out))
-        except Exception as _exc:
-            try:
-                if isinstance(result, dict):
-                    result.setdefault('licscopeBridgeWarning', str(_exc))
-            except Exception:
-                pass
-        return result
-    return _wrapped
 
-for _dbevlink_name in ('run', 'run_operational_atlas', 'generate', 'generate_operational_atlas', 'build_operational_atlas'):
-    try:
-        if _dbevlink_name in globals() and callable(globals()[_dbevlink_name]) and not getattr(globals()[_dbevlink_name], '_dbevlink_wrapped', False):
-            _dbevlink_fn = _dbevlink_bridge_wrap(globals()[_dbevlink_name])
-            _dbevlink_fn._dbevlink_wrapped = True
-            globals()[_dbevlink_name] = _dbevlink_fn
-    except Exception:
-        pass
-# DBEVLINK_LICSCOPE_BRIDGE_AUTOPATCH_END
+__all__ = [
+    "FEATURE_REGISTRY_VERSION",
+    "FEATURE_SPECS",
+    "LEGACY_STATUS_FIELD",
+    "LEGACY_STATUS_SEMANTICS",
+    "get_hardened_feature_specs",
+    "validate_feature_registry",
+]
