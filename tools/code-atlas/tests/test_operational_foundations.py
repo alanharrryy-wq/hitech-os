@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 from unittest import mock
 
-from code_atlas.operational import hardened_runner, html_tabs
+from code_atlas.operational import final_runner, hardened_runner, html_tabs
 from code_atlas.operational.assurance_foundation import validate_runtime_artifact
 from code_atlas.operational.evidence_foundation import (
     VOLATILE_KEYS,
@@ -114,8 +114,8 @@ class OperationalFoundationTests(unittest.TestCase):
         self.assertIn("CROSS_SCOPE_PARENT_CONFLICT", device["reasons"])
         self.assertFalse(graph["productionCertified"])
 
-    def test_html_tabs_cannot_bypass_hardening(self) -> None:
-        self.assertIs(html_tabs.run_operational_evidence, hardened_runner.run_operational_atlas)
+    def test_html_tabs_cannot_bypass_final_hardening(self) -> None:
+        self.assertIs(html_tabs.run_operational_evidence, final_runner.run_operational_atlas)
 
     def test_integrated_runner_emits_foundations_but_keeps_certification_false(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

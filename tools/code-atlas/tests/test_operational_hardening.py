@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from code_atlas.operational import hardened_runner
+from code_atlas.operational import final_runner, hardened_runner
 from code_atlas.operational import breakage, client_followup, device_claims, flow_health, gates, sales_lineage
 from code_atlas.operational.capability_contracts import (
     FORMER_PLACEHOLDERS,
@@ -58,8 +58,8 @@ class OperationalHardeningTests(unittest.TestCase):
         self.assertIn("negative_cross_tenant_tests_missing", spec["hardBlockers"])
         self.assertFalse(spec["certifiable"])
 
-    def test_legacy_run_shims_route_through_hardened_runner(self) -> None:
-        expected = hardened_runner.run_operational_atlas
+    def test_legacy_run_shims_route_through_final_runner(self) -> None:
+        expected = final_runner.run_operational_atlas
         for module in (breakage, client_followup, device_claims, flow_health, gates, sales_lineage):
             self.assertIs(module.run_operational_evidence, expected, module.__name__)
 
