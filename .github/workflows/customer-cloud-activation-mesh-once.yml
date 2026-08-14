@@ -1,0 +1,111 @@
+name: Customer Cloud Activation Mesh Once
+
+on:
+  push:
+    branches:
+      - mesh-custact-1408
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  authority-mesh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Generate task exact mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "CUSTOMER CLOUD ACTIVATION HOSTED CERT: customer activation license gateway D1 migration schema token-safe mutation; certify hosted customer setup create with synthetic canary, plan assignment setup bundle claim slots audit; product source stays read-only; quality evidence stays traceable; other surfaces stay outside; final target HOSTED_CERTIFIED."
+      - name: Guard scope and create layers map
+        shell: python
+        run: |
+          import hashlib, json
+          from pathlib import Path
+          repo = Path('apps/terminal-de-venta-system')
+          root = repo / '.governance/current'
+          required = [
+            'AUTHORITY_READSET.lock.json','APP_IMPACT_MATRIX.md','CONTRACT_AND_GATE_MATRIX.json',
+            'MISSING_OR_UNMAPPED_RISK.md','AGENT_PROMPT_ENVELOPE.md','AUTHORITY_MESH_REPORT.md'
+          ]
+          missing = [x for x in required if not (root/x).exists()]
+          if missing: raise SystemExit('missing outputs: '+', '.join(missing))
+          lock = json.loads((root/'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS': raise SystemExit('mesh not PASS')
+          if lock.get('full_mode') is not False: raise SystemExit('full mode forbidden')
+          expected_apps = ['database-sync','productization','quality']
+          actual_apps = sorted(lock.get('apps_detected', []))
+          if actual_apps != expected_apps: raise SystemExit(f'app scope {actual_apps} != {expected_apps}')
+          actual_types = sorted(lock.get('change_types_detected', []))
+          if actual_types != ['data_sync']: raise SystemExit(f'change types {actual_types} != [data_sync]')
+          refs = [
+            'shared/licensing/customer-setup-contract.ts',
+            'infra/cloudflare/licflow3-worker/src/worker.js',
+            'infra/cloudflare/licflow3-worker/wrangler.jsonc',
+            'infra/cloudflare/licflow3-worker/migrations/0003_plan_based_provisioning.sql',
+            'tools/verify-customer-setup-multidevice.mjs',
+            'docs/productization/E2E_012_PLAN_BASED_CLIENT_ONBOARDING.md',
+            'docs/productization/PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md',
+            'Prisma Cloud Ctr/internal/py/customer_registration_runtime.py',
+            'Prisma Cloud Ctr/internal/py/command_center_store.py'
+          ]
+          rows=[]
+          for rel in refs:
+            p=repo/rel
+            if not p.exists(): raise SystemExit('missing pinned authority '+rel)
+            b=p.read_bytes()
+            rows.append({'path':rel,'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b),'mode':'READ_ONLY_PREFLIGHT'})
+          (root/'CUSTOMER_CLOUD_ACTIVATION_SOURCE_HASHES.json').write_text(json.dumps({
+            'schemaVersion':'prisma.customer-cloud-activation-source-hashes.v1',
+            'status':'PASS','mutationAllowed':False,'files':rows
+          },indent=2)+'\n',encoding='utf-8')
+          excluded=['tablet','pc','mobile','web','chart-lab','shared-ui','backgrounds','prisma-control-center','product-runtime']
+          lines=[
+            '# Customer Cloud Activation Layers Map','',
+            '- Classification: EXTERNAL + VERIFY.','- Gate: `CUSTOMER_CLOUD_ACTIVATION`.','- Product source: read-only during preflight.',
+            '- Hosted ceremony candidates: Cloud License Gateway Worker + D1 only after token-safe authorization checks.',
+            '- Existing customer registration runtime: frozen reference; no rebuild.',
+            '- Existing plan-based onboarding: frozen reference; no rebuild.',
+            '- Expected Authority Mesh apps: `database-sync`, `productization`, `quality`.',
+            '- Expected change type: `data_sync`.','- Excluded surfaces: '+', '.join('`'+x+'`' for x in excluded)+'.','',
+            '## Pinned layers','', '| Path | SHA-256 | Mode |','|---|---|---|'
+          ]
+          for r in rows: lines.append(f"| `{r['path']}` | `{r['sha256']}` | READ_ONLY_PREFLIGHT |")
+          (root/'CUSTOMER_CLOUD_ACTIVATION_LAYERS_MAP.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          print('PASS_CUSTOMER_CLOUD_ACTIVATION_TASK_EXACT_MESH')
+      - name: Verify bootstrap scope only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          expected='.github/workflows/customer-cloud-activation-mesh-once.yml'
+          if [ "$changed" != "$expected" ]; then
+            echo "Unexpected bootstrap diff:"; printf '%s\n' "$changed"; exit 1
+          fi
+          echo PASS_BOOTSTRAP_SCOPE_ONLY
+      - name: Upload mesh
+        uses: actions/upload-artifact@v7
+        with:
+          name: customer-cloud-activation-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CUSTOMER_CLOUD_ACTIVATION_LAYERS_MAP.md
+            apps/terminal-de-venta-system/.governance/current/CUSTOMER_CLOUD_ACTIVATION_SOURCE_HASHES.json
