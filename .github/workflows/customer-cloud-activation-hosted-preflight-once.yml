@@ -1,0 +1,113 @@
+name: Customer Cloud Activation Hosted Preflight Once
+
+on:
+  push:
+    branches:
+      - mesh-custact-1408
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  BASE_URL: https://app.hitechrts.com
+
+jobs:
+  hosted-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Verify source hashes and current main ancestry
+        shell: python
+        run: |
+          import hashlib, subprocess
+          from pathlib import Path
+          expected={
+            'shared/licensing/customer-setup-contract.ts':'e30a49845703652350c084b881bd07b6a40a895ec3aa1245c9ad483364faa764',
+            'infra/cloudflare/licflow3-worker/src/worker.js':'a8eea91c2ae101d739d0b77f61630ca318c862e9cd4845e42722eb5a990b3c7e',
+            'infra/cloudflare/licflow3-worker/wrangler.jsonc':'dfc4827c8dcce5b5f62fcfbc20b171d930c622a00e817cdb7cc361ce65b25c0d',
+            'infra/cloudflare/licflow3-worker/migrations/0003_plan_based_provisioning.sql':'1d7538bc6a8f0c373418146473c3ec899fee830bac82302905ba4bc574a5b44f',
+            'tools/verify-customer-setup-multidevice.mjs':'d8e23973c71cc5a67d6172d5d9c8fc086680409eba5eb1faa0b87781a3753550',
+            'docs/productization/E2E_012_PLAN_BASED_CLIENT_ONBOARDING.md':'062c0e1e830fba83309bdae92e1d70487bed57c22e62713245f42600e201e5f2',
+            'docs/productization/PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md':'fde57545fd83d4b6750d5c51232c7247eec3ba1274c8302153803bfcf86f5b99',
+            'Prisma Cloud Ctr/internal/py/customer_registration_runtime.py':'a656d85df4f2a6c43ec35539d74cd541fa941a0e70942403ab61f18dca889e9a',
+            'Prisma Cloud Ctr/internal/py/command_center_store.py':'1919b3c92632caaab8d131c6673b457af9223db6e3f3c1279dd870ea46051eef'
+          }
+          root=Path('apps/terminal-de-venta-system')
+          for rel,sha in expected.items():
+            got=hashlib.sha256((root/rel).read_bytes()).hexdigest()
+            if got!=sha: raise SystemExit(f'SOURCE_DRIFT {rel}')
+          subprocess.run(['git','merge-base','--is-ancestor','29ca3f75bc1136ab337b4dc7888173338bd0dcd3','HEAD'],check=True)
+          print('PASS_SOURCE_HASHES_AND_ANCESTRY')
+      - name: Hosted read-only probes and secret presence
+        env:
+          PRISMA_ADMIN_TOKEN: ${{ secrets.PRISMA_ADMIN_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: python
+        run: |
+          import json, os, urllib.request, urllib.error
+          from pathlib import Path
+          base=os.environ['BASE_URL'].rstrip('/')
+          out={'baseUrl':base,'secretsExposed':False,'checks':{}}
+          out['checks']['repoAdminTokenPresent']=bool(os.environ.get('PRISMA_ADMIN_TOKEN'))
+          out['checks']['cloudflareApiTokenPresent']=bool(os.environ.get('CLOUDFLARE_API_TOKEN'))
+          out['checks']['cloudflareAccountIdPresent']=bool(os.environ.get('CLOUDFLARE_ACCOUNT_ID'))
+          def call(path, headers=None):
+            req=urllib.request.Request(base+path,headers=headers or {})
+            try:
+              with urllib.request.urlopen(req,timeout=20) as r:
+                body=r.read().decode('utf-8','replace')
+                return r.status, json.loads(body)
+            except urllib.error.HTTPError as e:
+              body=e.read().decode('utf-8','replace')
+              try: payload=json.loads(body)
+              except Exception: payload={'status':'NON_JSON'}
+              return e.code,payload
+          code,health=call('/health')
+          out['checks']['healthHttp']=code
+          out['checks']['dbHealth']=health.get('dbHealth')
+          out['checks']['healthOk']=health.get('ok') is True
+          code,caps=call('/api/public/capabilities')
+          c=caps.get('capabilities',{}) if isinstance(caps,dict) else {}
+          out['checks']['capabilitiesHttp']=code
+          out['checks']['customerSetup']=c.get('customerSetup') is True
+          out['checks']['planBasedProvisioning']=c.get('planBasedProvisioning') is True
+          out['checks']['autoGenerateClaimSlots']=c.get('autoGenerateClaimSlots') is True
+          code,denied=call('/api/admin/selftest')
+          out['checks']['unauthAdminSelftestHttp']=code
+          out['checks']['unauthAdminProtected']=code in (401,403)
+          token=os.environ.get('PRISMA_ADMIN_TOKEN','')
+          if token:
+            code,adm=call('/api/admin/selftest',{'x-prisma-admin-token':token})
+            out['checks']['authAdminSelftestHttp']=code
+            out['checks']['authAdminSelftestOk']=adm.get('ok') is True
+            out['checks']['authDbBinding']=adm.get('dbBinding')
+          else:
+            out['checks']['authAdminSelftestHttp']=None
+            out['checks']['authAdminSelftestOk']=False
+            out['checks']['authDbBinding']='not_tested'
+          Path('hosted-preflight.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+          required=[
+            out['checks']['healthHttp']==200,out['checks']['healthOk'],out['checks']['dbHealth']=='D1_BOUND',
+            out['checks']['capabilitiesHttp']==200,out['checks']['customerSetup'],out['checks']['planBasedProvisioning'],
+            out['checks']['autoGenerateClaimSlots'],out['checks']['unauthAdminProtected']
+          ]
+          if not all(required): raise SystemExit('HOSTED_READONLY_PREFLIGHT_FAILED')
+          if not token: raise SystemExit('PRISMA_ADMIN_TOKEN_NOT_AVAILABLE_TO_GITHUB_ACTIONS')
+          if out['checks']['authAdminSelftestHttp']!=200 or not out['checks']['authAdminSelftestOk'] or out['checks']['authDbBinding']!='present':
+            raise SystemExit('AUTH_ADMIN_SELFTEST_FAILED')
+          print('PASS_HOSTED_READONLY_PREFLIGHT')
+      - name: Upload safe preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: customer-cloud-activation-hosted-preflight
+          if-no-files-found: warn
+          path: hosted-preflight.json
