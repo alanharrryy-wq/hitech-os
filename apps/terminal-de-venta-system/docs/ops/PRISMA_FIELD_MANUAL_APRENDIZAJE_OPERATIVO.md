@@ -795,3 +795,16 @@ Esta intervención no inicia ni detiene servicios, no libera puertos, no toca DB
 - No se permiten `node kill` globales, consolas separadas ni cierre de procesos no probados.
 - Un `start-failed` o `start-exited` termina el readiness inmediatamente y conserva `startup_error`; el último timeout HTTP no puede sustituir la causa original.
 - El instalador de esta corrección es estático: no inicia servicios, no mata procesos y no libera puertos.
+
+## 2026-08-14 — Cloud Center customer registration: direct-source finalization
+
+- **Tipo:** FIX + UX hardening / transport + browser lifecycle recovery.
+- **Superficie:** Prisma Cloud Center 3160; Tablet/PC/Mobile/Cloudflare/Prisma schema excluidos.
+- **Causa transporte:** payload base64 frágil antes de `git apply`; reemplazado por fuente UTF-8 legible, preimage SHA y `main` vigente.
+- **Causa browser:** `change` de input re-renderizaba `surfaceRoot.innerHTML` entre pointerdown y click, destruyendo el target. Diagnóstico: `busy=false`, `handleAction` sin entrada.
+- **Fix:** texto sincroniza sin render en `change`; selects conservan render para dependencias; picker cierra en bubble y excluye acciones.
+- **Contrato E2E:** alta API 200/ok y proyección certificada en mesa Clientes.
+- **Gates:** registro local PASS 24 checks; Chrome runtime PASS 11 checks; consola/red limpia; DB y puerto efímeros.
+- **Regla:** no usar base64/zip para patches grandes si Git puede aplicar fuente legible; no recrear el target entre pointerdown y click.
+- **Evidencia:** artifact `cloudcust-1408-final-v10`.
+- **Rollback:** revert del commit/PR; pre-commit CI es efímero y fail-closed.
