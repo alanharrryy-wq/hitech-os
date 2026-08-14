@@ -1,0 +1,51 @@
+name: cloudcust sync current main once
+
+on:
+  push:
+    branches:
+      - cloudcust-runtime-20260814
+    paths:
+      - .github/workflows/cloudcust-sync-main-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout branch with full history
+        uses: actions/checkout@v4
+        with:
+          ref: cloudcust-runtime-20260814
+          fetch-depth: 0
+      - name: Merge current main fail-closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          BEFORE=$(git rev-parse HEAD)
+          MAIN=$(git rev-parse origin/main)
+          echo "BRANCH_BEFORE=$BEFORE"
+          echo "CURRENT_MAIN=$MAIN"
+          if git merge-base --is-ancestor origin/main HEAD; then
+            echo 'CURRENT_MAIN_ALREADY_INCLUDED'
+          else
+            git config user.name 'PRISMA Cloud Center Bot'
+            git config user.email 'prisma-cloud-center-bot@users.noreply.github.com'
+            git merge --no-ff --no-edit origin/main
+          fi
+          git diff --check origin/main...HEAD
+          git merge-base --is-ancestor origin/main HEAD
+          echo 'PASS_CURRENT_MAIN_SYNC'
+      - name: Remove one-shot sync workflow and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'PRISMA Cloud Center Bot'
+          git config user.email 'prisma-cloud-center-bot@users.noreply.github.com'
+          git rm '.github/workflows/cloudcust-sync-main-once.yml'
+          git commit -m 'chore(cloud-center): remove one-shot main sync workflow'
+          git push origin HEAD:cloudcust-runtime-20260814
+          echo "SYNCED_HEAD=$(git rev-parse HEAD)"
