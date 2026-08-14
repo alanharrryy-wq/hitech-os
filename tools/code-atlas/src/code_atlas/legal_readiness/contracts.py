@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -24,7 +26,7 @@ class LegalStageSpec:
 
     @property
     def root_path(self) -> Path:
-        return Path(self.root)
+        return Path(self.root or ".")
 
     def command_preview(self) -> str:
         values = [self.program, *self.args]
@@ -32,6 +34,10 @@ class LegalStageSpec:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+def _env(name: str, default: str = "") -> str:
+    return str(os.environ.get(name, default))
 
 
 @dataclass(frozen=True)
@@ -42,12 +48,14 @@ class LegalPipelineConfig:
     surface: str = "all"
     include_runtime: bool = False
     allow_partial: bool = True
-    output_root: str = r"F:\descargasf"
-    repo_root: str = r"F:\repos\hitech-os"
-    code_atlas_root: str = r"F:\repos\hitech-os\tools\code-atlas"
-    motors_root: str = r"F:\PRISMA_CTX\MOTORES"
-    ndc_root: str = r"F:\PRISMA_CTX\NDC"
-    mamastrophic_root: str = r"F:\repos\hitech-os\tools\Plawright Mamastrophic"
+    output_root: str = field(default_factory=lambda: _env("CODE_ATLAS_OUTPUT_ROOT", "./code-atlas-out"))
+    repo_root: str = field(default_factory=lambda: _env("CODE_ATLAS_PROJECT_ROOT", "."))
+    code_atlas_root: str = field(default_factory=lambda: _env("CODE_ATLAS_ROOT", "."))
+    motors_root: str = field(default_factory=lambda: _env("CODE_ATLAS_MOTORS_ROOT", ""))
+    ndc_root: str = field(default_factory=lambda: _env("CODE_ATLAS_NDC_ROOT", ""))
+    runtime_root: str = field(default_factory=lambda: _env("CODE_ATLAS_RUNTIME_ROOT", ""))
+    runtime_program: str = field(default_factory=lambda: _env("CODE_ATLAS_RUNTIME_PROGRAM", ""))
+    runtime_script: str = field(default_factory=lambda: _env("CODE_ATLAS_RUNTIME_SCRIPT", ""))
     run_id: str = ""
     cancel_file: str = ""
 
@@ -58,8 +66,8 @@ class LegalPipelineConfig:
         if profile not in {"static", "full", "runtime-only", "plan"}:
             raise ValueError(f"UNKNOWN_LEGAL_PROFILE:{profile}")
         surface = str(self.surface or "all").strip().lower()
-        if surface not in {"all", "chart-lab", "web", "tablet", "pc", "mobile", "control-center"}:
-            raise ValueError(f"UNKNOWN_SURFACE:{surface}")
+        if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{0,63}|all", surface):
+            raise ValueError(f"INVALID_SURFACE_ID:{surface}")
         return LegalPipelineConfig(
             profile=profile,
             workers=workers,
@@ -67,12 +75,14 @@ class LegalPipelineConfig:
             surface=surface,
             include_runtime=bool(self.include_runtime or profile in {"full", "runtime-only"}),
             allow_partial=bool(self.allow_partial),
-            output_root=str(Path(self.output_root)),
-            repo_root=str(Path(self.repo_root)),
-            code_atlas_root=str(Path(self.code_atlas_root)),
-            motors_root=str(Path(self.motors_root)),
-            ndc_root=str(Path(self.ndc_root)),
-            mamastrophic_root=str(Path(self.mamastrophic_root)),
+            output_root=str(Path(self.output_root or "./code-atlas-out")),
+            repo_root=str(Path(self.repo_root or ".")),
+            code_atlas_root=str(Path(self.code_atlas_root or ".")),
+            motors_root=str(Path(self.motors_root)) if str(self.motors_root).strip() else "",
+            ndc_root=str(Path(self.ndc_root)) if str(self.ndc_root).strip() else "",
+            runtime_root=str(Path(self.runtime_root)) if str(self.runtime_root).strip() else "",
+            runtime_program=str(self.runtime_program or "").strip(),
+            runtime_script=str(self.runtime_script or "").strip(),
             run_id=str(self.run_id or ""),
             cancel_file=str(Path(self.cancel_file)) if str(self.cancel_file or "").strip() else "",
         )
