@@ -55,3 +55,118 @@ jobs:
 
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+  caext-multiagent-mesh:
+    name: Code Atlas independent-agent replication mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate task-exact Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "CODE ATLAS INDEPENDENT AGENT REPLICATION V1: clasificación VERIFY / EXTERNAL EVIDENCE sobre main 8594a3c12abc3932e3142fc913ee7df1cdbd571f después de PR #288 y governance closure #291. No rebuild, no product-core repair, no self-certification. Reutilizar read-only .github/scripts/caext_usefulness_pilot_v1.py como generación/scoring de referencia y crear únicamente .github/scripts/caext_multiagent_replication_v1.py, .github/workflows/caext-multiagent-replication-v1.yml, .github/evidence/caext_multiagent_replication_manifest_v1.json y .github/evidence/caext_multiagent_replication_responses_v1.json. Mantener tools/code-atlas/src/code_atlas/** read-only y doNotRebuild=true. Ejecutar diseño within-task paired: las mismas seis tareas históricas del piloto anterior reciben dos evaluaciones separadas, BASELINE y ASSISTED, sobre el mismo parent snapshot y mismo evaluator-provided target. Cada sesión debe ser independiente de la otra y no puede ver ground truth ni respuesta de la condición pareja antes de persistir su propia respuesta. External evaluator preferido: GitHub Copilot cloud agent mediante issue assignment/API, porque es un agente distinto de ChatGPT/GPT-5.6 Sol; su disponibilidad debe demostrarse, no asumirse. Si Copilot/otro agente externo no puede asignarse o ejecutar con evidencia verificable, el gate debe cerrar BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR y no simular respuestas. No usar GitHub Models porque está retirado desde 2026-07-30. No pedir API keys al usuario. No usar hidden reasoning. Copilot-generated PRs/issues son evidencia externa efímera y no se mergean automáticamente; sólo se leen respuestas estructuradas. Ground truth permanece sellado hasta que ambas condiciones de cada tarea estén persistidas. Scoring mecánico: editable-scope widening/violations, target inclusion, historical companion recall/precision, changed-test recall/precision, evidence-reference validity/completeness, unknown/blocker handling, fake-green count, paired deltas por tarea. Al ser same-task paired, se puede calcular diferencia descriptiva within-task, pero no claim causal universal ni human usefulness. humanUsefulness=NOT_MEASURED. Independent-agent claim máximo inicial: INDEPENDENT_COPILOT_SESSION_REPLICATION si se prueban sesiones separadas; no MULTI_MODEL ni UNIVERSAL. No financial estimates; sólo raw observed ROI si existe. External repos read-only, commits/trees pinneados, no dependency install, no tests de terceros, no mutation externa. Historia es ground truth de evaluación, nunca autorización. Si aparece defecto reproducible del product core, detener y abrir FIX separado con nuevo Authority Mesh. PR #273 reserva tools/code-atlas/src/code_atlas/ui_bridge/** y tools/code-atlas/src/code_atlas/app_map/uimap/**. PR #287 PC queda fuera. Excluir Tablet, PC, Mobile, Chart Lab, Shared UI, DB/Prisma, deploys, puertos y procesos. Cero fake green."
+
+      - name: Validate mesh and emit replication scope lock
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json',
+              'APP_IMPACT_MATRIX.md',
+              'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md',
+              'AGENT_PROMPT_ENVELOPE.md',
+              'AUTHORITY_MESH_REPORT.md',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit('Authority Mesh status is not PASS')
+          task = str(lock.get('task', ''))
+          required_identity = (
+              'INDEPENDENT AGENT REPLICATION V1',
+              '8594a3c12abc3932e3142fc913ee7df1cdbd571f',
+              'BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR',
+              'INDEPENDENT_COPILOT_SESSION_REPLICATION',
+              'humanUsefulness=NOT_MEASURED',
+              'PR #273',
+              'PR #287',
+          )
+          if not all(token in task for token in required_identity):
+              raise SystemExit('Task-exact replication identity missing')
+          scope = {
+              'schemaVersion': 'caext.multiagent-replication-scope-lock.v1',
+              'authorityMeshStatus': lock.get('status'),
+              'baseCommit': '8594a3c12abc3932e3142fc913ee7df1cdbd571f',
+              'classification': 'VERIFY / EXTERNAL EVIDENCE',
+              'allowedFiles': [
+                  '.github/scripts/caext_multiagent_replication_v1.py',
+                  '.github/workflows/caext-multiagent-replication-v1.yml',
+                  '.github/evidence/caext_multiagent_replication_manifest_v1.json',
+                  '.github/evidence/caext_multiagent_replication_responses_v1.json',
+              ],
+              'referencePilotReadOnly': '.github/scripts/caext_usefulness_pilot_v1.py',
+              'productCoreReadOnly': 'tools/code-atlas/src/code_atlas/**',
+              'design': 'WITHIN_TASK_PAIRED_BASELINE_ASSISTED',
+              'taskCount': 6,
+              'evaluationSessionCountPlanned': 12,
+              'humanUsefulness': 'NOT_MEASURED',
+              'maximumAgentClaim': 'INDEPENDENT_COPILOT_SESSION_REPLICATION',
+              'multiModelClaimAllowed': False,
+              'selfCertificationAllowed': False,
+              'groundTruthHiddenUntilPairedResponsesPersisted': True,
+              'historyIsAuthorization': False,
+              'externalReposReadOnly': True,
+              'stopOnProductDefect': True,
+              'financialEstimateAllowed': False,
+              'failClosedWhenEvaluatorUnavailable': 'BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR',
+              'reservedByPr273': [
+                  'tools/code-atlas/src/code_atlas/ui_bridge/**',
+                  'tools/code-atlas/src/code_atlas/app_map/uimap/**',
+              ],
+              'excludedConcurrentPr287': True,
+          }
+          (root / 'CAEXT_MULTIAGENT_SCOPE_LOCK.json').write_text(json.dumps(scope, indent=2) + '\n', encoding='utf-8')
+          print('PASS_CAEXT_MULTIAGENT_TASK_EXACT_AUTHORITY_MESH')
+
+      - name: Verify ephemeral mesh bootstrap is isolated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          expected='.github/workflows/automesh-parallel-cert.yml'
+          if [ "$changed" != "$expected" ]; then
+            echo 'Unexpected bootstrap diff:'
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          echo 'PASS_CAEXT_MULTIAGENT_BOOTSTRAP_SCOPE_ONLY'
+
+      - name: Upload task-exact Authority Mesh artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-multiagent-replication-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CAEXT_MULTIAGENT_SCOPE_LOCK.json
