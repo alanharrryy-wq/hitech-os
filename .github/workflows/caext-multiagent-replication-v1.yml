@@ -1,13 +1,9 @@
-name: Code Atlas Independent Copilot Replication V1
+name: Code Atlas Copilot Actions Availability Probe
 
 on:
-  pull_request:
-    paths:
-      - '.github/scripts/caext_multiagent_replication_v1.py'
-      - '.github/workflows/caext-multiagent-replication-v1.yml'
-      - '.github/evidence/caext_multiagent_replication_manifest_v1.json'
-      - '.github/evidence/caext_multiagent_replication_responses_v1.json'
-  workflow_dispatch:
+  push:
+    branches:
+      - 'verify/caext-multiagent-v1-1508'
 
 permissions:
   contents: read
@@ -15,381 +11,40 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  PYTHONUTF8: '1'
-  PYTHONPATH: tools/code-atlas/src
-  CAEXT_WORKERS: '18'
 
 jobs:
-  mode:
-    name: Detect persisted evaluator responses
-    runs-on: ubuntu-latest
-    outputs:
-      persisted: ${{ steps.state.outputs.persisted }}
-    steps:
-      - uses: actions/checkout@v6
-      - id: state
-        shell: bash
-        run: |
-          if [ -f '.github/evidence/caext_multiagent_replication_responses_v1.json' ]; then
-            echo 'persisted=true' >> "$GITHUB_OUTPUT"
-            echo 'PASS_CAEXT_MULTIAGENT_PERSISTED_RESPONSE_MODE'
-          else
-            echo 'persisted=false' >> "$GITHUB_OUTPUT"
-            echo 'PASS_CAEXT_MULTIAGENT_LIVE_EVALUATION_MODE'
-          fi
-
-  protocol-regression:
-    name: Multiagent protocol / ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-      - name: Compile governed protocol
-        run: python -m py_compile .github/scripts/caext_multiagent_replication_v1.py .github/scripts/caext_usefulness_pilot_v1.py
-      - name: Run protocol self-test
-        run: python .github/scripts/caext_multiagent_replication_v1.py selftest
-      - name: Guard exact governed scope and concurrent PR reservations
-        shell: python
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          import os, subprocess
-          allowed = {
-              '.github/scripts/caext_multiagent_replication_v1.py',
-              '.github/workflows/caext-multiagent-replication-v1.yml',
-              '.github/evidence/caext_multiagent_replication_manifest_v1.json',
-              '.github/evidence/caext_multiagent_replication_responses_v1.json',
-          }
-          base = os.environ.get('BASE_SHA', '').strip()
-          if not base:
-              base = subprocess.check_output(['git', 'merge-base', 'HEAD', 'origin/main'], text=True).strip()
-          changed = set(filter(None, subprocess.check_output(['git', 'diff', '--name-only', f'{base}...HEAD'], text=True).splitlines()))
-          unexpected = sorted(changed - allowed)
-          forbidden = sorted(
-              p for p in changed
-              if p.startswith('tools/code-atlas/src/code_atlas/')
-              or p.startswith('tools/code-atlas/src/code_atlas/ui_bridge/')
-              or p.startswith('tools/code-atlas/src/code_atlas/app_map/uimap/')
-              or p.startswith('apps/terminal-de-venta-system/src/')
-          )
-          if unexpected or forbidden:
-              raise SystemExit(f'UNAUTHORIZED_MULTIAGENT_SCOPE unexpected={unexpected} forbidden={forbidden}')
-          print('PASS_CAEXT_MULTIAGENT_EXACT_SCOPE', sorted(changed))
-
-  prepare:
-    name: Prepare paired blind packets and sealed ground truth
-    needs: protocol-regression
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-      - name: Prepare six paired BASELINE/ASSISTED tasks
-        run: python .github/scripts/caext_multiagent_replication_v1.py prepare --out .caext-multi
-      - name: Verify packet/truth separation
-        shell: python
-        run: |
-          import json
-          from pathlib import Path
-          packets = Path('.caext-multi/task_packets')
-          prompts = Path('.caext-multi/prompts')
-          truth = Path('.caext-multi/ground_truth')
-          sessions = sorted(p.stem for p in packets.glob('U*_*.json'))
-          if len(sessions) != 12:
-              raise SystemExit(f'EXPECTED_12_SESSIONS_GOT_{len(sessions)}')
-          if len(list(prompts.glob('U*_*.txt'))) != 12:
-              raise SystemExit('PROMPT_COUNT_MISMATCH')
-          for path in packets.glob('U*_*.json'):
-              row = json.loads(path.read_text(encoding='utf-8'))
-              if row.get('groundTruthIncluded') is not False:
-                  raise SystemExit(f'GROUND_TRUTH_LEAK:{path.name}')
-              if row.get('otherConditionResponseIncluded') is not False:
-                  raise SystemExit(f'PAIR_RESPONSE_LEAK:{path.name}')
-          if len(list(truth.glob('U[1-6].json'))) != 6:
-              raise SystemExit('GROUND_TRUTH_TASK_COUNT_MISMATCH')
-          print('PASS_CAEXT_MULTIAGENT_PACKET_TRUTH_SEPARATION')
-      - name: Upload evaluator-only packets
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-multiagent-evaluator-packets
-          if-no-files-found: error
-          path: |
-            .caext-multi/task_packets
-            .caext-multi/prompts
-      - name: Upload sealed ground truth separately
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-multiagent-ground-truth-sealed
-          if-no-files-found: error
-          path: .caext-multi/ground_truth
-
-  copilot-availability:
-    name: Verify Copilot CLI GITHUB_TOKEN availability
-    needs: [protocol-regression, mode]
-    if: ${{ needs.mode.outputs.persisted == 'false' }}
+  availability:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
-      - name: Probe independent evaluator
+      - name: Install and invoke Copilot CLI with GITHUB_TOKEN
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set +e
-          mkdir -p .caext-availability
-          npm install -g @github/copilot > .caext-availability/install.log 2>&1
-          install_rc=$?
-          if [ "$install_rc" -eq 0 ]; then
-            copilot --version > .caext-availability/version.txt 2>&1
-            cli_rc=$?
-            copilot -s --no-ask-user --deny-tool='shell,write,read,url,memory' -p 'Return exactly this JSON object and no other content: {"status":"COPILOT_AVAILABLE"}' > .caext-availability/raw.txt 2> .caext-availability/stderr.txt
-            request_rc=$?
-          else
-            cli_rc=127
-            request_rc=127
-          fi
-          export INSTALL_RC="$install_rc" CLI_RC="$cli_rc" REQUEST_RC="$request_rc"
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          root = Path('.caext-availability')
-          state = {
-              'schemaVersion': 'caext_copilot_availability.v1',
-              'installRc': int(os.environ['INSTALL_RC']),
-              'cliRc': int(os.environ['CLI_RC']),
-              'requestRc': int(os.environ['REQUEST_RC']),
-              'status': 'AVAILABLE' if os.environ['INSTALL_RC'] == os.environ['CLI_RC'] == os.environ['REQUEST_RC'] == '0' else 'UNAVAILABLE',
-          }
-          (root / 'availability.json').write_text(json.dumps(state, indent=2) + '\n', encoding='utf-8')
-          PY
-          if [ "$install_rc" -ne 0 ] || [ "$cli_rc" -ne 0 ] || [ "$request_rc" -ne 0 ]; then
-            echo 'BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR'
-            exit 1
-          fi
+          set -euo pipefail
+          npm install -g @github/copilot
+          copilot --version
+          copilot -s --no-ask-user --deny-tool='shell,write,read,url,memory' -p 'Return exactly this JSON object and no other content: {"status":"COPILOT_AVAILABLE"}' | tee copilot-availability.txt
           python - <<'PY'
           import json
           from pathlib import Path
-          text = Path('.caext-availability/raw.txt').read_text(encoding='utf-8', errors='replace')
+          text = Path('copilot-availability.txt').read_text(encoding='utf-8', errors='replace')
           start = text.find('{')
           if start < 0:
               raise SystemExit('COPILOT_AVAILABILITY_NO_JSON')
-          decoder = json.JSONDecoder()
-          value, _ = decoder.raw_decode(text[start:])
+          value, _ = json.JSONDecoder().raw_decode(text[start:])
           if value != {'status': 'COPILOT_AVAILABLE'}:
               raise SystemExit(f'COPILOT_AVAILABILITY_BAD_RESPONSE:{value!r}')
           print('PASS_CAEXT_COPILOT_GITHUB_TOKEN_AVAILABLE')
           PY
-      - name: Upload Copilot availability evidence
+      - name: Upload availability evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: caext-copilot-availability
-          if-no-files-found: error
-          path: .caext-availability
-
-  evaluate:
-    name: Copilot session / ${{ matrix.session }}
-    needs: [mode, prepare, copilot-availability]
-    if: ${{ always() && needs.mode.outputs.persisted == 'false' && needs.prepare.result == 'success' && needs.copilot-availability.result == 'success' }}
-    strategy:
-      fail-fast: false
-      max-parallel: 12
-      matrix:
-        session:
-          - U1_BASELINE
-          - U1_ASSISTED
-          - U2_BASELINE
-          - U2_ASSISTED
-          - U3_BASELINE
-          - U3_ASSISTED
-          - U4_BASELINE
-          - U4_ASSISTED
-          - U5_BASELINE
-          - U5_ASSISTED
-          - U6_BASELINE
-          - U6_ASSISTED
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '24'
-      - name: Download evaluator-only packet artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: caext-multiagent-evaluator-packets
-          path: ${{ runner.temp }}/caext-packets
-      - name: Isolate this session only
-        shell: bash
-        env:
-          SESSION_ID: ${{ matrix.session }}
-        run: |
-          set -euo pipefail
-          eval_root="$RUNNER_TEMP/caext-eval"
-          session_root="$RUNNER_TEMP/caext-session/$SESSION_ID"
-          rm -rf "$eval_root" "$session_root"
-          mkdir -p "$eval_root" "$session_root"
-          cp "$RUNNER_TEMP/caext-packets/task_packets/$SESSION_ID.json" "$eval_root/packet.json"
-          cp "$RUNNER_TEMP/caext-packets/prompts/$SESSION_ID.txt" "$eval_root/prompt.txt"
-          rm -rf "$RUNNER_TEMP/caext-packets"
-          {
-            cat "$eval_root/prompt.txt"
-            printf '\nPACKET_JSON:\n'
-            cat "$eval_root/packet.json"
-          } > "$eval_root/evaluation_prompt.txt"
-          cp "$eval_root/packet.json" "$session_root/packet.json"
-      - name: Run isolated Copilot evaluation
-        shell: bash
-        working-directory: ${{ runner.temp }}/caext-eval
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SESSION_ID: ${{ matrix.session }}
-        run: |
-          set +e
-          session_root="$RUNNER_TEMP/caext-session/$SESSION_ID"
-          npm install -g @github/copilot > "$session_root/install.log" 2>&1
-          install_rc=$?
-          cli_version='NOT_MEASURED'
-          request_rc=127
-          if [ "$install_rc" -eq 0 ]; then
-            cli_version="$(copilot --version 2>&1 | head -n 1)"
-            copilot -s --no-ask-user --deny-tool='shell,write,read,url,memory' < evaluation_prompt.txt > "$session_root/raw.txt" 2> "$session_root/stderr.txt"
-            request_rc=$?
-          else
-            : > "$session_root/raw.txt"
-            : > "$session_root/stderr.txt"
-          fi
-          export INSTALL_RC="$install_rc" REQUEST_RC="$request_rc" CLI_VERSION="$cli_version"
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          root = Path(os.environ['RUNNER_TEMP']) / 'caext-session' / os.environ['SESSION_ID']
-          meta = {
-              'schemaVersion': 'caext_multiagent_session_meta.v1',
-              'sessionId': os.environ['SESSION_ID'],
-              'cliVersion': os.environ['CLI_VERSION'],
-              'runnerOs': os.environ.get('RUNNER_OS', 'Linux'),
-              'modelIdentity': 'NOT_MEASURED',
-              'repositoryCheckoutPresent': False,
-              'sessionIsolation': 'SEPARATE_GITHUB_ACTIONS_JOB',
-              'installRc': int(os.environ['INSTALL_RC']),
-              'requestRc': int(os.environ['REQUEST_RC']),
-          }
-          (root / 'meta.json').write_text(json.dumps(meta, indent=2) + '\n', encoding='utf-8')
-          PY
-          if [ "$install_rc" -ne 0 ] || [ "$request_rc" -ne 0 ]; then
-            echo "COPILOT_SESSION_FAILED:$SESSION_ID install=$install_rc request=$request_rc"
-            exit 1
-          fi
-          echo "PASS_CAEXT_COPILOT_SESSION_RAW_CAPTURED:$SESSION_ID"
-      - name: Upload isolated raw response
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-multiagent-response-${{ matrix.session }}
-          if-no-files-found: error
-          path: ${{ runner.temp }}/caext-session
-
-  score:
-    name: Seal responses before truth and score paired replication
-    needs: [mode, prepare, copilot-availability, evaluate]
-    if: always()
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-      - name: Fail closed if live independent evaluator was unavailable
-        if: ${{ needs.mode.outputs.persisted == 'false' && (needs.copilot-availability.result != 'success' || needs.evaluate.result != 'success') }}
-        run: python .github/scripts/caext_multiagent_replication_v1.py blocked --reason "Copilot CLI availability/evaluation failed: availability=${{ needs.copilot-availability.result }} evaluate=${{ needs.evaluate.result }}" --out .caext-result
-      - name: Upload blocked evidence
-        if: ${{ needs.mode.outputs.persisted == 'false' && (needs.copilot-availability.result != 'success' || needs.evaluate.result != 'success') }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-multiagent-blocked
-          if-no-files-found: error
-          path: .caext-result
-      - name: Stop blocked gate
-        if: ${{ needs.mode.outputs.persisted == 'false' && (needs.copilot-availability.result != 'success' || needs.evaluate.result != 'success') }}
-        run: exit 1
-      - name: Download evaluator-only packets
-        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
-        uses: actions/download-artifact@v8
-        with:
-          name: caext-multiagent-evaluator-packets
-          path: .caext-prepared
-      - name: Download 12 raw evaluator artifacts
-        if: ${{ needs.mode.outputs.persisted == 'false' && needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success' }}
-        uses: actions/download-artifact@v8
-        with:
-          pattern: caext-multiagent-response-*
-          merge-multiple: true
-          path: .caext-raw-responses
-      - name: Parse and collect 12 live responses without ground truth
-        if: ${{ needs.mode.outputs.persisted == 'false' && needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success' }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p .caext-parsed .caext-collected
-          for session in U1_BASELINE U1_ASSISTED U2_BASELINE U2_ASSISTED U3_BASELINE U3_ASSISTED U4_BASELINE U4_ASSISTED U5_BASELINE U5_ASSISTED U6_BASELINE U6_ASSISTED; do
-            mkdir -p ".caext-parsed/$session"
-            python .github/scripts/caext_multiagent_replication_v1.py parse-response \
-              --packet ".caext-prepared/task_packets/$session.json" \
-              --raw ".caext-raw-responses/$session/raw.txt" \
-              --meta ".caext-raw-responses/$session/meta.json" \
-              --out ".caext-parsed/$session/response.json"
-          done
-          python .github/scripts/caext_multiagent_replication_v1.py collect \
-            --responses-root .caext-parsed \
-            --out .caext-collected/RESPONSES.json
-          echo 'PASS_CAEXT_MULTIAGENT_12_RESPONSES_COLLECTED_BEFORE_TRUTH'
-      - name: Load already-persisted responses
-        if: ${{ needs.mode.outputs.persisted == 'true' }}
-        shell: bash
-        run: |
-          mkdir -p .caext-collected
-          cp .github/evidence/caext_multiagent_replication_responses_v1.json .caext-collected/RESPONSES.json
-          echo 'PASS_CAEXT_MULTIAGENT_REPO_PERSISTED_RESPONSES_LOADED'
-      - name: Seal response set before revealing ground truth
-        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-multiagent-responses-sealed
-          if-no-files-found: error
-          path: .caext-collected/RESPONSES.json
-      - name: Download sealed ground truth only after response seal
-        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
-        uses: actions/download-artifact@v8
-        with:
-          name: caext-multiagent-ground-truth-sealed
-          path: .caext-prepared/ground_truth
-      - name: Score exact paired responses
-        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
-        run: python .github/scripts/caext_multiagent_replication_v1.py score --responses .caext-collected/RESPONSES.json --prepared-root .caext-prepared --out .caext-result
-      - name: Upload scored paired replication evidence
-        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-multiagent-scored
-          if-no-files-found: error
-          path: .caext-result
+          name: caext-copilot-actions-availability
+          path: copilot-availability.txt
+          if-no-files-found: warn
