@@ -1,0 +1,148 @@
+name: Code Atlas External Agent Usefulness Pilot V1
+
+on:
+  pull_request:
+    paths:
+      - '.github/scripts/caext_usefulness_pilot_v1.py'
+      - '.github/workflows/caext-usefulness-pilot-v1.yml'
+      - '.github/evidence/caext_usefulness_agent_responses_v1.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+  PYTHONPATH: tools/code-atlas/src
+  CAEXT_WORKERS: '18'
+
+jobs:
+  protocol-regression:
+    name: Usefulness protocol / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile protocol
+        run: python -m py_compile .github/scripts/caext_usefulness_pilot_v1.py
+
+      - name: Run protocol self-test
+        run: python .github/scripts/caext_usefulness_pilot_v1.py selftest
+
+      - name: Guard governed scope and PR 273 reserved paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only origin/main...HEAD)"
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            case "$path" in
+              .github/scripts/caext_usefulness_pilot_v1.py|.github/workflows/caext-usefulness-pilot-v1.yml|.github/evidence/caext_usefulness_agent_responses_v1.json) ;;
+              *) echo "Unauthorized usefulness pilot path: $path"; exit 1 ;;
+            esac
+          done <<< "$changed"
+          if printf '%s\n' "$changed" | grep -E '^tools/code-atlas/src/code_atlas/'; then
+            echo 'Code Atlas product core was touched.'
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -E '^tools/code-atlas/src/code_atlas/(ui_bridge/|app_map/uimap/)'; then
+            echo 'PR #273 reserved paths were touched.'
+            exit 1
+          fi
+          echo 'PASS_CAEXT_USEFULNESS_SCOPE_LOCK'
+
+  prepare-and-score:
+    name: Prepare blind task packets and score persisted response if present
+    needs: protocol-regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Prepare six blind task packets
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="${RUNNER_TEMP}/caext-usefulness-prepared"
+          rm -rf "$root"
+          mkdir -p "$root"
+          python .github/scripts/caext_usefulness_pilot_v1.py prepare --output "$root"
+
+      - name: Verify ground truth is separated from evaluator packets
+        shell: python
+        run: |
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'caext-usefulness-prepared'
+          packets = root / 'task_packets'
+          truth = root / 'ground_truth'
+          manifest = json.loads((packets / 'MANIFEST.json').read_text(encoding='utf-8'))
+          if manifest.get('conditions') != {'ASSISTED': 3, 'BASELINE': 3}:
+              raise SystemExit(f"Unexpected condition split: {manifest.get('conditions')}")
+          if not manifest.get('groundTruthSeparated'):
+              raise SystemExit('Ground truth separation flag missing')
+          for path in packets.glob('U*.json'):
+              packet = json.loads(path.read_text(encoding='utf-8'))
+              forbidden = {'actualChangedPaths', 'actualCompanionPaths', 'actualChangedTestPaths', 'groundTruthDigest'}
+              if forbidden & set(packet):
+                  raise SystemExit(f'Ground truth leaked into {path.name}')
+              if packet.get('groundTruthIncluded') is not False:
+                  raise SystemExit(f'Packet not marked blind: {path.name}')
+          if len(list(truth.glob('U*.json'))) != 6:
+              raise SystemExit('Expected six separated ground-truth records')
+          print('PASS_CAEXT_USEFULNESS_BLIND_PACKET_BOUNDARY')
+
+      - name: Upload evaluator task packets
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-usefulness-task-packets
+          if-no-files-found: error
+          path: ${{ runner.temp }}/caext-usefulness-prepared/task_packets/**
+
+      - name: Upload sealed ground truth separately
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-usefulness-ground-truth-sealed
+          if-no-files-found: error
+          path: ${{ runner.temp }}/caext-usefulness-prepared/ground_truth/**
+
+      - name: Score persisted external-agent response
+        if: ${{ hashFiles('.github/evidence/caext_usefulness_agent_responses_v1.json') != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/caext-usefulness-scored"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python .github/scripts/caext_usefulness_pilot_v1.py score \
+            --prepared-root "${RUNNER_TEMP}/caext-usefulness-prepared" \
+            --responses .github/evidence/caext_usefulness_agent_responses_v1.json \
+            --output "$out"
+
+      - name: Upload scored external-agent pilot evidence
+        if: ${{ hashFiles('.github/evidence/caext_usefulness_agent_responses_v1.json') != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-usefulness-agent-pilot-scored
+          if-no-files-found: error
+          path: ${{ runner.temp }}/caext-usefulness-scored/**
