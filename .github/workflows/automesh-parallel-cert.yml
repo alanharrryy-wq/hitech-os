@@ -42,16 +42,96 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Compile AutoMesh tooling
         run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
-
       - name: Run legacy AutoMesh self-test
         run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
-
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+  caext-usefulness-closure-mesh:
+    name: Code Atlas usefulness governance closure mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Generate task-exact Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "CODE ATLAS USEFULNESS GOVERNANCE CLOSURE: clasificación VERIFY / GOVERNANCE CLOSURE sobre main cbb0949701529399810ac8ca2033b9f708f790f2 tras merge PR #288. Registrar exclusivamente evidencia ya obtenida del single external-agent usefulness pilot; source, harness y workflow mergeados quedan READ_ONLY_REFERENCE y doNotRebuild=true. Evidencia certificada para registrar: final run 31914395822 PASS; scored artifact 9254539137 digest sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c; result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd. Resultados descriptivos: ASSISTED 3 tasks, authorization widening 0%, target editable 100%, changed-test recall 100%, companion inspection recall 88.89%, evidence references 100%, fake-green 0, unknown omission 0; BASELINE 3 tareas distintas, authorization widening 0%, target editable 33.33%, changed-test recall 0%, companion recall 0%, evidence refs 100%. Human usefulness=NOT_MEASURED. Agent usefulness máximo=SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM. No causal uplift por task heterogeneity y single evaluator. Raw observed ROI únicamente outOfScopeChangeRate=0.0 ratio y evidenceCompletenessRate=1.0 ratio; financial estimate null. contextDiscoveryTime, changeScopeIdentificationTime, humanSupervisionTime, evidenceAssemblyTime, reopenedWorkRate, changeReadinessThroughput y workerPeak=NOT_MEASURED. Mantener LOCAL_VERIFIED, VERIFY, certifiable=false, productionCertified=false. Writes autorizados SOLO en tools/code-atlas/README.md, tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md, tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json, PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json, PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json y apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md. No tocar .github, tools/code-atlas/src/code_atlas/**, tests, product surfaces, Tablet, PC, Mobile, Chart Lab, Shared UI, DB/Prisma, deploy, ports ni procesos. PR #273 UI Bridge/UIMAP y PR #287 PC quedan fuera del alcance. Next gate: independent second-agent replication y/o real human usefulness study; hosted/security/production permanecen separados y no probados. Cero fake green; historia/evidencia no autoriza cambios de producto."
+      - name: Validate closure mesh and scope lock
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = ['AUTHORITY_READSET.lock.json','APP_IMPACT_MATRIX.md','CONTRACT_AND_GATE_MATRIX.json','MISSING_OR_UNMAPPED_RISK.md','AGENT_PROMPT_ENVELOPE.md','AUTHORITY_MESH_REPORT.md']
+          missing = [x for x in required if not (root/x).exists()]
+          if missing:
+              raise SystemExit('Missing mesh outputs: ' + ', '.join(missing))
+          lock = json.loads((root/'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS' or lock.get('full_mode') is not False:
+              raise SystemExit(f'Unexpected mesh state: {lock.get("status")}, full={lock.get("full_mode")}')
+          task = str(lock.get('task',''))
+          must = ('USEFULNESS GOVERNANCE CLOSURE','cbb0949701529399810ac8ca2033b9f708f790f2','9254539137','SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM','Human usefulness=NOT_MEASURED','PR #273','PR #287')
+          if not all(x in task for x in must):
+              raise SystemExit('Task-exact closure identity missing')
+          scope = {
+              'schemaVersion':'caext.usefulness-governance-scope-lock.v1',
+              'authorityMeshStatus':'PASS',
+              'baseCommit':'cbb0949701529399810ac8ca2033b9f708f790f2',
+              'sourcePr':288,
+              'finalRun':31914395822,
+              'scoredArtifact':9254539137,
+              'allowedFiles':[
+                  'tools/code-atlas/README.md',
+                  'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md',
+                  'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
+                  'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+                  'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+                  'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+              ],
+              'sourceAndHarnessReadOnly':True,
+              'humanUsefulness':'NOT_MEASURED',
+              'agentUsefulness':'SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM',
+              'causalUpliftClaimAllowed':False,
+              'financialEstimateAllowed':False,
+              'maturity':'LOCAL_VERIFIED',
+              'doNotRebuild':True,
+              'certifiable':False,
+              'productionCertified':False,
+              'nextGate':'INDEPENDENT_SECOND_AGENT_OR_REAL_HUMAN_USEFULNESS',
+          }
+          (root/'CAEXT_USEFULNESS_CLOSURE_SCOPE_LOCK.json').write_text(json.dumps(scope,indent=2)+'\n',encoding='utf-8')
+          print('PASS_CAEXT_USEFULNESS_CLOSURE_MESH')
+      - name: Verify ephemeral bootstrap isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          test "$changed" = '.github/workflows/automesh-parallel-cert.yml'
+          echo 'PASS_CAEXT_USEFULNESS_CLOSURE_BOOTSTRAP_ONLY'
+      - name: Upload closure Authority Mesh
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-usefulness-closure-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CAEXT_USEFULNESS_CLOSURE_SCOPE_LOCK.json
