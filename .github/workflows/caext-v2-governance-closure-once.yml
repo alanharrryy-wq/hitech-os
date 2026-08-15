@@ -31,240 +31,37 @@ jobs:
           python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
           --repo apps/terminal-de-venta-system
           --output .governance/current
-          --task "VERIFY GOVERNANCE CLOSURE — CODE ATLAS EXTERNAL DIVERSITY V2. PR #278 is merged to main as 9556609df6d60e8cecebb0f051ef27040842bc53 after CAEXT V2 run 31911140797. Record bounded external evidence only: seven pinned unrelated repositories across Ubuntu and Windows, 30/30 regression scenarios per OS for Click/Vite/ripgrep, 40/40 diversity scenarios per OS for Cobra/Spring PetClinic/Kubernetes YAML/pybind11, zero CORE_LEAK, repeatability PASS, read-only originals PASS. Preserve LOCAL_VERIFIED, doNotRebuild=true, certifiable=false, productionCertified=false. Authorized writes only: tools/code-atlas/README.md; tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md; tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json; PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json; PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json; apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md; plus self-removal of this temporary workflow. No Code Atlas source, tests, harness, UI Bridge, UIMAP, Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma generation, deploy, ports or live processes. PR #273 paths remain excluded. Next gate is historical real-diff validation, then human/agent usefulness evidence; hosted/security boundaries remain separately unproven."
+          --task "VERIFY GOVERNANCE CLOSURE — CODE ATLAS EXTERNAL DIVERSITY V2. PR #278 merged as 9556609df6d60e8cecebb0f051ef27040842bc53; record bounded evidence for seven pinned repositories on Ubuntu and Windows; preserve LOCAL_VERIFIED doNotRebuild=true certifiable=false productionCertified=false; authorized writes only README Customer Wow contract Factory Ledger Evidence Index Field Manual and self-removal of this workflow; exclude Code Atlas source tests harness UI Bridge UIMAP PR #273 Tablet PC Mobile Chart Lab Shared UI DB Prisma deploy ports processes; next gate historical real-diff then human/agent usefulness."
 
-      - name: Validate mesh and write closure scope evidence
+      - name: Validate Mesh and replay previously preimage-locked closure
         shell: python
         run: |
-          import hashlib, json
+          import json
+          import subprocess
+          import textwrap
           from pathlib import Path
 
           root = Path('apps/terminal-de-venta-system/.governance/current')
-          required = [
-              'AUTHORITY_READSET.lock.json', 'APP_IMPACT_MATRIX.md',
-              'CONTRACT_AND_GATE_MATRIX.json', 'MISSING_OR_UNMAPPED_RISK.md',
-              'AGENT_PROMPT_ENVELOPE.md', 'AUTHORITY_MESH_REPORT.md',
-          ]
-          missing = [name for name in required if not (root / name).is_file()]
-          if missing:
-              raise SystemExit('Missing Mesh outputs: ' + ', '.join(missing))
           lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
           if lock.get('status') != 'PASS':
               raise SystemExit(f"Authority Mesh not PASS: {lock.get('status')}")
-          task = str(lock.get('task', ''))
-          for token in ('EXTERNAL DIVERSITY V2', '9556609d', 'LOCAL_VERIFIED', 'doNotRebuild=true', 'historical real-diff'):
-              if token not in task:
-                  raise SystemExit('Task identity missing token: ' + token)
+          for name in ('AUTHORITY_MESH_REPORT.md', 'APP_IMPACT_MATRIX.md', 'CONTRACT_AND_GATE_MATRIX.json', 'MISSING_OR_UNMAPPED_RISK.md'):
+              if not (root / name).is_file():
+                  raise SystemExit('Missing Mesh evidence: ' + name)
 
-          targets = [
-              'tools/code-atlas/README.md',
-              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md',
-              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
-              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
-              'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
-              'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
-          ]
-          scope = {
-              'schemaVersion': 'caext_v2_governance_closure_scope.v1',
-              'meshStatus': 'PASS',
-              'classification': 'VERIFY / GOVERNANCE CLOSURE',
-              'preservedState': {
-                  'status': 'LOCAL_VERIFIED', 'doNotRebuild': True,
-                  'certifiable': False, 'productionCertified': False,
-              },
-              'authorizedWrites': targets,
-              'excluded': [
-                  'tools/code-atlas/src/code_atlas/**',
-                  'tools/code-atlas/tests/**',
-                  '.github/scripts/caext_external_gate_v2.py',
-                  '.github/workflows/caext-external-diversity-v2.yml',
-                  'tools/code-atlas/src/code_atlas/ui_bridge/**',
-                  'tools/code-atlas/src/code_atlas/app_map/uimap/**',
-                  'Tablet', 'PC', 'Mobile', 'Chart Lab', 'Shared UI', 'DB', 'Prisma generation', 'deploy', 'ports', 'live processes',
-              ],
-              'preimages': [
-                  {'path': p, 'sha256': hashlib.sha256(Path(p).read_bytes()).hexdigest()}
-                  for p in targets
-              ],
-          }
-          (root / 'CAEXT_V2_GOVERNANCE_CLOSURE_SCOPE.json').write_text(json.dumps(scope, indent=2) + '\n', encoding='utf-8')
-          print('PASS_CAEXT_V2_GOVERNANCE_AUTHORITY')
-
-      - name: Apply evidence-only closure with preimage locks
-        shell: python
-        run: |
-          import json, subprocess
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          expected_blob = {
-              'tools/code-atlas/README.md': '3b8466fc78a12a658579f6f4062096f2ac48903c',
-              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md': 'f4fe8ad7d67eb61b4f2373ed7bf2305017e74098',
-              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json': '9ea38aab13fdab264e23ac0f054d5e9063a4473b',
-              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json': 'a2d3c842aec59e155468e44fd84db8e06dbb4daf',
-              'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json': '90ca5bb309c36e5b10d426f1751f58d6b84964f1',
-              'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md': '8986dac911e4268afb1be004e2e6886359e86034',
-          }
-          for path, expected in expected_blob.items():
-              actual = subprocess.check_output(['git', 'hash-object', path], text=True).strip()
-              if actual != expected:
-                  raise SystemExit(f'PREIMAGE_DRIFT {path}: {actual} != {expected}')
-
-          now = datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
-
-          # Canonical README: replace the stale three-repo evidence narrative.
-          p = Path('tools/code-atlas/README.md')
-          text = p.read_text(encoding='utf-8')
-          old = """External evidence is now **limited but real**: the neutral/default profile was replayed read-only against pinned unrelated repositories **Click (Python), Vite (TypeScript/Node monorepo), and ripgrep (Rust)**. The post-fix full replay completed **30/30 declared scenarios**, **3/3 repeatability**, read-only compliance, and zero critical behavior failures after manual adjudication of legacy harness reporting. The hardened source also passed **140 Code Atlas tests** and **6/6 PR CI workflows**.\n\nThe evidence specifically supports fail-closed undeclared dirty-worktree detection, evidence-bearing Rust source targets with bounded repository-provable Rust dependencies, and normalized JS/TS parent-relative dependency resolution. It does **not** establish correctness for arbitrary repositories or stacks.\n\nThe next evidence gate is **broader repository/stack diversity, independent second-machine repeatability, and hosted/security boundary evidence**. Current evidence does **not** certify hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification."""
-          new = """External evidence is now **broader but still bounded**. CAEXT V2 replayed the neutral/default profile read-only against **seven pinned unrelated repositories** across **Ubuntu and Windows**: Click (Python), Vite (TypeScript/Node), ripgrep (Rust), Cobra (Go), Spring PetClinic (Java/Spring), Kubernetes examples (YAML/IaC), and pybind11 (C++/Python). The original three-repository regression completed **30/30 declared scenarios per OS**; the four-repository diversity gate completed **40/40 per OS**. Both OSes preserved read-only originals, repeatability, and **0 `CORE_LEAK`** findings.\n\nCAEXT V2 also retired the two known legacy harness ambiguities without changing the Code Atlas core: neutrality matching is boundary-aware with explicit provenance, and Impact Radius metrics come from the prepared change model rather than the DISCOVER graph. The evidence remains deliberately bounded: Go, Java, and Kubernetes YAML produced no repository dependency edges in this corpus, while pybind11 produced two, so dependency understanding for those stacks is **not** claimed complete.\n\nThe next evidence gate is **historical real-diff validation**, followed by **human/agent usefulness evidence**. Hosted/security boundaries remain separate gates. Current evidence does **not** certify arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification."""
-          if text.count(old) != 1:
-              raise SystemExit('README evidence preimage block not found exactly once')
-          p.write_text(text.replace(old, new), encoding='utf-8')
-
-          # Customer Wow narrative: preserve history, add V2 closure and retire the old harness ambiguity.
-          p = Path('tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md')
-          text = p.read_text(encoding='utf-8')
-          text = text.replace('External evidence status: `LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS`',
-                              'External evidence status: `BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS`', 1)
-          old_legacy = "Legacy harness outputs required manual adjudication: case-insensitive `NDC` matched inside source-derived `tailwindcss`, and the legacy matrix read Change Impact size from the DISCOVER graph rather than the prepared change model. Those instrumentation defects are not promoted to Code Atlas product failures.\n\nThis is **limited external falsification evidence**, not an arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification."
-          new_legacy = """CAEXT V2 closed the two known legacy harness ambiguities in PR #278 without modifying `tools/code-atlas/src/code_atlas/**`: token-boundary matching plus provenance prevents source-derived names such as `tailwindcss` from becoming fake `NDC` leaks, and Impact Radius is now reported from the prepared change model rather than the DISCOVER graph. Red runs retain their evidence artifact and still fail closed.\n\nThe same harness then replayed **seven pinned unrelated repositories on both Ubuntu and Windows**. The original Click/Vite/ripgrep regression was **30/30 per OS**; Cobra, Spring PetClinic, Kubernetes YAML examples, and pybind11 added **40/40 per OS**. Both OSes preserved read-only originals, repeatability, and zero `CORE_LEAK` findings. Evidence artifacts: Ubuntu `9253725843` (`sha256:9af0bf38e2ade9b60ff50066b064a7002e74f00bbdf4f0fcdf77136a1a3d91c4`) and Windows `9253737517` (`sha256:5e7a169e07d319f1d6d99686a803d052b0d3a75f4f962b746102384c8df3b07a`).\n\nObserved limits remain evidence, not defects by fiat: Cobra, Spring PetClinic, and Kubernetes examples produced zero repository dependency edges in this corpus; pybind11 produced two. This is **broader but still bounded external evidence**, not arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification. The next gate is historical real-diff validation, then human/agent usefulness evidence."""
-          if text.count(old_legacy) != 1:
-              raise SystemExit('Customer Wow legacy block not found exactly once')
-          p.write_text(text.replace(old_legacy, new_legacy), encoding='utf-8')
-
-          # Machine-readable Customer Wow contract.
-          p = Path('tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json')
-          contract = json.loads(p.read_text(encoding='utf-8'))
-          contract['status'] = 'UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED'
-          contract['certifiable'] = False
-          contract['productionCertified'] = False
-          ver = contract.setdefault('verification', {})
-          ver['externalRepositoryFalsification'] = 'BOUNDED_DIVERSITY_PASS_7_PINNED_REPOS_2_OS'
-          ver['externalDeclaredScenarios'] = '70/70 per OS (30 regression + 40 diversity)'
-          ver['externalRepeatability'] = '7/7 on ubuntu and windows'
-          ver['externalReadOnlyCompliance'] = 'PASS'
-          ver['externalCoreLeakFindings'] = 0
-          ver['externalPlatforms'] = ['ubuntu', 'windows']
-          contract['doesNotProve'][0] = 'correctness beyond the seven tested pinned repositories or across arbitrary real external repositories or stacks'
-          contract['nextGate'] = 'Run historical real-diff validation, then human/agent usefulness evidence. Treat hosted/security boundaries as separate gates. Do not rebuild Universal Intelligence or Customer Wow unless new evidence identifies a concrete reproducible defect.'
-          ext = contract.setdefault('externalEvidence', {})
-          ext.update({
-              'status': 'BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS',
-              'harnessV2Pr': 278,
-              'harnessV2MergeCommit': '9556609df6d60e8cecebb0f051ef27040842bc53',
-              'harnessV2AuthorityMeshRunId': 31910183053,
-              'harnessV2AuthorityMeshArtifactId': 9253435582,
-              'diversityRunId': 31911140797,
-              'diversityUbuntuArtifactId': 9253725843,
-              'diversityUbuntuArtifactDigest': 'sha256:9af0bf38e2ade9b60ff50066b064a7002e74f00bbdf4f0fcdf77136a1a3d91c4',
-              'diversityWindowsArtifactId': 9253737517,
-              'diversityWindowsArtifactDigest': 'sha256:5e7a169e07d319f1d6d99686a803d052b0d3a75f4f962b746102384c8df3b07a',
-              'declaredScenarioResult': '70/70 per OS',
-              'repeatability': '7/7 on ubuntu and windows',
-              'readOnlyCompliance': True,
-              'coreLeakFindings': 0,
-          })
-          repos = ext.setdefault('repositories', [])
-          existing = {r.get('name') for r in repos if isinstance(r, dict)}
-          additions = [
-              {'name': 'spf13/cobra', 'stack': 'Go library/CLI'},
-              {'name': 'spring-projects/spring-petclinic', 'stack': 'Java/Spring application'},
-              {'name': 'kubernetes/examples', 'stack': 'Kubernetes YAML/IaC examples'},
-              {'name': 'pybind/pybind11', 'stack': 'C++/Python mixed-language library'},
-          ]
-          repos.extend(r for r in additions if r['name'] not in existing)
-          ext['harnessV2Repairs'] = [
-              'boundary-aware neutrality matching with SOURCE_DERIVED PROFILE_DERIVED HISTORICAL_TOOL_EVIDENCE CORE_LEAK provenance',
-              'Impact Radius metrics sourced from prepared change model instead of DISCOVER graph',
-              'isolated evidence output roots prevent runner checkout paths from masquerading as core leakage',
-              'red gates upload evidence while retaining fail-closed exit status',
-          ]
-          ext['observedStructuralLimits'] = [
-              'Cobra Go corpus produced zero repository dependency edges',
-              'Spring PetClinic Java corpus produced zero repository dependency edges',
-              'Kubernetes YAML/IaC corpus produced zero repository dependency edges',
-              'pybind11 mixed-language corpus produced two repository dependency edges',
-          ]
-          p.write_text(json.dumps(contract, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          # Factory Ledger capability: evidence advances, maturity does not.
-          p = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
-          ledger = json.loads(p.read_text(encoding='utf-8'))
-          matches = [c for c in ledger.get('capabilities', []) if c.get('id') == 'code_atlas.change_intelligence.customer_wow_v1']
-          if len(matches) != 1:
-              raise SystemExit(f'Factory Ledger capability match count={len(matches)}')
-          cap = matches[0]
-          cap['classification'] = 'VERIFY'
-          cap['status'] = 'LOCAL_VERIFIED'
-          cap['stateLabel'] = 'PASS_EXTERNAL_DIVERSITY_V2_7_REPOS_2_OS_LOCAL_VERIFIED'
-          cap['doNotRebuild'] = True
-          cap['nextGate'] = 'Historical real-diff validation, then human/agent usefulness evidence. Hosted/security boundaries remain separate evidence gates; do not rebuild core without a concrete reproducible defect.'
-          ev = cap.setdefault('evidence', [])
-          for item in [
-              'PR #278 / merge 9556609df6d60e8cecebb0f051ef27040842bc53',
-              'CAEXT V2 Authority Mesh run 31910183053 / artifact 9253435582',
-              'CAEXT V2 external run 31911140797',
-              'Ubuntu diversity artifact 9253725843',
-              'Windows diversity artifact 9253737517',
-              '7 pinned unrelated repositories x Ubuntu/Windows; 70/70 declared scenarios per OS; CORE_LEAK 0; read-only/repeatability PASS',
-          ]:
-              if item not in ev:
-                  ev.append(item)
-          dnp = cap.setdefault('doesNotProve', [])
-          for item in [
-              'Arbitrary repository universality',
-              'Complete dependency understanding for Go, Java, YAML/IaC, C++ or other unproven stacks',
-              'Production, enterprise IAM/security, hosted multi-tenant, legal/privacy or paid-pilot readiness',
-          ]:
-              if item not in dnp:
-                  dnp.append(item)
-          ledger['updatedAt'] = now
-          p.write_text(json.dumps(ledger, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          # Evidence Index: additive evidence record, no prior record mutation required.
-          p = Path('PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json')
-          index = json.loads(p.read_text(encoding='utf-8'))
-          artifact_name = 'Code Atlas External Diversity V2 — PR #278 / run 31911140797'
-          artifacts = index.setdefault('artifacts', [])
-          if not any(a.get('artifact') == artifact_name for a in artifacts if isinstance(a, dict)):
-              artifacts.append({
-                  'artifact': artifact_name,
-                  'type': 'code_atlas_external_diversity_v2',
-                  'scope': ['code_atlas', 'change_intelligence', 'external_evidence'],
-                  'status': 'PASS',
-                  'proves': [
-                      'Boundary-aware harness V2 removes the known NDC/tailwindcss false-positive class',
-                      'PREPARE Impact Radius metrics replace the stale DISCOVER-matrix metric',
-                      'Click Vite ripgrep regression: 30/30 declared scenarios per OS on Ubuntu and Windows',
-                      'Cobra Spring PetClinic Kubernetes YAML pybind11 diversity: 40/40 declared scenarios per OS on Ubuntu and Windows',
-                      'Seven pinned external originals remained read-only and repeatable with CORE_LEAK 0',
-                  ],
-                  'doesNotProve': [
-                      'Correctness on arbitrary repositories or technology stacks',
-                      'Complete dependency understanding for Go Java YAML/IaC C++ or other unproven stacks',
-                      'Production readiness, enterprise IAM/security, hosted multi-tenant isolation, legal/privacy compliance or paid-pilot readiness',
-                  ],
-              })
-          if 'updatedAt' in index:
-              index['updatedAt'] = now
-          p.write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          # Field Manual learning entry.
-          p = Path('apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md')
-          text = p.read_text(encoding='utf-8').rstrip()
-          marker = '### 2026-08-15 - Code Atlas: CAEXT V2 separa fallas de harness de evidencia multi-stack'
-          if marker not in text:
-              entry = f'''\n\n---\n\n{marker}\n\n**Tipo:** EVIDENCE_LEARNING / HARNESS_HARDENING / GOVERNANCE_LEARNING\n**Superficie:** Tooling / Code Atlas / Change Intelligence / External Evidence\n**Contexto:** Después del primer gate externo de Click, Vite y ripgrep quedaron dos ambigüedades del harness, no del core: `NDC` podía coincidir dentro de nombres source-derived como `tailwindcss`, y la matriz legacy leía Change Impact desde DISCOVER en vez del modelo PREPARE.\n**Corrección:** PR #278 añadió CAEXT V2 fuera de `tools/code-atlas/src/code_atlas/**`: matching por límites de token con provenance `SOURCE_DERIVED | PROFILE_DERIVED | HISTORICAL_TOOL_EVIDENCE | CORE_LEAK`, métricas de impacto desde `prepared.changeModel.impactRadius`, output roots aislados y upload de evidencia incluso cuando el gate queda rojo.\n**Evidencia:** merge `9556609df6d60e8cecebb0f051ef27040842bc53`; Authority Mesh `31910183053` / artifact `9253435582`; run externo `31911140797`; Ubuntu artifact `9253725843`; Windows artifact `9253737517`.\n**Resultado:** Click/Vite/ripgrep `30/30` por OS; Cobra/Spring PetClinic/Kubernetes YAML/pybind11 `40/40` por OS; siete repos pinned; Ubuntu + Windows; `CORE_LEAK=0`; repeatability PASS; originales read-only PASS.\n**Límite observado:** Cobra Go, Spring Java y Kubernetes YAML produjeron 0 dependency edges en este corpus; pybind11 produjo 2. Eso es evidencia de cobertura estructural acotada, no autorización automática para reconstruir el core.\n**Rollback:** PR #278 es un harness/evidence-only merge; el core quedó byte-intacto respecto del pin gobernado. El cierre documental sólo cambia autoridad/evidencia y conserva `LOCAL_VERIFIED`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`.\n**Regla nueva:** cuando un gate externo falle, separar primero `PRODUCT FAILURE`, `HARNESS FAILURE`, `ENVIRONMENT FAILURE` y `UNSUPPORTED TECHNOLOGY`. No ampliar claims ni parchar core por una métrica o path contaminado. Un rojo debe conservar su artifact.\n**Siguiente gate:** historical real-diff validation; después human/agent usefulness. Hosted/security sigue siendo evidencia separada.\n'''
-              text += entry.rstrip()
-          p.write_text(text + '\n', encoding='utf-8')
-
-          print('PASS_CAEXT_V2_EVIDENCE_CLOSURE_APPLIED')
-
-      - name: Validate final truth and final diff scope
-        shell: python
-        run: |
-          import json, subprocess
-          from pathlib import Path
+          # Reuse exactly the evidence-application block from the first closure commit.
+          # That block already passed its six git-blob preimage locks and completed successfully
+          # in run 31911726449; only the final scope guard was wrong because it counted Mesh output.
+          old = subprocess.check_output([
+              'git', 'show',
+              '249fc134b482889a96ed93a6817027a84f5d17c2:.github/workflows/caext-v2-governance-closure-once.yml'
+          ], text=True)
+          start_marker = "      - name: Apply evidence-only closure with preimage locks\n        shell: python\n        run: |\n"
+          end_marker = "\n      - name: Validate final truth and final diff scope"
+          if start_marker not in old or end_marker not in old:
+              raise SystemExit('Could not recover locked closure block from 249fc134')
+          script = textwrap.dedent(old.split(start_marker, 1)[1].split(end_marker, 1)[0])
+          exec(compile(script, '<caext-v2-locked-closure>', 'exec'), {})
 
           contract = json.loads(Path('tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json').read_text(encoding='utf-8'))
           assert contract['status'] == 'UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED'
@@ -279,7 +76,7 @@ jobs:
           assert cap['classification'] == 'VERIFY'
           assert cap['doNotRebuild'] is True
 
-          allowed_docs = {
+          allowed = {
               'tools/code-atlas/README.md',
               'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md',
               'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
@@ -287,13 +84,15 @@ jobs:
               'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
               'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
           }
-          changed = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
-          unexpected = changed - allowed_docs
-          if unexpected:
-              raise SystemExit('Unexpected evidence write: ' + ', '.join(sorted(unexpected)))
-          if changed != allowed_docs:
-              raise SystemExit('Expected all six evidence docs to change; got: ' + ', '.join(sorted(changed)))
-          print('PASS_CAEXT_V2_CLOSURE_SCOPE_6_DOCS')
+          changed_all = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+          ephemeral_prefix = 'apps/terminal-de-venta-system/.governance/current/'
+          changed = {p for p in changed_all if not p.startswith(ephemeral_prefix)}
+          if changed != allowed:
+              raise SystemExit('Governed final docs diff mismatch: ' + ', '.join(sorted(changed)))
+          unexpected_non_mesh = changed_all - allowed - {p for p in changed_all if p.startswith(ephemeral_prefix)}
+          if unexpected_non_mesh:
+              raise SystemExit('Unexpected non-Mesh write: ' + ', '.join(sorted(unexpected_non_mesh)))
+          print('PASS_CAEXT_V2_CLOSURE_SCOPE_6_DOCS_PLUS_EPHEMERAL_MESH')
 
       - name: Upload closure Authority Mesh evidence
         uses: actions/upload-artifact@v7
@@ -307,9 +106,8 @@ jobs:
             apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
             apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
             apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
-            apps/terminal-de-venta-system/.governance/current/CAEXT_V2_GOVERNANCE_CLOSURE_SCOPE.json
 
-      - name: Commit governed docs and remove one-shot workflow
+      - name: Commit exactly six governed docs and remove one-shot workflow
         shell: bash
         run: |
           set -euo pipefail
@@ -322,6 +120,13 @@ jobs:
             'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' \
             apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md \
             .github/workflows/caext-v2-governance-closure-once.yml
+          staged="$(git diff --cached --name-only)"
+          count="$(printf '%s\n' "$staged" | sed '/^$/d' | wc -l | tr -d ' ')"
+          if [ "$count" != '7' ]; then
+            echo "Unexpected staged count: $count"
+            printf '%s\n' "$staged"
+            exit 1
+          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'docs(code-atlas): close external diversity v2 evidence'
