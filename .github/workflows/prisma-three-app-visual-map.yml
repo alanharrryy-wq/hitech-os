@@ -43,6 +43,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m py_compile \
+            tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py \
             tools/code-atlas/src/code_atlas/ui_bridge/multisurface.py \
             tools/code-atlas/src/code_atlas/ui_bridge/binding_promotion.py \
             tools/code-atlas/src/code_atlas/ui_bridge/consistency.py \
@@ -52,6 +53,7 @@ jobs:
             tools/code-atlas/src/code_atlas/ui_bridge/cli.py \
             tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \
             tools/code-atlas/tests/test_operational_ui_bridge_projection.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py \
             tools/code-atlas/tests/test_operational_visual_family_mapping.py
 
       - name: Run focused operational tests
@@ -61,6 +63,7 @@ jobs:
           python -m unittest -v \
             tools/code-atlas/tests/test_operational_ui_bridge_multisurface.py \
             tools/code-atlas/tests/test_operational_ui_bridge_projection.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py \
             tools/code-atlas/tests/test_operational_visual_family_mapping.py
 
       - name: Capture repo state before refresh
