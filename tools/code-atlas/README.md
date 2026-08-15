@@ -10,9 +10,13 @@ On top of that neutral core, optional profiles/adapters can add product-specific
 
 Current governed state: **`LOCAL_VERIFIED`**.
 
-The Universal Intelligence + Customer Wow binding is implemented and verified against neutral synthetic Git fixtures and repository CI across Ubuntu, Windows and macOS lanes. The canonical Factory Ledger preserves this source as `doNotRebuild=true`.
+The Universal Intelligence + Customer Wow binding remains the canonical implementation and the Factory Ledger continues to preserve it as `doNotRebuild=true`. PR #275 hardened that implementation after a real external falsification gate and merged the source fix into `main` as `caf918694c1c397d19a61bff217800d027a384e3`.
 
-The next evidence gate is execution against **unrelated external repositories**. Current evidence does **not** certify arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, or production certification.
+External evidence is now **limited but real**: the neutral/default profile was replayed read-only against pinned unrelated repositories **Click (Python), Vite (TypeScript/Node monorepo), and ripgrep (Rust)**. The post-fix full replay completed **30/30 declared scenarios**, **3/3 repeatability**, read-only compliance, and zero critical behavior failures after manual adjudication of legacy harness reporting. The hardened source also passed **140 Code Atlas tests** and **6/6 PR CI workflows**.
+
+The evidence specifically supports fail-closed undeclared dirty-worktree detection, evidence-bearing Rust source targets with bounded repository-provable Rust dependencies, and normalized JS/TS parent-relative dependency resolution. It does **not** establish correctness for arbitrary repositories or stacks.
+
+The next evidence gate is **broader repository/stack diversity, independent second-machine repeatability, and hosted/security boundary evidence**. Current evidence does **not** certify hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification.
 
 `certifiable=false` and `productionCertified=false` remain invariant until separate evidence-backed gates prove otherwise.
 

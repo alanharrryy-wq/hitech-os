@@ -1,6 +1,6 @@
 {
   "schemaVersion": "code_atlas_customer_wow.v1",
-  "status": "UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED_EXTERNAL_REPO_EVIDENCE_PENDING",
+  "status": "UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED",
   "certifiable": false,
   "productionCertified": false,
   "authority": {
@@ -124,10 +124,12 @@
     "profile version mismatch",
     "cross-repository architecture delta",
     "customer runner mutation attempt",
-    "local-only evidence egress attempt"
+    "local-only evidence egress attempt",
+    "undeclared staged unstaged or untracked worktree mutation",
+    "dirty baseline cannot issue a fresh authority pack"
   ],
   "verification": {
-    "operationalTestCount": 106,
+    "operationalTestCount": 140,
     "operationalTestResult": "PASS",
     "neutralityGate": "PASS_CODE_ATLAS_TOTAL_NEUTRALITY",
     "neutralityBlockingCount": 0,
@@ -142,7 +144,11 @@
     "forgeOsQualityGate": "PASS",
     "repoAnalyzerSelfTest": "PASS",
     "claCheck": "PASS",
-    "fixtureType": "neutral synthetic git repository"
+    "fixtureType": "neutral synthetic git repository",
+    "externalRepositoryFalsification": "LIMITED_PASS_3_PINNED_REPOS",
+    "externalDeclaredScenarios": "30/30",
+    "externalRepeatability": "3/3",
+    "externalReadOnlyCompliance": "PASS"
   },
   "excludedSurfaces": [
     "tablet",
@@ -157,7 +163,7 @@
     "live product processes"
   ],
   "doesNotProve": [
-    "correctness across arbitrary real external repositories or stacks",
+    "correctness beyond the three tested pinned repositories or across arbitrary real external repositories or stacks",
     "production runtime readiness",
     "hosted multi-tenant isolation",
     "enterprise IAM or security certification",
@@ -166,5 +172,51 @@
     "legal or privacy compliance",
     "production certification"
   ],
-  "nextGate": "Run the full read-only Change Studio -> Authority Pack -> actual change/session -> Verify -> Evidence Report -> ROI loop on unrelated external repositories. Do not rebuild the Universal Core or Customer Wow source unless that evidence identifies a concrete defect."
+  "nextGate": "Expand read-only falsification to broader repository and stack diversity, repeat on an independent second machine/environment, and separately prove hosted/security boundaries as required. Do not rebuild the Universal Core or Customer Wow unless new evidence identifies a concrete defect.",
+  "externalEvidence": {
+    "status": "LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS",
+    "sourceRepairPr": 275,
+    "sourceRepairMergeCommit": "caf918694c1c397d19a61bff217800d027a384e3",
+    "repairAuthorityMeshRunId": 31866829102,
+    "repairAuthorityMeshArtifactId": 9242284746,
+    "targetedExternalArtifactId": 9242394010,
+    "fullReplayRunId": 31867491454,
+    "fullReplayArtifactId": 9242450935,
+    "closureAuthorityMeshRunId": 31867706125,
+    "closureAuthorityMeshArtifactId": 9242519545,
+    "closureAuthorityMeshDigest": "sha256:1f73190bd9213fdac786001d0d5a8c89050e1d73c9f029ea514244ea8721d9ae",
+    "repositories": [
+      {
+        "name": "pallets/click",
+        "stack": "Python library/CLI"
+      },
+      {
+        "name": "vitejs/vite",
+        "stack": "TypeScript/Node monorepo"
+      },
+      {
+        "name": "BurntSushi/ripgrep",
+        "stack": "Rust workspace/CLI"
+      }
+    ],
+    "declaredScenarioResult": "30/30",
+    "repeatability": "3/3",
+    "readOnlyCompliance": true,
+    "prCiResult": "6/6",
+    "regressionTestCount": 140,
+    "regressionTestResult": "PASS",
+    "provenHardening": [
+      "undeclared dirty worktree mutation blocks Verify independently of caller manifest",
+      "legitimate explicitly declared in-scope dirty target remains verifiable",
+      "recognized Rust source receives physical and semantic evidence",
+      "Rust dependency graph resolves only repository-provable bounded module relationships",
+      "JS/TS parent-relative imports normalize before graph matching",
+      "architecture coverage and provenance are reported without granting authorization"
+    ],
+    "manualAdjudications": [
+      "legacy case-insensitive NDC leak scan false-positive inside source-derived tailwindcss names",
+      "legacy matrix changeImpactSize read from DISCOVER graph instead of prepared change model"
+    ],
+    "certifiesArbitraryRepositories": false
+  }
 }
