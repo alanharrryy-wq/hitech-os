@@ -1,0 +1,186 @@
+name: UIMAP Governed Marker Apply Once
+
+on:
+  push:
+    branches:
+      - agent/prisma-html-three-app-visual-closure
+    paths:
+      - .github/workflows/uimap-governed-marker-apply-once.yml
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  EXPECTED_PARENT: 42fc591f41c629a569bbb1ee7d551a67382ec4a2
+  EXPECTED_RUNNER_BLOB: 76ec89e8339e933a587bd625909341853117ef8e
+  EXPECTED_HELPER_SHA256: e7ee4890ec95b1c2e400587a2861d2a01c8a3a571c72c9fa37f1d4d909e82eb3
+
+jobs:
+  apply-and-prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact transaction branch
+        uses: actions/checkout@v6
+        with:
+          ref: agent/prisma-html-three-app-visual-closure
+          fetch-depth: 2
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Fail closed on preimage drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
+          test "$(git hash-object tools/code-atlas/src/code_atlas/app_map/uimap/runner.py)" = "$EXPECTED_RUNNER_BLOB"
+          echo "$EXPECTED_HELPER_SHA256  tools/code-atlas/src/code_atlas/app_map/uimap/governed_markers.py" | sha256sum -c -
+          test ! -e tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+      - name: Apply exact runner patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'LS0tIGEvdG9vbHMvY29kZS1hdGxhcy9zcmMvY29kZV9hdGxhcy9hcHBfbWFwL3VpbWFwL3J1bm5lci5weQorKysgYi90b29scy9jb2RlLWF0bGFzL3NyYy9jb2RlX2F0bGFzL2FwcF9tYXAvdWltYXAvcnVubmVyLnB5CkBAIC02MSw2ICs2MSwxMCBAQAogICAgIHNvdXJjZV9zbmFwc2hvdF9oYXNoLAogICAgIHdpZGdldF90eXBlX2lkLAogKQorZnJvbSAuZ292ZXJuZWRfbWFya2VycyBpbXBvcnQgKAorICAgIGxvYWRfZ292ZXJuZWRfcGlsb3RfY29udHJhY3RzLAorICAgIHJlY29uY2lsZV9nb3Zlcm5lZF9jYW5kaWRhdGUsCispCiAKIEdPTERFTl9CSU5ESU5HX0lEID0gIkJORC5BQ1QuUFJJTUFSWS5UQUJMRVQuUE9TLkNPQlJBUi5WMSIKIEdPTERFTl9MQVlFUl9JRCA9ICJMWVIuQUNULlBSSU1BUlkuVEFCTEVULlBPUy5DT0JSQVIuQkFTRSIKQEAgLTM5MCw2ICszOTQsNyBAQAogICAgIG9yZGluYWw6IGludCwKICAgICBnb2xkZW5fdHJhY2U6IGRpY3Rbc3RyLCBBbnldLAogICAgIGdvbGRlbl9ldmlkZW5jZTogbGlzdFtkaWN0W3N0ciwgQW55XV0sCisgICAgZ292ZXJuZWRfbWFya2VyX2F1dGhvcml0eTogZGljdFtzdHIsIGxpc3RbZGljdFtzdHIsIEFueV1dXSwKICkgLT4gZGljdFtzdHIsIEFueV06CiAgICAgcnVudGltZSA9IGNhbmRpZGF0ZS5ydW50aW1lX2FsaWFzCiAgICAgaXNfZ29sZGVuID0gKApAQCAtNDQ3LDEwICs0NTIsMzkgQEAKICAgICBpZiBjb21wb25lbnRfaWQuZW5kc3dpdGgoIi5pdGVtIik6CiAgICAgICAgIGNvbXBvbmVudF9pZCA9IGNvbXBvbmVudF9pZFs6LTVdCiAKKyAgICBnb3Zlcm5lZF90cmFjZSwgZ292ZXJuZWRfbWFya2VyX2Jsb2NrZXJzLCBnb3Zlcm5lZF9tYXJrZXJfZXZpZGVuY2UgPSAoCisgICAgICAgIChOb25lLCBbXSwgW10pCisgICAgICAgIGlmIGlzX2dvbGRlbgorICAgICAgICBlbHNlIHJlY29uY2lsZV9nb3Zlcm5lZF9jYW5kaWRhdGUoCisgICAgICAgICAgICBjYW5kaWRhdGUsCisgICAgICAgICAgICBjc3NfdGFyZ2V0cywKKyAgICAgICAgICAgIGdvdmVybmVkX21hcmtlcl9hdXRob3JpdHksCisgICAgICAgICAgICBhdXRoLAorICAgICAgICApCisgICAgKQorICAgIGFkYXB0ZXJfaWQgPSBBREFQVEVSU1tydW50aW1lXQorICAgIGdvdmVybmVkX3JlY2lwZV9pZCA9IE5vbmUKKyAgICByZXNvbHZlZF9vd25lcl9zeW1ib2wgPSBjYW5kaWRhdGUub3duZXJfc3ltYm9sCisgICAgcmVzb2x2ZWRfcmVuZGVyX3N5bWJvbCA9IGNhbmRpZGF0ZS5yZW5kZXJfc3ltYm9sCisgICAgaWYgZ292ZXJuZWRfdHJhY2U6CisgICAgICAgIHN1cmZhY2VfaWQgPSBnb3Zlcm5lZF90cmFjZVsic3VyZmFjZUlkIl0KKyAgICAgICAgcm91dGVfaWQgPSBnb3Zlcm5lZF90cmFjZVsicm91dGVJZCJdCisgICAgICAgIHJlZ2lvbl9pZCA9IGdvdmVybmVkX3RyYWNlWyJyZWdpb25JZCJdCisgICAgICAgIHNsb3RfaWQgPSBnb3Zlcm5lZF90cmFjZVsic2xvdElkIl0KKyAgICAgICAgbG9jYXRvciA9IGdvdmVybmVkX3RyYWNlWyJjb21wb25lbnRVaUlkIl0KKyAgICAgICAgb3duZXJfaWQgPSBnb3Zlcm5lZF90cmFjZVsib3duZXJJZCJdCisgICAgICAgIHJlc29sdmVkX293bmVyX3N5bWJvbCA9IGdvdmVybmVkX3RyYWNlWyJvd25lclN5bWJvbCJdCisgICAgICAgIHJlc29sdmVkX3JlbmRlcl9zeW1ib2wgPSBnb3Zlcm5lZF90cmFjZVsib3duZXJTeW1ib2wiXQorICAgICAgICBsYXllcl9pZCA9IGdvdmVybmVkX3RyYWNlWyJsYXllcklkIl0KKyAgICAgICAgaW1wbGVtZW50YXRpb25fbGF5ZXJfaWQgPSBnb3Zlcm5lZF90cmFjZVsiaW1wbGVtZW50YXRpb25MYXllcklkIl0KKyAgICAgICAgYmluZGluZ19pZCA9IGdvdmVybmVkX3RyYWNlWyJiaW5kaW5nSWQiXQorICAgICAgICBhZGFwdGVyX2lkID0gZ292ZXJuZWRfdHJhY2VbImFkYXB0ZXJJZCJdCisgICAgICAgIGdvdmVybmVkX3JlY2lwZV9pZCA9IGdvdmVybmVkX3RyYWNlWyJyZWNpcGVJZCJdCisKICAgICBuZXV0cmFsX21lYW5pbmdfaWQgPSBOb25lCiAgICAgcmVsYXRlZF9uZXV0cmFsX2lkczogbGlzdFtzdHJdID0gW10KICAgICBuZGNfc3RhdHVzID0gIkNBTkRJREFURSIKLSAgICBjb25maWRlbmNlID0gIk1FRElVTSIgaWYgY2FuZGlkYXRlLmNsYXNzX25hbWUgZWxzZSAiTE9XIgorICAgIGNvbmZpZGVuY2UgPSAiSElHSCIgaWYgZ292ZXJuZWRfdHJhY2UgZWxzZSAoIk1FRElVTSIgaWYgY2FuZGlkYXRlLmNsYXNzX25hbWUgZWxzZSAiTE9XIikKICAgICByZWNpcGVfY292ZXJhZ2UgPSAiTk9UX0VWQUxVQVRFRCIKIAogICAgIGlmIGlzX2dvbGRlbjoKQEAgLTQ4MCw3ICs1MTQsNyBAQAogICAgICAgICB0YXJnZXRbInZpc3VhbFRhcmdldElkIl0gPSBmIlZUUi57bG9jYXRvcn0ue3RhcmdldFsndGFyZ2V0Um9sZSddfS57aW5kZXg6MDJkfSIKIAogICAgIHN0YXRlX3N1cHBvcnQgPSBtYWtlX3N0YXRlX3N1cHBvcnQoY3NzX3RhcmdldHMsIHJ1bnRpbWUpCi0gICAgYmxvY2tlcnM6IGxpc3Rbc3RyXSA9IGxpc3QoYXV0aF9ibG9ja2VycykKKyAgICBibG9ja2VyczogbGlzdFtzdHJdID0gbGlzdChhdXRoX2Jsb2NrZXJzKSArIGxpc3QoZ292ZXJuZWRfbWFya2VyX2Jsb2NrZXJzKQogICAgIGlmIG5vdCBjYW5kaWRhdGUub3duZXJfZmlsZSBvciBub3QgY2FuZGlkYXRlLm93bmVyX3N5bWJvbDoKICAgICAgICAgYmxvY2tlcnMuYXBwZW5kKCJNSVNTSU5HX0NBTk9OSUNBTF9PV05FUiIpCiAgICAgaWYgbm90IGNhbmRpZGF0ZS5yZW5kZXJfc291cmNlX2ZpbGU6CkBAIC01MTUsNiArNTQ5LDcgQEAKICAgICAgICAgInNvdXJjZUZpbGUiOiBjYW5kaWRhdGUucmVuZGVyX3NvdXJjZV9maWxlLAogICAgICAgICAic291cmNlSGFzaCI6IGNhbmRpZGF0ZS5zb3VyY2VfaGFzaCwKICAgICB9XQorICAgIGV2aWRlbmNlX3JlZnMuZXh0ZW5kKGdvdmVybmVkX21hcmtlcl9ldmlkZW5jZSkKICAgICBpZiBjYW5kaWRhdGUucm91dGVfc291cmNlX2ZpbGU6CiAgICAgICAgIGV2aWRlbmNlX3JlZnMuYXBwZW5kKHsKICAgICAgICAgICAgICJldmlkZW5jZVR5cGUiOiAiUk9VVEVfU09VUkNFIiwKQEAgLTU1OCw2ICs1OTMsOCBAQAogICAgICAgICAib3duZXJGaWxlIjogY2FuZGlkYXRlLnNvdXJjZV9oYXNoLAogICAgICAgICAicmVuZGVyU291cmNlRmlsZSI6IGNhbmRpZGF0ZS5zb3VyY2VfaGFzaCwKICAgICB9CisgICAgaWYgZ292ZXJuZWRfdHJhY2U6CisgICAgICAgIHNvdXJjZV9oYXNoZXNbZ292ZXJuZWRfdHJhY2VbImNvbnRyYWN0UGF0aCJdXSA9IGdvdmVybmVkX3RyYWNlWyJjb250cmFjdEhhc2giXQogICAgIGZvciB0YXJnZXQgaW4gdGFyZ2V0czoKICAgICAgICAgc291cmNlX2hhc2hlc1t0YXJnZXRbInN0eWxlU291cmNlRmlsZSJdXSA9IHRhcmdldFsic291cmNlSGFzaCJdCiAKQEAgLTU3Nyw3ICs2MTQsNyBAQAogICAgICAgICAiYmluZGluZ0lkIjogYmluZGluZ19pZCwKICAgICAgICAgImxheWVySWQiOiBsYXllcl9pZCwKICAgICAgICAgImltcGxlbWVudGF0aW9uTGF5ZXJJZCI6IGltcGxlbWVudGF0aW9uX2xheWVyX2lkLAotICAgICAgICAiYWRhcHRlcklkIjogQURBUFRFUlNbcnVudGltZV0sCisgICAgICAgICJhZGFwdGVySWQiOiBhZGFwdGVyX2lkLAogICAgICAgICAibmV1dHJhbE1lYW5pbmdJZCI6IG5ldXRyYWxfbWVhbmluZ19pZCwKICAgICAgICAgInJlbGF0ZWROZXV0cmFsSWRzIjogcmVsYXRlZF9uZXV0cmFsX2lkcywKICAgICB9CkBAIC01ODYsNyArNjIzLDcgQEAKICAgICAgICAgYmxvY2tlcnMuYXBwZW5kKCJDQU5PTklDQUxfSURfQ09OVFJBQ1RfVklPTEFUSU9OIikKIAogICAgIHRhcmdldF9zdGF0dXMgPSAiUEFSVElBTCIKLSAgICBpZiBjYW5kaWRhdGUubXVsdGlwbGVfb3duZXJfY2FuZGlkYXRlcyBvciBhdXRoX2Jsb2NrZXJzOgorICAgIGlmIGNhbmRpZGF0ZS5tdWx0aXBsZV9vd25lcl9jYW5kaWRhdGVzIG9yIGF1dGhfYmxvY2tlcnMgb3IgZ292ZXJuZWRfbWFya2VyX2Jsb2NrZXJzOgogICAgICAgICB0YXJnZXRfc3RhdHVzID0gIkJMT0NLRURfQllfQ09ORkxJQ1QiCiAgICAgZWxpZiBub3QgY2FuZGlkYXRlLm93bmVyX2ZpbGUgb3Igbm90IGNhbmRpZGF0ZS5vd25lcl9zeW1ib2w6CiAgICAgICAgIHRhcmdldF9zdGF0dXMgPSAiQkxPQ0tFRF9CWV9NSVNTSU5HX09XTkVSIgpAQCAtNTk4LDkgKzYzNSw5IEBACiAgICAgY29tcGxldGVfY2hhaW4gPSBhbGwoWwogICAgICAgICBzdXJmYWNlX2lkLCBpbnRlcmZhY2VfaWQsIHJvdXRlX2lkLCByb3V0ZV9wYXRoLCByZWdpb25faWQsIHNsb3RfaWQsCiAgICAgICAgIGNvbXBvbmVudF9pZCwgbG9jYXRvciwgaWRlbnRpdHlfcHJvYmVbIndpZGdldFR5cGVJZCJdLAotICAgICAgICBvd25lcl9pZCwgY2FuZGlkYXRlLm93bmVyX2ZpbGUsIGNhbmRpZGF0ZS5vd25lcl9zeW1ib2wsIGNhbmRpZGF0ZS5yZW5kZXJfc291cmNlX2ZpbGUsCi0gICAgICAgIGNhbmRpZGF0ZS5yZW5kZXJfc3ltYm9sLCB0YXJnZXRzLCBiaW5kaW5nX2lkLCBsYXllcl9pZCwgaW1wbGVtZW50YXRpb25fbGF5ZXJfaWQsCi0gICAgICAgIEFEQVBURVJTW3J1bnRpbWVdLCBldmlkZW5jZV9yZWZzLCBzb3VyY2VfaGFzaGVzLAorICAgICAgICBvd25lcl9pZCwgY2FuZGlkYXRlLm93bmVyX2ZpbGUsIHJlc29sdmVkX293bmVyX3N5bWJvbCwgY2FuZGlkYXRlLnJlbmRlcl9zb3VyY2VfZmlsZSwKKyAgICAgICAgcmVzb2x2ZWRfcmVuZGVyX3N5bWJvbCwgdGFyZ2V0cywgYmluZGluZ19pZCwgbGF5ZXJfaWQsIGltcGxlbWVudGF0aW9uX2xheWVyX2lkLAorICAgICAgICBhZGFwdGVyX2lkLCBldmlkZW5jZV9yZWZzLCBzb3VyY2VfaGFzaGVzLAogICAgIF0pCiAgICAgaWYgKAogICAgICAgICBjb21wbGV0ZV9jaGFpbgpAQCAtNjQzLDE3ICs2ODAsMTcgQEAKICAgICAgICAgInJlbGF0ZWROZXV0cmFsSWRzIjogcmVsYXRlZF9uZXV0cmFsX2lkcywKICAgICAgICAgIm93bmVySWQiOiBvd25lcl9pZCwKICAgICAgICAgIm93bmVyRmlsZSI6IGNhbmRpZGF0ZS5vd25lcl9maWxlLAotICAgICAgICAib3duZXJTeW1ib2wiOiBjYW5kaWRhdGUub3duZXJfc3ltYm9sLAorICAgICAgICAib3duZXJTeW1ib2wiOiByZXNvbHZlZF9vd25lcl9zeW1ib2wsCiAgICAgICAgICJyZW5kZXJTb3VyY2VGaWxlIjogY2FuZGlkYXRlLnJlbmRlcl9zb3VyY2VfZmlsZSwKLSAgICAgICAgInJlbmRlclN5bWJvbCI6IGNhbmRpZGF0ZS5yZW5kZXJfc3ltYm9sLAorICAgICAgICAicmVuZGVyU3ltYm9sIjogcmVzb2x2ZWRfcmVuZGVyX3N5bWJvbCwKICAgICAgICAgInZpc3VhbFRhcmdldHMiOiB0YXJnZXRzLAogICAgICAgICAiYmluZGluZ0lkIjogYmluZGluZ19pZCwKICAgICAgICAgImxheWVySWQiOiBsYXllcl9pZCwKICAgICAgICAgImltcGxlbWVudGF0aW9uTGF5ZXJJZCI6IGltcGxlbWVudGF0aW9uX2xheWVyX2lkLAotICAgICAgICAiYWRhcHRlcklkIjogQURBUFRFUlNbcnVudGltZV0sCisgICAgICAgICJhZGFwdGVySWQiOiBhZGFwdGVyX2lkLAogICAgICAgICAicmVjaXBlQ29tcGF0aWJpbGl0eSI6IHsKICAgICAgICAgICAgICJjb3ZlcmFnZVN0YXR1cyI6IHJlY2lwZV9jb3ZlcmFnZSwKLSAgICAgICAgICAgICJjb21wYXRpYmxlUmVjaXBlSWRzIjogWyJSRUMuYnV0dG9uLnByaW1hcnkiXSBpZiBpc19nb2xkZW4gZWxzZSBbXSwKKyAgICAgICAgICAgICJjb21wYXRpYmxlUmVjaXBlSWRzIjogKFsiUkVDLmJ1dHRvbi5wcmltYXJ5Il0gaWYgaXNfZ29sZGVuIGVsc2UgKFtnb3Zlcm5lZF9yZWNpcGVfaWRdIGlmIGdvdmVybmVkX3JlY2lwZV9pZCBlbHNlIFtdKSksCiAgICAgICAgICAgICAiaG92ZXJQb2xpY3kiOiAic3Vic3RpdHV0ZS1wcmVzc2VkIiBpZiBydW50aW1lIGluIHsidGIiLCAibWIifSBlbHNlICJuYXRpdmUtaG92ZXIiLAogICAgICAgICB9LAogICAgICAgICAic3RhdGVTdXBwb3J0Ijogc3RhdGVfc3VwcG9ydCwKQEAgLTE2NzEsNiArMTcwOCw3IEBACiAgICAgICAgICAgICBjb250aW51ZQogICAgICAgICBydW50aW1lX3Jlc3VsdHNbYWxpYXNdID0gZGlzY292ZXJfcnVudGltZShhbGlhcywgcnVudGltZV9yb290c1swXSwgcHJvZHVjdCwgd29ya2Vycz13b3JrZXJzKQogICAgIGF1dGhvcml0eV9pbmRleCA9IGJ1aWxkX2F1dGhvcml0eV9pbmRleGVzKHByb2R1Y3QsIGdvdmVybm9yKQorICAgIGdvdmVybmVkX21hcmtlcl9hdXRob3JpdHkgPSBsb2FkX2dvdmVybmVkX3BpbG90X2NvbnRyYWN0cyhwcm9kdWN0KQogICAgIGdvbGRlbl90cmFjZSwgZ29sZGVuX2V2aWRlbmNlID0gZGlzY292ZXJfZ29sZGVuX3RyYWNlKAogICAgICAgICBnb3Zlcm5vciwKICAgICAgICAgUGF0aChlbWJlZGRlZF9ldmlkZW5jZSkucmVzb2x2ZSgpIGlmIGVtYmVkZGVkX2V2aWRlbmNlIGVsc2UgTm9uZSwKQEAgLTE3MDYsNiArMTc0NCw3IEBACiAgICAgICAgICAgICAgICAgb3JkaW5hbF9jb3VudGVyW2xvY2F0b3JfYmFzZV0sCiAgICAgICAgICAgICAgICAgZ29sZGVuX3RyYWNlLAogICAgICAgICAgICAgICAgIGdvbGRlbl9ldmlkZW5jZSwKKyAgICAgICAgICAgICAgICBnb3Zlcm5lZF9tYXJrZXJfYXV0aG9yaXR5LAogICAgICAgICAgICAgKQogICAgICAgICAgICAgYWxsX3JlY29yZHMuYXBwZW5kKHJlY29yZCkKICAgICAgICAgZm9yIHJvdXRlIGluIHJlc3VsdFsicm91dGVzIl06Cg==' | base64 -d > "$RUNNER_TEMP/runner.patch"
+          git apply --check "$RUNNER_TEMP/runner.patch"
+          git apply "$RUNNER_TEMP/runner.patch"
+          test "$(sha256sum tools/code-atlas/src/code_atlas/app_map/uimap/runner.py | awk '{print $1}')" = 'eccda7f9ded8aa07755261a5bb9af86948f025192f1ccb3dd0aacc7885e32e65'
+
+      - name: Materialize focused regression test
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'ZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKaW1wb3J0IGpzb24KaW1wb3J0IHRlbXBmaWxlCmltcG9ydCB1bml0dGVzdApmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKCmZyb20gY29kZV9hdGxhcy5hcHBfbWFwLnVpbWFwLmRpc2NvdmVyeSBpbXBvcnQgQ3NzVGFyZ2V0LCBVaUNhbmRpZGF0ZQpmcm9tIGNvZGVfYXRsYXMuYXBwX21hcC51aW1hcC5nb3Zlcm5lZF9tYXJrZXJzIGltcG9ydCAoCiAgICBsb2FkX2dvdmVybmVkX3BpbG90X2NvbnRyYWN0cywKICAgIHJlY29uY2lsZV9nb3Zlcm5lZF9jYW5kaWRhdGUsCikKZnJvbSBjb2RlX2F0bGFzLmFwcF9tYXAudWltYXAucnVubmVyIGltcG9ydCByZWNvcmRfZnJvbV9jYW5kaWRhdGUKClNPVVJDRV9PV05FUiA9ICJhcHBzL3Rlcm1pbmFsLWRlLXZlbnRhLXN5c3RlbS9wcm9kdWN0cy9wYy9hcHAvY29tcG9uZW50cy9pbnZlbnRvcnkvaW52ZW50b3J5LXdvcmtzcGFjZS50c3giCkNTU19PV05FUiA9ICJhcHBzL3Rlcm1pbmFsLWRlLXZlbnRhLXN5c3RlbS9wcm9kdWN0cy9wYy9hcHAvY29tcG9uZW50cy9pbnZlbnRvcnkvcGMtaW52ZW50b3J5LW1hc3Rlci1kZXRhaWwubW9kdWxlLmNzcyIKCgpkZWYgcGlsb3RfcGF5bG9hZCgpIC0+IGRpY3Q6CiAgICByZXR1cm4gewogICAgICAgICJzY2hlbWEiOiAicHJpc21hLnBjLXN0b2NrLWZpY2hhLXRhYmxldC1saWNlbnNlcy12aXN1YWwtcGlsb3QuY29udHJhY3QudjEiLAogICAgICAgICJzdGF0dXMiOiAiRVhBQ1RfVEFSR0VUX0FVVEhPUklaRURfRk9SX0dPVkVSTkVEX0FQUExJQ0FUSU9OIiwKICAgICAgICAidGFza0lkIjogIlBDX1NUT0NLX0ZJQ0hBX1RBQkxFVF9MSUNFTlNFU19WSVNVQUxfUElMT1RfVjEiLAogICAgICAgICJwaWxvdCI6IHsKICAgICAgICAgICAgInN1cmZhY2VJZCI6ICJTVVJGLnBjLmJhY2tvZmZpY2UiLAogICAgICAgICAgICAicm91dGVJZCI6ICJST1VURS5wYy5zdG9jayIsCiAgICAgICAgICAgICJydW50aW1lUm91dGUiOiAiL3N0b2NrIiwKICAgICAgICAgICAgIm93bmVySWQiOiAiT1dOLnBjLmludmVudG9yeS5zdG9ja19maWNoYSIsCiAgICAgICAgICAgICJvd25lclN5bWJvbCI6ICJTdG9ja0ZpY2hhIiwKICAgICAgICAgICAgInJlZ2lvbklkIjogIlpPTkUucGMuc3RvY2suZGV0YWlsIiwKICAgICAgICAgICAgInNsb3RJZCI6ICJTTE9ULnBjLnN0b2NrLmRldGFpbC5wcmltYXJ5IiwKICAgICAgICAgICAgImNvbXBvbmVudFVpSWQiOiAiUEMtU1RPQ0stRklDSEEtUEFORUwtMDEiLAogICAgICAgICAgICAicmVjaXBlSWQiOiAiUkVDLnBhbmVsLm9wZXJhdGlvbmFsLmNsb3VkZ2xhc3MiLAogICAgICAgICAgICAidmlzdWFsU3RhY2tJZCI6ICJWU1RBQ0suU1VSRkFDRS5PUEVSQVRJT05BTC5QQy5TVE9DSy5GSUNIQS5WMSIsCiAgICAgICAgICAgICJiaW5kaW5nSWQiOiAiQk5ELlNVUkZBQ0UuT1BFUkFUSU9OQUwuUEMuU1RPQ0suRklDSEEuVjEiLAogICAgICAgICAgICAiYWRhcHRlcklkIjogIkFEUC5QQy5ERU5TRS5DTE9VREdMQVNTLlYxIiwKICAgICAgICAgICAgIm5ldXRyYWxMYXllcklkIjogIkxZUi5TVVJGQUNFLk9QRVJBVElPTkFMLkRFVEFJTCIsCiAgICAgICAgICAgICJpbXBsZW1lbnRhdGlvbkxheWVySWQiOiAicHJvZHVjdHMucGMuYXBwLmNvbXBvbmVudHMuaW52ZW50b3J5LnBjLmludmVudG9yeS5tYXN0ZXIuZGV0YWlsLm1vZHVsZS5jc3MucHJvZHVjdGZpY2hhIiwKICAgICAgICAgICAgInJ1bnRpbWVTZWxlY3RvciI6ICJbZGF0YS1wY2ludi1wcm9kdWN0LWZpY2hhPVwic3RvY2tcIl0iLAogICAgICAgICAgICAic291cmNlT3duZXIiOiBTT1VSQ0VfT1dORVIsCiAgICAgICAgICAgICJjc3NPd25lciI6IENTU19PV05FUiwKICAgICAgICB9LAogICAgfQoKCmRlZiBjYW5kaWRhdGUoKiwgcm91dGVfcGF0aDogc3RyID0gIi9zdG9jayIsIGNvbXBvbmVudF91aV9pZDogc3RyID0gIlBDLVNUT0NLLUZJQ0hBLVBBTkVMLTAxIikgLT4gVWlDYW5kaWRhdGU6CiAgICBhdHRycyA9IHsKICAgICAgICAiZGF0YS1wcmlzbWEtc3VyZmFjZSI6ICJwYyIsCiAgICAgICAgImRhdGEtcHJpc21hLXJvdXRlIjogIi9zdG9jayIsCiAgICAgICAgImRhdGEtcHJpc21hLW93bmVyIjogIlN0b2NrRmljaGEiLAogICAgICAgICJkYXRhLXByaXNtYS1yZWdpb24iOiAiWk9ORS5wYy5zdG9jay5kZXRhaWwiLAogICAgICAgICJkYXRhLXByaXNtYS1zbG90IjogIlNMT1QucGMuc3RvY2suZGV0YWlsLnByaW1hcnkiLAogICAgICAgICJkYXRhLXByaXNtYS1jb21wb25lbnQtdWktaWQiOiBjb21wb25lbnRfdWlfaWQsCiAgICAgICAgImRhdGEtcHJpc21hLXJlY2lwZSI6ICJSRUMucGFuZWwub3BlcmF0aW9uYWwuY2xvdWRnbGFzcyIsCiAgICAgICAgImRhdGEtcHJpc21hLXZpc3VhbC1zdGFjayI6ICJWU1RBQ0suU1VSRkFDRS5PUEVSQVRJT05BTC5QQy5TVE9DSy5GSUNIQS5WMSIsCiAgICAgICAgImRhdGEtcHJpc21hLWJpbmRpbmciOiAiQk5ELlNVUkZBQ0UuT1BFUkFUSU9OQUwuUEMuU1RPQ0suRklDSEEuVjEiLAogICAgICAgICJkYXRhLXByaXNtYS1hZGFwdGVyIjogIkFEUC5QQy5ERU5TRS5DTE9VREdMQVNTLlYxIiwKICAgICAgICAiZGF0YS1wcmlzbWEtbmV1dHJhbC1sYXllciI6ICJMWVIuU1VSRkFDRS5PUEVSQVRJT05BTC5ERVRBSUwiLAogICAgICAgICJkYXRhLXByaXNtYS1zb3VyY2Utb3duZXIiOiAiaW52ZW50b3J5LXdvcmtzcGFjZS50c3giLAogICAgICAgICJkYXRhLXByaXNtYS1jc3Mtb3duZXIiOiAicGMtaW52ZW50b3J5LW1hc3Rlci1kZXRhaWwubW9kdWxlLmNzcyIsCiAgICB9CiAgICByZXR1cm4gVWlDYW5kaWRhdGUoCiAgICAgICAgcnVudGltZV9hbGlhcz0icGMiLAogICAgICAgIHJvdXRlX3BhdGg9cm91dGVfcGF0aCwKICAgICAgICByb3V0ZV9pZD0iUk9VVEUucGMuc3RvY2siIGlmIHJvdXRlX3BhdGggPT0gIi9zdG9jayIgZWxzZSAiUk9VVEUucGMuY291bnRzIiwKICAgICAgICByb3V0ZV9zb3VyY2VfZmlsZT1mImFwcHMvdGVybWluYWwtZGUtdmVudGEtc3lzdGVtL3Byb2R1Y3RzL3BjL2FwcC9hcHAve3JvdXRlX3BhdGguc3RyaXAoJy8nKX0vcGFnZS50c3giLAogICAgICAgIHJlbmRlcl9zb3VyY2VfZmlsZT1TT1VSQ0VfT1dORVIsCiAgICAgICAgcmVuZGVyX3N5bWJvbD0iSW52ZW50b3J5V29ya3NwYWNlVmlldyIsCiAgICAgICAgb3duZXJfZmlsZT1TT1VSQ0VfT1dORVIsCiAgICAgICAgb3duZXJfc3ltYm9sPSJJbnZlbnRvcnlXb3Jrc3BhY2VWaWV3IiwKICAgICAgICBjbGFzc19uYW1lPSJwcm9kdWN0RmljaGEiLAogICAgICAgIHRhZ19uYW1lPSJzZWN0aW9uIiwKICAgICAgICB3aWRnZXRfa2luZD0iY29udHJvbCIsCiAgICAgICAgdGV4dF9oaW50PSIiLAogICAgICAgIGluc3RhbmNlX3BvbGljeT0iU0lOR0xFX09SX1NUQVRJQyIsCiAgICAgICAgZGF0YV9hdHRyaWJ1dGVzPWF0dHJzLAogICAgICAgIHNvdXJjZV9oYXNoPSJBIiAqIDY0LAogICAgKQoKCmRlZiBjc3NfdGFyZ2V0KCkgLT4gQ3NzVGFyZ2V0OgogICAgcmV0dXJuIENzc1RhcmdldCgKICAgICAgICBjbGFzc19uYW1lPSJwcm9kdWN0RmljaGEiLAogICAgICAgIHNlbGVjdG9yPScucHJvZHVjdEZpY2hhW2RhdGEtcHJpc21hLXZpc3VhbC1waWxvdD0icGMtc3RvY2stZmljaGEtdGFibGV0LWxpY2Vuc2VzLXYxIl0nLAogICAgICAgIHNvdXJjZV9maWxlPUNTU19PV05FUiwKICAgICAgICBzb3VyY2VfaGFzaD0iQiIgKiA2NCwKICAgICAgICBwc2V1ZG9fZWxlbWVudD1Ob25lLAogICAgICAgIHN0YXRlX3NlbGVjdG9yPSJkZWZhdWx0IiwKICAgICAgICBhdF9ydWxlPU5vbmUsCiAgICAgICAgYW5jaG9yX2tpbmQ9IkNTU19NT0RVTEVfQ0xBU1MiLAogICAgICAgIHRhcmdldF9yb2xlPSJST09UIiwKICAgICAgICBkZWNsYXJhdGlvbnM9e30sCiAgICApCgoKY2xhc3MgR292ZXJuZWRNYXJrZXJSZWNvbmNpbGlhdGlvblRlc3RzKHVuaXR0ZXN0LlRlc3RDYXNlKToKICAgIGRlZiBtYWtlX2luZGV4KHNlbGYsIHJvb3Q6IFBhdGgpIC0+IGRpY3Q6CiAgICAgICAgcGF0aCA9IHJvb3QgLyAiYXBwcy90ZXJtaW5hbC1kZS12ZW50YS1zeXN0ZW0vcHJvZHVjdHMvcGMvYXBwL2RvY3MvdmlzdWFsLXBpbG90cy9QQ19TVE9DS19GSUNIQV9UQUJMRVRfTElDRU5TRVNfVklTVUFMX1BJTE9UX1YxLmNvbnRyYWN0Lmpzb24iCiAgICAgICAgcGF0aC5wYXJlbnQubWtkaXIocGFyZW50cz1UcnVlLCBleGlzdF9vaz1UcnVlKQogICAgICAgIHBhdGgud3JpdGVfdGV4dChqc29uLmR1bXBzKHBpbG90X3BheWxvYWQoKSksIGVuY29kaW5nPSJ1dGYtOCIpCiAgICAgICAgcmV0dXJuIGxvYWRfZ292ZXJuZWRfcGlsb3RfY29udHJhY3RzKHJvb3QpCgogICAgZGVmIHRlc3RfY2VydGlmaWVkX21hcmtlcnNfcmVjb25jaWxlX2V4YWN0X3Zpc3VhbF90cmFjZV93aXRob3V0X25ldXRyYWxfbWVhbmluZyhzZWxmKToKICAgICAgICB3aXRoIHRlbXBmaWxlLlRlbXBvcmFyeURpcmVjdG9yeSgpIGFzIHRtcDoKICAgICAgICAgICAgaW5kZXggPSBzZWxmLm1ha2VfaW5kZXgoUGF0aCh0bXApKQogICAgICAgICAgICB0cmFjZSwgYmxvY2tlcnMsIGV2aWRlbmNlID0gcmVjb25jaWxlX2dvdmVybmVkX2NhbmRpZGF0ZShjYW5kaWRhdGUoKSwgW2Nzc190YXJnZXQoKV0sIGluZGV4LCBOb25lKQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKGJsb2NrZXJzLCBbXSkKICAgICAgICAgICAgc2VsZi5hc3NlcnRJc05vdE5vbmUodHJhY2UpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwodHJhY2VbImNvbXBvbmVudFVpSWQiXSwgIlBDLVNUT0NLLUZJQ0hBLVBBTkVMLTAxIikKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbCh0cmFjZVsiYmluZGluZ0lkIl0sICJCTkQuU1VSRkFDRS5PUEVSQVRJT05BTC5QQy5TVE9DSy5GSUNIQS5WMSIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwodHJhY2VbImxheWVySWQiXSwgIkxZUi5TVVJGQUNFLk9QRVJBVElPTkFMLkRFVEFJTCIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0Tm90SW4oIm5ldXRyYWxNZWFuaW5nSWQiLCB0cmFjZSkKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChldmlkZW5jZVswXVsiZXZpZGVuY2VUeXBlIl0sICJDRVJUSUZJRURfVklTVUFMX1BJTE9UX0NPTlRSQUNUIikKCiAgICBkZWYgdGVzdF9yYXdfdW5yZWdpc3RlcmVkX21hcmtlcnNfbmV2ZXJfZ3JhbnRfYXV0aG9yaXR5KHNlbGYpOgogICAgICAgIHRyYWNlLCBibG9ja2VycywgXyA9IHJlY29uY2lsZV9nb3Zlcm5lZF9jYW5kaWRhdGUoY2FuZGlkYXRlKGNvbXBvbmVudF91aV9pZD0iUEMtVU5LTk9XTiIpLCBbY3NzX3RhcmdldCgpXSwge30sIE5vbmUpCiAgICAgICAgc2VsZi5hc3NlcnRJc05vbmUodHJhY2UpCiAgICAgICAgc2VsZi5hc3NlcnRJbigiR09WRVJORURfTUFSS0VSX0FVVEhPUklUWV9OT1RfRk9VTkQiLCBibG9ja2VycykKCiAgICBkZWYgdGVzdF9yb3V0ZV9taXNtYXRjaF9mYWlsc19jbG9zZWQoc2VsZik6CiAgICAgICAgd2l0aCB0ZW1wZmlsZS5UZW1wb3JhcnlEaXJlY3RvcnkoKSBhcyB0bXA6CiAgICAgICAgICAgIGluZGV4ID0gc2VsZi5tYWtlX2luZGV4KFBhdGgodG1wKSkKICAgICAgICAgICAgdHJhY2UsIGJsb2NrZXJzLCBfID0gcmVjb25jaWxlX2dvdmVybmVkX2NhbmRpZGF0ZShjYW5kaWRhdGUocm91dGVfcGF0aD0iL2NvdW50cyIpLCBbY3NzX3RhcmdldCgpXSwgaW5kZXgsIE5vbmUpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0SXNOb25lKHRyYWNlKQogICAgICAgICAgICBzZWxmLmFzc2VydEluKCJHT1ZFUk5FRF9DQU5ESURBVEVfUk9VVEVfUEFUSF9NSVNNQVRDSCIsIGJsb2NrZXJzKQoKICAgIGRlZiB0ZXN0X2NlbnRyYWxfYXV0aG9yaXR5X21pc21hdGNoX2ZhaWxzX2Nsb3NlZChzZWxmKToKICAgICAgICB3aXRoIHRlbXBmaWxlLlRlbXBvcmFyeURpcmVjdG9yeSgpIGFzIHRtcDoKICAgICAgICAgICAgaW5kZXggPSBzZWxmLm1ha2VfaW5kZXgoUGF0aCh0bXApKQogICAgICAgICAgICB0cmFjZSwgYmxvY2tlcnMsIF8gPSByZWNvbmNpbGVfZ292ZXJuZWRfY2FuZGlkYXRlKAogICAgICAgICAgICAgICAgY2FuZGlkYXRlKCksIFtjc3NfdGFyZ2V0KCldLCBpbmRleCwgeyJiaW5kaW5nSWQiOiAiQk5ELkNPTkZMSUNUIn0KICAgICAgICAgICAgKQogICAgICAgICAgICBzZWxmLmFzc2VydElzTm9uZSh0cmFjZSkKICAgICAgICAgICAgc2VsZi5hc3NlcnRJbigiR09WRVJORURfTUFSS0VSX0NFTlRSQUxfQVVUSE9SSVRZX01JU01BVENIOmJpbmRpbmdJZCIsIGJsb2NrZXJzKQoKICAgIGRlZiB0ZXN0X3JlY29yZF9hZG9wdHNfY2VydGlmaWVkX3Zpc3VhbF9jb29yZGluYXRlc19idXRfcmVtYWluc19zZW1hbnRpY2FsbHlfYmxvY2tlZChzZWxmKToKICAgICAgICB3aXRoIHRlbXBmaWxlLlRlbXBvcmFyeURpcmVjdG9yeSgpIGFzIHRtcDoKICAgICAgICAgICAgaW5kZXggPSBzZWxmLm1ha2VfaW5kZXgoUGF0aCh0bXApKQogICAgICAgICAgICByZWNvcmQgPSByZWNvcmRfZnJvbV9jYW5kaWRhdGUoY2FuZGlkYXRlKCksIFtjc3NfdGFyZ2V0KCldLCB7fSwgMSwge30sIFtdLCBpbmRleCkKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChyZWNvcmRbInN1cmZhY2VJZCJdLCAiU1VSRi5wYy5iYWNrb2ZmaWNlIikKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChyZWNvcmRbIm93bmVySWQiXSwgIk9XTi5wYy5pbnZlbnRvcnkuc3RvY2tfZmljaGEiKQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKHJlY29yZFsib3duZXJTeW1ib2wiXSwgIlN0b2NrRmljaGEiKQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKHJlY29yZFsicmVnaW9uSWQiXSwgIlpPTkUucGMuc3RvY2suZGV0YWlsIikKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChyZWNvcmRbInNsb3RJZCJdLCAiU0xPVC5wYy5zdG9jay5kZXRhaWwucHJpbWFyeSIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwocmVjb3JkWyJjb21wb25lbnRVaUlkIl0sICJQQy1TVE9DSy1GSUNIQS1QQU5FTC0wMSIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwocmVjb3JkWyJiaW5kaW5nSWQiXSwgIkJORC5TVVJGQUNFLk9QRVJBVElPTkFMLlBDLlNUT0NLLkZJQ0hBLlYxIikKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChyZWNvcmRbImxheWVySWQiXSwgIkxZUi5TVVJGQUNFLk9QRVJBVElPTkFMLkRFVEFJTCIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwocmVjb3JkWyJpbXBsZW1lbnRhdGlvbkxheWVySWQiXSwgInByb2R1Y3RzLnBjLmFwcC5jb21wb25lbnRzLmludmVudG9yeS5wYy5pbnZlbnRvcnkubWFzdGVyLmRldGFpbC5tb2R1bGUuY3NzLnByb2R1Y3RmaWNoYSIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwocmVjb3JkWyJhZGFwdGVySWQiXSwgIkFEUC5QQy5ERU5TRS5DTE9VREdMQVNTLlYxIikKICAgICAgICAgICAgc2VsZi5hc3NlcnRJc05vbmUocmVjb3JkWyJuZXV0cmFsTWVhbmluZ0lkIl0pCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwocmVjb3JkWyJjb25maWRlbmNlIl0sICJISUdIIikKICAgICAgICAgICAgc2VsZi5hc3NlcnROb3RFcXVhbChyZWNvcmRbInRhcmdldFJlc29sdXRpb25TdGF0dXMiXSwgIlNPVVJDRV9SRVNPTFZFRCIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwocmVjb3JkWyJhcHBsaWNhdGlvblJlYWRpbmVzcyJdLCAiQkxPQ0tFRCIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0SW4oIk5FVVRSQUxfTUVBTklOR19OT1RfUFJPVkVOIiwgcmVjb3JkWyJibG9ja2luZ1JlYXNvbnMiXSkKICAgICAgICAgICAgc2VsZi5hc3NlcnRJbigiUkVDLnBhbmVsLm9wZXJhdGlvbmFsLmNsb3VkZ2xhc3MiLCByZWNvcmRbInJlY2lwZUNvbXBhdGliaWxpdHkiXVsiY29tcGF0aWJsZVJlY2lwZUlkcyJdKQoKCmlmIF9fbmFtZV9fID09ICJfX21haW5fXyI6CiAgICB1bml0dGVzdC5tYWluKCkK' | base64 -d > tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py
+          test "$(sha256sum tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py | awk '{print $1}')" = '8d8b6f65c4c819adc8b4ebbd3879bf76d438939fba45ee60d7e298cc28347f83'
+
+      - name: Compile and run focused tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/app_map/uimap/governed_markers.py \
+            tools/code-atlas/src/code_atlas/app_map/uimap/runner.py \
+            tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py \
+            tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+          python -m unittest -v \
+            tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py \
+            tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+
+      - name: Generate real three-app mapping evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/marker-reconciliation"
+          python -m code_atlas.cli.main ui-bridge refresh-three-app-map \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-root "$RUNNER_TEMP/marker-reconciliation" \
+            --binding-registry "$GITHUB_WORKSPACE/prisma-html/authority/rifat/identity/registries/element-bindings.registry.json" \
+            --pilot-contract "$GITHUB_WORKSPACE/apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots/PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json" \
+            --workers 18
+
+      - name: Prove exact StockFicha visual trace without fake semantic green
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'marker-reconciliation'
+          projection = json.loads((root / 'PRISMA_UI_MULTI_SURFACE_PROJECTION.json').read_text(encoding='utf-8'))
+          gaps = json.loads((root / 'PRISMA_UI_BRIDGE_BINDING_GAP_MATRIX.json').read_text(encoding='utf-8'))
+
+          rows = [row for row in projection.get('components', []) if row.get('componentUiId') == 'PC-STOCK-FICHA-PANEL-01']
+          if len(rows) != 1:
+              raise SystemExit(f'STOCK_FICHA_EXACT_COMPONENT_COUNT:{len(rows)}')
+          row = rows[0]
+          trace = row.get('trace') or {}
+          expected = {
+              'surfaceId': 'SURF.pc.backoffice',
+              'routeId': 'ROUTE.pc.stock',
+              'ownerId': 'OWN.pc.inventory.stock_ficha',
+              'regionId': 'ZONE.pc.stock.detail',
+              'slotId': 'SLOT.pc.stock.detail.primary',
+              'componentUiId': 'PC-STOCK-FICHA-PANEL-01',
+              'bindingId': 'BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1',
+              'layerId': 'LYR.SURFACE.OPERATIONAL.DETAIL',
+              'implementationLayerId': 'products.pc.app.components.inventory.pc.inventory.master.detail.module.css.productficha',
+              'adapterId': 'ADP.PC.DENSE.CLOUDGLASS.V1',
+          }
+          mismatches = {key: [trace.get(key), value] for key, value in expected.items() if trace.get(key) != value}
+          if mismatches:
+              raise SystemExit('STOCK_FICHA_TRACE_MISMATCH:' + json.dumps(mismatches, sort_keys=True))
+          if row.get('neutralMeaningId') is not None:
+              raise SystemExit('STOCK_FICHA_NEUTRAL_MEANING_MUST_REMAIN_UNRESOLVED')
+          if row.get('targetResolutionStatus') == 'SOURCE_RESOLVED':
+              raise SystemExit('STOCK_FICHA_MUST_NOT_FAKE_SOURCE_RESOLVED')
+          if row.get('applicationReadiness') != 'BLOCKED':
+              raise SystemExit('STOCK_FICHA_MUST_REMAIN_APPLICATION_BLOCKED')
+          if row.get('confidence') != 'HIGH':
+              raise SystemExit('STOCK_FICHA_CERTIFIED_VISUAL_TRACE_MUST_BE_HIGH_CONFIDENCE')
+          blockers = set(row.get('blockingReasons') or [])
+          if 'NEUTRAL_MEANING_NOT_PROVEN' not in blockers:
+              raise SystemExit('STOCK_FICHA_NEUTRAL_MEANING_BLOCKER_MISSING')
+          forbidden = {'MISSING_CERTIFIED_LAYER','MISSING_IMPLEMENTATION_LAYER','MISSING_VISUAL_BINDING','MISSING_TRACE:bindingId','MISSING_TRACE:layerId','MISSING_TRACE:implementationLayerId'}
+          if blockers & forbidden:
+              raise SystemExit('STOCK_FICHA_VISUAL_TRACE_STILL_MISSING:' + ','.join(sorted(blockers & forbidden)))
+          if 'REC.panel.operational.cloudglass' not in (row.get('compatibleRecipeIds') or []):
+              raise SystemExit('STOCK_FICHA_CERTIFIED_RECIPE_NOT_PRESERVED')
+
+          gap_rows = [item for item in gaps.get('rows', []) if item.get('componentUiId') == 'PC-STOCK-FICHA-PANEL-01']
+          if len(gap_rows) != 1:
+              raise SystemExit(f'STOCK_FICHA_GAP_ROW_COUNT:{len(gap_rows)}')
+          gap = gap_rows[0]
+          alignment = gap.get('pilotAlignment') or {}
+          if alignment.get('aligned') is not True or alignment.get('mismatches') not in ([], None):
+              raise SystemExit('STOCK_FICHA_PILOT_ALIGNMENT_NOT_EXACT:' + json.dumps(alignment, sort_keys=True))
+          gap_blockers = set(gap.get('blockingReasons') or [])
+          if 'MISSING_COORDINATE:neutralMeaningId' not in gap_blockers:
+              raise SystemExit('STOCK_FICHA_PROMOTION_MUST_REMAIN_BLOCKED_ON_NEUTRAL_MEANING')
+          extra_missing = sorted(value for value in gap_blockers if value.startswith('MISSING_COORDINATE:') and value != 'MISSING_COORDINATE:neutralMeaningId')
+          if extra_missing:
+              raise SystemExit('STOCK_FICHA_OTHER_COORDINATES_STILL_MISSING:' + ','.join(extra_missing))
+
+          cobrar = [item for item in projection.get('components', []) if item.get('componentUiId') == 'TB-POS-PAY-COBRAR-BTN-01']
+          if len(cobrar) != 1 or cobrar[0].get('targetResolutionStatus') != 'SOURCE_RESOLVED':
+              raise SystemExit('COBRAR_GOLDEN_REGRESSION')
+
+          print(json.dumps({
+              'stockFichaTrace': trace,
+              'stockFichaBlockers': sorted(blockers),
+              'promotionBlockers': sorted(gap_blockers),
+              'pilotAlignment': alignment,
+              'cobrarStatus': cobrar[0].get('targetResolutionStatus'),
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Prove source-only scope and commit repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only -- prisma-html apps/terminal-de-venta-system/products/tablet apps/terminal-de-venta-system/products/pc apps/terminal-de-venta-system/products/mobile)"
+          changed="$(git diff --name-only; git ls-files --others --exclude-standard)"
+          printf '%s\n' "$changed"
+          printf '%s\n' "$changed" | grep -Fx 'tools/code-atlas/src/code_atlas/app_map/uimap/runner.py'
+          printf '%s\n' "$changed" | grep -Fx 'tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py'
+          test "$(printf '%s\n' "$changed" | sed '/^$/d' | sort -u | wc -l)" -eq 2
+
+          git config user.name 'prisma-uimap-bot'
+          git config user.email 'prisma-uimap-bot@users.noreply.github.com'
+          git add \
+            tools/code-atlas/src/code_atlas/app_map/uimap/runner.py \
+            tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py
+          git commit -m 'fix(uimap): reconcile certified governed marker trace'
+          git push origin HEAD:agent/prisma-html-three-app-visual-closure
