@@ -28,7 +28,7 @@ export default async function ExportablesPage() {
           <div className="hero-copy">
             <div className="kicker">descargas</div>
             <h1 className="hero-title">Exportables conectados</h1>
-            <p>Sólo se anuncian formatos que tienen endpoint real y gate de licencia. Nada de PDF imaginario con corbata.</p>
+            <p>Sólo se anuncian formatos que tienen un endpoint real y un gate de licencia verificable.</p>
           </div>
           <div className="inline-list">
             <span className="chip">Venta hoy: {sales?.value ?? "No disponible"}</span>
@@ -46,7 +46,7 @@ export default async function ExportablesPage() {
         <div className="section-head"><div><div className="kicker">alcance</div><h2 className="section-title">Lo que todavía no se anuncia</h2></div></div>
         <div className="list">
           <div className="list-item">Inventario, compras y auditoría no se ofrecen aquí como CSV/PDF hasta contar con exportador certificado.</div>
-          <div className="list-item">La ausencia de un exportador no se disfraza como “reporte listo”.</div>
+          <div className="list-item">La ausencia de un exportador se muestra como capacidad no disponible, sin declarar reportes listos.</div>
         </div>
       </section>
     </AppShell>
