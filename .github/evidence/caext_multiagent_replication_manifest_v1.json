@@ -19,11 +19,23 @@
   "groundTruthHiddenUntilPairedResponsesPersisted": true,
   "historyAuthorizes": false,
   "productCoreReadOnly": true,
-  "probe": {
-    "status": "PENDING_EXTERNAL_AGENT",
-    "scored": false,
-    "expectedResponseFile": ".github/evidence/caext_multiagent_replication_responses_v1.json",
-    "assignmentAttempt": "copilot-swe-agent[bot] via connector returned HTTP 403",
-    "fallback": "PR mention @copilot"
-  }
+  "evaluator": {
+    "system": "GitHub Copilot CLI",
+    "execution": "12 separate GitHub Actions jobs",
+    "authentication": "built-in GITHUB_TOKEN",
+    "requiredPermission": "copilot-requests: write",
+    "repositoryCheckoutInEvaluatorJobs": false,
+    "modelIdentity": "NOT_MEASURED",
+    "toolPolicy": "deny shell/write/read/url/memory",
+    "pairResponseVisibility": false,
+    "groundTruthVisibility": false
+  },
+  "availabilityHistory": {
+    "issueAssignmentAttempt": "HTTP_403_FROM_CHAT_GITHUB_CONNECTOR",
+    "prMentionAttempt": "NO_AGENT_RESPONSE_OR_HEAD_MOVEMENT",
+    "actionsCliRoute": "CANONICAL_NEXT_ATTEMPT"
+  },
+  "failClosedStatusWhenUnavailable": "BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR",
+  "expectedResponseFile": ".github/evidence/caext_multiagent_replication_responses_v1.json",
+  "scoredEvidenceMustBeProducedByWorkflow": true
 }
