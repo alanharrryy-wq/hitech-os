@@ -404,7 +404,8 @@ def historical_validation(spec: RepoSpec, base: Path, root: Path) -> dict[str, A
     try:
         git(wt, "checkout", "--detach", spec.historical_commit)
         context = resolve_intelligence_context(
-            wt, request=IntelligenceRequest(intent="VERIFY", domain="runtime", changed_paths=(spec.target,), workers=WORKERS),
+            wt, root / f"historical_output_{spec.repo_id}",
+            request=IntelligenceRequest(intent="VERIFY", domain="runtime", changed_paths=(spec.target,), workers=WORKERS),
         )
         impacted = set(((context.get("graphs") or {}).get("changeImpact") or {}).get("impacted") or [])
         actual = set(spec.historical_paths)
@@ -465,7 +466,7 @@ def run_gate(repo_set: str, output_root: Path, hitech_root: Path) -> Path:
 
             discover_request = IntelligenceRequest(intent="DISCOVER", domain="runtime", semantic_query=spec.request, workers=WORKERS)
             t0 = time.perf_counter()
-            context1 = resolve_intelligence_context(base, request=discover_request)
+            context1 = resolve_intelligence_context(base, repo_stage / "context1", request=discover_request)
             timings["intelligenceDiscoverSeconds"] = round(time.perf_counter() - t0, 4)
             graphs = context1.get("graphs") or {}
             authorities = context1.get("authorities") or {}
@@ -486,7 +487,7 @@ def run_gate(repo_set: str, output_root: Path, hitech_root: Path) -> Path:
             jdump(repo_stage / "prep_strict.json", pstrict)
 
             t0 = time.perf_counter()
-            context2 = resolve_intelligence_context(base, request=discover_request)
+            context2 = resolve_intelligence_context(base, repo_stage / "context2", request=discover_request)
             view1, view2 = stable_view(context1), stable_view(context2)
             repeatability = {"stable": view1 == view2, "fingerprint1": digest(view1), "fingerprint2": digest(view2)}
             timings["repeatabilitySeconds"] = round(time.perf_counter() - t0, 4)
