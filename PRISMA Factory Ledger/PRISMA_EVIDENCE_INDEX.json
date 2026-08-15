@@ -378,9 +378,32 @@
         "Complete dependency understanding for Go Java YAML/IaC C++ or other unproven stacks",
         "Production readiness, enterprise IAM/security, hosted multi-tenant isolation, legal/privacy compliance or paid-pilot readiness"
       ]
+    },
+    {
+      "artifact": "Code Atlas Historical Real-Diff V1 — PR #282 / run 31912606042",
+      "type": "code_atlas_historical_real_diff_v1",
+      "scope": [
+        "code_atlas",
+        "change_intelligence",
+        "historical_evidence"
+      ],
+      "status": "PASS_BOUNDED_EVIDENCE_CAPTURED",
+      "proves": [
+        "Historical parent snapshots and actual next-commit diffs were compared read-only on Ubuntu and Windows",
+        "Cobra Go measured 25% recall and 100% precision with 0% companion recall",
+        "Spring Java measured 50% recall and 100% precision with 0% companion recall",
+        "pybind11 C++ Python measured 33.33% recall and 100% precision with 0% companion recall",
+        "A Kubernetes target absent from the parent snapshot remained BLOCKED and did not receive an Authority Pack",
+        "All four cases were repeatable and external parent snapshots remained unchanged"
+      ],
+      "doesNotProve": [
+        "High companion-path recall",
+        "Complete dependency or historical change understanding across tested or arbitrary stacks",
+        "Production readiness, enterprise IAM/security, hosted multi-tenant isolation, legal/privacy compliance or paid-pilot readiness"
+      ]
     }
   ],
-  "updatedAt": "2026-08-15T22:24:29Z",
+  "updatedAt": "2026-08-15T22:42:19Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",

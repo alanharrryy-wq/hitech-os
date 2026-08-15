@@ -153,7 +153,45 @@
     "externalPlatforms": [
       "ubuntu",
       "windows"
-    ]
+    ],
+    "historicalRealDiff": {
+      "status": "VERIFY_HISTORICAL_EVIDENCE_CAPTURED",
+      "crossPlatform": [
+        "ubuntu",
+        "windows"
+      ],
+      "repeatability": "4/4 cases per OS",
+      "externalReadOnlyCompliance": "PASS",
+      "accuracyThresholds": "NONE_BY_DESIGN",
+      "cases": {
+        "cobra_go": {
+          "recallPct": 25.0,
+          "precisionPct": 100.0,
+          "companionRecallPct": 0.0,
+          "actualChangedCount": 4,
+          "predictedImpactCount": 1
+        },
+        "spring_java": {
+          "recallPct": 50.0,
+          "precisionPct": 100.0,
+          "companionRecallPct": 0.0,
+          "actualChangedCount": 2,
+          "predictedImpactCount": 1
+        },
+        "pybind_mixed": {
+          "recallPct": 33.33,
+          "precisionPct": 100.0,
+          "companionRecallPct": 0.0,
+          "actualChangedCount": 3,
+          "predictedImpactCount": 1
+        },
+        "kubernetes_new_path": {
+          "decision": "BLOCKED",
+          "authorityPackIssued": false,
+          "targetExistsInParent": false
+        }
+      }
+    }
   },
   "excludedSurfaces": [
     "tablet",
@@ -175,9 +213,11 @@
     "customer data-egress certification beyond the runner contract",
     "paid-pilot readiness by itself",
     "legal or privacy compliance",
-    "production certification"
+    "production certification",
+    "high companion-path recall across Go Java C++ Python YAML or arbitrary stacks",
+    "complete historical change prediction"
   ],
-  "nextGate": "Run historical real-diff validation, then human/agent usefulness evidence. Treat hosted/security boundaries as separate gates. Do not rebuild Universal Intelligence or Customer Wow unless new evidence identifies a concrete reproducible defect.",
+  "nextGate": "Run human/agent usefulness evidence on bounded real change tasks. Measure whether Authority Packs, impact, unknowns, protected scope and evidence reports improve task quality without widening authorization. Hosted/security boundaries remain separate. Do not rebuild core from low historical recall alone.",
   "externalEvidence": {
     "status": "BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS",
     "sourceRepairPr": 275,
@@ -260,6 +300,18 @@
       "Spring PetClinic Java corpus produced zero repository dependency edges",
       "Kubernetes YAML/IaC corpus produced zero repository dependency edges",
       "pybind11 mixed-language corpus produced two repository dependency edges"
-    ]
+    ],
+    "historicalRealDiff": {
+      "pr": 282,
+      "mergeCommit": "004b15f2068c86dac42366870d867e39fb990dcf",
+      "authorityMeshRunId": 31912469729,
+      "authorityMeshArtifactId": 9254042841,
+      "runId": 31912606042,
+      "ubuntuArtifactId": 9254078386,
+      "ubuntuArtifactDigest": "sha256:88784e9b9c58ec29cee6ef40229a7f307a41c71147e9d01f072f66e5078e5869",
+      "windowsArtifactId": 9254082540,
+      "windowsArtifactDigest": "sha256:d2efb32116430dbbfa78d5dc5dd9513afbc54198ffae90c302c43df75adb5e38",
+      "interpretation": "Conservative target-only impact in tested Go Java and C++/Python historical cases; low companion recall is bounded evidence, not automatic source-defect classification."
+    }
   }
 }

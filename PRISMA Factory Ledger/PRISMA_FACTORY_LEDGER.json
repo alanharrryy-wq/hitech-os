@@ -589,7 +589,7 @@
       ],
       "classification": "VERIFY",
       "status": "LOCAL_VERIFIED",
-      "stateLabel": "PASS_EXTERNAL_DIVERSITY_V2_7_REPOS_2_OS_LOCAL_VERIFIED",
+      "stateLabel": "PASS_HISTORICAL_REAL_DIFF_V1_BOUNDED_LOCAL_VERIFIED",
       "doNotRebuild": true,
       "evidence": [
         "PR #269",
@@ -611,7 +611,13 @@
         "CAEXT V2 external run 31911140797",
         "Ubuntu diversity artifact 9253725843",
         "Windows diversity artifact 9253737517",
-        "7 pinned unrelated repositories x Ubuntu/Windows; 70/70 declared scenarios per OS; CORE_LEAK 0; read-only/repeatability PASS"
+        "7 pinned unrelated repositories x Ubuntu/Windows; 70/70 declared scenarios per OS; CORE_LEAK 0; read-only/repeatability PASS",
+        "PR #282 / merge 004b15f2068c86dac42366870d867e39fb990dcf",
+        "Historical Authority Mesh run 31912469729 / artifact 9254042841",
+        "Historical real-diff run 31912606042",
+        "Ubuntu historical artifact 9254078386",
+        "Windows historical artifact 9254082540",
+        "Cobra recall 25%; Spring recall 50%; pybind11 recall 33.33%; companion recall 0% in all three; Kubernetes missing-parent target BLOCKED without Authority Pack"
       ],
       "allowedActions": [
         "read-only verification on unrelated external repositories",
@@ -642,10 +648,12 @@
         "Production certification",
         "Arbitrary repository universality",
         "Complete dependency understanding for Go, Java, YAML/IaC, C++ or other unproven stacks",
-        "Production, enterprise IAM/security, hosted multi-tenant, legal/privacy or paid-pilot readiness"
+        "Production, enterprise IAM/security, hosted multi-tenant, legal/privacy or paid-pilot readiness",
+        "High companion-path recall across tested multi-stack historical changes",
+        "Complete change-impact prediction for tests or documentation companions"
       ],
-      "nextGate": "Historical real-diff validation, then human/agent usefulness evidence. Hosted/security boundaries remain separate evidence gates; do not rebuild core without a concrete reproducible defect."
+      "nextGate": "Human/agent usefulness evidence. Preserve the measured companion-recall limitation; do not rebuild core without a separately authorized evidence-backed product-improvement gate."
     }
   ],
-  "updatedAt": "2026-08-15T22:24:29Z"
+  "updatedAt": "2026-08-15T22:42:19Z"
 }
