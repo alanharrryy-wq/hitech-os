@@ -37,6 +37,9 @@ jobs:
 
           path = Path('.github/scripts/caext_usefulness_pilot_v1.py')
           text = path.read_text(encoding='utf-8')
+          if '"observedRawRoiEvents": observed_roi' in text:
+              print('PASS_CAEXT_USEFULNESS_ROI_API_ALREADY_PATCHED')
+              raise SystemExit(0)
           old = '''    observed_roi = build_roi_event(
               metric_values={
                   "outOfScopeChangeRate": round(all_violations / max(1, all_edit_entries), 6),
@@ -86,10 +89,14 @@ jobs:
           python -m py_compile .github/scripts/caext_usefulness_pilot_v1.py
           python .github/scripts/caext_usefulness_pilot_v1.py selftest
 
-      - name: Commit script only
+      - name: Commit script only if needed
         shell: bash
         run: |
           set -euo pipefail
+          if git diff --quiet -- .github/scripts/caext_usefulness_pilot_v1.py; then
+            echo 'PASS_CAEXT_USEFULNESS_ROI_REPAIR_ALREADY_COMMITTED'
+            exit 0
+          fi
           changed="$(git diff --name-only)"
           if [ "$changed" != '.github/scripts/caext_usefulness_pilot_v1.py' ]; then
             echo "Unexpected ROI repair diff: $changed"
@@ -100,5 +107,3 @@ jobs:
           git add -- .github/scripts/caext_usefulness_pilot_v1.py
           git commit -m 'test(code-atlas): fix usefulness raw ROI event API'
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
-
-# bootstrap-trigger: roi-api-v1
