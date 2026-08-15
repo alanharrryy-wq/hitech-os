@@ -46,7 +46,8 @@ text = pat11.sub(section11, text, count=1)
 text = text.replace("The operational suite on the final fix ran **106 tests** and passed.", "The current hardened regression suite runs **140 tests** and passes; the original pre-external integration evidence ran 106 tests.")
 text = text.replace("- Ubuntu operational suite: 106 tests, `OK`;", "- original Ubuntu integration suite: 106 tests, `OK`;\n- post-external-hardening Code Atlas suite: 140 tests, `PASS`;")
 
-if "EXTERNAL_REPO_EVIDENCE_PENDING" in text:
-    raise SystemExit("WOW_PREPATCH_STALE_PENDING_REMAINS")
+remaining = text.count("EXTERNAL_REPO_EVIDENCE_PENDING")
+if remaining != 1:
+    raise SystemExit(f"WOW_PREPATCH_PENDING_CARDINALITY:{remaining}")
 path.write_text(text.rstrip() + "\n", encoding="utf-8")
-print("PASS_CAEXT_WOW_SECTIONS_PREPATCHED")
+print("PASS_CAEXT_WOW_SECTIONS_PREPATCHED_PENDING_TOP_STATUS_ONLY")
