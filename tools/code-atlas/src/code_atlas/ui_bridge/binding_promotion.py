@@ -71,6 +71,57 @@ def load_pilot_contracts(paths: Iterable[str | Path]) -> dict[str, dict[str, Any
     return out
 
 
+def resolve_pilot_contracts(
+    repository: BridgeRepository,
+    pilot_contracts: dict[str, dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    alias_rows: dict[str, list[dict[str, Any]]] = {}
+    for batch in repository.batches:
+        for alias in batch.get("aliases", []):
+            if not isinstance(alias, dict):
+                continue
+            alias_id = str(alias.get("aliasId") or "")
+            if alias_id:
+                alias_rows.setdefault(alias_id, []).append(alias)
+
+    buckets: dict[str, list[dict[str, Any]]] = {}
+    for pilot_component_ui_id, raw in sorted(pilot_contracts.items()):
+        canonical = repository.resolve_alias(pilot_component_ui_id)
+        certified = [
+            row for row in alias_rows.get(pilot_component_ui_id, [])
+            if row.get("reason") == "CERTIFIED_VISUAL_PILOT_CROSSWALK"
+            and str(row.get("canonicalComponentUiId") or "") == canonical
+        ]
+        row = dict(raw)
+        row["pilotComponentUiId"] = pilot_component_ui_id
+        row["canonicalComponentUiId"] = canonical
+        if canonical == pilot_component_ui_id:
+            row["identityResolution"] = "DIRECT_CANONICAL_ID"
+            row["aliasEvidence"] = []
+        elif len(certified) == 1:
+            row["identityResolution"] = "CERTIFIED_ALIAS_CROSSWALK"
+            row["aliasEvidence"] = certified
+        elif len(certified) > 1:
+            row["identityResolution"] = "AMBIGUOUS_CERTIFIED_ALIAS_CROSSWALK"
+            row["aliasEvidence"] = certified
+        else:
+            row["identityResolution"] = "UNVERIFIED_ALIAS_CROSSWALK"
+            row["aliasEvidence"] = []
+        buckets.setdefault(canonical, []).append(row)
+
+    resolved: dict[str, dict[str, Any]] = {}
+    for canonical, rows in sorted(buckets.items()):
+        if len(rows) == 1:
+            resolved[canonical] = rows[0]
+        else:
+            resolved[canonical] = {
+                "ambiguous": True,
+                "canonicalComponentUiId": canonical,
+                "pilots": rows,
+            }
+    return resolved
+
+
 def _visual_target_errors(component: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     visual_targets = component.get("visualTargets")
@@ -116,36 +167,58 @@ def evaluate_component(
     pilot = pilot_contracts.get(component_ui_id)
     pilot_alignment: dict[str, Any] | None = None
     if pilot:
-        pilot_row = pilot["pilot"]
-        comparisons = {
-            "routeId": (component.get("routeId"), pilot_row.get("routeId")),
-            "ownerId": (component.get("ownerId"), pilot_row.get("ownerId")),
-            "regionId": (component.get("regionId"), pilot_row.get("regionId")),
-            "slotId": (component.get("slotId"), pilot_row.get("slotId")),
-            "componentUiId": (
-                component.get("componentUiId"),
-                pilot_row.get("componentUiId"),
-            ),
-            "bindingId": (component.get("bindingId"), pilot_row.get("bindingId")),
-            "implementationLayerId": (
-                component.get("implementationLayerId"),
-                pilot_row.get("implementationLayerId"),
-            ),
-        }
-        mismatches = [
-            key
-            for key, (uimap_value, pilot_value) in comparisons.items()
-            if pilot_value is not None and uimap_value != pilot_value
-        ]
-        pilot_alignment = {
-            "contractPath": pilot["path"],
-            "contractSchema": pilot.get("schema"),
-            "contractStatus": pilot.get("status"),
-            "mismatches": mismatches,
-            "aligned": not mismatches,
-        }
-        if mismatches:
-            blockers.append("PILOT_CONTRACT_DRIFT:" + ",".join(sorted(mismatches)))
+        if pilot.get("ambiguous"):
+            pilot_alignment = {
+                "canonicalComponentUiId": component_ui_id,
+                "identityResolution": "AMBIGUOUS_PILOT_CROSSWALK",
+                "mismatches": ["ambiguousPilotCrosswalk"],
+                "aligned": False,
+            }
+            blockers.append("PILOT_ALIAS_CROSSWALK_AMBIGUOUS")
+        else:
+            pilot_row = pilot["pilot"]
+            visual_sources = {
+                str(target.get("styleSourceFile") or "")
+                for target in component.get("visualTargets", [])
+                if isinstance(target, dict)
+            }
+            identity_resolution = str(pilot.get("identityResolution") or "")
+            checks = {
+                "identityResolution": identity_resolution in {"DIRECT_CANONICAL_ID", "CERTIFIED_ALIAS_CROSSWALK"},
+                "routeId": component.get("routeId") == pilot_row.get("routeId"),
+                "routePath": component.get("routePath") == pilot_row.get("runtimeRoute"),
+                "ownerFile": component.get("ownerFile") == pilot_row.get("sourceOwner"),
+                "cssOwner": str(pilot_row.get("cssOwner") or "") in visual_sources,
+                "runtimeAlias": str(pilot_row.get("surfaceId") or "").startswith(f"SURF.{component.get('runtimeAlias')}."),
+                "aliasTarget": str(pilot.get("canonicalComponentUiId") or "") == component_ui_id,
+            }
+            mismatches = sorted(key for key, passed in checks.items() if not passed)
+            pilot_alignment = {
+                "contractPath": pilot["path"],
+                "contractSchema": pilot.get("schema"),
+                "contractStatus": pilot.get("status"),
+                "identityResolution": identity_resolution,
+                "pilotComponentUiId": pilot.get("pilotComponentUiId"),
+                "canonicalComponentUiId": pilot.get("canonicalComponentUiId"),
+                "canonicalCrosscheck": checks,
+                "pilotProjectionTrace": {
+                    "surfaceId": pilot_row.get("surfaceId"),
+                    "ownerId": pilot_row.get("ownerId"),
+                    "regionId": pilot_row.get("regionId"),
+                    "slotId": pilot_row.get("slotId"),
+                    "componentUiId": pilot_row.get("componentUiId"),
+                    "bindingId": pilot_row.get("bindingId"),
+                    "layerId": pilot_row.get("neutralLayerId"),
+                    "implementationLayerId": pilot_row.get("implementationLayerId"),
+                    "adapterId": pilot_row.get("adapterId"),
+                    "recipeId": pilot_row.get("recipeId"),
+                    "visualStackId": pilot_row.get("visualStackId"),
+                },
+                "mismatches": mismatches,
+                "aligned": not mismatches,
+            }
+            if mismatches:
+                blockers.append("PILOT_CONTRACT_DRIFT:" + ",".join(mismatches))
 
     blockers = sorted(set(blockers))
     binding_id = component.get("bindingId")
@@ -214,7 +287,10 @@ def build_binding_promotion_report(
         raise ValueError("UNSUPPORTED_CORE_RUNTIME_ALIAS:" + ",".join(unsupported))
 
     registered = load_registered_binding_ids(binding_registry_path)
-    pilots = load_pilot_contracts(pilot_contract_paths)
+    pilots = resolve_pilot_contracts(
+        repository,
+        load_pilot_contracts(pilot_contract_paths),
+    )
     rows = [
         evaluate_component(component, registered, pilots)
         for component in _unique_components(repository)

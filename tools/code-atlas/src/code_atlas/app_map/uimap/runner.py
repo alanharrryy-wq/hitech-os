@@ -61,6 +61,10 @@ from .discovery import (
     source_snapshot_hash,
     widget_type_id,
 )
+from .governed_markers import (
+    certified_pilot_alias_for_candidate,
+    load_certified_pilot_contracts,
+)
 
 GOLDEN_BINDING_ID = "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1"
 GOLDEN_LAYER_ID = "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE"
@@ -1671,6 +1675,9 @@ def run_uimap(
             continue
         runtime_results[alias] = discover_runtime(alias, runtime_roots[0], product, workers=workers)
     authority_index = build_authority_indexes(product, governor)
+    certified_pilot_index = load_certified_pilot_contracts(product)
+    certified_pilot_aliases: list[dict[str, Any]] = []
+    certified_pilot_conflicts: list[dict[str, Any]] = []
     golden_trace, golden_evidence = discover_golden_trace(
         governor,
         Path(embedded_evidence).resolve() if embedded_evidence else None,
@@ -1707,6 +1714,16 @@ def run_uimap(
                 golden_trace,
                 golden_evidence,
             )
+            pilot_alias, pilot_conflict = certified_pilot_alias_for_candidate(
+                candidate,
+                targets,
+                record,
+                certified_pilot_index,
+            )
+            if pilot_alias:
+                certified_pilot_aliases.append(pilot_alias)
+            if pilot_conflict:
+                certified_pilot_conflicts.append(pilot_conflict)
             all_records.append(record)
         for route in result["routes"]:
             all_routes.append({
@@ -1720,8 +1737,20 @@ def run_uimap(
             global_source_files[norm_rel(product, path)] = digest
 
     records, aliases, conflicts = deduplicate_records(all_records)
+    conflicts.extend(certified_pilot_conflicts)
+    canonical_records_by_ui = {
+        str(record["componentUiId"]): record
+        for record in records
+        if record.get("componentUiId")
+    }
+    certified_pilot_aliases = _normalize_aliases(
+        certified_pilot_aliases,
+        {},
+        canonical_records_by_ui,
+        conflicts,
+    )
     aliases = sorted(
-        aliases + golden_legacy_aliases(golden_trace),
+        aliases + golden_legacy_aliases(golden_trace) + certified_pilot_aliases,
         key=lambda row: (str(row.get("aliasKind", "")), str(row.get("aliasId", ""))),
     )
     deprecations = make_deprecations(product, governor, generated_at)
