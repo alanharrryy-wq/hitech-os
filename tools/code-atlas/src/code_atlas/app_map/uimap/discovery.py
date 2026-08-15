@@ -790,12 +790,17 @@ def extract_ui_candidates_from_file(
                     generated_projection="generated" in rel.lower() or "/dist/" in f"/{rel.lower()}/",
                 ))
 
-        # Preserve the existing CSS-only fallback semantics per proven route.
-        seen_keys = {(c.class_name, c.tag_name, c.render_source_file) for c in route_candidates}
+        # CSS-only fallback fills classes not already observed on a real JSX element.
+        # JSX candidates can carry data-prisma-* evidence; a later fallback must
+        # never compete with or erase that richer source observation.
+        seen_class_keys = {
+            (c.class_name, c.render_source_file)
+            for c in route_candidates
+            if c.class_name
+        }
         for match in style_matches:
             class_name = match.group(1)
-            key = (class_name, "styled-slot", rel)
-            if key in seen_keys:
+            if (class_name, rel) in seen_class_keys:
                 continue
             route_candidates.append(UiCandidate(
                 runtime_alias=runtime_alias,
@@ -817,16 +822,45 @@ def extract_ui_candidates_from_file(
             ))
         candidates.extend(route_candidates)
 
-    dedupe: dict[tuple[str, str, str, str, str], UiCandidate] = {}
+    # Keep distinct real JSX identities when their governed data-prisma-* markers
+    # differ. Ordinary runtime data-* values are intentionally excluded so state
+    # variants of the same governed component do not multiply the map.
+    dedupe: dict[tuple[Any, ...], UiCandidate] = {}
     for candidate in candidates:
+        prisma_fingerprint = tuple(sorted(
+            (key, value)
+            for key, value in candidate.data_attributes.items()
+            if key.startswith("data-prisma-")
+        ))
         key = (
             candidate.render_source_file,
             candidate.class_name or candidate.tag_name,
             candidate.route_path,
             candidate.route_id,
             candidate.widget_kind,
+            prisma_fingerprint,
         )
-        dedupe[key] = candidate
+        existing = dedupe.get(key)
+        if existing is None:
+            dedupe[key] = candidate
+            continue
+        existing_prisma = tuple(sorted(
+            (attr, value)
+            for attr, value in existing.data_attributes.items()
+            if attr.startswith("data-prisma-")
+        ))
+        candidate_score = (
+            len(prisma_fingerprint),
+            len(candidate.data_attributes),
+            candidate.tag_name != "styled-slot",
+        )
+        existing_score = (
+            len(existing_prisma),
+            len(existing.data_attributes),
+            existing.tag_name != "styled-slot",
+        )
+        if candidate_score > existing_score:
+            dedupe[key] = candidate
     return [dedupe[key] for key in sorted(dedupe)]
 
 
