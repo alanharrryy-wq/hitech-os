@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "caext_multiagent_replication_manifest.v1",
+  "classification": "VERIFY / EXTERNAL EVIDENCE",
+  "baseCommit": "8594a3c12abc3932e3142fc913ee7df1cdbd571f",
+  "authorityMesh": {
+    "runId": 31915254808,
+    "artifactId": 9254730793,
+    "artifactDigest": "sha256:62625686559fa46e94479c57dcf492e0dd59e9f2b5b7fa202989edae02ce738a",
+    "status": "PASS"
+  },
+  "design": "WITHIN_TASK_PAIRED_BASELINE_ASSISTED",
+  "plannedTaskCount": 6,
+  "plannedEvaluationSessions": 12,
+  "humanUsefulness": "NOT_MEASURED",
+  "maximumAgentClaim": "INDEPENDENT_COPILOT_SESSION_REPLICATION",
+  "multiModelClaimAllowed": false,
+  "causalUpliftClaimAllowed": false,
+  "financialEstimateAllowed": false,
+  "groundTruthHiddenUntilPairedResponsesPersisted": true,
+  "historyAuthorizes": false,
+  "productCoreReadOnly": true,
+  "probe": {
+    "status": "PENDING_EXTERNAL_AGENT",
+    "scored": false,
+    "expectedResponseFile": ".github/evidence/caext_multiagent_replication_responses_v1.json",
+    "assignmentAttempt": "copilot-swe-agent[bot] via connector returned HTTP 403",
+    "fallback": "PR mention @copilot"
+  }
+}
