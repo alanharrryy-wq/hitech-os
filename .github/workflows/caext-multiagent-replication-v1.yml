@@ -1,81 +1,395 @@
-name: Code Atlas Multiagent Harness Bootstrap
+name: Code Atlas Independent Copilot Replication V1
 
 on:
-  push:
-    branches:
-      - 'verify/caext-multiagent-v1-1508'
+  pull_request:
+    paths:
+      - '.github/scripts/caext_multiagent_replication_v1.py'
+      - '.github/workflows/caext-multiagent-replication-v1.yml'
+      - '.github/evidence/caext_multiagent_replication_manifest_v1.json'
+      - '.github/evidence/caext_multiagent_replication_responses_v1.json'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  copilot-requests: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PYTHONUTF8: '1'
   PYTHONPATH: tools/code-atlas/src
-  SCRIPT_SHA256: '6046bd87ebfa6061ab4266aec2bfc2d08537299c9fe0a1f9c3a9f8944100461e'
-  CHUNK_00: 'H4sIAHv6gGoC/+0923LbxpLv/AocPGzIhKLtVG12i1XcKpqCbSYypSIpJy6Fi0DgUEIMAjy46HK0+vft7rlgBhiQlI+zdR7WDzYxl56enp6+Tc94k6Vbx/c3ZVFmzPedaLtLs8IJkiQtgiJKk7zTkWXZzS7Icia/w3T3KH/fBvltHF3LT/4PFAzKIopl6Z95msjf+a1ekz/mnQ1isgsKhCPRuIBPXlE87qLkRpaPk8dOZ+698+bebOL5F+PlB2dErbswlyiGmfQG91Fx6yfBlnXdMGAPhV/mbFPGCctzfxfFaeHfvRnsHt1eZ3I2nn4EAO50dupdePDXbOlPzi+mZ+dLf+EtFtPzmT/3Ls6mk/ESfrudyfnsdIo/F9Ct674dL7yz6cxz+447huaLpXcKcL3fLrwJ/JQwsHFR7mLW3biXT9Gz/xSmyTpCMj+7zibNnMiJEicLkhvWfdN3/qNHhaoRVlYj9zqdzpptnHW53XWRcEOiQN+5C+KSDZFIPefkv5xZmrBhx4E/2GgAa8iSYrD9so6yLv/IR8usZH2HPUR54adf6LNXdbnPooL5BdCwS4X4BxdzgEPnXRoPeic58lCQh1E0ehfEOZRFyRrgj37sOzmsm/+FPfKxes4Pjvt74vYVPJaE6RqWeOSWxebkP0WNnGN+G/g4Yrc2t7zI+NQyBgycSD4cQPsf//2nl2Jr4gjfDOgTFGmWj7puHxd36PZ6A0IVuIojyunUG9yyh3V0w/KiK5GO02DtZ2zDgMYh6/Y4pvmOhcAH5hYZYKmPnM7ZN05D2n0W'
-  CHUNK_01: '1lUAAR9zC3BMog0fIspp5R1gIPweIDYsk8VDRZosiHLmzMukiLbMy7I067oV3OnHi/M5bAJgZP/deHpGfI3dtum6jFlzIrycTwXH7eJfvAvsclGdXxFKuDlXAIIXKuoIVAfsAWjC67r8n56+1qIXp/UOxtsVPmwX4OnwCyuGzjoKiytgkD5yy8pklzy8ZdsAhuaNr9yM5TsQdmxBFe5KMD9WEuNBU42HeMULWV7HfeO67ue0BJnKQNZSnx2jjrAJC5YlQeyEtygHTnKQs8xhyLbIiigDAhQJRZbGMVtD+x3LYOlgT3c6l7CU57Ozz05xq/fh+Dpse83Wa+hzzeL0fuCcpg6IeYCIVAcBD9jt0jyCHo99B1jOuWfXrxJW3KfZF9gMQRaCdNmwIrwl+LcgLdIsChHXdLuNgCCAKqLH1QmswGbTr8DDWLdME2ff5Y4ke9+hmQFnA1RAEYQgC4DeIBAGzhLGusnSMlk7RVYWt8jDUVLAjAFIEMePDor6WxavgQJA1cz5M73GRji5IkUOjRkSiLDmZB04c74SVdEJDAkSCPaYs2ZhlKPADXBMaEGLkDuPsGT3aRmvQdBgTUqLJ8HTjnWCG74Uc+TzYefEYTDb4DoG1sKF3AaPtHoBrGOaAO4oYXXIAcwQqPoPhuCxL0zjnhOBLyOQTa3sRZbeRbCiS1DOsMAwZ8SWw83YiYK1VlhwiQ5oiWX5FMTROigs2NURk+sIK3UnOhHh07KA5QlgNUBBE8JyWCIIjlWAWETdlC9TOZ4cJteYjto1xgUGj6MwKmBOclyE'
-  CHUNK_02: 'WSZfgDDQPwY2zAFz2DYRsKIqRwggLJGPgZI3JSws9mNIMBCfcylHoW8Jw2I7Itz0NHfI5gjugihGmnmiy3RNEKZbWIjCmQO3lDnSXILsOwm7Axa2EwEYLotw5V7hdn9wgG67spB8CgIs3WCzy9kvs/NfZ8R6b8/OJ794pyQmaO7YCfYaIzzE9g3jINpi/3UZ4lgoloAWuywincbCEtQ3bOjbNC/Yug8to7sgfHwVs5sghuJyC0xcKZi+EwZljoQEsm8K2pmbKAmSEKk7P58ib/O94/02nixB2KCa+XlxPnPS6z+BQ/rEFoCb8zHIvqxhMUBoEKFxTlAMuAKxrxlIa9JPwaZAzVTgpvx7GWXArpsItjNsnydN6nKhjbKaN3pHbdyVTQ73nlEviF1M63vNCM90M3RsQGXjT2getAKFuXs1qQo4anriuQOSXeik6zKK1/4uiDKft+gKFbDhxs33faXy+kLfoDU2RDWlF/hFxphWWtBmbxT4GUgcrTQBzrtjdT3I64I8h10Da9pSr2S0gEfa02w4FEPnX3zgyxGotCdS3qLENG41dVofELo+KWPE5cvxiWW4Fu7QEfbPtoyLiCSrT/A5qMHdG82CBL5AQUH7bYJ7YsKiGGQSQCEDX2tJPH+pWB7HmYGp/9EbLy7nYOJoTXG46RpaiHlpVbiyKHpFA332JlZCvMk2WKI1UGSCevVbq1+zPLohWvw6XX6YzvzlePELGHxTwNSXnoev3A59mkpBT0g/SwSEttZngnymGvHPRv0S2FDVElPW6KQTQatq0VZEU/xh'
-  CHUNK_03: 'QMGCBYsZiTLUoaoZ8Xej7WkEuhmE7uNHMBhgv+JKcEtMQ0DovrEukqHdFQexqq3WjDaOFPq0KrvHwZqxHf7o8n3VMzoZxuMQt/hAFvqcpbt6B27NLNGYmSZhXK6taPPle5RYs9zSJgf2hclM8zSmWUkBCk3Jh6lakvE1kfw1F9jtGV4t269g/uWw49hEqOy5YunJLQu/gE6ydAfznMVTNGlB+7TssGfusaxzEAI5yEdO2gGsSddlldJ1e6glrlbKwak84tFI87grp0aa9eiojYs4yMdK4LkoccwVraRhT0EApAblDo0NrfoAZgwocDwO6IZ19IY2e4NaoiPB1l0Qmd0HHhJ4QDcAUOwZAPi/p+SF0tbBzsiLF2MwI5b+6fS9t1j688szr7Wf6iOUmvBp+Zfhw/Ai5X+hr8y6wAs8DNGqMQA2jFD3jeXKQv8BhSFy6S+TiqRo0SDbotDBMfR5g0ucghk0wr7OKy6JhILIheIh57DeTpTyJuRY1BrwXepTFW+FjlCtkY9lvBYXhiphbbo6bn0Dg742WL8CqU0XP48J0HDzgUsAgHGfD8kYvjLJjgt6tTJmeUzLxwqfjYghUHAKWAMV0KKq5qu6SwXjhDEwts91DHn/+iSNTnxyit9IraSbLulHXVOZvcD2LoOYwlGi601U8OgU7+mi34nRmpMTjDCcoFUvPlNw8rAsh2+h5YyBcDe7rmW4ahc+gU3BBkCzaNflmxELyC2vEBvkYIoUWAF8jHytd3o25yOUoK7lxLxy0oM+rxCTk1jzwXq1RSBaSDKEUjjT'
-  CHUNK_04: '3NesCMJbNW+zJ2BoIyRIq6LMef9dmoUMzKpkhFYXlpRJkSGXr08wZpWPwBV3eyZbtASYNu7pdL78DEbM3Jsth0/KLHp2bRxCtkbLWmfs7oTC0ojTB298+t9P2PrZta5lHPvcveTABP68zCCwiQbXS6ITNvN5ibTrzaWRC6pGq/GvUgMCIC8ANKRiEfDUruE8KgHXKaSJ6Vw3ruEvMq6fO0aHPRHl5tqJwNGozZdprLX0bep/cAKjytNpjoOkG9UNzxZWGFlN0OaeGtXty2YT2m4jq4HZZIAR/8fepFrWUfXT3lSRf2Sx9+WfXqNESnpyt6TuFv7JqmXpJGNcqZFWWmdT8TdAiJMFTcm+IjdP4fE8QJ+XZEplHuh/uobqbfQuHgq3px8vNMK4vX7jZKCdMKjYBsEOI6l29nyylhqGNHlyCsV+e4ejvL9GrwPOXqP9Ie/RgtZeV87SXmOBYQtn2Ps/W3jW1GwUrR1ZyH6En69bX6aj/3VLcDQpj3abX0pz4bFa/N6v8X9VH24JTCiGvaYoK3Thhe2tYZsFCYwg2wvjZkfqYVdZM2gZ7Jy/jaTuOTT+UkZ6D8BEvRflPgZ8SUd2d72elbIVG+aKPaVQa127vT5zk3WJx650r1zzhdTRI7UyhQ8JSM11eNWIgkkBaelcGeOtMssur14ueixTG+6ZdROISS8+DwwKx/Fjm5emWS/RTZJmzGdo++W677IFHtxgzP+FMUDBBrJ7LQ4YxqiANyIUiAA+efPpu8+wPN5vS28+G5853qfpKR5wut8k0BZ+s3CjdhKo'
-  CHUNK_05: 'As2LR7AOt9jrfVR8KK+dSUr5CzDO1LmLAiei6A9bO6J+TMIjx2Ow3H1hSEYF8ybAFsgmP+lxwDhIErZecP0oW8Qs6eoquNeMT+WaVsUm9ljYgp+3Hx+9yj/QYWGzuYpd/Qwk+BDcsaNCVsdHFPkRySWdkFCseRzH6b21KbHtR6T8gYbqkMXLwVMCMrQ3PSDlno3NdeXKXzapJuv4nrZZfO7H8Wz6zlsspSyzdOnUhRrv+X5+fjk79Zfzy+UHvwamYxdyL7QMWmSApjw+mpMf7qFLrT/uglwKyhrbcoGRztLCewDOYm/pMAtW7IJks2LQC5xHbmPpZ5nhoqc0CIREUA3mDQ4qmMNRlhdCCUEZncm0xtfWDAOOmUxYwHO5U14komyUZ4QnkH08+KaEApaUW4Y7j+BrPjzGWrENGADuk2v6h3iAGyUl09b+0WwhUm18wEVgNciCe5//pqGuCJHhqtKM7CFku6KOO4UNDgwPuEZ5lHDHS6b5IIV69VAV0ZoadNoyYGbnPo7un7/92ZssfVAG4/eYFXZ+uby4XLoyxUceSPsy2t+SfaKSsixJKfYgqTgHbc9QaZ6D8l0fgZRNbjCSR2eotNz8F0XvBFwgFi/kCSAcvZWMwgog+5OEPk5BE87e+3NvcXE+W3j+u6l3droYupjb1XcHf6YRiBcOqacCvDQQj6ML17WH3CUO9IzyQzlKYljS0tNTH/D5OF5OPri2sQx/pjGiWXvkuGZQfe/o8nAZRhb0bl/V+kH0fmyms0/jM5i8wurUm0wx19CtNrta/a5r5KJg'
-  CHUNK_06: 'xMyWBYLllowNLJbJFfi7mUjhmpKDplrbkUQPQgg8ewxBU5gOW4It2dVaP/S5lFOnHdSd8/SqvqNtEcYGZc7AbBs+EQAZZhSigBcOjSHs++ZZHndgxLG+6X09CRMFnf69ZUVgFBw+KVHBNxKGeGKS6yMNMF+Jh00aIRIxveAeQ4wCkz3t+46wzekMPQiZoA8RBEC0ibm+TUXBeGJ8nLOJvqLCEciD4M/WL/UMlJEpEK25BnqUpx5Baz/Zr4IiWvGq5Qi/OvaTZSbkF4VblHxwBXfabFyoq9tQezyGupUUxlFFUFwfLrK04n7NUag56m5WglOQnedGf1V4qHfdKalAmDUHsWhY+BdAPJYU9ghA4+QcqbXwLsbz8dLz34MDePnWH08oLu7/fP7WbVhuzxqboiDHf20WNq/RjGVAre/opUIM8SIhYULM7gzxaEFYkmRUHy88ODDjQKB52Pf0rJQEbkqUdCJoYw47yG7i9LqruJGb8D3jyPK+LqiO2eSNsDaecQMszgDVbhWHOT1dvWj9okTN97BiOL3kifyeltrPVcRQD05rgwnYV1UtHZKn9/zU/wE1KNlqmMPQSPqv0rLppIhAkQUiO+7V8CbT1jGGQSrTY2gedv2gZyw/uXK0KjAnS0ATiyBeVSfxfLanMVeeC/gNN+zFYlpL1VKiOq/Jal2+2SIfr2R+PjsU93hB/OXoEEnejIFImlnEN455JdkIaMnNC/hhbDnefWU48UTeyk7MrT48NapLGL1U+pdUJCQM+XxRWL9SsYH9Wzj/o90SkDnrWMFb9+zO'
-  CHUNK_07: 'VjfC409q1+tRNgxPchF3OGB6TBMsujEk0kfWLxZyrbkk3PbRBJI58GHRhEHqQAoig6Fp876Ap/db8JezxeUFXrIAkfHx8mw55Y5mtcMnH7yPY1c3ivD4+gnEz5UmIVdDksE8B+WeXyMS2FdMKLKVntskkl1+7cd/MTmfV6JUl0euiPKKeJIhI2gN0EgZfp3S0FVW1+CeRgpQb8CV1+X3/vdCcWkbjII7/5e4GVlFCrerNyc/rUzsxEUV2DTrQ9k6lKBjqEMhU/YtpnIvBKF09VZTfZSo0NCBWiPOYKpZJa+0U2U69cHaf8Yjb9Xqcw/48LTFKW9T7GjQG8fhun3fqR9jcla5wlZaJb95wS0XcaQizvn0qJa8fQFLVk/jU0YVTy40PHSxYTUicn/d57eCDkKzuvcNoOjs54eB2WICDVggh48AZYsd1CGpixwHoamoRAPGXSSs+1xLo4QuksqgWZwnvlxaVlYoT0d92n4qGwvEPd7hCLvGKojDPY6K9XjVSBKVBG+DTYthg1k/YG1AJS/dr7Jp9f1kzS1tgSCWUCMXlvScf6tG0AzxZH+nE1sn0QVNN7SjQR5237x+7XxPZlQFrwfykh8uCWhgqf7YE8fHOTcwXg9ed6yZVfrsbSm4NPmn6mAzDPx9HFdPAm7nOQCkbp6MGv2kPjitQoJ4xN4MGpipzXyyZI2OL8h/eXvmVfb+JvjC/JuMMRzyOk3jriVJbA94M0EtWRuTgNk/ueIqErrh4oaS+9zoZW5LLeqJg8298elnt9PMbxKk9FMKFqdqCoeJIjBV'
-  CHUNK_08: '68bvFxVKdGhOJulR60G7LTvlyGSgZqAoyg5lnlSRX1VoOXA/PqT0z2byVMs0bF2/1kwVeX3AE/JUJavQqZIotPQ2tNwnKaR1Z6qS3L2j+6OXVfWzparoF0B+RUFI/jBx2/4BjZwgLtunXAnIXC5DZeyHUElylemDhFNKwdKbhKJX15pzkKAXYcGDg0KiWjoLGe01le7QkN+WrmIn6SujNpeNwCKV9ZK3ORc7GnrWN/mezu9AmL1HWQbdKsFm3SNCrF/UhepQF2D99g2uBf+k5VqFHVZmFEq1tU28HjdohfaioObXpTQJtwt97uDuptue7g++emL4/Op+vFDSpAk3CYLoGa4lgKwUXlJueUMeIOAt78SZTV4PFdTCBLrlyKOgZA7k5baLcKUJQL+l9qcB7QqRO03ldhtkEcttdw2rkOfBLGicJk6s5lhzXUJmCPrgNfVUJdpWykfiY2bhPjXTDYxwkplK0yLAwAWtpACnXYOFuG2FJH1TX0U1C6toXCH5t8EDPkaiUMJlMNPBGnkTNtXwTbBs0Tpfh+eWBcmHfXJ9zqA85kjjTmpebcCcECcOttfrAD+GHMv9yoJO7iXg1UswrPTGN8DMpoReiNqnA0pJSh8LIvv12arB93a9IrfLAdZuUUqtoygF9DL4ld7SIT/LIFiU5cfEcSgmUUVweNBBi4BcBzmjG0cjJ6F7MHuFkxnSQPlE8MlYtwiv6iWjXs2rohj/XzCg9lySyqrFR41YXARd7hKLSDG9nFRdbWlXXEQlxFYEuCXFrjRwV69XK+P7zWpVu6aj'
-  CHUNK_09: 'QZAkeBkEQ6EF4AlfSwUWyFcf6IUepM21UbLf2SNWOtaV+QoPRdHrkI8iGy40d6nqrMWm9xh7el9F5gN9w7ogPEVuAcFxkYJpgfYRZ5/uIXlH98ekvLMmoCu7/viBLCL/8DhWxU6jkY1eVCzYpqkbME+oX7UeLf1afTupXe1YtGrig3i09jxgz+J1OvT7fLCd0ZiC/flaVRiBPl4sY4zkFeWmkDVk17A9kJ1f1Y9ZVtbYdgO3H0biSPBgbLdnANHm8cOIS8x9vnKFgTlbKR2O0rWcvOl1zrI7OqiIkFh6RHfAr/9Bjc/uYIqm1OFCcOSmZXG+ISz5ZptT0lgzI3QkJKI5XWXA1WkJdtxPNd4ok6gYuRn2rA1QSSw/Ek7WiB/VnVRHdSd3b07y6OEELe4TLiBrYPK0zEImeg60pHw/5CfQWqKROvVrpiBjjioAGD3VMuobx8dvfuzbbxE8VwA1Ghy9JJIrUCjFrGB4/H1gWdDWMZmpZlzXKrEWTPf/XyR9kVbCES14iPufyY2Aim90v4XAm2kQRz54qQIU/uzcn4wvF+Mzn2b+lVkWX3/T5i+9H9Nc78NXYpQ9uyAn/5F7C9zdt2YUzmlJc2GL5S13ZUgx6fdfhHSeB/fzNPJwx2M7XWh/TRbL0ZdTXnDh5Zhna0KWFcDBImRcr63eMpvwdtZx4mgbFSrue2W6cpIFJE3pCTX9mUWen/hK1Dv41mTJueK6LKi1eJUNSI3vx+HzcGuYWZSEeL6wZln8iHn2ROp8UM+qxOf6QHrpbyQiBzlC3qGJcA96GMHS'
-  CHUNK_10: 'eT0+27fLIjzHB6gxO6HN6tAkMAWLV5Iw5C/nbaOEvzeYRVhED/biG2fANmXI6G3Cf7AsbSBWPV+G3I9mDsOnDZJUf4dPvhxBrgmnHHhYJWW5CVrQU3mFepSwT2QjYoDUXgNA/mzkqyJNY8DrNrjDyQknR1sIgBKUsIPYuoHqLBWP0+kPWQI/hNEusLWvIiX08iRf82tUavj+IYeBFNPfkuwTPpYH+zTgej4utNauhdWYri4B+5bqRbmDHUtx6WW0rSvieni4Uz8TQk2lLqjZAHDfiKwwDkbqCVtjdeXsnD8rWK/HFWTZBQu+NMnxXGk4MolBkthy06gBt3HxbZ8jnx2WWWyYMHO58N5dns1AK9Xyo+BDXknTRtG7Um5SlfyiWpN0bTYXCoiet6leNgAhbSTR0Vjyib84xQdEuvy1Uv5Y3hF5a/9adoF45QXai0Ne/+1nX97u0S0E79P47HK8PJ+br+7h1OnIA398nUFgMU3amv4VVy+/hTo6Ru01rnhCGwz4/GvvKAvfgy+/Keita/OF8T0JmXmALojJ9OpxRffytV89ot56EQOauS3XLlxb98bDfE/1OwPGDbq6QNdxPHTgvu9g/dABtms9s7VdzLKgZ7uo1XqOm1txaZ4Lm63qF2NrV9SAbCK5o+/Y8kRWjasT/OI3eKN023uMNrULPGS8CsjfePDThFkfpOPspLPWlQERt4wLJogr3zuFrdsOBkPR1YAGUCNgXU+ZOQj3bw24dHUMg+mWq1PfJWmUs99/T/744w8sgF9PapMYe+SZN/qup6PBQVc3'
-  CHUNK_11: 'mijArvfSG6Mr30wPxS5vfhSv5mHcDpQiiInJGDSIKSwq5xCAv1t6i+pW7DaIEi4ZAMKwmjXmWsr/RWIwzm5KfDX7gmqkkCivKXULiwbBeu1DAf/Ku+A0FuDsb2Evqvt4moCDltSDN8djey6ixMHCzheZVyhKa01FTb0ltQkEml335IS/pWYZe8dB2UDjvycqYmg0b8DnLLR3iEafLLh/WQe8X/WyHnumLW4pWSYuatxayyb+Mjn9BBOkD4zzEtRkemWDL7DcNVq1I7UXeHP9RBrK3qnYu+6ZiLAxLVMRNW6tpWU6AVfq++AfjxI0yqtdyq/CYllXRJLxgAs+B7BVSQKpnag9FaPsB/Fwar2P3JJaurp4YZT+lxdqi++AtvY3952e9W7c3K2gqffGqiK8yap/49YxCvZhIDfAUEsr5lf6tAGMW3ZHg+YsPDSTG21gDYjGTYSjx5I8ph1AC59HDEVGvxWYsBtfg1YAqD79Xzy+T1B9H3WE7wuwPKOfx/G8h6jocg3S6/wve8g97J9oAAA='
+  CAEXT_WORKERS: '18'
 
 jobs:
-  bootstrap-script:
+  mode:
+    name: Detect persisted evaluator responses
     runs-on: ubuntu-latest
+    outputs:
+      persisted: ${{ steps.state.outputs.persisted }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: state
+        shell: bash
+        run: |
+          if [ -f '.github/evidence/caext_multiagent_replication_responses_v1.json' ]; then
+            echo 'persisted=true' >> "$GITHUB_OUTPUT"
+            echo 'PASS_CAEXT_MULTIAGENT_PERSISTED_RESPONSE_MODE'
+          else
+            echo 'persisted=false' >> "$GITHUB_OUTPUT"
+            echo 'PASS_CAEXT_MULTIAGENT_LIVE_EVALUATION_MODE'
+          fi
+
+  protocol-regression:
+    name: Multiagent protocol / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: verify/caext-multiagent-v1-1508
           fetch-depth: 0
-
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+      - name: Compile governed protocol
+        run: python -m py_compile .github/scripts/caext_multiagent_replication_v1.py .github/scripts/caext_usefulness_pilot_v1.py
+      - name: Run protocol self-test
+        run: python .github/scripts/caext_multiagent_replication_v1.py selftest
+      - name: Guard exact governed scope and concurrent PR reservations
+        shell: python
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          import os, subprocess
+          allowed = {
+              '.github/scripts/caext_multiagent_replication_v1.py',
+              '.github/workflows/caext-multiagent-replication-v1.yml',
+              '.github/evidence/caext_multiagent_replication_manifest_v1.json',
+              '.github/evidence/caext_multiagent_replication_responses_v1.json',
+          }
+          base = os.environ.get('BASE_SHA', '').strip()
+          if not base:
+              base = subprocess.check_output(['git', 'merge-base', 'HEAD', 'origin/main'], text=True).strip()
+          changed = set(filter(None, subprocess.check_output(['git', 'diff', '--name-only', f'{base}...HEAD'], text=True).splitlines()))
+          unexpected = sorted(changed - allowed)
+          forbidden = sorted(
+              p for p in changed
+              if p.startswith('tools/code-atlas/src/code_atlas/')
+              or p.startswith('tools/code-atlas/src/code_atlas/ui_bridge/')
+              or p.startswith('tools/code-atlas/src/code_atlas/app_map/uimap/')
+              or p.startswith('apps/terminal-de-venta-system/src/')
+          )
+          if unexpected or forbidden:
+              raise SystemExit(f'UNAUTHORIZED_MULTIAGENT_SCOPE unexpected={unexpected} forbidden={forbidden}')
+          print('PASS_CAEXT_MULTIAGENT_EXACT_SCOPE', sorted(changed))
 
-      - name: Decode exact governed replication script
+  prepare:
+    name: Prepare paired blind packets and sealed ground truth
+    needs: protocol-regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Prepare six paired BASELINE/ASSISTED tasks
+        run: python .github/scripts/caext_multiagent_replication_v1.py prepare --out .caext-multi
+      - name: Verify packet/truth separation
         shell: python
         run: |
+          import json
           from pathlib import Path
-          import base64, gzip, hashlib, os
-          encoded = ''.join(os.environ[f'CHUNK_{i:02d}'] for i in range(12))
-          data = gzip.decompress(base64.b64decode(encoded, validate=True))
-          actual = hashlib.sha256(data).hexdigest()
-          if actual != os.environ['SCRIPT_SHA256']:
-              raise SystemExit(f'SCRIPT_DIGEST_MISMATCH:{actual}')
-          path = Path('.github/scripts/caext_multiagent_replication_v1.py')
-          path.write_bytes(data)
-          print('PASS_CAEXT_MULTIAGENT_SCRIPT_DECODED', actual)
+          packets = Path('.caext-multi/task_packets')
+          prompts = Path('.caext-multi/prompts')
+          truth = Path('.caext-multi/ground_truth')
+          sessions = sorted(p.stem for p in packets.glob('U*_*.json'))
+          if len(sessions) != 12:
+              raise SystemExit(f'EXPECTED_12_SESSIONS_GOT_{len(sessions)}')
+          if len(list(prompts.glob('U*_*.txt'))) != 12:
+              raise SystemExit('PROMPT_COUNT_MISMATCH')
+          for path in packets.glob('U*_*.json'):
+              row = json.loads(path.read_text(encoding='utf-8'))
+              if row.get('groundTruthIncluded') is not False:
+                  raise SystemExit(f'GROUND_TRUTH_LEAK:{path.name}')
+              if row.get('otherConditionResponseIncluded') is not False:
+                  raise SystemExit(f'PAIR_RESPONSE_LEAK:{path.name}')
+          if len(list(truth.glob('U[1-6].json'))) != 6:
+              raise SystemExit('GROUND_TRUTH_TASK_COUNT_MISMATCH')
+          print('PASS_CAEXT_MULTIAGENT_PACKET_TRUTH_SEPARATION')
+      - name: Upload evaluator-only packets
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-multiagent-evaluator-packets
+          if-no-files-found: error
+          path: |
+            .caext-multi/task_packets
+            .caext-multi/prompts
+      - name: Upload sealed ground truth separately
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-multiagent-ground-truth-sealed
+          if-no-files-found: error
+          path: .caext-multi/ground_truth
 
-      - name: Compile and self-test decoded script
+  copilot-availability:
+    name: Verify Copilot CLI GITHUB_TOKEN availability
+    needs: [protocol-regression, mode]
+    if: ${{ needs.mode.outputs.persisted == 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Probe independent evaluator
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python -m py_compile .github/scripts/caext_multiagent_replication_v1.py
-          python .github/scripts/caext_multiagent_replication_v1.py selftest
+          set +e
+          mkdir -p .caext-availability
+          npm install -g @github/copilot > .caext-availability/install.log 2>&1
+          install_rc=$?
+          if [ "$install_rc" -eq 0 ]; then
+            copilot --version > .caext-availability/version.txt 2>&1
+            cli_rc=$?
+            copilot -s --no-ask-user --deny-tool='shell,write,read,url,memory' -p 'Return exactly this JSON object and no other content: {"status":"COPILOT_AVAILABLE"}' > .caext-availability/raw.txt 2> .caext-availability/stderr.txt
+            request_rc=$?
+          else
+            cli_rc=127
+            request_rc=127
+          fi
+          export INSTALL_RC="$install_rc" CLI_RC="$cli_rc" REQUEST_RC="$request_rc"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path('.caext-availability')
+          state = {
+              'schemaVersion': 'caext_copilot_availability.v1',
+              'installRc': int(os.environ['INSTALL_RC']),
+              'cliRc': int(os.environ['CLI_RC']),
+              'requestRc': int(os.environ['REQUEST_RC']),
+              'status': 'AVAILABLE' if os.environ['INSTALL_RC'] == os.environ['CLI_RC'] == os.environ['REQUEST_RC'] == '0' else 'UNAVAILABLE',
+          }
+          (root / 'availability.json').write_text(json.dumps(state, indent=2) + '\n', encoding='utf-8')
+          PY
+          if [ "$install_rc" -ne 0 ] || [ "$cli_rc" -ne 0 ] || [ "$request_rc" -ne 0 ]; then
+            echo 'BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR'
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          text = Path('.caext-availability/raw.txt').read_text(encoding='utf-8', errors='replace')
+          start = text.find('{')
+          if start < 0:
+              raise SystemExit('COPILOT_AVAILABILITY_NO_JSON')
+          decoder = json.JSONDecoder()
+          value, _ = decoder.raw_decode(text[start:])
+          if value != {'status': 'COPILOT_AVAILABLE'}:
+              raise SystemExit(f'COPILOT_AVAILABILITY_BAD_RESPONSE:{value!r}')
+          print('PASS_CAEXT_COPILOT_GITHUB_TOKEN_AVAILABLE')
+          PY
+      - name: Upload Copilot availability evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-copilot-availability
+          if-no-files-found: error
+          path: .caext-availability
 
-      - name: Commit script only
+  evaluate:
+    name: Copilot session / ${{ matrix.session }}
+    needs: [mode, prepare, copilot-availability]
+    if: ${{ always() && needs.mode.outputs.persisted == 'false' && needs.prepare.result == 'success' && needs.copilot-availability.result == 'success' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        session:
+          - U1_BASELINE
+          - U1_ASSISTED
+          - U2_BASELINE
+          - U2_ASSISTED
+          - U3_BASELINE
+          - U3_ASSISTED
+          - U4_BASELINE
+          - U4_ASSISTED
+          - U5_BASELINE
+          - U5_ASSISTED
+          - U6_BASELINE
+          - U6_ASSISTED
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Download evaluator-only packet artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: caext-multiagent-evaluator-packets
+          path: ${{ runner.temp }}/caext-packets
+      - name: Isolate this session only
+        shell: bash
+        env:
+          SESSION_ID: ${{ matrix.session }}
+        run: |
+          set -euo pipefail
+          eval_root="$RUNNER_TEMP/caext-eval"
+          session_root="$RUNNER_TEMP/caext-session/$SESSION_ID"
+          rm -rf "$eval_root" "$session_root"
+          mkdir -p "$eval_root" "$session_root"
+          cp "$RUNNER_TEMP/caext-packets/task_packets/$SESSION_ID.json" "$eval_root/packet.json"
+          cp "$RUNNER_TEMP/caext-packets/prompts/$SESSION_ID.txt" "$eval_root/prompt.txt"
+          rm -rf "$RUNNER_TEMP/caext-packets"
+          {
+            cat "$eval_root/prompt.txt"
+            printf '\nPACKET_JSON:\n'
+            cat "$eval_root/packet.json"
+          } > "$eval_root/evaluation_prompt.txt"
+          cp "$eval_root/packet.json" "$session_root/packet.json"
+      - name: Run isolated Copilot evaluation
+        shell: bash
+        working-directory: ${{ runner.temp }}/caext-eval
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SESSION_ID: ${{ matrix.session }}
+        run: |
+          set +e
+          session_root="$RUNNER_TEMP/caext-session/$SESSION_ID"
+          npm install -g @github/copilot > "$session_root/install.log" 2>&1
+          install_rc=$?
+          cli_version='NOT_MEASURED'
+          request_rc=127
+          if [ "$install_rc" -eq 0 ]; then
+            cli_version="$(copilot --version 2>&1 | head -n 1)"
+            copilot -s --no-ask-user --deny-tool='shell,write,read,url,memory' < evaluation_prompt.txt > "$session_root/raw.txt" 2> "$session_root/stderr.txt"
+            request_rc=$?
+          else
+            : > "$session_root/raw.txt"
+            : > "$session_root/stderr.txt"
+          fi
+          export INSTALL_RC="$install_rc" REQUEST_RC="$request_rc" CLI_VERSION="$cli_version"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP']) / 'caext-session' / os.environ['SESSION_ID']
+          meta = {
+              'schemaVersion': 'caext_multiagent_session_meta.v1',
+              'sessionId': os.environ['SESSION_ID'],
+              'cliVersion': os.environ['CLI_VERSION'],
+              'runnerOs': os.environ.get('RUNNER_OS', 'Linux'),
+              'modelIdentity': 'NOT_MEASURED',
+              'repositoryCheckoutPresent': False,
+              'sessionIsolation': 'SEPARATE_GITHUB_ACTIONS_JOB',
+              'installRc': int(os.environ['INSTALL_RC']),
+              'requestRc': int(os.environ['REQUEST_RC']),
+          }
+          (root / 'meta.json').write_text(json.dumps(meta, indent=2) + '\n', encoding='utf-8')
+          PY
+          if [ "$install_rc" -ne 0 ] || [ "$request_rc" -ne 0 ]; then
+            echo "COPILOT_SESSION_FAILED:$SESSION_ID install=$install_rc request=$request_rc"
+            exit 1
+          fi
+          echo "PASS_CAEXT_COPILOT_SESSION_RAW_CAPTURED:$SESSION_ID"
+      - name: Upload isolated raw response
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-multiagent-response-${{ matrix.session }}
+          if-no-files-found: error
+          path: ${{ runner.temp }}/caext-session
+
+  score:
+    name: Seal responses before truth and score paired replication
+    needs: [mode, prepare, copilot-availability, evaluate]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Fail closed if live independent evaluator was unavailable
+        if: ${{ needs.mode.outputs.persisted == 'false' && (needs.copilot-availability.result != 'success' || needs.evaluate.result != 'success') }}
+        run: python .github/scripts/caext_multiagent_replication_v1.py blocked --reason "Copilot CLI availability/evaluation failed: availability=${{ needs.copilot-availability.result }} evaluate=${{ needs.evaluate.result }}" --out .caext-result
+      - name: Upload blocked evidence
+        if: ${{ needs.mode.outputs.persisted == 'false' && (needs.copilot-availability.result != 'success' || needs.evaluate.result != 'success') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-multiagent-blocked
+          if-no-files-found: error
+          path: .caext-result
+      - name: Stop blocked gate
+        if: ${{ needs.mode.outputs.persisted == 'false' && (needs.copilot-availability.result != 'success' || needs.evaluate.result != 'success') }}
+        run: exit 1
+      - name: Download evaluator-only packets
+        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
+        uses: actions/download-artifact@v8
+        with:
+          name: caext-multiagent-evaluator-packets
+          path: .caext-prepared
+      - name: Download 12 raw evaluator artifacts
+        if: ${{ needs.mode.outputs.persisted == 'false' && needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success' }}
+        uses: actions/download-artifact@v8
+        with:
+          pattern: caext-multiagent-response-*
+          merge-multiple: true
+          path: .caext-raw-responses
+      - name: Parse and collect 12 live responses without ground truth
+        if: ${{ needs.mode.outputs.persisted == 'false' && needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success' }}
         shell: bash
         run: |
           set -euo pipefail
-          status="$(git status --porcelain=v1 --untracked-files=all -- .github/scripts/caext_multiagent_replication_v1.py)"
-          if [ -z "$status" ]; then
-            echo 'PASS_CAEXT_MULTIAGENT_SCRIPT_ALREADY_COMMITTED'
-            exit 0
-          fi
-          changed="$(git status --porcelain=v1 --untracked-files=all | sed -E 's/^.. //')"
-          if [ "$changed" != '.github/scripts/caext_multiagent_replication_v1.py' ]; then
-            echo "Unexpected bootstrap diff: $changed"
-            exit 1
-          fi
-          git config user.name 'CAEXT Multiagent Bootstrap'
-          git config user.email 'caext-multiagent@example.invalid'
-          git add -- .github/scripts/caext_multiagent_replication_v1.py
-          git diff --cached --check
-          git commit -m 'test(code-atlas): add governed multiagent replication harness'
-          git push origin HEAD:verify/caext-multiagent-v1-1508
+          mkdir -p .caext-parsed .caext-collected
+          for session in U1_BASELINE U1_ASSISTED U2_BASELINE U2_ASSISTED U3_BASELINE U3_ASSISTED U4_BASELINE U4_ASSISTED U5_BASELINE U5_ASSISTED U6_BASELINE U6_ASSISTED; do
+            mkdir -p ".caext-parsed/$session"
+            python .github/scripts/caext_multiagent_replication_v1.py parse-response \
+              --packet ".caext-prepared/task_packets/$session.json" \
+              --raw ".caext-raw-responses/$session/raw.txt" \
+              --meta ".caext-raw-responses/$session/meta.json" \
+              --out ".caext-parsed/$session/response.json"
+          done
+          python .github/scripts/caext_multiagent_replication_v1.py collect \
+            --responses-root .caext-parsed \
+            --out .caext-collected/RESPONSES.json
+          echo 'PASS_CAEXT_MULTIAGENT_12_RESPONSES_COLLECTED_BEFORE_TRUTH'
+      - name: Load already-persisted responses
+        if: ${{ needs.mode.outputs.persisted == 'true' }}
+        shell: bash
+        run: |
+          mkdir -p .caext-collected
+          cp .github/evidence/caext_multiagent_replication_responses_v1.json .caext-collected/RESPONSES.json
+          echo 'PASS_CAEXT_MULTIAGENT_REPO_PERSISTED_RESPONSES_LOADED'
+      - name: Seal response set before revealing ground truth
+        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-multiagent-responses-sealed
+          if-no-files-found: error
+          path: .caext-collected/RESPONSES.json
+      - name: Download sealed ground truth only after response seal
+        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
+        uses: actions/download-artifact@v8
+        with:
+          name: caext-multiagent-ground-truth-sealed
+          path: .caext-prepared/ground_truth
+      - name: Score exact paired responses
+        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
+        run: python .github/scripts/caext_multiagent_replication_v1.py score --responses .caext-collected/RESPONSES.json --prepared-root .caext-prepared --out .caext-result
+      - name: Upload scored paired replication evidence
+        if: ${{ needs.mode.outputs.persisted == 'true' || (needs.copilot-availability.result == 'success' && needs.evaluate.result == 'success') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-multiagent-scored
+          if-no-files-found: error
+          path: .caext-result
