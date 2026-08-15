@@ -55,3 +55,107 @@ jobs:
 
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+  caext-historical-mesh:
+    name: Code Atlas Historical Real-Diff gate mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate task-exact Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "CODE ATLAS HISTORICAL REAL-DIFF GATE: clasificación VERIFY / EXTERNAL EVIDENCE; diseñar y validar únicamente el harness histórico posterior a PR #278 y cierre governance PR #279, sobre main b024dcd2c533bf00e6f6926863b48472af1c215a. Mutaciones autorizadas únicamente en .github/scripts/caext_external_gate_v2.py, .github/scripts/tests/test_caext_harness_v2.py y .github/workflows/caext-external-diversity-v2.yml. Mantener tools/code-atlas/src/code_atlas/** read-only y doNotRebuild=true. La validación histórica debe ejecutarse sobre el PARENT del commit real antes de revelar el diff; guardar primero una predicción pre-diff inmutable; target discovery autónomo debe declararse NOT_MEASURED/UNSUPPORTED si la API actual exige target_paths explícitos, jamás inferir capacidad inexistente. Con target explícito sólo se pueden medir Impact Radius y Test Intelligence; luego revelar el diff real y calcular recall/precision separados para target dado, impacto y tests. Historia es evidencia de evaluación, nunca autoridad. Mantener external repos read-only, commits/trees pinneados, snapshot/provenance, UNKNOWN válido, cero fake green, performance no medida como NOT_MEASURED. PR #273 reserva tools/code-atlas/src/code_atlas/ui_bridge/** y tools/code-atlas/src/code_atlas/app_map/uimap/**. No Tablet, PC, Mobile, Chart Lab, Shared UI, DB/Prisma, deploy, puertos ni procesos. Si aparece defecto reproducible de producto, detener este gate y clasificar FIX con Authority Mesh separado; no reparar core dentro del harness histórico."
+
+      - name: Validate task-exact mesh and emit scope lock
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json',
+              'APP_IMPACT_MATRIX.md',
+              'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md',
+              'AGENT_PROMPT_ENVELOPE.md',
+              'AUTHORITY_MESH_REPORT.md',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit('Authority Mesh status is not PASS')
+          if lock.get('full_mode') is not False:
+              raise SystemExit('Historical gate unexpectedly ran full-mode Mesh')
+          task = str(lock.get('task', ''))
+          required_identity = (
+              'HISTORICAL REAL-DIFF',
+              'b024dcd2c533bf00e6f6926863b48472af1c215a',
+              'NOT_MEASURED/UNSUPPORTED',
+              'PR #273',
+          )
+          if not all(token in task for token in required_identity):
+              raise SystemExit('Task-exact historical identity missing')
+
+          scope = {
+              'schemaVersion': 'caext.historical-scope-lock.v1',
+              'authorityMeshStatus': lock.get('status'),
+              'baseCommit': 'b024dcd2c533bf00e6f6926863b48472af1c215a',
+              'classification': 'VERIFY / EXTERNAL EVIDENCE',
+              'allowedFiles': [
+                  '.github/scripts/caext_external_gate_v2.py',
+                  '.github/scripts/tests/test_caext_harness_v2.py',
+                  '.github/workflows/caext-external-diversity-v2.yml',
+              ],
+              'productCoreReadOnly': 'tools/code-atlas/src/code_atlas/**',
+              'reservedByPr273': [
+                  'tools/code-atlas/src/code_atlas/ui_bridge/**',
+                  'tools/code-atlas/src/code_atlas/app_map/uimap/**',
+              ],
+              'historyIsAuthorization': False,
+              'targetDiscoveryAutonomous': 'NOT_MEASURED/UNSUPPORTED_UNLESS_PRODUCT_API_PROVES_OTHERWISE',
+              'stopOnProductDefect': True,
+          }
+          (root / 'CAEXT_HISTORICAL_SCOPE_LOCK.json').write_text(json.dumps(scope, indent=2) + '\n', encoding='utf-8')
+          print('PASS_CAEXT_HISTORICAL_TASK_EXACT_AUTHORITY_MESH')
+
+      - name: Verify ephemeral mesh bootstrap is isolated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          expected='.github/workflows/automesh-parallel-cert.yml'
+          if [ "$changed" != "$expected" ]; then
+            echo 'Unexpected bootstrap diff:'
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          echo 'PASS_CAEXT_HISTORICAL_BOOTSTRAP_SCOPE_ONLY'
+
+      - name: Upload task-exact Authority Mesh artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-historical-real-diff-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CAEXT_HISTORICAL_SCOPE_LOCK.json
