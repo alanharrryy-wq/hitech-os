@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import fnmatch
 import json
+import posixpath
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -10,16 +11,17 @@ from typing import Any
 from .common import unique
 
 IMPORT_PY = re.compile(r"^\s*(?:from\s+([A-Za-z0-9_\.]+)\s+import|import\s+([A-Za-z0-9_\.]+))", re.M)
-IMPORT_JS = re.compile(r"(?:from\s+|require\(\s*|import\(\s*)[\"']([^\"']+)[\"']")
-LAYER_RULES = [
-    ("governance", ("governance", "policy", "contract", "docs/architecture", "codeowners", ".github/workflows")),
-    ("ui", ("components", "views", "pages", "templates", "styles", ".css", ".scss", ".tsx", ".jsx")),
-    ("application", ("application", "usecase", "use-case", "handlers", "controllers", "commands", "queries")),
-    ("domain", ("domain", "entities", "models", "business", "core")),
-    ("persistence", ("database", "db", "repository", "repositories", "migrations", ".sql", ".prisma")),
-    ("integration", ("integration", "clients", "adapters", "connectors", "webhooks", "api")),
-    ("infrastructure", ("infra", "deploy", "docker", "terraform", "k8s", "helm", "workflow")),
-]
+IMPORT_JS = re.compile(
+    r"(?:from\s+|require\(\s*|import\(\s*|(?:^|[;\n])\s*import\s*)[\"']([^\"']+)[\"']",
+    re.M,
+)
+RUST_MOD = re.compile(r"^\s*(?:pub(?:\([^)]*\))?\s+)?mod\s+([A-Za-z_][A-Za-z0-9_]*)\s*;", re.M)
+RUST_USE = re.compile(r"^\s*(?:pub(?:\([^)]*\))?\s+)?use\s+([^;]+);", re.M)
+RUST_PATH_MOD = re.compile(
+    r"#\s*\[\s*path\s*=\s*[\"']([^\"']+)[\"']\s*\]\s*(?:pub(?:\([^)]*\))?\s+)?mod\s+([A-Za-z_][A-Za-z0-9_]*)\s*;",
+    re.M,
+)
+JS_RESOLVE_SUFFIXES = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts", ".json")
 
 def _safe_text(repo: Path, rel: str, max_bytes: int = 600_000) -> str:
     path = repo / rel
@@ -47,12 +49,93 @@ def _python_module_map(files: list[dict[str, Any]]) -> dict[str, str]:
                     out[".".join(parts[idx:])] = rel
     return out
 
+def _normalize_relative_candidate(base: Path, spec: str) -> str | None:
+    raw = (base / spec).as_posix()
+    normalized = posixpath.normpath(raw)
+    if normalized in {"", ".", ".."} or normalized.startswith("../") or normalized.startswith("/"):
+        return None
+    return normalized
+
+
+def _resolve_js_relative(file_paths: set[str], base: Path, spec: str) -> str | None:
+    raw = _normalize_relative_candidate(base, spec)
+    if not raw:
+        return None
+    candidates = [raw]
+    candidates.extend(raw + suffix for suffix in JS_RESOLVE_SUFFIXES)
+    candidates.extend(raw + "/index" + suffix for suffix in JS_RESOLVE_SUFFIXES)
+    return next((candidate for candidate in candidates if candidate in file_paths), None)
+
+
+def _rust_module_location(rel: str) -> tuple[str, str] | None:
+    path = Path(rel)
+    if path.suffix.lower() != ".rs":
+        return None
+    parts = list(path.parts)
+    src_positions = [idx for idx, part in enumerate(parts) if part == "src"]
+    if not src_positions:
+        return None
+    idx = src_positions[-1]
+    root = Path(*parts[: idx + 1]).as_posix()
+    tail = list(parts[idx + 1 :])
+    if not tail:
+        return None
+    if tail[-1] in {"lib.rs", "main.rs"}:
+        module_parts = tail[:-1]
+    elif tail[-1] == "mod.rs":
+        module_parts = tail[:-1]
+    else:
+        module_parts = [*tail[:-1], Path(tail[-1]).stem]
+    return root, "::".join(module_parts)
+
+
+def _rust_module_map(file_paths: set[str]) -> dict[tuple[str, str], str]:
+    result: dict[tuple[str, str], str] = {}
+    for rel in sorted(file_paths):
+        location = _rust_module_location(rel)
+        if location:
+            result[location] = rel
+    return result
+
+
+def _rust_resolve_use(
+    module_map: dict[tuple[str, str], str],
+    root: str,
+    current_module: str,
+    expression: str,
+) -> tuple[str | None, str]:
+    expr = expression.strip()
+    expr = re.sub(r"\s+as\s+[A-Za-z_][A-Za-z0-9_]*\s*$", "", expr)
+    if "{" in expr or "*" in expr:
+        return None, "ambiguous-group-or-glob-use"
+    parts = [part.strip() for part in expr.split("::") if part.strip()]
+    if not parts:
+        return None, "empty-use"
+    current = [part for part in current_module.split("::") if part]
+    if parts[0] == "crate":
+        module_parts = parts[1:]
+    elif parts[0] == "self":
+        module_parts = current + parts[1:]
+    elif parts[0] == "super":
+        module_parts = current[:-1] + parts[1:]
+    else:
+        return None, "external-or-unqualified-use"
+    for end in range(len(module_parts), 0, -1):
+        key = (root, "::".join(module_parts[:end]))
+        target = module_map.get(key)
+        if target:
+            return target, "resolved-local-module-prefix"
+    return None, "unresolved-local-module"
+
+
 def dependency_graph(repo_root: str | Path, inventory: dict[str, Any]) -> dict[str, Any]:
     repo = Path(repo_root).resolve()
     files = inventory.get("files") or []
     file_paths = {str(row.get("path")) for row in files if row.get("path")}
     module_map = _python_module_map(files)
+    rust_modules = _rust_module_map(file_paths)
     edges: set[tuple[str, str, str, str]] = set()
+    unresolved: list[dict[str, Any]] = []
     for row in files:
         rel = str(row.get("path") or "")
         if not row.get("isText") or row.get("sensitiveName"):
@@ -67,25 +150,84 @@ def dependency_graph(repo_root: str | Path, inventory: dict[str, Any]) -> dict[s
                 if not target:
                     target = next((path for key, path in module_map.items() if module.startswith(key + ".")), None)
                 if target and target != rel:
-                    edges.add((rel, target, "imports", "parsed"))
-        elif Path(rel).suffix.lower() in {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"}:
+                    edges.add((rel, target, "imports", "parsed-python-import"))
+        elif Path(rel).suffix.lower() in {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".mts", ".cts"}:
             base = Path(rel).parent
             for spec in IMPORT_JS.findall(text):
                 if not spec.startswith("."):
                     continue
-                raw = (base / spec).as_posix()
-                candidates = [
-                    raw, raw + ".ts", raw + ".tsx", raw + ".js", raw + ".jsx",
-                    raw + "/index.ts", raw + "/index.tsx", raw + "/index.js", raw + "/index.jsx",
-                ]
-                target = next((c for c in candidates if c in file_paths), None)
+                target = _resolve_js_relative(file_paths, base, spec)
                 if target and target != rel:
-                    edges.add((rel, target, "imports", "parsed"))
+                    edges.add((rel, target, "imports", f"parsed-js-relative:{spec}"))
+                elif target is None:
+                    unresolved.append({
+                        "from": rel,
+                        "specifier": spec,
+                        "language": "javascript-typescript",
+                        "reason": "relative-import-not-resolved-from-repository-facts",
+                    })
+        elif rel.endswith(".rs"):
+            location = _rust_module_location(rel)
+            if not location:
+                unresolved.append({
+                    "from": rel,
+                    "specifier": None,
+                    "language": "rust",
+                    "reason": "rust-source-outside-src-module-convention",
+                })
+                continue
+            root, current_module = location
+            for path_spec, _name in RUST_PATH_MOD.findall(text):
+                target = _normalize_relative_candidate(Path(rel).parent, path_spec)
+                if target and target in file_paths and target != rel:
+                    edges.add((rel, target, "rust-path-module", f"parsed-rust-path:{path_spec}"))
+                else:
+                    unresolved.append({
+                        "from": rel,
+                        "specifier": path_spec,
+                        "language": "rust",
+                        "reason": "rust-path-module-not-resolved",
+                    })
+            current_parts = [part for part in current_module.split("::") if part]
+            for name in RUST_MOD.findall(text):
+                target_module = "::".join([*current_parts, name])
+                target = rust_modules.get((root, target_module))
+                if target and target != rel:
+                    edges.add((rel, target, "rust-mod", f"parsed-rust-mod:{name}"))
+                else:
+                    unresolved.append({
+                        "from": rel,
+                        "specifier": name,
+                        "language": "rust",
+                        "reason": "rust-mod-declaration-not-resolved",
+                    })
+            for expression in RUST_USE.findall(text):
+                target, reason = _rust_resolve_use(rust_modules, root, current_module, expression)
+                if target and target != rel:
+                    edges.add((rel, target, "rust-use", f"parsed-rust-use:{expression.strip()}"))
+                elif reason != "external-or-unqualified-use":
+                    unresolved.append({
+                        "from": rel,
+                        "specifier": expression.strip(),
+                        "language": "rust",
+                        "reason": reason,
+                    })
     rows = [
         {"from": a, "to": b, "type": t, "evidence": e, "confidence": "supported"}
         for a, b, t, e in sorted(edges)
     ]
-    return {"nodes": sorted(file_paths), "edges": rows, "edgeCount": len(rows)}
+    return {
+        "nodes": sorted(file_paths),
+        "edges": rows,
+        "edgeCount": len(rows),
+        "unresolved": unresolved,
+        "unresolvedCount": len(unresolved),
+        "resolutionRule": "ONLY_RESOLVE_RELATIONSHIPS_PROVABLE_FROM_REPOSITORY_PATHS_AND_BOUNDED_LANGUAGE_SYNTAX",
+        "doesNotProve": [
+            "Runtime or macro-generated dependencies.",
+            "External package resolution unless represented as a repository-local file relationship.",
+        ],
+    }
 
 def _parse_codeowners(repo: Path, rel: str) -> list[tuple[str, list[str]]]:
     text = _safe_text(repo, rel)
@@ -152,39 +294,110 @@ def authority_graph(authorities: dict[str, Any]) -> dict[str, Any]:
             edges.append({"from": f"conflict:{scope}", "to": path, "type": "authority-conflict"})
     return {"nodes": nodes, "edges": edges, "edgeCount": len(edges)}
 
+def _architecture_candidates(row: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    rel = str(row.get("path") or "")
+    path = Path(rel)
+    parts = [part.lower() for part in path.parts]
+    partset = set(parts)
+    basename = path.name.lower()
+    suffix = path.suffix.lower()
+    candidates: dict[str, dict[str, Any]] = {}
+
+    def add(layer: str, signal: str, weight: int) -> None:
+        current = candidates.setdefault(layer, {"score": 0, "evidence": []})
+        current["score"] += weight
+        current["evidence"].append(signal)
+
+    if row.get("generated") or "generated" in partset:
+        add("generated", "generated-path", 6)
+    if partset & {"vendor", "third_party", "third-party", "vendored"}:
+        add("vendor", "vendor-path", 6)
+    if partset & {"test", "tests", "__tests__", "spec", "specs", "e2e"} or basename.startswith("test_") or basename.endswith(("_test.py", ".spec.ts", ".test.ts", ".spec.js", ".test.js")):
+        add("test", "test-convention", 6)
+    if partset & {"docs", "doc", "documentation"} or basename in {"readme.md", "architecture.md"}:
+        add("documentation", "documentation-convention", 5)
+    if partset & {"examples", "example", "samples", "sample", "demo", "demos"}:
+        add("example", "example-convention", 5)
+    if partset & {"bench", "benches", "benchmark", "benchmarks"}:
+        add("benchmark", "benchmark-convention", 5)
+    if partset & {"governance", "policy", "policies", "contracts"} or basename == "codeowners" or (len(parts) >= 2 and parts[0] == ".github" and parts[1] == "workflows"):
+        add("governance", "governance-convention", 5)
+    if partset & {"migrations", "migration", "database", "db", "repositories", "repository"} or suffix in {".sql", ".prisma"}:
+        add("persistence", "persistence-convention", 5)
+    if partset & {"adapters", "adapter", "connectors", "connector", "webhooks", "clients", "integrations", "integration", "api"}:
+        add("integration", "integration-convention", 4)
+    if partset & {"infra", "infrastructure", "deploy", "deployment", "terraform", "k8s", "helm", "docker"} or basename.startswith("dockerfile"):
+        add("infrastructure", "infrastructure-convention", 5)
+    if partset & {"components", "views", "pages", "templates", "styles"} or suffix in {".css", ".scss", ".jsx", ".tsx"}:
+        add("ui", "ui-convention", 3)
+    if partset & {"domain", "entities", "entity", "business"}:
+        add("domain", "domain-convention", 4)
+    if partset & {"handlers", "controllers", "commands", "queries", "usecase", "usecases", "application"}:
+        add("application", "application-convention", 4)
+    if partset & {"cli", "cmd", "bin"}:
+        add("entrypoint", "cli-entrypoint-convention", 4)
+    if basename in {"package.json", "pyproject.toml", "cargo.toml", "go.mod", "pom.xml", "build.gradle", "build.gradle.kts"}:
+        add("package", "package-manifest", 5)
+    if partset & {"config", "configs", ".config"} or basename.endswith((".config.js", ".config.ts", ".config.mjs")):
+        add("configuration", "configuration-convention", 4)
+    if "src" in partset or "lib" in partset:
+        add("source", "generic-source-region", 1)
+    return candidates
+
+
 def architecture_layer_graph(inventory: dict[str, Any]) -> dict[str, Any]:
     nodes: list[dict[str, Any]] = []
     for row in inventory.get("files") or []:
         rel = str(row.get("path") or "")
-        low = rel.lower()
-        scores: dict[str, int] = {}
-        evidence: dict[str, list[str]] = defaultdict(list)
-        for layer, signals in LAYER_RULES:
-            for signal in signals:
-                if signal in low:
-                    scores[layer] = scores.get(layer, 0) + 1
-                    evidence[layer].append(signal)
-        if not scores:
-            layer, confidence = "unclassified", "unknown"
-            selected_evidence: list[str] = []
+        candidates = _architecture_candidates(row)
+        ordered = sorted(
+            ((layer, data["score"], sorted(set(data["evidence"]))) for layer, data in candidates.items()),
+            key=lambda item: (-item[1], item[0]),
+        )
+        if not ordered:
+            layer, confidence, selected_evidence = "unclassified", "unknown", []
+        elif len(ordered) > 1 and ordered[0][1] == ordered[1][1]:
+            layer, confidence, selected_evidence = "unclassified", "unknown", []
         else:
-            ordered = sorted(scores.items(), key=lambda item: (-item[1], item[0]))
             layer = ordered[0][0]
-            confidence = "supported" if ordered[0][1] >= 2 else "inferred"
-            selected_evidence = sorted(set(evidence[layer]))
+            confidence = "supported" if ordered[0][1] >= 5 else "inferred"
+            selected_evidence = ordered[0][2]
         nodes.append({
-            "path": rel, "layer": layer, "confidence": confidence,
+            "path": rel,
+            "layer": layer,
+            "confidence": confidence,
             "evidence": selected_evidence,
-            "doesNotProve": ["Runtime call order or architectural intent beyond repository evidence."],
+            "candidateLayers": [
+                {"layer": candidate, "score": score, "evidence": evidence}
+                for candidate, score, evidence in ordered
+            ],
+            "classificationRule": "PORTABLE_STRUCTURAL_EVIDENCE_ONLY_NO_AUTHORIZATION",
+            "doesNotProve": [
+                "Runtime call order or architectural intent beyond repository evidence.",
+                "Authorization to edit this path.",
+            ],
         })
+    layer_counts = {
+        layer: sum(1 for row in nodes if row["layer"] == layer)
+        for layer in sorted({row["layer"] for row in nodes})
+    }
+    unclassified = layer_counts.get("unclassified", 0)
+    total = len(nodes)
     return {
-        "schemaVersion": "code_atlas_architecture_layer_graph.v1",
+        "schemaVersion": "code_atlas_architecture_layer_graph.v2",
         "name": "Architecture Layer Graph",
         "nodes": nodes,
-        "layerCounts": {
-            layer: sum(1 for row in nodes if row["layer"] == layer)
-            for layer in sorted({row["layer"] for row in nodes})
+        "layerCounts": layer_counts,
+        "coverage": {
+            "totalFiles": total,
+            "classifiedFiles": total - unclassified,
+            "unclassifiedFiles": unclassified,
+            "classifiedPercent": round(100 * (total - unclassified) / max(1, total), 4),
+            "supported": sum(1 for row in nodes if row["confidence"] == "supported"),
+            "inferred": sum(1 for row in nodes if row["confidence"] == "inferred"),
+            "unknown": sum(1 for row in nodes if row["confidence"] == "unknown"),
         },
+        "authorizationRule": "ARCHITECTURE_CLASSIFICATION_NEVER_EXPANDS_ALLOWED_SCOPE",
     }
 
 def test_intelligence(inventory: dict[str, Any], dependencies: dict[str, Any]) -> dict[str, Any]:

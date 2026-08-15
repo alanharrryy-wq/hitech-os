@@ -219,5 +219,28 @@ class UniversalCustomerWowBindingTests(unittest.TestCase):
         self.assertEqual(report["findings"][0]["code"], "REQUIRED_AUTHORITY_MISSING")
 
 
+    def test_hidden_dirty_worktree_path_blocks_even_when_manifest_omits_it(self) -> None:
+        prepared = self._prepare()
+        hidden = self.repo / "hidden outside ü.txt"
+        hidden.write_text("undeclared mutation\n", encoding="utf-8")
+        report = verify_prepared_change(
+            prepared,
+            self.repo,
+            changed_paths=[],
+            produced_evidence=["test:auth", "evidence:auth"],
+            policy=self.policy,
+        )
+        self.assertEqual(report["decision"], "BLOCKED")
+        finding = next(row for row in report["findings"] if row.get("code") == "UNDECLARED_WORKTREE_MUTATION")
+        self.assertIn("hidden outside ü.txt", finding["paths"])
+        self.assertFalse(report["worktreeReconciliation"]["reconciled"])
+
+    def test_dirty_baseline_cannot_issue_authority_pack(self) -> None:
+        (self.repo / "undeclared before prepare.txt").write_text("dirty baseline\n", encoding="utf-8")
+        prepared = self._prepare()
+        self.assertEqual(prepared["decision"], "BLOCKED")
+        self.assertIsNone(prepared["authorityPack"])
+        self.assertTrue(any("worktree must be clean" in reason for reason in prepared["reasonCodes"]))
+
 if __name__ == "__main__":
     unittest.main()
