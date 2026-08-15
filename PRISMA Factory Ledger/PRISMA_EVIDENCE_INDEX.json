@@ -401,9 +401,41 @@
         "Complete dependency or historical change understanding across tested or arbitrary stacks",
         "Production readiness, enterprise IAM/security, hosted multi-tenant isolation, legal/privacy compliance or paid-pilot readiness"
       ]
+    },
+    {
+      "artifact": "Code Atlas Single External-Agent Usefulness Pilot — PR #288 / run 31914395822",
+      "type": "code_atlas_single_external_agent_usefulness_pilot_v1",
+      "scope": [
+        "code_atlas",
+        "change_intelligence",
+        "external_agent_evidence",
+        "governance"
+      ],
+      "status": "PASS_BOUNDED_SINGLE_AGENT_EVIDENCE",
+      "proves": [
+        "Six blind historical tasks were scored after evaluator responses were persisted before ground truth was viewed",
+        "ASSISTED 3-task descriptive result: 0% authorization widening, 100% target editable inclusion, 100% mean changed-test recall, 88.89% mean companion-inspection recall, 100% valid evidence references, zero fake-green and zero unknown omission",
+        "BASELINE 3 different-task descriptive result: 0% authorization widening, 33.33% target editable inclusion, 0% mean changed-test recall, 0% mean companion-inspection recall, 100% valid evidence references",
+        "Observed raw ROI events were limited to outOfScopeChangeRate=0.0 ratio and evidenceCompletenessRate=1.0 ratio with no financial estimate",
+        "Two harness-only failures were repaired fail-closed before a valid score; neither was classified as a product-core defect"
+      ],
+      "doesNotProve": [
+        "Causal uplift because assisted and baseline conditions used different tasks and only one external evaluator",
+        "Human usefulness because no human evaluator participated",
+        "Independent multi-agent replication",
+        "Arbitrary-repository correctness, production readiness, enterprise IAM/security, hosted multi-tenant isolation, privacy/legal compliance or paid-pilot readiness"
+      ],
+      "evidence": [
+        "Authority Mesh run 31913264991 artifact 9254247789 sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015",
+        "PR #288 merge cbb0949701529399810ac8ca2033b9f708f790f2",
+        "final scoring run 31914395822",
+        "scored artifact 9254539137 sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c",
+        "result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd",
+        "closure Authority Mesh run 31914600435 artifact 9254577043 sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b"
+      ]
     }
   ],
-  "updatedAt": "2026-08-15T22:42:19Z",
+  "updatedAt": "2026-08-15T23:26:53Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -498,6 +530,18 @@
         "caf918694c1c397d19a61bff217800d027a384e3",
         "31867491454/9242450935",
         "31867706125/9242519545"
+      ]
+    },
+    {
+      "capabilityId": "code_atlas.change_intelligence.customer_wow_v1",
+      "status": "LOCAL_VERIFIED",
+      "runId": "PR288_CODE_ATLAS_SINGLE_EXTERNAL_AGENT_USEFULNESS",
+      "evidence": [
+        "PR #288",
+        "merge commit cbb0949701529399810ac8ca2033b9f708f790f2",
+        "run 31914395822 / scored artifact 9254539137",
+        "result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd",
+        "closure mesh 31914600435 / 9254577043"
       ]
     }
   ]
