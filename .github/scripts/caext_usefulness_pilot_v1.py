@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -16,6 +17,8 @@ from code_atlas.change_intelligence.roi import build_roi_event
 from code_atlas.intelligence import IntelligenceRequest, resolve_intelligence_context
 
 WORKERS = max(1, min(18, int(os.environ.get("CAEXT_WORKERS", "18"))))
+PACKET_DIGEST_RULE = "SEMANTIC_STABLE_V1_EXCLUDES_VOLATILE_CODE_ATLAS_RUN_METADATA"
+VOLATILE_PACKET_KEYS = {"generatedAt", "checksum", "packId", "modelDigest", "snapshotDigest"}
 MAX_TEXT = 60_000
 SOURCE_SUFFIXES = {
     ".py", ".pyi", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".mts", ".cts",
@@ -86,6 +89,28 @@ def sha_json(value: Any) -> str:
     return hashlib.sha256(
         json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
+
+
+def semantic_packet_view(packet: dict[str, Any]) -> dict[str, Any]:
+    """Return evaluator-visible semantics without run-volatile Code Atlas metadata."""
+    value = copy.deepcopy(packet)
+    value.pop("packetDigest", None)
+    assistance = value.get("codeAtlasAssistance")
+    if isinstance(assistance, dict):
+        assistance.pop("changeReportMarkdown", None)
+
+    def scrub(item: Any) -> Any:
+        if isinstance(item, dict):
+            return {key: scrub(child) for key, child in item.items() if key not in VOLATILE_PACKET_KEYS}
+        if isinstance(item, list):
+            return [scrub(child) for child in item]
+        return item
+
+    return scrub(value)
+
+
+def packet_digest(packet: dict[str, Any]) -> str:
+    return sha_json(semantic_packet_view(packet))
 
 
 def run(cmd: list[str], *, cwd: Path | None = None, check: bool = True, timeout: int = 1200) -> subprocess.CompletedProcess[str]:
@@ -364,7 +389,8 @@ def prepare_one(spec: TaskSpec, work_root: Path, packets_root: Path, truth_root:
     else:
         packet["codeAtlasAssistance"] = None
     packet["availableEvidenceIds"] = sorted(packet_evidence_ids)
-    packet["packetDigest"] = sha_json(packet)
+    packet["packetDigestRule"] = PACKET_DIGEST_RULE
+    packet["packetDigest"] = packet_digest(packet)
     dump(packets_root / f"{spec.task_id}.json", packet)
 
     actual_tests = sorted(p for p in actual if is_test_path(p))
@@ -416,6 +442,7 @@ def prepare(out: Path) -> dict[str, Any]:
         "agentEvaluator": "ChatGPT / GPT-5.6 Sol via GitHub connector",
         "independentMultiAgentEvidence": False,
         "assignmentRule": "LAST_HEX_PARITY_EVEN_ASSISTED_ODD_BASELINE",
+        "packetDigestRule": PACKET_DIGEST_RULE,
         "taskCount": len(rows),
         "conditions": {
             "ASSISTED": sum(1 for row in rows if row["condition"] == "ASSISTED"),
@@ -605,6 +632,24 @@ def selftest() -> None:
     assert condition_for("1") == "BASELINE"
     schema = response_schema()
     assert "editableScope" in schema["requiredFields"]
+    volatile_a = {
+        "taskId": "fixture",
+        "packetDigestRule": PACKET_DIGEST_RULE,
+        "codeAtlasAssistance": {
+            "authorityPack": {"allowedScope": ["x.py"], "generatedAt": "T1", "packId": "A", "checksum": "1"},
+            "changeModel": {"decision": "PASS", "generatedAt": "T1", "modelDigest": "1", "repositorySnapshot": {"snapshotDigest": "A"}},
+            "changeReportMarkdown": "volatile render 1",
+        },
+    }
+    volatile_b = copy.deepcopy(volatile_a)
+    volatile_b["codeAtlasAssistance"]["authorityPack"].update({"generatedAt": "T2", "packId": "B", "checksum": "2"})
+    volatile_b["codeAtlasAssistance"]["changeModel"].update({"generatedAt": "T2", "modelDigest": "2"})
+    volatile_b["codeAtlasAssistance"]["changeModel"]["repositorySnapshot"]["snapshotDigest"] = "B"
+    volatile_b["codeAtlasAssistance"]["changeReportMarkdown"] = "volatile render 2"
+    assert packet_digest(volatile_a) == packet_digest(volatile_b)
+    semantic_change = copy.deepcopy(volatile_b)
+    semantic_change["codeAtlasAssistance"]["authorityPack"]["allowedScope"] = ["other.py"]
+    assert packet_digest(volatile_a) != packet_digest(semantic_change)
     print("PASS_CAEXT_USEFULNESS_PILOT_SELFTEST")
 
 

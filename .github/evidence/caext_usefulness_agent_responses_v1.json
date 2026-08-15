@@ -7,7 +7,8 @@
     "id": "chatgpt-gpt-5.6-sol",
     "independentMultiAgentEvidence": false,
     "mode": "SINGLE_EXTERNAL_AGENT_PILOT",
-    "model": "GPT-5.6 Sol"
+    "model": "GPT-5.6 Sol",
+    "packetDigestRule": "SEMANTIC_STABLE_V1_EXCLUDES_VOLATILE_CODE_ATLAS_RUN_METADATA"
   },
   "responses": [
     {
@@ -26,7 +27,7 @@
         "tests/test_jsonable_encoder.py"
       ],
       "notes": "The target shows exclude_defaults propagated for models/lists but omitted from recursive dict key/value encoding. Keep edits confined to the target and validate the focused encoder test.",
-      "packetDigest": "815b2ec9abfd0e5dd81511036cbfa2229617c2bd9826fecd0475d6e9760b1dd2",
+      "packetDigest": "3f8071d41b848a4dedb36c625ac5eba572c32464294e24132460015089350b41",
       "taskId": "U1",
       "testPathsToValidate": [
         "tests/test_jsonable_encoder.py"
@@ -50,7 +51,7 @@
         "middleware/logger_test.go"
       ],
       "notes": "NoColor is already captured as useColor on defaultLogEntry, while Panic bypasses that state via PrintPrettyStack. Authorize only logger.go; inspect the stack/color helper and focused logger tests.",
-      "packetDigest": "e1ad798939b1dda8e865dcbf8cc47dbfc2959f1a16722ae40edb8ee0e1b5121e",
+      "packetDigest": "f0dd445f87e7c4d24681f6b078dddbcabdfd12a12801db6b3f96aecca29c8c51",
       "taskId": "U2",
       "testPathsToValidate": [
         "middleware/logger_test.go"
@@ -72,7 +73,7 @@
         "django/contrib/admin/tests.py"
       ],
       "notes": "The task and target are plausible, but the packet is insufficient to distinguish the exact malformed-value branch or a focused validation test without guessing.",
-      "packetDigest": "d8cf35f37b56719fa0b18853d5bedffd7c6c7bc488d2d821f9caf551e49fd777",
+      "packetDigest": "39dcc0bb62f8e716c3d44f75f45472269c022fe7bd892e14b363cb230bab4846",
       "taskId": "U3",
       "testPathsToValidate": [],
       "unknowns": [
@@ -99,7 +100,7 @@
         "tests/test_http_parser.py"
       ],
       "notes": "The target shows PARSE_LENGTH can pause after feeding exactly the required bytes, before completion is emitted. Validate the focused HTTP parser path while keeping the C-extension as inspection-only.",
-      "packetDigest": "572757df069d3989eaa9d7c7bc66eb5e968a205941cfe87f826dd07ab0cd1cbf",
+      "packetDigest": "8da76f0a971001c1f88c961b7f08179a78a5c0919c61d219d81bcfe1edbb0631",
       "taskId": "U4",
       "testPathsToValidate": [
         "tests/test_http_parser.py"
@@ -123,7 +124,7 @@
         "crates/ruff_linter/src/rules/flake8_use_pathlib/violations.rs"
       ],
       "notes": "The packet is not strong enough to justify an implementation decision. Additional repo-native evidence should resolve the actual FURB rule implementation and focused fixtures.",
-      "packetDigest": "85b5b7341c6a74faa8b8908dcd275d598559ed2f5a365ea16736ec425ae343b0",
+      "packetDigest": "ae96b718553c1cbdf0dc5b1b7e45237fc60940550750185b559dd5a9cb95227e",
       "taskId": "U5",
       "testPathsToValidate": [],
       "unknowns": [
@@ -150,7 +151,7 @@
         "tests/types/unions/test_discriminated_union.py"
       ],
       "notes": "The target's tagged_union_schema stringifies discriminator keys; bool-specific mapping behavior belongs here. Keep the edit to json_schema.py and validate JSON-schema plus discriminated-union coverage.",
-      "packetDigest": "335194f9dcfb79128c9d1cef00d0d275c32039f079a0ceeb2644c6555b623db4",
+      "packetDigest": "1af961bfd8c24c0169e7e0f8a70c73e293a224579163e61e41c229ca9adb4419",
       "taskId": "U6",
       "testPathsToValidate": [
         "tests/test_json_schema.py",
