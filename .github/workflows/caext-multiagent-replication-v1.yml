@@ -63,11 +63,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- .github/scripts/caext_multiagent_replication_v1.py; then
+          status="$(git status --porcelain=v1 --untracked-files=all -- .github/scripts/caext_multiagent_replication_v1.py)"
+          if [ -z "$status" ]; then
             echo 'PASS_CAEXT_MULTIAGENT_SCRIPT_ALREADY_COMMITTED'
             exit 0
           fi
-          changed="$(git diff --name-only)"
+          changed="$(git status --porcelain=v1 --untracked-files=all | sed -E 's/^.. //')"
           if [ "$changed" != '.github/scripts/caext_multiagent_replication_v1.py' ]; then
             echo "Unexpected bootstrap diff: $changed"
             exit 1
