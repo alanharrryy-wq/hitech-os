@@ -860,3 +860,16 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
 **Regla nueva:** precision/recall históricos son métricas de calidad de evidencia. No convertir recall bajo en autorización para parchear core; un FIX/BUILD de companion/dependency intelligence exige su propio Authority Mesh y criterio de producto. Los casos new-path deben permanecer fail-closed si el target no existe en el snapshot autoridad.
 **Rollback:** Phase D fue evidence-only; no tocó `tools/code-atlas/src/code_atlas/**`.
 **Siguiente gate:** human/agent usefulness evidence. Hosted/security y production siguen siendo gates separados.
+
+## 2026-08-15 — Code Atlas single external-agent usefulness pilot
+
+- **Tipo:** VERIFY / EXTERNAL EVIDENCE → governance closure.
+- **Superficie:** Code Atlas / Change Intelligence / governance. Product core read-only.
+- **Contexto:** después de External Diversity V2 e Historical Real-Diff, se ejecutó un piloto ciego de seis tareas históricas con 3 ASSISTED y 3 BASELINE, usando el mismo target precondicionado y ground truth separado hasta persistir respuestas.
+- **Evidencia:** Authority Mesh `31913264991` / `9254247789`; scoring `31914395822` / `9254539137`; result digest `8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd`; merge PR #288 `cbb0949701529399810ac8ca2033b9f708f790f2`; closure Mesh `31914600435` / `9254577043`.
+- **Resultado ASSISTED:** 0% authorization widening, 100% target editable inclusion, 100% changed-test recall, 88.89% companion-inspection recall, 100% valid evidence refs, fake-green 0, unknown omission 0.
+- **Resultado BASELINE:** 0% authorization widening, 33.33% target editable inclusion, 0% changed-test recall, 0% companion-inspection recall, 100% valid evidence refs.
+- **Root cause de fallos durante el gate:** dos `J TEST HARNESS FAILURE`, no product failures: digest dependiente de metadata volátil de ejecución y llamada incorrecta a la API de raw ROI. Ambos se repararon y se reejecutó el gate antes de aceptar evidencia.
+- **Regla nueva:** un piloto single-agent con tareas distintas por condición sólo admite lectura descriptiva. No convertir diferencias de métricas en causal uplift; no llamar evidencia humana a una evaluación sin humano; no derivar ROI financiero de ratios observados.
+- **Estado preservado:** `LOCAL_VERIFIED`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`, `humanUsefulness=NOT_MEASURED`.
+- **Siguiente gate:** estudio humano bounded y/o replicación multi-agent independiente. Hosted/security/production siguen gates separados.

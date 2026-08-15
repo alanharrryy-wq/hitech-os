@@ -191,6 +191,59 @@
           "targetExistsInParent": false
         }
       }
+    },
+    "externalAgentUsefulness": {
+      "status": "SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM",
+      "humanUsefulness": "NOT_MEASURED",
+      "taskCount": 6,
+      "conditions": {
+        "ASSISTED": {
+          "taskCount": 3,
+          "authorizationWideningRatePct": 0.0,
+          "targetIncludedEditablePct": 100.0,
+          "meanHistoricalChangedTestRecallPct": 100.0,
+          "meanHistoricalCompanionInspectionRecallPct": 88.89,
+          "validEvidenceReferenceRatePct": 100.0,
+          "fakeGreenCount": 0,
+          "unknownOmissionCount": 0
+        },
+        "BASELINE": {
+          "taskCount": 3,
+          "authorizationWideningRatePct": 0.0,
+          "targetIncludedEditablePct": 33.33,
+          "meanHistoricalChangedTestRecallPct": 0.0,
+          "meanHistoricalCompanionInspectionRecallPct": 0.0,
+          "validEvidenceReferenceRatePct": 100.0
+        }
+      },
+      "causalUpliftClaimAllowed": false,
+      "conditionComparisonConfoundedByDifferentTasks": true,
+      "singleEvaluatorOnly": true,
+      "historyAuthorizes": false,
+      "rawObservedRoi": {
+        "outOfScopeChangeRate": {
+          "value": 0.0,
+          "unit": "ratio"
+        },
+        "evidenceCompletenessRate": {
+          "value": 1.0,
+          "unit": "ratio"
+        },
+        "financialEstimate": null
+      },
+      "notMeasured": [
+        "contextDiscoveryTime",
+        "changeScopeIdentificationTime",
+        "humanSupervisionTime",
+        "evidenceAssemblyTime",
+        "reopenedWorkRate",
+        "changeReadinessThroughput",
+        "workerPeak"
+      ],
+      "harnessFailures": [
+        "J TEST HARNESS FAILURE: evaluator packet digest included run-volatile Code Atlas metadata; repaired with semantic-stable digest binding before valid score",
+        "J TEST HARNESS FAILURE: raw ROI instrumentation used an invalid build_roi_event metric_values call; repaired to one observed event per metric before valid score"
+      ]
     }
   },
   "excludedSurfaces": [
@@ -215,9 +268,12 @@
     "legal or privacy compliance",
     "production certification",
     "high companion-path recall across Go Java C++ Python YAML or arbitrary stacks",
-    "complete historical change prediction"
+    "complete historical change prediction",
+    "causal usefulness uplift from the single external-agent pilot",
+    "human usefulness because no human evaluator participated",
+    "independent multi-agent replication"
   ],
-  "nextGate": "Run human/agent usefulness evidence on bounded real change tasks. Measure whether Authority Packs, impact, unknowns, protected scope and evidence reports improve task quality without widening authorization. Hosted/security boundaries remain separate. Do not rebuild core from low historical recall alone.",
+  "nextGate": "Run a bounded human usefulness study and/or independent multi-agent replication. Keep hosted/security and production certification separate. Do not rebuild core from this single-agent pilot.",
   "externalEvidence": {
     "status": "BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS",
     "sourceRepairPr": 275,
@@ -312,6 +368,20 @@
       "windowsArtifactId": 9254082540,
       "windowsArtifactDigest": "sha256:d2efb32116430dbbfa78d5dc5dd9513afbc54198ffae90c302c43df75adb5e38",
       "interpretation": "Conservative target-only impact in tested Go Java and C++/Python historical cases; low companion recall is bounded evidence, not automatic source-defect classification."
+    },
+    "usefulnessPilot": {
+      "pr": 288,
+      "mergeCommit": "cbb0949701529399810ac8ca2033b9f708f790f2",
+      "authorityMeshRunId": 31913264991,
+      "authorityMeshArtifactId": 9254247789,
+      "authorityMeshArtifactDigest": "sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015",
+      "finalRunId": 31914395822,
+      "scoredArtifactId": 9254539137,
+      "scoredArtifactDigest": "sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c",
+      "resultDigest": "8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd",
+      "governanceClosureAuthorityMeshRunId": 31914600435,
+      "governanceClosureAuthorityMeshArtifactId": 9254577043,
+      "governanceClosureAuthorityMeshArtifactDigest": "sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b"
     }
   }
 }

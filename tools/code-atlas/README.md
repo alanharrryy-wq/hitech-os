@@ -429,3 +429,20 @@ Prove the result with evidence.
 ```
 
 That is the current Code Atlas architecture.
+
+## External-agent usefulness evidence — 2026-08-15
+
+Governed state remains **LOCAL_VERIFIED** with `doNotRebuild=true`, `certifiable=false`, and `productionCertified=false`.
+
+- Pilot: PR #288, merge `cbb0949701529399810ac8ca2033b9f708f790f2`.
+- Task-exact Authority Mesh: run `31913264991`, artifact `9254247789`, digest `sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015`.
+- Final scoring: run `31914395822`, artifact `9254539137`, digest `sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c`, result digest `8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd`.
+- ASSISTED, three tasks: authorization widening 0%; target editable inclusion 100%; changed-test recall 100%; companion-inspection recall 88.89%; valid evidence references 100%; fake-green 0; unknown omission 0.
+- BASELINE, three different tasks: authorization widening 0%; target editable inclusion 33.33%; changed-test recall 0%; companion-inspection recall 0%; valid evidence references 100%.
+- The condition comparison is descriptive only: task heterogeneity plus one evaluator means **no causal uplift claim**.
+- Human usefulness is **NOT_MEASURED**. Independent multi-agent replication is not yet proven.
+- Observed ROI is limited to `outOfScopeChangeRate=0.0` and `evidenceCompletenessRate=1.0`; no financial estimate was generated.
+- Two `J TEST HARNESS FAILURE` defects were repaired fail-closed before the valid score: run-volatile packet binding and an invalid `build_roi_event(metric_values=...)` call. Neither was a product-core defect.
+- Closure Authority Mesh: run `31914600435`, artifact `9254577043`, digest `sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b`.
+
+**Next evidence gate:** bounded human usefulness study and/or independent multi-agent replication. Hosted/security and production certification remain separate boundaries; do not rebuild core from this pilot.

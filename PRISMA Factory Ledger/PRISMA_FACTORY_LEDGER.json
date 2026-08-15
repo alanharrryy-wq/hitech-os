@@ -617,7 +617,11 @@
         "Historical real-diff run 31912606042",
         "Ubuntu historical artifact 9254078386",
         "Windows historical artifact 9254082540",
-        "Cobra recall 25%; Spring recall 50%; pybind11 recall 33.33%; companion recall 0% in all three; Kubernetes missing-parent target BLOCKED without Authority Pack"
+        "Cobra recall 25%; Spring recall 50%; pybind11 recall 33.33%; companion recall 0% in all three; Kubernetes missing-parent target BLOCKED without Authority Pack",
+        "PR #288 merge cbb0949701529399810ac8ca2033b9f708f790f2",
+        "single external-agent usefulness run 31914395822 scored artifact 9254539137 sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c",
+        "usefulness result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd",
+        "usefulness governance closure Authority Mesh run 31914600435 artifact 9254577043 sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b"
       ],
       "allowedActions": [
         "read-only verification on unrelated external repositories",
@@ -635,7 +639,10 @@
       ],
       "forbiddenClaims": [
         "Do not claim arbitrary external-repository compatibility from synthetic fixtures.",
-        "Do not claim paid-pilot, enterprise, hosted multi-tenant, legal/privacy or production certification from LOCAL_VERIFIED evidence."
+        "Do not claim paid-pilot, enterprise, hosted multi-tenant, legal/privacy or production certification from LOCAL_VERIFIED evidence.",
+        "Do not claim causal usefulness uplift from the 3 assisted versus 3 baseline tasks because the task sets differ.",
+        "Do not claim human usefulness from the single external-agent pilot.",
+        "Do not derive financial ROI from the two observed raw ratios."
       ],
       "doesNotProve": [
         "Correct behavior beyond the three tested pinned external repositories or across arbitrary stacks",
@@ -650,9 +657,12 @@
         "Complete dependency understanding for Go, Java, YAML/IaC, C++ or other unproven stacks",
         "Production, enterprise IAM/security, hosted multi-tenant, legal/privacy or paid-pilot readiness",
         "High companion-path recall across tested multi-stack historical changes",
-        "Complete change-impact prediction for tests or documentation companions"
+        "Complete change-impact prediction for tests or documentation companions",
+        "Causal usefulness uplift from the single external-agent pilot",
+        "Human usefulness; no human evaluator participated",
+        "Independent multi-agent replication"
       ],
-      "nextGate": "Human/agent usefulness evidence. Preserve the measured companion-recall limitation; do not rebuild core without a separately authorized evidence-backed product-improvement gate."
+      "nextGate": "Run bounded human usefulness and/or independent multi-agent replication; keep hosted/security and production certification as separate gates. Do not rebuild core from the single-agent pilot."
     }
   ],
   "updatedAt": "2026-08-15T22:42:19Z"
