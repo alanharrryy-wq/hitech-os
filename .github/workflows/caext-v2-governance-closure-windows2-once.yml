@@ -1,0 +1,109 @@
+name: CAEXT V2 Governance Closure Windows Exact Once
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/caext-v2-governance-closure-windows2-once.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+
+jobs:
+  close-governed-evidence-windows-exact:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate fresh task-exact Authority Mesh
+        shell: pwsh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "VERIFY GOVERNANCE CLOSURE — CODE ATLAS EXTERNAL DIVERSITY V2. PR #278 merged as 9556609df6d60e8cecebb0f051ef27040842bc53; preserve exact Git blob preimages on Windows; record bounded evidence for seven pinned repositories on Ubuntu and Windows; preserve LOCAL_VERIFIED doNotRebuild=true certifiable=false productionCertified=false; authorized writes only README Customer Wow contract Factory Ledger Evidence Index Field Manual and self-removal of temporary closure workflows; exclude Code Atlas source tests harness UI Bridge UIMAP PR #273 Tablet PC Mobile Chart Lab Shared UI DB Prisma deploy ports processes; next gate historical real-diff then human/agent usefulness."
+
+      - name: Rehydrate exact Git blob preimages and run locked closure
+        shell: python
+        run: |
+          import subprocess
+          import textwrap
+          from pathlib import Path
+
+          exact_paths = [
+              'tools/code-atlas/README.md',
+              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md',
+              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+              'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+              'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+          ]
+          subprocess.check_call(['git', 'config', 'core.autocrlf', 'false'])
+          for path in exact_paths:
+              raw = subprocess.check_output(['git', 'show', f'HEAD:{path}'])
+              Path(path).write_bytes(raw)
+
+          workflow = subprocess.check_output([
+              'git', 'show',
+              '796ef60888df365f2bfd4a29331791f7fe480941:.github/workflows/caext-v2-governance-closure-windows-once.yml'
+          ], text=True, encoding='utf-8')
+          start_marker = "      - name: Validate Mesh and replay preimage-locked closure\n        shell: python\n        run: |\n"
+          end_marker = "\n      - name: Upload closure Authority Mesh evidence"
+          if start_marker not in workflow or end_marker not in workflow:
+              raise SystemExit('Could not recover Windows locked validation block')
+          script = textwrap.dedent(workflow.split(start_marker, 1)[1].split(end_marker, 1)[0])
+          exec(compile(script, '<caext-v2-windows-exact-closure>', 'exec'), {})
+
+      - name: Upload closure Authority Mesh evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-v2-governance-closure-mesh-windows-exact
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+
+      - name: Commit exactly six governed docs and remove all closure workflows
+        shell: pwsh
+        run: |
+          $tempWorkflows = @(
+            '.github/workflows/caext-v2-governance-closure-once.yml',
+            '.github/workflows/caext-v2-governance-closure-windows-once.yml',
+            '.github/workflows/caext-v2-governance-closure-windows2-once.yml'
+          )
+          foreach ($path in $tempWorkflows) { if (Test-Path $path) { Remove-Item $path -Force } }
+          git add -- `
+            'tools/code-atlas/README.md' `
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md' `
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json' `
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' `
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' `
+            'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md' `
+            '.github/workflows/caext-v2-governance-closure-once.yml' `
+            '.github/workflows/caext-v2-governance-closure-windows-once.yml' `
+            '.github/workflows/caext-v2-governance-closure-windows2-once.yml'
+          $staged = @(git diff --cached --name-only | Where-Object { $_ })
+          if ($staged.Count -ne 9) {
+            Write-Host "Unexpected staged count: $($staged.Count)"
+            $staged | ForEach-Object { Write-Host $_ }
+            exit 1
+          }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(code-atlas): close external diversity v2 evidence'
+          git push origin "HEAD:$env:GITHUB_HEAD_REF"
