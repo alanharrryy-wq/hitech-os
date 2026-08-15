@@ -1,0 +1,93 @@
+name: Code Atlas External Evidence Gate
+
+on:
+  push:
+    branches: ['caext/external-evidence-1408']
+    paths:
+      - '.github/scripts/caext_external_gate.py'
+      - '.github/workflows/caext-external-evidence.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  CAEXT_HITECH_ROOT: ${{ github.workspace }}
+  CAEXT_OUTPUT_ROOT: ${{ runner.temp }}/caext-output
+
+jobs:
+  external-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact harness branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify task-exact harness scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          PIN=6bd15cda5649a58c7bac806faff446c9074a2d94
+          test "$(git merge-base HEAD "$PIN")" = "$PIN"
+          git diff --exit-code "$PIN"..HEAD -- tools/code-atlas
+          git diff --name-only "$PIN"..HEAD | sort | tee "$RUNNER_TEMP/caext_changed.txt"
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          allowed = {
+              '.github/scripts/caext_external_gate.py',
+              '.github/workflows/caext-external-evidence.yml',
+          }
+          changed = {
+              line.strip()
+              for line in Path(os.environ['RUNNER_TEMP']).joinpath('caext_changed.txt').read_text(encoding='utf-8').splitlines()
+              if line.strip()
+          }
+          extra = sorted(changed - allowed)
+          missing = sorted(allowed - changed)
+          print('HARNESS_CHANGED=' + repr(sorted(changed)))
+          if extra:
+              raise SystemExit('HARNESS_SCOPE_VIOLATION:' + ','.join(extra))
+          if missing:
+              raise SystemExit('HARNESS_EXPECTED_FILE_MISSING:' + ','.join(missing))
+          PY
+          python -m py_compile .github/scripts/caext_external_gate.py
+
+      - name: Run external falsification gate
+        id: gate
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$CAEXT_OUTPUT_ROOT"
+          python .github/scripts/caext_external_gate.py
+
+      - name: List packaged evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find "$CAEXT_OUTPUT_ROOT" -maxdepth 1 -type f -name 'caext_*.zip' -print -exec sha256sum {} \;
+
+      - name: Upload external evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 14
+          path: ${{ runner.temp }}/caext-output/caext_*.zip
+
+      - name: Preserve harness failure semantics
+        if: always() && steps.gate.outcome == 'failure'
+        shell: bash
+        run: exit 1
