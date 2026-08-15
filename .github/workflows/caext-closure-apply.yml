@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Verify closure baseline and applicator
+      - name: Verify closure baseline and applicators
         shell: bash
         run: |
           set -euo pipefail
@@ -38,12 +38,13 @@ jobs:
             tools/code-atlas \
             "PRISMA Factory Ledger" \
             apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
-          python -m py_compile .github/scripts/caext_closure_apply.py
+          python -m py_compile .github/scripts/caext_closure_prepatch.py .github/scripts/caext_closure_apply.py
 
       - name: Apply evidence-only closure
         shell: bash
         run: |
           set -euo pipefail
+          python .github/scripts/caext_closure_prepatch.py
           python .github/scripts/caext_closure_apply.py
           python -m json.tool tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json >/dev/null
           python -m json.tool "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" >/dev/null
@@ -61,7 +62,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f .github/workflows/caext-closure-apply.yml .github/scripts/caext_closure_apply.py
+          rm -f \
+            .github/workflows/caext-closure-apply.yml \
+            .github/scripts/caext_closure_apply.py \
+            .github/scripts/caext_closure_prepatch.py
           git add -A
           git diff --cached "$BASELINE" --name-only | sort | tee /tmp/caext_closure_paths.txt
           python - <<'PY'
