@@ -1,11 +1,9 @@
 name: Code Atlas Usefulness ROI API Bootstrap
 
 on:
-  pull_request:
-    paths:
-      - '.github/scripts/caext_usefulness_pilot_v1.py'
-      - '.github/workflows/caext-usefulness-pilot-v1.yml'
-      - '.github/evidence/caext_usefulness_agent_responses_v1.json'
+  push:
+    branches:
+      - 'verify/caext-usefulness-v1-1508'
 
 permissions:
   contents: write
@@ -23,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: verify/caext-usefulness-v1-1508
           fetch-depth: 0
 
       - uses: actions/setup-python@v6
@@ -106,4 +104,4 @@ jobs:
           git config user.email 'caext-usefulness@example.invalid'
           git add -- .github/scripts/caext_usefulness_pilot_v1.py
           git commit -m 'test(code-atlas): fix usefulness raw ROI event API'
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git push origin HEAD:verify/caext-usefulness-v1-1508
