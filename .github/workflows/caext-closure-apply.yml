@@ -29,346 +29,32 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Verify closure baseline
+      - name: Verify closure baseline and decode applicator
         shell: bash
         run: |
           set -euo pipefail
           test "$(git merge-base HEAD "$BASELINE")" = "$BASELINE"
-          git diff --exit-code "$BASELINE"..HEAD -- \
-            tools/code-atlas \
-            "PRISMA Factory Ledger" \
-            apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
+          git diff --exit-code "$BASELINE"..HEAD --             tools/code-atlas             "PRISMA Factory Ledger"             apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
+          python - <<'PY'
+          import base64, gzip, hashlib
+          from pathlib import Path
+          payload = 'H4sIAPFJgGoC/91ba3PbuBV/51fQQc+2S2PLY7d5p3G63eymSW9MU5IOh5GICAlSS1AUEIVdzf/7vQASRdmxE7uXuRNE4IF73wpwPBE7tKKhlkMzbiYLBaZD3kBUIWi53YLnE6AGdtlIGvqyIe+EaqaR0jQ44pqRSLXtG8DqpOTyI7H1FPAmXpUU1/hb06to/nYLvxqaikGMXltN8Y9vCqFeiTbZOdbYRrwNqjU6hsmASr5mVEy2S6l2bIILpmGl1G83ZtkGIL93CAYvSf8WeaU6Q31/dgw+BxRVLF77bujA5Huy3YxrqmT5HXj+kRnoUg+iTWioMs+wtwp0OxsmROy4qzZYU10BkwFIUdRQbVa3IIV94J/YM9lSpG2B7vm31Ouf+8MTKqLt8YyVBNtGFSgPlRZq7HkKpdYXcTIzGG5B0XWiOsGjoBxav/M0L8kfFL2Vsu3uFZ5jeCEJhl+RdtqPS5xP5iNYHFUAcGTd3HVWCYW3zqibFMzlXtIwDW4Q9h7/Ylqe9uCJkKx0y2DPjMswHpaMA8uA8k/P/T+53GgtmITzgp3GcBUDOGE3jHcOQw3MfnYsFHpjl/sriMwJvfDFXlA0FSjxHXeKUNlpDdBdBPuXqhnwEKr80PeaWyYCO0JoT8+bQ05CkAc5z1HOr8dcOXeJR7KVfSSXPsmsjVZvg43IQA6sLifjyogVLqo+l94Q9kw4YsLw6jm2i0dYbJr3DUI6EdRlQMwQiDC9DRQ7k59BYei34vzPgZoIeuyFV48eqiop5hXBvPtMvXM+rRu/GKVhKLuwCPbyX6Xq39fk/s8oHRvOHigMoCQmyw1sqHMoAKoGBAPQNnvzyOO4OpayZLAJlBsuSN1FiAm99ebluZQtINvQxnptzYl84SKloRaF2tC33H/xAC3+tIwlp+I4eQTsvwFpQ1p6YEDdmFYoWXBwDNp2j/jgk4DutIgGOYtrV51TveO6nr9CIJ27ZvTB2RvdtHUWa12FCVNzaOmfx3LgBniJDdRE46Pi+afBKodNJkJsXJ8frDoy9DBbAsOzo1le09tThOo5XwLxVdV5I/Uca/ZtGDlfOfqra1Ov4EMiQ7Zvn9+1oBsCNqybaYs6mRNpoQgIzjpdi5h80zHUdj89NSoLWVmDhJo5aHi+dlXZhW6Oc69ecRKuRb/DQ2jzx7a9fXqLkQaWHMCIMCbXiR8cBHBq7qGQs3kGbh2knt+GhNdcfPJBo51pqMiLN5cPimhoagFyMIseJeAUF3yuMpniLb0C/tQMq6mlKRiHm1z8g3y09J0+9NnyR9cC/PFk1xAGwxHwYt5pnaF7hnkE8641dsxtXNlP3Qxb3txwQScoywB+C2ax5NiXbGfOHIJ7+6jbhDuC465GX4BuhzsLQoR7zc7lPA7pVXMNQTbMQ/423NcPTbTPdBSUT7nv5KYxH7+f/vz+6t3Nhe398d3tzZXO6s369vr+x9vTm6sz64unsyaZCZArWXWAuQ6RpBDDAg/ConytVeWQlWuoe5pgsykKCWP/LK8QDN7LCNDqe/4TpFmp5Q1gxGi6+mCyJ0je54dNvMWCd0nBKx+tZTZEvaCK7YKhYhPCqioJMpAizXNjgnyBk4eHo2F65ydR8ZoyDulF0Jc01+S3t9AqsIGAzibVKf73RCVeTuTc7JSiu4/nTvlFJh+4bHaWhWnk6gIvxjYWk4an7wEEqSZYQi8FMF0+zpARFpchZD+iRAx6wQW9wJK3CixCuIKKDLuv+hDOio+TNXWB0NHufR9C+oJPqgAWZNkv8npV42NgV86hyEfvWeoEiLadMBmJvA4a4mjoqe4WCStQNfGF5HTNpG0jFJqySBdNsQuCt+78iSI9zPCyTkw6zfDCYIbDZOW/95XGG8yAx9mtUIrxgfVDjGHsrSra5VsZ27DletONdYLjsTwCB8yBqFNqFVnvQGNp6RBT0WYbX9Ft6nTg9p8M7YitBFYUr/ToQl5Cd6qDcoQpD7lDVwxVO5GRciKWyFkLhwR4K/iiIJuoUbiw4gQzRFSzLSHcd5ldJ2R6Ktlj97ubm+sCk43YfBhcW7KkeUDvWHDDVKafXWdZut6MhtjtJBsxvzKdX7R0q5ZBOZJhk2EyZsBsNoePVm2KoXxcnuoaSBnMZii7OPmVHItEK+QSbcC2KdHaLKTTiGJiAJQMS8yu0yDGA/qrgJiE4yZc2r0Q09HWfNNGtJE4t4GxAZbN/XQgpqcjuCMHUkuOridajwJI7vbyi/6XgAtwvtr4A0RPKRzYCVUsMEcmTmYeQTwIqHGse/kFdvSTCsSN03W0aQyQeDJXiUg3LkftmxxV0QbpOvKLJKJeKOTjiXI5pgAwX50SB32IeYD5ff1D1YoS++MxT4p1PsNPSSgOFQrYWZSAe+6Xk3WPn57NRpRwjJ2e9VJdOtdIKkV9tGQpJ8xt3EZMoOduQtMlZDo7WuIH4+v4rGsQGtpjE8fHqTQZ0sZe5GIghTUqpLm39ZnSoquUEITvNluw3CY/oqo6+jHPDIwAG4a+NjaHwoplgKBa3MJBEtZjwcLsDmMmWY2yrZR46UrMuDaDnwcZePwouYrVKsSrZxbA7V7JKO4/ygkbMDJiQMEffZ4GogMxYaCiNh8/Z5YqD+YS87If1ro+mdhpOO8G4JsaVlqyZZsBq6TZk8HgY43ONjPtgkq+UJhkIrzeLKXMOfAOyMFuwEWmqZPBijmfKJS83LcSezRjsMqeAlqP82MX+7yRxBzD34M1/dFzLfL5Dc3Gh6ueFDykI1gFy+Y1pejXEt/18G/l50d/dn5hZ08o4fJvHHikFEgMvPsa0XJXJ3Kbm/rUjfX+9Zu5w8/Pq7s73z8969vROrqeJoxUC7HIJQPM01zWSrUAjpaOsCnMZkLoIrZN8vtYtIvYRyUWJEZT6oO96mh5SpGS0wlUr/Nvn+MnJCXI+XZsp5qozvBDwBmuHb38/IYGKXPLOhKEJCJiLeUvzuEeXWOeBgrd1HdGoRMZ3N9PtPPjaOFlmsBdCuYYLfc1gp1NTBXLRGn+jX6fuI9qHw1IEwWVDTqerEoFpTd49Loqvo5QXqrj/D37GVwMC+YyXN6WRDaqCn2V2z91LlczypnD7jyPveXLfubfaN9yefz78fHPzK5spF82dltu8B66eYq1+Xtzpd60TD+EGisAiQu1LcQT4Rs4a8rHIiNL27KNcjPOx6n+KmSltld/pnbS+xtZgqhs5pIu3kb3wIyIpJ9J3lA6nC8BoAe7LyGO5GUJrz/UunwDIxX6N0FXWhw0/fd/KRk12sLcg1Al8nVaYnCpAYtAHzsVapUiE3HVPwliK2w6gBM/m+H3MaRQVyjXQ3JS0QMtFd3m/kHvJPoxnAOpHXkTfaCFT/9CH6pnxH+dBQV7Trjn2ceqpWcXTPR1ZTKmho/TcoRKryYl+pm8GzJrzod7kZHDZKx0E6MoWDwsPeVLyCjmxiIyNzJl7XsaMXf6pZDFaSMdZc8pnOP37qtDvBswWgl0RfDg2AAtmdrhneK6lx3nxFRNOvDsxszQZE0VifJ+tHeVFgi7ruCUjCef+2mwY0t6JhTH9DsXC0cC286uxlaSY+Q1bkBk1VmuKRSF3xhv5wGFbdhbjaEuKHmoMo0yDhh9Zrk2uNA1hwtMN6+hYFH9/mUlZKM9gWt/lSz7GTkpOIpLVJao1jKCVeVKXY+ZbpR5K7VzIeUQ9gHA9kCqe7VSGZmIBwKG4aEijvgs8Bsia/iU/YYqBbA3Bk+2w3eYDhQVkuFcOUyQsogR9T3ur5q18MCw2zXfGbGPnHg2U3e4D1mN61d18HkkkKSqbZTatH43kSyGw5H+WK7wHpJ0LCCbvlVI3UB+3aOdOVnJ6XWAOqoSW1MZT3KGhzfpNPzgXCQC9lzGmHiQ2VPAwFKCN4ubkyu8h2ne4dPpXKFC8Dd9/WZScu2RsqRpKvQmg1G6D1+CLdCUpnXp2brY3RSkVSYvgKRshSII0jhi+w7wGnHNLCdDOivMAo4aEECG1CTYJx4kuBBr5ovA5wQzdX2Z4POafoa5bKvQSw3GBlUzvE2Z7YqXDor96Mu1tKIClq1WiR1Pm68LKijd0unVqFhYvVPJBHUxhL8QeA3HfGELVbOnwfy2hiS6/79s3V8WUWaFu43IY7GO2mFbniY5vavKnpq0VfZLP6xXphnN/BaBIKiNP9qGc05GvvgdBu5MfwqT/lFmqrVFmSb+sXpA2OCC2bSEZ9TeZvvRmuCcIr5TuRSJM+DIOgepfDjQQDPWXzmPgLiQtqoAFhgu2Tcj4jpydz8DL5XfK4Pz5S3mZAV/zcl17xh0Lmr6HB6acLdUJfSD4KhyYSN9nC2zRj2gNEmNtSMEjuTAiBP3/aXDlEpDIWnNxK6sF9ZPTct3V/azxps/jn71Unc/yV5jPUXtv2jUQ6X4AhRlLeTBFFK34ZKkqkXCZ8D7Q4f1zKNEHgdVhK3/T3DLF9EUCqAtCnNw5ui6waos1Mm4Jo2h7FJj8oj3LW8AKXnu01gkGgwYLXp/NOVXR+fn5ez46u76HSxOo4aw7FSFHxMxGJDVaXsjkxq9rjEPkRBI4fkoIbll4WaKbawKegCoWTNAyPAvXycSqDEKgriJyEoDk2Y1MwV5z2Dva1L1bFEKQ1h2tjCrARtuF7diBXxLT/LbooeopdDdZnYNm0xpPFDqkQj3tpzpZ57B65RyPft6nz7vJGyIE5kdqR5g6Kqfj1JKtTvytJkoNhV/I2OlC0JL5sa5FYOt76OgBCWiIbQfOy9SmLCG+HsQjL1TSaO3DuEXXdUYR9/pHido6Czg88VOm7CRzDSJSXBhgtbc84M+5pFJdODraLUyT3vuiw4YKIGbeYE3TvCg4V3XTlORphQ0UCMWdTnCzWlqDhaIeUyziMgzIt/gFwKM6YmrePDK+ul2Zu8b/vVP/Jf++Ynolz/89ftRYTz+9U987v9fpz8rg+RXlmAPGKUEqcQtBD93PggrVSnlfE5TjEJUhpk+F0Ovx/uXyqxKf/39Jvl0rL8CTUcQUaQHxxKnrfqcjGL9x4Vn8dWuz/K6efumTcSZ11B5KxCbyJ3PYH/uN+VUQiWBP/5PxfZb0wkbJhBEdoMzNAo+T1Nqct5J9zGpM3d91AcATKWNJFiWfnOdCo8L8UFKy6rFLnh0ocIyOFcnVhVNvc9V0sH0dbMQy1jxhbxdsxKoU1HMGWsIeROCTgdYGCEre1Gs8uyQQfnMribUWBvIk3g28GzYpdL0VHM6VZyJKSgj+g1PnKKHgHlXzdTjCNXaTCjVNDCjpZFhu9TIoOdc59iOigYDH8awxPnZeUgSrXHX4ua0L8qyLDr8fdY/0eflnd2H86vHP6dfTmeX94JCwNnAhTkHO0muCAf4wpqnI5F4iPhkDPCpWOLGIxaKZJ4WTL04mq29sjGhKEGUbf/m3/qLfpnh6qD+5BwRIdVWHil6rdePHIBjyNJP2WMQRP+8O7oYvs3xDZq4GDnsIcZUJG29gUvucFkPUvYRi6y3Ds7cWi7e9w6RxKCWI/kvVPxmCpZdP10ZL9Yfjys4+qhtBqpbBnlxfajI8yv+fi9uxs1vJd/3BGeM1UJsOpJRU2lpQcecs0A2brtjAfkh9ERWsNPQdqmGuKfk1adBIgBdEzMNzi+XhaIiVPwIofjyzuM6sY9xvHprX0RaN5u3I+opDyMHUVT1XLeqjYDCSzEEydycySPf9SsWoRfFpItfiTJ/AhtayIU02HeLjapjtRPsiRUxE+A0d4WsxUl+eUr+BjJpWHoaDumHdaQoqYlhb3ISi9b74IhR4V+OlFxz8J4UE4/uuWwc6e0rRrZEoeDWe4S7goFV1FcVpvKa7leMzsp6zxbK4xDcZtdKx7i0fNrZ5VbN4TqWsw0JCyHFbTaO8hIxajokUxEfHoLBYOiQxHsqalQaVbHulLta3Hwusllq1DCv/o8Wt+WdEFzYvkSuYItKfOHF+V6PMi16nY7j5uCGCxgQVYjDNVaFLKn7vn3chgy5CIvoLlKiBkHFgoFNZdRKCPYzbEbGSUf7kJdEYuBMuVOwbuLqdVM+GUhzBsGGhoCPkbGSpSu9rIq0p+uQc+SaQ2Qb3dLPupPGth4Pu9InWXBaYTcwDCoz27XBkpQRv+M/wj6sI84h97PRxpy9bPdyL2hUSQsKDliXNpIZhMFPhO33srHg12X7RrWtvk53R3fjx7OzRPyEKioikGAUlDq/+nXfveJB85CgswMpseZ7taY1HmJIadQVIEOuFyQwjiWE1JNbXtMmZiM02o5S3iIF6VT/gBt+woGiNVCbnNCSWcjRqPfBPcfqlxwAnEBo7MUFa+m9daLnz2qkR0yVqTfWUEwva+StNyVkECKaaTkuOxNpZoN2MVoVkVoAjNLStdyXAOuJLWaLUfkBi1EO1qy6GGQVryiDu93smvtoZPxNWUQLkuTI4jGj7oGju3naS0hJ0NShzZCpV4gM/2kJZLpoOee3XXaIl4fzOE8ZWXhWUhIrqYRz5kEeONQMoa5eejhLNuJQTcTAjJA2a8XpBgVSdWTdCUbEuqBHv7FF/Nltx1WzAIo/WoW/76xcj7cWBf8GPvlAfBCZS7gaHPo5YqvD/xmLVNP7wBFgaWEIkCuziwcTpOe3gU65Vv7/2X8O7YeJ9/Yxw0ptMH9+zhxwMGFPAd6KRuGPiXVzCkpWdSu+hGPVW5tLc6wxWwE6wrrNykM4KWwdvpSm5gVSdmUiLyGiZaiq5UTx/nqngRfRaPBfsxAf/IiRi5ui1h4n88uEInEadDdhPsZHPzU9vZSvtQorE4DiTn4IcCYhbwNrCEVltxGUPxWsuoLKApYIRKHSItqSsu+ETZp1/HEgdNyTk2zjuYl9cHq5XoDMGaZVT0f4WqksnRfC7FV7O6IbSdaV95Ua/2zB50WfOXjHkEOp/vkJ5bcGDOnCmU2RClLQmoTW/jopM6mPy9zCAhdDgwDhD9OYeRSol+woWqheIFwu8Qq3DkgmyxoQhc/LeWXL6gH7xiK3Q2OPx/RbMzcUL9sE5t/A+z3moWPB359uPwf5p0mHf2y/1n57wfJV1+XdDhIrGpdmL972J98ZfYKnPfpE7F5Tu8AeFwXO/Fo6Au4k2V5M6t/eH999e3F7erKxfPX5vvzc/e2vx8IrBPGAPJWn3t88m/wF30KZBfhIAAA='
+          raw = gzip.decompress(base64.b64decode(payload))
+          actual = hashlib.sha256(raw).hexdigest()
+          expected = 'fe15262a747dc7bfadf5f5b6c2a450f74624dec4e6923978657568888f3e3124'
+          if actual != expected:
+              raise SystemExit('CLOSURE_APPLICATOR_DIGEST_MISMATCH:' + actual)
+          target = Path('/tmp/caext_closure_apply.py')
+          target.write_bytes(raw)
+          print('CLOSURE_APPLICATOR_SHA256=' + actual)
+          PY
+          python -m py_compile /tmp/caext_closure_apply.py
 
       - name: Apply evidence-only closure
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          from __future__ import annotations
-          import json, re
-          from datetime import datetime, timezone
-          from pathlib import Path
-
-          ROOT = Path(".")
-          README = ROOT / "tools/code-atlas/README.md"
-          WOW_MD = ROOT / "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md"
-          WOW_JSON = ROOT / "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
-          LEDGER = ROOT / "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json"
-          EVIDENCE = ROOT / "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
-          MANUAL = ROOT / "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
-
-          MERGE = "caf918694c1c397d19a61bff217800d027a384e3"
-          FIX_MESH_RUN = 31866829102
-          FIX_MESH_ARTIFACT = 9242284746
-          TARGETED_ARTIFACT = 9242394010
-          FULL_RUN = 31867491454
-          FULL_ARTIFACT = 9242450935
-          CLOSURE_MESH_RUN = 31867706125
-          CLOSURE_MESH_ARTIFACT = 9242519545
-          CLOSURE_MESH_DIGEST = "sha256:1f73190bd9213fdac786001d0d5a8c89050e1d73c9f029ea514244ea8721d9ae"
-          UPDATED = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
-
-          def write_text(path: Path, text: str) -> None:
-              path.write_text(text.rstrip() + "\n", encoding="utf-8")
-
-          def write_json(path: Path, data) -> None:
-              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-          def unique(values):
-              return list(dict.fromkeys(values))
-
-          readme = README.read_text(encoding="utf-8")
-          replacement = f'''## Current evidence status
-
-Current governed state: **`LOCAL_VERIFIED`**.
-
-The Universal Intelligence + Customer Wow binding remains the canonical implementation and the Factory Ledger continues to preserve it as `doNotRebuild=true`. PR #275 hardened that implementation after a real external falsification gate and merged the source fix into `main` as `{MERGE}`.
-
-External evidence is now **limited but real**: the neutral/default profile was replayed read-only against pinned unrelated repositories **Click (Python), Vite (TypeScript/Node monorepo), and ripgrep (Rust)**. The post-fix full replay completed **30/30 declared scenarios**, **3/3 repeatability**, read-only compliance, and zero critical behavior failures after manual adjudication of legacy harness reporting. The hardened source also passed **140 Code Atlas tests** and **6/6 PR CI workflows**.
-
-The evidence specifically supports fail-closed undeclared dirty-worktree detection, evidence-bearing Rust source targets with bounded repository-provable Rust dependencies, and normalized JS/TS parent-relative dependency resolution. It does **not** establish correctness for arbitrary repositories or stacks.
-
-The next evidence gate is **broader repository/stack diversity, independent second-machine repeatability, and hosted/security boundary evidence**. Current evidence does **not** certify hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification.
-
-`certifiable=false` and `productionCertified=false` remain invariant until separate evidence-backed gates prove otherwise.
-
-## Architecture'''
-          pattern = re.compile(r"## Current evidence status\n.*?\n## Architecture", re.S)
-          if len(pattern.findall(readme)) != 1:
-              raise SystemExit("README_EVIDENCE_SECTION_ANCHOR_MISMATCH")
-          readme = pattern.sub(replacement, readme, count=1)
-          write_text(README, readme)
-
-          wow = WOW_MD.read_text(encoding="utf-8")
-          old_status = "Status: `UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED_EXTERNAL_REPO_EVIDENCE_PENDING`"
-          if wow.count(old_status) != 1:
-              raise SystemExit("WOW_STATUS_ANCHOR_MISMATCH")
-          wow = wow.replace(old_status, "Status: `UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED`\n\nExternal evidence status: `LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS`", 1)
-          marker = "## External falsification evidence after PR #275"
-          if marker not in wow:
-              anchor = "- Universal Intelligence PR #270 merge commit `83a83bf50691e866d31465993d7145e033fb2cc0`\n"
-              if wow.count(anchor) != 1:
-                  raise SystemExit("WOW_AUTHORITY_ANCHOR_MISMATCH")
-              block = f'''
-{marker}
-
-Source hardening was driven by external evidence rather than a rebuild:
-
-- repair Authority Mesh: run `{FIX_MESH_RUN}` on the pre-fix governed baseline;
-- source repair: PR #275, merged to `main` as `{MERGE}`;
-- targeted post-fix external evidence artifact: `{TARGETED_ARTIFACT}`;
-- full post-fix external replay: workflow run `{FULL_RUN}`, artifact `{FULL_ARTIFACT}`;
-- external corpus: pinned Click, Vite and ripgrep repositories under the neutral/default profile;
-- result: `30/30` declared full-gate scenarios behaved as expected after fix, `3/3` repeatability, read-only compliance;
-- source regression suite: `140` Code Atlas tests PASS;
-- PR #275 repository CI: `6/6` workflows PASS;
-- closure Authority Mesh: run `{CLOSURE_MESH_RUN}`, artifact `{CLOSURE_MESH_ARTIFACT}`, digest `{CLOSURE_MESH_DIGEST}`.
-
-Proven hardening includes independent Git-worktree reconciliation in Verify, Rust source evidence plus bounded repository-provable Rust dependency edges, normalized JS/TS parent-relative imports, and more explicit architecture coverage/provenance.
-
-Legacy harness outputs required manual adjudication: case-insensitive `NDC` matched inside source-derived `tailwindcss`, and the legacy matrix read Change Impact size from the DISCOVER graph rather than the prepared change model. Those instrumentation defects are not promoted to Code Atlas product failures.
-
-This is **limited external falsification evidence**, not an arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification.
-'''
-              wow = wow.replace(anchor, anchor + block, 1)
-          wow = wow.replace(
-              "The next gate is execution against unrelated external repositories.",
-              "The next gate is broader repository/stack diversity, independent second-machine repeatability, and hosted/security boundary evidence."
-          )
-          if "EXTERNAL_REPO_EVIDENCE_PENDING" in wow:
-              raise SystemExit("WOW_STALE_EXTERNAL_PENDING_REMAINS")
-          write_text(WOW_MD, wow)
-
-          contract = json.loads(WOW_JSON.read_text(encoding="utf-8"))
-          if contract.get("certifiable") is not False or contract.get("productionCertified") is not False:
-              raise SystemExit("WOW_CERTIFICATION_INVARIANT_BROKEN_PRE")
-          contract["status"] = "UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED"
-          contract["externalEvidence"] = {
-              "status": "LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS",
-              "sourceRepairPr": 275,
-              "sourceRepairMergeCommit": MERGE,
-              "repairAuthorityMeshRunId": FIX_MESH_RUN,
-              "repairAuthorityMeshArtifactId": FIX_MESH_ARTIFACT,
-              "targetedExternalArtifactId": TARGETED_ARTIFACT,
-              "fullReplayRunId": FULL_RUN,
-              "fullReplayArtifactId": FULL_ARTIFACT,
-              "closureAuthorityMeshRunId": CLOSURE_MESH_RUN,
-              "closureAuthorityMeshArtifactId": CLOSURE_MESH_ARTIFACT,
-              "closureAuthorityMeshDigest": CLOSURE_MESH_DIGEST,
-              "repositories": [
-                  {"name": "pallets/click", "stack": "Python library/CLI"},
-                  {"name": "vitejs/vite", "stack": "TypeScript/Node monorepo"},
-                  {"name": "BurntSushi/ripgrep", "stack": "Rust workspace/CLI"}
-              ],
-              "declaredScenarioResult": "30/30",
-              "repeatability": "3/3",
-              "readOnlyCompliance": True,
-              "prCiResult": "6/6",
-              "regressionTestCount": 140,
-              "regressionTestResult": "PASS",
-              "provenHardening": [
-                  "undeclared dirty worktree mutation blocks Verify independently of caller manifest",
-                  "legitimate explicitly declared in-scope dirty target remains verifiable",
-                  "recognized Rust source receives physical and semantic evidence",
-                  "Rust dependency graph resolves only repository-provable bounded module relationships",
-                  "JS/TS parent-relative imports normalize before graph matching",
-                  "architecture coverage and provenance are reported without granting authorization"
-              ],
-              "manualAdjudications": [
-                  "legacy case-insensitive NDC leak scan false-positive inside source-derived tailwindcss names",
-                  "legacy matrix changeImpactSize read from DISCOVER graph instead of prepared change model"
-              ],
-              "certifiesArbitraryRepositories": False
-          }
-          neg = list(contract.get("negativeTestsCovered") or [])
-          for item in [
-              "undeclared staged unstaged or untracked worktree mutation",
-              "dirty baseline cannot issue a fresh authority pack"
-          ]:
-              if item not in neg:
-                  neg.append(item)
-          contract["negativeTestsCovered"] = neg
-          ver = contract.setdefault("verification", {})
-          ver["operationalTestCount"] = 140
-          ver["operationalTestResult"] = "PASS"
-          ver["externalRepositoryFalsification"] = "LIMITED_PASS_3_PINNED_REPOS"
-          ver["externalDeclaredScenarios"] = "30/30"
-          ver["externalRepeatability"] = "3/3"
-          ver["externalReadOnlyCompliance"] = "PASS"
-          contract["doesNotProve"] = [
-              "correctness beyond the three tested pinned repositories or across arbitrary real external repositories or stacks",
-              "production runtime readiness",
-              "hosted multi-tenant isolation",
-              "enterprise IAM or security certification",
-              "customer data-egress certification beyond the runner contract",
-              "paid-pilot readiness by itself",
-              "legal or privacy compliance",
-              "production certification"
-          ]
-          contract["nextGate"] = (
-              "Expand read-only falsification to broader repository and stack diversity, repeat on an independent "
-              "second machine/environment, and separately prove hosted/security boundaries as required. Do not "
-              "rebuild the Universal Core or Customer Wow unless new evidence identifies a concrete defect."
-          )
-          if contract.get("certifiable") is not False or contract.get("productionCertified") is not False:
-              raise SystemExit("WOW_CERTIFICATION_INVARIANT_BROKEN_POST")
-          write_json(WOW_JSON, contract)
-
-          ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
-          caps = ledger.get("capabilities")
-          if not isinstance(caps, list):
-              raise SystemExit("LEDGER_CAPABILITIES_MISSING")
-          matches = [c for c in caps if c.get("id") == "code_atlas.change_intelligence.customer_wow_v1"]
-          if len(matches) != 1:
-              raise SystemExit("LEDGER_CAPABILITY_CARDINALITY")
-          cap = matches[0]
-          if cap.get("doNotRebuild") is not True:
-              raise SystemExit("LEDGER_DONOTREBUILD_INVARIANT")
-          if cap.get("status") != "LOCAL_VERIFIED":
-              raise SystemExit("LEDGER_STATUS_VOCABULARY_DRIFT")
-          cap["stateLabel"] = "PASS_EXTERNAL_FALSIFICATION_HARDENED_3_REPOS_LOCAL_VERIFIED"
-          cap["nextGate"] = (
-              "Broaden external repository/stack diversity, repeat the same falsification gate on an independent "
-              "second machine/environment, then pursue hosted/security evidence only where required. Do not rebuild "
-              "Universal Intelligence or Customer Wow."
-          )
-          cap["evidence"] = unique(list(cap.get("evidence") or []) + [
-              "PR #275 merge " + MERGE,
-              "Authority Mesh run 31866829102",
-              "targeted external artifact 9242394010",
-              "post-fix full external run 31867491454 artifact 9242450935",
-              "140 Code Atlas tests PASS",
-              "PR #275 CI 6/6 PASS",
-              "closure Authority Mesh run 31867706125 artifact 9242519545"
-          ])
-          cap["doesNotProve"] = [
-              "Correct behavior beyond the three tested pinned external repositories or across arbitrary stacks",
-              "Production runtime readiness",
-              "Hosted multi-tenant isolation",
-              "Enterprise IAM or security certification",
-              "Customer data-egress certification beyond the runner contract",
-              "Paid-pilot readiness by itself",
-              "Legal or privacy compliance",
-              "Production certification"
-          ]
-          if isinstance(cap.get("allowedActions"), list):
-              cap["allowedActions"] = unique(cap["allowedActions"] + [
-                  "broader read-only external falsification",
-                  "independent second-machine repeatability verification"
-              ])
-          if "updatedAt" in ledger:
-              ledger["updatedAt"] = UPDATED
-          write_json(LEDGER, ledger)
-
-          evid = json.loads(EVIDENCE.read_text(encoding="utf-8"))
-          artifacts = evid.get("artifacts")
-          if not isinstance(artifacts, list):
-              raise SystemExit("EVIDENCE_ARTIFACTS_MISSING")
-          artifact_name = "PR #275 Code Atlas external falsification hardening"
-          record = {
-              "artifact": artifact_name,
-              "type": "code_atlas_external_falsification_hardening",
-              "scope": ["code_atlas", "change_intelligence", "external_evidence", "governance"],
-              "status": "PASS_EXTERNAL_FALSIFICATION_LIMITED",
-              "proves": [
-                  "Code Atlas source was hardened from concrete external falsification defects without rebuilding Universal Intelligence or Customer Wow",
-                  "PR #275 merged as " + MERGE + " with 6/6 repository CI workflows passing",
-                  "140 Code Atlas tests passed after the source repair",
-                  "Full post-fix read-only replay against pinned Click, Vite and ripgrep produced 30/30 declared scenario behavior and 3/3 repeatability",
-                  "Verify blocks undeclared dirty-worktree mutations while preserving declared in-scope changes",
-                  "Rust source evidence and bounded repository-provable dependency relationships are available",
-                  "Vite parent-relative JS/TS import evidence is recovered into static dependency/change-impact analysis"
-              ],
-              "doesNotProve": [
-                  "Correctness across arbitrary external repositories or every technology stack",
-                  "Production runtime readiness",
-                  "Hosted multi-tenant isolation",
-                  "Enterprise IAM/security certification",
-                  "Legal/privacy compliance",
-                  "Absolute repository universality"
-              ],
-              "evidence": [
-                  "repair Authority Mesh run 31866829102",
-                  "targeted artifact 9242394010",
-                  "full replay run 31867491454 artifact 9242450935",
-                  "closure Authority Mesh run 31867706125 artifact 9242519545"
-              ]
-          }
-          replaced = False
-          for i, old in enumerate(artifacts):
-              if isinstance(old, dict) and old.get("artifact") == artifact_name:
-                  artifacts[i] = record
-                  replaced = True
-                  break
-          if not replaced:
-              artifacts.append(record)
-          entries = evid.get("entries")
-          if isinstance(entries, list):
-              run_id = "PR275_CODE_ATLAS_EXTERNAL_FALSIFICATION_HARDENING"
-              new_entry = {
-                  "capabilityId": "code_atlas.change_intelligence.customer_wow_v1",
-                  "status": "LOCAL_VERIFIED",
-                  "runId": run_id,
-                  "evidence": [
-                      "PR #275",
-                      MERGE,
-                      "31867491454/9242450935",
-                      "31867706125/9242519545"
-                  ]
-              }
-              for i, old in enumerate(entries):
-                  if isinstance(old, dict) and old.get("runId") == run_id:
-                      entries[i] = new_entry
-                      break
-              else:
-                  entries.append(new_entry)
-          if "updatedAt" in evid:
-              evid["updatedAt"] = UPDATED
-          write_json(EVIDENCE, evid)
-
-          manual = MANUAL.read_text(encoding="utf-8")
-          heading = "### 2026-08-14/15 - Code Atlas: falsificación externa real antes de ampliar claims"
-          if heading not in manual:
-              entry = f'''
----
-
-{heading}
-
-**Tipo:** EVIDENCE_LEARNING / GOVERNANCE_LEARNING / GOTCHA
-**Superficie:** Tooling / Code Atlas / Governance
-**Contexto:** Se ejecutó el primer gate externo serio de Code Atlas contra repositorios ajenos a PRISMA: `pallets/click`, `vitejs/vite` y `BurntSushi/ripgrep`, siempre con perfil neutral/default y originales read-only.
-**Resultado observado:** FAIL útil inicial → FIX gobernado → PASS externo limitado.
-**Evidencia:** Authority Mesh de reparación `31866829102`; PR #275; merge `{MERGE}`; artifact focal `9242394010`; replay completo `31867491454` / `9242450935`; 140 tests Code Atlas PASS; CI PR 6/6; Authority Mesh de cierre `31867706125` / `9242519545`.
-**Defectos de source demostrados:** Verify podía aceptar un worktree dirty oculto si el caller lo omitía del manifest; `.rs` se reconocía como Rust pero no recibía evidencia textual coherente; imports JS/TS con `..` podían perder dependencias directas; Rust no tenía relaciones de dependencia repository-provable; Architecture Layer Graph tenía cobertura externa débil.
-**Corrección:** reconciliar Git real contra manifest antes de Verify; alinear source suffixes reconocidos con evidencia segura; normalizar rutas relativas JS/TS; resolver Rust sólo con relaciones acotadas demostrables (`mod`, `#[path]`, `crate/self/super`); reportar arquitectura/cobertura con provenance y sin convertir impacto en autorización.
-**Harness / tooling que NO debe confundirse con fallo del producto:** el scan legacy de leakage encontró `NDC` dentro de `tailwindcss`; la matriz legacy leyó `changeImpactSize` desde el grafo DISCOVER en lugar del change model PREPARE; un workflow temporal usó un scope guard contra HEAD transitorio; el gateway Remote AutoMesh exige Base64 URL-safe sin padding.
-**Comando de regresión confirmado:**
-
-```bash
-PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/tests -p 'test_*.py' -v
-```
-
-**Rollback probado:** N/A sobre producto. El FIX se trabajó en rama gobernada y no se mergeó hasta 140 tests, replay externo y CI; los repos externos originales permanecieron read-only.
-**Regla nueva:** Un verde externo no se promociona sólo porque el proceso terminó en cero. Separar `PRODUCT FAILURE` de `HARNESS FAILURE`, adjudicar manualmente métricas/leak scans sospechosos contra provenance física, y después de cualquier FIX repetir exactamente el mismo gate adversarial antes de ampliar claims.
-**Límite:** Este aprendizaje prueba sólo el corpus externo y condiciones declaradas. No prueba universalidad absoluta, producción, enterprise, hosted multi-tenant ni cumplimiento legal/privacidad/IAM.
-'''
-              manual += entry
-          write_text(MANUAL, manual)
-
-          final_contract = json.loads(WOW_JSON.read_text(encoding="utf-8"))
-          final_ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
-          final_evidence = json.loads(EVIDENCE.read_text(encoding="utf-8"))
-          final_cap = next(c for c in final_ledger["capabilities"] if c.get("id") == "code_atlas.change_intelligence.customer_wow_v1")
-          assert final_contract["certifiable"] is False
-          assert final_contract["productionCertified"] is False
-          assert final_contract["status"] == "UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED"
-          assert final_cap["status"] == "LOCAL_VERIFIED"
-          assert final_cap["doNotRebuild"] is True
-          assert any(a.get("artifact") == artifact_name for a in final_evidence["artifacts"])
-          assert "EXTERNAL_REPO_EVIDENCE_PENDING" not in WOW_MD.read_text(encoding="utf-8")
-          assert "The next evidence gate is execution against **unrelated external repositories**" not in README.read_text(encoding="utf-8")
-          print("PASS_CAEXT_EVIDENCE_CLOSURE_APPLIED")
-          PY
+          python /tmp/caext_closure_apply.py
           python -m json.tool tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json >/dev/null
           python -m json.tool "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" >/dev/null
           python -m json.tool "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json" >/dev/null
@@ -378,8 +64,7 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
         shell: bash
         run: |
           set -euo pipefail
-          PYTHONPATH="$GITHUB_WORKSPACE/tools/code-atlas/src" \
-            python -m unittest discover -s tools/code-atlas/tests -p 'test_*.py' -q
+          PYTHONPATH="$GITHUB_WORKSPACE/tools/code-atlas/src"             python -m unittest discover -s tools/code-atlas/tests -p 'test_*.py' -q
 
       - name: Enforce effective closure scope
         shell: bash
