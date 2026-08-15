@@ -287,23 +287,138 @@ def parse_imports(text: str) -> list[str]:
     return found
 
 
-def resolve_import(source: Path, spec: str, root: Path) -> Path | None:
-    if not spec.startswith("."):
-        return None
-    base = (source.parent / spec).resolve()
-    candidates = [base]
-    for ext in SOURCE_EXTS | STYLE_EXTS | {".json"}:
-        candidates.append(Path(str(base) + ext))
-    for ext in SOURCE_EXTS | STYLE_EXTS:
-        candidates.append(base / ("index" + ext))
+RESOLUTION_EXTS = (
+    ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte",
+    ".json", ".css", ".scss", ".sass", ".less",
+)
+
+
+def load_tsconfig_path_aliases(root: Path) -> list[dict[str, Any]]:
+    """Load deterministic path aliases for source reachability only.
+
+    Alias targets are always confined to the current runtime root. A path alias
+    may prove that a file is reachable; it never grants ownership or visual
+    authority by itself.
+    """
+    config = next(
+        (candidate for candidate in (root / "tsconfig.json", root / "jsconfig.json") if candidate.is_file()),
+        None,
+    )
+    if config is None:
+        return []
+    try:
+        payload = json.loads(read_text(config))
+    except Exception:
+        return []
+    compiler = payload.get("compilerOptions") or {}
+    paths = compiler.get("paths") or {}
+    if not isinstance(paths, dict):
+        return []
+    base_dir = (config.parent / str(compiler.get("baseUrl") or ".")).resolve()
+    rules: list[dict[str, Any]] = []
+    for pattern, raw_targets in paths.items():
+        if not isinstance(pattern, str) or pattern.count("*") > 1:
+            continue
+        targets = raw_targets if isinstance(raw_targets, list) else [raw_targets]
+        targets = [str(value) for value in targets if isinstance(value, str) and value.strip()]
+        if not targets:
+            continue
+        if "*" in pattern:
+            prefix, suffix = pattern.split("*", 1)
+            exact = False
+        else:
+            prefix, suffix, exact = pattern, "", True
+        rules.append({
+            "pattern": pattern,
+            "prefix": prefix,
+            "suffix": suffix,
+            "exact": exact,
+            "targets": targets,
+            "baseDir": base_dir,
+        })
+    return sorted(
+        rules,
+        key=lambda row: (
+            -int(bool(row["exact"])),
+            -len(str(row["prefix"])),
+            -len(str(row["suffix"])),
+            str(row["pattern"]),
+        ),
+    )
+
+
+def _resolve_file_base(base: Path, root: Path) -> Path | None:
+    root_resolved = root.resolve()
+    candidates = [base.resolve()]
+    candidates.extend(Path(str(base) + ext).resolve() for ext in RESOLUTION_EXTS)
+    candidates.extend((base / ("index" + ext)).resolve() for ext in RESOLUTION_EXTS)
+    seen: set[Path] = set()
     for candidate in candidates:
+        if candidate in seen:
+            continue
+        seen.add(candidate)
         try:
-            candidate.relative_to(root.resolve())
+            candidate.relative_to(root_resolved)
         except Exception:
             continue
         if candidate.exists() and candidate.is_file():
             return candidate
     return None
+
+
+def _alias_match(rule: dict[str, Any], spec: str) -> str | None:
+    pattern = str(rule["pattern"])
+    if rule["exact"]:
+        return "" if spec == pattern else None
+    prefix = str(rule["prefix"])
+    suffix = str(rule["suffix"])
+    if not spec.startswith(prefix) or (suffix and not spec.endswith(suffix)):
+        return None
+    end = len(spec) - len(suffix) if suffix else len(spec)
+    if end < len(prefix):
+        return None
+    return spec[len(prefix):end]
+
+
+def resolve_import(
+    source: Path,
+    spec: str,
+    root: Path,
+    alias_rules: list[dict[str, Any]] | None = None,
+) -> Path | None:
+    if spec.startswith("."):
+        return _resolve_file_base((source.parent / spec).resolve(), root)
+
+    rules = alias_rules if alias_rules is not None else load_tsconfig_path_aliases(root)
+    matches: list[tuple[tuple[int, int, int], dict[str, Any], str]] = []
+    for rule in rules:
+        wildcard = _alias_match(rule, spec)
+        if wildcard is None:
+            continue
+        score = (
+            int(bool(rule["exact"])),
+            len(str(rule["prefix"])),
+            len(str(rule["suffix"])),
+        )
+        matches.append((score, rule, wildcard))
+    if not matches:
+        return None
+
+    best_score = max(score for score, _, _ in matches)
+    best = [(rule, wildcard) for score, rule, wildcard in matches if score == best_score]
+    resolved: set[Path] = set()
+    for rule, wildcard in sorted(best, key=lambda item: str(item[0]["pattern"])):
+        chosen: Path | None = None
+        for target_pattern in rule["targets"]:
+            if target_pattern.count("*") > 1:
+                continue
+            substituted = target_pattern.replace("*", wildcard) if "*" in target_pattern else target_pattern
+            chosen = _resolve_file_base((Path(rule["baseDir"]) / substituted).resolve(), root)
+            if chosen is not None:
+                break
+        if chosen is not None:
+            resolved.add(chosen.resolve())
+    return next(iter(resolved)) if len(resolved) == 1 else None
 
 
 def discover_routes(runtime_alias: str, root: Path, product_root: Path, hashes: dict[Path, str]) -> list[RouteRecord]:
@@ -329,6 +444,7 @@ def discover_routes(runtime_alias: str, root: Path, product_root: Path, hashes: 
 
 
 def build_route_reachability(root: Path, product_root: Path, routes: list[RouteRecord]) -> dict[str, list[RouteRecord]]:
+    alias_rules = load_tsconfig_path_aliases(root)
     rel_to_path: dict[str, Path] = {}
     for path in iter_files(root, SOURCE_EXTS | STYLE_EXTS | {".json"}):
         rel_to_path[norm_rel(product_root, path)] = path
@@ -350,7 +466,7 @@ def build_route_reachability(root: Path, product_root: Path, routes: list[RouteR
                 reach.setdefault(rel, []).append(route)
             text = read_text(current)
             for spec in parse_imports(text):
-                target = resolve_import(current, spec, root)
+                target = resolve_import(current, spec, root, alias_rules)
                 if target is not None and target.resolve() not in visited:
                     queue.append(target)
     for rel in list(reach):
@@ -582,6 +698,45 @@ def repeated_by_data(text: str, position: int) -> bool:
     return bool(re.search(r"\.(?:map|flatMap)\s*\(", window) or re.search(r"for\s*\(", window))
 
 
+def _candidate_routes(
+    runtime_alias: str,
+    rel: str,
+    source_hash: str,
+    routes_for_file: list[RouteRecord],
+) -> list[RouteRecord]:
+    if not routes_for_file:
+        return [RouteRecord(
+            runtime_alias=runtime_alias,
+            route_id=stable_id("ROUTE", runtime_alias, "unrouted"),
+            route_path="/",
+            source_file=rel,
+            source_hash=source_hash,
+            kind="unrouted",
+        )]
+
+    kind_priority = {
+        "page": 0, "screen": 0, "layout": 1, "template": 2,
+        "loading": 3, "error_boundary": 4, "global_error_boundary": 5,
+        "not_found_boundary": 6, "parallel_route_default": 7, "api_route": 8,
+    }
+    ordered = sorted(
+        routes_for_file,
+        key=lambda route: (
+            route.route_path,
+            route.route_id,
+            kind_priority.get(route.kind, 50),
+            route.source_file,
+        ),
+    )
+    by_identity: dict[tuple[str, str], RouteRecord] = {}
+    for route in ordered:
+        by_identity.setdefault((route.route_id, route.route_path), route)
+    return [
+        by_identity[key]
+        for key in sorted(by_identity, key=lambda item: (item[1], item[0]))
+    ]
+
+
 def extract_ui_candidates_from_file(
     runtime_alias: str,
     path: Path,
@@ -593,32 +748,56 @@ def extract_ui_candidates_from_file(
     rel = norm_rel(product_root, path)
     symbols = extract_export_symbols(text, path.stem)
     owner_symbol = symbols[0]
-    route = routes_for_file[0] if routes_for_file else RouteRecord(
-        runtime_alias=runtime_alias,
-        route_id=stable_id("ROUTE", runtime_alias, "unrouted"),
-        route_path="/",
-        source_file=rel,
-        source_hash=source_hash,
-        kind="unrouted",
-    )
-    candidates: list[UiCandidate] = []
+    routes = _candidate_routes(runtime_alias, rel, source_hash, routes_for_file)
     tag_pattern = re.compile(r"<([A-Za-z][A-Za-z0-9_.:-]*)(\s[^<>]*?)?\s*/?>", flags=re.MULTILINE | re.DOTALL)
-    for match in tag_pattern.finditer(text):
-        tag = match.group(1)
-        attrs = match.group(2) or ""
-        if tag.lower() in {"fragment", "react.fragment"}:
-            continue
-        classes = extract_class_names(attrs)
-        data_attrs = extract_data_attributes(attrs)
-        is_native_visual = tag.lower() in HTML_WIDGETS
-        is_component = tag[0].isupper()
-        if not classes and not data_attrs and not is_native_visual and not is_component:
-            continue
-        if not classes:
-            classes = [None]
-        for class_name in classes:
-            widget_kind = infer_widget_kind(tag, class_name, owner_symbol, attrs)
-            candidates.append(UiCandidate(
+    tag_matches = list(tag_pattern.finditer(text))
+    style_matches = list(re.finditer(r"styles\.([A-Za-z_][A-Za-z0-9_]*)", text))
+    candidates: list[UiCandidate] = []
+
+    for route in routes:
+        route_candidates: list[UiCandidate] = []
+        for match in tag_matches:
+            tag = match.group(1)
+            attrs = match.group(2) or ""
+            if tag.lower() in {"fragment", "react.fragment"}:
+                continue
+            classes = extract_class_names(attrs)
+            data_attrs = extract_data_attributes(attrs)
+            is_native_visual = tag.lower() in HTML_WIDGETS
+            is_component = tag[0].isupper()
+            if not classes and not data_attrs and not is_native_visual and not is_component:
+                continue
+            if not classes:
+                classes = [None]
+            for class_name in classes:
+                widget_kind = infer_widget_kind(tag, class_name, owner_symbol, attrs)
+                route_candidates.append(UiCandidate(
+                    runtime_alias=runtime_alias,
+                    route_path=route.route_path,
+                    route_id=route.route_id,
+                    route_source_file=route.source_file,
+                    render_source_file=rel,
+                    render_symbol=owner_symbol,
+                    owner_file=rel,
+                    owner_symbol=owner_symbol,
+                    class_name=class_name,
+                    tag_name=tag,
+                    widget_kind=widget_kind,
+                    text_hint=extract_text_hint(attrs),
+                    instance_policy="REPEATED_BY_DATA" if repeated_by_data(text, match.start()) else "SINGLE_OR_STATIC",
+                    data_attributes=data_attrs,
+                    source_hash=source_hash,
+                    generated_projection="generated" in rel.lower() or "/dist/" in f"/{rel.lower()}/",
+                ))
+
+        # Preserve the existing CSS-only fallback semantics per proven route.
+        seen_keys = {(c.class_name, c.tag_name, c.render_source_file) for c in route_candidates}
+        for match in style_matches:
+            class_name = match.group(1)
+            key = (class_name, "styled-slot", rel)
+            if key in seen_keys:
+                continue
+            route_candidates.append(UiCandidate(
                 runtime_alias=runtime_alias,
                 route_path=route.route_path,
                 route_id=route.route_id,
@@ -628,44 +807,27 @@ def extract_ui_candidates_from_file(
                 owner_file=rel,
                 owner_symbol=owner_symbol,
                 class_name=class_name,
-                tag_name=tag,
-                widget_kind=widget_kind,
-                text_hint=extract_text_hint(attrs),
+                tag_name="styled-slot",
+                widget_kind=infer_widget_kind("styled-slot", class_name, owner_symbol),
+                text_hint=class_name,
                 instance_policy="REPEATED_BY_DATA" if repeated_by_data(text, match.start()) else "SINGLE_OR_STATIC",
-                data_attributes=data_attrs,
+                data_attributes={},
                 source_hash=source_hash,
-                generated_projection="generated" in rel.lower() or "/dist/" in f"/{rel.lower()}/",
+                generated_projection="generated" in rel.lower(),
             ))
-    # CSS-only component classes used through helper calls still matter.
-    seen_keys = {(c.class_name, c.tag_name, c.render_source_file) for c in candidates}
-    for match in re.finditer(r"styles\.([A-Za-z_][A-Za-z0-9_]*)", text):
-        class_name = match.group(1)
-        key = (class_name, "styled-slot", rel)
-        if key in seen_keys:
-            continue
-        candidates.append(UiCandidate(
-            runtime_alias=runtime_alias,
-            route_path=route.route_path,
-            route_id=route.route_id,
-            route_source_file=route.source_file,
-            render_source_file=rel,
-            render_symbol=owner_symbol,
-            owner_file=rel,
-            owner_symbol=owner_symbol,
-            class_name=class_name,
-            tag_name="styled-slot",
-            widget_kind=infer_widget_kind("styled-slot", class_name, owner_symbol),
-            text_hint=class_name,
-            instance_policy="REPEATED_BY_DATA" if repeated_by_data(text, match.start()) else "SINGLE_OR_STATIC",
-            data_attributes={},
-            source_hash=source_hash,
-            generated_projection="generated" in rel.lower(),
-        ))
-    dedupe: dict[tuple[str, str, str, str], UiCandidate] = {}
+        candidates.extend(route_candidates)
+
+    dedupe: dict[tuple[str, str, str, str, str], UiCandidate] = {}
     for candidate in candidates:
-        key = (candidate.render_source_file, candidate.class_name or candidate.tag_name, candidate.route_path, candidate.widget_kind)
+        key = (
+            candidate.render_source_file,
+            candidate.class_name or candidate.tag_name,
+            candidate.route_path,
+            candidate.route_id,
+            candidate.widget_kind,
+        )
         dedupe[key] = candidate
-    return [dedupe[k] for k in sorted(dedupe)]
+    return [dedupe[key] for key in sorted(dedupe)]
 
 
 def discover_runtime(
