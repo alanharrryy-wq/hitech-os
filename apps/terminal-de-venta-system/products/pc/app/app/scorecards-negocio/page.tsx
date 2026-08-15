@@ -1,8 +1,5 @@
-import { DecisionScreen } from "@components/uiux/decision-screen";
-import { reportsScreenContract } from "@/uiux/reports-screen-contract";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default async function ScorecardsNegocioPage() {
-  return <DecisionScreen {...reportsScreenContract} currentPath="/scorecards-negocio" />;
+export default function BusinessScorecardsPage() {
+  redirect("/prisma-insights");
 }

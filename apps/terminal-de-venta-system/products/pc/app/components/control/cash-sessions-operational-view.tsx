@@ -2,7 +2,6 @@ import type { CommandCenterModel, CommandMetric, CommandPanel, CommandTable } fr
 import { AppShell } from "@components/layout/app-shell";
 import { DataTable } from "@components/backoffice/data-table";
 import { PcCommandActions } from "./pc-command-actions";
-import { SmartDropdownDock } from "@components/uiux/smart-dropdown-dock";
 import styles from "./cash-sessions-operational-view.module.css";
 
 function toneClass(tone?: CommandMetric["tone"]) {
@@ -119,8 +118,7 @@ export function CashSessionsOperationalView({ model }: { model: CommandCenterMod
         </section>
 
         <section className={styles.consoleGrid}>
-          <aside className={styles.cashRail} aria-label="Filtros y cierre guiado">
-            <SmartDropdownDock currentPath={model.currentPath} title="Filtros compactos de caja" />
+          <aside className={styles.cashRail} aria-label="Cierre guiado, evidencia y acciones de caja">
             <CashGuidedAction />
             <EvidenceSteps />
             {model.actions?.length ? (
