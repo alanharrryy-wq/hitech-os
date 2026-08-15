@@ -14,7 +14,7 @@ from code_atlas.app_map.uimap.governed_markers import (
 SOURCE_OWNER = "apps/terminal-de-venta-system/products/pc/app/components/inventory/inventory-workspace.tsx"
 CSS_OWNER = "apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css"
 PILOT_UI = "PC-STOCK-FICHA-PANEL-01"
-CANONICAL_UI = "PC-STOCK-MAIN-COMPONENTS-INVENTORY-INVENTORY-WORKSPACE-PRODUCT-FICHA-TAB-01"
+HEURISTIC_UI = "PC-STOCK-MAIN-COMPONENTS-INVENTORY-INVENTORY-WORKSPACE-PRODUCT-FICHA-TAB-01"
 CERTIFIED_BINDING = "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1"
 
 
@@ -80,12 +80,12 @@ def candidate_with_binding(binding_id: str) -> UiCandidate:
     )
 
 
-def css_target() -> CssTarget:
+def css_target(source_hash: str = "B" * 64) -> CssTarget:
     return CssTarget(
         class_name="productFicha",
         selector='.productFicha[data-prisma-visual-pilot="pc-stock-ficha-tablet-licenses-v1"]',
         source_file=CSS_OWNER,
-        source_hash="B" * 64,
+        source_hash=source_hash,
         pseudo_element=None,
         state_selector="default",
         at_rule=None,
@@ -95,48 +95,101 @@ def css_target() -> CssTarget:
     )
 
 
-def canonical_component() -> dict:
+def canonical_component(
+    owner_hash: str = "A" * 64,
+    style_hash: str = "B" * 64,
+) -> dict:
     return {
         "runtimeAlias": "pc",
+        "surfaceId": "SURF.pc.stock",
         "routeId": "ROUTE.pc.stock",
+        "routePath": "/stock",
+        "regionId": "ZONE.pc.stock.main",
+        "slotId": "SLOT.pc.stock.main.inventory.product_ficha",
+        "ownerId": "OWN.pc.inventory_workspace",
         "ownerFile": SOURCE_OWNER,
+        "ownerSymbol": "InventoryWorkspaceView",
         "componentId": "WGT.pc.stock.components_inventory_inventory_workspace.product_ficha",
-        "componentUiId": CANONICAL_UI,
+        "componentUiId": HEURISTIC_UI,
+        "neutralMeaningId": None,
+        "bindingId": None,
+        "layerId": None,
+        "implementationLayerId": None,
         "adapterId": "ADP.PC.ADMIN.V2",
+        "visualTargets": [{
+            "styleSourceFile": CSS_OWNER,
+            "sourceHash": style_hash,
+            "implementationLayerId": None,
+        }],
+        "evidenceRefs": [],
+        "sourceHashes": {SOURCE_OWNER: owner_hash, CSS_OWNER: style_hash},
+        "targetResolutionStatus": "BLOCKED_BY_MISSING_LAYER",
+        "applicationReadiness": "BLOCKED",
+        "blockingReasons": [
+            "MISSING_CERTIFIED_LAYER",
+            "MISSING_IMPLEMENTATION_LAYER",
+            "MISSING_VISUAL_BINDING",
+            "NEUTRAL_MEANING_NOT_PROVEN",
+        ],
     }
 
 
 class CertifiedPilotCrosswalkNegativeTests(unittest.TestCase):
+    def make_index(self, root: Path) -> dict:
+        contract = (
+            root
+            / "apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots"
+            / "PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json"
+        )
+        contract.parent.mkdir(parents=True, exist_ok=True)
+        contract.write_text(json.dumps(pilot_payload()), encoding="utf-8")
+        return load_certified_pilot_contracts(root)
+
+    def assert_withheld_without_mutation(
+        self,
+        candidate: UiCandidate,
+        targets: list[CssTarget],
+        component: dict,
+        index: dict,
+        expected_reason: str,
+    ) -> None:
+        before = json.loads(json.dumps(component))
+        alias, conflict = certified_pilot_alias_for_candidate(candidate, targets, component, index)
+        self.assertIsNone(alias)
+        self.assertIsNotNone(conflict)
+        self.assertEqual(conflict["aliasId"], PILOT_UI)
+        self.assertEqual(conflict["resolution"], "ALIAS_WITHHELD")
+        self.assertIn(expected_reason, conflict["blockingReasons"])
+        self.assertEqual(component, before)
+
     def test_certified_pilot_with_binding_marker_drift_is_withheld(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            contract = (
-                root
-                / "apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots"
-                / "PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json"
-            )
-            contract.parent.mkdir(parents=True, exist_ok=True)
-            contract.write_text(json.dumps(pilot_payload()), encoding="utf-8")
-            index = load_certified_pilot_contracts(root)
-
-            alias, conflict = certified_pilot_alias_for_candidate(
+            self.assert_withheld_without_mutation(
                 candidate_with_binding("BND.CONFLICT"),
                 [css_target()],
                 canonical_component(),
-                index,
+                self.make_index(Path(tmp)),
+                "CERTIFIED_PILOT_MARKER_MISMATCH:data-prisma-binding",
             )
 
-            self.assertIsNone(alias)
-            self.assertIsNotNone(conflict)
-            self.assertEqual(conflict["aliasId"], PILOT_UI)
-            self.assertEqual(conflict["resolution"], "ALIAS_WITHHELD")
-            self.assertIn(
-                "CERTIFIED_PILOT_MARKER_MISMATCH:data-prisma-binding",
-                conflict["blockingReasons"],
+    def test_render_source_hash_drift_is_withheld(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assert_withheld_without_mutation(
+                candidate_with_binding(CERTIFIED_BINDING),
+                [css_target()],
+                canonical_component(owner_hash="C" * 64),
+                self.make_index(Path(tmp)),
+                "CERTIFIED_PILOT_RENDER_SOURCE_HASH_MISMATCH",
             )
-            self.assertNotIn(
-                "CERTIFIED_PILOT_CONTRACT_NOT_FOUND",
-                conflict["blockingReasons"],
+
+    def test_style_source_hash_drift_is_withheld(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assert_withheld_without_mutation(
+                candidate_with_binding(CERTIFIED_BINDING),
+                [css_target("B" * 64)],
+                canonical_component(style_hash="D" * 64),
+                self.make_index(Path(tmp)),
+                "CERTIFIED_PILOT_STYLE_SOURCE_HASH_MISMATCH",
             )
 
 
