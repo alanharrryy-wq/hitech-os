@@ -5,6 +5,8 @@ on:
     branches: ['governance/code-atlas-external-closure-1508']
     paths:
       - '.github/workflows/caext-closure-apply.yml'
+      - '.github/scripts/caext_closure_apply.py'
+      - '.github/scripts/caext_closure_prepatch.py'
 
 permissions:
   contents: write
