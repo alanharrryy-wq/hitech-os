@@ -303,8 +303,25 @@ def certified_pilot_alias_for_candidate(
     if not isinstance(source_hashes, dict):
         blockers.append("CERTIFIED_PILOT_CANONICAL_SOURCE_HASHES_MISSING")
     else:
-        owner_hash = str(source_hashes.get(str(pilot.get("sourceOwner") or "")) or "")
-        if owner_hash != candidate_source_hash:
+        # UIMAP stores render provenance under literal ownerFile/renderSourceFile
+        # slots. Accept the older path-keyed form only as a compatibility input;
+        # every observed render hash must still exactly match the candidate bytes.
+        render_hashes = [
+            str(source_hashes.get(key) or "")
+            for key in ("ownerFile", "renderSourceFile")
+            if key in source_hashes
+        ]
+        if not render_hashes:
+            legacy_owner_hash = str(
+                source_hashes.get(str(pilot.get("sourceOwner") or "")) or ""
+            )
+            if legacy_owner_hash:
+                render_hashes.append(legacy_owner_hash)
+        if (
+            not render_hashes
+            or any(len(value) != 64 for value in render_hashes)
+            or any(value != candidate_source_hash for value in render_hashes)
+        ):
             blockers.append("CERTIFIED_PILOT_RENDER_SOURCE_HASH_MISMATCH")
         observed_style_hashes = {
             str(getattr(target, "source_hash", "") or "")
