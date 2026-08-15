@@ -831,3 +831,18 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
 **Rollback probado:** N/A sobre producto. El FIX se trabajó en rama gobernada y no se mergeó hasta 140 tests, replay externo y CI; los repos externos originales permanecieron read-only.
 **Regla nueva:** Un verde externo no se promociona sólo porque el proceso terminó en cero. Separar `PRODUCT FAILURE` de `HARNESS FAILURE`, adjudicar manualmente métricas/leak scans sospechosos contra provenance física, y después de cualquier FIX repetir exactamente el mismo gate adversarial antes de ampliar claims.
 **Límite:** Este aprendizaje prueba sólo el corpus externo y condiciones declaradas. No prueba universalidad absoluta, producción, enterprise, hosted multi-tenant ni cumplimiento legal/privacidad/IAM.
+
+---
+
+### 2026-08-15 - Code Atlas: CAEXT V2 separa fallas de harness de evidencia multi-stack
+
+**Tipo:** EVIDENCE_LEARNING / HARNESS_HARDENING / GOVERNANCE_LEARNING
+**Superficie:** Tooling / Code Atlas / Change Intelligence / External Evidence
+**Contexto:** Después del primer gate externo de Click, Vite y ripgrep quedaron dos ambigüedades del harness, no del core: `NDC` podía coincidir dentro de nombres source-derived como `tailwindcss`, y la matriz legacy leía Change Impact desde DISCOVER en vez del modelo PREPARE.
+**Corrección:** PR #278 añadió CAEXT V2 fuera de `tools/code-atlas/src/code_atlas/**`: matching por límites de token con provenance `SOURCE_DERIVED | PROFILE_DERIVED | HISTORICAL_TOOL_EVIDENCE | CORE_LEAK`, métricas de impacto desde `prepared.changeModel.impactRadius`, output roots aislados y upload de evidencia incluso cuando el gate queda rojo.
+**Evidencia:** merge `9556609df6d60e8cecebb0f051ef27040842bc53`; Authority Mesh `31910183053` / artifact `9253435582`; run externo `31911140797`; Ubuntu artifact `9253725843`; Windows artifact `9253737517`.
+**Resultado:** Click/Vite/ripgrep `30/30` por OS; Cobra/Spring PetClinic/Kubernetes YAML/pybind11 `40/40` por OS; siete repos pinned; Ubuntu + Windows; `CORE_LEAK=0`; repeatability PASS; originales read-only PASS.
+**Límite observado:** Cobra Go, Spring Java y Kubernetes YAML produjeron 0 dependency edges en este corpus; pybind11 produjo 2. Eso es evidencia de cobertura estructural acotada, no autorización automática para reconstruir el core.
+**Rollback:** PR #278 es un harness/evidence-only merge; el core quedó byte-intacto respecto del pin gobernado. El cierre documental sólo cambia autoridad/evidencia y conserva `LOCAL_VERIFIED`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`.
+**Regla nueva:** cuando un gate externo falle, separar primero `PRODUCT FAILURE`, `HARNESS FAILURE`, `ENVIRONMENT FAILURE` y `UNSUPPORTED TECHNOLOGY`. No ampliar claims ni parchar core por una métrica o path contaminado. Un rojo debe conservar su artifact.
+**Siguiente gate:** historical real-diff validation; después human/agent usefulness. Hosted/security sigue siendo evidencia separada.

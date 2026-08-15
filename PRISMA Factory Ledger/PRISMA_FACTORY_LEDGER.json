@@ -589,7 +589,7 @@
       ],
       "classification": "VERIFY",
       "status": "LOCAL_VERIFIED",
-      "stateLabel": "PASS_EXTERNAL_FALSIFICATION_HARDENED_3_REPOS_LOCAL_VERIFIED",
+      "stateLabel": "PASS_EXTERNAL_DIVERSITY_V2_7_REPOS_2_OS_LOCAL_VERIFIED",
       "doNotRebuild": true,
       "evidence": [
         "PR #269",
@@ -605,7 +605,13 @@
         "post-fix full external run 31867491454 artifact 9242450935",
         "140 Code Atlas tests PASS",
         "PR #275 CI 6/6 PASS",
-        "closure Authority Mesh run 31867706125 artifact 9242519545"
+        "closure Authority Mesh run 31867706125 artifact 9242519545",
+        "PR #278 / merge 9556609df6d60e8cecebb0f051ef27040842bc53",
+        "CAEXT V2 Authority Mesh run 31910183053 / artifact 9253435582",
+        "CAEXT V2 external run 31911140797",
+        "Ubuntu diversity artifact 9253725843",
+        "Windows diversity artifact 9253737517",
+        "7 pinned unrelated repositories x Ubuntu/Windows; 70/70 declared scenarios per OS; CORE_LEAK 0; read-only/repeatability PASS"
       ],
       "allowedActions": [
         "read-only verification on unrelated external repositories",
@@ -633,10 +639,13 @@
         "Customer data-egress certification beyond the runner contract",
         "Paid-pilot readiness by itself",
         "Legal or privacy compliance",
-        "Production certification"
+        "Production certification",
+        "Arbitrary repository universality",
+        "Complete dependency understanding for Go, Java, YAML/IaC, C++ or other unproven stacks",
+        "Production, enterprise IAM/security, hosted multi-tenant, legal/privacy or paid-pilot readiness"
       ],
-      "nextGate": "Broaden external repository/stack diversity, repeat the same falsification gate on an independent second machine/environment, then pursue hosted/security evidence only where required. Do not rebuild Universal Intelligence or Customer Wow."
+      "nextGate": "Historical real-diff validation, then human/agent usefulness evidence. Hosted/security boundaries remain separate evidence gates; do not rebuild core without a concrete reproducible defect."
     }
   ],
-  "updatedAt": "2026-08-15T05:58:59Z"
+  "updatedAt": "2026-08-15T22:24:29Z"
 }
