@@ -55,3 +55,157 @@ jobs:
 
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+  caext-v2-harness-mesh:
+    name: Code Atlas External Diversity V2 harness mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate task-exact Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "VERIFY / EXTERNAL EVIDENCE — CODE ATLAS EXTERNAL DIVERSITY GATE V2 HARNESS REPAIR. Universal Intelligence and Customer Wow are LOCAL_VERIFIED and doNotRebuild=true. Repair only two already-evidenced J TEST HARNESS FAILURE items: (1) replace legacy substring neutrality leakage matching that falsely detects NDC inside source-derived strings such as tailwindcss with boundary-aware matching plus exact provenance classes SOURCE_DERIVED, PROFILE_DERIVED, HISTORICAL_TOOL_EVIDENCE, CORE_LEAK; (2) stop reporting changeImpactSize from DISCOVER and instead report explicit PREPARE metrics prepareImpactRadiusSize, prepareDirectImpactCount, prepareTransitiveImpactCount, protectedScopeCount and requiredEvidenceCount while keeping discovery graph metrics separately named. Add honest performance instrumentation and keep any uninstrumented value as NOT_MEASURED; never infer worker peak from configured workers. Authorized future write scope after this Mesh: .github/scripts/caext_external_gate_v2.py, .github/scripts/tests/test_caext_harness_v2.py, .github/workflows/caext-external-diversity-v2.yml, and evidence/docs closure only after successful external runs. tools/code-atlas/src/code_atlas/** remains read-only unless a new reproducible product defect is separately demonstrated and reclassified FIX. Explicitly exclude tools/code-atlas/src/code_atlas/ui_bridge/** and tools/code-atlas/src/code_atlas/app_map/uimap/** because draft PR #273 owns that surface. Exclude Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma generation, deploys, ports and live processes. Require neutral/default first, snapshot-lock, external originals read-only, UNKNOWN/BLOCKED preserved, no fake green, regression tests for tailwindcss versus real NDC and DISCOVER-zero/PREPARE-positive impact, task-exact layer map and rollback/evidence boundaries."
+
+      - name: Validate task-exact mesh and emit scope lock
+        shell: python
+        run: |
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json',
+              'APP_IMPACT_MATRIX.md',
+              'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md',
+              'AGENT_PROMPT_ENVELOPE.md',
+              'AUTHORITY_MESH_REPORT.md',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit('Authority Mesh status is not PASS')
+          if lock.get('full_mode') is not False:
+              raise SystemExit('Mesh unexpectedly ran in full mode')
+
+          task = str(lock.get('task', ''))
+          required_identity = (
+              'EXTERNAL DIVERSITY GATE V2',
+              'J TEST HARNESS FAILURE',
+              'SOURCE_DERIVED',
+              'prepareImpactRadiusSize',
+              'PR #273',
+              'doNotRebuild=true',
+          )
+          if not all(token in task for token in required_identity):
+              raise SystemExit('Task-exact Authority Mesh identity missing')
+
+          refs = [
+              'tools/code-atlas/README.md',
+              'tools/code-atlas/AGENTS.md',
+              'tools/code-atlas/NEUTRALITY_POLICY.md',
+              'tools/code-atlas/CODE_ATLAS_NEUTRALITY_CONTRACT.json',
+              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+              'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+              'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+          ]
+          hashes = []
+          for rel in refs:
+              p = Path(rel)
+              if not p.is_file():
+                  raise SystemExit('Missing required authority reference: ' + rel)
+              raw = p.read_bytes()
+              hashes.append({'path': rel, 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw), 'mode': 'READ_ONLY_REFERENCE'})
+
+          allowed_future = [
+              '.github/scripts/caext_external_gate_v2.py',
+              '.github/scripts/tests/test_caext_harness_v2.py',
+              '.github/workflows/caext-external-diversity-v2.yml',
+          ]
+          reserved = [
+              'tools/code-atlas/src/code_atlas/ui_bridge/**',
+              'tools/code-atlas/src/code_atlas/app_map/uimap/**',
+          ]
+          excluded = [
+              'Tablet', 'PC', 'Mobile', 'Chart Lab', 'Shared UI', 'DB', 'Prisma generation', 'deploys', 'ports', 'live processes',
+          ]
+          scope = {
+              'schemaVersion': 'caext_v2_mesh_scope.v1',
+              'classification': 'VERIFY / EXTERNAL EVIDENCE',
+              'harnessFailureClass': 'J TEST HARNESS FAILURE',
+              'coreDoNotRebuild': True,
+              'allowedFutureWrites': allowed_future,
+              'reservedByOpenPr273': reserved,
+              'excludedSurfaces': excluded,
+              'authorityReferences': hashes,
+              'meshStatus': lock.get('status'),
+              'appsDetected': lock.get('apps_detected', []),
+              'changeTypesDetected': lock.get('change_types_detected', []),
+          }
+          (root / 'CAEXT_V2_MESH_SCOPE.json').write_text(json.dumps(scope, indent=2) + '\n', encoding='utf-8')
+
+          lines = [
+              '# Code Atlas External Diversity V2 Harness Mesh Scope',
+              '',
+              '- Classification: `VERIFY / EXTERNAL EVIDENCE`.',
+              '- Existing Universal Intelligence / Customer Wow: `doNotRebuild=true`.',
+              '- Known defects: two `J TEST HARNESS FAILURE` items only.',
+              '- Future product-core writes: forbidden unless a new reproducible defect separately justifies `FIX`.',
+              '- PR #273 reserved paths: `ui_bridge/**`, `app_map/uimap/**`.',
+              '- External originals: read-only.',
+              '- Neutral/default profile runs first.',
+              '- No fake green; `UNKNOWN` and `BLOCKED` remain valid outcomes.',
+              '',
+              '## Allowed future harness writes',
+          ]
+          lines.extend(f'- `{p}`' for p in allowed_future)
+          lines += ['', '## Authority hashes', '', '| Path | SHA-256 | Mode |', '|---|---|---|']
+          for item in hashes:
+              lines.append(f"| `{item['path']}` | `{item['sha256']}` | READ_ONLY_REFERENCE |")
+          (root / 'CAEXT_V2_MESH_SCOPE.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          print('PASS_CAEXT_V2_TASK_EXACT_AUTHORITY_MESH')
+
+      - name: Verify ephemeral mesh bootstrap is isolated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          expected='.github/workflows/automesh-parallel-cert.yml'
+          if [ "$changed" != "$expected" ]; then
+            echo 'Unexpected bootstrap diff:'
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          echo 'PASS_CAEXT_V2_MESH_BOOTSTRAP_SCOPE_ONLY'
+
+      - name: Upload task-exact Authority Mesh artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-v2-harness-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CAEXT_V2_MESH_SCOPE.json
+            apps/terminal-de-venta-system/.governance/current/CAEXT_V2_MESH_SCOPE.md
