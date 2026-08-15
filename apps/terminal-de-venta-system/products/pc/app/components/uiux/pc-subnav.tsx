@@ -1,8 +1,19 @@
-import { getSecondaryNavigationForPath } from "@/composition/navigation";
-import { normalizePcPathname } from "@/uiux/decision-model";
+import { getPcSubnavItems, normalizePcPathname } from "@/uiux/decision-model";
+
+const HIDDEN_SURFACE_TRUTH_SUBNAV_ROUTES = new Set([
+  "/acciones-masivas",
+  "/contratos-reporte",
+  "/detalle-registros",
+  "/estados-operativos",
+  "/forecast-basico",
+  "/scorecards-negocio",
+  "/tablas-operativas",
+  "/tablero-kpi",
+  "/vistas-ejecutivas"
+]);
 
 export function PcSubnav({ currentPath }: { currentPath: string }) {
-  const items = getSecondaryNavigationForPath(currentPath);
+  const items = getPcSubnavItems(currentPath).filter((item) => !HIDDEN_SURFACE_TRUTH_SUBNAV_ROUTES.has(item.href));
   const normalizedCurrentPath = normalizePcPathname(currentPath);
 
   return (
@@ -14,12 +25,12 @@ export function PcSubnav({ currentPath }: { currentPath: string }) {
           <a
             className={`footer-chip${isActive ? " is-active" : ""}`}
             href={item.href}
-            key={`${item.title}-${item.href}`}
+            key={`${item.label}-${item.href}`}
             aria-current={isActive ? "page" : undefined}
             data-active={isActive ? "true" : "false"}
-            data-subnav-kind={item.status}
+            data-subnav-kind={item.kind}
           >
-            {item.title}
+            {item.label}
           </a>
         );
       })}
