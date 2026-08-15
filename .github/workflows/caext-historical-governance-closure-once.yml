@@ -1,0 +1,287 @@
+name: CAEXT Historical Governance Closure Once
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/caext-historical-governance-closure-once.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+
+jobs:
+  historical-governance-closure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate fresh task-exact Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "VERIFY GOVERNANCE CLOSURE — CODE ATLAS PHASE D HISTORICAL REAL-DIFF V1. Current main must remain exactly 004b15f2068c86dac42366870d867e39fb990dcf. PR #282 is merged and run 31912606042 produced identical bounded historical evidence on Ubuntu and Windows. Cobra/Go recall 25 percent precision 100 percent companion recall 0; Spring/Java recall 50 percent precision 100 percent companion recall 0; pybind11 C++/Python recall 33.33 percent precision 100 percent companion recall 0; Kubernetes new-parent-missing target correctly BLOCKED with no Authority Pack. Repeatability PASS and external originals read-only PASS. Preserve LOCAL_VERIFIED, classification VERIFY, doNotRebuild=true, certifiable=false, productionCertified=false. Authorized writes only tools/code-atlas/README.md; tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md; tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json; PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json; PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json; apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md; plus self-removal of this temporary workflow. Explicitly exclude Code Atlas source/tests/historical harness, PR #273 UI Bridge/UIMAP paths, Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma generation, deploys, ports and live processes. Record low companion recall as bounded evidence, not a product defect or automatic authorization to patch core. Next gate is HUMAN / AGENT USEFULNESS evidence. Hosted/security and production claims remain separate and unproven."
+
+      - name: Validate current main and closure authority
+        shell: python
+        run: |
+          import json, subprocess
+          from pathlib import Path
+
+          expected_main = '004b15f2068c86dac42366870d867e39fb990dcf'
+          subprocess.check_call(['git', 'fetch', 'origin', 'main'])
+          current_main = subprocess.check_output(['git', 'rev-parse', 'origin/main'], text=True).strip()
+          if current_main != expected_main:
+              raise SystemExit(f'MAIN_DRIFT:{current_main}!={expected_main}')
+
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json', 'AUTHORITY_MESH_REPORT.md',
+              'APP_IMPACT_MATRIX.md', 'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md', 'AGENT_PROMPT_ENVELOPE.md',
+          ]
+          missing = [name for name in required if not (root / name).is_file()]
+          if missing:
+              raise SystemExit('Missing Mesh outputs: ' + ', '.join(missing))
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit(f"Authority Mesh not PASS: {lock.get('status')}")
+          task = str(lock.get('task', ''))
+          for token in ('HISTORICAL REAL-DIFF V1', '004b15f', 'LOCAL_VERIFIED', 'doNotRebuild=true', 'HUMAN / AGENT USEFULNESS'):
+              if token not in task:
+                  raise SystemExit('Task identity missing token: ' + token)
+
+          changed = subprocess.check_output(['git', 'diff', '--name-only', 'origin/main...HEAD'], text=True).splitlines()
+          if changed != ['.github/workflows/caext-historical-governance-closure-once.yml']:
+              raise SystemExit('Unexpected bootstrap diff: ' + ', '.join(changed))
+          print('PASS_CAEXT_HISTORICAL_GOVERNANCE_AUTHORITY')
+
+      - name: Apply bounded historical evidence closure
+        shell: python
+        run: |
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          now = datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
+
+          # README: mark historical real-diff complete and move the next gate forward.
+          p = Path('tools/code-atlas/README.md')
+          text = p.read_text(encoding='utf-8')
+          old = "The next evidence gate is **historical real-diff validation**, followed by **human/agent usefulness evidence**. Hosted/security boundaries remain separate gates. Current evidence does **not** certify arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification."
+          new = """Historical real-diff validation is now complete as **bounded evidence**, not as a universality claim. At immutable parent commits, Cobra/Go measured **25% recall / 100% precision**, Spring PetClinic/Java **50% / 100%**, and pybind11 C++/Python **33.33% / 100%**; all three had **0% companion-path recall**, exposing a conservative Impact Radius that missed historical tests/docs. A Kubernetes YAML target absent from the parent snapshot correctly returned `BLOCKED` with no Authority Pack. Ubuntu and Windows reproduced the same result, with read-only originals and repeatability preserved.\n\nThe next evidence gate is **human/agent usefulness evidence**. Hosted/security boundaries remain separate gates. Current evidence does **not** certify high companion-path recall across stacks, arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification."""
+          if text.count(old) != 1:
+              raise SystemExit('README historical-next-gate block not found exactly once')
+          p.write_text(text.replace(old, new), encoding='utf-8')
+
+          # Customer Wow narrative: add the historical measurement and advance the next gate.
+          p = Path('tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md')
+          text = p.read_text(encoding='utf-8')
+          text = text.replace(
+              'External evidence status: `BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS`',
+              'External evidence status: `BOUNDED_EXTERNAL_DIVERSITY_PLUS_HISTORICAL_REAL_DIFF_PASS`',
+              1,
+          )
+          old = "Observed limits remain evidence, not defects by fiat: Cobra, Spring PetClinic, and Kubernetes examples produced zero repository dependency edges in this corpus; pybind11 produced two. This is **broader but still bounded external evidence**, not arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification. The next gate is historical real-diff validation, then human/agent usefulness evidence."
+          new = """Observed limits remain evidence, not defects by fiat: Cobra, Spring PetClinic, and Kubernetes examples produced zero repository dependency edges in the diversity corpus; pybind11 produced two.\n\nPhase D then compared PREPARE impact at immutable historical parents against the paths that actually changed in the next real commit. Cobra/Go predicted only `command.go` across a four-path commit (**25% recall, 100% precision, 0% companion recall**). Spring PetClinic/Java predicted only the controller across controller + regression-test changes (**50% recall, 100% precision, 0% companion recall**). pybind11 predicted only `function_ref.h` across header + C++ test + Python test (**33.33% recall, 100% precision, 0% companion recall**). The Kubernetes new-path case was correctly fail-closed: the target did not exist in the parent snapshot, PREPARE returned `BLOCKED`, and no Authority Pack was issued. Ubuntu and Windows reproduced the same invariants. Historical evidence artifacts: Ubuntu `9254078386` (`sha256:88784e9b9c58ec29cee6ef40229a7f307a41c71147e9d01f072f66e5078e5869`) and Windows `9254082540` (`sha256:d2efb32116430dbbfa78d5dc5dd9513afbc54198ffae90c302c43df75adb5e38`).\n\nThis is **broader but still bounded external evidence**. Low companion recall is recorded as a measured limitation, not automatically promoted to a source defect. The next gate is human/agent usefulness evidence, not a core rebuild."""
+          if text.count(old) != 1:
+              raise SystemExit('Customer Wow historical-next-gate block not found exactly once')
+          p.write_text(text.replace(old, new), encoding='utf-8')
+
+          # Machine-readable contract.
+          p = Path('tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json')
+          contract = json.loads(p.read_text(encoding='utf-8'))
+          contract['status'] = 'UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED'
+          contract['certifiable'] = False
+          contract['productionCertified'] = False
+          verification = contract.setdefault('verification', {})
+          verification['historicalRealDiff'] = {
+              'status': 'VERIFY_HISTORICAL_EVIDENCE_CAPTURED',
+              'crossPlatform': ['ubuntu', 'windows'],
+              'repeatability': '4/4 cases per OS',
+              'externalReadOnlyCompliance': 'PASS',
+              'accuracyThresholds': 'NONE_BY_DESIGN',
+              'cases': {
+                  'cobra_go': {'recallPct': 25.0, 'precisionPct': 100.0, 'companionRecallPct': 0.0, 'actualChangedCount': 4, 'predictedImpactCount': 1},
+                  'spring_java': {'recallPct': 50.0, 'precisionPct': 100.0, 'companionRecallPct': 0.0, 'actualChangedCount': 2, 'predictedImpactCount': 1},
+                  'pybind_mixed': {'recallPct': 33.33, 'precisionPct': 100.0, 'companionRecallPct': 0.0, 'actualChangedCount': 3, 'predictedImpactCount': 1},
+                  'kubernetes_new_path': {'decision': 'BLOCKED', 'authorityPackIssued': False, 'targetExistsInParent': False},
+              },
+          }
+          ext = contract.setdefault('externalEvidence', {})
+          ext['historicalRealDiff'] = {
+              'pr': 282,
+              'mergeCommit': '004b15f2068c86dac42366870d867e39fb990dcf',
+              'authorityMeshRunId': 31912469729,
+              'authorityMeshArtifactId': 9254042841,
+              'runId': 31912606042,
+              'ubuntuArtifactId': 9254078386,
+              'ubuntuArtifactDigest': 'sha256:88784e9b9c58ec29cee6ef40229a7f307a41c71147e9d01f072f66e5078e5869',
+              'windowsArtifactId': 9254082540,
+              'windowsArtifactDigest': 'sha256:d2efb32116430dbbfa78d5dc5dd9513afbc54198ffae90c302c43df75adb5e38',
+              'interpretation': 'Conservative target-only impact in tested Go Java and C++/Python historical cases; low companion recall is bounded evidence, not automatic source-defect classification.',
+          }
+          contract['nextGate'] = 'Run human/agent usefulness evidence on bounded real change tasks. Measure whether Authority Packs, impact, unknowns, protected scope and evidence reports improve task quality without widening authorization. Hosted/security boundaries remain separate. Do not rebuild core from low historical recall alone.'
+          does_not_prove = contract.setdefault('doesNotProve', [])
+          for item in [
+              'high companion-path recall across Go Java C++ Python YAML or arbitrary stacks',
+              'complete historical change prediction',
+          ]:
+              if item not in does_not_prove:
+                  does_not_prove.append(item)
+          p.write_text(json.dumps(contract, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Factory Ledger: evidence advances, maturity does not.
+          p = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
+          ledger = json.loads(p.read_text(encoding='utf-8'))
+          matches = [c for c in ledger.get('capabilities', []) if c.get('id') == 'code_atlas.change_intelligence.customer_wow_v1']
+          if len(matches) != 1:
+              raise SystemExit(f'Factory Ledger capability match count={len(matches)}')
+          cap = matches[0]
+          cap['classification'] = 'VERIFY'
+          cap['status'] = 'LOCAL_VERIFIED'
+          cap['stateLabel'] = 'PASS_HISTORICAL_REAL_DIFF_V1_BOUNDED_LOCAL_VERIFIED'
+          cap['doNotRebuild'] = True
+          cap['nextGate'] = 'Human/agent usefulness evidence. Preserve the measured companion-recall limitation; do not rebuild core without a separately authorized evidence-backed product-improvement gate.'
+          evidence = cap.setdefault('evidence', [])
+          for item in [
+              'PR #282 / merge 004b15f2068c86dac42366870d867e39fb990dcf',
+              'Historical Authority Mesh run 31912469729 / artifact 9254042841',
+              'Historical real-diff run 31912606042',
+              'Ubuntu historical artifact 9254078386',
+              'Windows historical artifact 9254082540',
+              'Cobra recall 25%; Spring recall 50%; pybind11 recall 33.33%; companion recall 0% in all three; Kubernetes missing-parent target BLOCKED without Authority Pack',
+          ]:
+              if item not in evidence:
+                  evidence.append(item)
+          dnp = cap.setdefault('doesNotProve', [])
+          for item in [
+              'High companion-path recall across tested multi-stack historical changes',
+              'Complete change-impact prediction for tests or documentation companions',
+          ]:
+              if item not in dnp:
+                  dnp.append(item)
+          ledger['updatedAt'] = now
+          p.write_text(json.dumps(ledger, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Evidence Index: additive bounded evidence record.
+          p = Path('PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json')
+          index = json.loads(p.read_text(encoding='utf-8'))
+          artifact_name = 'Code Atlas Historical Real-Diff V1 — PR #282 / run 31912606042'
+          artifacts = index.setdefault('artifacts', [])
+          if not any(a.get('artifact') == artifact_name for a in artifacts if isinstance(a, dict)):
+              artifacts.append({
+                  'artifact': artifact_name,
+                  'type': 'code_atlas_historical_real_diff_v1',
+                  'scope': ['code_atlas', 'change_intelligence', 'historical_evidence'],
+                  'status': 'PASS_BOUNDED_EVIDENCE_CAPTURED',
+                  'proves': [
+                      'Historical parent snapshots and actual next-commit diffs were compared read-only on Ubuntu and Windows',
+                      'Cobra Go measured 25% recall and 100% precision with 0% companion recall',
+                      'Spring Java measured 50% recall and 100% precision with 0% companion recall',
+                      'pybind11 C++ Python measured 33.33% recall and 100% precision with 0% companion recall',
+                      'A Kubernetes target absent from the parent snapshot remained BLOCKED and did not receive an Authority Pack',
+                      'All four cases were repeatable and external parent snapshots remained unchanged',
+                  ],
+                  'doesNotProve': [
+                      'High companion-path recall',
+                      'Complete dependency or historical change understanding across tested or arbitrary stacks',
+                      'Production readiness, enterprise IAM/security, hosted multi-tenant isolation, legal/privacy compliance or paid-pilot readiness',
+                  ],
+              })
+          if 'updatedAt' in index:
+              index['updatedAt'] = now
+          p.write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Field Manual learning.
+          p = Path('apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md')
+          text = p.read_text(encoding='utf-8').rstrip()
+          marker = '### 2026-08-15 - Code Atlas: historical real-diff mide recall sin convertirlo en fake green'
+          if marker not in text:
+              entry = f'''\n\n---\n\n{marker}\n\n**Tipo:** EVIDENCE_LEARNING / HISTORICAL_VALIDATION / GOVERNANCE_LEARNING\n**Superficie:** Tooling / Code Atlas / Change Intelligence / External Evidence\n**Contexto:** Después de CAEXT V2 multi-stack, Phase D comparó PREPARE en padres históricos inmutables contra los paths que realmente cambiaron en el siguiente commit. No se definió umbral artificial de accuracy.\n**Evidencia:** PR #282 / merge `004b15f2068c86dac42366870d867e39fb990dcf`; Authority Mesh `31912469729` / artifact `9254042841`; historical run `31912606042`; Ubuntu artifact `9254078386`; Windows artifact `9254082540`.\n**Resultado medido:** Cobra/Go: recall 25%, precision 100%, companion recall 0%, 3 false negatives; Spring/Java: recall 50%, precision 100%, companion recall 0%, 1 false negative; pybind11 C++/Python: recall 33.33%, precision 100%, companion recall 0%, 2 false negatives. Kubernetes new-path: target ausente en parent, decision `BLOCKED`, sin Authority Pack. Ubuntu y Windows reprodujeron los mismos invariantes; originales read-only.\n**Causa interpretativa:** En estos casos el Impact Radius fue conservador y target-only; la evidencia previa ya mostraba cobertura de dependency edges limitada en Go/Java/YAML. Esto es una limitación medida, no un defecto de source promovido automáticamente.\n**Regla nueva:** precision/recall históricos son métricas de calidad de evidencia. No convertir recall bajo en autorización para parchear core; un FIX/BUILD de companion/dependency intelligence exige su propio Authority Mesh y criterio de producto. Los casos new-path deben permanecer fail-closed si el target no existe en el snapshot autoridad.\n**Rollback:** Phase D fue evidence-only; no tocó `tools/code-atlas/src/code_atlas/**`.\n**Siguiente gate:** human/agent usefulness evidence. Hosted/security y production siguen siendo gates separados.\n'''
+              text += entry.rstrip()
+          p.write_text(text + '\n', encoding='utf-8')
+
+          print('PASS_CAEXT_HISTORICAL_GOVERNANCE_APPLIED')
+
+      - name: Validate final truth and exact six-document scope
+        shell: python
+        run: |
+          import json, subprocess
+          from pathlib import Path
+
+          contract = json.loads(Path('tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json').read_text(encoding='utf-8'))
+          assert contract['status'] == 'UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED'
+          assert contract['certifiable'] is False
+          assert contract['productionCertified'] is False
+          assert contract['verification']['historicalRealDiff']['status'] == 'VERIFY_HISTORICAL_EVIDENCE_CAPTURED'
+
+          ledger = json.loads(Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json').read_text(encoding='utf-8'))
+          cap = next(c for c in ledger['capabilities'] if c.get('id') == 'code_atlas.change_intelligence.customer_wow_v1')
+          assert cap['classification'] == 'VERIFY'
+          assert cap['status'] == 'LOCAL_VERIFIED'
+          assert cap['doNotRebuild'] is True
+
+          allowed = {
+              'tools/code-atlas/README.md',
+              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md',
+              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+              'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+              'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+          }
+          changed_all = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+          mesh_prefix = 'apps/terminal-de-venta-system/.governance/current/'
+          changed = {path for path in changed_all if not path.startswith(mesh_prefix)}
+          if changed != allowed:
+              raise SystemExit('Governed docs diff mismatch: ' + ', '.join(sorted(changed)))
+          print('PASS_CAEXT_HISTORICAL_CLOSURE_SCOPE_6_DOCS')
+
+      - name: Upload closure Authority Mesh evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-historical-governance-closure-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+
+      - name: Commit exactly six governed docs and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/caext-historical-governance-closure-once.yml
+          git add -- \
+            tools/code-atlas/README.md \
+            tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md \
+            tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json \
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' \
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' \
+            apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md \
+            .github/workflows/caext-historical-governance-closure-once.yml
+          staged="$(git diff --cached --name-only)"
+          count="$(printf '%s\n' "$staged" | sed '/^$/d' | wc -l | tr -d ' ')"
+          if [ "$count" != '7' ]; then
+            echo "Unexpected staged count: $count"
+            printf '%s\n' "$staged"
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(code-atlas): close historical real-diff evidence'
+          git push origin "HEAD:${GITHUB_HEAD_REF}"
