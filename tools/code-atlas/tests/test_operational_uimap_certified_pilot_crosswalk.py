@@ -16,11 +16,7 @@ from code_atlas.ui_bridge.repository import BridgeRepository
 SOURCE_OWNER = "apps/terminal-de-venta-system/products/pc/app/components/inventory/inventory-workspace.tsx"
 CSS_OWNER = "apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css"
 PILOT_UI = "PC-STOCK-FICHA-PANEL-01"
-HEURISTIC_UI = "PC-STOCK-MAIN-COMPONENTS-INVENTORY-INVENTORY-WORKSPACE-PRODUCT-FICHA-TAB-01"
-CERTIFIED_BINDING = "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1"
-CERTIFIED_LAYER = "LYR.SURFACE.OPERATIONAL.DETAIL"
-CERTIFIED_IMPLEMENTATION_LAYER = "products.pc.app.components.inventory.pc.inventory.master.detail.module.css.productficha"
-CERTIFIED_ADAPTER = "ADP.PC.DENSE.CLOUDGLASS.V1"
+CANONICAL_UI = "PC-STOCK-MAIN-COMPONENTS-INVENTORY-INVENTORY-WORKSPACE-PRODUCT-FICHA-TAB-01"
 
 
 def pilot_payload() -> dict:
@@ -39,10 +35,10 @@ def pilot_payload() -> dict:
             "componentUiId": PILOT_UI,
             "recipeId": "REC.panel.operational.cloudglass",
             "visualStackId": "VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
-            "bindingId": CERTIFIED_BINDING,
-            "adapterId": CERTIFIED_ADAPTER,
-            "neutralLayerId": CERTIFIED_LAYER,
-            "implementationLayerId": CERTIFIED_IMPLEMENTATION_LAYER,
+            "bindingId": "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+            "adapterId": "ADP.PC.DENSE.CLOUDGLASS.V1",
+            "neutralLayerId": "LYR.SURFACE.OPERATIONAL.DETAIL",
+            "implementationLayerId": "products.pc.app.components.inventory.pc.inventory.master.detail.module.css.productficha",
             "runtimeSelector": "[data-pcinv-product-ficha=\"stock\"]",
             "sourceOwner": SOURCE_OWNER,
             "cssOwner": CSS_OWNER,
@@ -61,9 +57,9 @@ def candidate(route_path: str = "/stock", ui_id: str = PILOT_UI) -> UiCandidate:
         "data-prisma-component-ui-id": ui_id,
         "data-prisma-recipe": "REC.panel.operational.cloudglass",
         "data-prisma-visual-stack": "VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
-        "data-prisma-binding": CERTIFIED_BINDING,
-        "data-prisma-adapter": CERTIFIED_ADAPTER,
-        "data-prisma-neutral-layer": CERTIFIED_LAYER,
+        "data-prisma-binding": "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+        "data-prisma-adapter": "ADP.PC.DENSE.CLOUDGLASS.V1",
+        "data-prisma-neutral-layer": "LYR.SURFACE.OPERATIONAL.DETAIL",
         "data-prisma-source-owner": "inventory-workspace.tsx",
         "data-prisma-css-owner": "pc-inventory-master-detail.module.css",
     }
@@ -111,7 +107,7 @@ def canonical_component() -> dict:
         "regionId": "ZONE.pc.stock.main",
         "slotId": "SLOT.pc.stock.main.components_inventory_inventory_workspace.product_ficha",
         "componentId": "WGT.pc.stock.components_inventory_inventory_workspace.product_ficha",
-        "componentUiId": HEURISTIC_UI,
+        "componentUiId": CANONICAL_UI,
         "widgetTypeId": "WID.control",
         "neutralMeaningId": None,
         "relatedNeutralIds": [],
@@ -159,112 +155,48 @@ class CertifiedPilotCrosswalkTests(unittest.TestCase):
         path.write_text(json.dumps(pilot_payload()), encoding="utf-8")
         return load_certified_pilot_contracts(root)
 
-    def test_exact_certified_pilot_promotes_governed_identity_atomically(self):
+    def test_exact_pilot_becomes_alias_without_replacing_canonical_identity(self):
         with tempfile.TemporaryDirectory() as tmp:
-            component = canonical_component()
-            alias, conflict = certified_pilot_alias_for_candidate(
-                candidate(), [css_target()], component, self.make_index(Path(tmp))
-            )
-
+            alias, conflict = certified_pilot_alias_for_candidate(candidate(), [css_target()], canonical_component(), self.make_index(Path(tmp)))
             self.assertIsNone(conflict)
-            self.assertEqual(component["componentUiId"], PILOT_UI)
-            self.assertEqual(component["surfaceId"], "SURF.pc.backoffice")
-            self.assertEqual(component["ownerId"], "OWN.pc.inventory.stock_ficha")
-            self.assertEqual(component["ownerSymbol"], "StockFicha")
-            self.assertEqual(component["regionId"], "ZONE.pc.stock.detail")
-            self.assertEqual(component["slotId"], "SLOT.pc.stock.detail.primary")
-            self.assertEqual(component["bindingId"], CERTIFIED_BINDING)
-            self.assertEqual(component["layerId"], CERTIFIED_LAYER)
-            self.assertEqual(component["implementationLayerId"], CERTIFIED_IMPLEMENTATION_LAYER)
-            self.assertEqual(component["adapterId"], CERTIFIED_ADAPTER)
-            self.assertEqual(component["visualTargets"][0]["implementationLayerId"], CERTIFIED_IMPLEMENTATION_LAYER)
-            self.assertIsNone(component["neutralMeaningId"])
-            self.assertEqual(component["targetResolutionStatus"], "PARTIAL")
-            self.assertEqual(component["applicationReadiness"], "BLOCKED")
-            self.assertEqual(component["blockingReasons"], ["NEUTRAL_MEANING_NOT_PROVEN"])
-            self.assertTrue(any(row.get("evidenceType") == "CERTIFIED_VISUAL_PILOT_CONTRACT" for row in component["evidenceRefs"]))
-
-            self.assertEqual(alias["aliasId"], HEURISTIC_UI)
-            self.assertEqual(alias["canonicalComponentUiId"], PILOT_UI)
-            self.assertEqual(alias["reason"], "CERTIFIED_GOVERNED_IDENTITY_PROMOTED")
-            self.assertEqual(alias["pilotTrace"]["adapterId"], CERTIFIED_ADAPTER)
-            self.assertEqual(alias["formerCanonicalTrace"]["adapterId"], "ADP.PC.ADMIN.V2")
-            self.assertEqual(alias["canonicalTrace"]["componentUiId"], PILOT_UI)
+            self.assertEqual(alias["aliasId"], PILOT_UI)
+            self.assertEqual(alias["canonicalComponentUiId"], CANONICAL_UI)
+            self.assertEqual(alias["reason"], "CERTIFIED_VISUAL_PILOT_CROSSWALK")
+            self.assertEqual(alias["pilotTrace"]["adapterId"], "ADP.PC.DENSE.CLOUDGLASS.V1")
+            self.assertEqual(alias["canonicalTrace"]["adapterId"], "ADP.PC.ADMIN.V2")
             self.assertNotIn("neutralMeaningId", alias["pilotTrace"])
 
-    def test_shared_source_on_other_route_is_not_false_conflict_or_mutation(self):
+    def test_shared_source_on_other_route_is_not_false_conflict(self):
         with tempfile.TemporaryDirectory() as tmp:
-            component = canonical_component()
-            before = json.loads(json.dumps(component))
-            alias, conflict = certified_pilot_alias_for_candidate(
-                candidate(route_path="/counts"), [css_target()], component, self.make_index(Path(tmp))
-            )
+            alias, conflict = certified_pilot_alias_for_candidate(candidate(route_path="/counts"), [css_target()], canonical_component(), self.make_index(Path(tmp)))
             self.assertIsNone(alias)
             self.assertIsNone(conflict)
-            self.assertEqual(component, before)
 
-    def test_unregistered_explicit_pilot_marker_fails_closed_without_mutation(self):
-        component = canonical_component()
-        before = json.loads(json.dumps(component))
-        alias, conflict = certified_pilot_alias_for_candidate(
-            candidate(ui_id="PC-UNKNOWN-PILOT-01"), [css_target()], component, {}
-        )
+    def test_unregistered_explicit_pilot_marker_fails_closed(self):
+        alias, conflict = certified_pilot_alias_for_candidate(candidate(ui_id="PC-UNKNOWN-PILOT-01"), [css_target()], canonical_component(), {})
         self.assertIsNone(alias)
         self.assertIn("CERTIFIED_PILOT_CONTRACT_NOT_FOUND", conflict["blockingReasons"])
-        self.assertEqual(component, before)
 
-    def test_bridge_resolves_heuristic_compatibility_alias_to_governed_component(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            component = canonical_component()
-            alias, conflict = certified_pilot_alias_for_candidate(
-                candidate(), [css_target()], component, self.make_index(Path(tmp))
-            )
-            self.assertIsNone(conflict)
-            batch = {
-                "schema": "test",
-                "batchId": "BATCH.TEST",
-                "runtimeAlias": "pc",
-                "components": [component],
-                "aliases": [alias],
-            }
-            repository = BridgeRepository([batch], [])
-            self.assertEqual(repository.resolve_alias(HEURISTIC_UI), PILOT_UI)
-            self.assertEqual(repository.resolve_alias(PILOT_UI), PILOT_UI)
-            self.assertEqual(repository.component(HEURISTIC_UI)["adapterId"], CERTIFIED_ADAPTER)
-            self.assertEqual(repository.component(PILOT_UI)["componentUiId"], PILOT_UI)
+    def test_bridge_resolves_certified_alias_to_canonical_component(self):
+        component = canonical_component()
+        batch = {"schema": "test", "batchId": "BATCH.TEST", "runtimeAlias": "pc", "components": [component], "aliases": [{"aliasId": PILOT_UI, "aliasKind": "componentUiId", "canonicalComponentUiId": CANONICAL_UI, "reason": "CERTIFIED_VISUAL_PILOT_CROSSWALK", "status": "CERTIFIED"}]}
+        repository = BridgeRepository([batch], [])
+        self.assertEqual(repository.resolve_alias(PILOT_UI), CANONICAL_UI)
+        self.assertEqual(repository.component(PILOT_UI)["adapterId"], "ADP.PC.ADMIN.V2")
 
-    def test_binding_promotion_sees_governed_id_directly_but_stays_blocked(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            component = canonical_component()
-            alias, conflict = certified_pilot_alias_for_candidate(
-                candidate(), [css_target()], component, self.make_index(Path(tmp))
-            )
-            self.assertIsNone(conflict)
-            batch = {
-                "schema": "test",
-                "batchId": "BATCH.TEST",
-                "runtimeAlias": "pc",
-                "components": [component],
-                "aliases": [alias],
-            }
-            repository = BridgeRepository([batch], [])
-            raw = {
-                PILOT_UI: {
-                    "path": "pilot.contract.json",
-                    "schema": pilot_payload()["schema"],
-                    "status": pilot_payload()["status"],
-                    "pilot": pilot_payload()["pilot"],
-                }
-            }
-            resolved = resolve_pilot_contracts(repository, raw)
-            row = evaluate_component(component, set(), resolved)
-            self.assertTrue(row["pilotAlignment"]["aligned"])
-            self.assertEqual(row["pilotAlignment"]["identityResolution"], "DIRECT_CANONICAL_ID")
-            self.assertEqual(row["pilotAlignment"]["pilotComponentUiId"], PILOT_UI)
-            self.assertEqual(row["pilotAlignment"]["canonicalComponentUiId"], PILOT_UI)
-            self.assertIn("MISSING_COORDINATE:neutralMeaningId", row["blockingReasons"])
-            self.assertIn("TARGET_NOT_SOURCE_RESOLVED", row["blockingReasons"])
-            self.assertEqual(row["uimapState"]["applicationReadiness"], "BLOCKED")
+    def test_binding_promotion_is_alias_aware_but_stays_blocked(self):
+        component = canonical_component()
+        batch = {"schema": "test", "batchId": "BATCH.TEST", "runtimeAlias": "pc", "components": [component], "aliases": [{"aliasId": PILOT_UI, "aliasKind": "componentUiId", "canonicalComponentUiId": CANONICAL_UI, "reason": "CERTIFIED_VISUAL_PILOT_CROSSWALK", "status": "CERTIFIED"}]}
+        repository = BridgeRepository([batch], [])
+        raw = {PILOT_UI: {"path": "pilot.contract.json", "schema": pilot_payload()["schema"], "status": pilot_payload()["status"], "pilot": pilot_payload()["pilot"]}}
+        resolved = resolve_pilot_contracts(repository, raw)
+        row = evaluate_component(component, set(), resolved)
+        self.assertTrue(row["pilotAlignment"]["aligned"])
+        self.assertEqual(row["pilotAlignment"]["identityResolution"], "CERTIFIED_ALIAS_CROSSWALK")
+        self.assertEqual(row["pilotAlignment"]["pilotComponentUiId"], PILOT_UI)
+        self.assertEqual(row["pilotAlignment"]["canonicalComponentUiId"], CANONICAL_UI)
+        self.assertIn("MISSING_COORDINATE:neutralMeaningId", row["blockingReasons"])
+        self.assertEqual(row["uimapState"]["applicationReadiness"], "BLOCKED")
 
 
 if __name__ == "__main__":
