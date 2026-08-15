@@ -1,0 +1,66 @@
+name: CAEXT Historical Real-Diff Authority Once
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/caext-historical-mesh-once.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+
+jobs:
+  historical-authority:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Generate task-exact Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "VERIFY / EXTERNAL EVIDENCE — CODE ATLAS PHASE D HISTORICAL REAL-DIFF VALIDATION. Current main is b024dcd2c533bf00e6f6926863b48472af1c215a; Customer Wow remains LOCAL_VERIFIED, classification VERIFY, doNotRebuild=true, certifiable=false, productionCertified=false. Build only a read-only historical evidence harness/workflow outside tools/code-atlas/src/code_atlas/**. Compare PREPARE impact predictions at immutable historical parent commits against actual next-commit changed paths. Measure actualChangedCount, predictedImpactCount, recallPct, precisionPct, companionRecallPct, falseNegatives and falsePositives without inventing thresholds. Cases: Cobra commit 24ada7fe71e3a3a8741dd52e0a7fc3b97450535a parent 680936a2200be363c61feda8cd29287f0726a48c target command.go; Spring PetClinic commit bb37aad8c332264723817d855e8b3b96b7c392bc parent 0f6e8614047bd74cf6223b4d8a858d2ed2824f8a target OwnerController.java; pybind11 commit 0599909bfebc7d3440cc1fda3144e437e6ade056 parent 856a3485ca5b704fc7614e89540670cb553e6e4f target include/pybind11/detail/function_ref.h; Kubernetes examples commit 6227892d666343a741fe4db9ae0425fff0dd1e28 parent 083633d483c903121d10a671ebc771f155c0b798 where nginx-platform-app/deployment.yml is a new path and must remain BLOCKED or UNKNOWN rather than guessed. External clones must remain read-only; analysis outputs isolated; neutral/default only; UNKNOWN/BLOCKED preserved; low recall or low precision is evidence, not automatic authorization to patch core. Run on Ubuntu and Windows for repeatability. Authorized future writes only .github/scripts/caext_historical_real_diff_v1.py and .github/workflows/caext-historical-real-diff-v1.yml plus later governance evidence closure after results. Explicitly exclude tools/code-atlas/src/code_atlas/**, tools/code-atlas/tests/**, PR #273 UI Bridge/UIMAP paths, Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma generation, deploys, ports and live processes. If any reproducible core defect appears, stop and reclassify separately before any source patch."
+      - name: Validate Mesh scope
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          lock = json.loads((root/'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit(f"Mesh not PASS: {lock.get('status')}")
+          task = str(lock.get('task',''))
+          for token in ('HISTORICAL REAL-DIFF','24ada7fe','bb37aad8','0599909b','6227892d','doNotRebuild=true','BLOCKED or UNKNOWN'):
+              if token not in task:
+                  raise SystemExit('Missing task token: '+token)
+          for name in ('AUTHORITY_MESH_REPORT.md','APP_IMPACT_MATRIX.md','CONTRACT_AND_GATE_MATRIX.json','MISSING_OR_UNMAPPED_RISK.md'):
+              if not (root/name).is_file():
+                  raise SystemExit('Missing Mesh artifact '+name)
+          print('PASS_CAEXT_HISTORICAL_TASK_EXACT_MESH')
+      - name: Guard bootstrap scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only origin/main...HEAD)"
+          test "$changed" = '.github/workflows/caext-historical-mesh-once.yml'
+          echo PASS_CAEXT_HISTORICAL_MESH_BOOTSTRAP_ONLY
+      - name: Upload Mesh evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-historical-authority-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
