@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from code_atlas.intelligence import AuthorityRequirementError, IntelligenceRequest, resolve_intelligence_context
+from code_atlas.intelligence.common import run_git
 
 from .authority_pack import build_authority_pack
 from .change_studio import compose_change_model
@@ -32,6 +33,33 @@ def _validated_policy(policy: Mapping[str, Any] | None) -> dict[str, Any] | None
     return validate_policy_pack(policy)
 
 
+
+def _actual_worktree_changes(repo_root: str | Path) -> dict[str, Any]:
+    repo = Path(repo_root).expanduser().resolve()
+    commands = [
+        ("unstaged", ("diff", "--name-only", "--no-renames", "-z")),
+        ("staged", ("diff", "--cached", "--name-only", "--no-renames", "-z")),
+        ("untracked", ("ls-files", "--others", "--exclude-standard", "-z")),
+    ]
+    by_kind: dict[str, list[str]] = {}
+    errors: list[dict[str, Any]] = []
+    all_paths: set[str] = set()
+    for kind, args in commands:
+        code, out, err = run_git(repo, *args)
+        if code != 0:
+            errors.append({"kind": kind, "returnCode": code, "stderr": err.strip()})
+            by_kind[kind] = []
+            continue
+        paths = sorted({normalize_repo_path(path) for path in out.split("\0") if path.strip()})
+        by_kind[kind] = paths
+        all_paths.update(paths)
+    return {
+        "paths": sorted(all_paths),
+        "byKind": by_kind,
+        "errors": errors,
+        "complete": not errors,
+        "rule": "VERIFY_ACTUAL_GIT_WORKTREE_INDEPENDENTLY_OF_CALLER_MANIFEST",
+    }
 def _is_mutable_graph_path(value: Any, mutable_scope: Sequence[str]) -> bool:
     if not mutable_scope or not isinstance(value, str) or not value.strip() or value.startswith("reason:"):
         return False
@@ -262,6 +290,8 @@ def prepare_change(
         return result
 
     primary_targets, blockers, unknowns = _target_rows(context, targets)
+    if bool(((context.get("snapshot") or {}).get("repository") or {}).get("dirty")):
+        blockers.append("repository worktree must be clean before issuing an authority pack")
     protected_scope = list((normalized_policy or {}).get("protectedPaths") or [])
     protected_overlap = sorted(
         path for path in allowed_scope if any(path_matches_scope(path, [protected]) for protected in protected_scope)
@@ -419,11 +449,14 @@ def verify_prepared_change(
         }
 
     normalized_policy = _validated_policy(policy)
+    declared_paths = [normalize_repo_path(path) for path in changed_paths]
+    worktree = _actual_worktree_changes(repo_root)
+    hidden_worktree_paths = sorted(set(worktree["paths"]) - set(declared_paths))
     request = IntelligenceRequest(
         intent="VERIFY",
         domain=str(preparation.get("domain") or ""),
         required_authorities=tuple(preparation.get("requiredAuthorities") or []),
-        changed_paths=tuple(normalize_repo_path(path) for path in changed_paths),
+        changed_paths=tuple(declared_paths),
         fail_on_missing_authority=True,
         workers=workers,
     )
@@ -451,13 +484,33 @@ def verify_prepared_change(
     )
     report = verify_change(
         authority_pack=pack,
-        change_manifest={"changedPaths": [normalize_repo_path(path) for path in changed_paths]},
+        change_manifest={"changedPaths": declared_paths},
         current_snapshot=current_snapshot,
         produced_evidence=produced_evidence,
         contradictions=contradictions,
         new_unknowns=new_unknowns,
         agent_session=agent_session,
     )
+    if not worktree["complete"]:
+        report.setdefault("findings", []).append({
+            "code": "WORKTREE_STATE_UNAVAILABLE",
+            "detail": "Git worktree state could not be independently reconciled.",
+            "errors": worktree["errors"],
+        })
+        report["decision"] = "BLOCKED"
+    if hidden_worktree_paths:
+        report.setdefault("findings", []).append({
+            "code": "UNDECLARED_WORKTREE_MUTATION",
+            "paths": hidden_worktree_paths,
+            "detail": "Actual staged, unstaged or untracked repository mutations were omitted from changedPaths.",
+        })
+        report["decision"] = "BLOCKED"
+    report["worktreeReconciliation"] = {
+        **worktree,
+        "declaredPaths": declared_paths,
+        "undeclaredPaths": hidden_worktree_paths,
+        "reconciled": worktree["complete"] and not hidden_worktree_paths,
+    }
     report["universalContext"] = {
         "schemaVersion": context.get("schemaVersion"),
         "snapshotDigest": (context.get("snapshot") or {}).get("snapshotDigest"),

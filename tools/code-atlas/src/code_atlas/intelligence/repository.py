@@ -41,6 +41,7 @@ MANIFEST_NAMES = {
     "Cargo.toml", "go.mod", "pom.xml", "build.gradle", "build.gradle.kts", "Gemfile",
     "composer.json", "mix.exs",
 }
+MAX_TEXT_BYTES = 2_500_000
 
 def _tracked_entries(repo: Path) -> tuple[list[str], str, dict[str, dict[str, Any]]]:
     code, out, _ = run_git(repo, "ls-files", "-s", "-z")
@@ -93,6 +94,7 @@ def _record(repo: Path, rel: str, git_meta: dict[str, Any] | None = None) -> dic
         "gitBlobSha": git_meta.get("gitBlobSha"),
         "gitStage": git_meta.get("gitStage"),
         "exists": exists,
+        "isSymlink": bool(exists and path.is_symlink()),
         "size": size,
         "suffix": Path(rel).suffix.lower(),
         "basename": Path(rel).name,
@@ -106,7 +108,7 @@ def _record(repo: Path, rel: str, git_meta: dict[str, Any] | None = None) -> dic
         "generated": is_generated_path(rel),
     }
 
-def _inspect_safe(repo: Path, row: dict[str, Any], max_text_bytes: int = 2_500_000) -> tuple[str, str | None, str | None, bool]:
+def _inspect_safe(repo: Path, row: dict[str, Any], max_text_bytes: int = MAX_TEXT_BYTES) -> tuple[str, str | None, str | None, bool]:
     if not row["exists"] or row["sensitiveName"]:
         return row["path"], None, None, False
     path = repo / row["path"]
@@ -184,6 +186,52 @@ def _component_roots(paths: set[str], packages: dict[str, Any]) -> list[dict[str
             roots[top] = {"root": top, "kind": "repository-region", "evidence": [f"file-count:{count}"]}
     return sorted(roots.values(), key=lambda row: row["root"])
 
+
+def _semantic_coverage(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    text_candidates = [
+        row for row in rows
+        if row["exists"] and row["isText"] and not row["sensitiveName"]
+    ]
+    readable_candidates = [
+        row for row in text_candidates
+        if not row.get("isSymlink") and (row.get("size") or 0) <= MAX_TEXT_BYTES
+    ]
+    content_read = [row for row in text_candidates if row["contentRead"]]
+    oversized = [row for row in text_candidates if (row.get("size") or 0) > MAX_TEXT_BYTES]
+    symlinks = [row for row in text_candidates if row.get("isSymlink")]
+    unreadable = [
+        row for row in readable_candidates
+        if not row["contentRead"]
+    ]
+    unsupported_or_binary = [
+        row for row in rows
+        if row["exists"] and not row["sensitiveName"] and not row["isText"]
+    ]
+    recognized_source = [
+        row for row in rows
+        if row["exists"] and row.get("language") and not row["sensitiveName"]
+    ]
+    recognized_read = [row for row in recognized_source if row["contentRead"]]
+    recognized_unread = [row for row in recognized_source if not row["contentRead"]]
+    return {
+        "eligibleText": len(text_candidates),
+        "readableEligibleText": len(readable_candidates),
+        "contentRead": len(content_read),
+        "percent": round(100 * len(content_read) / max(1, len(text_candidates)), 4),
+        "oversizedText": len(oversized),
+        "unreadableText": len(unreadable),
+        "sensitiveSkipped": sum(1 for row in rows if row["exists"] and row["sensitiveName"]),
+        "symlinkSkipped": len(symlinks),
+        "unsupportedOrBinary": len(unsupported_or_binary),
+        "recognizedSourceFiles": len(recognized_source),
+        "recognizedSourceRead": len(recognized_read),
+        "recognizedSourceUnreadable": len(recognized_unread),
+        "recognizedSourceCoveragePercent": round(
+            100 * len(recognized_read) / max(1, len(recognized_source)), 4
+        ),
+        "maxTextBytes": MAX_TEXT_BYTES,
+        "rule": "COUNT_SKIPPED_AND_UNREADABLE_EXPLICITLY_NEVER_HIDE_RECOGNIZED_SOURCE",
+    }
 def discover_repository(repo_root: str | Path, *, workers: int = 18) -> dict[str, Any]:
     repo = Path(repo_root).expanduser().resolve()
     if not repo.is_dir():
@@ -214,8 +262,7 @@ def discover_repository(repo_root: str | Path, *, workers: int = 18) -> dict[str
     )
     ownership = sorted(p for p in paths if Path(p).name in {"CODEOWNERS", "OWNERS", "MAINTAINERS"})
     packages = _package_metadata(repo, pathset)
-    semantic_eligible = sum(1 for row in rows if row["isText"] and not row["sensitiveName"] and row["exists"])
-    semantic_read = sum(1 for row in rows if row["isText"] and row["contentRead"])
+    semantic_coverage = _semantic_coverage(rows)
     sensitive = [row["path"] for row in rows if row["sensitiveName"]]
     return {
         "schemaVersion": "code_atlas_repository_discovery.v1",
@@ -231,11 +278,7 @@ def discover_repository(repo_root: str | Path, *, workers: int = 18) -> dict[str
             "gitBlobHashed": sum(1 for row in rows if row.get("gitBlobSha")),
             "sha256Inspected": sum(1 for row in rows if row.get("fileSha256")),
         },
-        "semanticCoverage": {
-            "eligibleText": semantic_eligible,
-            "contentRead": semantic_read,
-            "percent": round(100 * semantic_read / max(1, semantic_eligible), 4),
-        },
+        "semanticCoverage": semantic_coverage,
         "languages": [{"id": k, "files": v} for k, v in languages.most_common()],
         "frameworks": _infer_frameworks(pathset, packages),
         "packages": packages,

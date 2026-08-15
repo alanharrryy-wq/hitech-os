@@ -14,6 +14,8 @@ from code_atlas.intelligence.authority import (
 )
 from code_atlas.intelligence.engine import IntelligenceRequest, run_intelligence
 from code_atlas.intelligence.graphs import build_system_graphs
+from code_atlas.intelligence.common import TEXT_SUFFIXES
+from code_atlas.intelligence.repository import LANGUAGE_SUFFIXES
 from code_atlas.intelligence.index import build_derived_index, query_derived_index
 from code_atlas.intelligence.repository import discover_repository
 from code_atlas.intelligence.snapshot import assess_snapshot_freshness, build_snapshot
@@ -286,6 +288,93 @@ class UniversalIntelligenceTests(unittest.TestCase):
             inv_row = next(row for row in inv["files"] if row["path"] == "archive/architecture-old.md")
             self.assertTrue(inv_row["historical"])
 
+
+    def test_every_recognized_source_suffix_is_text_evidence_eligible(self):
+        self.assertEqual(sorted(set(LANGUAGE_SUFFIXES) - set(TEXT_SUFFIXES)), [])
+
+    def test_rust_source_gets_physical_and_semantic_evidence(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo = Path(td) / "rust repo ü"
+            (repo / "src").mkdir(parents=True)
+            (repo / "Cargo.toml").write_text('[package]\nname="fixture"\nversion="0.1.0"\n', encoding="utf-8")
+            (repo / "src/lib.rs").write_text('mod worker;\npub fn run() -> i32 { worker::value() }\n', encoding="utf-8")
+            (repo / "src/worker.rs").write_text('pub fn value() -> i32 { 1 }\n', encoding="utf-8")
+            _git(repo, "init")
+            _git(repo, "config", "user.email", "test@example.invalid")
+            _git(repo, "config", "user.name", "Test")
+            _git(repo, "add", ".")
+            _git(repo, "commit", "-m", "rust fixture")
+            inv = discover_repository(repo)
+            worker = next(row for row in inv["files"] if row["path"] == "src/worker.rs")
+            self.assertTrue(worker["isText"])
+            self.assertTrue(worker["contentRead"])
+            self.assertIsNotNone(worker["fileSha256"])
+            self.assertIsNotNone(worker["contentSha256"])
+            self.assertEqual(inv["semanticCoverage"]["recognizedSourceFiles"], 2)
+            self.assertEqual(inv["semanticCoverage"]["recognizedSourceRead"], 2)
+            self.assertEqual(inv["semanticCoverage"]["recognizedSourceCoveragePercent"], 100.0)
+
+    def test_js_ts_parent_relative_import_normalizes_before_graph_matching(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo = Path(td) / "ts monorepo"
+            target = repo / "packages/vite/src/node/plugins/define.ts"
+            test = repo / "packages/vite/src/node/__tests__/plugins/define.spec.ts"
+            target.parent.mkdir(parents=True)
+            test.parent.mkdir(parents=True)
+            (repo / "package.json").write_text('{"private":true}', encoding="utf-8")
+            target.write_text('export const definePlugin = () => true\n', encoding="utf-8")
+            test.write_text("import { definePlugin } from '../../plugins/define'\nvoid definePlugin\n", encoding="utf-8")
+            _git(repo, "init")
+            _git(repo, "config", "user.email", "test@example.invalid")
+            _git(repo, "config", "user.name", "Test")
+            _git(repo, "add", ".")
+            _git(repo, "commit", "-m", "ts fixture")
+            inv = discover_repository(repo)
+            auth = discover_authorities(repo, inv, request=AuthorityRequest(fail_on_missing=False))
+            graphs = build_system_graphs(repo, inv, auth, changed_paths=["packages/vite/src/node/plugins/define.ts"])
+            edge = next(
+                row for row in graphs["dependencyGraph"]["edges"]
+                if row["from"] == "packages/vite/src/node/__tests__/plugins/define.spec.ts"
+                and row["to"] == "packages/vite/src/node/plugins/define.ts"
+            )
+            self.assertEqual(edge["type"], "imports")
+            self.assertIn("packages/vite/src/node/__tests__/plugins/define.spec.ts", graphs["changeImpact"]["impacted"])
+
+    def test_rust_module_graph_is_bounded_to_repository_provable_modules(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo = Path(td) / "rust workspace"
+            src = repo / "crates/ignore/src"
+            src.mkdir(parents=True)
+            (repo / "Cargo.toml").write_text('[workspace]\nmembers=["crates/ignore"]\n', encoding="utf-8")
+            (repo / "crates/ignore/Cargo.toml").write_text('[package]\nname="ignore"\nversion="0.1.0"\n', encoding="utf-8")
+            (src / "lib.rs").write_text('mod gitignore;\nmod types;\n', encoding="utf-8")
+            (src / "gitignore.rs").write_text('use crate::types::Types;\nuse std::path::Path;\npub fn f(_: Types) {}\n', encoding="utf-8")
+            (src / "types.rs").write_text('pub struct Types;\n', encoding="utf-8")
+            _git(repo, "init")
+            _git(repo, "config", "user.email", "test@example.invalid")
+            _git(repo, "config", "user.name", "Test")
+            _git(repo, "add", ".")
+            _git(repo, "commit", "-m", "rust graph fixture")
+            inv = discover_repository(repo)
+            auth = discover_authorities(repo, inv, request=AuthorityRequest(fail_on_missing=False))
+            graphs = build_system_graphs(repo, inv, auth, changed_paths=["crates/ignore/src/gitignore.rs"])
+            edges = {(row["from"], row["to"], row["type"]) for row in graphs["dependencyGraph"]["edges"]}
+            self.assertIn(("crates/ignore/src/lib.rs", "crates/ignore/src/gitignore.rs", "rust-mod"), edges)
+            self.assertIn(("crates/ignore/src/gitignore.rs", "crates/ignore/src/types.rs", "rust-use"), edges)
+            self.assertFalse(any(row["to"].startswith("std") for row in graphs["dependencyGraph"]["edges"]))
+            self.assertIn("crates/ignore/src/lib.rs", graphs["changeImpact"]["impacted"])
+
+    def test_architecture_graph_reports_structural_coverage_without_authorization(self):
+        with tempfile.TemporaryDirectory() as td:
+            repo = _init_repo(Path(td))
+            inv = discover_repository(repo)
+            auth = discover_authorities(repo, inv, request=AuthorityRequest(fail_on_missing=False))
+            graph = build_system_graphs(repo, inv, auth)["architectureLayerGraph"]
+            self.assertGreater(graph["coverage"]["classifiedPercent"], 50.0)
+            self.assertEqual(graph["authorizationRule"], "ARCHITECTURE_CLASSIFICATION_NEVER_EXPANDS_ALLOWED_SCOPE")
+            test_row = next(row for row in graph["nodes"] if row["path"] == "tests/test_service.py")
+            self.assertEqual(test_row["layer"], "test")
+            self.assertTrue(test_row["candidateLayers"])
 
 if __name__ == "__main__":
     unittest.main()

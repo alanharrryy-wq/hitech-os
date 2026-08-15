@@ -15,9 +15,15 @@ EXCLUDED_PARTS = {
 HISTORICAL_PARTS = {"archive", "archives", "old", "legacy", "history", "historical", "backup", "backups"}
 GENERATED_PARTS = {"generated", "dist", "build", ".next", "coverage"}
 TEXT_SUFFIXES = {
-    ".py", ".pyi", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".json", ".jsonc",
-    ".md", ".txt", ".csv", ".toml", ".yaml", ".yml", ".xml", ".html", ".css", ".scss",
-    ".sql", ".prisma", ".graphql", ".gql", ".sh", ".ps1", ".cmd", ".bat", ".ini", ".cfg",
+    # Repository-neutral source text. Keep this coherent with languages recognized
+    # by repository discovery so a file cannot be called source code and then be
+    # silently excluded from physical/semantic evidence.
+    ".py", ".pyi", ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".mts", ".cts",
+    ".java", ".kt", ".go", ".rs", ".cs", ".cpp", ".cc", ".c", ".h", ".rb", ".php",
+    ".swift", ".scala",
+    ".json", ".jsonc", ".md", ".txt", ".csv", ".toml", ".yaml", ".yml", ".xml", ".html",
+    ".css", ".scss", ".sql", ".prisma", ".graphql", ".gql", ".sh", ".ps1", ".cmd", ".bat",
+    ".ini", ".cfg",
 }
 SENSITIVE_NAME_RE = re.compile(
     r"(?i)(^|/)(?:\.env(?:\.|$)|[^/]*(?:secret|credential|password|private[_-]?key|access[_-]?token)[^/]*)"
