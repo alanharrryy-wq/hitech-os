@@ -14,8 +14,6 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
-  CAEXT_HITECH_ROOT: ${{ github.workspace }}
-  CAEXT_OUTPUT_ROOT: ${{ runner.temp }}/caext-output
 
 jobs:
   external-evidence:
@@ -66,6 +64,9 @@ jobs:
         id: gate
         continue-on-error: true
         shell: bash
+        env:
+          CAEXT_HITECH_ROOT: ${{ github.workspace }}
+          CAEXT_OUTPUT_ROOT: ${{ runner.temp }}/caext-output
         run: |
           set -euo pipefail
           mkdir -p "$CAEXT_OUTPUT_ROOT"
@@ -74,6 +75,8 @@ jobs:
       - name: List packaged evidence
         if: always()
         shell: bash
+        env:
+          CAEXT_OUTPUT_ROOT: ${{ runner.temp }}/caext-output
         run: |
           set -euo pipefail
           find "$CAEXT_OUTPUT_ROOT" -maxdepth 1 -type f -name 'caext_*.zip' -print -exec sha256sum {} \;
