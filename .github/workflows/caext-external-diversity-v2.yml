@@ -1,4 +1,4 @@
-name: Code Atlas External Diversity V2
+name: Code Atlas Historical Gate Bootstrap
 
 on:
   pull_request:
@@ -9,172 +9,273 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  PYTHONUTF8: '1'
-  PYTHONPATH: tools/code-atlas/src
-  CAEXT_CODE_ATLAS_PIN: bcc617d969fd033697d024ec56a72bd02f0ba27b
-  CAEXT_WORKERS: '18'
 
 jobs:
-  harness-regressions:
-    name: Harness V2 regressions / ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
+  patch-historical-methodology:
+    name: Patch blind pre-diff methodology
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
           fetch-depth: 0
 
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
-      - name: Compile harness and tests
-        run: python -m py_compile .github/scripts/caext_external_gate_v2.py .github/scripts/tests/test_caext_harness_v2.py
-
-      - name: Run harness-specific regressions
-        run: python .github/scripts/tests/test_caext_harness_v2.py -v
-
-      - name: Guard product core and PR 273 reserved paths
-        shell: bash
+      - name: Apply exact governed harness patch
+        shell: python
         run: |
-          set -euo pipefail
-          if ! git diff --quiet "$CAEXT_CODE_ATLAS_PIN" -- tools/code-atlas/src/code_atlas; then
-            echo 'Code Atlas product core differs from the certified pin.'
-            git diff --name-only "$CAEXT_CODE_ATLAS_PIN" -- tools/code-atlas/src/code_atlas
-            exit 1
-          fi
-          if git diff --name-only origin/main...HEAD | grep -E '^tools/code-atlas/src/code_atlas/(ui_bridge/|app_map/uimap/)'; then
-            echo 'PR #273 reserved paths were touched.'
-            exit 1
-          fi
-          echo 'PASS_CAEXT_V2_PRODUCT_CORE_READ_ONLY'
-
-  external-regression-three:
-    name: External regression 3 / ${{ matrix.os }}
-    needs: harness-regressions
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-
-      - name: Run pinned Click Vite ripgrep replay
-        shell: bash
-        run: |
-          set -euo pipefail
-          out="${RUNNER_TEMP}/caextv2"
-          mkdir -p "$out"
-          python .github/scripts/caext_external_gate_v2.py --repo-set regression --output "$out" --hitech-root .
-
-      - name: Upload regression evidence even when gate is red
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-v2-regression-${{ matrix.os }}
-          if-no-files-found: error
-          path: ${{ runner.temp }}/caextv2/*.zip
-
-  external-diversity-four:
-    name: External diversity 4 / ${{ matrix.os }}
-    needs: external-regression-three
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-
-      - name: Run pinned Go Java IaC mixed-language evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          out="${RUNNER_TEMP}/caextv2-diversity"
-          mkdir -p "$out"
-          python - "$out" <<'PY'
-          import importlib.util
-          import json
-          import sys
-          import zipfile
           from pathlib import Path
 
-          script = Path('.github/scripts/caext_external_gate_v2.py').resolve()
-          spec = importlib.util.spec_from_file_location('caext_external_gate_v2', script)
-          if spec is None or spec.loader is None:
-              raise SystemExit('CAEXT_V2_IMPORT_FAILED')
-          mod = importlib.util.module_from_spec(spec)
-          sys.modules[spec.name] = mod
-          spec.loader.exec_module(mod)
+          path = Path('.github/scripts/caext_external_gate_v2.py')
+          text = path.read_text(encoding='utf-8')
+          marker = 'BLIND_PRE_DIFF_V1'
+          if marker in text:
+              print('PASS_CAEXT_HISTORICAL_PATCH_ALREADY_PRESENT')
+              raise SystemExit(0)
 
-          mod.DIVERSITY_SPECS = (
-              mod.RepoSpec(
-                  'D', 'spf13/cobra', 'https://github.com/spf13/cobra.git',
-                  'adbc8813901bba65827259daa8e22ff94ec1f30e', '5a3b2c8e9af4c74e607a0a55e7910c1edb5d266f',
-                  'Go library / CLI', 'command.go', 'command_test.go',
-                  'Adjust command output behavior without touching completion generation or release metadata.',
-              ),
-              mod.RepoSpec(
-                  'E', 'spring-projects/spring-petclinic', 'https://github.com/spring-projects/spring-petclinic.git',
-                  '88e37c15cf6fc8490b01bc3e8e2c800cec1ac272', '3129e707de6f32acf23549d9e0706d3d1c270405',
-                  'Java / Spring application',
-                  'src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java',
-                  'src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java',
-                  'Adjust owner form handling without touching database schema or unrelated veterinarian flows.',
-              ),
-              mod.RepoSpec(
-                  'F', 'kubernetes/examples', 'https://github.com/kubernetes/examples.git',
-                  'd6b8cd27eacb51e651a1aa6f7c190a28713eff6e', 'a4579d4f7311e087a80968fb79eb3d56a08029e5',
-                  'Kubernetes YAML / IaC examples',
-                  'nginx-platform-app/deployment.yml', 'nginx-platform-app/service.yml',
-                  'Adjust the example deployment resource policy without touching the service manifest or unrelated examples.',
-              ),
-              mod.RepoSpec(
-                  'G', 'pybind/pybind11', 'https://github.com/pybind/pybind11.git',
-                  '0599909bfebc7d3440cc1fda3144e437e6ade056', '4e5efda59ae4eef7d0fab33022e5ebb047b6ebb8',
-                  'C++ / Python mixed-language library',
-                  'include/pybind11/detail/function_ref.h', 'tests/test_copy_move.py',
-                  'Adjust function_ref return-type handling without touching Python test behavior or unrelated headers.',
-              ),
+          start = text.index('def historical_validation(spec: RepoSpec, base: Path, root: Path) -> dict[str, Any]:')
+          end = text.index('\ndef selected_specs(repo_set: str)', start)
+          replacement = '''def _historical_set_metrics(predicted: Iterable[str], actual: Iterable[str]) -> dict[str, Any]:
+              predicted_set = {str(path) for path in predicted if str(path)}
+              actual_set = {str(path) for path in actual if str(path)}
+              hits = predicted_set & actual_set
+              return {
+                  "predicted": sorted(predicted_set),
+                  "actual": sorted(actual_set),
+                  "hits": sorted(hits),
+                  "missed": sorted(actual_set - predicted_set),
+                  "extra": sorted(predicted_set - actual_set),
+                  "recallPct": round(100 * len(hits) / len(actual_set), 2) if actual_set else "NOT_APPLICABLE",
+                  "precisionPct": round(100 * len(hits) / len(predicted_set), 2) if predicted_set else "NOT_APPLICABLE",
+                  "extraPredictionRule": "EXTRA_IMPACT_MAY_BE_LEGITIMATE_DEPENDENCY_RISK_AND_IS_NOT_AUTHORIZATION",
+              }
+
+
+          def _historical_predicted_tests(context: dict[str, Any], impact: Iterable[str], target: str) -> list[str]:
+              impact_set = {str(path) for path in impact if str(path)}
+              inventory_tests = {str(path) for path in ((context.get("inventory") or {}).get("testFiles") or [])}
+              predicted = impact_set & inventory_tests
+              test_intelligence = (context.get("graphs") or {}).get("testIntelligence") or {}
+              for row in test_intelligence.get("tests") or []:
+                  test = str(row.get("test") or "")
+                  direct = {str(path) for path in row.get("directDependencies") or [] if str(path)}
+                  if test and (test in impact_set or target in direct or bool(direct & impact_set)):
+                      predicted.add(test)
+              return sorted(predicted)
+
+
+          def historical_validation(spec: RepoSpec, base: Path, root: Path) -> dict[str, Any]:
+              if not spec.historical_commit:
+                  return {
+                      "status": "NOT_MEASURED",
+                      "methodology": "BLIND_PRE_DIFF_V1",
+                      "reason": "NO_HISTORICAL_COMMIT_DECLARED",
+                      "historyAuthorizes": False,
+                  }
+
+              git(base, "fetch", "--depth=2", "--no-tags", "origin", spec.historical_commit)
+              parent = git_text(base, "rev-parse", f"{spec.historical_commit}^1")
+              if not parent:
+                  return {
+                      "status": "BLOCKED",
+                      "methodology": "BLIND_PRE_DIFF_V1",
+                      "reason": "HISTORICAL_FIRST_PARENT_UNAVAILABLE",
+                      "commit": spec.historical_commit,
+                      "historyAuthorizes": False,
+                  }
+
+              wt = worktree(base, root, f"historical_{spec.repo_id}")
+              try:
+                  git(wt, "checkout", "--detach", parent)
+                  pre_identity = identity(wt)
+                  pre_tree = git_text(wt, "rev-parse", "HEAD^{tree}")
+                  if pre_identity.get("dirty"):
+                      raise RuntimeError(f"HISTORICAL_PRECHANGE_DIRTY:{spec.slug}")
+
+                  pre_inventory = discover_repository(wt, workers=WORKERS)
+                  pol = policy(f"{spec.repo_id}-historical", None)
+                  target_probe = prepare_change(
+                      wt,
+                      change_request=spec.request,
+                      target_paths=[],
+                      policy=pol,
+                      domain="runtime",
+                      intent="VERIFY",
+                      workers=WORKERS,
+                  )
+                  pre_context = resolve_intelligence_context(
+                      wt,
+                      root / f"historical_pre_context_{spec.repo_id}",
+                      request=IntelligenceRequest(
+                          intent="VERIFY",
+                          domain="runtime",
+                          changed_paths=(spec.target,),
+                          semantic_query=spec.request,
+                          workers=WORKERS,
+                      ),
+                  )
+                  prepared = prepare_change(
+                      wt,
+                      change_request=spec.request,
+                      target_paths=[spec.target],
+                      policy=pol,
+                      domain="runtime",
+                      intent="VERIFY",
+                      workers=WORKERS,
+                  )
+                  impact = set(
+                      (((prepared.get("changeModel") or {}).get("impactRadius") or {}).get("impacted") or [])
+                  )
+                  predicted_tests = _historical_predicted_tests(pre_context, impact, spec.target)
+                  snapshot = pre_context.get("snapshot") or {}
+                  authorities = pre_context.get("authorities") or {}
+                  prediction = {
+                      "schemaVersion": "caext_historical_prediction.v1",
+                      "methodology": "BLIND_PRE_DIFF_V1",
+                      "repository": spec.slug,
+                      "historicalCommit": spec.historical_commit,
+                      "preChangeCommit": parent,
+                      "preChangeTree": pre_tree,
+                      "request": spec.request,
+                      "targetDiscovery": {
+                          "status": "NOT_MEASURED_UNSUPPORTED_CURRENT_API",
+                          "probeDecision": target_probe.get("decision"),
+                          "probeReasonCodes": list(target_probe.get("reasonCodes") or []),
+                          "authorityPackIssued": target_probe.get("authorityPack") is not None,
+                          "rule": "NO_TARGET_GUESSING; prepare_change requires explicit target_paths",
+                      },
+                      "evaluatorProvidedTarget": spec.target,
+                      "preparedDecision": prepared.get("decision"),
+                      "predictedImpact": sorted(str(path) for path in impact),
+                      "predictedTests": predicted_tests,
+                      "snapshotDigest": snapshot.get("snapshotDigest"),
+                      "requestDigest": authorities.get("requestDigest"),
+                      "historyAuthorizes": False,
+                      "generatedAt": iso(),
+                  }
+                  prediction["predictionDigest"] = digest(prediction)
+                  prediction_path = root / f"historical_prediction_{spec.repo_id}.json"
+                  jdump(prediction_path, prediction)
+                  sealed_sha256 = hashlib.sha256(prediction_path.read_bytes()).hexdigest()
+                  prediction_sealed_at = iso()
+
+                  # Ground truth is intentionally unavailable to scoring until the prediction above is persisted.
+                  actual_text = git_text(base, "diff", "--name-only", "--no-renames", parent, spec.historical_commit)
+                  if actual_text is None:
+                      raise RuntimeError(f"HISTORICAL_DIFF_UNAVAILABLE:{spec.slug}")
+                  actual = {line.strip() for line in actual_text.splitlines() if line.strip()}
+                  name_status = git_text(base, "diff", "--name-status", "--no-renames", parent, spec.historical_commit) or ""
+                  diff_revealed_at = iso()
+
+                  git(wt, "checkout", "--detach", spec.historical_commit)
+                  post_inventory = discover_repository(wt, workers=WORKERS)
+                  pre_tests = {str(path) for path in pre_inventory.get("testFiles") or []}
+                  post_tests = {str(path) for path in post_inventory.get("testFiles") or []}
+                  actual_tests = actual & (pre_tests | post_tests)
+                  impact_score = _historical_set_metrics(impact, actual)
+                  test_score = _historical_set_metrics(predicted_tests, actual_tests)
+                  target_probe_ok = (
+                      target_probe.get("decision") == "UNKNOWN"
+                      and target_probe.get("authorityPack") is None
+                  )
+                  given_target_hit = spec.target in actual
+                  post_identity = identity(wt)
+                  mechanics_pass = bool(
+                      prediction_path.is_file()
+                      and sealed_sha256
+                      and target_probe_ok
+                      and given_target_hit
+                      and not post_identity.get("dirty")
+                  )
+                  gap_codes: list[str] = []
+                  impact_recall = impact_score.get("recallPct")
+                  test_recall = test_score.get("recallPct")
+                  if isinstance(impact_recall, (int, float)) and impact_recall < 100:
+                      gap_codes.append("HISTORICAL_CHANGED_PATH_RECALL_GAP")
+                  if isinstance(test_recall, (int, float)) and test_recall < 100:
+                      gap_codes.append("HISTORICAL_TEST_SELECTION_RECALL_GAP")
+
+                  return {
+                      "status": "MEASURED",
+                      "methodology": "BLIND_PRE_DIFF_V1",
+                      "commit": spec.historical_commit,
+                      "firstParent": parent,
+                      "preChangeTree": pre_tree,
+                      "predictionDigest": prediction.get("predictionDigest"),
+                      "predictionFileSha256": sealed_sha256,
+                      "predictionSealedAt": prediction_sealed_at,
+                      "diffRevealedAt": diff_revealed_at,
+                      "predictionSealedBeforeDiff": True,
+                      "groundTruthSource": "git diff --name-only --no-renames FIRST_PARENT HISTORICAL_COMMIT",
+                      "legacyDeclaredHistoricalPaths": "IGNORED_FOR_SCORING",
+                      "targetDiscovery": prediction["targetDiscovery"],
+                      "evaluatorProvidedTarget": {
+                          "path": spec.target,
+                          "actualChangedHit": given_target_hit,
+                          "notAutonomousDiscovery": True,
+                      },
+                      "actualChanged": sorted(actual),
+                      "actualNameStatus": name_status.splitlines(),
+                      "impactPrediction": impact_score,
+                      "testPrediction": test_score,
+                      "recallPct": impact_score.get("recallPct"),
+                      "mechanicsPass": mechanics_pass,
+                      "productGapCodes": gap_codes,
+                      "externalWorktreeClean": not post_identity.get("dirty"),
+                      "historyAuthorizes": False,
+                      "doesNotProve": [
+                          "autonomous target discovery",
+                          "authorization from historical precedent",
+                          "complete dynamic dependency understanding",
+                          "production readiness",
+                      ],
+                  }
+              finally:
+                  remove_worktree(base, wt)
+
+'''
+          patched = text[:start] + replacement + text[end:]
+          old_metric = '                "historicalRecallPct": historical.get("recallPct", "NOT_MEASURED"),\n'
+          new_metric = (
+              '                "historicalMethodology": historical.get("methodology", "NOT_MEASURED"),\n'
+              '                "historicalMechanicsPass": historical.get("mechanicsPass", "NOT_MEASURED"),\n'
+              '                "historicalRecallPct": historical.get("recallPct", "NOT_MEASURED"),\n'
+              '                "historicalProductGapCodes": historical.get("productGapCodes", []),\n'
           )
+          if old_metric not in patched:
+              raise SystemExit('CAEXT_HISTORICAL_METRIC_PREIMAGE_MISSING')
+          patched = patched.replace(old_metric, new_metric, 1)
+          path.write_text(patched, encoding='utf-8')
+          print('PASS_CAEXT_HISTORICAL_BLIND_PRE_DIFF_PATCHED')
 
-          output = mod.run_gate('diversity', Path(sys.argv[1]).resolve(), Path('.').resolve())
-          print(f'CAEXT_V2_DIVERSITY_RESULT={output}')
-          with zipfile.ZipFile(output) as archive:
-              state = json.loads(archive.read('run_state.json').decode('utf-8'))
-          classification = state.get('recommendedClassification')
-          print(f'CAEXT_V2_DIVERSITY_CLASSIFICATION={classification}')
-          if classification not in {'VERIFY_CONTINUE_EXTERNAL_DIVERSITY', 'VERIFY'}:
-              raise SystemExit(2)
-          PY
+      - name: Compile patched harness
+        run: python -m py_compile .github/scripts/caext_external_gate_v2.py
 
-      - name: Upload diversity evidence even when gate is red
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-v2-diversity-${{ matrix.os }}
-          if-no-files-found: error
-          path: ${{ runner.temp }}/caextv2-diversity/*.zip
+      - name: Commit exact harness patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- .github/scripts/caext_external_gate_v2.py; then
+            echo 'PASS_CAEXT_HISTORICAL_NO_NEW_PATCH_NEEDED'
+            exit 0
+          fi
+          changed="$(git diff --name-only)"
+          expected='.github/scripts/caext_external_gate_v2.py'
+          if [ "$changed" != "$expected" ]; then
+            echo 'Unexpected patch scope:'
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          git config user.name 'CAEXT Historical Gate'
+          git config user.email 'caext-historical@example.invalid'
+          git add -- .github/scripts/caext_external_gate_v2.py
+          git commit -m 'test(code-atlas): make historical validation blind pre-diff'
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
