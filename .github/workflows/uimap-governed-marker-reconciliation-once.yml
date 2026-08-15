@@ -1,0 +1,701 @@
+name: UIMAP Governed Marker Reconciliation Once
+
+on:
+  push:
+    branches:
+      - agent/prisma-html-three-app-visual-closure
+    paths:
+      - .github/workflows/uimap-governed-marker-reconciliation-once.yml
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  EXPECTED_PARENT: da10ca11bcb1e1171d14122f7cbcb148e529ec86
+  EXPECTED_RUNNER_BLOB: 76ec89e8339e933a587bd625909341853117ef8e
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout transaction branch
+        uses: actions/checkout@v6
+        with:
+          ref: agent/prisma-html-three-app-visual-closure
+          fetch-depth: 2
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Fail closed on preimage drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
+          test "$(git hash-object tools/code-atlas/src/code_atlas/app_map/uimap/runner.py)" = "$EXPECTED_RUNNER_BLOB"
+          test ! -e tools/code-atlas/src/code_atlas/app_map/uimap/governed_markers.py
+          test ! -e tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+      - name: Add governed marker authority reconciler
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > tools/code-atlas/src/code_atlas/app_map/uimap/governed_markers.py <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          from pathlib import Path
+          from typing import Any, Iterable
+
+          CERTIFIED_PILOT_STATUSES = {
+              "EXACT_TARGET_AUTHORIZED_FOR_GOVERNED_APPLICATION",
+          }
+
+          RUNTIME_MARKER_NAMES = {
+              "tb": "tablet",
+              "pc": "pc",
+              "mb": "mobile",
+              "web": "web",
+              "cl": "chart-lab",
+              "cc": "control-center",
+              "cmd": "cloud-command-center",
+              "shared": "shared-ui",
+          }
+
+          REQUIRED_PILOT_FIELDS = (
+              "surfaceId",
+              "routeId",
+              "runtimeRoute",
+              "ownerId",
+              "ownerSymbol",
+              "regionId",
+              "slotId",
+              "componentUiId",
+              "recipeId",
+              "visualStackId",
+              "bindingId",
+              "adapterId",
+              "neutralLayerId",
+              "implementationLayerId",
+              "sourceOwner",
+              "cssOwner",
+          )
+
+          MARKER_TO_PILOT_FIELD = {
+              "data-prisma-route": "runtimeRoute",
+              "data-prisma-owner": "ownerSymbol",
+              "data-prisma-region": "regionId",
+              "data-prisma-slot": "slotId",
+              "data-prisma-component-ui-id": "componentUiId",
+              "data-prisma-recipe": "recipeId",
+              "data-prisma-visual-stack": "visualStackId",
+              "data-prisma-binding": "bindingId",
+              "data-prisma-adapter": "adapterId",
+              "data-prisma-neutral-layer": "neutralLayerId",
+          }
+
+
+          def _sha256(path: Path) -> str:
+              digest = hashlib.sha256()
+              with path.open("rb") as handle:
+                  for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                      digest.update(chunk)
+              return digest.hexdigest().upper()
+
+
+          def _repo_rel(root: Path, path: Path) -> str:
+              try:
+                  return path.resolve().relative_to(root.resolve()).as_posix()
+              except Exception:
+                  return path.as_posix()
+
+
+          def _pilot_contract_paths(product_root: Path) -> Iterable[Path]:
+              roots = (
+                  product_root / "apps/terminal-de-venta-system/products",
+                  product_root / "products",
+              )
+              seen: set[Path] = set()
+              for products in roots:
+                  if not products.is_dir():
+                      continue
+                  for path in sorted(products.glob("*/app/docs/visual-pilots/*.contract.json")):
+                      resolved = path.resolve()
+                      if resolved in seen or not resolved.is_file():
+                          continue
+                      seen.add(resolved)
+                      yield resolved
+
+
+          def load_governed_pilot_contracts(product_root: Path) -> dict[str, list[dict[str, Any]]]:
+              """Index certified pilot contracts by exact componentUiId.
+
+              The index is evidence, not authority by path name. Only explicitly
+              certified statuses enter the index; malformed certified entries remain
+              visible so candidate reconciliation can fail closed on them.
+              """
+              root = product_root.resolve()
+              index: dict[str, list[dict[str, Any]]] = {}
+              for path in _pilot_contract_paths(root):
+                  try:
+                      payload = json.loads(path.read_text(encoding="utf-8"))
+                  except Exception:
+                      continue
+                  if not isinstance(payload, dict) or payload.get("status") not in CERTIFIED_PILOT_STATUSES:
+                      continue
+                  pilot = payload.get("pilot")
+                  if not isinstance(pilot, dict):
+                      continue
+                  component_ui_id = str(pilot.get("componentUiId") or "").strip()
+                  if not component_ui_id:
+                      continue
+                  index.setdefault(component_ui_id, []).append({
+                      "contractPath": _repo_rel(root, path),
+                      "contractHash": _sha256(path),
+                      "contractSchema": payload.get("schema"),
+                      "contractStatus": payload.get("status"),
+                      "taskId": payload.get("taskId"),
+                      "pilot": pilot,
+                  })
+              for component_ui_id in list(index):
+                  index[component_ui_id] = sorted(
+                      index[component_ui_id],
+                      key=lambda row: (str(row.get("contractPath")), str(row.get("contractHash"))),
+                  )
+              return index
+
+
+          def _governed_marker_present(attrs: dict[str, str]) -> bool:
+              return bool(
+                  attrs.get("data-prisma-component-ui-id")
+                  or attrs.get("data-prisma-binding")
+              )
+
+
+          def reconcile_governed_candidate(
+              candidate: Any,
+              css_targets: list[Any],
+              pilot_index: dict[str, list[dict[str, Any]]],
+              existing_selector_authority: dict[str, Any] | None = None,
+          ) -> tuple[dict[str, Any] | None, list[str], list[dict[str, Any]]]:
+              """Return an exact visual trace only after certified cross-check.
+
+              Raw data-prisma-* markers never grant authority. A candidate is
+              reconciled only when its static markers, route, owner source and CSS
+              owner all agree with one certified pilot contract. Neutral meaning is
+              intentionally absent from the returned trace.
+              """
+              attrs = dict(getattr(candidate, "data_attributes", {}) or {})
+              if not _governed_marker_present(attrs):
+                  return None, [], []
+
+              component_ui_id = str(attrs.get("data-prisma-component-ui-id") or "").strip()
+              if not component_ui_id:
+                  return None, ["GOVERNED_MARKER_COMPONENT_UI_ID_MISSING"], []
+
+              matches = list(pilot_index.get(component_ui_id) or [])
+              if not matches:
+                  return None, ["GOVERNED_MARKER_AUTHORITY_NOT_FOUND"], []
+              if len(matches) != 1:
+                  return None, ["GOVERNED_MARKER_AUTHORITY_AMBIGUOUS"], [
+                      {
+                          "evidenceType": "CERTIFIED_VISUAL_PILOT_CONTRACT",
+                          "sourceFile": str(row.get("contractPath") or ""),
+                          "sourceHash": str(row.get("contractHash") or ""),
+                      }
+                      for row in matches
+                  ]
+
+              contract = matches[0]
+              pilot = contract.get("pilot") or {}
+              evidence = [{
+                  "evidenceType": "CERTIFIED_VISUAL_PILOT_CONTRACT",
+                  "sourceFile": str(contract.get("contractPath") or ""),
+                  "sourceHash": str(contract.get("contractHash") or ""),
+              }]
+              blockers: list[str] = []
+
+              for field in REQUIRED_PILOT_FIELDS:
+                  if not str(pilot.get(field) or "").strip():
+                      blockers.append(f"GOVERNED_PILOT_CONTRACT_INCOMPLETE:{field}")
+
+              for marker, pilot_field in MARKER_TO_PILOT_FIELD.items():
+                  actual = str(attrs.get(marker) or "").strip()
+                  expected = str(pilot.get(pilot_field) or "").strip()
+                  if not actual:
+                      blockers.append(f"GOVERNED_MARKER_MISSING:{marker}")
+                  elif actual != expected:
+                      blockers.append(f"GOVERNED_MARKER_MISMATCH:{marker}")
+
+              runtime_alias = str(getattr(candidate, "runtime_alias", "") or "")
+              expected_surface_marker = RUNTIME_MARKER_NAMES.get(runtime_alias, runtime_alias)
+              if str(attrs.get("data-prisma-surface") or "").strip() != expected_surface_marker:
+                  blockers.append("GOVERNED_MARKER_MISMATCH:data-prisma-surface")
+              if not str(pilot.get("surfaceId") or "").startswith(f"SURF.{runtime_alias}."):
+                  blockers.append("GOVERNED_PILOT_SURFACE_RUNTIME_MISMATCH")
+
+              if str(getattr(candidate, "route_path", "") or "") != str(pilot.get("runtimeRoute") or ""):
+                  blockers.append("GOVERNED_CANDIDATE_ROUTE_PATH_MISMATCH")
+              if str(getattr(candidate, "route_id", "") or "") != str(pilot.get("routeId") or ""):
+                  blockers.append("GOVERNED_CANDIDATE_ROUTE_ID_MISMATCH")
+              if str(getattr(candidate, "owner_file", "") or "") != str(pilot.get("sourceOwner") or ""):
+                  blockers.append("GOVERNED_CANDIDATE_SOURCE_OWNER_MISMATCH")
+
+              source_owner_marker = str(attrs.get("data-prisma-source-owner") or "").strip()
+              if source_owner_marker and source_owner_marker != Path(str(pilot.get("sourceOwner") or "")).name:
+                  blockers.append("GOVERNED_MARKER_MISMATCH:data-prisma-source-owner")
+              css_owner_marker = str(attrs.get("data-prisma-css-owner") or "").strip()
+              if css_owner_marker and css_owner_marker != Path(str(pilot.get("cssOwner") or "")).name:
+                  blockers.append("GOVERNED_MARKER_MISMATCH:data-prisma-css-owner")
+
+              style_sources = {
+                  str(getattr(target, "source_file", "") or "")
+                  for target in css_targets
+              }
+              if str(pilot.get("cssOwner") or "") not in style_sources:
+                  blockers.append("GOVERNED_CANDIDATE_CSS_OWNER_MISMATCH")
+
+              if existing_selector_authority:
+                  authority_pairs = {
+                      "layerId": "neutralLayerId",
+                      "implementationLayerId": "implementationLayerId",
+                      "bindingId": "bindingId",
+                  }
+                  for authority_field, pilot_field in authority_pairs.items():
+                      existing = existing_selector_authority.get(authority_field)
+                      expected = pilot.get(pilot_field)
+                      if existing and expected and str(existing) != str(expected):
+                          blockers.append(f"GOVERNED_MARKER_CENTRAL_AUTHORITY_MISMATCH:{authority_field}")
+
+              if blockers:
+                  return None, sorted(set(blockers)), evidence
+
+              return {
+                  "surfaceId": str(pilot["surfaceId"]),
+                  "routeId": str(pilot["routeId"]),
+                  "ownerId": str(pilot["ownerId"]),
+                  "ownerSymbol": str(pilot["ownerSymbol"]),
+                  "regionId": str(pilot["regionId"]),
+                  "slotId": str(pilot["slotId"]),
+                  "componentUiId": str(pilot["componentUiId"]),
+                  "bindingId": str(pilot["bindingId"]),
+                  "layerId": str(pilot["neutralLayerId"]),
+                  "implementationLayerId": str(pilot["implementationLayerId"]),
+                  "adapterId": str(pilot["adapterId"]),
+                  "recipeId": str(pilot["recipeId"]),
+                  "visualStackId": str(pilot["visualStackId"]),
+                  "contractPath": str(contract["contractPath"]),
+                  "contractHash": str(contract["contractHash"]),
+              }, [], evidence
+          PY
+
+      - name: Patch UIMAP record reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('tools/code-atlas/src/code_atlas/app_map/uimap/runner.py')
+          text = path.read_text(encoding='utf-8')
+
+          def replace_once(old: str, new: str, label: str) -> None:
+              global text
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}_PREIMAGE_MISMATCH:{count}')
+              text = text.replace(old, new, 1)
+
+          replace_once(
+              '    widget_type_id,\n)\n\nGOLDEN_BINDING_ID',
+              '    widget_type_id,\n)\nfrom .governed_markers import (\n    load_governed_pilot_contracts,\n    reconcile_governed_candidate,\n)\n\nGOLDEN_BINDING_ID',
+              'IMPORT',
+          )
+          replace_once(
+              '    golden_trace: dict[str, Any],\n    golden_evidence: list[dict[str, Any]],\n) -> dict[str, Any]:',
+              '    golden_trace: dict[str, Any],\n    golden_evidence: list[dict[str, Any]],\n    governed_marker_authority: dict[str, list[dict[str, Any]]],\n) -> dict[str, Any]:',
+              'SIGNATURE',
+          )
+          replace_once(
+              '''    if component_id.endswith(".item"):\n        component_id = component_id[:-5]\n\n    neutral_meaning_id = None\n    related_neutral_ids: list[str] = []\n    ndc_status = "CANDIDATE"\n    confidence = "MEDIUM" if candidate.class_name else "LOW"\n    recipe_coverage = "NOT_EVALUATED"\n''',
+              '''    if component_id.endswith(".item"):\n        component_id = component_id[:-5]\n\n    governed_trace, governed_marker_blockers, governed_marker_evidence = (\n        (None, [], [])\n        if is_golden\n        else reconcile_governed_candidate(\n            candidate,\n            css_targets,\n            governed_marker_authority,\n            auth,\n        )\n    )\n    adapter_id = ADAPTERS[runtime]\n    governed_recipe_id = None\n    resolved_owner_symbol = candidate.owner_symbol\n    resolved_render_symbol = candidate.render_symbol\n    if governed_trace:\n        surface_id = governed_trace["surfaceId"]\n        route_id = governed_trace["routeId"]\n        region_id = governed_trace["regionId"]\n        slot_id = governed_trace["slotId"]\n        locator = governed_trace["componentUiId"]\n        owner_id = governed_trace["ownerId"]\n        resolved_owner_symbol = governed_trace["ownerSymbol"]\n        resolved_render_symbol = governed_trace["ownerSymbol"]\n        layer_id = governed_trace["layerId"]\n        implementation_layer_id = governed_trace["implementationLayerId"]\n        binding_id = governed_trace["bindingId"]\n        adapter_id = governed_trace["adapterId"]\n        governed_recipe_id = governed_trace["recipeId"]\n\n    neutral_meaning_id = None\n    related_neutral_ids: list[str] = []\n    ndc_status = "CANDIDATE"\n    confidence = "HIGH" if governed_trace else ("MEDIUM" if candidate.class_name else "LOW")\n    recipe_coverage = "NOT_EVALUATED"\n''',
+              'GOVERNED_TRACE',
+          )
+          replace_once(
+              '    blockers: list[str] = list(auth_blockers)\n',
+              '    blockers: list[str] = list(auth_blockers) + list(governed_marker_blockers)\n',
+              'BLOCKERS',
+          )
+          replace_once(
+              '''    evidence_refs: list[dict[str, Any]] = [{\n        "evidenceType": "RENDER_SOURCE",\n        "sourceFile": candidate.render_source_file,\n        "sourceHash": candidate.source_hash,\n    }]\n''',
+              '''    evidence_refs: list[dict[str, Any]] = [{\n        "evidenceType": "RENDER_SOURCE",\n        "sourceFile": candidate.render_source_file,\n        "sourceHash": candidate.source_hash,\n    }]\n    evidence_refs.extend(governed_marker_evidence)\n''',
+              'EVIDENCE',
+          )
+          replace_once(
+              '''    source_hashes = {\n        "ownerFile": candidate.source_hash,\n        "renderSourceFile": candidate.source_hash,\n    }\n''',
+              '''    source_hashes = {\n        "ownerFile": candidate.source_hash,\n        "renderSourceFile": candidate.source_hash,\n    }\n    if governed_trace:\n        source_hashes[governed_trace["contractPath"]] = governed_trace["contractHash"]\n''',
+              'SOURCE_HASHES',
+          )
+          replace_once(
+              '        "adapterId": ADAPTERS[runtime],\n',
+              '        "adapterId": adapter_id,\n',
+              'IDENTITY_ADAPTER',
+          )
+          replace_once(
+              '    if candidate.multiple_owner_candidates or auth_blockers:\n        target_status = "BLOCKED_BY_CONFLICT"\n',
+              '    if candidate.multiple_owner_candidates or auth_blockers or governed_marker_blockers:\n        target_status = "BLOCKED_BY_CONFLICT"\n',
+              'TARGET_CONFLICT',
+          )
+          replace_once(
+              '        candidate.owner_id if False else candidate.owner_symbol, candidate.render_source_file,\n',
+              '        candidate.owner_id if False else resolved_owner_symbol, candidate.render_source_file,\n',
+              'NOOP_OWNER_SENTINEL',
+          ) if False else None
+          replace_once(
+              '''        component_id, locator, identity_probe["widgetTypeId"],\n        owner_id, candidate.owner_file, candidate.owner_symbol, candidate.render_source_file,\n        candidate.render_symbol, targets, binding_id, layer_id, implementation_layer_id,\n        ADAPTERS[runtime], evidence_refs, source_hashes,\n''',
+              '''        component_id, locator, identity_probe["widgetTypeId"],\n        owner_id, candidate.owner_file, resolved_owner_symbol, candidate.render_source_file,\n        resolved_render_symbol, targets, binding_id, layer_id, implementation_layer_id,\n        adapter_id, evidence_refs, source_hashes,\n''',
+              'COMPLETE_CHAIN',
+          )
+          replace_once(
+              '        "ownerSymbol": candidate.owner_symbol,\n        "renderSourceFile": candidate.render_source_file,\n        "renderSymbol": candidate.render_symbol,\n',
+              '        "ownerSymbol": resolved_owner_symbol,\n        "renderSourceFile": candidate.render_source_file,\n        "renderSymbol": resolved_render_symbol,\n',
+              'RESOLVED_SYMBOLS',
+          )
+          replace_once(
+              '        "adapterId": ADAPTERS[runtime],\n        "recipeCompatibility": {\n            "coverageStatus": recipe_coverage,\n            "compatibleRecipeIds": ["REC.button.primary"] if is_golden else [],\n',
+              '        "adapterId": adapter_id,\n        "recipeCompatibility": {\n            "coverageStatus": recipe_coverage,\n            "compatibleRecipeIds": (["REC.button.primary"] if is_golden else ([governed_recipe_id] if governed_recipe_id else [])),\n',
+              'RECORD_ADAPTER_RECIPE',
+          )
+          replace_once(
+              '''    authority_index = build_authority_indexes(product, governor)\n    golden_trace, golden_evidence = discover_golden_trace(\n''',
+              '''    authority_index = build_authority_indexes(product, governor)\n    governed_marker_authority = load_governed_pilot_contracts(product)\n    golden_trace, golden_evidence = discover_golden_trace(\n''',
+              'LOAD_MARKER_AUTHORITY',
+          )
+          replace_once(
+              '''                golden_trace,\n                golden_evidence,\n            )\n''',
+              '''                golden_trace,\n                golden_evidence,\n                governed_marker_authority,\n            )\n''',
+              'CALL_MARKER_AUTHORITY',
+          )
+
+          path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+
+      - name: Add focused regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import tempfile
+          import unittest
+          from pathlib import Path
+
+          from code_atlas.app_map.uimap.discovery import CssTarget, UiCandidate
+          from code_atlas.app_map.uimap.governed_markers import (
+              load_governed_pilot_contracts,
+              reconcile_governed_candidate,
+          )
+          from code_atlas.app_map.uimap.runner import record_from_candidate
+
+
+          SOURCE_OWNER = "apps/terminal-de-venta-system/products/pc/app/components/inventory/inventory-workspace.tsx"
+          CSS_OWNER = "apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css"
+
+
+          def pilot_payload() -> dict:
+              return {
+                  "schema": "prisma.pc-stock-ficha-tablet-licenses-visual-pilot.contract.v1",
+                  "status": "EXACT_TARGET_AUTHORIZED_FOR_GOVERNED_APPLICATION",
+                  "taskId": "PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1",
+                  "pilot": {
+                      "surfaceId": "SURF.pc.backoffice",
+                      "routeId": "ROUTE.pc.stock",
+                      "runtimeRoute": "/stock",
+                      "ownerId": "OWN.pc.inventory.stock_ficha",
+                      "ownerSymbol": "StockFicha",
+                      "regionId": "ZONE.pc.stock.detail",
+                      "slotId": "SLOT.pc.stock.detail.primary",
+                      "componentUiId": "PC-STOCK-FICHA-PANEL-01",
+                      "recipeId": "REC.panel.operational.cloudglass",
+                      "visualStackId": "VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+                      "bindingId": "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+                      "adapterId": "ADP.PC.DENSE.CLOUDGLASS.V1",
+                      "neutralLayerId": "LYR.SURFACE.OPERATIONAL.DETAIL",
+                      "implementationLayerId": "products.pc.app.components.inventory.pc.inventory.master.detail.module.css.productficha",
+                      "runtimeSelector": "[data-pcinv-product-ficha=\"stock\"]",
+                      "sourceOwner": SOURCE_OWNER,
+                      "cssOwner": CSS_OWNER,
+                  },
+              }
+
+
+          def candidate(*, route_path: str = "/stock", component_ui_id: str = "PC-STOCK-FICHA-PANEL-01") -> UiCandidate:
+              attrs = {
+                  "data-prisma-surface": "pc",
+                  "data-prisma-route": "/stock",
+                  "data-prisma-owner": "StockFicha",
+                  "data-prisma-region": "ZONE.pc.stock.detail",
+                  "data-prisma-slot": "SLOT.pc.stock.detail.primary",
+                  "data-prisma-component-ui-id": component_ui_id,
+                  "data-prisma-recipe": "REC.panel.operational.cloudglass",
+                  "data-prisma-visual-stack": "VSTACK.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+                  "data-prisma-binding": "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1",
+                  "data-prisma-adapter": "ADP.PC.DENSE.CLOUDGLASS.V1",
+                  "data-prisma-neutral-layer": "LYR.SURFACE.OPERATIONAL.DETAIL",
+                  "data-prisma-source-owner": "inventory-workspace.tsx",
+                  "data-prisma-css-owner": "pc-inventory-master-detail.module.css",
+              }
+              return UiCandidate(
+                  runtime_alias="pc",
+                  route_path=route_path,
+                  route_id="ROUTE.pc.stock" if route_path == "/stock" else "ROUTE.pc.counts",
+                  route_source_file=f"apps/terminal-de-venta-system/products/pc/app/app/{route_path.strip('/')}/page.tsx",
+                  render_source_file=SOURCE_OWNER,
+                  render_symbol="InventoryWorkspaceView",
+                  owner_file=SOURCE_OWNER,
+                  owner_symbol="InventoryWorkspaceView",
+                  class_name="productFicha",
+                  tag_name="section",
+                  widget_kind="control",
+                  text_hint="",
+                  instance_policy="SINGLE_OR_STATIC",
+                  data_attributes=attrs,
+                  source_hash="A" * 64,
+              )
+
+
+          def css_target() -> CssTarget:
+              return CssTarget(
+                  class_name="productFicha",
+                  selector='.productFicha[data-prisma-visual-pilot="pc-stock-ficha-tablet-licenses-v1"]',
+                  source_file=CSS_OWNER,
+                  source_hash="B" * 64,
+                  pseudo_element=None,
+                  state_selector="default",
+                  at_rule=None,
+                  anchor_kind="CSS_MODULE_CLASS",
+                  target_role="ROOT",
+                  declarations={},
+              )
+
+
+          class GovernedMarkerReconciliationTests(unittest.TestCase):
+              def make_index(self, root: Path) -> dict:
+                  path = root / "apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots/PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json"
+                  path.parent.mkdir(parents=True, exist_ok=True)
+                  path.write_text(json.dumps(pilot_payload()), encoding="utf-8")
+                  return load_governed_pilot_contracts(root)
+
+              def test_certified_markers_reconcile_exact_visual_trace_without_neutral_meaning(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      index = self.make_index(Path(tmp))
+                      trace, blockers, evidence = reconcile_governed_candidate(candidate(), [css_target()], index, None)
+                      self.assertEqual(blockers, [])
+                      self.assertIsNotNone(trace)
+                      self.assertEqual(trace["componentUiId"], "PC-STOCK-FICHA-PANEL-01")
+                      self.assertEqual(trace["bindingId"], "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1")
+                      self.assertEqual(trace["layerId"], "LYR.SURFACE.OPERATIONAL.DETAIL")
+                      self.assertNotIn("neutralMeaningId", trace)
+                      self.assertEqual(evidence[0]["evidenceType"], "CERTIFIED_VISUAL_PILOT_CONTRACT")
+
+              def test_raw_unregistered_markers_never_grant_authority(self):
+                  trace, blockers, _ = reconcile_governed_candidate(candidate(component_ui_id="PC-UNKNOWN"), [css_target()], {}, None)
+                  self.assertIsNone(trace)
+                  self.assertIn("GOVERNED_MARKER_AUTHORITY_NOT_FOUND", blockers)
+
+              def test_route_mismatch_fails_closed(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      index = self.make_index(Path(tmp))
+                      trace, blockers, _ = reconcile_governed_candidate(candidate(route_path="/counts"), [css_target()], index, None)
+                      self.assertIsNone(trace)
+                      self.assertIn("GOVERNED_CANDIDATE_ROUTE_PATH_MISMATCH", blockers)
+
+              def test_central_authority_mismatch_fails_closed(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      index = self.make_index(Path(tmp))
+                      trace, blockers, _ = reconcile_governed_candidate(
+                          candidate(),
+                          [css_target()],
+                          index,
+                          {"bindingId": "BND.CONFLICT"},
+                      )
+                      self.assertIsNone(trace)
+                      self.assertIn("GOVERNED_MARKER_CENTRAL_AUTHORITY_MISMATCH:bindingId", blockers)
+
+              def test_record_adopts_certified_visual_coordinates_but_remains_semantically_blocked(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      index = self.make_index(Path(tmp))
+                      record = record_from_candidate(
+                          candidate(),
+                          [css_target()],
+                          {},
+                          1,
+                          {},
+                          [],
+                          index,
+                      )
+                      self.assertEqual(record["surfaceId"], "SURF.pc.backoffice")
+                      self.assertEqual(record["ownerId"], "OWN.pc.inventory.stock_ficha")
+                      self.assertEqual(record["ownerSymbol"], "StockFicha")
+                      self.assertEqual(record["regionId"], "ZONE.pc.stock.detail")
+                      self.assertEqual(record["slotId"], "SLOT.pc.stock.detail.primary")
+                      self.assertEqual(record["componentUiId"], "PC-STOCK-FICHA-PANEL-01")
+                      self.assertEqual(record["bindingId"], "BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1")
+                      self.assertEqual(record["layerId"], "LYR.SURFACE.OPERATIONAL.DETAIL")
+                      self.assertEqual(record["implementationLayerId"], "products.pc.app.components.inventory.pc.inventory.master.detail.module.css.productficha")
+                      self.assertEqual(record["adapterId"], "ADP.PC.DENSE.CLOUDGLASS.V1")
+                      self.assertEqual(record["neutralMeaningId"], None)
+                      self.assertEqual(record["confidence"], "HIGH")
+                      self.assertNotEqual(record["targetResolutionStatus"], "SOURCE_RESOLVED")
+                      self.assertEqual(record["applicationReadiness"], "BLOCKED")
+                      self.assertIn("NEUTRAL_MEANING_NOT_PROVEN", record["blockingReasons"])
+                      self.assertIn("REC.panel.operational.cloudglass", record["recipeCompatibility"]["compatibleRecipeIds"])
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          PY
+
+      - name: Compile and run focused tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/app_map/uimap/governed_markers.py \
+            tools/code-atlas/src/code_atlas/app_map/uimap/runner.py \
+            tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py \
+            tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+          python -m unittest -v \
+            tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py \
+            tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+
+      - name: Generate real three-app mapping evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/marker-reconciliation"
+          python -m code_atlas.cli.main ui-bridge refresh-three-app-map \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-root "$RUNNER_TEMP/marker-reconciliation" \
+            --binding-registry "$GITHUB_WORKSPACE/prisma-html/authority/rifat/identity/registries/element-bindings.registry.json" \
+            --pilot-contract "$GITHUB_WORKSPACE/apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots/PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json" \
+            --workers 18
+
+      - name: Prove StockFicha exact visual trace and semantic blocker
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'marker-reconciliation'
+          projection = json.loads((root / 'PRISMA_UI_MULTI_SURFACE_PROJECTION.json').read_text(encoding='utf-8'))
+          gaps = json.loads((root / 'PRISMA_UI_BRIDGE_BINDING_GAP_MATRIX.json').read_text(encoding='utf-8'))
+
+          rows = [row for row in projection.get('components', []) if row.get('componentUiId') == 'PC-STOCK-FICHA-PANEL-01']
+          if len(rows) != 1:
+              raise SystemExit(f'STOCK_FICHA_EXACT_COMPONENT_COUNT:{len(rows)}')
+          row = rows[0]
+          trace = row.get('trace') or {}
+          expected = {
+              'surfaceId': 'SURF.pc.backoffice',
+              'routeId': 'ROUTE.pc.stock',
+              'ownerId': 'OWN.pc.inventory.stock_ficha',
+              'regionId': 'ZONE.pc.stock.detail',
+              'slotId': 'SLOT.pc.stock.detail.primary',
+              'componentUiId': 'PC-STOCK-FICHA-PANEL-01',
+              'bindingId': 'BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1',
+              'layerId': 'LYR.SURFACE.OPERATIONAL.DETAIL',
+              'implementationLayerId': 'products.pc.app.components.inventory.pc.inventory.master.detail.module.css.productficha',
+              'adapterId': 'ADP.PC.DENSE.CLOUDGLASS.V1',
+          }
+          mismatches = {key: (trace.get(key), value) for key, value in expected.items() if trace.get(key) != value}
+          if mismatches:
+              raise SystemExit('STOCK_FICHA_TRACE_MISMATCH:' + json.dumps(mismatches, sort_keys=True))
+          if row.get('neutralMeaningId') is not None:
+              raise SystemExit('STOCK_FICHA_NEUTRAL_MEANING_MUST_REMAIN_UNRESOLVED')
+          if row.get('targetResolutionStatus') == 'SOURCE_RESOLVED':
+              raise SystemExit('STOCK_FICHA_MUST_NOT_FAKE_SOURCE_RESOLVED')
+          if row.get('applicationReadiness') != 'BLOCKED':
+              raise SystemExit('STOCK_FICHA_MUST_REMAIN_APPLICATION_BLOCKED')
+          blockers = set(row.get('blockingReasons') or [])
+          if 'NEUTRAL_MEANING_NOT_PROVEN' not in blockers:
+              raise SystemExit('STOCK_FICHA_NEUTRAL_MEANING_BLOCKER_MISSING')
+          forbidden_missing = {
+              'MISSING_CERTIFIED_LAYER',
+              'MISSING_IMPLEMENTATION_LAYER',
+              'MISSING_VISUAL_BINDING',
+              'MISSING_TRACE:bindingId',
+              'MISSING_TRACE:layerId',
+              'MISSING_TRACE:implementationLayerId',
+          }
+          if blockers & forbidden_missing:
+              raise SystemExit('STOCK_FICHA_VISUAL_TRACE_STILL_MISSING:' + ','.join(sorted(blockers & forbidden_missing)))
+          if 'REC.panel.operational.cloudglass' not in (row.get('compatibleRecipeIds') or []):
+              raise SystemExit('STOCK_FICHA_CERTIFIED_RECIPE_NOT_PRESERVED')
+
+          gap_rows = [row for row in gaps.get('rows', []) if row.get('componentUiId') == 'PC-STOCK-FICHA-PANEL-01']
+          if len(gap_rows) != 1:
+              raise SystemExit(f'STOCK_FICHA_GAP_ROW_COUNT:{len(gap_rows)}')
+          gap = gap_rows[0]
+          alignment = gap.get('pilotAlignment') or {}
+          if alignment.get('aligned') is not True or alignment.get('mismatches') not in ([], None):
+              raise SystemExit('STOCK_FICHA_PILOT_ALIGNMENT_NOT_EXACT:' + json.dumps(alignment, sort_keys=True))
+          gap_blockers = set(gap.get('blockingReasons') or [])
+          if 'MISSING_COORDINATE:neutralMeaningId' not in gap_blockers:
+              raise SystemExit('STOCK_FICHA_PROMOTION_MUST_REMAIN_BLOCKED_ON_NEUTRAL_MEANING')
+          if any(value.startswith('MISSING_COORDINATE:') and value != 'MISSING_COORDINATE:neutralMeaningId' for value in gap_blockers):
+              raise SystemExit('STOCK_FICHA_OTHER_COORDINATES_STILL_MISSING:' + ','.join(sorted(gap_blockers)))
+
+          cobrar = [row for row in projection.get('components', []) if row.get('componentUiId') == 'TB-POS-PAY-COBRAR-BTN-01']
+          if len(cobrar) != 1 or cobrar[0].get('targetResolutionStatus') != 'SOURCE_RESOLVED':
+              raise SystemExit('COBRAR_GOLDEN_REGRESSION')
+
+          print(json.dumps({
+              'stockFichaTrace': expected,
+              'stockFichaBlockers': sorted(blockers),
+              'promotionBlockers': sorted(gap_blockers),
+              'pilotAlignment': alignment,
+              'cobrarStatus': cobrar[0].get('targetResolutionStatus'),
+          }, indent=2, sort_keys=True))
+          PY
+
+      - name: Prove scope and commit transaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only -- prisma-html apps/terminal-de-venta-system/products/tablet apps/terminal-de-venta-system/products/pc apps/terminal-de-venta-system/products/mobile)"
+          changed="$(git diff --name-only; git ls-files --others --exclude-standard)"
+          printf '%s\n' "$changed"
+          printf '%s\n' "$changed" | grep -Fx 'tools/code-atlas/src/code_atlas/app_map/uimap/governed_markers.py'
+          printf '%s\n' "$changed" | grep -Fx 'tools/code-atlas/src/code_atlas/app_map/uimap/runner.py'
+          printf '%s\n' "$changed" | grep -Fx 'tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py'
+          test "$(printf '%s\n' "$changed" | sed '/^$/d' | sort -u | wc -l)" -eq 3
+
+          git config user.name 'prisma-uimap-bot'
+          git config user.email 'prisma-uimap-bot@users.noreply.github.com'
+          git add \
+            tools/code-atlas/src/code_atlas/app_map/uimap/governed_markers.py \
+            tools/code-atlas/src/code_atlas/app_map/uimap/runner.py \
+            tools/code-atlas/tests/test_operational_uimap_governed_marker_reconciliation.py
+          git rm .github/workflows/uimap-governed-marker-reconciliation-once.yml
+          git commit -m 'fix(uimap): reconcile certified governed marker trace'
+          git push origin HEAD:agent/prisma-html-three-app-visual-closure
