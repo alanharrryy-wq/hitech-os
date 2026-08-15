@@ -100,3 +100,5 @@ jobs:
           git add -- .github/scripts/caext_usefulness_pilot_v1.py
           git commit -m 'test(code-atlas): fix usefulness raw ROI event API'
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
+
+# bootstrap-trigger: roi-api-v1
