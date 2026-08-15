@@ -577,13 +577,24 @@ def score(responses_path: Path, prepared_root: Path, out: Path) -> dict[str, Any
     all_edit_entries = sum(len((responses[row["taskId"]].get("editableScope") or [])) for row in scored)
     all_violations = sum(row["editableScopeViolationCount"] for row in scored)
     evidence_rates = [row["validEvidenceReferenceRatePct"] for row in scored]
-    observed_roi = build_roi_event(
-        metric_values={
-            "outOfScopeChangeRate": round(all_violations / max(1, all_edit_entries), 6),
-            "evidenceCompletenessRate": round(sum(evidence_rates) / max(1, len(evidence_rates)) / 100, 6),
-        },
-        source="caext.single_external_agent_pilot.v1",
-    )
+    observed_roi = [
+        build_roi_event(
+            metric="outOfScopeChangeRate",
+            value=round(all_violations / max(1, all_edit_entries), 6),
+            unit="ratio",
+            repository_identity="caext-usefulness-pilot-v1-six-task-controlled",
+            source="caext.single_external_agent_pilot.v1",
+            context={"taskCount": len(scored), "claimCeiling": "SINGLE_EXTERNAL_AGENT_PILOT"},
+        ),
+        build_roi_event(
+            metric="evidenceCompletenessRate",
+            value=round(sum(evidence_rates) / max(1, len(evidence_rates)) / 100, 6),
+            unit="ratio",
+            repository_identity="caext-usefulness-pilot-v1-six-task-controlled",
+            source="caext.single_external_agent_pilot.v1",
+            context={"taskCount": len(scored), "claimCeiling": "SINGLE_EXTERNAL_AGENT_PILOT"},
+        ),
+    ]
 
     state = {
         "schemaVersion": "caext_usefulness_agent_pilot_result.v1",
@@ -594,7 +605,7 @@ def score(responses_path: Path, prepared_root: Path, out: Path) -> dict[str, Any
         "taskCount": len(scored),
         "conditionSummary": summaries,
         "tasks": scored,
-        "observedRawRoiEvent": observed_roi,
+        "observedRawRoiEvents": observed_roi,
         "notMeasured": [
             "contextDiscoveryTime",
             "changeScopeIdentificationTime",
@@ -650,6 +661,17 @@ def selftest() -> None:
     semantic_change = copy.deepcopy(volatile_b)
     semantic_change["codeAtlasAssistance"]["authorityPack"]["allowedScope"] = ["other.py"]
     assert packet_digest(volatile_a) != packet_digest(semantic_change)
+    roi_probe = build_roi_event(
+        metric="outOfScopeChangeRate",
+        value=0.0,
+        unit="ratio",
+        repository_identity="caext-usefulness-selftest",
+        source="caext.usefulness.selftest",
+        context={"financialEstimateAllowed": False},
+    )
+    assert roi_probe["metric"] == "outOfScopeChangeRate"
+    assert roi_probe["financialEstimate"] is None
+    assert roi_probe["observedMetric"] is True
     print("PASS_CAEXT_USEFULNESS_PILOT_SELFTEST")
 
 
