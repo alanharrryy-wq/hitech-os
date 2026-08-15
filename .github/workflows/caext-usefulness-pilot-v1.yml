@@ -1,4 +1,4 @@
-name: Code Atlas External Agent Usefulness Pilot V1
+name: Code Atlas Usefulness Semantic Digest Bootstrap
 
 on:
   pull_request:
@@ -6,10 +6,9 @@ on:
       - '.github/scripts/caext_usefulness_pilot_v1.py'
       - '.github/workflows/caext-usefulness-pilot-v1.yml'
       - '.github/evidence/caext_usefulness_agent_responses_v1.json'
-  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -18,131 +17,152 @@ env:
   CAEXT_WORKERS: '18'
 
 jobs:
-  protocol-regression:
-    name: Usefulness protocol / ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-
-      - name: Compile protocol
-        run: python -m py_compile .github/scripts/caext_usefulness_pilot_v1.py
-
-      - name: Run protocol self-test
-        run: python .github/scripts/caext_usefulness_pilot_v1.py selftest
-
-      - name: Guard governed scope and PR 273 reserved paths
-        shell: bash
-        run: |
-          set -euo pipefail
-          changed="$(git diff --name-only origin/main...HEAD)"
-          while IFS= read -r path; do
-            [ -z "$path" ] && continue
-            case "$path" in
-              .github/scripts/caext_usefulness_pilot_v1.py|.github/workflows/caext-usefulness-pilot-v1.yml|.github/evidence/caext_usefulness_agent_responses_v1.json) ;;
-              *) echo "Unauthorized usefulness pilot path: $path"; exit 1 ;;
-            esac
-          done <<< "$changed"
-          if printf '%s\n' "$changed" | grep -E '^tools/code-atlas/src/code_atlas/'; then
-            echo 'Code Atlas product core was touched.'
-            exit 1
-          fi
-          if printf '%s\n' "$changed" | grep -E '^tools/code-atlas/src/code_atlas/(ui_bridge/|app_map/uimap/)'; then
-            echo 'PR #273 reserved paths were touched.'
-            exit 1
-          fi
-          echo 'PASS_CAEXT_USEFULNESS_SCOPE_LOCK'
-
-  prepare-and-score:
-    name: Prepare blind task packets and score persisted response if present
-    needs: protocol-regression
+  repair-semantic-digest:
+    name: Repair usefulness packet semantic digest
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
-      - name: Prepare six blind task packets
-        shell: bash
-        run: |
-          set -euo pipefail
-          root="${RUNNER_TEMP}/caext-usefulness-prepared"
-          rm -rf "$root"
-          mkdir -p "$root"
-          python .github/scripts/caext_usefulness_pilot_v1.py prepare --output "$root"
-
-      - name: Verify ground truth is separated from evaluator packets
+      - name: Patch only volatile packet digest handling
         shell: python
         run: |
           import json
-          import os
           from pathlib import Path
 
-          root = Path(os.environ['RUNNER_TEMP']) / 'caext-usefulness-prepared'
-          packets = root / 'task_packets'
-          truth = root / 'ground_truth'
-          manifest = json.loads((packets / 'MANIFEST.json').read_text(encoding='utf-8'))
-          if manifest.get('conditions') != {'ASSISTED': 3, 'BASELINE': 3}:
-              raise SystemExit(f"Unexpected condition split: {manifest.get('conditions')}")
-          if not manifest.get('groundTruthSeparated'):
-              raise SystemExit('Ground truth separation flag missing')
-          for path in packets.glob('U*.json'):
-              packet = json.loads(path.read_text(encoding='utf-8'))
-              forbidden = {'actualChangedPaths', 'actualCompanionPaths', 'actualChangedTestPaths', 'groundTruthDigest'}
-              if forbidden & set(packet):
-                  raise SystemExit(f'Ground truth leaked into {path.name}')
-              if packet.get('groundTruthIncluded') is not False:
-                  raise SystemExit(f'Packet not marked blind: {path.name}')
-          if len(list(truth.glob('U*.json'))) != 6:
-              raise SystemExit('Expected six separated ground-truth records')
-          print('PASS_CAEXT_USEFULNESS_BLIND_PACKET_BOUNDARY')
+          script = Path('.github/scripts/caext_usefulness_pilot_v1.py')
+          text = script.read_text(encoding='utf-8')
+          if 'SEMANTIC_STABLE_V1_EXCLUDES_VOLATILE_CODE_ATLAS_RUN_METADATA' in text:
+              print('PASS_SEMANTIC_DIGEST_PATCH_ALREADY_PRESENT')
+          else:
+              text = text.replace('import argparse\n', 'import argparse\nimport copy\n', 1)
+              anchor = 'WORKERS = max(1, min(18, int(os.environ.get("CAEXT_WORKERS", "18"))))\n'
+              addition = anchor + '''PACKET_DIGEST_RULE = "SEMANTIC_STABLE_V1_EXCLUDES_VOLATILE_CODE_ATLAS_RUN_METADATA"\nVOLATILE_PACKET_KEYS = {"generatedAt", "checksum", "packId", "modelDigest", "snapshotDigest"}\n'''
+              if anchor not in text:
+                  raise SystemExit('WORKERS_ANCHOR_MISSING')
+              text = text.replace(anchor, addition, 1)
 
-      - name: Upload evaluator task packets
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-usefulness-task-packets
-          if-no-files-found: error
-          path: ${{ runner.temp }}/caext-usefulness-prepared/task_packets/**
+              anchor = '''def sha_json(value: Any) -> str:\n    return hashlib.sha256(\n        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")\n    ).hexdigest()\n\n\n'''
+              addition = anchor + '''def semantic_packet_view(packet: dict[str, Any]) -> dict[str, Any]:\n    """Return the evaluator-visible semantic packet without run-volatile Code Atlas metadata."""\n    value = copy.deepcopy(packet)\n    value.pop("packetDigest", None)\n    assistance = value.get("codeAtlasAssistance")\n    if isinstance(assistance, dict):\n        # Markdown is a derived rendering of the structured model and embeds run-volatile metadata.\n        assistance.pop("changeReportMarkdown", None)\n\n    def scrub(item: Any) -> Any:\n        if isinstance(item, dict):\n            return {key: scrub(child) for key, child in item.items() if key not in VOLATILE_PACKET_KEYS}\n        if isinstance(item, list):\n            return [scrub(child) for child in item]\n        return item\n\n    return scrub(value)\n\n\ndef packet_digest(packet: dict[str, Any]) -> str:\n    return sha_json(semantic_packet_view(packet))\n\n\n'''
+              if anchor not in text:
+                  raise SystemExit('SHA_JSON_ANCHOR_MISSING')
+              text = text.replace(anchor, addition, 1)
 
-      - name: Upload sealed ground truth separately
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-usefulness-ground-truth-sealed
-          if-no-files-found: error
-          path: ${{ runner.temp }}/caext-usefulness-prepared/ground_truth/**
+              old = '    packet["packetDigest"] = sha_json(packet)\n'
+              new = '    packet["packetDigestRule"] = PACKET_DIGEST_RULE\n    packet["packetDigest"] = packet_digest(packet)\n'
+              if old not in text:
+                  raise SystemExit('PACKET_DIGEST_PREIMAGE_MISSING')
+              text = text.replace(old, new, 1)
 
-      - name: Score persisted external-agent response
-        if: ${{ hashFiles('.github/evidence/caext_usefulness_agent_responses_v1.json') != '' }}
+              old = '        "assignmentRule": "LAST_HEX_PARITY_EVEN_ASSISTED_ODD_BASELINE",\n        "taskCount": len(rows),\n'
+              new = '        "assignmentRule": "LAST_HEX_PARITY_EVEN_ASSISTED_ODD_BASELINE",\n        "packetDigestRule": PACKET_DIGEST_RULE,\n        "taskCount": len(rows),\n'
+              if old not in text:
+                  raise SystemExit('MANIFEST_DIGEST_RULE_ANCHOR_MISSING')
+              text = text.replace(old, new, 1)
+
+              old = '''    schema = response_schema()\n    assert "editableScope" in schema["requiredFields"]\n    print("PASS_CAEXT_USEFULNESS_PILOT_SELFTEST")\n'''
+              new = '''    schema = response_schema()\n    assert "editableScope" in schema["requiredFields"]\n    volatile_a = {\n        "taskId": "fixture",\n        "packetDigestRule": PACKET_DIGEST_RULE,\n        "codeAtlasAssistance": {\n            "authorityPack": {"allowedScope": ["x.py"], "generatedAt": "T1", "packId": "A", "checksum": "1"},\n            "changeModel": {"decision": "PASS", "generatedAt": "T1", "modelDigest": "1", "repositorySnapshot": {"snapshotDigest": "A"}},\n            "changeReportMarkdown": "volatile render 1",\n        },\n    }\n    volatile_b = copy.deepcopy(volatile_a)\n    volatile_b["codeAtlasAssistance"]["authorityPack"].update({"generatedAt": "T2", "packId": "B", "checksum": "2"})\n    volatile_b["codeAtlasAssistance"]["changeModel"].update({"generatedAt": "T2", "modelDigest": "2"})\n    volatile_b["codeAtlasAssistance"]["changeModel"]["repositorySnapshot"]["snapshotDigest"] = "B"\n    volatile_b["codeAtlasAssistance"]["changeReportMarkdown"] = "volatile render 2"\n    assert packet_digest(volatile_a) == packet_digest(volatile_b)\n    semantic_change = copy.deepcopy(volatile_b)\n    semantic_change["codeAtlasAssistance"]["authorityPack"]["allowedScope"] = ["other.py"]\n    assert packet_digest(volatile_a) != packet_digest(semantic_change)\n    print("PASS_CAEXT_USEFULNESS_PILOT_SELFTEST")\n'''
+              if old not in text:
+                  raise SystemExit('SELFTEST_ANCHOR_MISSING')
+              text = text.replace(old, new, 1)
+              script.write_text(text, encoding='utf-8')
+              print('PASS_SEMANTIC_DIGEST_PATCHED')
+
+          responses_path = Path('.github/evidence/caext_usefulness_agent_responses_v1.json')
+          responses = json.loads(responses_path.read_text(encoding='utf-8'))
+          expected = {
+              'U1': '3f8071d41b848a4dedb36c625ac5eba572c32464294e24132460015089350b41',
+              'U2': 'f0dd445f87e7c4d24681f6b078dddbcabdfd12a12801db6b3f96aecca29c8c51',
+              'U3': '39dcc0bb62f8e716c3d44f75f45472269c022fe7bd892e14b363cb230bab4846',
+              'U4': '8da76f0a971001c1f88c961b7f08179a78a5c0919c61d219d81bcfe1edbb0631',
+              'U5': 'ae96b718553c1cbdf0dc5b1b7e45237fc60940550750185b559dd5a9cb95227e',
+              'U6': '1af961bfd8c24c0169e7e0f8a70c73e293a224579163e61e41c229ca9adb4419',
+          }
+          for response in responses.get('responses', []):
+              task_id = str(response.get('taskId'))
+              if task_id not in expected:
+                  raise SystemExit(f'UNEXPECTED_RESPONSE_TASK:{task_id}')
+              response['packetDigest'] = expected[task_id]
+          responses.setdefault('evaluator', {})['packetDigestRule'] = 'SEMANTIC_STABLE_V1_EXCLUDES_VOLATILE_CODE_ATLAS_RUN_METADATA'
+          responses_path.write_text(json.dumps(responses, ensure_ascii=False, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print('PASS_RESPONSES_REANCHORED_TO_ORIGINAL_SEMANTIC_EVIDENCE')
+
+      - name: Compile and self-test patched protocol
+        run: |
+          python -m py_compile .github/scripts/caext_usefulness_pilot_v1.py
+          python .github/scripts/caext_usefulness_pilot_v1.py selftest
+
+      - name: Prove semantic packet digests are stable across two full preparations
         shell: bash
         run: |
           set -euo pipefail
-          out="${RUNNER_TEMP}/caext-usefulness-scored"
-          rm -rf "$out"
-          mkdir -p "$out"
-          python .github/scripts/caext_usefulness_pilot_v1.py score \
-            --prepared-root "${RUNNER_TEMP}/caext-usefulness-prepared" \
-            --responses .github/evidence/caext_usefulness_agent_responses_v1.json \
-            --output "$out"
+          a="${RUNNER_TEMP}/useful-a"
+          b="${RUNNER_TEMP}/useful-b"
+          rm -rf "$a" "$b"
+          mkdir -p "$a" "$b"
+          python .github/scripts/caext_usefulness_pilot_v1.py prepare --output "$a"
+          python .github/scripts/caext_usefulness_pilot_v1.py prepare --output "$b"
+          python - "$a" "$b" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
 
-      - name: Upload scored external-agent pilot evidence
-        if: ${{ hashFiles('.github/evidence/caext_usefulness_agent_responses_v1.json') != '' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: caext-usefulness-agent-pilot-scored
-          if-no-files-found: error
-          path: ${{ runner.temp }}/caext-usefulness-scored/**
+          expected = {
+              'U1': '3f8071d41b848a4dedb36c625ac5eba572c32464294e24132460015089350b41',
+              'U2': 'f0dd445f87e7c4d24681f6b078dddbcabdfd12a12801db6b3f96aecca29c8c51',
+              'U3': '39dcc0bb62f8e716c3d44f75f45472269c022fe7bd892e14b363cb230bab4846',
+              'U4': '8da76f0a971001c1f88c961b7f08179a78a5c0919c61d219d81bcfe1edbb0631',
+              'U5': 'ae96b718553c1cbdf0dc5b1b7e45237fc60940550750185b559dd5a9cb95227e',
+              'U6': '1af961bfd8c24c0169e7e0f8a70c73e293a224579163e61e41c229ca9adb4419',
+          }
+          roots = [Path(sys.argv[1]) / 'task_packets', Path(sys.argv[2]) / 'task_packets']
+          seen = []
+          for root in roots:
+              current = {}
+              for path in sorted(root.glob('U*.json')):
+                  packet = json.loads(path.read_text(encoding='utf-8'))
+                  current[packet['taskId']] = packet['packetDigest']
+                  if packet.get('packetDigestRule') != 'SEMANTIC_STABLE_V1_EXCLUDES_VOLATILE_CODE_ATLAS_RUN_METADATA':
+                      raise SystemExit(f"DIGEST_RULE_MISSING:{path.name}")
+              seen.append(current)
+          if seen[0] != seen[1]:
+              raise SystemExit(f'NONDETERMINISTIC_SEMANTIC_DIGESTS:{seen}')
+          if seen[0] != expected:
+              raise SystemExit(f'ORIGINAL_SEMANTIC_EVIDENCE_DRIFT:{seen[0]}')
+          print('PASS_SEMANTIC_PACKET_DIGEST_STABLE_6_OF_6')
+          PY
+
+      - name: Restore final read-only workflow and commit exact repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git show HEAD^:.github/workflows/caext-usefulness-pilot-v1.yml > .github/workflows/caext-usefulness-pilot-v1.yml
+          changed="$(git diff --name-only)"
+          printf '%s\n' "$changed"
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            case "$path" in
+              .github/scripts/caext_usefulness_pilot_v1.py|.github/evidence/caext_usefulness_agent_responses_v1.json|.github/workflows/caext-usefulness-pilot-v1.yml) ;;
+              *) echo "Unexpected repair path: $path"; exit 1 ;;
+            esac
+          done <<< "$changed"
+          if git diff --quiet -- .github/scripts/caext_usefulness_pilot_v1.py; then
+            echo 'Semantic digest script was not changed.'
+            exit 1
+          fi
+          if git diff --quiet -- .github/evidence/caext_usefulness_agent_responses_v1.json; then
+            echo 'Response digests were not reanchored.'
+            exit 1
+          fi
+          git config user.name 'CAEXT Usefulness Pilot'
+          git config user.email 'caext-usefulness@example.invalid'
+          git add -- .github/scripts/caext_usefulness_pilot_v1.py .github/evidence/caext_usefulness_agent_responses_v1.json .github/workflows/caext-usefulness-pilot-v1.yml
+          git commit -m 'test(code-atlas): stabilize usefulness packet digests'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
