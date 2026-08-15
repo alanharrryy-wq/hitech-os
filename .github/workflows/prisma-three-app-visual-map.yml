@@ -95,6 +95,50 @@ jobs:
           import os
           from pathlib import Path
 
+          EXPLICIT_VISUAL_FAMILY_GAP = 'NO_GOVERNED_VISUAL_FAMILY_TARGET_READY'
+
+          def validate_visual_family_gap(recipe_ready_count, refresh_status, blockers):
+              try:
+                  count = int(recipe_ready_count)
+              except (TypeError, ValueError):
+                  raise SystemExit('INVALID_VISUAL_RECIPE_READY_COUNT')
+              if count < 0:
+                  raise SystemExit('NEGATIVE_VISUAL_RECIPE_READY_COUNT')
+              blocker_set = {str(value) for value in (blockers or [])}
+              has_gap = EXPLICIT_VISUAL_FAMILY_GAP in blocker_set
+              if count == 0:
+                  if not has_gap:
+                      raise SystemExit('ZERO_VISUAL_RECIPE_TARGETS_WITHOUT_EXPLICIT_BLOCKER')
+                  if refresh_status != 'SOURCE_GAPS_EXPLICIT':
+                      raise SystemExit('ZERO_VISUAL_RECIPE_TARGETS_REQUIRE_SOURCE_GAPS_EXPLICIT')
+                  return 'EXPLICIT_SOURCE_GAP'
+              if has_gap:
+                  raise SystemExit('VISUAL_RECIPE_TARGET_COUNT_CONTRADICTS_EXPLICIT_BLOCKER')
+              return 'RECIPE_TARGETS_PRESENT'
+
+          # Workflow-contract self-test. These checks protect the fail-closed
+          # relationship between the count, blocker and refresh status.
+          if validate_visual_family_gap(
+              0,
+              'SOURCE_GAPS_EXPLICIT',
+              [EXPLICIT_VISUAL_FAMILY_GAP],
+          ) != 'EXPLICIT_SOURCE_GAP':
+              raise SystemExit('EXPLICIT_GAP_GATE_SELFTEST_FAILED')
+          if validate_visual_family_gap(1, 'SOURCE_READY', []) != 'RECIPE_TARGETS_PRESENT':
+              raise SystemExit('POSITIVE_RECIPE_GATE_SELFTEST_FAILED')
+          for invalid_case, expected_code in [
+              ((0, 'SOURCE_GAPS_EXPLICIT', []), 'ZERO_VISUAL_RECIPE_TARGETS_WITHOUT_EXPLICIT_BLOCKER'),
+              ((0, 'SOURCE_READY', [EXPLICIT_VISUAL_FAMILY_GAP]), 'ZERO_VISUAL_RECIPE_TARGETS_REQUIRE_SOURCE_GAPS_EXPLICIT'),
+              ((1, 'SOURCE_GAPS_EXPLICIT', [EXPLICIT_VISUAL_FAMILY_GAP]), 'VISUAL_RECIPE_TARGET_COUNT_CONTRADICTS_EXPLICIT_BLOCKER'),
+          ]:
+              try:
+                  validate_visual_family_gap(*invalid_case)
+              except SystemExit as exc:
+                  if str(exc) != expected_code:
+                      raise SystemExit(f'EXPLICIT_GAP_GATE_SELFTEST_WRONG_FAILURE:{expected_code}:{exc}')
+              else:
+                  raise SystemExit(f'EXPLICIT_GAP_GATE_SELFTEST_MISSED_FAILURE:{expected_code}')
+
           root = Path(os.environ['RUNNER_TEMP']) / 'prisma-three-app-map'
           required = [
               'PRISMA_THREE_APP_VISUAL_MAPPING_REFRESH.json',
@@ -141,8 +185,13 @@ jobs:
               raise SystemExit('PRODUCT_MUTATION_FLAG_MUST_REMAIN_FALSE')
           if visual_family.get('totalSourceResolvedVisualBindingCount', 0) <= 0:
               raise SystemExit('NO_SOURCE_RESOLVED_VISUAL_BINDINGS')
-          if visual_family.get('totalVisualRecipeProjectionReadyCount', 0) <= 0:
-              raise SystemExit('NO_GOVERNED_VISUAL_RECIPE_TARGETS')
+
+          recipe_gap_state = validate_visual_family_gap(
+              visual_family.get('totalVisualRecipeProjectionReadyCount', 0),
+              refresh.get('status'),
+              refresh.get('blockers', []),
+          )
+
           if visual_control.get('status') != 'SOURCE_READY_GENERATED_PROJECTION':
               raise SystemExit('GENERATED_VISUAL_CONTROL_PROJECTION_NOT_SOURCE_READY')
 
@@ -174,6 +223,7 @@ jobs:
                   'blockerStatus': projection_blockers.get('status'),
               },
               'visualFamilyProjection': {
+                  'recipeGapState': recipe_gap_state,
                   'totalVisualCandidateCount': visual_family.get('totalVisualCandidateCount'),
                   'totalSourceResolvedVisualBindingCount': visual_family.get('totalSourceResolvedVisualBindingCount'),
                   'totalVisualRecipeProjectionReadyCount': visual_family.get('totalVisualRecipeProjectionReadyCount'),
