@@ -55,3 +55,112 @@ jobs:
 
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+  caext-usefulness-closure-mesh:
+    name: Code Atlas usefulness governance closure mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate task-exact closure Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "CODE ATLAS EXTERNAL AGENT USEFULNESS GOVERNANCE CLOSURE: clasificación VERIFY / GOVERNANCE CLOSURE sobre main cbb0949701529399810ac8ca2033b9f708f790f2 después del merge PR #288. Registrar exclusivamente evidencia ya observada; no cambiar comportamiento de Code Atlas ni reconstruir Universal Intelligence/Customer Wow. Mutaciones autorizadas únicamente en seis documentos: tools/code-atlas/README.md, tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md, tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json, PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json, PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json y apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md. Registrar Authority Mesh del piloto run 31913264991 artifact 9254247789 digest sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015; PR #288 merge cbb0949701529399810ac8ca2033b9f708f790f2; final evidence run 31914395822; scored artifact 9254539137 digest sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c; result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd. Registrar sólo métricas descriptivas: ASSISTED 3 tasks authorization widening 0%, target included editable 100%, changed-test recall 100%, companion inspection recall 88.89%, valid evidence refs 100%, fake-green 0, unknown omission 0; BASELINE 3 tareas distintas authorization widening 0%, target included editable 33.33%, changed-test recall 0%, companion inspection recall 0%, valid evidence refs 100%. Registrar explícitamente que comparación está confundida por heterogeneidad de tareas y un solo evaluador, por lo tanto causal uplift claim NO permitido. Human usefulness NOT_MEASURED. Agent usefulness máximo SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM. Raw ROI observed únicamente outOfScopeChangeRate=0.0 ratio y evidenceCompletenessRate=1.0 ratio; financial estimate null; no inventar tiempos ni worker peak. Registrar dos J TEST HARNESS FAILURE reparados antes del score válido: digest ligado a metadata volátil y firma incorrecta build_roi_event(metric_values); ninguno fue product-core defect. Preservar LOCAL_VERIFIED, classification VERIFY, doNotRebuild=true, certifiable=false, productionCertified=false, historyAuthorizes=false. No declarar universal usefulness, arbitrary-repository correctness, production/enterprise readiness, hosted multi-tenant isolation, IAM/security, privacy/legal ni paid-pilot readiness. Próximo gate: human usefulness study y/o independent multi-agent replication sobre tareas bounded; hosted/security siguen frontera separada. PR #273 reserva tools/code-atlas/src/code_atlas/ui_bridge/** y tools/code-atlas/src/code_atlas/app_map/uimap/**. PR #287 PC no edita Ledger y su cierre permanece separado. Excluir tools/code-atlas/src/code_atlas/**, harness/scripts/workflows del piloto, Tablet, PC, Mobile, Chart Lab, Shared UI, DB/Prisma, deploys, puertos y procesos. Cero fake green."
+
+      - name: Validate closure mesh and scope lock
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json',
+              'APP_IMPACT_MATRIX.md',
+              'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md',
+              'AGENT_PROMPT_ENVELOPE.md',
+              'AUTHORITY_MESH_REPORT.md',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit('Authority Mesh status is not PASS')
+          task = str(lock.get('task', ''))
+          required_identity = (
+              'USEFULNESS GOVERNANCE CLOSURE',
+              'cbb0949701529399810ac8ca2033b9f708f790f2',
+              '31914395822',
+              '9254539137',
+              'SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM',
+              'Human usefulness NOT_MEASURED',
+              'PR #273',
+              'PR #287',
+          )
+          if not all(token in task for token in required_identity):
+              raise SystemExit('Task-exact closure identity missing')
+          scope = {
+              'schemaVersion': 'caext.usefulness-governance-closure-scope.v1',
+              'authorityMeshStatus': lock.get('status'),
+              'baseCommit': 'cbb0949701529399810ac8ca2033b9f708f790f2',
+              'classification': 'VERIFY / GOVERNANCE CLOSURE',
+              'allowedFiles': [
+                  'tools/code-atlas/README.md',
+                  'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md',
+                  'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
+                  'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+                  'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+                  'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+              ],
+              'productCoreReadOnly': True,
+              'preserveLocalVerified': True,
+              'preserveDoNotRebuild': True,
+              'humanUsefulness': 'NOT_MEASURED',
+              'agentUsefulnessMaximumClaim': 'SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM',
+              'causalUpliftClaimAllowed': False,
+              'financialEstimateAllowed': False,
+              'historyIsAuthorization': False,
+              'reservedByPr273': True,
+              'pcPr287ClosureSeparate': True,
+          }
+          (root / 'CAEXT_USEFULNESS_CLOSURE_SCOPE_LOCK.json').write_text(json.dumps(scope, indent=2) + '\n', encoding='utf-8')
+          print('PASS_CAEXT_USEFULNESS_GOVERNANCE_CLOSURE_MESH')
+
+      - name: Verify ephemeral closure bootstrap is isolated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          expected='.github/workflows/automesh-parallel-cert.yml'
+          if [ "$changed" != "$expected" ]; then
+            echo 'Unexpected bootstrap diff:'
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          echo 'PASS_CAEXT_USEFULNESS_CLOSURE_BOOTSTRAP_SCOPE_ONLY'
+
+      - name: Upload closure Authority Mesh artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-usefulness-governance-closure-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CAEXT_USEFULNESS_CLOSURE_SCOPE_LOCK.json
