@@ -29,32 +29,22 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Verify closure baseline and decode applicator
+      - name: Verify closure baseline and applicator
         shell: bash
         run: |
           set -euo pipefail
           test "$(git merge-base HEAD "$BASELINE")" = "$BASELINE"
-          git diff --exit-code "$BASELINE"..HEAD --             tools/code-atlas             "PRISMA Factory Ledger"             apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
-          python - <<'PY'
-          import base64, gzip, hashlib
-          from pathlib import Path
-          payload = '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'
-          raw = gzip.decompress(base64.b64decode(payload))
-          actual = hashlib.sha256(raw).hexdigest()
-          expected = 'fe15262a747dc7bfadf5f5b6c2a450f74624dec4e6923978657568888f3e3124'
-          if actual != expected:
-              raise SystemExit('CLOSURE_APPLICATOR_DIGEST_MISMATCH:' + actual)
-          target = Path('/tmp/caext_closure_apply.py')
-          target.write_bytes(raw)
-          print('CLOSURE_APPLICATOR_SHA256=' + actual)
-          PY
-          python -m py_compile /tmp/caext_closure_apply.py
+          git diff --exit-code "$BASELINE"..HEAD -- \
+            tools/code-atlas \
+            "PRISMA Factory Ledger" \
+            apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
+          python -m py_compile .github/scripts/caext_closure_apply.py
 
       - name: Apply evidence-only closure
         shell: bash
         run: |
           set -euo pipefail
-          python /tmp/caext_closure_apply.py
+          python .github/scripts/caext_closure_apply.py
           python -m json.tool tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json >/dev/null
           python -m json.tool "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" >/dev/null
           python -m json.tool "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json" >/dev/null
@@ -64,13 +54,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PYTHONPATH="$GITHUB_WORKSPACE/tools/code-atlas/src"             python -m unittest discover -s tools/code-atlas/tests -p 'test_*.py' -q
+          PYTHONPATH="$GITHUB_WORKSPACE/tools/code-atlas/src" \
+            python -m unittest discover -s tools/code-atlas/tests -p 'test_*.py' -q
 
       - name: Enforce effective closure scope
         shell: bash
         run: |
           set -euo pipefail
-          rm -f .github/workflows/caext-closure-apply.yml
+          rm -f .github/workflows/caext-closure-apply.yml .github/scripts/caext_closure_apply.py
           git add -A
           git diff --cached "$BASELINE" --name-only | sort | tee /tmp/caext_closure_paths.txt
           python - <<'PY'
