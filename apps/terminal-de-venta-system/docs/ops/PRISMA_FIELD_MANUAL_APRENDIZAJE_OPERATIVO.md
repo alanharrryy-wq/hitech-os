@@ -808,3 +808,26 @@ Esta intervención no inicia ni detiene servicios, no libera puertos, no toca DB
 - **Regla:** no usar base64/zip para patches grandes si Git puede aplicar fuente legible; no recrear el target entre pointerdown y click.
 - **Evidencia:** artifact `cloudcust-1408-final-v10`.
 - **Rollback:** revert del commit/PR; pre-commit CI es efímero y fail-closed.
+
+
+---
+
+### 2026-08-14/15 - Code Atlas: falsificación externa real antes de ampliar claims
+
+**Tipo:** EVIDENCE_LEARNING / GOVERNANCE_LEARNING / GOTCHA
+**Superficie:** Tooling / Code Atlas / Governance
+**Contexto:** Se ejecutó el primer gate externo serio de Code Atlas contra repositorios ajenos a PRISMA: `pallets/click`, `vitejs/vite` y `BurntSushi/ripgrep`, siempre con perfil neutral/default y originales read-only.
+**Resultado observado:** FAIL útil inicial → FIX gobernado → PASS externo limitado.
+**Evidencia:** Authority Mesh de reparación `31866829102`; PR #275; merge `caf918694c1c397d19a61bff217800d027a384e3`; artifact focal `9242394010`; replay completo `31867491454` / `9242450935`; 140 tests Code Atlas PASS; CI PR 6/6; Authority Mesh de cierre `31867706125` / `9242519545`.
+**Defectos de source demostrados:** Verify podía aceptar un worktree dirty oculto si el caller lo omitía del manifest; `.rs` se reconocía como Rust pero no recibía evidencia textual coherente; imports JS/TS con `..` podían perder dependencias directas; Rust no tenía relaciones de dependencia repository-provable; Architecture Layer Graph tenía cobertura externa débil.
+**Corrección:** reconciliar Git real contra manifest antes de Verify; alinear source suffixes reconocidos con evidencia segura; normalizar rutas relativas JS/TS; resolver Rust sólo con relaciones acotadas demostrables (`mod`, `#[path]`, `crate/self/super`); reportar arquitectura/cobertura con provenance y sin convertir impacto en autorización.
+**Harness / tooling que NO debe confundirse con fallo del producto:** el scan legacy de leakage encontró `NDC` dentro de `tailwindcss`; la matriz legacy leyó `changeImpactSize` desde el grafo DISCOVER en lugar del change model PREPARE; un workflow temporal usó un scope guard contra HEAD transitorio; el gateway Remote AutoMesh exige Base64 URL-safe sin padding.
+**Comando de regresión confirmado:**
+
+```bash
+PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/tests -p 'test_*.py' -v
+```
+
+**Rollback probado:** N/A sobre producto. El FIX se trabajó en rama gobernada y no se mergeó hasta 140 tests, replay externo y CI; los repos externos originales permanecieron read-only.
+**Regla nueva:** Un verde externo no se promociona sólo porque el proceso terminó en cero. Separar `PRODUCT FAILURE` de `HARNESS FAILURE`, adjudicar manualmente métricas/leak scans sospechosos contra provenance física, y después de cualquier FIX repetir exactamente el mismo gate adversarial antes de ampliar claims.
+**Límite:** Este aprendizaje prueba sólo el corpus externo y condiciones declaradas. No prueba universalidad absoluta, producción, enterprise, hosted multi-tenant ni cumplimiento legal/privacidad/IAM.
