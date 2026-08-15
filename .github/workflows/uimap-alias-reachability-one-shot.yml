@@ -1,4 +1,4 @@
-name: UIMAP Alias Reachability Diagnostic 2
+name: UIMAP Route Projection One Shot
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - agent/prisma-html-three-app-visual-closure
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -15,129 +15,328 @@ env:
   PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  diagnose:
+  apply-and-verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact branch
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - name: Isolate reachability versus extraction
+
+      - name: Verify exact source preimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "agent/prisma-html-three-app-visual-closure"
+          test "$(git hash-object tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py)" = "f027139e34ea919c9ad4f17dafd76992b9ec4b45"
+          test ! -e tools/code-atlas/tests/test_operational_uimap_route_projection.py
+
+      - name: Apply authorized alias and multi-route source patch
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          from __future__ import annotations
-          import json, os
           from pathlib import Path
-          import code_atlas.app_map.uimap.discovery as d
 
-          repo = Path(os.environ['GITHUB_WORKSPACE']).resolve()
-          pc_root = d.resolve_runtime_roots(repo)['pc'][0]
-          stock_page = pc_root / 'app/stock/page.tsx'
-          workspace = pc_root / 'components/inventory/inventory-workspace.tsx'
-          workspace_rel = d.norm_rel(repo, workspace)
+          path = Path('tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py')
+          text = path.read_text(encoding='utf-8')
 
-          cfg = json.loads((pc_root / 'tsconfig.json').read_text(encoding='utf-8'))
-          paths_cfg = (cfg.get('compilerOptions') or {}).get('paths') or {}
-          exts = ('.ts','.tsx','.js','.jsx','.mjs','.cjs','.vue','.svelte','.json','.css','.scss','.sass','.less')
+          old_resolve = '''def resolve_import(source: Path, spec: str, root: Path) -> Path | None:\n    if not spec.startswith("."):\n        return None\n    base = (source.parent / spec).resolve()\n    candidates = [base]\n    for ext in SOURCE_EXTS | STYLE_EXTS | {".json"}:\n        candidates.append(Path(str(base) + ext))\n    for ext in SOURCE_EXTS | STYLE_EXTS:\n        candidates.append(base / ("index" + ext))\n    for candidate in candidates:\n        try:\n            candidate.relative_to(root.resolve())\n        except Exception:\n            continue\n        if candidate.exists() and candidate.is_file():\n            return candidate\n    return None\n'''
+          new_resolve = '''RESOLUTION_EXTS = (\n    ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte",\n    ".json", ".css", ".scss", ".sass", ".less",\n)\n\n\ndef load_tsconfig_path_aliases(root: Path) -> list[dict[str, Any]]:\n    """Load deterministic path aliases for source reachability only.\n\n    Alias targets are always confined to the current runtime root. A path alias\n    may prove that a file is reachable; it never grants ownership or visual\n    authority by itself.\n    """\n    config = next(\n        (candidate for candidate in (root / "tsconfig.json", root / "jsconfig.json") if candidate.is_file()),\n        None,\n    )\n    if config is None:\n        return []\n    try:\n        payload = json.loads(read_text(config))\n    except Exception:\n        return []\n    compiler = payload.get("compilerOptions") or {}\n    paths = compiler.get("paths") or {}\n    if not isinstance(paths, dict):\n        return []\n    base_dir = (config.parent / str(compiler.get("baseUrl") or ".")).resolve()\n    rules: list[dict[str, Any]] = []\n    for pattern, raw_targets in paths.items():\n        if not isinstance(pattern, str) or pattern.count("*") > 1:\n            continue\n        targets = raw_targets if isinstance(raw_targets, list) else [raw_targets]\n        targets = [str(value) for value in targets if isinstance(value, str) and value.strip()]\n        if not targets:\n            continue\n        if "*" in pattern:\n            prefix, suffix = pattern.split("*", 1)\n            exact = False\n        else:\n            prefix, suffix, exact = pattern, "", True\n        rules.append({\n            "pattern": pattern,\n            "prefix": prefix,\n            "suffix": suffix,\n            "exact": exact,\n            "targets": targets,\n            "baseDir": base_dir,\n        })\n    return sorted(\n        rules,\n        key=lambda row: (\n            -int(bool(row["exact"])),\n            -len(str(row["prefix"])),\n            -len(str(row["suffix"])),\n            str(row["pattern"]),\n        ),\n    )\n\n\ndef _resolve_file_base(base: Path, root: Path) -> Path | None:\n    root_resolved = root.resolve()\n    candidates = [base.resolve()]\n    candidates.extend(Path(str(base) + ext).resolve() for ext in RESOLUTION_EXTS)\n    candidates.extend((base / ("index" + ext)).resolve() for ext in RESOLUTION_EXTS)\n    seen: set[Path] = set()\n    for candidate in candidates:\n        if candidate in seen:\n            continue\n        seen.add(candidate)\n        try:\n            candidate.relative_to(root_resolved)\n        except Exception:\n            continue\n        if candidate.exists() and candidate.is_file():\n            return candidate\n    return None\n\n\ndef _alias_match(rule: dict[str, Any], spec: str) -> str | None:\n    pattern = str(rule["pattern"])\n    if rule["exact"]:\n        return "" if spec == pattern else None\n    prefix = str(rule["prefix"])\n    suffix = str(rule["suffix"])\n    if not spec.startswith(prefix) or (suffix and not spec.endswith(suffix)):\n        return None\n    end = len(spec) - len(suffix) if suffix else len(spec)\n    if end < len(prefix):\n        return None\n    return spec[len(prefix):end]\n\n\ndef resolve_import(\n    source: Path,\n    spec: str,\n    root: Path,\n    alias_rules: list[dict[str, Any]] | None = None,\n) -> Path | None:\n    if spec.startswith("."):\n        return _resolve_file_base((source.parent / spec).resolve(), root)\n\n    rules = alias_rules if alias_rules is not None else load_tsconfig_path_aliases(root)\n    matches: list[tuple[tuple[int, int, int], dict[str, Any], str]] = []\n    for rule in rules:\n        wildcard = _alias_match(rule, spec)\n        if wildcard is None:\n            continue\n        score = (\n            int(bool(rule["exact"])),\n            len(str(rule["prefix"])),\n            len(str(rule["suffix"])),\n        )\n        matches.append((score, rule, wildcard))\n    if not matches:\n        return None\n\n    best_score = max(score for score, _, _ in matches)\n    best = [(rule, wildcard) for score, rule, wildcard in matches if score == best_score]\n    resolved: set[Path] = set()\n    for rule, wildcard in sorted(best, key=lambda item: str(item[0]["pattern"])):\n        chosen: Path | None = None\n        for target_pattern in rule["targets"]:\n            if target_pattern.count("*") > 1:\n                continue\n            substituted = target_pattern.replace("*", wildcard) if "*" in target_pattern else target_pattern\n            chosen = _resolve_file_base((Path(rule["baseDir"]) / substituted).resolve(), root)\n            if chosen is not None:\n                break\n        if chosen is not None:\n            resolved.add(chosen.resolve())\n    return next(iter(resolved)) if len(resolved) == 1 else None\n'''
+          if old_resolve not in text:
+              raise SystemExit('RESOLVE_IMPORT_PREIMAGE_NOT_FOUND')
+          text = text.replace(old_resolve, new_resolve, 1)
 
-          def resolve_base(base: Path, root: Path):
-              for candidate in [base.resolve(), *[Path(str(base)+ext).resolve() for ext in exts], *[(base/('index'+ext)).resolve() for ext in exts]]:
-                  try: candidate.relative_to(root.resolve())
-                  except Exception: continue
-                  if candidate.is_file(): return candidate
-              return None
+          old_reach = '''def build_route_reachability(root: Path, product_root: Path, routes: list[RouteRecord]) -> dict[str, list[RouteRecord]]:\n    rel_to_path: dict[str, Path] = {}\n'''
+          new_reach = '''def build_route_reachability(root: Path, product_root: Path, routes: list[RouteRecord]) -> dict[str, list[RouteRecord]]:\n    alias_rules = load_tsconfig_path_aliases(root)\n    rel_to_path: dict[str, Path] = {}\n'''
+          if old_reach not in text:
+              raise SystemExit('REACHABILITY_PREIMAGE_NOT_FOUND')
+          text = text.replace(old_reach, new_reach, 1)
+          old_call = '                target = resolve_import(current, spec, root)\n'
+          if text.count(old_call) != 1:
+              raise SystemExit(f'RESOLVE_IMPORT_CALL_COUNT:{text.count(old_call)}')
+          text = text.replace(old_call, '                target = resolve_import(current, spec, root, alias_rules)\n', 1)
 
-          def rules(root: Path):
-              out=[]
-              for pattern, targets in paths_cfg.items():
-                  if pattern.count('*') > 1: continue
-                  if '*' in pattern: prefix,suffix=pattern.split('*',1); exact=False
-                  else: prefix,suffix,exact=pattern,'',True
-                  out.append((exact,prefix,suffix,pattern,[str(x) for x in targets]))
-              return sorted(out, key=lambda r:(-int(r[0]),-len(r[1]),-len(r[2]),r[3]))
+          start = text.index('def extract_ui_candidates_from_file(')
+          end = text.index('\n\ndef discover_runtime(', start)
+          new_extract = '''def _candidate_routes(\n    runtime_alias: str,\n    rel: str,\n    source_hash: str,\n    routes_for_file: list[RouteRecord],\n) -> list[RouteRecord]:\n    if not routes_for_file:\n        return [RouteRecord(\n            runtime_alias=runtime_alias,\n            route_id=stable_id("ROUTE", runtime_alias, "unrouted"),\n            route_path="/",\n            source_file=rel,\n            source_hash=source_hash,\n            kind="unrouted",\n        )]\n\n    kind_priority = {\n        "page": 0, "screen": 0, "layout": 1, "template": 2,\n        "loading": 3, "error_boundary": 4, "global_error_boundary": 5,\n        "not_found_boundary": 6, "parallel_route_default": 7, "api_route": 8,\n    }\n    ordered = sorted(\n        routes_for_file,\n        key=lambda route: (\n            route.route_path,\n            route.route_id,\n            kind_priority.get(route.kind, 50),\n            route.source_file,\n        ),\n    )\n    by_identity: dict[tuple[str, str], RouteRecord] = {}\n    for route in ordered:\n        by_identity.setdefault((route.route_id, route.route_path), route)\n    return [\n        by_identity[key]\n        for key in sorted(by_identity, key=lambda item: (item[1], item[0]))\n    ]\n\n\ndef extract_ui_candidates_from_file(\n    runtime_alias: str,\n    path: Path,\n    product_root: Path,\n    routes_for_file: list[RouteRecord],\n    source_hash: str,\n) -> list[UiCandidate]:\n    text = read_text(path)\n    rel = norm_rel(product_root, path)\n    symbols = extract_export_symbols(text, path.stem)\n    owner_symbol = symbols[0]\n    routes = _candidate_routes(runtime_alias, rel, source_hash, routes_for_file)\n    tag_pattern = re.compile(r"<([A-Za-z][A-Za-z0-9_.:-]*)(\\s[^<>]*?)?\\s*/?>", flags=re.MULTILINE | re.DOTALL)\n    tag_matches = list(tag_pattern.finditer(text))\n    style_matches = list(re.finditer(r"styles\\.([A-Za-z_][A-Za-z0-9_]*)", text))\n    candidates: list[UiCandidate] = []\n\n    for route in routes:\n        route_candidates: list[UiCandidate] = []\n        for match in tag_matches:\n            tag = match.group(1)\n            attrs = match.group(2) or ""\n            if tag.lower() in {"fragment", "react.fragment"}:\n                continue\n            classes = extract_class_names(attrs)\n            data_attrs = extract_data_attributes(attrs)\n            is_native_visual = tag.lower() in HTML_WIDGETS\n            is_component = tag[0].isupper()\n            if not classes and not data_attrs and not is_native_visual and not is_component:\n                continue\n            if not classes:\n                classes = [None]\n            for class_name in classes:\n                widget_kind = infer_widget_kind(tag, class_name, owner_symbol, attrs)\n                route_candidates.append(UiCandidate(\n                    runtime_alias=runtime_alias,\n                    route_path=route.route_path,\n                    route_id=route.route_id,\n                    route_source_file=route.source_file,\n                    render_source_file=rel,\n                    render_symbol=owner_symbol,\n                    owner_file=rel,\n                    owner_symbol=owner_symbol,\n                    class_name=class_name,\n                    tag_name=tag,\n                    widget_kind=widget_kind,\n                    text_hint=extract_text_hint(attrs),\n                    instance_policy="REPEATED_BY_DATA" if repeated_by_data(text, match.start()) else "SINGLE_OR_STATIC",\n                    data_attributes=data_attrs,\n                    source_hash=source_hash,\n                    generated_projection="generated" in rel.lower() or "/dist/" in f"/{rel.lower()}/",\n                ))\n\n        # Preserve the existing CSS-only fallback semantics per proven route.\n        seen_keys = {(c.class_name, c.tag_name, c.render_source_file) for c in route_candidates}\n        for match in style_matches:\n            class_name = match.group(1)\n            key = (class_name, "styled-slot", rel)\n            if key in seen_keys:\n                continue\n            route_candidates.append(UiCandidate(\n                runtime_alias=runtime_alias,\n                route_path=route.route_path,\n                route_id=route.route_id,\n                route_source_file=route.source_file,\n                render_source_file=rel,\n                render_symbol=owner_symbol,\n                owner_file=rel,\n                owner_symbol=owner_symbol,\n                class_name=class_name,\n                tag_name="styled-slot",\n                widget_kind=infer_widget_kind("styled-slot", class_name, owner_symbol),\n                text_hint=class_name,\n                instance_policy="REPEATED_BY_DATA" if repeated_by_data(text, match.start()) else "SINGLE_OR_STATIC",\n                data_attributes={},\n                source_hash=source_hash,\n                generated_projection="generated" in rel.lower(),\n            ))\n        candidates.extend(route_candidates)\n\n    dedupe: dict[tuple[str, str, str, str, str], UiCandidate] = {}\n    for candidate in candidates:\n        key = (\n            candidate.render_source_file,\n            candidate.class_name or candidate.tag_name,\n            candidate.route_path,\n            candidate.route_id,\n            candidate.widget_kind,\n        )\n        dedupe[key] = candidate\n    return [dedupe[key] for key in sorted(dedupe)]\n'''
+          text = text[:start] + new_extract + text[end:]
+          path.write_text(text, encoding='utf-8', newline='\n')
+          PY
 
-          alias_rules = rules(pc_root)
-          def patched(source: Path, spec: str, root: Path):
-              if spec.startswith('.'):
-                  return resolve_base((source.parent/spec).resolve(), root)
-              matches=[]
-              for exact,prefix,suffix,pattern,targets in alias_rules:
-                  if exact:
-                      wildcard='' if spec==pattern else None
-                  elif spec.startswith(prefix) and (not suffix or spec.endswith(suffix)):
-                      end=len(spec)-len(suffix) if suffix else len(spec)
-                      wildcard=spec[len(prefix):end] if end>=len(prefix) else None
-                  else:
-                      wildcard=None
-                  if wildcard is not None:
-                      matches.append(((int(exact),len(prefix),len(suffix)),pattern,targets,wildcard))
-              if not matches: return None
-              score=max(x[0] for x in matches)
-              resolved=set()
-              for _,pattern,targets,wildcard in [x for x in matches if x[0]==score]:
-                  for target_pattern in targets:
-                      sub=target_pattern.replace('*',wildcard) if '*' in target_pattern else target_pattern
-                      found=resolve_base((pc_root/sub).resolve(), root)
-                      if found is not None:
-                          resolved.add(found.resolve()); break
-              return next(iter(resolved)) if len(resolved)==1 else None
+          cat > tools/code-atlas/tests/test_operational_uimap_route_projection.py <<'PYTEST'
+          from __future__ import annotations
 
-          d.resolve_import = patched
-          files = sorted(d.iter_files(pc_root), key=lambda p:str(p).lower())
-          hashes = d.parallel_hash(files, workers=18)
-          routes = d.discover_routes('pc', pc_root, repo, hashes)
-          stock_routes = [r for r in routes if r.route_path == '/stock']
-          reach = d.build_route_reachability(pc_root, repo, routes)
-          workspace_routes = reach.get(workspace_rel, [])
+          import hashlib
+          import json
+          import tempfile
+          import unittest
+          from pathlib import Path
 
-          extraction_error = None
-          manual_candidates = []
-          try:
-              manual_candidates = d.extract_ui_candidates_from_file('pc', workspace, repo, workspace_routes, hashes.get(workspace,''))
-          except Exception as exc:
-              extraction_error = f'{type(exc).__name__}: {exc}'
+          from code_atlas.app_map.uimap.discovery import (
+              RouteRecord,
+              build_route_reachability,
+              discover_routes,
+              extract_ui_candidates_from_file,
+              parallel_hash,
+              resolve_import,
+          )
 
-          runtime = d.discover_runtime('pc', pc_root, repo, workers=18)
-          runtime_workspace = [c for c in runtime['candidates'] if c.render_source_file == workspace_rel or c.owner_file == workspace_rel]
-          manual_stock = [c for c in manual_candidates if c.route_path == '/stock']
+
+          def write(path: Path, text: str) -> Path:
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(text, encoding="utf-8")
+              return path
+
+
+          def route(path: str, source: str) -> RouteRecord:
+              slug = path.strip("/").replace("/", ".") or "home"
+              return RouteRecord(
+                  runtime_alias="pc",
+                  route_id=f"ROUTE.pc.{slug}",
+                  route_path=path,
+                  source_file=source,
+                  source_hash="A" * 64,
+                  kind="page",
+              )
+
+
+          class UimapRouteProjectionTests(unittest.TestCase):
+              def test_relative_import_behavior_is_preserved(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp)
+                      source = write(root / "src/a.ts", 'import "./b";\n')
+                      target = write(root / "src/b.ts", "export const b = 1;\n")
+                      self.assertEqual(resolve_import(source, "./b", root), target.resolve())
+
+              def test_tsconfig_alias_resolves_and_external_package_does_not(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp)
+                      write(root / "tsconfig.json", json.dumps({
+                          "compilerOptions": {
+                              "paths": {"@/*": ["./src/*"], "@components/*": ["./components/*"]}
+                          }
+                      }))
+                      source = write(root / "app/page.tsx", 'import X from "@components/widget";\n')
+                      expected = write(root / "components/widget.tsx", "export default function X(){return null}\n")
+                      write(root / "src/components/widget.tsx", "export default 0\n")
+                      self.assertEqual(resolve_import(source, "@components/widget", root), expected.resolve())
+                      self.assertIsNone(resolve_import(source, "react", root))
+
+              def test_alias_escape_outside_runtime_root_is_rejected(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      base = Path(tmp)
+                      root = base / "runtime"
+                      write(root / "tsconfig.json", json.dumps({
+                          "compilerOptions": {"paths": {"@shared/*": ["../shared/*"]}}
+                      }))
+                      source = write(root / "app/page.tsx", 'import X from "@shared/widget";\n')
+                      write(base / "shared/widget.tsx", "export default 1\n")
+                      self.assertIsNone(resolve_import(source, "@shared/widget", root))
+
+              def test_one_route_behavior_stays_single_route(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp)
+                      source = write(root / "workspace.tsx", 'export function W(){return <section className={styles.productFicha}/>;}')
+                      rows = extract_ui_candidates_from_file(
+                          "pc", source, root, [route("/stock", "app/stock/page.tsx")], hashlib.sha256(source.read_bytes()).hexdigest().upper()
+                      )
+                      self.assertTrue(rows)
+                      self.assertEqual({row.route_path for row in rows}, {"/stock"})
+
+              def test_three_proven_routes_emit_three_route_specific_candidate_sets(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp)
+                      source = write(root / "workspace.tsx", 'export function W(){return <section className={styles.productFicha}/>;}')
+                      routes = [
+                          route("/stock", "app/stock/page.tsx"),
+                          route("/auditoria-inventario", "app/auditoria-inventario/page.tsx"),
+                          route("/counts", "app/counts/page.tsx"),
+                      ]
+                      rows = extract_ui_candidates_from_file(
+                          "pc", source, root, routes, hashlib.sha256(source.read_bytes()).hexdigest().upper()
+                      )
+                      product_rows = [row for row in rows if row.class_name == "productFicha"]
+                      self.assertEqual(
+                          {row.route_path for row in product_rows},
+                          {"/auditoria-inventario", "/counts", "/stock"},
+                      )
+                      for route_path in {"/auditoria-inventario", "/counts", "/stock"}:
+                          self.assertTrue(any(row.route_path == route_path for row in product_rows))
+
+              def test_duplicate_route_evidence_does_not_duplicate_projection(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp)
+                      source = write(root / "workspace.tsx", 'export function W(){return <section className={styles.productFicha}/>;}')
+                      one = [route("/stock", "app/stock/page.tsx")]
+                      duplicate = [
+                          route("/stock", "app/stock/page.tsx"),
+                          route("/stock", "app/stock/alternate.tsx"),
+                      ]
+                      digest = hashlib.sha256(source.read_bytes()).hexdigest().upper()
+                      self.assertEqual(
+                          len(extract_ui_candidates_from_file("pc", source, root, one, digest)),
+                          len(extract_ui_candidates_from_file("pc", source, root, duplicate, digest)),
+                      )
+
+              def test_route_order_does_not_change_candidate_identity(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp)
+                      source = write(root / "workspace.tsx", 'export function W(){return <section className={styles.productFicha}/>;}')
+                      routes = [route("/stock", "s.tsx"), route("/counts", "c.tsx"), route("/auditoria-inventario", "a.tsx")]
+                      digest = hashlib.sha256(source.read_bytes()).hexdigest().upper()
+                      first = extract_ui_candidates_from_file("pc", source, root, routes, digest)
+                      second = extract_ui_candidates_from_file("pc", source, root, list(reversed(routes)), digest)
+                      shape = lambda rows: [
+                          (row.route_id, row.route_path, row.render_source_file, row.class_name, row.tag_name, row.widget_kind)
+                          for row in rows
+                      ]
+                      self.assertEqual(shape(first), shape(second))
+
+              def test_unrouted_fallback_is_preserved(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp)
+                      source = write(root / "orphan.tsx", 'export function W(){return <button>Go</button>;}')
+                      rows = extract_ui_candidates_from_file(
+                          "pc", source, root, [], hashlib.sha256(source.read_bytes()).hexdigest().upper()
+                      )
+                      self.assertTrue(rows)
+                      self.assertEqual({row.route_path for row in rows}, {"/"})
+                      self.assertTrue(all(row.route_id.endswith(".unrouted") for row in rows))
+
+              def test_alias_reachability_preserves_all_three_real_route_records(self):
+                  with tempfile.TemporaryDirectory() as tmp:
+                      root = Path(tmp) / "runtime"
+                      write(root / "tsconfig.json", json.dumps({"compilerOptions": {"paths": {"@components/*": ["./components/*"]}}}))
+                      workspace = write(root / "components/inventory/inventory-workspace.tsx", 'export function W(){return <section className={styles.productFicha}/>;}')
+                      pages = []
+                      for route_path in ("auditoria-inventario", "counts", "stock"):
+                          pages.append(write(
+                              root / f"app/{route_path}/page.tsx",
+                              'import { W } from "@components/inventory/inventory-workspace"; export default function Page(){return <W/>;}\n',
+                          ))
+                      hashes = parallel_hash([workspace, *pages])
+                      routes = discover_routes("pc", root, root, hashes)
+                      reach = build_route_reachability(root, root, routes)
+                      key = "components/inventory/inventory-workspace.tsx"
+                      self.assertIn(key, reach)
+                      self.assertEqual(
+                          {row.route_path for row in reach[key]},
+                          {"/auditoria-inventario", "/counts", "/stock"},
+                      )
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          PYTEST
+
+      - name: Compile and run focused plus canonical UIMAP tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+          python -m unittest -v tools/code-atlas/tests/test_operational_uimap_route_projection.py
+          python -m unittest -v code_atlas.app_map.uimap.tests
+
+      - name: Generate real three-app mapping evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/prisma-three-app-map-routefix"
+          python -m code_atlas.cli.main ui-bridge refresh-three-app-map \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-root "$RUNNER_TEMP/prisma-three-app-map-routefix" \
+            --binding-registry "$GITHUB_WORKSPACE/prisma-html/authority/rifat/identity/registries/element-bindings.registry.json" \
+            --pilot-contract "$GITHUB_WORKSPACE/apps/terminal-de-venta-system/products/pc/app/docs/visual-pilots/PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.contract.json" \
+            --workers 18
+
+      - name: Gate real multi-route projection and safety
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'prisma-three-app-map-routefix'
+          refresh = json.loads((root / 'PRISMA_THREE_APP_VISUAL_MAPPING_REFRESH.json').read_text(encoding='utf-8'))
+          if refresh.get('status') == 'BLOCKED_BY_UIMAP':
+              raise SystemExit('UIMAP_ROUTEFIX_BLOCKED')
+          validation = refresh.get('uimap', {}).get('validation', {})
+          if validation.get('ok') is not True:
+              raise SystemExit('UIMAP_VALIDATION_NOT_OK')
+          gates = validation.get('gates', {})
+          required_gates = ('goldenCobrarPreserved', 'governorByteForByteIntact', 'productByteForByteIntact')
+          if any(gates.get(name) is not True for name in required_gates):
+              raise SystemExit(f'REGRESSION_GATE_FAILED:{gates}')
+
+          pc = json.loads((root / 'uimap/batches/02_pc.json').read_text(encoding='utf-8'))
+          workspace_suffix = 'products/pc/app/components/inventory/inventory-workspace.tsx'
+          workspace = [
+              row for row in pc.get('components', [])
+              if str(row.get('ownerFile', '')).endswith(workspace_suffix)
+              or str(row.get('renderSourceFile', '')).endswith(workspace_suffix)
+          ]
+          by_route = {}
+          for row in workspace:
+              by_route.setdefault(row.get('routePath'), []).append(row)
+          required_routes = {'/auditoria-inventario', '/counts', '/stock'}
+          missing = sorted(required_routes - set(by_route))
+          if missing:
+              raise SystemExit(f'MISSING_WORKSPACE_ROUTE_PROJECTIONS:{missing}')
+          stock = by_route['/stock']
+          product_ficha = [
+              row for row in stock
+              if any('productFicha' in str(target.get('selector', '')) for target in row.get('visualTargets', []))
+          ]
+          if not product_ficha:
+              raise SystemExit('STOCK_PRODUCTFICHA_VISUAL_TARGET_NOT_EMITTED')
+          component_ids = [row.get('componentId') for row in pc.get('components', [])]
+          if len(component_ids) != len(set(component_ids)):
+              raise SystemExit('PC_COMPONENT_ID_COLLISION_AFTER_ROUTE_PROJECTION')
 
           report = {
-              'status':'DIAGNOSTIC_ONLY_NO_SOURCE_MUTATION',
-              'pcRoot':d.norm_rel(repo,pc_root),
-              'workspaceRel':workspace_rel,
-              'workspaceInIterFiles':workspace in files,
-              'workspaceHashPresent':workspace in hashes,
-              'stockRouteCount':len(stock_routes),
-              'stockRouteImports':[r.imports for r in stock_routes],
-              'directAliasResolution':str(patched(stock_page,'@components/inventory/inventory-workspace',pc_root)),
-              'workspaceInReach':workspace_rel in reach,
-              'workspaceReachRoutes':[{'routePath':r.route_path,'kind':r.kind,'sourceFile':r.source_file} for r in workspace_routes],
-              'manualExtractionError':extraction_error,
-              'manualCandidateCount':len(manual_candidates),
-              'manualStockCandidateCount':len(manual_stock),
-              'manualStockSample':[{'className':c.class_name,'tagName':c.tag_name,'widgetKind':c.widget_kind,'data':c.data_attributes,'routePath':c.route_path} for c in manual_stock[:20]],
-              'discoverRuntimeWorkspaceCandidateCount':len(runtime_workspace),
-              'discoverRuntimeWorkspaceSample':[{'className':c.class_name,'tagName':c.tag_name,'widgetKind':c.widget_kind,'data':c.data_attributes,'routePath':c.route_path} for c in runtime_workspace[:20]],
+              'status': 'PASS_UIMAP_ALIAS_AND_MULTI_ROUTE_SOURCE_ONLY',
+              'refreshStatus': refresh.get('status'),
+              'uimapComponentCount': refresh.get('uimap', {}).get('componentCount'),
+              'pcComponentCount': len(pc.get('components', [])),
+              'workspaceRouteCounts': {key: len(value) for key, value in sorted(by_route.items()) if key in required_routes},
+              'stockProductFichaRows': len(product_ficha),
+              'goldenCobrarPreserved': gates.get('goldenCobrarPreserved'),
+              'governorByteForByteIntact': gates.get('governorByteForByteIntact'),
+              'productByteForByteIntact': gates.get('productByteForByteIntact'),
           }
-          print('PRISMA_UIMAP_REACH_EXTRACTION_DIAGNOSTIC_BEGIN')
-          print(json.dumps(report,ensure_ascii=False,indent=2,sort_keys=True))
-          print('PRISMA_UIMAP_REACH_EXTRACTION_DIAGNOSTIC_END')
-          if str(patched(stock_page,'@components/inventory/inventory-workspace',pc_root)) != str(workspace.resolve()):
-              raise SystemExit('DIRECT_ALIAS_RESOLUTION_FAILED')
-          if not report['workspaceInIterFiles']:
-              raise SystemExit('WORKSPACE_EXCLUDED_FROM_FILE_INVENTORY')
-          if not report['workspaceInReach']:
-              raise SystemExit('WORKSPACE_NOT_PROPAGATED_IN_REACHABILITY')
-          if extraction_error:
-              raise SystemExit('WORKSPACE_EXTRACTION_EXCEPTION')
-          if not runtime_workspace:
-              raise SystemExit('DISCOVER_RUNTIME_DROPPED_EXTRACTED_WORKSPACE')
+          print('PRISMA_UIMAP_ROUTEFIX_GATE_BEGIN')
+          print(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True))
+          print('PRISMA_UIMAP_ROUTEFIX_GATE_END')
           PY
-      - name: Prove source untouched
+
+      - name: Commit exact source-only patch and self-delete
         shell: bash
-        run: test -z "$(git status --porcelain=v1 --untracked-files=all)"
+        run: |
+          set -euo pipefail
+          git config user.name "prisma-uimap-bot"
+          git config user.email "prisma-uimap-bot@users.noreply.github.com"
+          git add \
+            tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+          git rm .github/workflows/uimap-alias-reachability-one-shot.yml
+          staged="$(git diff --cached --name-only | sort)"
+          expected="$(printf '%s\n' \
+            '.github/workflows/uimap-alias-reachability-one-shot.yml' \
+            'tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py' \
+            'tools/code-atlas/tests/test_operational_uimap_route_projection.py' | sort)"
+          test "$staged" = "$expected"
+          git diff --cached --check
+          git commit -m "fix(uimap): preserve shared owners across proven routes"
+          git push origin HEAD:agent/prisma-html-three-app-visual-closure
