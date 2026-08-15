@@ -1,0 +1,224 @@
+name: UIMAP Rich Candidate Preservation Once
+
+on:
+  push:
+    branches:
+      - agent/prisma-html-three-app-visual-closure
+    paths:
+      - .github/workflows/uimap-rich-candidate-preservation-once.yml
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  EXPECTED_PARENT: ae1a4c7dec35963c93962ca4a9ae139815501c3b
+  EXPECTED_DISCOVERY_BLOB: 6950bcb4150e967d7a33e39a2cad98997c62b477
+
+jobs:
+  preserve-rich-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout transaction branch
+        uses: actions/checkout@v6
+        with:
+          ref: agent/prisma-html-three-app-visual-closure
+          fetch-depth: 2
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Fail closed on preimage drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$EXPECTED_PARENT"
+          test "$(git hash-object tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py)" = "$EXPECTED_DISCOVERY_BLOB"
+          test ! -e tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+      - name: Apply evidence-preserving discovery repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py')
+          text = path.read_text(encoding='utf-8')
+
+          old_fallback = '''        # Preserve the existing CSS-only fallback semantics per proven route.\n        seen_keys = {(c.class_name, c.tag_name, c.render_source_file) for c in route_candidates}\n        for match in style_matches:\n            class_name = match.group(1)\n            key = (class_name, "styled-slot", rel)\n            if key in seen_keys:\n                continue\n'''
+          new_fallback = '''        # CSS-only fallback fills classes not already observed on a real JSX element.\n        # JSX candidates can carry data-prisma-* evidence; a later fallback must\n        # never compete with or erase that richer source observation.\n        seen_class_keys = {\n            (c.class_name, c.render_source_file)\n            for c in route_candidates\n            if c.class_name\n        }\n        for match in style_matches:\n            class_name = match.group(1)\n            if (class_name, rel) in seen_class_keys:\n                continue\n'''
+          if text.count(old_fallback) != 1:
+              raise SystemExit(f'FALLBACK_PREIMAGE_MISMATCH:{text.count(old_fallback)}')
+          text = text.replace(old_fallback, new_fallback, 1)
+
+          old_dedupe = '''    dedupe: dict[tuple[str, str, str, str, str], UiCandidate] = {}\n    for candidate in candidates:\n        key = (\n            candidate.render_source_file,\n            candidate.class_name or candidate.tag_name,\n            candidate.route_path,\n            candidate.route_id,\n            candidate.widget_kind,\n        )\n        dedupe[key] = candidate\n    return [dedupe[key] for key in sorted(dedupe)]\n'''
+          new_dedupe = '''    # Keep distinct real JSX identities when their governed data-prisma-* markers\n    # differ. Ordinary runtime data-* values are intentionally excluded so state\n    # variants of the same governed component do not multiply the map.\n    dedupe: dict[tuple[Any, ...], UiCandidate] = {}\n    for candidate in candidates:\n        prisma_fingerprint = tuple(sorted(\n            (key, value)\n            for key, value in candidate.data_attributes.items()\n            if key.startswith("data-prisma-")\n        ))\n        key = (\n            candidate.render_source_file,\n            candidate.class_name or candidate.tag_name,\n            candidate.route_path,\n            candidate.route_id,\n            candidate.widget_kind,\n            prisma_fingerprint,\n        )\n        existing = dedupe.get(key)\n        if existing is None:\n            dedupe[key] = candidate\n            continue\n        existing_prisma = tuple(sorted(\n            (attr, value)\n            for attr, value in existing.data_attributes.items()\n            if attr.startswith("data-prisma-")\n        ))\n        candidate_score = (\n            len(prisma_fingerprint),\n            len(candidate.data_attributes),\n            candidate.tag_name != "styled-slot",\n        )\n        existing_score = (\n            len(existing_prisma),\n            len(existing.data_attributes),\n            existing.tag_name != "styled-slot",\n        )\n        if candidate_score > existing_score:\n            dedupe[key] = candidate\n    return [dedupe[key] for key in sorted(dedupe)]\n'''
+          if text.count(old_dedupe) != 1:
+              raise SystemExit(f'DEDUPE_PREIMAGE_MISMATCH:{text.count(old_dedupe)}')
+          text = text.replace(old_dedupe, new_dedupe, 1)
+          path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+
+      - name: Add focused regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import tempfile
+          import unittest
+          from pathlib import Path
+
+          from code_atlas.app_map.uimap.discovery import RouteRecord, extract_ui_candidates_from_file
+
+
+          def route(path: str) -> RouteRecord:
+              slug = path.strip('/').replace('/', '.') or 'home'
+              return RouteRecord(
+                  runtime_alias='pc',
+                  route_id=f'ROUTE.pc.{slug}',
+                  route_path=path,
+                  source_file=f'app/{slug}/page.tsx',
+                  source_hash='A' * 64,
+                  kind='page',
+              )
+
+
+          def extract(source_text: str):
+              with tempfile.TemporaryDirectory() as tmp:
+                  root = Path(tmp)
+                  source = root / 'workspace.tsx'
+                  source.write_text(source_text, encoding='utf-8')
+                  digest = hashlib.sha256(source.read_bytes()).hexdigest().upper()
+                  return extract_ui_candidates_from_file('pc', source, root, [route('/stock')], digest)
+
+
+          class UimapCandidateEvidenceTests(unittest.TestCase):
+              def test_rich_jsx_candidate_wins_over_css_fallback_for_same_class(self):
+                  rows = extract('''
+          export function W(){
+            return <section
+              className={styles.productFicha}
+              data-prisma-component-ui-id="PC-STOCK-FICHA-PANEL-01"
+              data-prisma-binding="BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1"
+              data-prisma-region="ZONE.pc.stock.detail"
+              data-prisma-slot="SLOT.pc.stock.detail.primary"
+            />;
+          }
+          ''')
+                  product = [row for row in rows if row.class_name == 'productFicha']
+                  self.assertEqual(len(product), 1)
+                  self.assertEqual(product[0].tag_name, 'section')
+                  self.assertEqual(product[0].data_attributes['data-prisma-component-ui-id'], 'PC-STOCK-FICHA-PANEL-01')
+                  self.assertEqual(product[0].data_attributes['data-prisma-binding'], 'BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1')
+
+              def test_distinct_governed_markers_on_same_class_are_not_collapsed(self):
+                  rows = extract('''
+          export function W(){
+            return <>
+              <section className={styles.shared} data-prisma-component-ui-id="PC-A" data-prisma-binding="BND.A" />
+              <section className={styles.shared} data-prisma-component-ui-id="PC-B" data-prisma-binding="BND.B" />
+            </>;
+          }
+          ''')
+                  shared = [row for row in rows if row.class_name == 'shared']
+                  self.assertEqual(len(shared), 2)
+                  self.assertEqual(
+                      {row.data_attributes['data-prisma-component-ui-id'] for row in shared},
+                      {'PC-A', 'PC-B'},
+                  )
+
+              def test_css_only_fallback_is_preserved_when_no_jsx_owner_exists(self):
+                  rows = extract('''
+          export function W(){
+            const visual = styles.cssOnlyPanel;
+            return <div data-testid="root" />;
+          }
+          ''')
+                  fallback = [row for row in rows if row.class_name == 'cssOnlyPanel']
+                  self.assertEqual(len(fallback), 1)
+                  self.assertEqual(fallback[0].tag_name, 'styled-slot')
+                  self.assertEqual(fallback[0].data_attributes, {})
+
+
+          if __name__ == '__main__':
+              unittest.main()
+          PY
+
+      - name: Compile and run focused tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py \
+            tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+          python -m unittest -v \
+            tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py \
+            tools/code-atlas/tests/test_operational_uimap_route_projection.py
+
+      - name: Prove StockFicha markers survive real discovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          from code_atlas.app_map.uimap.discovery import discover_runtime
+
+          repo = Path('.').resolve()
+          root = repo / 'apps/terminal-de-venta-system/products/pc/app'
+          result = discover_runtime('pc', root, repo, workers=18)
+          rows = [
+              row for row in result['candidates']
+              if row.route_path == '/stock'
+              and row.render_source_file.endswith('products/pc/app/components/inventory/inventory-workspace.tsx')
+              and row.class_name == 'productFicha'
+          ]
+          if not rows:
+              raise SystemExit('STOCK_FICHA_CANDIDATE_NOT_FOUND')
+          rich = [
+              row for row in rows
+              if row.data_attributes.get('data-prisma-component-ui-id') == 'PC-STOCK-FICHA-PANEL-01'
+              and row.data_attributes.get('data-prisma-binding') == 'BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1'
+              and row.data_attributes.get('data-prisma-region') == 'ZONE.pc.stock.detail'
+              and row.data_attributes.get('data-prisma-slot') == 'SLOT.pc.stock.detail.primary'
+          ]
+          if not rich:
+              raise SystemExit('STOCK_FICHA_GOVERNED_MARKERS_NOT_PRESERVED')
+          if any(row.tag_name == 'styled-slot' for row in rows):
+              raise SystemExit('STOCK_FICHA_CSS_FALLBACK_STILL_COMPETING')
+          print({
+              'stockFichaCandidateCount': len(rows),
+              'governedMarkerCandidateCount': len(rich),
+              'componentUiId': rich[0].data_attributes['data-prisma-component-ui-id'],
+              'bindingId': rich[0].data_attributes['data-prisma-binding'],
+          })
+          PY
+
+      - name: Prove scope and commit transaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git diff --name-only -- prisma-html apps/terminal-de-venta-system/products/tablet apps/terminal-de-venta-system/products/pc apps/terminal-de-venta-system/products/mobile)"
+          changed="$(git diff --name-only; git ls-files --others --exclude-standard)"
+          printf '%s\n' "$changed"
+          printf '%s\n' "$changed" | grep -Fx 'tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py'
+          printf '%s\n' "$changed" | grep -Fx 'tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py'
+          test "$(printf '%s\n' "$changed" | sed '/^$/d' | sort -u | wc -l)" -eq 2
+
+          git config user.name 'prisma-uimap-bot'
+          git config user.email 'prisma-uimap-bot@users.noreply.github.com'
+          git add tools/code-atlas/src/code_atlas/app_map/uimap/discovery.py tools/code-atlas/tests/test_operational_uimap_candidate_evidence.py
+          git rm .github/workflows/uimap-rich-candidate-preservation-once.yml
+          git commit -m 'fix(uimap): preserve governed JSX candidate evidence'
+          git push origin HEAD:agent/prisma-html-three-app-visual-closure
