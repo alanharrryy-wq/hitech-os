@@ -1,0 +1,88 @@
+name: Code Atlas Post-Fix Full External Falsification
+
+on:
+  push:
+    branches: ['caext/external-evidence-1408']
+    paths:
+      - '.github/workflows/caext-postfix-full.yml'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  CAEXT_OUTPUT_ROOT: ${{ runner.temp }}/caext-postfix
+  CAEXT_HITECH_ROOT: ${{ github.workspace }}
+
+jobs:
+  full-external-falsification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout laboratory harness
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Freeze original harness and retarget source pin only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp .github/scripts/caext_external_gate.py "$RUNNER_TEMP/caext_external_gate.py"
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          p=Path(os.environ['RUNNER_TEMP'])/'caext_external_gate.py'
+          s=p.read_text(encoding='utf-8')
+          old='PIN="6bd15cda5649a58c7bac806faff446c9074a2d94"'
+          new='PIN="69f6c5cb06b68d475ce41515f82d1110f78e33e7"'
+          if s.count(old)!=1:
+              raise SystemExit('PIN_ANCHOR_MISMATCH')
+          p.write_text(s.replace(old,new),encoding='utf-8')
+          print('HARNESS_RUNTIME_PIN=69f6c5cb06b68d475ce41515f82d1110f78e33e7')
+          PY
+          python -m py_compile "$RUNNER_TEMP/caext_external_gate.py"
+
+      - name: Checkout exact fixed Code Atlas source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach --force 69f6c5cb06b68d475ce41515f82d1110f78e33e7
+          test "$(git rev-parse HEAD)" = "69f6c5cb06b68d475ce41515f82d1110f78e33e7"
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"
+
+      - name: Run unchanged full falsification protocol
+        id: gate
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$CAEXT_OUTPUT_ROOT"
+          python "$RUNNER_TEMP/caext_external_gate.py"
+
+      - name: Show result package
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find "$CAEXT_OUTPUT_ROOT" -maxdepth 1 -type f -name 'caext_*.zip' -print -exec sha256sum {} \;
+
+      - name: Upload full post-fix evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-postfix-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 14
+          path: ${{ runner.temp }}/caext-postfix/caext_*.zip
+
+      - name: Preserve incomplete-run failure semantics
+        if: always() && steps.gate.outcome == 'failure'
+        shell: bash
+        run: exit 1
