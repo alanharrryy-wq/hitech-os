@@ -13,8 +13,14 @@ from code_atlas.ui_bridge.visual_family import (
 )
 
 
-def component(runtime: str, widget: str, suffix: str, source_hash: str = "A" * 64) -> dict:
-    return {
+def component(
+    runtime: str,
+    widget: str,
+    suffix: str,
+    source_hash: str = "A" * 64,
+    certified_recipe: bool = False,
+) -> dict:
+    row = {
         "runtimeAlias": runtime,
         "surfaceId": f"SURF.{runtime}.test",
         "interfaceId": f"IFC.{runtime}.test",
@@ -49,6 +55,12 @@ def component(runtime: str, widget: str, suffix: str, source_hash: str = "A" * 6
         ],
         "evidenceRefs": [],
     }
+    if certified_recipe:
+        row["recipeCompatibility"] = {
+            "coverageStatus": "CURRENT_SOURCE_COVERAGE_COMPLETE",
+            "compatibleRecipeIds": ["REC.button.governed.v2"],
+        }
+    return row
 
 
 class VisualFamilyMappingTests(unittest.TestCase):
@@ -95,9 +107,9 @@ class VisualFamilyMappingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             components = {
-                "tb": component("tb", "WID.button", "button"),
-                "pc": component("pc", "WID.button", "button"),
-                "mb": component("mb", "WID.button", "button"),
+                "tb": component("tb", "WID.button", "button", certified_recipe=True),
+                "pc": component("pc", "WID.button", "button", certified_recipe=True),
+                "mb": component("mb", "WID.button", "button", certified_recipe=True),
             }
             repo = SimpleNamespace(components_by_id=components)
             report, control = build_visual_family_mapping(
@@ -113,12 +125,64 @@ class VisualFamilyMappingTests(unittest.TestCase):
                 self.assertEqual(row["visualFamilyId"], "VISFAM.button.v1")
                 self.assertEqual(row["recipeId"], "REC.button.governed.v2")
                 self.assertTrue(row["sourceResolvedVisualBinding"])
+                self.assertTrue(row["sourceVisualStateCoverageComplete"])
+                self.assertEqual(
+                    row["sourceCompatibleRecipeIds"],
+                    ["REC.button.governed.v2"],
+                )
+                self.assertTrue(row["governedRecipeCoverageMatch"])
                 self.assertTrue(row["visualRecipeProjectionReady"])
                 self.assertTrue(row["visualBindingId"].startswith("BND.VIS."))
                 self.assertTrue(row["visualTargets"][0]["visualLayerId"].startswith("LYR.VIS."))
                 self.assertTrue(row["visualTargets"][0]["implementationLayerId"].startswith("ILYR.SRC."))
             self.assertEqual(set(control["surfaces"]), {"tb", "pc", "mb"})
             self.assertEqual(control["surfaces"]["pc"]["counts"]["layers"], 1)
+
+    def test_exact_binding_without_recipe_coverage_remains_not_recipe_ready(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = SimpleNamespace(
+                components_by_id={"pc": component("pc", "WID.button", "button")}
+            )
+            report, _ = build_visual_family_mapping(
+                repo,
+                self._recipes(root),
+                self._crosswalk(root),
+            )
+            row = report["rows"][0]
+            self.assertTrue(row["sourceResolvedVisualBinding"])
+            self.assertTrue(row["visualRecipeFamilyCandidate"])
+            self.assertFalse(row["sourceVisualStateCoverageComplete"])
+            self.assertFalse(row["visualRecipeProjectionReady"])
+            self.assertEqual(row["sourceVisualStateCoverageStatus"], "NOT_EVALUATED")
+            self.assertIn(
+                "SOURCE_VISUAL_STATE_COVERAGE_NOT_COMPLETE:NOT_EVALUATED",
+                row["recipeCoverageBlockingReasons"],
+            )
+
+    def test_complete_state_coverage_without_recipe_match_remains_not_recipe_ready(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            row = component("pc", "WID.button", "button")
+            row["recipeCompatibility"] = {
+                "coverageStatus": "CURRENT_SOURCE_COVERAGE_COMPLETE",
+                "compatibleRecipeIds": [],
+            }
+            repo = SimpleNamespace(components_by_id={"pc": row})
+            report, _ = build_visual_family_mapping(
+                repo,
+                self._recipes(root),
+                self._crosswalk(root),
+            )
+            mapped = report["rows"][0]
+            self.assertTrue(mapped["sourceResolvedVisualBinding"])
+            self.assertTrue(mapped["sourceVisualStateCoverageComplete"])
+            self.assertFalse(mapped["governedRecipeCoverageMatch"])
+            self.assertFalse(mapped["visualRecipeProjectionReady"])
+            self.assertIn(
+                "GOVERNED_RECIPE_NOT_CERTIFIED_FOR_COMPONENT:REC.button.governed.v2",
+                mapped["recipeCoverageBlockingReasons"],
+            )
 
     def test_unmapped_family_does_not_block_exact_physical_visual_binding(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -140,7 +204,7 @@ class VisualFamilyMappingTests(unittest.TestCase):
     def test_source_hash_drift_fails_visual_binding_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            row = component("pc", "WID.button", "button", "A" * 64)
+            row = component("pc", "WID.button", "button", "A" * 64, certified_recipe=True)
             row["visualTargets"][0]["sourceHash"] = "B" * 64
             repo = SimpleNamespace(components_by_id={"pc": row})
             report, control = build_visual_family_mapping(
@@ -150,6 +214,7 @@ class VisualFamilyMappingTests(unittest.TestCase):
             )
             mapped = report["rows"][0]
             self.assertFalse(mapped["sourceResolvedVisualBinding"])
+            self.assertFalse(mapped["visualRecipeProjectionReady"])
             self.assertIn("VISUAL_TARGET_SOURCE_HASH_DRIFT:0", mapped["blockingReasons"])
             self.assertEqual(set(control["surfaces"]), {"pc"})
             blocked_surface = control["surfaces"]["pc"]
@@ -171,7 +236,7 @@ class VisualFamilyMappingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             repo = SimpleNamespace(
-                components_by_id={"tb": component("tb", "WID.button", "button")}
+                components_by_id={"tb": component("tb", "WID.button", "button", certified_recipe=True)}
             )
             recipes = self._recipes(root)
             crosswalk = self._crosswalk(root)
