@@ -145,10 +145,15 @@
     "repoAnalyzerSelfTest": "PASS",
     "claCheck": "PASS",
     "fixtureType": "neutral synthetic git repository",
-    "externalRepositoryFalsification": "LIMITED_PASS_3_PINNED_REPOS",
-    "externalDeclaredScenarios": "30/30",
-    "externalRepeatability": "3/3",
-    "externalReadOnlyCompliance": "PASS"
+    "externalRepositoryFalsification": "BOUNDED_DIVERSITY_PASS_7_PINNED_REPOS_2_OS",
+    "externalDeclaredScenarios": "70/70 per OS (30 regression + 40 diversity)",
+    "externalRepeatability": "7/7 on ubuntu and windows",
+    "externalReadOnlyCompliance": "PASS",
+    "externalCoreLeakFindings": 0,
+    "externalPlatforms": [
+      "ubuntu",
+      "windows"
+    ]
   },
   "excludedSurfaces": [
     "tablet",
@@ -163,7 +168,7 @@
     "live product processes"
   ],
   "doesNotProve": [
-    "correctness beyond the three tested pinned repositories or across arbitrary real external repositories or stacks",
+    "correctness beyond the seven tested pinned repositories or across arbitrary real external repositories or stacks",
     "production runtime readiness",
     "hosted multi-tenant isolation",
     "enterprise IAM or security certification",
@@ -172,9 +177,9 @@
     "legal or privacy compliance",
     "production certification"
   ],
-  "nextGate": "Expand read-only falsification to broader repository and stack diversity, repeat on an independent second machine/environment, and separately prove hosted/security boundaries as required. Do not rebuild the Universal Core or Customer Wow unless new evidence identifies a concrete defect.",
+  "nextGate": "Run historical real-diff validation, then human/agent usefulness evidence. Treat hosted/security boundaries as separate gates. Do not rebuild Universal Intelligence or Customer Wow unless new evidence identifies a concrete reproducible defect.",
   "externalEvidence": {
-    "status": "LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS",
+    "status": "BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS",
     "sourceRepairPr": 275,
     "sourceRepairMergeCommit": "caf918694c1c397d19a61bff217800d027a384e3",
     "repairAuthorityMeshRunId": 31866829102,
@@ -197,10 +202,26 @@
       {
         "name": "BurntSushi/ripgrep",
         "stack": "Rust workspace/CLI"
+      },
+      {
+        "name": "spf13/cobra",
+        "stack": "Go library/CLI"
+      },
+      {
+        "name": "spring-projects/spring-petclinic",
+        "stack": "Java/Spring application"
+      },
+      {
+        "name": "kubernetes/examples",
+        "stack": "Kubernetes YAML/IaC examples"
+      },
+      {
+        "name": "pybind/pybind11",
+        "stack": "C++/Python mixed-language library"
       }
     ],
-    "declaredScenarioResult": "30/30",
-    "repeatability": "3/3",
+    "declaredScenarioResult": "70/70 per OS",
+    "repeatability": "7/7 on ubuntu and windows",
     "readOnlyCompliance": true,
     "prCiResult": "6/6",
     "regressionTestCount": 140,
@@ -217,6 +238,28 @@
       "legacy case-insensitive NDC leak scan false-positive inside source-derived tailwindcss names",
       "legacy matrix changeImpactSize read from DISCOVER graph instead of prepared change model"
     ],
-    "certifiesArbitraryRepositories": false
+    "certifiesArbitraryRepositories": false,
+    "harnessV2Pr": 278,
+    "harnessV2MergeCommit": "9556609df6d60e8cecebb0f051ef27040842bc53",
+    "harnessV2AuthorityMeshRunId": 31910183053,
+    "harnessV2AuthorityMeshArtifactId": 9253435582,
+    "diversityRunId": 31911140797,
+    "diversityUbuntuArtifactId": 9253725843,
+    "diversityUbuntuArtifactDigest": "sha256:9af0bf38e2ade9b60ff50066b064a7002e74f00bbdf4f0fcdf77136a1a3d91c4",
+    "diversityWindowsArtifactId": 9253737517,
+    "diversityWindowsArtifactDigest": "sha256:5e7a169e07d319f1d6d99686a803d052b0d3a75f4f962b746102384c8df3b07a",
+    "coreLeakFindings": 0,
+    "harnessV2Repairs": [
+      "boundary-aware neutrality matching with SOURCE_DERIVED PROFILE_DERIVED HISTORICAL_TOOL_EVIDENCE CORE_LEAK provenance",
+      "Impact Radius metrics sourced from prepared change model instead of DISCOVER graph",
+      "isolated evidence output roots prevent runner checkout paths from masquerading as core leakage",
+      "red gates upload evidence while retaining fail-closed exit status"
+    ],
+    "observedStructuralLimits": [
+      "Cobra Go corpus produced zero repository dependency edges",
+      "Spring PetClinic Java corpus produced zero repository dependency edges",
+      "Kubernetes YAML/IaC corpus produced zero repository dependency edges",
+      "pybind11 mixed-language corpus produced two repository dependency edges"
+    ]
   }
 }

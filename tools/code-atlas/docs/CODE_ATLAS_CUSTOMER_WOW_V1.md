@@ -2,7 +2,7 @@
 
 Status: `UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED`
 
-External evidence status: `LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS`
+External evidence status: `BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS`
 
 Authority basis:
 
@@ -33,9 +33,11 @@ Source hardening was driven by external evidence rather than a rebuild:
 
 Proven hardening includes independent Git-worktree reconciliation in Verify, Rust source evidence plus bounded repository-provable Rust dependency edges, normalized JS/TS parent-relative imports, and more explicit architecture coverage/provenance.
 
-Legacy harness outputs required manual adjudication: case-insensitive `NDC` matched inside source-derived `tailwindcss`, and the legacy matrix read Change Impact size from the DISCOVER graph rather than the prepared change model. Those instrumentation defects are not promoted to Code Atlas product failures.
+CAEXT V2 closed the two known legacy harness ambiguities in PR #278 without modifying `tools/code-atlas/src/code_atlas/**`: token-boundary matching plus provenance prevents source-derived names such as `tailwindcss` from becoming fake `NDC` leaks, and Impact Radius is now reported from the prepared change model rather than the DISCOVER graph. Red runs retain their evidence artifact and still fail closed.
 
-This is **limited external falsification evidence**, not an arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification.
+The same harness then replayed **seven pinned unrelated repositories on both Ubuntu and Windows**. The original Click/Vite/ripgrep regression was **30/30 per OS**; Cobra, Spring PetClinic, Kubernetes YAML examples, and pybind11 added **40/40 per OS**. Both OSes preserved read-only originals, repeatability, and zero `CORE_LEAK` findings. Evidence artifacts: Ubuntu `9253725843` (`sha256:9af0bf38e2ade9b60ff50066b064a7002e74f00bbdf4f0fcdf77136a1a3d91c4`) and Windows `9253737517` (`sha256:5e7a169e07d319f1d6d99686a803d052b0d3a75f4f962b746102384c8df3b07a`).
+
+Observed limits remain evidence, not defects by fiat: Cobra, Spring PetClinic, and Kubernetes examples produced zero repository dependency edges in this corpus; pybind11 produced two. This is **broader but still bounded external evidence**, not arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification. The next gate is historical real-diff validation, then human/agent usefulness evidence.
 
 Customer Wow V1 is now bound to the canonical neutral Universal Intelligence Core. The binding consumes repository inventory, authority discovery, system graphs, portable snapshots, coverage and retrieval through a structured neutral API. It does not duplicate discovery, graphing, indexing, snapshot or drift primitives.
 
