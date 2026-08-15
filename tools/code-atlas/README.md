@@ -16,7 +16,9 @@ External evidence is now **broader but still bounded**. CAEXT V2 replayed the ne
 
 CAEXT V2 also retired the two known legacy harness ambiguities without changing the Code Atlas core: neutrality matching is boundary-aware with explicit provenance, and Impact Radius metrics come from the prepared change model rather than the DISCOVER graph. The evidence remains deliberately bounded: Go, Java, and Kubernetes YAML produced no repository dependency edges in this corpus, while pybind11 produced two, so dependency understanding for those stacks is **not** claimed complete.
 
-The next evidence gate is **historical real-diff validation**, followed by **human/agent usefulness evidence**. Hosted/security boundaries remain separate gates. Current evidence does **not** certify arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification.
+Historical real-diff validation is now complete as **bounded evidence**, not as a universality claim. At immutable parent commits, Cobra/Go measured **25% recall / 100% precision**, Spring PetClinic/Java **50% / 100%**, and pybind11 C++/Python **33.33% / 100%**; all three had **0% companion-path recall**, exposing a conservative Impact Radius that missed historical tests/docs. A Kubernetes YAML target absent from the parent snapshot correctly returned `BLOCKED` with no Authority Pack. Ubuntu and Windows reproduced the same result, with read-only originals and repeatability preserved.
+
+The next evidence gate is **human/agent usefulness evidence**. Hosted/security boundaries remain separate gates. Current evidence does **not** certify high companion-path recall across stacks, arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification.
 
 `certifiable=false` and `productionCertified=false` remain invariant until separate evidence-backed gates prove otherwise.
 

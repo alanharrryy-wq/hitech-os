@@ -2,7 +2,7 @@
 
 Status: `UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED`
 
-External evidence status: `BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS`
+External evidence status: `BOUNDED_EXTERNAL_DIVERSITY_PLUS_HISTORICAL_REAL_DIFF_PASS`
 
 Authority basis:
 
@@ -37,7 +37,11 @@ CAEXT V2 closed the two known legacy harness ambiguities in PR #278 without modi
 
 The same harness then replayed **seven pinned unrelated repositories on both Ubuntu and Windows**. The original Click/Vite/ripgrep regression was **30/30 per OS**; Cobra, Spring PetClinic, Kubernetes YAML examples, and pybind11 added **40/40 per OS**. Both OSes preserved read-only originals, repeatability, and zero `CORE_LEAK` findings. Evidence artifacts: Ubuntu `9253725843` (`sha256:9af0bf38e2ade9b60ff50066b064a7002e74f00bbdf4f0fcdf77136a1a3d91c4`) and Windows `9253737517` (`sha256:5e7a169e07d319f1d6d99686a803d052b0d3a75f4f962b746102384c8df3b07a`).
 
-Observed limits remain evidence, not defects by fiat: Cobra, Spring PetClinic, and Kubernetes examples produced zero repository dependency edges in this corpus; pybind11 produced two. This is **broader but still bounded external evidence**, not arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification. The next gate is historical real-diff validation, then human/agent usefulness evidence.
+Observed limits remain evidence, not defects by fiat: Cobra, Spring PetClinic, and Kubernetes examples produced zero repository dependency edges in the diversity corpus; pybind11 produced two.
+
+Phase D then compared PREPARE impact at immutable historical parents against the paths that actually changed in the next real commit. Cobra/Go predicted only `command.go` across a four-path commit (**25% recall, 100% precision, 0% companion recall**). Spring PetClinic/Java predicted only the controller across controller + regression-test changes (**50% recall, 100% precision, 0% companion recall**). pybind11 predicted only `function_ref.h` across header + C++ test + Python test (**33.33% recall, 100% precision, 0% companion recall**). The Kubernetes new-path case was correctly fail-closed: the target did not exist in the parent snapshot, PREPARE returned `BLOCKED`, and no Authority Pack was issued. Ubuntu and Windows reproduced the same invariants. Historical evidence artifacts: Ubuntu `9254078386` (`sha256:88784e9b9c58ec29cee6ef40229a7f307a41c71147e9d01f072f66e5078e5869`) and Windows `9254082540` (`sha256:d2efb32116430dbbfa78d5dc5dd9513afbc54198ffae90c302c43df75adb5e38`).
+
+This is **broader but still bounded external evidence**. Low companion recall is recorded as a measured limitation, not automatically promoted to a source defect. The next gate is human/agent usefulness evidence, not a core rebuild.
 
 Customer Wow V1 is now bound to the canonical neutral Universal Intelligence Core. The binding consumes repository inventory, authority discovery, system graphs, portable snapshots, coverage and retrieval through a structured neutral API. It does not duplicate discovery, graphing, indexing, snapshot or drift primitives.
 

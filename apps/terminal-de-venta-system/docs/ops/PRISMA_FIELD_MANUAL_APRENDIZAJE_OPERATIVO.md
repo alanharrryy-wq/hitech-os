@@ -846,3 +846,17 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
 **Rollback:** PR #278 es un harness/evidence-only merge; el core quedó byte-intacto respecto del pin gobernado. El cierre documental sólo cambia autoridad/evidencia y conserva `LOCAL_VERIFIED`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`.
 **Regla nueva:** cuando un gate externo falle, separar primero `PRODUCT FAILURE`, `HARNESS FAILURE`, `ENVIRONMENT FAILURE` y `UNSUPPORTED TECHNOLOGY`. No ampliar claims ni parchar core por una métrica o path contaminado. Un rojo debe conservar su artifact.
 **Siguiente gate:** historical real-diff validation; después human/agent usefulness. Hosted/security sigue siendo evidencia separada.
+
+---
+
+### 2026-08-15 - Code Atlas: historical real-diff mide recall sin convertirlo en fake green
+
+**Tipo:** EVIDENCE_LEARNING / HISTORICAL_VALIDATION / GOVERNANCE_LEARNING
+**Superficie:** Tooling / Code Atlas / Change Intelligence / External Evidence
+**Contexto:** Después de CAEXT V2 multi-stack, Phase D comparó PREPARE en padres históricos inmutables contra los paths que realmente cambiaron en el siguiente commit. No se definió umbral artificial de accuracy.
+**Evidencia:** PR #282 / merge `004b15f2068c86dac42366870d867e39fb990dcf`; Authority Mesh `31912469729` / artifact `9254042841`; historical run `31912606042`; Ubuntu artifact `9254078386`; Windows artifact `9254082540`.
+**Resultado medido:** Cobra/Go: recall 25%, precision 100%, companion recall 0%, 3 false negatives; Spring/Java: recall 50%, precision 100%, companion recall 0%, 1 false negative; pybind11 C++/Python: recall 33.33%, precision 100%, companion recall 0%, 2 false negatives. Kubernetes new-path: target ausente en parent, decision `BLOCKED`, sin Authority Pack. Ubuntu y Windows reprodujeron los mismos invariantes; originales read-only.
+**Causa interpretativa:** En estos casos el Impact Radius fue conservador y target-only; la evidencia previa ya mostraba cobertura de dependency edges limitada en Go/Java/YAML. Esto es una limitación medida, no un defecto de source promovido automáticamente.
+**Regla nueva:** precision/recall históricos son métricas de calidad de evidencia. No convertir recall bajo en autorización para parchear core; un FIX/BUILD de companion/dependency intelligence exige su propio Authority Mesh y criterio de producto. Los casos new-path deben permanecer fail-closed si el target no existe en el snapshot autoridad.
+**Rollback:** Phase D fue evidence-only; no tocó `tools/code-atlas/src/code_atlas/**`.
+**Siguiente gate:** human/agent usefulness evidence. Hosted/security y production siguen siendo gates separados.
