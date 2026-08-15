@@ -12,7 +12,7 @@ permissions:
 env:
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
-  CAEXT_OUTPUT_ROOT: ${{ runner.temp }}/caext-postfix
+  CAEXT_OUTPUT_ROOT: /tmp/caext-postfix
   CAEXT_HITECH_ROOT: ${{ github.workspace }}
 
 jobs:
@@ -63,6 +63,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          rm -rf "$CAEXT_OUTPUT_ROOT"
           mkdir -p "$CAEXT_OUTPUT_ROOT"
           python "$RUNNER_TEMP/caext_external_gate.py"
 
@@ -80,7 +81,7 @@ jobs:
           name: caext-postfix-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: error
           retention-days: 14
-          path: ${{ runner.temp }}/caext-postfix/caext_*.zip
+          path: /tmp/caext-postfix/caext_*.zip
 
       - name: Preserve incomplete-run failure semantics
         if: always() && steps.gate.outcome == 'failure'
