@@ -38,47 +38,54 @@ jobs:
           if '"observedRawRoiEvents": observed_roi' in text:
               print('PASS_CAEXT_USEFULNESS_ROI_API_ALREADY_PATCHED')
               raise SystemExit(0)
-          old = '''    observed_roi = build_roi_event(
-              metric_values={
-                  "outOfScopeChangeRate": round(all_violations / max(1, all_edit_entries), 6),
-                  "evidenceCompletenessRate": round(sum(evidence_rates) / max(1, len(evidence_rates)) / 100, 6),
-              },
-              source="caext.single_external_agent_pilot.v1",
+
+          start = text.index('    observed_roi = build_roi_event(\n')
+          end = text.index('\n\n    state = {', start)
+          replacement = (
+              '    observed_roi = [\n'
+              '        build_roi_event(\n'
+              '            metric="outOfScopeChangeRate",\n'
+              '            value=round(all_violations / max(1, all_edit_entries), 6),\n'
+              '            unit="ratio",\n'
+              '            repository_identity="caext-usefulness-pilot-v1-six-task-controlled",\n'
+              '            source="caext.single_external_agent_pilot.v1",\n'
+              '            context={"taskCount": len(scored), "claimCeiling": "SINGLE_EXTERNAL_AGENT_PILOT"},\n'
+              '        ),\n'
+              '        build_roi_event(\n'
+              '            metric="evidenceCompletenessRate",\n'
+              '            value=round(sum(evidence_rates) / max(1, len(evidence_rates)) / 100, 6),\n'
+              '            unit="ratio",\n'
+              '            repository_identity="caext-usefulness-pilot-v1-six-task-controlled",\n'
+              '            source="caext.single_external_agent_pilot.v1",\n'
+              '            context={"taskCount": len(scored), "claimCeiling": "SINGLE_EXTERNAL_AGENT_PILOT"},\n'
+              '        ),\n'
+              '    ]'
           )
-'''
-          new = '''    observed_roi = [
-              build_roi_event(
-                  metric="outOfScopeChangeRate",
-                  value=round(all_violations / max(1, all_edit_entries), 6),
-                  unit="ratio",
-                  repository_identity="caext-usefulness-pilot-v1-six-task-controlled",
-                  source="caext.single_external_agent_pilot.v1",
-                  context={"taskCount": len(scored), "claimCeiling": "SINGLE_EXTERNAL_AGENT_PILOT"},
-              ),
-              build_roi_event(
-                  metric="evidenceCompletenessRate",
-                  value=round(sum(evidence_rates) / max(1, len(evidence_rates)) / 100, 6),
-                  unit="ratio",
-                  repository_identity="caext-usefulness-pilot-v1-six-task-controlled",
-                  source="caext.single_external_agent_pilot.v1",
-                  context={"taskCount": len(scored), "claimCeiling": "SINGLE_EXTERNAL_AGENT_PILOT"},
-              ),
-          ]
-'''
-          if old not in text:
-              raise SystemExit('ROI_CALL_PREIMAGE_MISSING')
-          text = text.replace(old, new, 1)
+          text = text[:start] + replacement + text[end:]
+
           old_key = '        "observedRawRoiEvent": observed_roi,\n'
           new_key = '        "observedRawRoiEvents": observed_roi,\n'
           if old_key not in text:
               raise SystemExit('ROI_RESULT_KEY_PREIMAGE_MISSING')
           text = text.replace(old_key, new_key, 1)
 
-          self_anchor = '''    assert packet_digest(volatile_a) != packet_digest(semantic_change)\n    print("PASS_CAEXT_USEFULNESS_PILOT_SELFTEST")\n'''
-          self_new = '''    assert packet_digest(volatile_a) != packet_digest(semantic_change)\n    roi_probe = build_roi_event(\n        metric="outOfScopeChangeRate",\n        value=0.0,\n        unit="ratio",\n        repository_identity="caext-usefulness-selftest",\n        source="caext.usefulness.selftest",\n        context={"financialEstimateAllowed": False},\n    )\n    assert roi_probe["metric"] == "outOfScopeChangeRate"\n    assert roi_probe["financialEstimate"] is None\n    assert roi_probe["observedMetric"] is True\n    print("PASS_CAEXT_USEFULNESS_PILOT_SELFTEST")\n'''
-          if self_anchor not in text:
+          anchor = '    print("PASS_CAEXT_USEFULNESS_PILOT_SELFTEST")\n'
+          if anchor not in text:
               raise SystemExit('ROI_SELFTEST_ANCHOR_MISSING')
-          text = text.replace(self_anchor, self_new, 1)
+          probe = (
+              '    roi_probe = build_roi_event(\n'
+              '        metric="outOfScopeChangeRate",\n'
+              '        value=0.0,\n'
+              '        unit="ratio",\n'
+              '        repository_identity="caext-usefulness-selftest",\n'
+              '        source="caext.usefulness.selftest",\n'
+              '        context={"financialEstimateAllowed": False},\n'
+              '    )\n'
+              '    assert roi_probe["metric"] == "outOfScopeChangeRate"\n'
+              '    assert roi_probe["financialEstimate"] is None\n'
+              '    assert roi_probe["observedMetric"] is True\n'
+          )
+          text = text.replace(anchor, probe + anchor, 1)
           path.write_text(text, encoding='utf-8')
           print('PASS_CAEXT_USEFULNESS_ROI_API_PATCHED')
 
