@@ -23,6 +23,7 @@ REQUIRED_TARGET_FIELDS = (
     "anchorValue",
     "sourceHash",
 )
+SOURCE_COVERAGE_COMPLETE = "CURRENT_SOURCE_COVERAGE_COMPLETE"
 
 
 def load_visual_family_crosswalk(path: str | Path) -> dict[str, Any]:
@@ -191,7 +192,39 @@ def _component_row(
         or reason.startswith("VISUAL_TARGET_")
         for reason in blockers
     )
-    recipe_ready = source_resolved and family_status == "GOVERNED_VISUAL_FAMILY"
+
+    compatibility = component.get("recipeCompatibility")
+    compatibility = compatibility if isinstance(compatibility, dict) else {}
+    source_coverage_status = str(compatibility.get("coverageStatus") or "NOT_EVALUATED")
+    covered_recipe_ids = sorted(
+        str(value)
+        for value in (compatibility.get("compatibleRecipeIds") or [])
+        if value
+    )
+    source_state_coverage_complete = source_coverage_status == SOURCE_COVERAGE_COMPLETE
+    governed_family_candidate = source_resolved and family_status == "GOVERNED_VISUAL_FAMILY"
+    recipe_coverage_matches = bool(recipe_id and recipe_id in covered_recipe_ids)
+    full_stack_recipe_ready = (
+        governed_family_candidate
+        and source_state_coverage_complete
+        and recipe_coverage_matches
+    )
+    recipe_coverage_blockers: list[str] = []
+    if governed_family_candidate and not source_state_coverage_complete:
+        recipe_coverage_blockers.append(
+            f"SOURCE_VISUAL_STATE_COVERAGE_NOT_COMPLETE:{source_coverage_status}"
+        )
+    if governed_family_candidate and source_state_coverage_complete and not recipe_coverage_matches:
+        recipe_coverage_blockers.append(
+            f"GOVERNED_RECIPE_NOT_CERTIFIED_FOR_COMPONENT:{recipe_id or 'NONE'}"
+        )
+
+    if full_stack_recipe_ready:
+        visual_application_readiness = "READY_FOR_EXACT_VISUAL_AUTHORITY_PREFLIGHT"
+    elif governed_family_candidate:
+        visual_application_readiness = "BLOCKED_BY_UNCERTIFIED_FULL_STACK_RECIPE_COVERAGE"
+    else:
+        visual_application_readiness = "BLOCKED_BY_VISUAL_AUTHORITY_GAP"
 
     return {
         "visualBindingId": visual_binding_id,
@@ -217,12 +250,14 @@ def _component_row(
         "recipeStatus": recipe_status,
         "visualTargets": target_rows,
         "sourceResolvedVisualBinding": source_resolved,
-        "visualRecipeProjectionReady": recipe_ready,
-        "visualApplicationReadiness": (
-            "READY_FOR_EXACT_VISUAL_AUTHORITY_PREFLIGHT"
-            if recipe_ready
-            else "BLOCKED_BY_VISUAL_AUTHORITY_GAP"
-        ),
+        "visualRecipeFamilyCandidate": governed_family_candidate,
+        "sourceVisualStateCoverageStatus": source_coverage_status,
+        "sourceVisualStateCoverageComplete": source_state_coverage_complete,
+        "sourceCompatibleRecipeIds": covered_recipe_ids,
+        "governedRecipeCoverageMatch": recipe_coverage_matches,
+        "visualRecipeProjectionReady": full_stack_recipe_ready,
+        "recipeCoverageBlockingReasons": recipe_coverage_blockers,
+        "visualApplicationReadiness": visual_application_readiness,
         "blockingReasons": sorted(set(blockers)),
         "sourceHashes": component.get("sourceHashes", {}),
         "evidenceRefs": component.get("evidenceRefs", []),
@@ -350,6 +385,8 @@ def build_visual_family_mapping(
             "visualCandidateCount": len(subset),
             "sourceResolvedVisualBindingCount": sum(1 for row in subset if row.get("sourceResolvedVisualBinding")),
             "governedVisualFamilyCount": sum(1 for row in subset if row.get("familyStatus") == "GOVERNED_VISUAL_FAMILY"),
+            "visualRecipeFamilyCandidateCount": sum(1 for row in subset if row.get("visualRecipeFamilyCandidate")),
+            "sourceVisualStateCoverageCompleteCount": sum(1 for row in subset if row.get("sourceVisualStateCoverageComplete")),
             "visualRecipeProjectionReadyCount": sum(1 for row in subset if row.get("visualRecipeProjectionReady")),
             "unmappedVisualFamilyCount": sum(1 for row in subset if row.get("familyStatus") == "BLOCKED_BY_UNMAPPED_VISUAL_FAMILY"),
             "sourceEvidenceBlockedCount": sum(1 for row in subset if not row.get("sourceResolvedVisualBinding")),
@@ -357,14 +394,17 @@ def build_visual_family_mapping(
 
     report = {
         "schema": "prisma.visual-family-mapping-report.v1",
-        "schemaVersion": "1.0.0",
-        "status": "SOURCE_READY_WITH_EXPLICIT_FAMILY_GAPS",
+        "schemaVersion": "1.1.0",
+        "status": "SOURCE_READY_WITH_EXPLICIT_FAMILY_AND_RECIPE_COVERAGE_GAPS",
         "runtimeAliases": list(requested),
         "meaningBoundary": crosswalk.get("meaningBoundary", {}),
         "crosswalkVersion": crosswalk.get("version"),
         "counts": counts,
         "totalVisualCandidateCount": len(rows),
         "totalSourceResolvedVisualBindingCount": sum(1 for row in rows if row.get("sourceResolvedVisualBinding")),
+        "totalGovernedVisualFamilyCount": sum(1 for row in rows if row.get("familyStatus") == "GOVERNED_VISUAL_FAMILY"),
+        "totalVisualRecipeFamilyCandidateCount": sum(1 for row in rows if row.get("visualRecipeFamilyCandidate")),
+        "totalSourceVisualStateCoverageCompleteCount": sum(1 for row in rows if row.get("sourceVisualStateCoverageComplete")),
         "totalVisualRecipeProjectionReadyCount": sum(1 for row in rows if row.get("visualRecipeProjectionReady")),
         "rows": rows,
         "applicationEnabled": False,
