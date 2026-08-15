@@ -1,7 +1,8 @@
-import { getPcSubnavItems, normalizePcPathname } from "@/uiux/decision-model";
+import { getSecondaryNavigationForPath } from "@/composition/navigation";
+import { normalizePcPathname } from "@/uiux/decision-model";
 
 export function PcSubnav({ currentPath }: { currentPath: string }) {
-  const items = getPcSubnavItems(currentPath);
+  const items = getSecondaryNavigationForPath(currentPath);
   const normalizedCurrentPath = normalizePcPathname(currentPath);
 
   return (
@@ -13,12 +14,12 @@ export function PcSubnav({ currentPath }: { currentPath: string }) {
           <a
             className={`footer-chip${isActive ? " is-active" : ""}`}
             href={item.href}
-            key={`${item.label}-${item.href}`}
+            key={`${item.title}-${item.href}`}
             aria-current={isActive ? "page" : undefined}
             data-active={isActive ? "true" : "false"}
-            data-subnav-kind={item.kind}
+            data-subnav-kind={item.status}
           >
-            {item.label}
+            {item.title}
           </a>
         );
       })}
