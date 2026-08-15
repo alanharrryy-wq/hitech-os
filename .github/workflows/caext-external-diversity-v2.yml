@@ -90,3 +90,91 @@ jobs:
           name: caext-v2-regression-${{ matrix.os }}
           if-no-files-found: error
           path: ${{ runner.temp }}/caextv2/*.zip
+
+  external-diversity-four:
+    name: External diversity 4 / ${{ matrix.os }}
+    needs: external-regression-three
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run pinned Go Java IaC mixed-language evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/caextv2-diversity"
+          mkdir -p "$out"
+          python - "$out" <<'PY'
+          import importlib.util
+          import json
+          import sys
+          import zipfile
+          from pathlib import Path
+
+          script = Path('.github/scripts/caext_external_gate_v2.py').resolve()
+          spec = importlib.util.spec_from_file_location('caext_external_gate_v2', script)
+          if spec is None or spec.loader is None:
+              raise SystemExit('CAEXT_V2_IMPORT_FAILED')
+          mod = importlib.util.module_from_spec(spec)
+          sys.modules[spec.name] = mod
+          spec.loader.exec_module(mod)
+
+          mod.DIVERSITY_SPECS = (
+              mod.RepoSpec(
+                  'D', 'spf13/cobra', 'https://github.com/spf13/cobra.git',
+                  'adbc8813901bba65827259daa8e22ff94ec1f30e', '5a3b2c8e9af4c74e607a0a55e7910c1edb5d266f',
+                  'Go library / CLI', 'command.go', 'command_test.go',
+                  'Adjust command output behavior without touching completion generation or release metadata.',
+              ),
+              mod.RepoSpec(
+                  'E', 'spring-projects/spring-petclinic', 'https://github.com/spring-projects/spring-petclinic.git',
+                  '88e37c15cf6fc8490b01bc3e8e2c800cec1ac272', '3129e707de6f32acf23549d9e0706d3d1c270405',
+                  'Java / Spring application',
+                  'src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java',
+                  'src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java',
+                  'Adjust owner form handling without touching database schema or unrelated veterinarian flows.',
+              ),
+              mod.RepoSpec(
+                  'F', 'kubernetes/examples', 'https://github.com/kubernetes/examples.git',
+                  'd6b8cd27eacb51e651a1aa6f7c190a28713eff6e', 'a4579d4f7311e087a80968fb79eb3d56a08029e5',
+                  'Kubernetes YAML / IaC examples',
+                  'nginx-platform-app/deployment.yml', 'nginx-platform-app/service.yml',
+                  'Adjust the example deployment resource policy without touching the service manifest or unrelated examples.',
+              ),
+              mod.RepoSpec(
+                  'G', 'pybind/pybind11', 'https://github.com/pybind/pybind11.git',
+                  '0599909bfebc7d3440cc1fda3144e437e6ade056', '4e5efda59ae4eef7d0fab33022e5ebb047b6ebb8',
+                  'C++ / Python mixed-language library',
+                  'include/pybind11/detail/function_ref.h', 'tests/test_copy_move.py',
+                  'Adjust function_ref return-type handling without touching Python test behavior or unrelated headers.',
+              ),
+          )
+
+          output = mod.run_gate('diversity', Path(sys.argv[1]).resolve(), Path('.').resolve())
+          print(f'CAEXT_V2_DIVERSITY_RESULT={output}')
+          with zipfile.ZipFile(output) as archive:
+              state = json.loads(archive.read('run_state.json').decode('utf-8'))
+          classification = state.get('recommendedClassification')
+          print(f'CAEXT_V2_DIVERSITY_CLASSIFICATION={classification}')
+          if classification not in {'VERIFY_CONTINUE_EXTERNAL_DIVERSITY', 'VERIFY'}:
+              raise SystemExit(2)
+          PY
+
+      - name: Upload diversity evidence even when gate is red
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-v2-diversity-${{ matrix.os }}
+          if-no-files-found: error
+          path: ${{ runner.temp }}/caextv2-diversity/*.zip
