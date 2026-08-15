@@ -83,7 +83,8 @@ jobs:
           mkdir -p "$out"
           python .github/scripts/caext_external_gate_v2.py --repo-set regression --output "$out" --hitech-root .
 
-      - name: Upload regression evidence
+      - name: Upload regression evidence even when gate is red
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: caext-v2-regression-${{ matrix.os }}
