@@ -1,6 +1,8 @@
 # Code Atlas Customer Wow V1
 
-Status: `UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED_EXTERNAL_REPO_EVIDENCE_PENDING`
+Status: `UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED`
+
+External evidence status: `LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS`
 
 Authority basis:
 
@@ -13,6 +15,27 @@ Authority basis:
 - required authority coverage: 7 / 7 in both lanes, 0 missing
 - repository drift stable; provenance verified
 - Universal Intelligence PR #270 merge commit `83a83bf50691e866d31465993d7145e033fb2cc0`
+
+
+## External falsification evidence after PR #275
+
+Source hardening was driven by external evidence rather than a rebuild:
+
+- repair Authority Mesh: run `31866829102` on the pre-fix governed baseline;
+- source repair: PR #275, merged to `main` as `caf918694c1c397d19a61bff217800d027a384e3`;
+- targeted post-fix external evidence artifact: `9242394010`;
+- full post-fix external replay: workflow run `31867491454`, artifact `9242450935`;
+- external corpus: pinned Click, Vite and ripgrep repositories under the neutral/default profile;
+- result: `30/30` declared full-gate scenarios behaved as expected after fix, `3/3` repeatability, read-only compliance;
+- source regression suite: `140` Code Atlas tests PASS;
+- PR #275 repository CI: `6/6` workflows PASS;
+- closure Authority Mesh: run `31867706125`, artifact `9242519545`, digest `sha256:1f73190bd9213fdac786001d0d5a8c89050e1d73c9f029ea514244ea8721d9ae`.
+
+Proven hardening includes independent Git-worktree reconciliation in Verify, Rust source evidence plus bounded repository-provable Rust dependency edges, normalized JS/TS parent-relative imports, and more explicit architecture coverage/provenance.
+
+Legacy harness outputs required manual adjudication: case-insensitive `NDC` matched inside source-derived `tailwindcss`, and the legacy matrix read Change Impact size from the DISCOVER graph rather than the prepared change model. Those instrumentation defects are not promoted to Code Atlas product failures.
+
+This is **limited external falsification evidence**, not an arbitrary-repository, enterprise, hosted, legal/privacy/IAM, or production certification.
 
 Customer Wow V1 is now bound to the canonical neutral Universal Intelligence Core. The binding consumes repository inventory, authority discovery, system graphs, portable snapshots, coverage and retrieval through a structured neutral API. It does not duplicate discovery, graphing, indexing, snapshot or drift primitives.
 
@@ -169,7 +192,7 @@ The source-ready layer includes:
 
 The final binding was exercised in a neutral synthetic Git repository rather than relying on PRISMA product semantics.
 
-The operational suite on the final fix ran **106 tests** and passed. It covers both the pre-existing hardening baseline and the new Universal-to-Customer-Wow integration.
+The current hardened regression suite runs **140 tests** and passes; the original pre-external integration evidence ran 106 tests. It covers both the pre-existing hardening baseline and the new Universal-to-Customer-Wow integration.
 
 New integration coverage includes:
 
@@ -188,7 +211,8 @@ Repository CI evidence on the final integration head:
 
 - Code Atlas Operational Hardening: PASS;
 - total neutrality gate: `PASS_CODE_ATLAS_TOTAL_NEUTRALITY`, blocking count 0;
-- Ubuntu operational suite: 106 tests, `OK`;
+- original Ubuntu integration suite: 106 tests, `OK`;
+- post-external-hardening Code Atlas suite: 140 tests, `PASS`;
 - Windows operational hardening: PASS;
 - Windows neutrality/portability: PASS;
 - macOS neutrality/portability: PASS;
@@ -211,14 +235,19 @@ The runner contract is read-only and least-privilege by default. It does not cer
 
 ## 9. What this status proves
 
-`UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED_EXTERNAL_REPO_EVIDENCE_PENDING` proves:
+`UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED` with `LIMITED_EXTERNAL_FALSIFICATION_PASS_3_REPOS` proves:
 
-- the neutral Customer Wow composition layer is source implemented;
-- it is bound to the canonical Universal Intelligence Core rather than duplicating it;
-- fail-closed preparation and verification work against a neutral Git fixture;
-- the reusable source boundary remains neutral across repository CI platforms;
-- protected scope, authority drift, evidence drift, stale commit/tree and missing-evidence cases remain blocking;
-- the final source/test integration is locally/CI verified.
+- the neutral Customer Wow composition layer remains bound to the canonical Universal Intelligence Core rather than duplicating it;
+- fail-closed preparation and verification still work against the neutral synthetic Git fixture;
+- the repaired source passed 140 Code Atlas tests and 6/6 PR #275 repository CI workflows;
+- the same neutral/default core was exercised read-only against pinned Click, Vite and ripgrep repositories;
+- the full post-fix external replay produced 30/30 declared scenario behavior and 3/3 repeatability;
+- undeclared dirty-worktree mutation is independently detected instead of trusting an incomplete caller manifest;
+- explicit Rust source targets now receive physical/semantic evidence and bounded repository-provable Rust dependency relationships;
+- normalized JS/TS parent-relative imports recover direct static dependencies such as Vite's `define.spec.ts` -> `../../plugins/define` relationship;
+- missing ownership or source-vs-document reconciliation evidence remains `UNKNOWN` rather than being invented.
+
+This evidence is deliberately limited to the pinned repositories, commits, runner and declared scenarios recorded by the external falsification package.
 
 ## 10. What this status does NOT prove
 
@@ -237,19 +266,10 @@ No claim such as `productionCertified=true`, `enterprise-ready`, `paid-pilot-cer
 
 ## 11. Next gate
 
-The next allowed gate is **external repository evidence**, not another source rebuild.
+The next allowed gate is **broader external diversity and independent repeatability**, not another source rebuild.
 
-Run the complete loop read-only on unrelated external repositories with explicit authorization and record:
+Expand the same read-only falsification protocol to additional unrelated repository and stack families, including technologies not represented by Click, Vite and ripgrep. Repeat the governed evidence collection on an independent second machine/environment, preserve snapshot/provenance locking, and continue to adjudicate harness instrumentation separately from product behavior.
 
-1. repository/authority discovery quality;
-2. time to a supported change target;
-3. Change Studio target/impact/protected/unknown/evidence usefulness;
-4. Authority Pack portability;
-5. actual diff/session verification;
-6. negative scope/drift/evidence behavior;
-7. source/privacy boundary behavior;
-8. repeatability across machines/stacks;
-9. founder/operator intervention required;
-10. ROI raw metrics.
+Hosted multi-tenant, security/IAM, data-egress, legal/privacy and production-readiness claims remain separate gates and must be proved independently if those product boundaries are pursued.
 
-Until that evidence exists, Customer Wow V1 remains source/local verified and evidence-gated, not production certified.
+Universal Intelligence and Customer Wow remain `doNotRebuild=true`: future source work is allowed only when new evidence localizes a concrete defect.

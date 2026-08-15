@@ -322,9 +322,43 @@
         "Legal or privacy compliance",
         "Production certification"
       ]
+    },
+    {
+      "artifact": "PR #275 Code Atlas external falsification hardening",
+      "type": "code_atlas_external_falsification_hardening",
+      "scope": [
+        "code_atlas",
+        "change_intelligence",
+        "external_evidence",
+        "governance"
+      ],
+      "status": "PASS_EXTERNAL_FALSIFICATION_LIMITED",
+      "proves": [
+        "Code Atlas source was hardened from concrete external falsification defects without rebuilding Universal Intelligence or Customer Wow",
+        "PR #275 merged as caf918694c1c397d19a61bff217800d027a384e3 with 6/6 repository CI workflows passing",
+        "140 Code Atlas tests passed after the source repair",
+        "Full post-fix read-only replay against pinned Click, Vite and ripgrep produced 30/30 declared scenario behavior and 3/3 repeatability",
+        "Verify blocks undeclared dirty-worktree mutations while preserving declared in-scope changes",
+        "Rust source evidence and bounded repository-provable dependency relationships are available",
+        "Vite parent-relative JS/TS import evidence is recovered into static dependency/change-impact analysis"
+      ],
+      "doesNotProve": [
+        "Correctness across arbitrary external repositories or every technology stack",
+        "Production runtime readiness",
+        "Hosted multi-tenant isolation",
+        "Enterprise IAM/security certification",
+        "Legal/privacy compliance",
+        "Absolute repository universality"
+      ],
+      "evidence": [
+        "repair Authority Mesh run 31866829102",
+        "targeted artifact 9242394010",
+        "full replay run 31867491454 artifact 9242450935",
+        "closure Authority Mesh run 31867706125 artifact 9242519545"
+      ]
     }
   ],
-  "updatedAt": "2026-08-14T14:48:38-06:00",
+  "updatedAt": "2026-08-15T05:58:59Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -408,6 +442,17 @@
         "repo-analyzer-self-test run 31839187841",
         "CLA Check run 31839187843",
         "106 operational tests PASS"
+      ]
+    },
+    {
+      "capabilityId": "code_atlas.change_intelligence.customer_wow_v1",
+      "status": "LOCAL_VERIFIED",
+      "runId": "PR275_CODE_ATLAS_EXTERNAL_FALSIFICATION_HARDENING",
+      "evidence": [
+        "PR #275",
+        "caf918694c1c397d19a61bff217800d027a384e3",
+        "31867491454/9242450935",
+        "31867706125/9242519545"
       ]
     }
   ]
