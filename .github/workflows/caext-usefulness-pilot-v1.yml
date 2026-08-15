@@ -50,7 +50,7 @@ jobs:
               text = text.replace(anchor, addition, 1)
 
               anchor = '''def sha_json(value: Any) -> str:\n    return hashlib.sha256(\n        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")\n    ).hexdigest()\n\n\n'''
-              addition = anchor + '''def semantic_packet_view(packet: dict[str, Any]) -> dict[str, Any]:\n    """Return the evaluator-visible semantic packet without run-volatile Code Atlas metadata."""\n    value = copy.deepcopy(packet)\n    value.pop("packetDigest", None)\n    assistance = value.get("codeAtlasAssistance")\n    if isinstance(assistance, dict):\n        # Markdown is a derived rendering of the structured model and embeds run-volatile metadata.\n        assistance.pop("changeReportMarkdown", None)\n\n    def scrub(item: Any) -> Any:\n        if isinstance(item, dict):\n            return {key: scrub(child) for key, child in item.items() if key not in VOLATILE_PACKET_KEYS}\n        if isinstance(item, list):\n            return [scrub(child) for child in item]\n        return item\n\n    return scrub(value)\n\n\ndef packet_digest(packet: dict[str, Any]) -> str:\n    return sha_json(semantic_packet_view(packet))\n\n\n'''
+              addition = anchor + '''def semantic_packet_view(packet: dict[str, Any]) -> dict[str, Any]:\n    """Return evaluator-visible semantics without run-volatile Code Atlas metadata."""\n    value = copy.deepcopy(packet)\n    value.pop("packetDigest", None)\n    assistance = value.get("codeAtlasAssistance")\n    if isinstance(assistance, dict):\n        assistance.pop("changeReportMarkdown", None)\n\n    def scrub(item: Any) -> Any:\n        if isinstance(item, dict):\n            return {key: scrub(child) for key, child in item.items() if key not in VOLATILE_PACKET_KEYS}\n        if isinstance(item, list):\n            return [scrub(child) for child in item]\n        return item\n\n    return scrub(value)\n\n\ndef packet_digest(packet: dict[str, Any]) -> str:\n    return sha_json(semantic_packet_view(packet))\n\n\n'''
               if anchor not in text:
                   raise SystemExit('SHA_JSON_ANCHOR_MISSING')
               text = text.replace(anchor, addition, 1)
@@ -139,17 +139,16 @@ jobs:
           print('PASS_SEMANTIC_PACKET_DIGEST_STABLE_6_OF_6')
           PY
 
-      - name: Restore final read-only workflow and commit exact repair
+      - name: Commit only script and response repair
         shell: bash
         run: |
           set -euo pipefail
-          git show HEAD^:.github/workflows/caext-usefulness-pilot-v1.yml > .github/workflows/caext-usefulness-pilot-v1.yml
           changed="$(git diff --name-only)"
           printf '%s\n' "$changed"
           while IFS= read -r path; do
             [ -z "$path" ] && continue
             case "$path" in
-              .github/scripts/caext_usefulness_pilot_v1.py|.github/evidence/caext_usefulness_agent_responses_v1.json|.github/workflows/caext-usefulness-pilot-v1.yml) ;;
+              .github/scripts/caext_usefulness_pilot_v1.py|.github/evidence/caext_usefulness_agent_responses_v1.json) ;;
               *) echo "Unexpected repair path: $path"; exit 1 ;;
             esac
           done <<< "$changed"
@@ -163,6 +162,6 @@ jobs:
           fi
           git config user.name 'CAEXT Usefulness Pilot'
           git config user.email 'caext-usefulness@example.invalid'
-          git add -- .github/scripts/caext_usefulness_pilot_v1.py .github/evidence/caext_usefulness_agent_responses_v1.json .github/workflows/caext-usefulness-pilot-v1.yml
+          git add -- .github/scripts/caext_usefulness_pilot_v1.py .github/evidence/caext_usefulness_agent_responses_v1.json
           git commit -m 'test(code-atlas): stabilize usefulness packet digests'
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
