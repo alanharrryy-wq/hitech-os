@@ -1,0 +1,167 @@
+{
+  "evaluator": {
+    "connector": "GitHub",
+    "groundTruthViewedBeforeResponses": false,
+    "harnessTrigger": "roi-api-v1-synchronize-only-no-decision-change",
+    "hiddenReasoningCaptured": false,
+    "humanEvaluator": false,
+    "id": "chatgpt-gpt-5.6-sol",
+    "independentMultiAgentEvidence": false,
+    "mode": "SINGLE_EXTERNAL_AGENT_PILOT",
+    "model": "GPT-5.6 Sol",
+    "packetDigestRule": "SEMANTIC_STABLE_V1_EXCLUDES_VOLATILE_CODE_ATLAS_RUN_METADATA"
+  },
+  "responses": [
+    {
+      "decision": "READY",
+      "editableScope": [
+        "fastapi/encoders.py"
+      ],
+      "evidenceReferences": [
+        "repo:target",
+        "repo:authority:docs/en/docs/contributing.md",
+        "ca:authority-pack",
+        "ca:change-model",
+        "ca:impact:tests/test_jsonable_encoder.py"
+      ],
+      "inspectValidateScope": [
+        "tests/test_jsonable_encoder.py"
+      ],
+      "notes": "The target shows exclude_defaults propagated for models/lists but omitted from recursive dict key/value encoding. Keep edits confined to the target and validate the focused encoder test.",
+      "packetDigest": "3f8071d41b848a4dedb36c625ac5eba572c32464294e24132460015089350b41",
+      "taskId": "U1",
+      "testPathsToValidate": [
+        "tests/test_jsonable_encoder.py"
+      ],
+      "unknowns": [
+        "The packet identifies the focused encoder test through static impact, but does not include that test body's assertions, so exact pre-existing coverage remains unknown."
+      ]
+    },
+    {
+      "decision": "READY",
+      "editableScope": [
+        "middleware/logger.go"
+      ],
+      "evidenceReferences": [
+        "repo:target",
+        "repo:test-candidate:middleware/logger_test.go",
+        "repo:authority:CONTRIBUTING.md"
+      ],
+      "inspectValidateScope": [
+        "middleware/terminal.go",
+        "middleware/logger_test.go"
+      ],
+      "notes": "NoColor is already captured as useColor on defaultLogEntry, while Panic bypasses that state via PrintPrettyStack. Authorize only logger.go; inspect the stack/color helper and focused logger tests.",
+      "packetDigest": "f0dd445f87e7c4d24681f6b078dddbcabdfd12a12801db6b3f96aecca29c8c51",
+      "taskId": "U2",
+      "testPathsToValidate": [
+        "middleware/logger_test.go"
+      ],
+      "unknowns": [
+        "PrintPrettyStack is called by Panic but its implementation is not included in the packet, so terminal.go should be inspected before deciding whether logger.go alone is sufficient."
+      ]
+    },
+    {
+      "decision": "UNKNOWN",
+      "editableScope": [],
+      "evidenceReferences": [
+        "repo:target",
+        "repo:authority:CONTRIBUTING.rst",
+        "repo:authority:tests/README.rst"
+      ],
+      "inspectValidateScope": [
+        "django/contrib/admin/options.py",
+        "django/contrib/admin/tests.py"
+      ],
+      "notes": "The task and target are plausible, but the packet is insufficient to distinguish the exact malformed-value branch or a focused validation test without guessing.",
+      "packetDigest": "39dcc0bb62f8e716c3d44f75f45472269c022fe7bd892e14b363cb230bab4846",
+      "taskId": "U3",
+      "testPathsToValidate": [],
+      "unknowns": [
+        "The target evidence is truncated immediately after response_add begins, so the popup response branch that consumes _source_model is not visible.",
+        "The packet exposes no clearly relevant admin-popup test path; the listed model_options tests appear lexically related to the filename rather than to popup behavior.",
+        "Do not authorize an edit until the malformed _source_model handling branch and its focused regression test are evidenced."
+      ]
+    },
+    {
+      "decision": "READY",
+      "editableScope": [
+        "aiohttp/http_parser.py"
+      ],
+      "evidenceReferences": [
+        "repo:target",
+        "repo:authority:AGENTS.md",
+        "repo:authority:.github/CODEOWNERS",
+        "ca:authority-pack",
+        "ca:change-model",
+        "ca:impact:tests/test_http_parser.py"
+      ],
+      "inspectValidateScope": [
+        "aiohttp/_http_parser.pyx",
+        "tests/test_http_parser.py"
+      ],
+      "notes": "The target shows PARSE_LENGTH can pause after feeding exactly the required bytes, before completion is emitted. Validate the focused HTTP parser path while keeping the C-extension as inspection-only.",
+      "packetDigest": "8da76f0a971001c1f88c961b7f08179a78a5c0919c61d219d81bcfe1edbb0631",
+      "taskId": "U4",
+      "testPathsToValidate": [
+        "tests/test_http_parser.py"
+      ],
+      "unknowns": [
+        "The packet does not establish whether the C-extension parser must mirror the Python parser's pause-at-content-length behavior; inspect it for parity but do not authorize edits without separate evidence."
+      ]
+    },
+    {
+      "decision": "UNKNOWN",
+      "editableScope": [],
+      "evidenceReferences": [
+        "repo:target",
+        "repo:authority:AGENTS.md",
+        "repo:authority:CONTRIBUTING.md",
+        "repo:authority:.github/CODEOWNERS"
+      ],
+      "inspectValidateScope": [
+        "crates/ruff_linter/src/rules/flake8_use_pathlib/mod.rs",
+        "crates/ruff_linter/src/rules/flake8_use_pathlib/helpers.rs",
+        "crates/ruff_linter/src/rules/flake8_use_pathlib/violations.rs"
+      ],
+      "notes": "The packet is not strong enough to justify an implementation decision. Additional repo-native evidence should resolve the actual FURB rule implementation and focused fixtures.",
+      "packetDigest": "ae96b718553c1cbdf0dc5b1b7e45237fc60940550750185b559dd5a9cb95227e",
+      "taskId": "U5",
+      "testPathsToValidate": [],
+      "unknowns": [
+        "The task names FURB101 and FURB103, but the supplied target evidence contains flake8-use-pathlib/PTH rule registration and no visible FURB101/FURB103 implementation.",
+        "The packet's test candidates are broad Ruff CLI/resource tests and do not expose a focused FURB101/FURB103 fixture or snapshot.",
+        "Do not guess a refurb rule path or grant edit authority beyond the evidenced target."
+      ]
+    },
+    {
+      "decision": "READY",
+      "editableScope": [
+        "pydantic/json_schema.py"
+      ],
+      "evidenceReferences": [
+        "repo:target",
+        "repo:authority:CONTRIBUTING.md",
+        "ca:authority-pack",
+        "ca:change-model",
+        "ca:impact:tests/test_json_schema.py",
+        "ca:impact:tests/types/unions/test_discriminated_union.py"
+      ],
+      "inspectValidateScope": [
+        "tests/test_json_schema.py",
+        "tests/types/unions/test_discriminated_union.py"
+      ],
+      "notes": "The target's tagged_union_schema stringifies discriminator keys; bool-specific mapping behavior belongs here. Keep the edit to json_schema.py and validate JSON-schema plus discriminated-union coverage.",
+      "packetDigest": "1af961bfd8c24c0169e7e0f8a70c73e293a224579163e61e41c229ca9adb4419",
+      "taskId": "U6",
+      "testPathsToValidate": [
+        "tests/test_json_schema.py",
+        "tests/types/unions/test_discriminated_union.py"
+      ],
+      "unknowns": [
+        "Semantic retrieval surfaces multiple schema-related candidates, but those candidates are not proof; validation should stay focused on JSON-schema discriminator output."
+      ]
+    }
+  ],
+  "schemaVersion": "caext_usefulness_agent_responses.v1"
+}
