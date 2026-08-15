@@ -1,0 +1,326 @@
+name: Code Atlas Usefulness Governance Closure Apply
+
+on:
+  push:
+    branches:
+      - 'governance/caext-usefulness-closure-1508'
+    paths:
+      - '.github/workflows/caext-usefulness-closure-apply.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+
+jobs:
+  apply-governance-closure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: governance/caext-usefulness-closure-1508
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Apply exact six-document closure
+        shell: python
+        run: |
+          from __future__ import annotations
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          ROOT = Path('.')
+          README = ROOT / 'tools/code-atlas/README.md'
+          WOW_MD = ROOT / 'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md'
+          WOW_JSON = ROOT / 'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json'
+          LEDGER = ROOT / 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
+          EVIDENCE = ROOT / 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+          MANUAL = ROOT / 'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
+          DOCS = [README, WOW_MD, WOW_JSON, LEDGER, EVIDENCE, MANUAL]
+          now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z')
+
+          def load_json(path: Path):
+              return json.loads(path.read_text(encoding='utf-8'))
+
+          def write_json(path: Path, value):
+              path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          def append_unique(seq, value):
+              if value not in seq:
+                  seq.append(value)
+
+          def append_section(path: Path, marker: str, lines: list[str]):
+              text = path.read_text(encoding='utf-8')
+              if marker in text:
+                  return
+              if not text.endswith('\n'):
+                  text += '\n'
+              text += '\n' + '\n'.join(lines) + '\n'
+              path.write_text(text, encoding='utf-8')
+
+          # Customer Wow contract: preserve maturity, add bounded evidence only.
+          contract = load_json(WOW_JSON)
+          if contract.get('status') != 'UNIVERSAL_CORE_BOUND_LOCAL_VERIFIED':
+              raise SystemExit('Unexpected Customer Wow status before closure')
+          if contract.get('certifiable') is not False or contract.get('productionCertified') is not False:
+              raise SystemExit('Customer Wow maturity boundary drifted before closure')
+          verification = contract.setdefault('verification', {})
+          verification['externalAgentUsefulness'] = {
+              'status': 'SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM',
+              'humanUsefulness': 'NOT_MEASURED',
+              'taskCount': 6,
+              'conditions': {
+                  'ASSISTED': {
+                      'taskCount': 3,
+                      'authorizationWideningRatePct': 0.0,
+                      'targetIncludedEditablePct': 100.0,
+                      'meanHistoricalChangedTestRecallPct': 100.0,
+                      'meanHistoricalCompanionInspectionRecallPct': 88.89,
+                      'validEvidenceReferenceRatePct': 100.0,
+                      'fakeGreenCount': 0,
+                      'unknownOmissionCount': 0,
+                  },
+                  'BASELINE': {
+                      'taskCount': 3,
+                      'authorizationWideningRatePct': 0.0,
+                      'targetIncludedEditablePct': 33.33,
+                      'meanHistoricalChangedTestRecallPct': 0.0,
+                      'meanHistoricalCompanionInspectionRecallPct': 0.0,
+                      'validEvidenceReferenceRatePct': 100.0,
+                  },
+              },
+              'causalUpliftClaimAllowed': False,
+              'conditionComparisonConfoundedByDifferentTasks': True,
+              'singleEvaluatorOnly': True,
+              'historyAuthorizes': False,
+              'rawObservedRoi': {
+                  'outOfScopeChangeRate': {'value': 0.0, 'unit': 'ratio'},
+                  'evidenceCompletenessRate': {'value': 1.0, 'unit': 'ratio'},
+                  'financialEstimate': None,
+              },
+              'notMeasured': [
+                  'contextDiscoveryTime',
+                  'changeScopeIdentificationTime',
+                  'humanSupervisionTime',
+                  'evidenceAssemblyTime',
+                  'reopenedWorkRate',
+                  'changeReadinessThroughput',
+                  'workerPeak',
+              ],
+              'harnessFailures': [
+                  'J TEST HARNESS FAILURE: evaluator packet digest included run-volatile Code Atlas metadata; repaired with semantic-stable digest binding before valid score',
+                  'J TEST HARNESS FAILURE: raw ROI instrumentation used an invalid build_roi_event metric_values call; repaired to one observed event per metric before valid score',
+              ],
+          }
+          external = contract.setdefault('externalEvidence', {})
+          external['usefulnessPilot'] = {
+              'pr': 288,
+              'mergeCommit': 'cbb0949701529399810ac8ca2033b9f708f790f2',
+              'authorityMeshRunId': 31913264991,
+              'authorityMeshArtifactId': 9254247789,
+              'authorityMeshArtifactDigest': 'sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015',
+              'finalRunId': 31914395822,
+              'scoredArtifactId': 9254539137,
+              'scoredArtifactDigest': 'sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c',
+              'resultDigest': '8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd',
+              'governanceClosureAuthorityMeshRunId': 31914600435,
+              'governanceClosureAuthorityMeshArtifactId': 9254577043,
+              'governanceClosureAuthorityMeshArtifactDigest': 'sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b',
+          }
+          contract['nextGate'] = 'Run a bounded human usefulness study and/or independent multi-agent replication. Keep hosted/security and production certification separate. Do not rebuild core from this single-agent pilot.'
+          for item in [
+              'causal usefulness uplift from the single external-agent pilot',
+              'human usefulness because no human evaluator participated',
+              'independent multi-agent replication',
+          ]:
+              append_unique(contract.setdefault('doesNotProve', []), item)
+          write_json(WOW_JSON, contract)
+
+          # Factory Ledger: preserve DONE/LOCAL_VERIFIED/doNotRebuild and advance only the evidence gate.
+          ledger = load_json(LEDGER)
+          candidates = [row for row in ledger.get('capabilities', []) if row.get('id') == 'code_atlas.change_intelligence.customer_wow_v1']
+          if len(candidates) != 1:
+              raise SystemExit(f'Expected exactly one Customer Wow ledger capability, got {len(candidates)}')
+          cap = candidates[0]
+          if cap.get('status') != 'LOCAL_VERIFIED' or cap.get('doNotRebuild') is not True:
+              raise SystemExit('Factory Ledger Customer Wow maturity boundary drifted')
+          cap['nextGate'] = 'Run bounded human usefulness and/or independent multi-agent replication; keep hosted/security and production certification as separate gates. Do not rebuild core from the single-agent pilot.'
+          for item in [
+              'PR #288 merge cbb0949701529399810ac8ca2033b9f708f790f2',
+              'single external-agent usefulness run 31914395822 scored artifact 9254539137 sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c',
+              'usefulness result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd',
+              'usefulness governance closure Authority Mesh run 31914600435 artifact 9254577043 sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b',
+          ]:
+              append_unique(cap.setdefault('evidence', []), item)
+          for item in [
+              'Causal usefulness uplift from the single external-agent pilot',
+              'Human usefulness; no human evaluator participated',
+              'Independent multi-agent replication',
+          ]:
+              append_unique(cap.setdefault('doesNotProve', []), item)
+          for item in [
+              'Do not claim causal usefulness uplift from the 3 assisted versus 3 baseline tasks because the task sets differ.',
+              'Do not claim human usefulness from the single external-agent pilot.',
+              'Do not derive financial ROI from the two observed raw ratios.',
+          ]:
+              append_unique(cap.setdefault('forbiddenClaims', []), item)
+          write_json(LEDGER, ledger)
+
+          # Evidence Index: append one bounded evidence artifact and one capability entry.
+          index = load_json(EVIDENCE)
+          artifact_name = 'Code Atlas Single External-Agent Usefulness Pilot — PR #288 / run 31914395822'
+          if not any(row.get('artifact') == artifact_name for row in index.get('artifacts', [])):
+              index.setdefault('artifacts', []).append({
+                  'artifact': artifact_name,
+                  'type': 'code_atlas_single_external_agent_usefulness_pilot_v1',
+                  'scope': ['code_atlas', 'change_intelligence', 'external_agent_evidence', 'governance'],
+                  'status': 'PASS_BOUNDED_SINGLE_AGENT_EVIDENCE',
+                  'proves': [
+                      'Six blind historical tasks were scored after evaluator responses were persisted before ground truth was viewed',
+                      'ASSISTED 3-task descriptive result: 0% authorization widening, 100% target editable inclusion, 100% mean changed-test recall, 88.89% mean companion-inspection recall, 100% valid evidence references, zero fake-green and zero unknown omission',
+                      'BASELINE 3 different-task descriptive result: 0% authorization widening, 33.33% target editable inclusion, 0% mean changed-test recall, 0% mean companion-inspection recall, 100% valid evidence references',
+                      'Observed raw ROI events were limited to outOfScopeChangeRate=0.0 ratio and evidenceCompletenessRate=1.0 ratio with no financial estimate',
+                      'Two harness-only failures were repaired fail-closed before a valid score; neither was classified as a product-core defect',
+                  ],
+                  'doesNotProve': [
+                      'Causal uplift because assisted and baseline conditions used different tasks and only one external evaluator',
+                      'Human usefulness because no human evaluator participated',
+                      'Independent multi-agent replication',
+                      'Arbitrary-repository correctness, production readiness, enterprise IAM/security, hosted multi-tenant isolation, privacy/legal compliance or paid-pilot readiness',
+                  ],
+                  'evidence': [
+                      'Authority Mesh run 31913264991 artifact 9254247789 sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015',
+                      'PR #288 merge cbb0949701529399810ac8ca2033b9f708f790f2',
+                      'final scoring run 31914395822',
+                      'scored artifact 9254539137 sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c',
+                      'result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd',
+                      'closure Authority Mesh run 31914600435 artifact 9254577043 sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b',
+                  ],
+              })
+          run_id = 'PR288_CODE_ATLAS_SINGLE_EXTERNAL_AGENT_USEFULNESS'
+          if not any(row.get('runId') == run_id for row in index.get('entries', [])):
+              index.setdefault('entries', []).append({
+                  'capabilityId': 'code_atlas.change_intelligence.customer_wow_v1',
+                  'status': 'LOCAL_VERIFIED',
+                  'runId': run_id,
+                  'evidence': [
+                      'PR #288',
+                      'merge commit cbb0949701529399810ac8ca2033b9f708f790f2',
+                      'run 31914395822 / scored artifact 9254539137',
+                      'result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd',
+                      'closure mesh 31914600435 / 9254577043',
+                  ],
+              })
+          index['updatedAt'] = now
+          write_json(EVIDENCE, index)
+
+          marker = '## External-agent usefulness evidence — 2026-08-15'
+          common_lines = [
+              marker,
+              '',
+              'Governed state remains **LOCAL_VERIFIED** with `doNotRebuild=true`, `certifiable=false`, and `productionCertified=false`.',
+              '',
+              '- Pilot: PR #288, merge `cbb0949701529399810ac8ca2033b9f708f790f2`.',
+              '- Task-exact Authority Mesh: run `31913264991`, artifact `9254247789`, digest `sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015`.',
+              '- Final scoring: run `31914395822`, artifact `9254539137`, digest `sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c`, result digest `8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd`.',
+              '- ASSISTED, three tasks: authorization widening 0%; target editable inclusion 100%; changed-test recall 100%; companion-inspection recall 88.89%; valid evidence references 100%; fake-green 0; unknown omission 0.',
+              '- BASELINE, three different tasks: authorization widening 0%; target editable inclusion 33.33%; changed-test recall 0%; companion-inspection recall 0%; valid evidence references 100%.',
+              '- The condition comparison is descriptive only: task heterogeneity plus one evaluator means **no causal uplift claim**.',
+              '- Human usefulness is **NOT_MEASURED**. Independent multi-agent replication is not yet proven.',
+              '- Observed ROI is limited to `outOfScopeChangeRate=0.0` and `evidenceCompletenessRate=1.0`; no financial estimate was generated.',
+              '- Two `J TEST HARNESS FAILURE` defects were repaired fail-closed before the valid score: run-volatile packet binding and an invalid `build_roi_event(metric_values=...)` call. Neither was a product-core defect.',
+              '- Closure Authority Mesh: run `31914600435`, artifact `9254577043`, digest `sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b`.',
+              '',
+              '**Next evidence gate:** bounded human usefulness study and/or independent multi-agent replication. Hosted/security and production certification remain separate boundaries; do not rebuild core from this pilot.',
+          ]
+          append_section(README, marker, common_lines)
+          append_section(WOW_MD, marker, common_lines)
+
+          manual_marker = '## 2026-08-15 — Code Atlas single external-agent usefulness pilot'
+          manual_lines = [
+              manual_marker,
+              '',
+              '- **Tipo:** VERIFY / EXTERNAL EVIDENCE → governance closure.',
+              '- **Superficie:** Code Atlas / Change Intelligence / governance. Product core read-only.',
+              '- **Contexto:** después de External Diversity V2 e Historical Real-Diff, se ejecutó un piloto ciego de seis tareas históricas con 3 ASSISTED y 3 BASELINE, usando el mismo target precondicionado y ground truth separado hasta persistir respuestas.',
+              '- **Evidencia:** Authority Mesh `31913264991` / `9254247789`; scoring `31914395822` / `9254539137`; result digest `8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd`; merge PR #288 `cbb0949701529399810ac8ca2033b9f708f790f2`; closure Mesh `31914600435` / `9254577043`.',
+              '- **Resultado ASSISTED:** 0% authorization widening, 100% target editable inclusion, 100% changed-test recall, 88.89% companion-inspection recall, 100% valid evidence refs, fake-green 0, unknown omission 0.',
+              '- **Resultado BASELINE:** 0% authorization widening, 33.33% target editable inclusion, 0% changed-test recall, 0% companion-inspection recall, 100% valid evidence refs.',
+              '- **Root cause de fallos durante el gate:** dos `J TEST HARNESS FAILURE`, no product failures: digest dependiente de metadata volátil de ejecución y llamada incorrecta a la API de raw ROI. Ambos se repararon y se reejecutó el gate antes de aceptar evidencia.',
+              '- **Regla nueva:** un piloto single-agent con tareas distintas por condición sólo admite lectura descriptiva. No convertir diferencias de métricas en causal uplift; no llamar evidencia humana a una evaluación sin humano; no derivar ROI financiero de ratios observados.',
+              '- **Estado preservado:** `LOCAL_VERIFIED`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`, `humanUsefulness=NOT_MEASURED`.',
+              '- **Siguiente gate:** estudio humano bounded y/o replicación multi-agent independiente. Hosted/security/production siguen gates separados.',
+          ]
+          append_section(MANUAL, manual_marker, manual_lines)
+
+          # Final in-memory validation.
+          for path in DOCS:
+              if not path.exists() or path.stat().st_size == 0:
+                  raise SystemExit(f'Missing/empty governed doc: {path}')
+          contract2 = load_json(WOW_JSON)
+          if contract2.get('certifiable') is not False or contract2.get('productionCertified') is not False:
+              raise SystemExit('Closure illegally promoted Customer Wow maturity')
+          ev = contract2.get('verification', {}).get('externalAgentUsefulness', {})
+          if ev.get('status') != 'SINGLE_EXTERNAL_AGENT_PILOT_MEASURED_NO_CAUSAL_CLAIM':
+              raise SystemExit('Usefulness status missing after closure')
+          if ev.get('humanUsefulness') != 'NOT_MEASURED' or ev.get('causalUpliftClaimAllowed') is not False:
+              raise SystemExit('Usefulness claim boundary drifted')
+          ledger2 = load_json(LEDGER)
+          cap2 = next(row for row in ledger2['capabilities'] if row.get('id') == 'code_atlas.change_intelligence.customer_wow_v1')
+          if cap2.get('status') != 'LOCAL_VERIFIED' or cap2.get('doNotRebuild') is not True:
+              raise SystemExit('Ledger maturity changed illegally')
+          print('PASS_CAEXT_USEFULNESS_SIX_DOCUMENT_CLOSURE_APPLIED')
+
+      - name: Validate exact working-tree scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          mapfile -t changed < <(git diff --name-only | sort)
+          expected=(
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
+            'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
+            'tools/code-atlas/README.md'
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json'
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md'
+          )
+          if [ "${#changed[@]}" -ne 6 ]; then
+            printf 'Unexpected changed count: %s\n' "${#changed[@]}"
+            printf '%s\n' "${changed[@]}"
+            exit 1
+          fi
+          for i in "${!expected[@]}"; do
+            if [ "${changed[$i]}" != "${expected[$i]}" ]; then
+              echo 'Governance closure scope mismatch'
+              printf 'changed:  %s\nexpected: %s\n' "${changed[$i]}" "${expected[$i]}"
+              exit 1
+            fi
+          done
+          echo 'PASS_CAEXT_USEFULNESS_EXACT_SIX_DOC_SCOPE'
+
+      - name: Commit six docs only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'CAEXT Governance Closure'
+          git config user.email 'caext-governance@example.invalid'
+          git add -- \
+            'tools/code-atlas/README.md' \
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md' \
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json' \
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' \
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' \
+            'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
+          staged="$(git diff --cached --name-only | sort)"
+          count="$(printf '%s\n' "$staged" | sed '/^$/d' | wc -l)"
+          [ "$count" -eq 6 ] || { echo "Unexpected staged count: $count"; printf '%s\n' "$staged"; exit 1; }
+          git commit -m 'docs(code-atlas): record bounded external-agent usefulness evidence'
+          git push origin HEAD:governance/caext-usefulness-closure-1508
