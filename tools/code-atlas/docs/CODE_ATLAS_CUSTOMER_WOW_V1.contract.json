@@ -244,6 +244,30 @@
         "J TEST HARNESS FAILURE: evaluator packet digest included run-volatile Code Atlas metadata; repaired with semantic-stable digest binding before valid score",
         "J TEST HARNESS FAILURE: raw ROI instrumentation used an invalid build_roi_event metric_values call; repaired to one observed event per metric before valid score"
       ]
+    },
+    "independentAgentReplication": {
+      "status": "BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR",
+      "classification": "VERIFY / EXTERNAL EVIDENCE / BLOCKED",
+      "design": "WITHIN_TASK_PAIRED_BASELINE_ASSISTED",
+      "plannedTaskCount": 6,
+      "plannedEvaluationSessionCount": 12,
+      "executedEvaluationSessionCount": 0,
+      "scoreProduced": false,
+      "humanUsefulness": "NOT_MEASURED",
+      "productFailure": false,
+      "fixAuthorized": false,
+      "maturityAdvanced": false,
+      "blocker": "GITHUB_COPILOT_POLICY_SETTINGS",
+      "availabilityEvidence": {
+        "directCopilotAssigneeAttempt": "HTTP_403_FROM_CHAT_GITHUB_CONNECTOR",
+        "prMentionAttempt": "NO_AGENT_RESPONSE_OR_HEAD_MOVEMENT",
+        "actionsRunId": 31916081998,
+        "actionsArtifactId": 9254928517,
+        "actionsArtifactDigest": "sha256:9b66acf2461bc765727cf3ff8b6eca6c63c1931e628c47e89e5cf406d4b433f9",
+        "githubTokenPermission": "CopilotRequests: write",
+        "copilotCliVersion": "1.0.80",
+        "requestResult": "Access denied by policy settings"
+      }
     }
   },
   "excludedSurfaces": [
@@ -271,9 +295,10 @@
     "complete historical change prediction",
     "causal usefulness uplift from the single external-agent pilot",
     "human usefulness because no human evaluator participated",
-    "independent multi-agent replication"
+    "independent multi-agent replication",
+    "successful independent-agent replication while the current external evaluator policy blocker remains"
   ],
-  "nextGate": "Run a bounded human usefulness study and/or independent multi-agent replication. Keep hosted/security and production certification separate. Do not rebuild core from this single-agent pilot.",
+  "nextGate": "Demonstrate an actually available independent external evaluator, then rerun the paired independent-agent replication. A bounded human usefulness study remains a separate future gate. Keep hosted/security and production certification separate, and do not rebuild core from this external policy blocker.",
   "externalEvidence": {
     "status": "BOUNDED_EXTERNAL_DIVERSITY_PASS_7_REPOS_2_OS",
     "sourceRepairPr": 275,
@@ -382,6 +407,25 @@
       "governanceClosureAuthorityMeshRunId": 31914600435,
       "governanceClosureAuthorityMeshArtifactId": 9254577043,
       "governanceClosureAuthorityMeshArtifactDigest": "sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b"
+    },
+    "independentAgentReplication": {
+      "status": "BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR",
+      "replicationAuthorityMeshRunId": 31915254808,
+      "replicationAuthorityMeshArtifactId": 9254730793,
+      "replicationAuthorityMeshArtifactDigest": "sha256:62625686559fa46e94479c57dcf492e0dd59e9f2b5b7fa202989edae02ce738a",
+      "availabilityIssue": 293,
+      "blockedEvidencePr": 294,
+      "blockedEvidencePrMerged": false,
+      "availabilityRunId": 31916081998,
+      "availabilityArtifactId": 9254928517,
+      "availabilityArtifactDigest": "sha256:9b66acf2461bc765727cf3ff8b6eca6c63c1931e628c47e89e5cf406d4b433f9",
+      "blocker": "GITHUB_COPILOT_POLICY_SETTINGS",
+      "closureAuthorityMeshRunId": 31916191500,
+      "closureAuthorityMeshArtifactId": 9254953865,
+      "closureAuthorityMeshArtifactDigest": "sha256:bb15de6aa6394d61ea22eabe8f2e3a11ddb178429b6430a11a800566fb0184bb",
+      "productFailure": false,
+      "fixAuthorized": false,
+      "scoreProduced": false
     }
   }
 }

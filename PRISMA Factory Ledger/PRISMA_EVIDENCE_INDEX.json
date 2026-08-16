@@ -433,9 +433,44 @@
         "result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd",
         "closure Authority Mesh run 31914600435 artifact 9254577043 sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b"
       ]
+    },
+    {
+      "artifact": "Code Atlas Independent Agent Replication V1 — BLOCKED / PR #294 / run 31916081998",
+      "type": "code_atlas_independent_agent_replication_blocked",
+      "scope": [
+        "code_atlas",
+        "change_intelligence",
+        "external_evidence",
+        "governance"
+      ],
+      "status": "BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR",
+      "proves": [
+        "Fresh task-exact Authority Mesh authorized a same-task paired six-task / twelve-session independent-agent replication protocol",
+        "Direct copilot-swe-agent assignment through the connected GitHub app returned HTTP 403",
+        "PR @copilot mention produced no external agent response or head movement",
+        "GitHub Actions granted the built-in GITHUB_TOKEN CopilotRequests: write",
+        "GitHub Copilot CLI 1.0.80 installed successfully in the Actions runner",
+        "GitHub rejected the Copilot request with Access denied by policy settings",
+        "No twelve-session responses were fabricated and no independent-agent usefulness score was produced",
+        "The blocker is external policy/dependency evidence, not a Code Atlas product-core failure"
+      ],
+      "doesNotProve": [
+        "Successful independent-agent replication",
+        "Causal usefulness uplift",
+        "Human usefulness",
+        "A Code Atlas product-core defect",
+        "Production, enterprise, hosted multi-tenant, IAM/security, privacy/legal or paid-pilot readiness"
+      ],
+      "evidence": [
+        "replication Authority Mesh run 31915254808 artifact 9254730793",
+        "issue #293",
+        "PR #294 closed without merge",
+        "Copilot availability run 31916081998 artifact 9254928517",
+        "blocker closure Authority Mesh run 31916191500 artifact 9254953865"
+      ]
     }
   ],
-  "updatedAt": "2026-08-15T23:26:53Z",
+  "updatedAt": "2026-08-16T00:09:11Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -542,6 +577,17 @@
         "run 31914395822 / scored artifact 9254539137",
         "result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd",
         "closure mesh 31914600435 / 9254577043"
+      ]
+    },
+    {
+      "capabilityId": "code_atlas.change_intelligence.customer_wow_v1",
+      "status": "LOCAL_VERIFIED",
+      "runId": "PR294_CODE_ATLAS_INDEPENDENT_EVALUATOR_BLOCKED",
+      "evidence": [
+        "PR #294 closed without merge",
+        "run 31916081998 / artifact 9254928517",
+        "closure Authority Mesh 31916191500 / artifact 9254953865",
+        "BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR"
       ]
     }
   ]

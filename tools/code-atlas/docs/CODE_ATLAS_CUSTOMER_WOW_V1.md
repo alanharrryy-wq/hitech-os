@@ -41,11 +41,19 @@ Observed limits remain evidence, not defects by fiat: Cobra, Spring PetClinic, a
 
 Phase D then compared PREPARE impact at immutable historical parents against the paths that actually changed in the next real commit. Cobra/Go predicted only `command.go` across a four-path commit (**25% recall, 100% precision, 0% companion recall**). Spring PetClinic/Java predicted only the controller across controller + regression-test changes (**50% recall, 100% precision, 0% companion recall**). pybind11 predicted only `function_ref.h` across header + C++ test + Python test (**33.33% recall, 100% precision, 0% companion recall**). The Kubernetes new-path case was correctly fail-closed: the target did not exist in the parent snapshot, PREPARE returned `BLOCKED`, and no Authority Pack was issued. Ubuntu and Windows reproduced the same invariants. Historical evidence artifacts: Ubuntu `9254078386` (`sha256:88784e9b9c58ec29cee6ef40229a7f307a41c71147e9d01f072f66e5078e5869`) and Windows `9254082540` (`sha256:d2efb32116430dbbfa78d5dc5dd9513afbc54198ffae90c302c43df75adb5e38`).
 
-This is **broader but still bounded external evidence**. Low companion recall is recorded as a measured limitation, not automatically promoted to a source defect. The next gate is human/agent usefulness evidence, not a core rebuild.
+This is **broader but still bounded external evidence**. Low companion recall is recorded as a measured limitation, not automatically promoted to a source defect. The single external-agent usefulness pilot is recorded; the attempted independent-agent replication is now `BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR` because GitHub Copilot access is denied by policy in the current environment. This is an external dependency blocker, not a core rebuild trigger.
 
 Customer Wow V1 is now bound to the canonical neutral Universal Intelligence Core. The binding consumes repository inventory, authority discovery, system graphs, portable snapshots, coverage and retrieval through a structured neutral API. It does not duplicate discovery, graphing, indexing, snapshot or drift primitives.
 
 `certifiable=false` and `productionCertified=false` remain invariant.
+
+## Independent-agent replication V1 — blocked before scoring
+
+The next agent-evidence design removed the main confounder from the prior pilot by pairing `BASELINE` and `ASSISTED` on the **same six historical tasks**. Twelve separate evaluator sessions were planned, with no paired-response visibility and ground truth sealed until both responses existed.
+
+Fresh Authority Mesh run `31915254808` / artifact `9254730793` authorized that protocol. The external evaluator could not be demonstrated as available: direct Copilot-agent assignment returned HTTP 403, the PR mention produced no agent execution, and Actions run `31916081998` received `CopilotRequests: write` and installed Copilot CLI `1.0.80` but GitHub rejected the request with **`Access denied by policy settings`**. Availability evidence is artifact `9254928517` (`sha256:9b66acf2461bc765727cf3ff8b6eca6c63c1931e628c47e89e5cf406d4b433f9`).
+
+Therefore the gate is **`BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR`**. Executed evaluator sessions: `0/12`; independent-agent score: **not produced**. This does not change the earlier single-agent result, does not establish human usefulness, and does not authorize a Code Atlas source fix. Replication may resume only after an actually available independent evaluator is demonstrated. Human usefulness remains a separate future study.
 
 ## 1. Product goal
 
