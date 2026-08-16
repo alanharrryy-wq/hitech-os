@@ -34,7 +34,7 @@ jobs:
         run: |
           set -euo pipefail
           git diff --check
-          git status --porcelain=v1 | sed -E 's/^.. //' | sort > /tmp/changed.txt
+          git diff --name-only | sort > /tmp/changed.txt
           printf '%s\n' \
             'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' \
             'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' \
