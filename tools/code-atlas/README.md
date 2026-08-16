@@ -18,9 +18,24 @@ CAEXT V2 also retired the two known legacy harness ambiguities without changing 
 
 Historical real-diff validation is now complete as **bounded evidence**, not as a universality claim. At immutable parent commits, Cobra/Go measured **25% recall / 100% precision**, Spring PetClinic/Java **50% / 100%**, and pybind11 C++/Python **33.33% / 100%**; all three had **0% companion-path recall**, exposing a conservative Impact Radius that missed historical tests/docs. A Kubernetes YAML target absent from the parent snapshot correctly returned `BLOCKED` with no Authority Pack. Ubuntu and Windows reproduced the same result, with read-only originals and repeatability preserved.
 
-The next evidence gate is **human/agent usefulness evidence**. Hosted/security boundaries remain separate gates. Current evidence does **not** certify high companion-path recall across stacks, arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification.
+The bounded single external-agent usefulness pilot is recorded, but the next independent-agent replication attempt is currently **`BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR`**: GitHub Actions granted `CopilotRequests: write` and installed Copilot CLI `1.0.80`, then GitHub rejected the request with `Access denied by policy settings`. A bounded human usefulness study remains a separate future gate; hosted/security boundaries remain separate gates. Current evidence does **not** certify high companion-path recall across stacks, arbitrary repositories, hosted multi-tenant execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness by itself, absolute repository universality, or production certification.
 
 `certifiable=false` and `productionCertified=false` remain invariant until separate evidence-backed gates prove otherwise.
+
+## Independent-agent replication gate — external policy blocked
+
+A fresh task-exact Authority Mesh authorized a stronger **same-task paired** replication design: six historical tasks, each evaluated once as `BASELINE` and once as `ASSISTED`, for 12 isolated external-agent sessions with ground truth sealed until paired responses were persisted.
+
+That experiment did **not** run to scoring. Independent evaluator availability failed closed:
+
+- replication Authority Mesh: run `31915254808`, artifact `9254730793`, `sha256:62625686559fa46e94479c57dcf492e0dd59e9f2b5b7fa202989edae02ce738a`;
+- direct `copilot-swe-agent[bot]` assignment through the connected GitHub app: HTTP 403;
+- `@copilot` PR mention: no agent response or head movement;
+- GitHub Actions availability run `31916081998` received `CopilotRequests: write`, installed Copilot CLI `1.0.80`, then GitHub returned **`Access denied by policy settings`**;
+- availability artifact `9254928517`, `sha256:9b66acf2461bc765727cf3ff8b6eca6c63c1931e628c47e89e5cf406d4b433f9`;
+- blocker closure Authority Mesh: run `31916191500`, artifact `9254953865`, `sha256:bb15de6aa6394d61ea22eabe8f2e3a11ddb178429b6430a11a800566fb0184bb`.
+
+Result: **`BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR`**. No 12-session responses were invented, no score was produced, and no Code Atlas core defect was inferred. `LOCAL_VERIFIED`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`, and `humanUsefulness=NOT_MEASURED` remain unchanged.
 
 ## Architecture
 

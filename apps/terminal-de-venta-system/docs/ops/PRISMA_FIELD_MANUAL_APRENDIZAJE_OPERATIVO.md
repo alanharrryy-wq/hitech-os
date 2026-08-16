@@ -873,3 +873,18 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
 - **Regla nueva:** un piloto single-agent con tareas distintas por condición sólo admite lectura descriptiva. No convertir diferencias de métricas en causal uplift; no llamar evidencia humana a una evaluación sin humano; no derivar ROI financiero de ratios observados.
 - **Estado preservado:** `LOCAL_VERIFIED`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`, `humanUsefulness=NOT_MEASURED`.
 - **Siguiente gate:** estudio humano bounded y/o replicación multi-agent independiente. Hosted/security/production siguen gates separados.
+
+
+## 2026-08-15 — Code Atlas independent evaluator replication blocked by GitHub policy
+
+- Classification: `VERIFY / EXTERNAL EVIDENCE / BLOCKED`; **not** a product failure.
+- Replication Authority Mesh: run `31915254808`, artifact `9254730793`, `sha256:62625686559fa46e94479c57dcf492e0dd59e9f2b5b7fa202989edae02ce738a`.
+- Planned design: six same-task paired historical tasks, 12 independent `BASELINE`/`ASSISTED` sessions, ground truth sealed until paired responses persisted.
+- Direct `copilot-swe-agent[bot]` assignment via connected GitHub app returned HTTP 403.
+- `@copilot` PR mention produced no agent response/head movement.
+- Actions run `31916081998` explicitly had `CopilotRequests: write`, installed Copilot CLI `1.0.80`, then GitHub rejected the request with `Access denied by policy settings`.
+- Availability artifact: `9254928517`, `sha256:9b66acf2461bc765727cf3ff8b6eca6c63c1931e628c47e89e5cf406d4b433f9`.
+- Evidence PR #294 and issue #293 were closed without merge / not planned. No 12-session responses were fabricated and no score was produced.
+- Closure Authority Mesh: run `31916191500`, artifact `9254953865`, `sha256:bb15de6aa6394d61ea22eabe8f2e3a11ddb178429b6430a11a800566fb0184bb`.
+- Preserve `LOCAL_VERIFIED`, `VERIFY`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`, `humanUsefulness=NOT_MEASURED`; do not advance agent-usefulness maturity.
+- Next allowed gate: prove an actually available independent external evaluator and rerun the paired protocol, or conduct the bounded human usefulness study as a separate gate. Do not rebuild core to work around external Copilot policy.

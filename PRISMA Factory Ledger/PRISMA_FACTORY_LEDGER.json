@@ -589,7 +589,7 @@
       ],
       "classification": "VERIFY",
       "status": "LOCAL_VERIFIED",
-      "stateLabel": "PASS_HISTORICAL_REAL_DIFF_V1_BOUNDED_LOCAL_VERIFIED",
+      "stateLabel": "LOCAL_VERIFIED_INDEPENDENT_EVALUATOR_BLOCKED",
       "doNotRebuild": true,
       "evidence": [
         "PR #269",
@@ -621,28 +621,38 @@
         "PR #288 merge cbb0949701529399810ac8ca2033b9f708f790f2",
         "single external-agent usefulness run 31914395822 scored artifact 9254539137 sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c",
         "usefulness result digest 8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd",
-        "usefulness governance closure Authority Mesh run 31914600435 artifact 9254577043 sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b"
+        "usefulness governance closure Authority Mesh run 31914600435 artifact 9254577043 sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b",
+        "independent replication Authority Mesh run 31915254808 artifact 9254730793 sha256:62625686559fa46e94479c57dcf492e0dd59e9f2b5b7fa202989edae02ce738a",
+        "issue #293 independent evaluator availability probe closed not_planned",
+        "PR #294 independent evaluator gate closed without merge",
+        "Copilot Actions availability run 31916081998 artifact 9254928517 sha256:9b66acf2461bc765727cf3ff8b6eca6c63c1931e628c47e89e5cf406d4b433f9",
+        "Copilot CLI 1.0.80 with CopilotRequests: write rejected by GitHub: Access denied by policy settings",
+        "independent-evaluator blocker closure Authority Mesh run 31916191500 artifact 9254953865 sha256:bb15de6aa6394d61ea22eabe8f2e3a11ddb178429b6430a11a800566fb0184bb"
       ],
       "allowedActions": [
         "read-only verification on unrelated external repositories",
         "evidence review and recertification after material source or authority drift",
         "collect customer usefulness, repeatability, privacy-boundary and ROI evidence",
         "broader read-only external falsification",
-        "independent second-machine repeatability verification"
+        "independent second-machine repeatability verification",
+        "prove independent external evaluator availability and rerun the paired replication under fresh evidence",
+        "run a bounded human usefulness study as a separate evidence gate"
       ],
       "forbiddenActions": [
         "rebuild Universal Intelligence primitives already merged in PR #270",
         "rebuild Customer Wow source without a concrete evidence-backed defect",
         "mutate external customer repositories during default analysis",
         "treat Impact Radius as authorization to edit",
-        "promote semantic retrieval or derived indexes to authority"
+        "promote semantic retrieval or derived indexes to authority",
+        "rebuild or patch Code Atlas core to work around external GitHub Copilot policy settings"
       ],
       "forbiddenClaims": [
         "Do not claim arbitrary external-repository compatibility from synthetic fixtures.",
         "Do not claim paid-pilot, enterprise, hosted multi-tenant, legal/privacy or production certification from LOCAL_VERIFIED evidence.",
         "Do not claim causal usefulness uplift from the 3 assisted versus 3 baseline tasks because the task sets differ.",
         "Do not claim human usefulness from the single external-agent pilot.",
-        "Do not derive financial ROI from the two observed raw ratios."
+        "Do not derive financial ROI from the two observed raw ratios.",
+        "Do not claim successful independent-agent replication while the gate is BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR."
       ],
       "doesNotProve": [
         "Correct behavior beyond the three tested pinned external repositories or across arbitrary stacks",
@@ -660,10 +670,11 @@
         "Complete change-impact prediction for tests or documentation companions",
         "Causal usefulness uplift from the single external-agent pilot",
         "Human usefulness; no human evaluator participated",
-        "Independent multi-agent replication"
+        "Independent multi-agent replication",
+        "Successful independent-agent replication; the planned 12 sessions were not executed because the external evaluator was policy-blocked"
       ],
-      "nextGate": "Run bounded human usefulness and/or independent multi-agent replication; keep hosted/security and production certification as separate gates. Do not rebuild core from the single-agent pilot."
+      "nextGate": "Prove availability of an independent external evaluator, then rerun the same-task paired replication; bounded human usefulness remains a separate future study. Do not rebuild Code Atlas core to work around GitHub Copilot policy settings."
     }
   ],
-  "updatedAt": "2026-08-15T22:42:19Z"
+  "updatedAt": "2026-08-16T00:09:11Z"
 }
