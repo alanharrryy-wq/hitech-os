@@ -55,3 +55,117 @@ jobs:
 
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+  caext-independent-blocked-closure-mesh:
+    name: Code Atlas independent evaluator blocker closure mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate task-exact blocker closure Authority Mesh
+        run: >-
+          python apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh.py
+          --repo apps/terminal-de-venta-system
+          --output .governance/current
+          --task "CODE ATLAS INDEPENDENT EVALUATOR BLOCKER GOVERNANCE CLOSURE: clasificación VERIFY / GOVERNANCE CLOSURE sobre main 8594a3c12abc3932e3142fc913ee7df1cdbd571f después de la utilidad single-agent cerrada en PR #288/#291. Registrar exclusivamente el resultado BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR del gate de replicación independiente; no reconstruir ni modificar Code Atlas core/harness/producto. Evidencia externa: Authority Mesh de replicación run 31915254808 artifact 9254730793 sha256:62625686559fa46e94479c57dcf492e0dd59e9f2b5b7fa202989edae02ce738a; issue probe #293 cerrado; PR #294 cerrado sin merge; GitHub Actions availability run 31916081998; availability artifact 9254928517 sha256:9b66acf2461bc765727cf3ff8b6eca6c63c1931e628c47e89e5cf406d4b433f9. Hechos del run: GITHUB_TOKEN recibió CopilotRequests: write, Node 24 PASS, npm install -g @github/copilot PASS, Copilot CLI 1.0.80, y la solicitud fue rechazada por GitHub con 'Access denied by policy settings'. Clasificarlo como dependencia/policy externa, no como PRODUCT FAILURE ni autorización de FIX. No se ejecutaron las 12 sesiones, no hay score nuevo, no se fabrican respuestas. Preservar LOCAL_VERIFIED, VERIFY, doNotRebuild=true, certifiable=false, productionCertified=false, humanUsefulness=NOT_MEASURED, y no avanzar agentUsefulness más allá del single-agent pilot ya registrado. Mutaciones autorizadas únicamente en tools/code-atlas/README.md, tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md, tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json, PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json, PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json y apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md. Registrar que una futura replicación independiente sólo puede reabrirse después de demostrar un evaluador externo realmente disponible; el estudio humano sigue siendo un gate futuro separado. PR #273 UI Bridge/UIMAP y PR #287 PC quedan fuera. Excluir Tablet, PC, Mobile, Chart Lab, Shared UI, DB/Prisma, deploys, puertos y procesos. Cero fake green."
+
+      - name: Validate closure mesh and exact six-document scope lock
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          root = Path('apps/terminal-de-venta-system/.governance/current')
+          required = [
+              'AUTHORITY_READSET.lock.json',
+              'APP_IMPACT_MATRIX.md',
+              'CONTRACT_AND_GATE_MATRIX.json',
+              'MISSING_OR_UNMAPPED_RISK.md',
+              'AGENT_PROMPT_ENVELOPE.md',
+              'AUTHORITY_MESH_REPORT.md',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise SystemExit('Missing Authority Mesh outputs: ' + ', '.join(missing))
+          lock = json.loads((root / 'AUTHORITY_READSET.lock.json').read_text(encoding='utf-8'))
+          if lock.get('status') != 'PASS':
+              raise SystemExit('Authority Mesh status is not PASS')
+          task = str(lock.get('task', ''))
+          required_identity = (
+              'INDEPENDENT EVALUATOR BLOCKER GOVERNANCE CLOSURE',
+              '8594a3c12abc3932e3142fc913ee7df1cdbd571f',
+              'BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR',
+              '31916081998',
+              '9254928517',
+              'Access denied by policy settings',
+              'humanUsefulness=NOT_MEASURED',
+              'PR #273',
+              'PR #287',
+          )
+          if not all(token in task for token in required_identity):
+              raise SystemExit('Task-exact blocker closure identity missing')
+          allowed = [
+              'tools/code-atlas/README.md',
+              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md',
+              'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+              'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+              'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+          ]
+          scope = {
+              'schemaVersion': 'caext.independent-evaluator-blocker-closure-scope-lock.v1',
+              'authorityMeshStatus': lock.get('status'),
+              'baseCommit': '8594a3c12abc3932e3142fc913ee7df1cdbd571f',
+              'classification': 'VERIFY / GOVERNANCE CLOSURE',
+              'resultToRecord': 'BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR',
+              'allowedFiles': allowed,
+              'productCoreReadOnly': 'tools/code-atlas/src/code_atlas/**',
+              'productFailure': False,
+              'fixAuthorized': False,
+              'humanUsefulness': 'NOT_MEASURED',
+              'agentUsefulnessAdvanceAllowed': False,
+              'maturityAdvanceAllowed': False,
+              'doNotRebuild': True,
+              'certifiable': False,
+              'productionCertified': False,
+              'externalBlocker': 'GITHUB_COPILOT_POLICY_SETTINGS',
+              'replicationMayResumeOnlyAfterEvaluatorAvailabilityProven': True,
+              'reservedByPr273': True,
+              'excludedConcurrentPr287': True,
+          }
+          (root / 'CAEXT_INDEPENDENT_BLOCKED_CLOSURE_SCOPE_LOCK.json').write_text(json.dumps(scope, indent=2) + '\n', encoding='utf-8')
+          print('PASS_CAEXT_INDEPENDENT_BLOCKED_CLOSURE_AUTHORITY_MESH')
+
+      - name: Verify ephemeral closure bootstrap is isolated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          changed="$(git diff --name-only origin/main...HEAD)"
+          expected='.github/workflows/automesh-parallel-cert.yml'
+          if [ "$changed" != "$expected" ]; then
+            echo 'Unexpected bootstrap diff:'
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          echo 'PASS_CAEXT_INDEPENDENT_BLOCKED_CLOSURE_BOOTSTRAP_ONLY'
+
+      - name: Upload task-exact closure Authority Mesh artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-independent-blocked-closure-mesh
+          if-no-files-found: error
+          path: |
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_READSET.lock.json
+            apps/terminal-de-venta-system/.governance/current/APP_IMPACT_MATRIX.md
+            apps/terminal-de-venta-system/.governance/current/CONTRACT_AND_GATE_MATRIX.json
+            apps/terminal-de-venta-system/.governance/current/MISSING_OR_UNMAPPED_RISK.md
+            apps/terminal-de-venta-system/.governance/current/AGENT_PROMPT_ENVELOPE.md
+            apps/terminal-de-venta-system/.governance/current/AUTHORITY_MESH_REPORT.md
+            apps/terminal-de-venta-system/.governance/current/CAEXT_INDEPENDENT_BLOCKED_CLOSURE_SCOPE_LOCK.json
