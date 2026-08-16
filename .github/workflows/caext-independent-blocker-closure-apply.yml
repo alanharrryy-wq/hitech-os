@@ -35,15 +35,14 @@ jobs:
           set -euo pipefail
           git diff --check
           git status --porcelain=v1 | sed -E 's/^.. //' | sort > /tmp/changed.txt
-          cat > /tmp/expected.txt <<'EOF'
-PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json
-PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json
-apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
-tools/code-atlas/README.md
-tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json
-tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md
-EOF
-          sort -o /tmp/expected.txt /tmp/expected.txt
+          printf '%s\n' \
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' \
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' \
+            'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md' \
+            'tools/code-atlas/README.md' \
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json' \
+            'tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md' \
+            | sort > /tmp/expected.txt
           diff -u /tmp/expected.txt /tmp/changed.txt
           echo 'PASS_EXACT_SIX_DOCUMENT_BLOCKER_CLOSURE_SCOPE'
 
