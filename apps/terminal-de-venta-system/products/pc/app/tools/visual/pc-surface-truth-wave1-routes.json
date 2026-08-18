@@ -1,5 +1,5 @@
 {
-  "version": "pc-surface-truth-wave1-v1",
+  "version": "pc-surface-truth-wave1-v2",
   "baseUrl": "http://127.0.0.1:3130",
   "forbidSmartDropdownOnCustomerRoutes": true,
   "bannedLegacyText": [
@@ -39,10 +39,10 @@
     { "route": "/glosario", "mode": "render", "critical": false },
     { "route": "/forecast-basico", "mode": "blocked", "critical": true, "expectedText": ["Pronóstico bloqueado", "fuente canónica"] },
     { "route": "/acciones-masivas", "mode": "blocked", "critical": true, "expectedText": ["Sin operaciones masivas simuladas"] },
-    { "route": "/contratos-reporte", "mode": "redirect", "critical": true, "target": "/exportables" },
-    { "route": "/scorecards-negocio", "mode": "redirect", "critical": true, "target": "/prisma-insights" },
-    { "route": "/tablero-kpi", "mode": "redirect", "critical": true, "target": "/prisma-insights" },
-    { "route": "/vistas-ejecutivas", "mode": "redirect", "critical": true, "target": "/prisma-insights" },
+    { "route": "/contratos-reporte", "mode": "redirect", "critical": true, "target": "/exportables", "expectedText": ["Exportables conectados", "Descargas disponibles"] },
+    { "route": "/scorecards-negocio", "mode": "redirect", "critical": true, "target": "/prisma-insights", "expectedText": ["Análisis", "KPIs con procedencia"] },
+    { "route": "/tablero-kpi", "mode": "redirect", "critical": true, "target": "/prisma-insights", "expectedText": ["Análisis", "KPIs con procedencia"] },
+    { "route": "/vistas-ejecutivas", "mode": "redirect", "critical": true, "target": "/prisma-insights", "expectedText": ["Análisis", "KPIs con procedencia"] },
     { "route": "/filtros-avanzados", "mode": "not_found", "critical": true },
     { "route": "/filtros-fecha", "mode": "not_found", "critical": true }
   ]
