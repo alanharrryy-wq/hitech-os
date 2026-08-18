@@ -82,6 +82,22 @@ const GROUP_DESCRIPTIONS: Record<string, string> = {
   ayuda: "Guías internas y referencias operativas bajo demanda."
 };
 
+// Surface Truth reconciliation: these routes remain addressable for compatibility,
+// redirects or honest blocked states, but they are not separate customer navigation
+// destinations because their canonical owner is another real-data surface or no
+// certified runtime owner exists yet.
+const PC_HIDDEN_SECONDARY_ROUTES = new Set([
+  "/acciones-masivas",
+  "/contratos-reporte",
+  "/detalle-registros",
+  "/estados-operativos",
+  "/forecast-basico",
+  "/scorecards-negocio",
+  "/tablas-operativas",
+  "/tablero-kpi",
+  "/vistas-ejecutivas"
+]);
+
 const ROUTE_MAP_BY_ROUTE = new Map<string, PcRouteMapEntry>(PC_ROUTE_MAP.map((entry) => [entry.route, entry]));
 const MODULE_BY_ROUTE = new Map(pcModuleRegistry.map((module) => [module.route, module]));
 const PRIMARY_BY_GROUP = new Map(PC_PRIMARY_NAVIGATION.map((item) => [item.group, item]));
@@ -173,5 +189,7 @@ export function getCurrentRouteMeta(currentPath: string) {
 
 export function getSecondaryNavigationForPath(currentPath: string) {
   const current = getCurrentRouteMeta(currentPath);
-  return getNavigation().filter((item) => item.group === current.group && isClientVisibleRouteStatus(item.status));
+  return getNavigation().filter(
+    (item) => item.group === current.group && isClientVisibleRouteStatus(item.status) && !PC_HIDDEN_SECONDARY_ROUTES.has(item.href)
+  );
 }

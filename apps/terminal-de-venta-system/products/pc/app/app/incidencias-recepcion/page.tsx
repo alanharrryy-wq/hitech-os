@@ -1,10 +1,22 @@
-import { DecisionScreen } from "@components/uiux/decision-screen";
-import { getPurchasingScreenContract } from "@/uiux/purchasing-screen-contract";
+import { OperationWorkspace } from "@components/operations/operation-workspace";
+import { getOperationWorkspace } from "@/server/services/operation-control.service";
 
 export const dynamic = "force-dynamic";
 
-const CURRENT_PATH = "/incidencias-recepcion";
-
 export default async function ReceivingIncidentsPage() {
-  return <DecisionScreen {...getPurchasingScreenContract(CURRENT_PATH)} currentPath={CURRENT_PATH} />;
+  const workspace = await getOperationWorkspace("receiving");
+  const receipts = workspace.receipts.filter((row) => row.discrepancyQty !== 0);
+  return (
+    <OperationWorkspace
+      currentPath="/incidencias-recepcion"
+      workspace={{
+        ...workspace,
+        kicker: "diferencias de recepción",
+        title: "Incidencias de recepción",
+        description: "Sólo recepciones reales con diferencia entre cantidades esperadas y recibidas.",
+        receipts,
+        summary: { ...workspace.summary, receiptsWithDiscrepancy: receipts.length }
+      }}
+    />
+  );
 }

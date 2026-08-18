@@ -1,7 +1,19 @@
 import { getPcSubnavItems, normalizePcPathname } from "@/uiux/decision-model";
 
+const HIDDEN_SURFACE_TRUTH_SUBNAV_ROUTES = new Set([
+  "/acciones-masivas",
+  "/contratos-reporte",
+  "/detalle-registros",
+  "/estados-operativos",
+  "/forecast-basico",
+  "/scorecards-negocio",
+  "/tablas-operativas",
+  "/tablero-kpi",
+  "/vistas-ejecutivas"
+]);
+
 export function PcSubnav({ currentPath }: { currentPath: string }) {
-  const items = getPcSubnavItems(currentPath);
+  const items = getPcSubnavItems(currentPath).filter((item) => !HIDDEN_SURFACE_TRUTH_SUBNAV_ROUTES.has(item.href));
   const normalizedCurrentPath = normalizePcPathname(currentPath);
 
   return (

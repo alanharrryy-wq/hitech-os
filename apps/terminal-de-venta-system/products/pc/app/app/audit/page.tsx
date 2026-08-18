@@ -1,8 +1,9 @@
-import { DecisionScreen } from "@components/uiux/decision-screen";
-import { systemScreenContract } from "@/uiux/system-screen-contract";
+import { ModuleOverviewPage } from "@components/backoffice/module-overview-page";
+import { getBackofficeModuleOverview } from "@/lib/backoffice/overview";
 
 export const dynamic = "force-dynamic";
 
 export default async function AuditPage() {
-  return <DecisionScreen {...systemScreenContract} currentPath="/audit" />;
+  const overview = await getBackofficeModuleOverview("audit");
+  return <ModuleOverviewPage overview={overview} />;
 }

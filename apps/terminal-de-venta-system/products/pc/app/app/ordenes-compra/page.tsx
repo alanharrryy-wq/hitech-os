@@ -1,10 +1,19 @@
-import { DecisionScreen } from "@components/uiux/decision-screen";
-import { getPurchasingScreenContract } from "@/uiux/purchasing-screen-contract";
+import { OperationWorkspace } from "@components/operations/operation-workspace";
+import { getOperationWorkspace } from "@/server/services/operation-control.service";
 
 export const dynamic = "force-dynamic";
 
-const CURRENT_PATH = "/ordenes-compra";
-
 export default async function PurchaseOrdersPage() {
-  return <DecisionScreen {...getPurchasingScreenContract(CURRENT_PATH)} currentPath={CURRENT_PATH} />;
+  const workspace = await getOperationWorkspace("purchasing");
+  return (
+    <OperationWorkspace
+      currentPath="/ordenes-compra"
+      workspace={{
+        ...workspace,
+        kicker: "órdenes de compra",
+        title: "Órdenes de compra",
+        description: "Pedidos reales, proveedor, unidades, pendientes, total y riesgo desde persistencia canónica."
+      }}
+    />
+  );
 }
