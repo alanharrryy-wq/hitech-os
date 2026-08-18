@@ -127,7 +127,8 @@ function dispatchMessage(result: DispatchResult | null) {
   return `Resultado de envío: ${result.reason}.`;
 }
 
-function emptyQueueMessage(filter: FilterMode) {
+function emptyQueueMessage(filter: FilterMode, confirmed: boolean) {
+  if (!confirmed) return "Estado de cola sin confirmar. Actualiza el panel para revisar los movimientos reales.";
   if (filter === "all" || filter === "needs_attention" || filter === "pending") return "No hay pendientes para enviar.";
   return "No hay elementos en este filtro.";
 }
@@ -176,8 +177,9 @@ function pcConnectionTone(health: TabletPcHealth | null) {
   return "danger";
 }
 
-function syncHeadline(panel: SyncPanelResponse | null) {
-  if (!panel) return "Revisando pendientes";
+function syncHeadline(panel: SyncPanelResponse | null, confirmed: boolean, hasError: boolean) {
+  if (hasError) return "Estado de pendientes sin confirmar";
+  if (!panel || !confirmed) return "Revisando pendientes";
   if (panel.summary.failed > 0 || panel.summary.conflict > 0) return "Pendientes que requieren atención";
   if (panel.summary.pending > 0) return "Pendientes por enviar";
   return "Pendientes al día";
@@ -189,14 +191,21 @@ export function SyncWorkspace() {
   const [actionMode, setActionMode] = useState<ActionMode>(null);
   const [showAll, setShowAll] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [panelUnverified, setPanelUnverified] = useState(true);
   const [dispatchResult, setDispatchResult] = useState<DispatchResult | null>(null);
   const [license, setLicense] = useState<LicenseStatusResponse["data"] | null>(null);
   const [pcHealth, setPcHealth] = useState<TabletPcHealth | null>(null);
   const busy = actionMode !== null;
 
   async function loadPanelOnly() {
-    const r = await requestJson<SyncPanelResponse>("/api/pos/sync/panel?limit=120");
-    setPanel(r.data);
+    try {
+      const r = await requestJson<SyncPanelResponse>("/api/pos/sync/panel?limit=120");
+      setPanel(r.data);
+      setPanelUnverified(false);
+    } catch (panelError) {
+      setPanelUnverified(true);
+      throw panelError;
+    }
   }
 
   async function loadOperationalContext() {
@@ -287,20 +296,25 @@ export function SyncWorkspace() {
     };
   }, []);
 
-  const items = useMemo(() => (panel ? filterSyncItems(panel.items, filter) : []), [panel, filter]);
+  const panelConfirmed = Boolean(panel && !panelUnverified && actionMode === null);
+  const items = useMemo(() => (panel && panelConfirmed ? filterSyncItems(panel.items, filter) : []), [panel, panelConfirmed, filter]);
   const visibleItems = useMemo(() => showAll ? items : items.slice(0, QUEUE_PREVIEW_LIMIT), [items, showAll]);
   const hiddenItems = Math.max(0, items.length - visibleItems.length);
-  const tone = panel?.summary.risk === "danger" ? "danger" : panel?.summary.risk === "warn" ? "warn" : "ok";
-  const pendingOrFailedCount = panel ? panel.summary.pending + panel.summary.failed : 0;
-  const sentAwaitingAckCount = panel?.summary.sent ?? 0;
+  const summaryRisk = panelConfirmed ? panel?.summary.risk : null;
+  const tone = summaryRisk === "ok" ? "ok" : summaryRisk === "warn" ? "warn" : summaryRisk === "danger" ? "danger" : "neutral";
+  const pendingOrFailedCount = panelConfirmed && panel ? panel.summary.pending + panel.summary.failed : 0;
+  const sentAwaitingAckCount = panelConfirmed && panel ? panel.summary.sent : 0;
   const sendableCount = pendingOrFailedCount + sentAwaitingAckCount;
-  const retryableCount = panel ? panel.summary.failed + panel.summary.conflict : 0;
+  const retryableCount = panelConfirmed && panel ? panel.summary.failed + panel.summary.conflict : 0;
   const primaryActionLabel = pendingOrFailedCount > 0 ? "Enviar pendientes" : sentAwaitingAckCount > 0 ? "Confirmar enviados" : "Enviar pendientes";
   const noteTone = dispatchTone(dispatchResult);
   const pcTone = pcConnectionTone(pcHealth);
   const licenseStatus = license?.status;
-  const headline = syncHeadline(panel);
-  const lastCheckedLabel = panel?.summary.lastCheckedAt ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date(panel.summary.lastCheckedAt)) : "sin revisión";
+  const headline = syncHeadline(panel, panelConfirmed, panelUnverified && actionMode === null);
+  const lastCheckedLabel = panelConfirmed && panel?.summary.lastCheckedAt
+    ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date(panel.summary.lastCheckedAt))
+    : "sin confirmar";
+  const queueMetric = (value: number | undefined) => panelConfirmed && typeof value === "number" ? value : "—";
   const activeStatusMessage = actionMode === "sending"
     ? "Enviando pendientes a PC..."
     : actionMode === "retrying"
@@ -326,7 +340,7 @@ export function SyncWorkspace() {
             <div className={styles.heroMeta} aria-label="Estado de conexión y revisión">
               <span className={[styles.metaPill, styles[`metaPill_${pcTone}`]].join(" ")}>{pcConnectionLabel(pcHealth)}</span>
               <span className={styles.metaPill}>Revisado {lastCheckedLabel}</span>
-              <span className={styles.metaPill}>{panel?.summary.total ?? 0} movimientos en cola</span>
+              <span className={styles.metaPill}>{panelConfirmed && panel ? `${panel.summary.total} movimientos en cola` : "Cola sin confirmar"}</span>
             </div>
           </div>
           <div className={styles.heroActions}>
@@ -348,22 +362,22 @@ export function SyncWorkspace() {
         <section className={styles.kpis}>
           <article>
             <span>Pendientes</span>
-            <strong>{panel?.summary.pending ?? 0}</strong>
+            <strong>{queueMetric(panel?.summary.pending)}</strong>
             <small>Guardados para enviar</small>
           </article>
           <article>
             <span>Fallidos</span>
-            <strong>{panel?.summary.failed ?? 0}</strong>
+            <strong>{queueMetric(panel?.summary.failed)}</strong>
             <small>Requieren reintento</small>
           </article>
           <article>
             <span>Revisión</span>
-            <strong>{panel?.summary.conflict ?? 0}</strong>
+            <strong>{queueMetric(panel?.summary.conflict)}</strong>
             <small>Atención antes de enviar</small>
           </article>
           <article>
             <span>Confirmados</span>
-            <strong>{panel?.summary.acked ?? 0}</strong>
+            <strong>{queueMetric(panel?.summary.acked)}</strong>
             <small>Confirmados por el flujo</small>
           </article>
         </section>
@@ -373,9 +387,9 @@ export function SyncWorkspace() {
             <div>
               <span>Lista operativa</span>
               <h2>{filterTitle(filter)}</h2>
-              <p>{items.length > QUEUE_PREVIEW_LIMIT && !showAll ? `Mostrando ${QUEUE_PREVIEW_LIMIT} de ${items.length}. Usa "Ver todos" solo para revisar uno por uno.` : `${items.length} movimiento(s) visibles.`}</p>
+              <p>{!panelConfirmed ? "Estado de cola sin confirmar." : items.length > QUEUE_PREVIEW_LIMIT && !showAll ? `Mostrando ${QUEUE_PREVIEW_LIMIT} de ${items.length}. Usa "Ver todos" solo para revisar uno por uno.` : `${items.length} movimiento(s) visibles.`}</p>
             </div>
-            {items.length > QUEUE_PREVIEW_LIMIT ? (
+            {panelConfirmed && items.length > QUEUE_PREVIEW_LIMIT ? (
               <button className={styles.showMoreButton} type="button" onClick={() => setShowAll((value) => !value)}>
                 {showAll ? "Ver menos" : `Ver todos (${hiddenItems} más)`}
               </button>
@@ -392,7 +406,7 @@ export function SyncWorkspace() {
 
           <div className={styles.queue}>
             {visibleItems.length === 0 ? (
-              <div className={styles.empty}>{emptyQueueMessage(filter)}</div>
+              <div className={styles.empty}>{emptyQueueMessage(filter, panelConfirmed)}</div>
             ) : (
               visibleItems.map((item) => (
                 <article className={[styles.item, styles[`risk_${item.risk}`]].join(" ")} key={item.id}>
@@ -449,7 +463,7 @@ export function SyncWorkspace() {
             <span>Cliente: {PRISMA_ORIGINAL_CUSTOMER.displayName}</span>
             <span>Ultima revision: {lastCheckedLabel}</span>
             {pcHealth?.url ? <span>Destino PC configurado</span> : null}
-            {panel?.diagnostics.map((note) => <span key={note}>{note}</span>)}
+            {panelConfirmed ? panel?.diagnostics.map((note) => <span key={note}>{note}</span>) : <span>Estado de cola sin confirmar</span>}
           </section>
         </details>
       </main>
