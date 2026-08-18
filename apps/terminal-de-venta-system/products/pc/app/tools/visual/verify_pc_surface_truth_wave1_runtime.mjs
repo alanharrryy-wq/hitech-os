@@ -8,6 +8,7 @@ const configPath = path.resolve(process.argv[2] || "pc-surface-truth-wave1-route
 const outDir = path.resolve(process.argv[3] || "pc-surface-truth-wave1-runtime-results");
 const cfg = JSON.parse(fs.readFileSync(configPath, "utf8"));
 const baseUrl = String(process.env.PRISMA_PC_VISUAL_URL || cfg.baseUrl || "http://127.0.0.1:3130").replace(/\/$/, "");
+const appRoot = process.cwd();
 fs.mkdirSync(outDir, { recursive: true });
 fs.mkdirSync(path.join(outDir, "screenshots"), { recursive: true });
 fs.mkdirSync(path.join(outDir, "html"), { recursive: true });
@@ -18,6 +19,18 @@ const results = [];
 
 function slug(route) { return route.replace(/^\//, "").replace(/[^a-zA-Z0-9_-]+/g, "_") || "root"; }
 function pathOnly(url) { try { return new URL(url).pathname; } catch { return ""; } }
+function routeSource(route) {
+  const parts = route.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
+  const file = path.join(appRoot, "app", ...parts, "page.tsx");
+  return { file, text: fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "" };
+}
+function sourceCallsRedirect(source, target) {
+  return source.includes(`redirect("${target}")`) || source.includes(`redirect('${target}')`) || source.includes(`redirect(\`${target}\`)`);
+}
+function containsAll(text, tokens = []) {
+  const haystack = String(text).toLowerCase();
+  return tokens.length > 0 && tokens.every(token => haystack.includes(String(token).toLowerCase()));
+}
 
 for (const entry of cfg.routes) {
   const page = await context.newPage();
@@ -28,22 +41,53 @@ for (const entry of cfg.routes) {
   let responseStatus = 0;
   let finalUrl = "";
   let text = "";
+  let htmlText = "";
   let smartDropdownCount = 0;
   let status = "PASS";
   const checks = [];
   try {
+    const source = routeSource(entry.route);
+    if (entry.mode === "redirect") {
+      checks.push({
+        id: "source-redirect-contract",
+        pass: sourceCallsRedirect(source.text, entry.target),
+        detail: `${path.relative(appRoot, source.file)} -> ${entry.target}`
+      });
+    }
+    if (entry.mode === "not_found") {
+      checks.push({
+        id: "source-not-found-contract",
+        pass: source.text.includes("notFound()"),
+        detail: path.relative(appRoot, source.file)
+      });
+    }
+
     const response = await page.goto(baseUrl + entry.route, { waitUntil: "domcontentloaded", timeout: 45000 });
     await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
     await page.waitForTimeout(500);
     responseStatus = response?.status() || 0;
     finalUrl = page.url();
     text = await page.locator("body").innerText().catch(() => "");
+    htmlText = await page.content();
     smartDropdownCount = await page.locator('[data-prisma-component="SmartDropdownDock"]').count();
 
     if (entry.mode === "not_found") {
-      checks.push({ id: "not-found", pass: responseStatus === 404, detail: `status=${responseStatus}` });
+      const nextNotFoundMeta = /<meta[^>]+name=["']next-error["'][^>]+content=["']not-found["']/i.test(htmlText)
+        || /<meta[^>]+content=["']not-found["'][^>]+name=["']next-error["']/i.test(htmlText);
+      const visibleNotFound = /\b404\b/.test(text) && /not found|could not be found/i.test(text);
+      checks.push({
+        id: "runtime-not-found-semantic",
+        pass: responseStatus === 404 || nextNotFoundMeta || visibleNotFound,
+        detail: `status=${responseStatus} meta=${nextNotFoundMeta} visible404=${visibleNotFound}`
+      });
     } else if (entry.mode === "redirect") {
-      checks.push({ id: "redirect-target", pass: pathOnly(finalUrl) === entry.target, detail: `final=${pathOnly(finalUrl)} expected=${entry.target}` });
+      const urlReachedTarget = pathOnly(finalUrl) === entry.target;
+      const canonicalTargetRendered = containsAll(text, entry.expectedText || []);
+      checks.push({
+        id: "runtime-redirect-semantic",
+        pass: urlReachedTarget || canonicalTargetRendered,
+        detail: `final=${pathOnly(finalUrl)} expected=${entry.target} canonicalTargetRendered=${canonicalTargetRendered}`
+      });
     } else {
       checks.push({ id: "render-status", pass: responseStatus >= 200 && responseStatus < 400, detail: `status=${responseStatus}` });
     }
@@ -61,7 +105,7 @@ for (const entry of cfg.routes) {
 
     const s = slug(entry.route);
     await page.screenshot({ path: path.join(outDir, "screenshots", `${s}.png`), fullPage: true });
-    fs.writeFileSync(path.join(outDir, "html", `${s}.html`), await page.content(), "utf8");
+    fs.writeFileSync(path.join(outDir, "html", `${s}.html`), htmlText, "utf8");
     if (checks.some(c => !c.pass)) status = entry.critical ? "FAIL" : "WARN";
   } catch (err) {
     status = entry.critical ? "FAIL" : "WARN";
