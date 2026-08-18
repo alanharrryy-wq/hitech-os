@@ -54,9 +54,16 @@ export async function getProductVariantWorkspace() {
     const businessId = await resolvePcBusinessScope();
     const [variants, products] = await Promise.all([repository.list(businessId), repository.listProducts(businessId)]);
     return { variants, products, meta: { source: "canonical_prisma" as const, warning: null as string | null, generatedAt: new Date().toISOString() } };
-  } catch (error) {
-    const reason = error instanceof Error ? error.message : "lectura no disponible";
-    return { variants: [], products: [], meta: { source: "unavailable" as const, warning: `No fue posible leer variantes: ${reason}. Verifica la migración canónica.`, generatedAt: new Date().toISOString() } };
+  } catch {
+    return {
+      variants: [],
+      products: [],
+      meta: {
+        source: "unavailable" as const,
+        warning: "No pudimos cargar las variantes del catálogo. Intenta de nuevo. Si el problema continúa, contacta a soporte.",
+        generatedAt: new Date().toISOString()
+      }
+    };
   }
 }
 
