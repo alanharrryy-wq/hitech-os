@@ -191,14 +191,21 @@ export function SyncWorkspace() {
   const [actionMode, setActionMode] = useState<ActionMode>(null);
   const [showAll, setShowAll] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [panelUnverified, setPanelUnverified] = useState(true);
   const [dispatchResult, setDispatchResult] = useState<DispatchResult | null>(null);
   const [license, setLicense] = useState<LicenseStatusResponse["data"] | null>(null);
   const [pcHealth, setPcHealth] = useState<TabletPcHealth | null>(null);
   const busy = actionMode !== null;
 
   async function loadPanelOnly() {
-    const r = await requestJson<SyncPanelResponse>("/api/pos/sync/panel?limit=120");
-    setPanel(r.data);
+    try {
+      const r = await requestJson<SyncPanelResponse>("/api/pos/sync/panel?limit=120");
+      setPanel(r.data);
+      setPanelUnverified(false);
+    } catch (panelError) {
+      setPanelUnverified(true);
+      throw panelError;
+    }
   }
 
   async function loadOperationalContext() {
@@ -289,7 +296,7 @@ export function SyncWorkspace() {
     };
   }, []);
 
-  const panelConfirmed = Boolean(panel && !error && actionMode === null);
+  const panelConfirmed = Boolean(panel && !panelUnverified && actionMode === null);
   const items = useMemo(() => (panel && panelConfirmed ? filterSyncItems(panel.items, filter) : []), [panel, panelConfirmed, filter]);
   const visibleItems = useMemo(() => showAll ? items : items.slice(0, QUEUE_PREVIEW_LIMIT), [items, showAll]);
   const hiddenItems = Math.max(0, items.length - visibleItems.length);
@@ -303,7 +310,7 @@ export function SyncWorkspace() {
   const noteTone = dispatchTone(dispatchResult);
   const pcTone = pcConnectionTone(pcHealth);
   const licenseStatus = license?.status;
-  const headline = syncHeadline(panel, panelConfirmed, Boolean(error));
+  const headline = syncHeadline(panel, panelConfirmed, panelUnverified && actionMode === null);
   const lastCheckedLabel = panelConfirmed && panel?.summary.lastCheckedAt
     ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeStyle: "short" }).format(new Date(panel.summary.lastCheckedAt))
     : "sin confirmar";
