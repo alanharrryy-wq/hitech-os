@@ -34,22 +34,41 @@ jobs:
       - name: Generate PC Prisma client in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
-      - name: Validate canonical Prisma bootstrap in isolated runner
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:validate
-
       - name: Apply canonical SQLite migrations in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
 
-      - name: Seed canonical CI data in isolated runner
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:seed
-
-      - name: Smoke canonical runtime database
+      - name: Verify migrated runtime schema
         shell: bash
         run: |
           set -euo pipefail
-          cd apps/terminal-de-venta-system/products/pc/app
-          export DATABASE_URL="file:$GITHUB_WORKSPACE/tools/_local/data/terminal-de-venta-system/canonical.db"
-          node ../../../prisma/runtime-smoke.mjs
+          mkdir -p artifacts/db
+          python - <<'PY'
+          import json, sqlite3, sys
+          from pathlib import Path
+
+          db = Path("tools/_local/data/terminal-de-venta-system/canonical.db").resolve()
+          required = [
+              "Business", "Product", "ProductMediaRef", "Sale", "SaleLine",
+              "CashSession", "PurchaseOrder", "GoodsReceipt", "ReplenishmentSignal",
+              "OutboxEvent", "AuditCount"
+          ]
+          conn = sqlite3.connect(db)
+          existing = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+          conn.close()
+          missing = [name for name in required if name not in existing]
+          report = {
+              "database": str(db),
+              "requiredTables": required,
+              "missingTables": missing,
+              "pass": not missing,
+          }
+          Path("artifacts/db/CANONICAL_SCHEMA_BOOTSTRAP.json").write_text(
+              json.dumps(report, indent=2), encoding="utf-8"
+          )
+          print(json.dumps(report, indent=2))
+          if missing:
+              sys.exit(1)
+          PY
 
       - name: Install Playwright Chromium
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
@@ -95,11 +114,21 @@ jobs:
             tools/visual/pc-surface-truth-wave1-routes.json \
             "$GITHUB_WORKSPACE/artifacts/pc-surface-truth-wave1"
 
-      - name: Capture PC server log
+      - name: Capture and assert PC server log
         if: always()
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p artifacts/server
-          cp "$RUNNER_TEMP/pc-3130.log" artifacts/server/pc-3130.log || true
+          if [[ ! -f "$RUNNER_TEMP/pc-3130.log" ]]; then
+            echo "PC server log was not created"
+            exit 1
+          fi
+          cp "$RUNNER_TEMP/pc-3130.log" artifacts/server/pc-3130.log
+          if grep -E -i 'PrismaClientKnownRequestError|unhandledRejection|no such table' "$RUNNER_TEMP/pc-3130.log"; then
+            echo "Disallowed runtime database/server error found in PC log"
+            exit 1
+          fi
 
       - name: Upload visual evidence
         if: always()
