@@ -125,29 +125,33 @@ async function prismaTabboom1OriginalBounded(
 }
 
 export async function GET(request: Request) {
-  const input = readPosListInput(new URL(request.url).searchParams, 80, 200);
-  const cacheKey = prismaTabboom1QueryKey(input);
-  const state = prismaTabboom1State(cacheKey);
-  const now = Date.now();
-
-  if (state.cache && now - state.cache.at <= PRISMA_TABBOOM1_TTL_MS) {
-    return prismaTabboom1Clone(state.cache, "hit");
-  }
-
-  if (state.inflight) {
-    return Promise.race([
-      state.inflight.then((response) => response.clone()),
-      new Promise<Response>((resolve) => {
-        setTimeout(() => resolve(prismaTabboom1UnverifiedTimeout()), PRISMA_TABBOOM1_TIMEOUT_MS);
-      })
-    ]);
-  }
-
-  state.inflight = prismaTabboom1OriginalBounded(state, () => prismaTabboom1OriginalGET(input));
   try {
-    return await state.inflight;
-  } finally {
-    state.inflight = undefined;
-    state.touchedAt = Date.now();
+    const input = readPosListInput(new URL(request.url).searchParams, 80, 200);
+    const cacheKey = prismaTabboom1QueryKey(input);
+    const state = prismaTabboom1State(cacheKey);
+    const now = Date.now();
+
+    if (state.cache && now - state.cache.at <= PRISMA_TABBOOM1_TTL_MS) {
+      return prismaTabboom1Clone(state.cache, "hit");
+    }
+
+    if (state.inflight) {
+      return Promise.race([
+        state.inflight.then((response) => response.clone()),
+        new Promise<Response>((resolve) => {
+          setTimeout(() => resolve(prismaTabboom1UnverifiedTimeout()), PRISMA_TABBOOM1_TIMEOUT_MS);
+        })
+      ]);
+    }
+
+    state.inflight = prismaTabboom1OriginalBounded(state, () => prismaTabboom1OriginalGET(input));
+    try {
+      return await state.inflight;
+    } finally {
+      state.inflight = undefined;
+      state.touchedAt = Date.now();
+    }
+  } catch (error) {
+    return toPosApiError(error);
   }
 }
