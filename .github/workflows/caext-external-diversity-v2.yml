@@ -83,7 +83,9 @@ jobs:
           import json
           import os
           import shutil
+          import stat
           import subprocess
+          import time
           from pathlib import Path
 
           from code_atlas.change_intelligence import (
@@ -104,8 +106,35 @@ jobs:
           evidence_dir = Path(os.environ['RUNNER_TEMP']) / 'caext-p0-rental'
           work_root = Path(os.environ['RUNNER_TEMP']) / 'caext-p0-rental-work'
           evidence_dir.mkdir(parents=True, exist_ok=True)
+
+          def remove_tree(path: Path) -> None:
+              path = Path(path)
+              if not path.exists():
+                  return
+
+              def onerror(func, raw_path, _exc_info):
+                  target = Path(raw_path)
+                  try:
+                      os.chmod(target, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+                  except OSError:
+                      pass
+                  func(raw_path)
+
+              last_error = None
+              for attempt in range(4):
+                  try:
+                      shutil.rmtree(path, onerror=onerror)
+                      return
+                  except PermissionError as exc:
+                      last_error = exc
+                      time.sleep(0.25 * (attempt + 1))
+              if path.exists():
+                  if last_error is not None:
+                      raise last_error
+                  raise RuntimeError('RUNNER_WORK_ROOT_CLEANUP_FAILED')
+
           if work_root.exists():
-              shutil.rmtree(work_root)
+              remove_tree(work_root)
           work_root.mkdir(parents=True)
           repo = work_root / 'click'
           customer_base = work_root / 'customer'
@@ -280,17 +309,28 @@ jobs:
                       )
                   except Exception:
                       result['emergencyWorkspaceCleanup'] = 'FAILED'
-              if work_root.exists():
-                  shutil.rmtree(work_root)
-              result['ephemeralRunnerWorkRootRemoved'] = not work_root.exists()
-              result['secureEraseGuaranteed'] = False
-              result['productionCertified'] = False
-              (evidence_dir / 'p0-external-rental-smoke.json').write_text(
-                  json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
-                  encoding='utf-8',
-              )
+              try:
+                  remove_tree(work_root)
+              except Exception as exc:
+                  result['ephemeralRunnerWorkRootRemoved'] = False
+                  result['runnerWorkRootCleanupErrorClass'] = type(exc).__name__
+                  failed = failed or 'RUNNER_WORK_ROOT_CLEANUP_FAILED'
+              else:
+                  result['ephemeralRunnerWorkRootRemoved'] = not work_root.exists()
+              finally:
+                  result['secureEraseGuaranteed'] = False
+                  result['productionCertified'] = False
+                  (evidence_dir / 'p0-external-rental-smoke.json').write_text(
+                      json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+                      encoding='utf-8',
+                  )
 
-          if failed or result.get('emergencyArtifactCleanup') == 'FAILED' or result.get('emergencyWorkspaceCleanup') == 'FAILED':
+          if (
+              failed
+              or result.get('emergencyArtifactCleanup') == 'FAILED'
+              or result.get('emergencyWorkspaceCleanup') == 'FAILED'
+              or result.get('ephemeralRunnerWorkRootRemoved') is not True
+          ):
               raise SystemExit(2)
           print('PASS_EXTERNAL_RENTAL_P0_HYGIENE')
           PY
