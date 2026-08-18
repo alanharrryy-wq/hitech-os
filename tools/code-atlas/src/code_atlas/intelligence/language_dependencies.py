@@ -8,10 +8,68 @@ from typing import Any
 _GO_MODULE = re.compile(r"(?m)^\s*module\s+([^\s]+)\s*$")
 _GO_PACKAGE = re.compile(r"(?m)^\s*package\s+([A-Za-z_][A-Za-z0-9_]*)\s*$")
 _GO_IMPORT_BLOCK = re.compile(r"(?ms)^\s*import\s*\((.*?)\)")
-_GO_IMPORT_SINGLE = re.compile(r"(?m)^\s*import\s+(?:[._A-Za-z][A-Za-z0-9_]*\s+)?[\"`]([^\"`]+)[\"`]")
-_GO_QUOTED_IMPORT = re.compile(r"(?:^|\s)(?:[._A-Za-z][A-Za-z0-9_]*\s+)?[\"`]([^\"`]+)[\"`]", re.M)
-_GO_FUNC = re.compile(r"(?m)^\s*func\s+(?:\([^\n)]*\)\s*)?([A-Za-z_][A-Za-z0-9_]*)\s*\(")
-_GO_DECL = re.compile(r"(?m)^\s*(?:type|var|const)\s+([A-Za-z_][A-Za-z0-9_]*)\b")
+_GO_IMPORT_SINGLE_ENTRY = re.compile(
+    r"(?m)^\s*import\s+(?:(?P<alias>[._A-Za-z][A-Za-z0-9_]*)\s+)?[\"`](?P<spec>[^\"`]+)[\"`]"
+)
+_GO_IMPORT_BLOCK_ENTRY = re.compile(
+    r"(?m)^\s*(?:(?P<alias>[._A-Za-z][A-Za-z0-9_]*)\s+)?[\"`](?P<spec>[^\"`]+)[\"`]"
+)
+_GO_FREE_FUNC = re.compile(r"(?m)^func\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(")
+_GO_METHOD = re.compile(r"(?m)^func\s+\([^\n)]*\)\s*([A-Za-z_][A-Za-z0-9_]*)\s*\(")
+_GO_TYPE = re.compile(r"(?m)^type\s+([A-Za-z_][A-Za-z0-9_]*)\b")
+_GO_VALUE = re.compile(r"(?m)^(var|const)\s+([A-Za-z_][A-Za-z0-9_]*)\b")
+_GO_BLOCK_COMMENT = re.compile(r"/\*.*?\*/", re.S)
+_GO_LINE_COMMENT = re.compile(r"//[^\n]*")
+_GO_RAW_STRING = re.compile(r"`[^`]*`", re.S)
+_GO_QUOTED_STRING = re.compile(r'"(?:\\.|[^"\\\n])*"')
+_GO_RUNE = re.compile(r"'(?:\\.|[^'\\\n])+'")
+
+_GO_PREDECLARED = {
+    "any",
+    "append",
+    "bool",
+    "byte",
+    "cap",
+    "clear",
+    "close",
+    "comparable",
+    "complex",
+    "complex128",
+    "complex64",
+    "copy",
+    "delete",
+    "error",
+    "false",
+    "float32",
+    "float64",
+    "imag",
+    "int",
+    "int16",
+    "int32",
+    "int64",
+    "int8",
+    "iota",
+    "len",
+    "make",
+    "max",
+    "min",
+    "new",
+    "nil",
+    "panic",
+    "print",
+    "println",
+    "real",
+    "recover",
+    "rune",
+    "string",
+    "true",
+    "uint",
+    "uint16",
+    "uint32",
+    "uint64",
+    "uint8",
+    "uintptr",
+}
 
 _JAVA_PACKAGE = re.compile(r"(?m)^\s*package\s+([A-Za-z_$][A-Za-z0-9_.$]*)\s*;")
 _JAVA_IMPORT = re.compile(r"(?m)^\s*import\s+(static\s+)?([A-Za-z_$][A-Za-z0-9_.$]*\*?)\s*;")
@@ -30,24 +88,37 @@ def _safe_text(repo: Path, rel: str, max_bytes: int = 600_000) -> str:
         return ""
 
 
-def _nearest_ancestor(path: Path, roots: set[str]) -> str | None:
-    current = path.parent
-    while True:
-        candidate = current.as_posix()
-        if candidate == ".":
-            candidate = ""
-        if candidate in roots:
-            return candidate
-        if not current.parts:
-            return None
-        current = current.parent
+def _blank_non_newlines(match: re.Match[str]) -> str:
+    return "".join("\n" if char == "\n" else " " for char in match.group(0))
 
 
-def _go_imports(text: str) -> list[str]:
-    imports = list(_GO_IMPORT_SINGLE.findall(text))
+def _go_code_only(text: str) -> str:
+    """Blank comments and literals before lexical reference matching.
+
+    This is intentionally a bounded lexer, not a Go parser. Its job is to prevent
+    comments, examples and string contents from manufacturing file dependencies.
+    """
+
+    cleaned = _GO_BLOCK_COMMENT.sub(_blank_non_newlines, text)
+    cleaned = _GO_LINE_COMMENT.sub(_blank_non_newlines, cleaned)
+    cleaned = _GO_RAW_STRING.sub(_blank_non_newlines, cleaned)
+    cleaned = _GO_QUOTED_STRING.sub(_blank_non_newlines, cleaned)
+    cleaned = _GO_RUNE.sub(_blank_non_newlines, cleaned)
+    return cleaned
+
+
+def _go_import_entries(text: str) -> list[tuple[str | None, str]]:
+    entries: list[tuple[str | None, str]] = []
+    block_spans = [match.span() for match in _GO_IMPORT_BLOCK.finditer(text)]
     for block in _GO_IMPORT_BLOCK.findall(text):
-        imports.extend(_GO_QUOTED_IMPORT.findall(block))
-    return sorted(set(imports))
+        for match in _GO_IMPORT_BLOCK_ENTRY.finditer(block):
+            entries.append((match.group("alias"), match.group("spec")))
+    for match in _GO_IMPORT_SINGLE_ENTRY.finditer(text):
+        start = match.start()
+        if any(left <= start < right for left, right in block_spans):
+            continue
+        entries.append((match.group("alias"), match.group("spec")))
+    return sorted(set(entries), key=lambda item: (item[1], item[0] or ""))
 
 
 def _go_module_facts(repo: Path, file_paths: set[str]) -> list[tuple[str, str]]:
@@ -70,6 +141,48 @@ def _join_repo(root: str, suffix: str) -> str:
     return (Path(root) / suffix).as_posix() if suffix else Path(root).as_posix()
 
 
+def _go_top_level_declarations(text: str) -> list[tuple[str, str]]:
+    code = _go_code_only(text)
+    rows: list[tuple[str, str]] = []
+    rows.extend((name, "free-func") for name in _GO_FREE_FUNC.findall(code))
+    rows.extend((name, "method") for name in _GO_METHOD.findall(code))
+    rows.extend((name, "type") for name in _GO_TYPE.findall(code))
+    rows.extend((name, kind) for kind, name in _GO_VALUE.findall(code))
+    return sorted({(name, kind) for name, kind in rows if len(name) >= 3 and name not in _GO_PREDECLARED})
+
+
+def _unique_symbol_definitions(
+    definitions: dict[str, list[tuple[str, str]]],
+) -> dict[str, tuple[str, str]]:
+    result: dict[str, tuple[str, str]] = {}
+    for symbol, rows in definitions.items():
+        unique_rows = sorted(set(rows))
+        if len(unique_rows) == 1:
+            result[symbol] = unique_rows[0]
+    return result
+
+
+def _symbol_references(code: str, definitions: dict[str, tuple[str, str]], *, exclude_path: str) -> dict[str, list[tuple[str, str]]]:
+    by_target: dict[str, list[tuple[str, str]]] = defaultdict(list)
+    for symbol, (target, kind) in sorted(definitions.items()):
+        if target == exclude_path:
+            continue
+        if re.search(rf"\b{re.escape(symbol)}\b", code):
+            by_target[target].append((symbol, kind))
+    return {target: rows for target, rows in by_target.items()}
+
+
+def _unique_top_partner(counts: dict[str, int], *, minimum: int = 2) -> str | None:
+    if not counts:
+        return None
+    ordered = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
+    if ordered[0][1] < minimum:
+        return None
+    if len(ordered) > 1 and ordered[0][1] == ordered[1][1]:
+        return None
+    return ordered[0][0]
+
+
 def _go_edges(
     repo: Path,
     files: list[dict[str, Any]],
@@ -80,8 +193,8 @@ def _go_edges(
     modules = _go_module_facts(repo, file_paths)
     go_rows: dict[str, dict[str, Any]] = {}
     prod_by_dir_package: dict[tuple[str, str], list[str]] = defaultdict(list)
-    all_prod_by_dir: dict[str, list[str]] = defaultdict(list)
-    symbols_by_dir_package: dict[tuple[str, str], dict[str, str]] = defaultdict(dict)
+    prod_by_dir: dict[str, list[str]] = defaultdict(list)
+    definitions_by_dir_package: dict[tuple[str, str], dict[str, list[tuple[str, str]]]] = defaultdict(lambda: defaultdict(list))
 
     for row in files:
         rel = str(row.get("path") or "")
@@ -104,36 +217,119 @@ def _go_edges(
         if directory == ".":
             directory = ""
         is_test = rel.endswith("_test.go")
-        go_rows[rel] = {"text": text, "package": package, "directory": directory, "isTest": is_test}
+        code = _go_code_only(text)
+        go_rows[rel] = {
+            "text": text,
+            "code": code,
+            "package": package,
+            "directory": directory,
+            "isTest": is_test,
+        }
         if not is_test:
             prod_by_dir_package[(directory, package)].append(rel)
-            all_prod_by_dir[directory].append(rel)
-            symbols = [*_GO_FUNC.findall(text), *_GO_DECL.findall(text)]
-            for symbol in symbols:
-                symbols_by_dir_package[(directory, package)].setdefault(symbol, rel)
+            prod_by_dir[directory].append(rel)
+            for symbol, kind in _go_top_level_declarations(text):
+                definitions_by_dir_package[(directory, package)][symbol].append((rel, kind))
 
     for key in prod_by_dir_package:
         prod_by_dir_package[key].sort()
-    for directory in all_prod_by_dir:
-        all_prod_by_dir[directory].sort()
+    for directory in prod_by_dir:
+        prod_by_dir[directory].sort()
+
+    unique_by_package = {
+        key: _unique_symbol_definitions(definitions)
+        for key, definitions in definitions_by_dir_package.items()
+    }
+    unique_by_dir: dict[str, dict[str, tuple[str, str]]] = {}
+    for directory in sorted(prod_by_dir):
+        merged: dict[str, list[tuple[str, str]]] = defaultdict(list)
+        for (candidate_dir, _package), definitions in definitions_by_dir_package.items():
+            if candidate_dir != directory:
+                continue
+            for symbol, rows in definitions.items():
+                merged[symbol].extend(rows)
+        unique_by_dir[directory] = _unique_symbol_definitions(merged)
+
+    same_package_refs: dict[str, dict[str, list[tuple[str, str]]]] = {}
+    prod_reference_counts: dict[str, dict[str, int]] = defaultdict(dict)
+    for rel, info in sorted(go_rows.items()):
+        key = (str(info["directory"]), str(info["package"]))
+        refs = _symbol_references(str(info["code"]), unique_by_package.get(key, {}), exclude_path=rel)
+        same_package_refs[rel] = refs
+        if not info["isTest"]:
+            prod_reference_counts[rel] = {
+                target: len({symbol for symbol, _kind in rows})
+                for target, rows in refs.items()
+                if target != rel
+            }
+
+    top_partner = {
+        rel: _unique_top_partner(counts)
+        for rel, counts in prod_reference_counts.items()
+    }
 
     for rel, info in sorted(go_rows.items()):
-        text = str(info["text"])
         directory = str(info["directory"])
         package = str(info["package"])
+        code = str(info["code"])
+        refs = same_package_refs.get(rel, {})
 
         if info["isTest"]:
-            for target in prod_by_dir_package.get((directory, package), []):
-                if target != rel:
-                    edges.add((rel, target, "go-test-package", f"parsed-go-same-package-test:{package}"))
+            stem_target = rel[: -len("_test.go")] + ".go"
+            if stem_target in file_paths:
+                edges.add((
+                    rel,
+                    stem_target,
+                    "go-test-companion",
+                    f"parsed-go-same-basename-test:{Path(stem_target).name}",
+                ))
+        else:
+            for target, symbols in sorted(refs.items()):
+                for symbol, kind in sorted(set(symbols)):
+                    if kind in {"free-func", "var", "const"}:
+                        edges.add((
+                            rel,
+                            target,
+                            "go-symbol-exact",
+                            f"parsed-go-unique-top-level-symbol:{symbol}|kind:{kind}",
+                        ))
 
-        for symbol, target in sorted(symbols_by_dir_package.get((directory, package), {}).items()):
-            if target == rel or len(symbol) < 3:
-                continue
-            if re.search(rf"\b{re.escape(symbol)}\b", text):
-                edges.add((rel, target, "go-symbol", f"parsed-go-same-package-symbol:{symbol}"))
+            partner = top_partner.get(rel)
+            if partner and top_partner.get(partner) == rel:
+                forward_symbols = sorted({symbol for symbol, _kind in refs.get(partner, [])})
+                reverse_symbols = sorted({
+                    symbol
+                    for symbol, _kind in same_package_refs.get(partner, {}).get(rel, [])
+                })
+                if len(forward_symbols) >= 2 and len(reverse_symbols) >= 2:
+                    edges.add((
+                        rel,
+                        partner,
+                        "go-mutual-file-cohesion",
+                        "parsed-go-mutual-top-partner:"
+                        f"forward={len(forward_symbols)}|reverse={len(reverse_symbols)}|"
+                        f"symbols={','.join(forward_symbols[:6])}",
+                    ))
 
-        for spec in _go_imports(text):
+            for target, symbols in sorted(refs.items()):
+                suppressed = sorted({
+                    symbol
+                    for symbol, kind in symbols
+                    if kind in {"method", "type"}
+                })
+                if suppressed and not any(
+                    edge[0] == rel and edge[1] == target and edge[2] == "go-mutual-file-cohesion"
+                    for edge in edges
+                ):
+                    unresolved.append({
+                        "from": rel,
+                        "specifier": target,
+                        "language": "go",
+                        "reason": "same-package-method-or-type-reference-not-specific-enough-for-file-impact",
+                        "evidence": suppressed[:8],
+                    })
+
+        for explicit_alias, spec in _go_import_entries(str(info["text"])):
             local_module: tuple[str, str] | None = None
             for module_path, module_root in modules:
                 if spec == module_path or spec.startswith(module_path + "/"):
@@ -144,7 +340,7 @@ def _go_edges(
             module_path, module_root = local_module
             suffix = spec[len(module_path) :].lstrip("/")
             target_dir = _join_repo(module_root, suffix)
-            targets = all_prod_by_dir.get(target_dir, [])
+            targets = prod_by_dir.get(target_dir, [])
             if not targets:
                 unresolved.append({
                     "from": rel,
@@ -154,9 +350,67 @@ def _go_edges(
                     "evidence": f"go-module:{module_path}",
                 })
                 continue
-            for target in targets:
-                if target != rel:
-                    edges.add((rel, target, "go-import", f"parsed-go-local-import:{spec}|module:{module_path}"))
+
+            alias = explicit_alias or Path(spec).name
+            if alias in {"_", "."}:
+                unresolved.append({
+                    "from": rel,
+                    "specifier": spec,
+                    "language": "go",
+                    "reason": "local-go-blank-or-dot-import-not-file-resolved",
+                    "evidence": f"go-module:{module_path}|alias:{alias}",
+                })
+                continue
+
+            observed = sorted(set(re.findall(rf"\b{re.escape(alias)}\.([A-Za-z_][A-Za-z0-9_]*)\b", code)))
+            resolved_symbols = 0
+            dir_definitions = unique_by_dir.get(target_dir, {})
+            for symbol in observed:
+                target_row = dir_definitions.get(symbol)
+                if target_row is None:
+                    unresolved.append({
+                        "from": rel,
+                        "specifier": f"{spec}:{symbol}",
+                        "language": "go",
+                        "reason": "local-go-qualified-symbol-not-resolved",
+                        "evidence": f"go-module:{module_path}|alias:{alias}",
+                    })
+                    continue
+                target, kind = target_row
+                if target == rel:
+                    continue
+                edges.add((
+                    rel,
+                    target,
+                    "go-import-symbol",
+                    f"parsed-go-local-qualified-symbol:{alias}.{symbol}|kind:{kind}|module:{module_path}",
+                ))
+                resolved_symbols += 1
+
+            if not observed:
+                if len(targets) == 1 and targets[0] != rel:
+                    edges.add((
+                        rel,
+                        targets[0],
+                        "go-import-single-file-package",
+                        f"parsed-go-local-single-file-package:{spec}|module:{module_path}",
+                    ))
+                else:
+                    unresolved.append({
+                        "from": rel,
+                        "specifier": spec,
+                        "language": "go",
+                        "reason": "local-go-package-import-not-file-specific-enough",
+                        "evidence": f"go-module:{module_path}|candidateFiles:{len(targets)}",
+                    })
+            elif resolved_symbols == 0:
+                unresolved.append({
+                    "from": rel,
+                    "specifier": spec,
+                    "language": "go",
+                    "reason": "local-go-package-import-has-no-resolved-qualified-symbols",
+                    "evidence": f"go-module:{module_path}|observedSymbols:{len(observed)}",
+                })
 
     return edges, unresolved
 

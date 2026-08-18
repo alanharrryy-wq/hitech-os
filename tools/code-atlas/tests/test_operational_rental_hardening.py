@@ -150,36 +150,122 @@ class BoundedGoJavaDependencyTests(unittest.TestCase):
             "testFiles": tests or [],
         }
 
-    def test_go_local_module_import_and_same_package_test_are_resolved(self) -> None:
+    @staticmethod
+    def _write(root: Path, files: dict[str, str]) -> None:
+        for rel, text in files.items():
+            path = root / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(text, encoding="utf-8")
+
+    def test_go_local_module_import_and_same_basename_test_are_precise(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             files = {
                 "go.mod": "module example.com/acme\n\ngo 1.24\n",
                 "core/core.go": "package core\n\nfunc Value() int { return 1 }\n",
+                "core/other.go": "package core\n\nfunc Other() int { return 2 }\n",
                 "core/core_test.go": "package core\n\nimport \"testing\"\n\nfunc TestValue(t *testing.T) { _ = Value() }\n",
                 "consumer/consumer.go": "package consumer\n\nimport \"example.com/acme/core\"\n\nfunc Use() int { return core.Value() }\n",
             }
-            for rel, text in files.items():
-                path = root / rel
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(text, encoding="utf-8")
+            self._write(root, files)
             inventory = self._inventory(list(files), ["core/core_test.go"])
             deps = dependency_graph(root, inventory)
             edges = {(row["from"], row["to"], row["type"]) for row in deps["edges"]}
-            self.assertIn(("consumer/consumer.go", "core/core.go", "go-import"), edges)
-            self.assertIn(("core/core_test.go", "core/core.go", "go-test-package"), edges)
+            self.assertIn(("consumer/consumer.go", "core/core.go", "go-import-symbol"), edges)
+            self.assertNotIn(("consumer/consumer.go", "core/other.go", "go-import-symbol"), edges)
+            self.assertIn(("core/core_test.go", "core/core.go", "go-test-companion"), edges)
             impact = change_impact(["core/core.go"], deps, {"edges": []})
             self.assertIn("consumer/consumer.go", impact["impacted"])
             self.assertIn("core/core_test.go", impact["impacted"])
+            self.assertNotIn("core/other.go", impact["impacted"])
             self.assertEqual(deps, dependency_graph(root, inventory))
 
     def test_go_external_import_is_not_invented(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "go.mod").write_text("module example.com/acme\n", encoding="utf-8")
-            (root / "main.go").write_text("package main\nimport \"github.com/other/pkg\"\nfunc main() {}\n", encoding="utf-8")
-            deps = dependency_graph(root, self._inventory(["go.mod", "main.go"]))
-            self.assertFalse(any(row["type"] == "go-import" for row in deps["edges"]))
+            files = {
+                "go.mod": "module example.com/acme\n",
+                "main.go": "package main\nimport \"github.com/other/pkg\"\nfunc main() { _ = pkg.Value() }\n",
+            }
+            self._write(root, files)
+            deps = dependency_graph(root, self._inventory(list(files)))
+            self.assertFalse(any(row["type"].startswith("go-import") for row in deps["edges"]))
+
+    def test_go_local_declarations_predeclared_names_comments_and_strings_do_not_invent_edges(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            files = {
+                "go.mod": "module example.com/acme\n",
+                "a.go": "package acme\n\nfunc RealHelper() int {\n\tvar string = \"not a declaration owner\"\n\t_ = string\n\treturn 1\n}\n",
+                "b.go": "package acme\n\nfunc Use(s string) string {\n\t_ = \"RealHelper\"\n\t// RealHelper is mentioned only in a comment.\n\treturn s\n}\n",
+            }
+            self._write(root, files)
+            deps = dependency_graph(root, self._inventory(list(files)))
+            self.assertFalse(any(row["from"] == "b.go" and row["to"] == "a.go" for row in deps["edges"]))
+
+    def test_go_duplicate_method_name_is_not_resolved_to_arbitrary_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            files = {
+                "go.mod": "module example.com/acme\n",
+                "a.go": "package acme\ntype A struct{}\nfunc (a *A) Name() string { return \"a\" }\n",
+                "b.go": "package acme\ntype B struct{}\nfunc (b *B) Name() string { return \"b\" }\n",
+                "c.go": "package acme\nfunc Use(a *A, b *B) string { return a.Name() + b.Name() }\n",
+            }
+            self._write(root, files)
+            deps = dependency_graph(root, self._inventory(list(files)))
+            self.assertFalse(any(
+                row["from"] == "c.go" and row["type"] in {"go-symbol-exact", "go-mutual-file-cohesion"}
+                for row in deps["edges"]
+            ))
+
+    def test_go_mutual_file_cohesion_and_test_companion_avoid_package_fanout(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            files = {
+                "go.mod": "module example.com/cobra\n",
+                "command.go": (
+                    "package cobra\n"
+                    "type Command struct{}\n"
+                    "func (c *Command) Name() string { return \"cmd\" }\n"
+                    "func (c *Command) Execute() error { return nil }\n"
+                    "func (c *Command) wireCompletion() { c.InitDefaultCompletionCmd(); _ = CompletionOptions{} }\n"
+                ),
+                "completions.go": (
+                    "package cobra\n"
+                    "type CompletionOptions struct{}\n"
+                    "func (c *Command) InitDefaultCompletionCmd() {}\n"
+                    "func completionLabel(c *Command) string { _ = c.Execute(); return c.Name() }\n"
+                ),
+                "completions_test.go": (
+                    "package cobra\n"
+                    "import \"testing\"\n"
+                    "func TestCompletion(t *testing.T) { c := &Command{}; c.InitDefaultCompletionCmd(); _ = CompletionOptions{} }\n"
+                ),
+                "args.go": (
+                    "package cobra\n"
+                    "func ValidateArgs(c *Command) error { _ = c.Name(); _ = c.Execute(); return nil }\n"
+                ),
+                "noise.go": (
+                    "package cobra\n"
+                    "func Render(c *Command) string { return c.Name() }\n"
+                ),
+            }
+            self._write(root, files)
+            inventory = self._inventory(list(files), ["completions_test.go"])
+            deps = dependency_graph(root, inventory)
+            edges = {(row["from"], row["to"], row["type"]) for row in deps["edges"]}
+            self.assertIn(("completions.go", "command.go", "go-mutual-file-cohesion"), edges)
+            self.assertIn(("command.go", "completions.go", "go-mutual-file-cohesion"), edges)
+            self.assertIn(("completions_test.go", "completions.go", "go-test-companion"), edges)
+            self.assertNotIn(("args.go", "command.go", "go-mutual-file-cohesion"), edges)
+            self.assertNotIn(("noise.go", "command.go", "go-mutual-file-cohesion"), edges)
+            impact = change_impact(["command.go"], deps, {"edges": []})
+            self.assertEqual(
+                impact["impacted"],
+                ["command.go", "completions.go", "completions_test.go"],
+            )
+            self.assertEqual(deps, dependency_graph(root, inventory))
 
     def test_java_local_import_and_same_package_test_are_resolved(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -190,10 +276,7 @@ class BoundedGoJavaDependencyTests(unittest.TestCase):
                 "src/test/java/com/acme/OwnerControllerTests.java": "package com.acme;\npublic class OwnerControllerTests { OwnerController subject; }\n",
                 "src/test/java/com/acme/WildcardTests.java": "package com.acme.tests;\nimport com.acme.*;\npublic class WildcardTests {}\n",
             }
-            for rel, text in files.items():
-                path = root / rel
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(text, encoding="utf-8")
+            self._write(root, files)
             inventory = self._inventory(list(files), [
                 "src/test/java/com/acme/OwnerControllerTests.java",
                 "src/test/java/com/acme/WildcardTests.java",
