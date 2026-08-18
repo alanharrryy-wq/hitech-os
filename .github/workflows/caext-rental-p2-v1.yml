@@ -76,8 +76,15 @@ jobs:
         run: |
           set -euo pipefail
           out="${RUNNER_TEMP}/caext-rental-p2"
+          pin_root="${RUNNER_TEMP}/code-atlas-governed-pin"
           mkdir -p "$out"
-          python .github/scripts/caext_rental_p2_v1.py --output "$out" --hitech-root .
+          git worktree add --detach "$pin_root" "$CAEXT_RENTAL_P2_PIN"
+          cleanup_worktree() {
+            git worktree remove --force "$pin_root" >/dev/null 2>&1 || true
+          }
+          trap cleanup_worktree EXIT
+          test "$(git -C "$pin_root" rev-parse HEAD)" = "$CAEXT_RENTAL_P2_PIN"
+          python .github/scripts/caext_rental_p2_v1.py --output "$out" --hitech-root "$pin_root"
 
       - name: Upload sanitized P2 evidence even when red
         if: always()
