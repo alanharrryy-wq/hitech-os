@@ -1,0 +1,70 @@
+name: PRISMA Remote AutoMesh Pointer
+
+on:
+  workflow_run:
+    workflows: ["PRISMA Remote AutoMesh"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  publish-pointer:
+    if: >-
+      github.event.workflow_run.event == 'issue_comment' &&
+      (
+        github.event.workflow_run.triggering_actor.login == 'chatgpt-codex-connector[bot]' ||
+        github.event.workflow_run.triggering_actor.login == 'alanharrryy-wq'
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Publish bounded AutoMesh run pointer
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          RUN_ACTOR: ${{ github.event.workflow_run.triggering_actor.login }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          TRACKER_ISSUE: '250'
+        run: |
+          set -euo pipefail
+
+          artifacts_json="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/artifacts?per_page=100")"
+          artifact_count="$(jq -r '.artifacts | length' <<<"$artifacts_json")"
+
+          if [ "$artifact_count" -lt 1 ]; then
+            echo "No artifacts found for AutoMesh run ${RUN_ID}" >&2
+            exit 1
+          fi
+
+          artifact_lines="$(jq -r '.artifacts[] | "- `" + .name + "` | artifact_id=`" + (.id|tostring) + "` | bytes=`" + (.size_in_bytes|tostring) + "` | expires=`" + (.expires_at // "UNKNOWN") + "`"' <<<"$artifacts_json")"
+
+          body="$(cat <<EOF
+          ### PRISMA Remote AutoMesh run pointer
+
+          - run_id: \`${RUN_ID}\`
+          - run_attempt: \`${RUN_ATTEMPT}\`
+          - conclusion: \`${RUN_CONCLUSION}\`
+          - head_sha: \`${RUN_HEAD_SHA}\`
+          - triggering_actor: \`${RUN_ACTOR}\`
+          - run: ${RUN_URL}
+          - artifacts: \`${artifact_count}\`
+
+          ${artifact_lines}
+
+          Pointer-only governance metadata. Artifact contents remain the authority source and must be retrieved/reviewed before any governed source mutation.
+          EOF
+          )"
+
+          gh api "repos/${GITHUB_REPOSITORY}/issues/${TRACKER_ISSUE}/comments" -f body="$body" >/dev/null
+          echo "Published AutoMesh run pointer for run ${RUN_ID} with ${artifact_count} artifact(s)."
