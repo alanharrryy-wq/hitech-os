@@ -47,26 +47,38 @@ jobs:
           from pathlib import Path
 
           db = Path("tools/_local/data/terminal-de-venta-system/canonical.db").resolve()
-          required = [
-              "Business", "Product", "ProductMediaRef", "Sale", "SaleLine",
-              "CashSession", "PurchaseOrder", "GoodsReceipt", "ReplenishmentSignal",
+          required_tables = [
+              "Business", "Product", "Sale", "SaleLine", "CashSession",
+              "PurchaseOrder", "GoodsReceipt", "ReplenishmentSignal",
               "OutboxEvent", "AuditCount"
           ]
+          required_columns = {"Product": ["mediaRef"]}
           conn = sqlite3.connect(db)
           existing = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+          missing_tables = [name for name in required_tables if name not in existing]
+          missing_columns = {}
+          for table, columns in required_columns.items():
+              if table not in existing:
+                  missing_columns[table] = columns
+                  continue
+              present = {row[1] for row in conn.execute(f'PRAGMA table_info("{table}")')}
+              absent = [column for column in columns if column not in present]
+              if absent:
+                  missing_columns[table] = absent
           conn.close()
-          missing = [name for name in required if name not in existing]
           report = {
               "database": str(db),
-              "requiredTables": required,
-              "missingTables": missing,
-              "pass": not missing,
+              "requiredTables": required_tables,
+              "missingTables": missing_tables,
+              "requiredColumns": required_columns,
+              "missingColumns": missing_columns,
+              "pass": not missing_tables and not missing_columns,
           }
           Path("artifacts/db/CANONICAL_SCHEMA_BOOTSTRAP.json").write_text(
               json.dumps(report, indent=2), encoding="utf-8"
           )
           print(json.dumps(report, indent=2))
-          if missing:
+          if not report["pass"]:
               sys.exit(1)
           PY
 
@@ -74,6 +86,7 @@ jobs:
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
 
       - name: Start PC on canonical port 3130
+        id: start_pc
         shell: bash
         run: |
           set -euo pipefail
@@ -117,12 +130,17 @@ jobs:
       - name: Capture and assert PC server log
         if: always()
         shell: bash
+        env:
+          START_PC_OUTCOME: ${{ steps.start_pc.outcome }}
         run: |
           set -euo pipefail
           mkdir -p artifacts/server
           if [[ ! -f "$RUNNER_TEMP/pc-3130.log" ]]; then
-            echo "PC server log was not created"
-            exit 1
+            printf 'PC server log was not created; start step outcome=%s\n' "$START_PC_OUTCOME" | tee artifacts/server/PC_SERVER_LOG_NOT_CREATED.txt
+            if [[ "$START_PC_OUTCOME" == "success" ]]; then
+              exit 1
+            fi
+            exit 0
           fi
           cp "$RUNNER_TEMP/pc-3130.log" artifacts/server/pc-3130.log
           if grep -E -i 'PrismaClientKnownRequestError|unhandledRejection|no such table' "$RUNNER_TEMP/pc-3130.log"; then
