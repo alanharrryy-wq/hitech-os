@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -46,6 +47,38 @@ def git(root: Path, *args: str) -> tuple[int, str]:
     p = subprocess.run(["git", *args], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                        text=True, encoding="utf-8", errors="replace", check=False)
     return p.returncode, p.stdout.strip()
+
+
+def resolve_diff_base(root: Path) -> tuple[str | None, str]:
+    """Resolve the current PR/base boundary without reinterpreting authority provenance."""
+    event_path = os.environ.get("GITHUB_EVENT_PATH", "").strip()
+    if event_path:
+        try:
+            event = json.loads(Path(event_path).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            event = {}
+        base_sha = str(event.get("pull_request", {}).get("base", {}).get("sha") or "").strip()
+        if re.fullmatch(r"[0-9a-fA-F]{40}", base_sha):
+            code, _ = git(root, "cat-file", "-e", f"{base_sha}^{{commit}}")
+            if code == 0:
+                return base_sha, "github_event.pull_request.base.sha"
+
+    base_ref = os.environ.get("GITHUB_BASE_REF", "").strip()
+    candidates: list[str] = []
+    if base_ref:
+        candidates.extend((f"origin/{base_ref}", base_ref))
+    candidates.extend(("origin/main", "main"))
+
+    seen: set[str] = set()
+    for ref in candidates:
+        if not ref or ref in seen:
+            continue
+        seen.add(ref)
+        code, _ = git(root, "cat-file", "-e", f"{ref}^{{commit}}")
+        if code == 0:
+            return ref, "git_ref"
+
+    return None, "unavailable"
 
 
 def main() -> int:
@@ -145,19 +178,20 @@ def main() -> int:
     check("workflow_evidence_upload", "change-intelligence-cloud-runtime-evidence" in workflow)
 
     diff_evaluated = False
-    code, _ = git(root, "cat-file", "-e", f"{BASE_HEAD}^{{commit}}")
-    if code == 0:
+    diff_base, diff_base_source = resolve_diff_base(root)
+    if diff_base:
         diff_evaluated = True
-        code, output = git(root, "diff", "--name-only", f"{BASE_HEAD}...HEAD")
+        code, output = git(root, "diff", "--name-only", f"{diff_base}...HEAD")
         if code != 0:
-            check("git_diff_boundary", False, output)
+            check("git_diff_boundary", False, f"base={diff_base} source={diff_base_source} error={output}")
         else:
             changed = {x.strip().replace("\\", "/") for x in output.splitlines() if x.strip()}
-            check("git_diff_boundary", not (changed - ALLOWED_DIFF), f"changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}")
+            check("git_diff_boundary", not (changed - ALLOWED_DIFF),
+                  f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}")
             check("git_diff_expected_files", not (ALLOWED_DIFF - changed), f"missing={sorted(ALLOWED_DIFF - changed)}")
             check("git_diff_no_css", not any(x.lower().endswith(".css") for x in changed), "Commercial Billing Authority no-CSS boundary")
     else:
-        warnings.append(f"DIFF_BOUNDARY_NOT_EVALUATED: base {BASE_HEAD} unavailable")
+        check("git_diff_boundary", False, "CURRENT_PR_BASE_UNAVAILABLE")
 
     return emit(checks, errors, warnings, diff_evaluated)
 
