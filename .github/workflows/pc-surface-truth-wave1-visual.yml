@@ -34,12 +34,8 @@ jobs:
       - name: Generate PC Prisma client in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
-      - name: Generate default canonical seed client in isolated runner
-        shell: bash
-        run: |
-          set -euo pipefail
-          export DATABASE_URL="file:$GITHUB_WORKSPACE/tools/_local/data/terminal-de-venta-system/canonical.db"
-          pnpm -C apps/terminal-de-venta-system/products/pc/app exec prisma generate --schema ../../../prisma/schema.prisma
+      - name: Validate canonical Prisma bootstrap in isolated runner
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:validate
 
       - name: Apply canonical SQLite migrations in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
@@ -47,8 +43,13 @@ jobs:
       - name: Seed canonical CI data in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:seed
 
-      - name: Validate canonical SQLite in isolated runner
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:validate
+      - name: Smoke canonical runtime database
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd apps/terminal-de-venta-system/products/pc/app
+          export DATABASE_URL="file:$GITHUB_WORKSPACE/tools/_local/data/terminal-de-venta-system/canonical.db"
+          node ../../../prisma/runtime-smoke.mjs
 
       - name: Install Playwright Chromium
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
