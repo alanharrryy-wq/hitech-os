@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 import fs from 'node:fs/promises';
 import process from 'node:process';
-import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const playwrightRoot = process.env.PCI_PLAYWRIGHT_ROOT || 'playwright';
+const { chromium } = require(playwrightRoot);
 
 const baseUrl = process.env.PCI_BASE_URL || 'http://127.0.0.1:8316';
 const evidenceDir = process.env.PCI_EVIDENCE_DIR || 'pci-runtime-evidence';
@@ -37,9 +41,7 @@ async function verifyProfile(name, viewport) {
   page.on('pageerror', err => pageErrors.push(String(err)));
   page.on('response', response => {
     const url = response.url();
-    if (url.startsWith(baseUrl) && response.status() >= 400) {
-      badResponses.push({ url, status: response.status() });
-    }
+    if (url.startsWith(baseUrl) && response.status() >= 400) badResponses.push({ url, status: response.status() });
   });
 
   const response = await page.goto(target, { waitUntil: 'networkidle', timeout: 30000 });
@@ -52,13 +54,8 @@ async function verifyProfile(name, viewport) {
   const configResponse = await page.request.get(`${baseUrl}/internal/config/change_intelligence_cloud.json`);
   if (!configResponse.ok()) throw new Error(`${name}: governed config HTTP ${configResponse.status()}`);
   const config = await configResponse.json();
-
-  if (config?.maturity?.engineStatus !== 'LOCAL_VERIFIED') {
-    throw new Error(`${name}: unexpected engineStatus ${config?.maturity?.engineStatus}`);
-  }
-  if (config?.maturity?.productionCertified !== false || config?.maturity?.certifiable !== false) {
-    throw new Error(`${name}: maturity claim ceiling drift`);
-  }
+  if (config?.maturity?.engineStatus !== 'LOCAL_VERIFIED') throw new Error(`${name}: unexpected engineStatus ${config?.maturity?.engineStatus}`);
+  if (config?.maturity?.productionCertified !== false || config?.maturity?.certifiable !== false) throw new Error(`${name}: maturity claim ceiling drift`);
 
   const navViews = await page.locator('[data-pci-view]').evaluateAll(nodes => nodes.map(n => n.getAttribute('data-pci-view')));
   const missingViews = expectedViews.filter(view => !navViews.includes(view));
@@ -71,16 +68,11 @@ async function verifyProfile(name, viewport) {
     if (hash !== view) throw new Error(`${name}: navigation ${view} resolved ${hash}`);
   }
 
-  const forbiddenGreen = await page.locator('body').evaluate(body => {
-    const text = body.innerText;
-    return /production\s+certified|paid\s+pilot\s+ready/i.test(text);
-  });
+  const forbiddenGreen = await page.locator('body').evaluate(body => /production\s+certified|paid\s+pilot\s+ready/i.test(body.innerText));
   if (forbiddenGreen) throw new Error(`${name}: forbidden maturity claim rendered`);
 
   const semanticText = await page.locator('body').innerText();
-  if (!/UNKNOWN|NOT_CONNECTED|BLOCKED/i.test(semanticText)) {
-    throw new Error(`${name}: fail-closed state vocabulary not rendered`);
-  }
+  if (!/UNKNOWN|NOT_CONNECTED|BLOCKED/i.test(semanticText)) throw new Error(`${name}: fail-closed state vocabulary not rendered`);
 
   const screenshot = `${evidenceDir}/change-intelligence-${name}.png`;
   await page.screenshot({ path: screenshot, fullPage: true });
@@ -96,10 +88,7 @@ async function verifyProfile(name, viewport) {
     badResponses,
     screenshot,
   };
-
-  if (consoleErrors.length || pageErrors.length || badResponses.length) {
-    throw new Error(`${name}: runtime errors console=${consoleErrors.length} page=${pageErrors.length} http=${badResponses.length}`);
-  }
+  if (consoleErrors.length || pageErrors.length || badResponses.length) throw new Error(`${name}: runtime errors console=${consoleErrors.length} page=${pageErrors.length} http=${badResponses.length}`);
 
   result.profiles.push(profile);
   await context.close();
