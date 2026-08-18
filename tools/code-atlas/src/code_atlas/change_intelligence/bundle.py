@@ -68,6 +68,9 @@ def _normalize_sanitization_attestations(
         artifact = by_artifact.get(name)
         if artifact is None:
             raise ContractError(f"sanitization attestation has no matching artifact: {name}")
+        kind = require_nonempty_string(raw.get("kind"), f"sanitizationAttestations[{index}].kind")
+        if kind != artifact["kind"]:
+            raise ContractError(f"sanitization attestation kind mismatch: {name}")
         if raw.get("decision") not in {"PASS_CLEAN", "PASS_SANITIZED"}:
             raise ContractError(f"artifact sanitization is not PASS: {name}")
         if raw.get("contentInspection") != "FULL_UTF8_TEXT":
@@ -92,7 +95,7 @@ def _normalize_sanitization_attestations(
         normalized.append({
             "schemaVersion": "code_atlas_artifact_sanitization.v1",
             "name": name,
-            "kind": require_nonempty_string(raw.get("kind"), f"sanitizationAttestations[{index}].kind"),
+            "kind": kind,
             "scannerId": require_nonempty_string(raw.get("scannerId"), f"sanitizationAttestations[{index}].scannerId"),
             "rulesetDigest": ruleset_digest,
             "contentInspection": "FULL_UTF8_TEXT",
