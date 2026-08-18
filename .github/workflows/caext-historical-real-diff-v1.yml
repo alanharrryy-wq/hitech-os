@@ -14,7 +14,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PYTHONUTF8: '1'
   PYTHONPATH: tools/code-atlas/src
-  CAEXT_HISTORICAL_CODE_ATLAS_PIN: b024dcd2c533bf00e6f6926863b48472af1c215a
+  CAEXT_HISTORICAL_CODE_ATLAS_PIN: 9e627756fb37f81baa3465550098dcba63d26bde
   CAEXT_WORKERS: '18'
 
 jobs:
@@ -49,11 +49,17 @@ jobs:
             git diff --name-only "$CAEXT_HISTORICAL_CODE_ATLAS_PIN" -- tools/code-atlas/src/code_atlas
             exit 1
           fi
-          if git diff --name-only origin/main...HEAD | grep -E '^tools/code-atlas/src/code_atlas/(ui_bridge/|app_map/uimap/)'; then
+          base_ref="${GITHUB_BASE_REF:-main}"
+          base_remote="origin/${base_ref}"
+          if ! git rev-parse --verify "$base_remote" >/dev/null 2>&1; then
+            echo "Pull-request base ref is not available: ${base_remote}"
+            exit 1
+          fi
+          if git diff --name-only "$base_remote...HEAD" | grep -E '^tools/code-atlas/src/code_atlas/(ui_bridge/|app_map/uimap/)'; then
             echo 'PR #273 reserved paths were touched.'
             exit 1
           fi
-          changed="$(git diff --name-only origin/main...HEAD)"
+          changed="$(git diff --name-only "$base_remote...HEAD")"
           allowed1='.github/scripts/caext_historical_real_diff_v1.py'
           allowed2='.github/workflows/caext-historical-real-diff-v1.yml'
           unexpected="$(printf '%s\n' "$changed" | grep -v -F -e "$allowed1" -e "$allowed2" || true)"
