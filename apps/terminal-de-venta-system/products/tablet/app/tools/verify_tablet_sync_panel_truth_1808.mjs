@@ -88,7 +88,7 @@ check(
 check(
   "UI does not fabricate zero queue counts while unconfirmed",
   screen.includes("Cola sin confirmar") &&
-    screen.includes('return "—"') &&
+    screen.includes('panelConfirmed && typeof value === "number" ? value : "—"') &&
     !screen.includes("panel?.summary.total ?? 0") &&
     !screen.includes("panel?.summary.pending ?? 0") &&
     !screen.includes("panel?.summary.failed ?? 0") &&
