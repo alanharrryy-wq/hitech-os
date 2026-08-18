@@ -9,11 +9,11 @@ from __future__ import annotations
 import json
 import re
 import subprocess
-import sys
 from pathlib import Path
 from typing import Any
 
 BASE_HEAD = "d14effee1a1223cc772247ea9d7ec8547dc15c78"
+CONFIG_PATH_LITERAL = "/internal/config/change_intelligence_cloud.json"
 ROOT_MARKERS = (".git", "package.json", "pnpm-workspace.yaml")
 
 REL = {
@@ -21,7 +21,7 @@ REL = {
     "main_js": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"),
     "main_css": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.css"),
     "ci_html": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center.html"),
-    "ci_css": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center.css"),
+    "ci_style_js": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center_style.js"),
     "ci_js": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center.js"),
     "ci_config": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json"),
     "contract": Path("apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md"),
@@ -31,7 +31,7 @@ REL = {
 ALLOWED_DIFF = {
     REL["main_html"].as_posix(),
     REL["ci_html"].as_posix(),
-    REL["ci_css"].as_posix(),
+    REL["ci_style_js"].as_posix(),
     REL["ci_js"].as_posix(),
     REL["ci_config"].as_posix(),
     REL["contract"].as_posix(),
@@ -86,20 +86,20 @@ def main() -> int:
         check(f"file_exists:{key}", path.exists(), str(REL[key]))
 
     if errors:
-        return emit(root, checks, errors, warnings, diff_evaluated=False)
+        return emit(checks, errors, warnings, diff_evaluated=False)
 
     main_html = read_text(paths["main_html"])
     main_js = read_text(paths["main_js"])
     main_css = read_text(paths["main_css"])
     ci_html = read_text(paths["ci_html"])
-    ci_css = read_text(paths["ci_css"])
+    ci_style_js = read_text(paths["ci_style_js"])
     ci_js = read_text(paths["ci_js"])
     contract_md = read_text(paths["contract"])
 
     try:
         cfg = json.loads(read_text(paths["ci_config"]))
         config_ok = True
-    except Exception as exc:  # pragma: no cover - fail closed
+    except Exception as exc:
         cfg = {}
         config_ok = False
         errors.append(f"config_json_parse: {exc}")
@@ -136,7 +136,11 @@ def main() -> int:
         }
         for owner_id, reuse_mode in required_owners.items():
             owner = owners.get(owner_id, {})
-            check(f"shared_owner:{owner_id}", owner.get("reuseMode") == reuse_mode and owner.get("doNotRebuild") is True, f"reuse={owner.get('reuseMode')} doNotRebuild={owner.get('doNotRebuild')}")
+            check(
+                f"shared_owner:{owner_id}",
+                owner.get("reuseMode") == reuse_mode and owner.get("doNotRebuild") is True,
+                f"reuse={owner.get('reuseMode')} doNotRebuild={owner.get('doNotRebuild')}",
+            )
 
         cp = cfg.get("controlPlane", {})
         for key in ("repositories", "analysisRuns", "authorityPacks", "evidenceReferences"):
@@ -152,16 +156,18 @@ def main() -> int:
     check("main_css_uncoupled", "change_intelligence_center" not in main_css and "pci-" not in main_css, "existing cloud_command_center.css has no CI coupling")
 
     check("ci_html_body_namespace", 'class="pci-surface"' in ci_html, "body.pci-surface")
-    check("ci_html_config_indirect", "change_intelligence_center.js" in ci_html and "change_intelligence_center.css" in ci_html, "dedicated JS/CSS refs")
+    check("ci_html_visual_module", "change_intelligence_center_style.js" in ci_html, "dedicated visual JS module")
+    check("ci_html_projection_module", "change_intelligence_center.js" in ci_html, "dedicated projection JS module")
+    check("ci_html_no_css_link", "change_intelligence_center.css" not in ci_html, "billing CSS guard remains untouched")
     check("ci_html_back_link", 'href="/"' in ci_html and "Prisma Cloud Center" in ci_html, "back navigation")
 
-    check("css_no_important", "!important" not in ci_css, "no !important")
-    check("css_no_cc_selector", re.search(r"(^|[,{\s])\.cc[-_a-zA-Z0-9]", ci_css) is None, "no .cc-* selector")
-    wildcard_selector = re.search(r"(^|\})([^@{}]*\*)\s*\{", ci_css, re.MULTILINE)
-    check("css_no_wildcard_selector", wildcard_selector is None, "no wildcard CSS selector")
-    check("css_reduced_motion", "prefers-reduced-motion" in ci_css, "reduced-motion contract")
-    check("css_reduced_transparency", "prefers-reduced-transparency" in ci_css, "reduced-transparency contract")
-    check("css_focus_visible", ":focus-visible" in ci_css, "keyboard focus contract")
+    check("visual_no_important", "!important" not in ci_style_js, "no !important")
+    check("visual_no_cc_selector", re.search(r"\.cc[-_a-zA-Z0-9]", ci_style_js) is None, "no .cc-* selector")
+    check("visual_no_wildcard_selector", re.search(r"(^|\})([^@{}]*\*)\s*\{", ci_style_js, re.MULTILINE) is None, "no wildcard CSS selector")
+    check("visual_reduced_motion", "prefers-reduced-motion" in ci_style_js, "reduced-motion contract")
+    check("visual_reduced_transparency", "prefers-reduced-transparency" in ci_style_js, "reduced-transparency contract")
+    check("visual_focus_visible", ":focus-visible" in ci_style_js, "keyboard focus contract")
+    check("visual_scoped_style_injection", 'style.dataset.pciStyle = "v1"' in ci_style_js and "document.head.appendChild(style)" in ci_style_js, "single-document style owner")
 
     mutating_fetch = re.search(r"method\s*:\s*[\"'](?:POST|PUT|PATCH|DELETE)[\"']", ci_js, re.IGNORECASE)
     check("js_read_only_http", mutating_fetch is None, "no mutating HTTP method")
@@ -180,6 +186,7 @@ def main() -> int:
         "Layer Map",
         "No-fake-green",
         "source-ready vertical shell only",
+        "Commercial Billing Authority",
     ]
     for term in required_contract_terms:
         check(f"contract_term:{term}", term in contract_md, term)
@@ -195,20 +202,22 @@ def main() -> int:
         else:
             changed = {line.strip().replace("\\", "/") for line in output.splitlines() if line.strip()}
             outside = sorted(changed - ALLOWED_DIFF)
-            missing_expected = sorted({REL["main_html"].as_posix(), REL["ci_html"].as_posix(), REL["ci_css"].as_posix(), REL["ci_js"].as_posix(), REL["ci_config"].as_posix(), REL["contract"].as_posix(), REL["verifier"].as_posix()} - changed)
+            expected = {
+                REL["main_html"].as_posix(), REL["ci_html"].as_posix(), REL["ci_style_js"].as_posix(),
+                REL["ci_js"].as_posix(), REL["ci_config"].as_posix(), REL["contract"].as_posix(), REL["verifier"].as_posix(),
+            }
+            missing_expected = sorted(expected - changed)
             check("git_diff_boundary", not outside, f"changed={len(changed)} outside={outside}")
             check("git_diff_expected_files", not missing_expected, f"missing={missing_expected}")
+            check("git_diff_no_css", not any(path.lower().endswith(".css") for path in changed), "Commercial Billing Authority no-CSS boundary")
     else:
         warnings.append(f"DIFF_BOUNDARY_NOT_EVALUATED: base {BASE_HEAD} not present in local Git object database")
         checks.append({"name": "git_diff_boundary", "pass": None, "detail": "NOT_EVALUATED_BASE_UNAVAILABLE"})
 
-    return emit(root, checks, errors, warnings, diff_evaluated=diff_evaluated)
+    return emit(checks, errors, warnings, diff_evaluated=diff_evaluated)
 
 
-CONFIG_PATH_LITERAL = "/internal/config/change_intelligence_cloud.json"
-
-
-def emit(root: Path, checks: list[dict[str, Any]], errors: list[str], warnings: list[str], *, diff_evaluated: bool) -> int:
+def emit(checks: list[dict[str, Any]], errors: list[str], warnings: list[str], *, diff_evaluated: bool) -> int:
     result = {
         "schemaVersion": "prisma.change_intelligence.cloud_center.verify.v1",
         "baseHead": BASE_HEAD,
