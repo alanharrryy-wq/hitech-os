@@ -51,9 +51,12 @@ function prismaTabboom1QueryKey(input: SyncPanelInput) {
 }
 
 function prismaTabboom1Store(): PrismaTabboom1Store {
-  const globalStore = globalThis as unknown as Record<string, PrismaTabboom1Store>;
-  globalStore[PRISMA_TABBOOM1_CACHE_KEY] ??= { states: new Map() };
-  return globalStore[PRISMA_TABBOOM1_CACHE_KEY];
+  const globalStore = globalThis as unknown as Record<string, PrismaTabboom1Store | undefined>;
+  const existing = globalStore[PRISMA_TABBOOM1_CACHE_KEY];
+  if (!existing || !(existing.states instanceof Map)) {
+    globalStore[PRISMA_TABBOOM1_CACHE_KEY] = { states: new Map() };
+  }
+  return globalStore[PRISMA_TABBOOM1_CACHE_KEY] as PrismaTabboom1Store;
 }
 
 function prismaTabboom1PruneStore(store: PrismaTabboom1Store, keepKey: string) {
@@ -74,9 +77,12 @@ function prismaTabboom1State(cacheKey: string): PrismaTabboom1State {
     existing.touchedAt = Date.now();
     return existing;
   }
+
   prismaTabboom1PruneStore(store, cacheKey);
   const created: PrismaTabboom1State = { touchedAt: Date.now() };
-  store.states.set(cacheKey, created);
+  if (store.states.size < PRISMA_TABBOOM1_MAX_QUERY_STATES) {
+    store.states.set(cacheKey, created);
+  }
   return created;
 }
 
@@ -114,7 +120,7 @@ async function prismaTabboom1OriginalBounded(
   const response = await Promise.race([Promise.resolve().then(runOriginal), timeout]);
   const body = await response.clone().text();
   const headers = Array.from(response.headers.entries());
-  if (response.status < 500 && body.length > 0) {
+  if (response.ok && body.length > 0) {
     state.cache = { at: Date.now(), status: response.status, body, headers };
   }
   state.touchedAt = Date.now();
