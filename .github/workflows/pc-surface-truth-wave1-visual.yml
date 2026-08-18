@@ -34,6 +34,15 @@ jobs:
       - name: Generate PC Prisma client in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
+      - name: Apply canonical SQLite migrations in isolated runner
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
+
+      - name: Seed canonical CI data in isolated runner
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:seed
+
+      - name: Validate canonical SQLite in isolated runner
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:validate
+
       - name: Install Playwright Chromium
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
 
