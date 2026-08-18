@@ -61,7 +61,18 @@ check(
     route.includes("store.states.get(cacheKey)") &&
     route.includes("prismaTabboom1State(cacheKey)")
 );
-check("query-state store is bounded", route.includes("PRISMA_TABBOOM1_MAX_QUERY_STATES") && route.includes("prismaTabboom1PruneStore"));
+check(
+  "legacy global cache shape is discarded safely",
+  route.includes("existing.states instanceof Map") &&
+    route.includes("globalStore[PRISMA_TABBOOM1_CACHE_KEY] = { states: new Map() }")
+);
+check(
+  "query-state store is hard bounded",
+  route.includes("PRISMA_TABBOOM1_MAX_QUERY_STATES") &&
+    route.includes("prismaTabboom1PruneStore") &&
+    route.includes("if (store.states.size < PRISMA_TABBOOM1_MAX_QUERY_STATES)") &&
+    route.includes("store.states.set(cacheKey, created)")
+);
 
 const timeoutBody = functionBody(route, "prismaTabboom1UnverifiedTimeout", "prismaTabboom1OriginalBounded");
 check(
@@ -73,7 +84,10 @@ check(
 );
 check("timeout never returns stale cache as current truth", timeoutBody.length > 0 && !timeoutBody.includes("prismaTabboom1Clone"));
 check("timeout cannot manufacture unknown success payload", !route.includes('risk: "unknown"') && !route.includes("summary: { total: 0, pending: 0"));
-check("timeout response is not cached", route.includes("if (response.status < 500 && body.length > 0)") && timeoutBody.includes('"cache-control", "no-store"'));
+check(
+  "only verified 2xx responses are cached",
+  route.includes("if (response.ok && body.length > 0)") && timeoutBody.includes('"cache-control", "no-store"')
+);
 check("route preserves POS API error translation", route.includes("catch (error)") && route.includes("return toPosApiError(error)"));
 
 check(
