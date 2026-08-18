@@ -57,6 +57,252 @@ jobs:
           fi
           echo 'PASS_CAEXT_V2_PRODUCT_CORE_READ_ONLY'
 
+  rental-hygiene-smoke:
+    name: External rental P0 hygiene / ${{ matrix.os }}
+    needs: harness-regressions
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Exercise rental lifecycle and byte-level egress on pinned Click
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import shutil
+          import subprocess
+          from pathlib import Path
+
+          from code_atlas.change_intelligence import (
+              build_hardened_portable_bundle_manifest,
+              build_rental_runner_plan,
+              cleanup_customer_workspace,
+              cleanup_published_artifacts,
+              create_customer_workspace,
+              sanitize_artifact_bytes,
+              sanitize_artifacts_for_egress,
+              validate_runner_cleanup,
+              validate_runner_egress,
+          )
+          from code_atlas.change_intelligence.contracts import ContractError
+
+          click_commit = '8b44edfff7d9a6c895fa804148c16b3a0bc9efb5'
+          click_tree = 'a52cd0994280efa88a13aa9af244c4b809b89b13'
+          evidence_dir = Path(os.environ['RUNNER_TEMP']) / 'caext-p0-rental'
+          work_root = Path(os.environ['RUNNER_TEMP']) / 'caext-p0-rental-work'
+          evidence_dir.mkdir(parents=True, exist_ok=True)
+          if work_root.exists():
+              shutil.rmtree(work_root)
+          work_root.mkdir(parents=True)
+          repo = work_root / 'click'
+          customer_base = work_root / 'customer'
+          egress_dir = work_root / 'egress'
+          workspace = None
+          plan = None
+          published_files = []
+          failed = None
+          result = {
+              'schemaVersion': 'caext_p0_external_rental_smoke.v1',
+              'repository': 'pallets/click',
+              'expectedCommit': click_commit,
+              'expectedTree': click_tree,
+              'readOnly': True,
+              'sourceCodeEgressAllowed': False,
+              'secureEraseGuaranteed': False,
+              'privacyLegalSecurityCertified': False,
+              'productionCertified': False,
+          }
+
+          def git(*args: str) -> str:
+              proc = subprocess.run(
+                  ['git', '-C', str(repo), *args],
+                  check=False,
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.PIPE,
+                  text=True,
+                  encoding='utf-8',
+                  errors='replace',
+                  timeout=180,
+              )
+              if proc.returncode:
+                  raise RuntimeError('GIT_COMMAND_FAILED')
+              return proc.stdout.strip()
+
+          try:
+              subprocess.run(['git', 'init', str(repo)], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+              git('remote', 'add', 'origin', 'https://github.com/pallets/click.git')
+              git('fetch', '--depth=1', '--no-tags', 'origin', click_commit)
+              git('checkout', '--detach', click_commit)
+              head_before = git('rev-parse', 'HEAD')
+              tree_before = git('rev-parse', 'HEAD^{tree}')
+              status_before = git('status', '--porcelain=v1', '--untracked-files=all')
+              if head_before != click_commit or tree_before != click_tree or status_before:
+                  raise RuntimeError('PINNED_EXTERNAL_REPOSITORY_IDENTITY_MISMATCH')
+
+              repository_identity = f'pallets/click@{head_before}'
+              plan = build_rental_runner_plan(
+                  repository_identity=repository_identity,
+                  requested_outputs=['change-readiness-report'],
+                  retention_mode='EPHEMERAL',
+                  retention_seconds=0,
+              )
+              workspace = create_customer_workspace(
+                  base_root=customer_base,
+                  lifecycle_policy=plan['dataLifecyclePolicy'],
+                  session_id='external-click-p0-smoke',
+              )
+              raw_report = Path(workspace['workspacePath']) / 'change-readiness-report.json'
+              raw_report.write_text(
+                  json.dumps(
+                      {
+                          'repositoryIdentity': repository_identity,
+                          'commitIdentity': head_before,
+                          'treeIdentity': tree_before,
+                          'finding': 'external rental hygiene smoke',
+                          'contact': 'customer-owner@example.invalid',
+                          'token': 'ghp_' + ('A' * 30),
+                      },
+                      ensure_ascii=False,
+                      indent=2,
+                  ) + '\n',
+                  encoding='utf-8',
+              )
+
+              source_file = next(path for path in repo.rglob('*.py') if path.is_file())
+              source_rejected = False
+              try:
+                  sanitize_artifact_bytes(name='customer-source.py', kind='source', content=source_file.read_bytes())
+              except ContractError:
+                  source_rejected = True
+              if not source_rejected:
+                  raise RuntimeError('SOURCE_CODE_EGRESS_NOT_REJECTED')
+
+              hardened = sanitize_artifacts_for_egress(
+                  artifacts=[{
+                      'localPath': str(raw_report),
+                      'name': 'change-readiness-report.json',
+                      'kind': 'change-readiness-report',
+                  }],
+                  output_dir=egress_dir,
+              )
+              published_files = list(hardened['publishedFiles'])
+              sanitized_text = Path(published_files[0]).read_text(encoding='utf-8')
+              if 'customer-owner@example.invalid' in sanitized_text or ('ghp_' + ('A' * 30)) in sanitized_text:
+                  raise RuntimeError('SEEDED_SECRET_OR_PII_SURVIVED_SANITIZATION')
+              if '<REDACTED_EMAIL>' not in sanitized_text or '<REDACTED_SECRET>' not in sanitized_text:
+                  raise RuntimeError('EXPECTED_REDACTION_MARKERS_MISSING')
+
+              snapshot = {
+                  'repositoryIdentity': repository_identity,
+                  'commitIdentity': head_before,
+                  'treeIdentity': tree_before,
+              }
+              manifest = build_hardened_portable_bundle_manifest(
+                  repository_snapshot=snapshot,
+                  artifacts=hardened['artifacts'],
+                  sanitization_attestations=hardened['sanitizationAttestations'],
+                  lifecycle_policy_digest=plan['dataLifecyclePolicyDigest'],
+                  purpose='external-rental-p0-smoke',
+              )
+              egress = validate_runner_egress(runner_plan=plan, bundle_manifest=manifest)
+              if egress.get('allowed') is not True or egress.get('postEgressCleanupRequired') is not True:
+                  raise RuntimeError('RENTAL_EGRESS_CONTRACT_NOT_ENFORCED')
+
+              artifact_cleanup = cleanup_published_artifacts(
+                  published_files=published_files,
+                  output_root=egress_dir,
+              )
+              published_files = []
+              if artifact_cleanup.get('cleanupVerified') is not True:
+                  raise RuntimeError('PUBLISHED_ARTIFACT_CLEANUP_NOT_VERIFIED')
+
+              cleanup = cleanup_customer_workspace(
+                  workspace=workspace,
+                  lifecycle_policy=plan['dataLifecyclePolicy'],
+                  reason='external-rental-p0-smoke-complete',
+              )
+              cleanup_validation = validate_runner_cleanup(runner_plan=plan, cleanup_evidence=cleanup)
+              workspace = None
+              if cleanup_validation.get('cleanupVerified') is not True:
+                  raise RuntimeError('CUSTOMER_WORKSPACE_CLEANUP_NOT_VERIFIED')
+
+              head_after = git('rev-parse', 'HEAD')
+              tree_after = git('rev-parse', 'HEAD^{tree}')
+              status_after = git('status', '--porcelain=v1', '--untracked-files=all')
+              if (head_after, tree_after, status_after) != (head_before, tree_before, status_before):
+                  raise RuntimeError('EXTERNAL_REPOSITORY_MUTATED')
+
+              result.update({
+                  'status': 'PASS_EXTERNAL_RENTAL_P0_HYGIENE',
+                  'commitIdentity': head_after,
+                  'treeIdentity': tree_after,
+                  'repositoryUnchanged': True,
+                  'sourceArtifactRejected': True,
+                  'allArtifactsInspected': hardened['allArtifactsInspected'],
+                  'artifactSanitizationDecision': hardened['sanitizationAttestations'][0]['decision'],
+                  'sanitizationFindingClasses': [row['class'] for row in hardened['sanitizationAttestations'][0]['findings']],
+                  'artifactContentSanitizationProven': manifest['artifactContentSanitizationProven'],
+                  'manifestDigest': manifest['manifestDigest'],
+                  'runnerPlanDigest': plan['planDigest'],
+                  'lifecyclePolicyDigest': plan['dataLifecyclePolicyDigest'],
+                  'artifactCleanupVerified': artifact_cleanup['cleanupVerified'],
+                  'workspaceCleanupVerified': cleanup_validation['cleanupVerified'],
+                  'remainingCustomerWorkspacePaths': cleanup_validation['remainingPaths'],
+              })
+          except Exception as exc:
+              failed = type(exc).__name__
+              result.update({'status': 'FAIL_EXTERNAL_RENTAL_P0_HYGIENE', 'errorClass': failed})
+          finally:
+              if published_files:
+                  try:
+                      cleanup_published_artifacts(published_files=published_files, output_root=egress_dir)
+                  except Exception:
+                      result['emergencyArtifactCleanup'] = 'FAILED'
+              if workspace is not None and plan is not None:
+                  try:
+                      cleanup_customer_workspace(
+                          workspace=workspace,
+                          lifecycle_policy=plan['dataLifecyclePolicy'],
+                          reason='external-rental-p0-smoke-failure-cleanup',
+                      )
+                  except Exception:
+                      result['emergencyWorkspaceCleanup'] = 'FAILED'
+              if work_root.exists():
+                  shutil.rmtree(work_root)
+              result['ephemeralRunnerWorkRootRemoved'] = not work_root.exists()
+              result['secureEraseGuaranteed'] = False
+              result['productionCertified'] = False
+              (evidence_dir / 'p0-external-rental-smoke.json').write_text(
+                  json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + '\n',
+                  encoding='utf-8',
+              )
+
+          if failed or result.get('emergencyArtifactCleanup') == 'FAILED' or result.get('emergencyWorkspaceCleanup') == 'FAILED':
+              raise SystemExit(2)
+          print('PASS_EXTERNAL_RENTAL_P0_HYGIENE')
+          PY
+
+      - name: Upload external rental hygiene evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-p0-rental-${{ matrix.os }}
+          if-no-files-found: error
+          path: ${{ runner.temp }}/caext-p0-rental/p0-external-rental-smoke.json
+
   external-regression-three:
     name: External regression 3 / ${{ matrix.os }}
     needs: harness-regressions
