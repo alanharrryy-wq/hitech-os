@@ -433,6 +433,70 @@ def test_intelligence(inventory: dict[str, Any], dependencies: dict[str, Any]) -
         })
     return {"tests": rows, "testCount": len(rows), "productionCertified": False}
 
+
+def _is_go_actionable_direct_edge(edge: dict[str, Any]) -> bool:
+    edge_type = str(edge.get("type") or "")
+    evidence = str(edge.get("evidence") or "")
+    if edge_type == "go-symbol-exact":
+        return True
+    if edge_type == "go-import-symbol":
+        return "|kind:type|" not in evidence and "|kind:method|" not in evidence
+    return False
+
+
+def _go_actionable_review(
+    changed: set[str],
+    impacted: set[str],
+    dependencies: dict[str, Any],
+) -> dict[str, Any]:
+    direct_reverse: dict[str, set[str]] = defaultdict(set)
+    companion_reverse: dict[str, set[str]] = defaultdict(set)
+    for edge in dependencies.get("edges") or []:
+        source = str(edge.get("from") or "")
+        target = str(edge.get("to") or "")
+        if not source or not target:
+            continue
+        if _is_go_actionable_direct_edge(edge):
+            direct_reverse[target].add(source)
+        elif edge.get("type") == "go-test-companion":
+            companion_reverse[target].add(source)
+
+    direct = {
+        source
+        for target in changed
+        for source in direct_reverse.get(target, set())
+        if source in impacted
+    }
+    actionable = set(changed) | direct
+    test_companions: set[str] = set()
+    frontier = list(actionable)
+    while frontier:
+        current = frontier.pop()
+        for companion in companion_reverse.get(current, set()):
+            if companion not in impacted or companion in actionable:
+                continue
+            actionable.add(companion)
+            test_companions.add(companion)
+            frontier.append(companion)
+
+    structural_only = impacted - actionable
+    return {
+        "schemaVersion": "code_atlas_actionable_review.v1",
+        "scope": "GO_BOUNDED_V1",
+        "paths": sorted(actionable),
+        "directDependencies": sorted(direct),
+        "testCompanions": sorted(test_companions),
+        "structuralOnlyImpacted": sorted(structural_only),
+        "rule": "CHANGED_PLUS_DIRECT_EXACT_GO_REVERSE_DEPENDENCIES_PLUS_TEST_COMPANION_CLOSURE",
+        "authorizationRule": "ACTIONABLE_REVIEW_NEVER_EXPANDS_ALLOWED_SCOPE",
+        "doesNotProve": [
+            "Authorization to edit any impacted or actionable path.",
+            "Completeness outside bounded repository-proven Go relationships.",
+            "That structural-only impacted paths are safe to ignore.",
+        ],
+    }
+
+
 def change_impact(changed_paths: list[str], dependencies: dict[str, Any], ownership: dict[str, Any]) -> dict[str, Any]:
     changed = set(changed_paths)
     reverse: dict[str, set[str]] = defaultdict(set)
@@ -456,6 +520,7 @@ def change_impact(changed_paths: list[str], dependencies: dict[str, Any], owners
         "impacted": sorted(impacted),
         "owners": owners,
         "impactRule": "STATIC_GRAPH_TRANSITIVE_REVERSE_DEPENDENCY",
+        "actionableReview": _go_actionable_review(changed, impacted, dependencies),
         "doesNotProve": ["Runtime dynamic dependencies not present in repository evidence."],
     }
 
