@@ -178,6 +178,13 @@ class BoundedGoJavaDependencyTests(unittest.TestCase):
             self.assertIn("consumer/consumer.go", impact["impacted"])
             self.assertIn("core/core_test.go", impact["impacted"])
             self.assertNotIn("core/other.go", impact["impacted"])
+            self.assertEqual(
+                impact["actionableReview"]["paths"],
+                ["consumer/consumer.go", "core/core.go", "core/core_test.go"],
+            )
+            self.assertEqual(impact["actionableReview"]["directDependencies"], ["consumer/consumer.go"])
+            self.assertEqual(impact["actionableReview"]["testCompanions"], ["core/core_test.go"])
+            self.assertEqual(impact["actionableReview"]["structuralOnlyImpacted"], [])
             self.assertEqual(deps, dependency_graph(root, inventory))
 
     def test_go_external_import_is_not_invented(self) -> None:
@@ -265,7 +272,90 @@ class BoundedGoJavaDependencyTests(unittest.TestCase):
                 impact["impacted"],
                 ["command.go", "completions.go", "completions_test.go"],
             )
+            self.assertEqual(impact["actionableReview"]["paths"], ["command.go"])
+            self.assertEqual(
+                impact["actionableReview"]["structuralOnlyImpacted"],
+                ["completions.go", "completions_test.go"],
+            )
             self.assertEqual(deps, dependency_graph(root, inventory))
+
+    def test_go_actionable_review_keeps_type_only_imports_structural(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            files = {
+                "go.mod": "module example.com/cobra\n",
+                "command.go": (
+                    "package cobra\n"
+                    "type Command struct{}\n"
+                    "func commandSignal() int { return 1 }\n"
+                ),
+                "completions.go": (
+                    "package cobra\n"
+                    "func completionSignal() int { return commandSignal() }\n"
+                ),
+                "command_test.go": (
+                    "package cobra\n"
+                    "import \"testing\"\n"
+                    "func TestCommand(t *testing.T) { _ = commandSignal() }\n"
+                ),
+                "completions_test.go": (
+                    "package cobra\n"
+                    "import \"testing\"\n"
+                    "func TestCompletion(t *testing.T) { _ = completionSignal() }\n"
+                ),
+                "doc/md_docs.go": (
+                    "package doc\n"
+                    "import cobra \"example.com/cobra\"\n"
+                    "func Render(c *cobra.Command) {}\n"
+                ),
+            }
+            self._write(root, files)
+            inventory = self._inventory(
+                list(files),
+                ["command_test.go", "completions_test.go"],
+            )
+            deps = dependency_graph(root, inventory)
+            type_edge = next(
+                row
+                for row in deps["edges"]
+                if row["from"] == "doc/md_docs.go"
+                and row["to"] == "command.go"
+                and row["type"] == "go-import-symbol"
+            )
+            self.assertIn("|kind:type|", type_edge["evidence"])
+            impact = change_impact(["command.go"], deps, {"edges": []})
+            self.assertEqual(
+                impact["impacted"],
+                [
+                    "command.go",
+                    "command_test.go",
+                    "completions.go",
+                    "completions_test.go",
+                    "doc/md_docs.go",
+                ],
+            )
+            self.assertEqual(
+                impact["actionableReview"]["paths"],
+                [
+                    "command.go",
+                    "command_test.go",
+                    "completions.go",
+                    "completions_test.go",
+                ],
+            )
+            self.assertEqual(impact["actionableReview"]["directDependencies"], ["completions.go"])
+            self.assertEqual(
+                impact["actionableReview"]["testCompanions"],
+                ["command_test.go", "completions_test.go"],
+            )
+            self.assertEqual(
+                impact["actionableReview"]["structuralOnlyImpacted"],
+                ["doc/md_docs.go"],
+            )
+            self.assertEqual(
+                impact["actionableReview"]["authorizationRule"],
+                "ACTIONABLE_REVIEW_NEVER_EXPANDS_ALLOWED_SCOPE",
+            )
 
     def test_java_local_import_and_same_package_test_are_resolved(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -299,6 +389,14 @@ class BoundedGoJavaDependencyTests(unittest.TestCase):
             ))
             impact = change_impact(["src/main/java/com/acme/OwnerController.java"], deps, {"edges": []})
             self.assertIn("src/test/java/com/acme/OwnerControllerTests.java", impact["impacted"])
+            self.assertEqual(
+                impact["actionableReview"]["paths"],
+                ["src/main/java/com/acme/OwnerController.java"],
+            )
+            self.assertEqual(
+                impact["actionableReview"]["structuralOnlyImpacted"],
+                ["src/test/java/com/acme/OwnerControllerTests.java"],
+            )
             self.assertEqual(deps, dependency_graph(root, inventory))
 
 
