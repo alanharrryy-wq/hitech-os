@@ -1,0 +1,626 @@
+name: Tablet Sync Truth PR298 V5 Evidence
+
+on:
+  push:
+    branches:
+      - evidence/tablet-sync-truth-pr298-v5
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: tablet-sync-truth-pr298-v5
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  TARGET_SHA: caec783e1d6f1a14af113143c5089bc8f41c6317
+  AUTHORITY_MAIN_SHA: d14effee1a1223cc772247ea9d7ec8547dc15c78
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-sync-truth-pr298-v5
+  ARTIFACT_NAME: tablet-sync-truth-pr298-v5-${{ github.run_id }}-${{ github.run_attempt }}
+
+jobs:
+  tablet-sync-truth-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+
+    steps:
+      - name: Publish retrievable start pointer
+        continue-on-error: true
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python - <<'PY' > "$RUNNER_TEMP/start-comment.json"
+          import json, os
+          body = (
+              "TABLET_RUNTIME_EVIDENCE_STARTED\n"
+              f"run_id={os.environ['GITHUB_RUN_ID']}\n"
+              f"run_attempt={os.environ['GITHUB_RUN_ATTEMPT']}\n"
+              f"target_sha={os.environ['TARGET_SHA']}\n"
+              f"authority_main_sha={os.environ['AUTHORITY_MAIN_SHA']}\n"
+              "authority_mesh_request_id=54e08127e1395ef4\n"
+              f"artifact_name={os.environ['ARTIFACT_NAME']}\n"
+              "scope=temporary evidence-only workflow; never merge this workflow into product PR"
+          )
+          print(json.dumps({"body": body}))
+          PY
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/298/comments" \
+            --data-binary @"$RUNNER_TEMP/start-comment.json" >/dev/null
+
+      - name: Checkout exact PR head under V5 authority
+        uses: actions/checkout@v6
+        with:
+          ref: caec783e1d6f1a14af113143c5089bc8f41c6317
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify exact target and governed base
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$TARGET_SHA"
+          git cat-file -e "${AUTHORITY_MAIN_SHA}^{commit}"
+          merge_base="$(git merge-base "$AUTHORITY_MAIN_SHA" "$TARGET_SHA")"
+          mkdir -p "$EVIDENCE_DIR"
+          printf '%s\n' "$actual" > "$EVIDENCE_DIR/target-sha.txt"
+          printf '%s\n' "$AUTHORITY_MAIN_SHA" > "$EVIDENCE_DIR/authority-main-sha.txt"
+          printf '%s\n' "$merge_base" > "$EVIDENCE_DIR/merge-base.txt"
+          git diff --name-only "$merge_base" "$TARGET_SHA" | tee "$EVIDENCE_DIR/product-diff-files.txt"
+          python - <<'PY'
+          from pathlib import Path
+          allowed = {
+              "apps/terminal-de-venta-system/products/tablet/app/app/api/pos/sync/panel/route.ts",
+              "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
+              "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs",
+          }
+          rows = [line.strip() for line in Path("evidence/tablet-sync-truth-pr298-v5/product-diff-files.txt").read_text().splitlines() if line.strip()]
+          unexpected = sorted(set(rows) - allowed)
+          missing = sorted(allowed - set(rows))
+          if unexpected or missing:
+              raise SystemExit(f"SCOPE_MISMATCH unexpected={unexpected} missing={missing}")
+          print("PASS exact three-file Tablet scope")
+          PY
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Frozen install without scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/frozen-install.log"
+
+      - name: Focused Tablet truth verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          node "$APP_ROOT/tools/verify_tablet_sync_panel_truth_1808.mjs" 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-sync-panel-truth.log"
+
+      - name: Zero important gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:zero-important 2>&1 | tee "$EVIDENCE_DIR/verify-zero-important.log"
+
+      - name: License allow deny source gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:tablet-license-missing-fallback 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-license.log"
+
+      - name: Tablet operational gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:tablet-operational-gate 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-operational-gate.log"
+
+      - name: Tablet sync dispatcher local-first gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:tablet-sync-dispatcher 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-sync-dispatcher.log"
+
+      - name: Prove no generated Prisma client is being created
+        shell: bash
+        run: |
+          set -euo pipefail
+          generated="$APP_ROOT/.generated/prisma-client"
+          if [ -e "$generated" ]; then
+            echo "BLOCKED unexpected generated Prisma client exists after --ignore-scripts install" | tee "$EVIDENCE_DIR/prisma-generation-gate.log"
+            exit 1
+          fi
+          printf '%s\n' \
+            'PASS no app/.generated/prisma-client exists' \
+            'PASS no prisma generate command executed by this evidence workflow' \
+            'PASS no DB init/push/seed/migrate command executed by this evidence workflow' \
+            | tee "$EVIDENCE_DIR/prisma-generation-gate.log"
+
+      - name: Resolve preinstalled Chrome only
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=""
+          for candidate in google-chrome google-chrome-stable chromium chromium-browser; do
+            if command -v "$candidate" >/dev/null 2>&1; then
+              chrome="$(command -v "$candidate")"
+              break
+            fi
+          done
+          if [ -z "$chrome" ]; then
+            echo "BLOCKED_CHROME_NOT_PREINSTALLED" | tee "$EVIDENCE_DIR/chrome-resolution.log"
+            exit 1
+          fi
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome-resolution.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start runner-local Tablet only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if curl --silent --fail --max-time 1 http://127.0.0.1:3120/ >/dev/null 2>&1; then
+            echo "BLOCKED port 3120 was already occupied on the clean runner; refusing to kill/free it" | tee "$EVIDENCE_DIR/runtime-start.log"
+            exit 1
+          fi
+          setsid bash -lc "exec pnpm -C '$APP_ROOT' dev" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          server_pid=$!
+          printf '%s\n' "$server_pid" > "$EVIDENCE_DIR/server.pid"
+          printf 'runner_local_process_group=%s\n' "$server_pid" | tee "$EVIDENCE_DIR/runtime-start.log"
+          ready=0
+          for _ in $(seq 1 120); do
+            if curl --silent --fail --max-time 2 http://127.0.0.1:3120/sync >/dev/null 2>&1; then
+              ready=1
+              break
+            fi
+            if ! kill -0 "$server_pid" >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            echo "BLOCKED_TABLET_RUNTIME_NOT_READY" | tee -a "$EVIDENCE_DIR/runtime-start.log"
+            tail -n 240 "$EVIDENCE_DIR/server.log" || true
+            exit 1
+          fi
+          echo "PASS runner-local Tablet /sync HTTP ready" | tee -a "$EVIDENCE_DIR/runtime-start.log"
+
+      - name: Capture no-fake-green browser evidence with API contract fixtures
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/tablet-sync-capture.mjs" <<'JS'
+          import fs from 'node:fs';
+          import os from 'node:os';
+          import path from 'node:path';
+          import { spawn } from 'node:child_process';
+
+          const targetSha = process.env.TARGET_SHA;
+          const evidenceDir = process.env.EVIDENCE_DIR;
+          const chromeBin = process.env.CHROME_BIN;
+          const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+          fs.mkdirSync(evidenceDir, { recursive: true });
+
+          class CDP {
+            constructor(url) {
+              this.ws = new WebSocket(url);
+              this.seq = 0;
+              this.pending = new Map();
+              this.listeners = [];
+            }
+            async open() {
+              await new Promise((resolve, reject) => {
+                const timer = setTimeout(() => reject(new Error('CDP websocket open timeout')), 10000);
+                this.ws.addEventListener('open', () => { clearTimeout(timer); resolve(); }, { once: true });
+                this.ws.addEventListener('error', () => { clearTimeout(timer); reject(new Error('CDP websocket error')); }, { once: true });
+              });
+              this.ws.addEventListener('message', (event) => {
+                const msg = JSON.parse(String(event.data));
+                if (msg.id && this.pending.has(msg.id)) {
+                  const { resolve, reject } = this.pending.get(msg.id);
+                  this.pending.delete(msg.id);
+                  if (msg.error) reject(new Error(`${msg.error.code}: ${msg.error.message}`));
+                  else resolve(msg.result ?? {});
+                  return;
+                }
+                for (const listener of this.listeners) listener(msg);
+              });
+            }
+            on(listener) { this.listeners.push(listener); }
+            send(method, params = {}, sessionId = undefined) {
+              const id = ++this.seq;
+              const payload = { id, method, params };
+              if (sessionId) payload.sessionId = sessionId;
+              return new Promise((resolve, reject) => {
+                this.pending.set(id, { resolve, reject });
+                this.ws.send(JSON.stringify(payload));
+              });
+            }
+          }
+
+          function apiEnvelope(status, body) {
+            return {
+              responseCode: status,
+              responseHeaders: [
+                { name: 'content-type', value: 'application/json; charset=utf-8' },
+                { name: 'cache-control', value: 'no-store' },
+                { name: 'x-prisma-evidence-fixture', value: 'tablet-sync-truth-pr298-v5' }
+              ],
+              body: Buffer.from(JSON.stringify(body), 'utf8').toString('base64')
+            };
+          }
+
+          const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'prisma-tablet-chrome-'));
+          const chromeLog = fs.openSync(path.join(evidenceDir, 'chrome.log'), 'a');
+          const chrome = spawn(chromeBin, [
+            '--headless=new',
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+            '--remote-debugging-port=0',
+            `--user-data-dir=${userDataDir}`,
+            '--window-size=1365,768',
+            '--force-device-scale-factor=1',
+            'about:blank'
+          ], { stdio: ['ignore', chromeLog, chromeLog] });
+
+          const pageConsole = [];
+          const pageErrors = [];
+          const logEntries = [];
+          const apiRequests = [];
+          const unexpectedApis = [];
+
+          try {
+            const portFile = path.join(userDataDir, 'DevToolsActivePort');
+            for (let i = 0; i < 100 && !fs.existsSync(portFile); i += 1) await sleep(100);
+            if (!fs.existsSync(portFile)) throw new Error('Chrome DevToolsActivePort missing');
+            const [portText] = fs.readFileSync(portFile, 'utf8').trim().split(/\r?\n/);
+            const port = Number(portText);
+            if (!Number.isInteger(port) || port <= 0) throw new Error(`Invalid DevTools port ${portText}`);
+            const version = await fetch(`http://127.0.0.1:${port}/json/version`).then((r) => r.json());
+            const cdp = new CDP(version.webSocketDebuggerUrl);
+            await cdp.open();
+            const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
+            const { sessionId } = await cdp.send('Target.attachToTarget', { targetId, flatten: true });
+
+            let loadResolve;
+            const loaded = new Promise((resolve) => { loadResolve = resolve; });
+            cdp.on((msg) => {
+              if (msg.sessionId !== sessionId) return;
+              if (msg.method === 'Page.loadEventFired') loadResolve?.();
+              if (msg.method === 'Runtime.consoleAPICalled') {
+                pageConsole.push({
+                  type: msg.params.type,
+                  args: (msg.params.args ?? []).map((arg) => arg.value ?? arg.description ?? arg.type),
+                  timestamp: msg.params.timestamp
+                });
+              }
+              if (msg.method === 'Runtime.exceptionThrown') pageErrors.push(msg.params.exceptionDetails);
+              if (msg.method === 'Log.entryAdded') logEntries.push(msg.params.entry);
+              if (msg.method === 'Fetch.requestPaused') {
+                void (async () => {
+                  const request = msg.params.request;
+                  const url = request.url;
+                  if (!url.includes('/api/')) {
+                    await cdp.send('Fetch.continueRequest', { requestId: msg.params.requestId }, sessionId);
+                    return;
+                  }
+                  let response;
+                  if (url.includes('/api/pos/sync/panel')) {
+                    response = apiEnvelope(503, {
+                      ok: false,
+                      code: 'SYNC_PANEL_UNVERIFIED',
+                      message: 'No se pudo confirmar el estado de pendientes a tiempo. La venta local sigue disponible; vuelve a revisar el panel.',
+                      details: {
+                        source: 'TABLET_SYNC_TRUTH_EVIDENCE_FIXTURE',
+                        reason: 'bounded_timeout',
+                        localSalesBlocked: false
+                      }
+                    });
+                  } else if (url.includes('/api/license/status')) {
+                    response = apiEnvelope(200, {
+                      ok: true,
+                      data: {
+                        status: {
+                          state: 'active',
+                          plan: 'Evidence Active',
+                          assignmentState: 'assigned',
+                          operationalDecision: 'allow'
+                        }
+                      },
+                      meta: { source: 'TABLET_SYNC_TRUTH_EVIDENCE_FIXTURE' }
+                    });
+                  } else if (url.includes('/api/pos/sync/health/pc')) {
+                    response = apiEnvelope(200, {
+                      ok: false,
+                      enabled: true,
+                      status: 'offline',
+                      url: 'http://pc-evidence.invalid',
+                      error: 'PC intentionally unavailable in isolated evidence fixture'
+                    });
+                  } else {
+                    unexpectedApis.push({ method: request.method, url });
+                    response = apiEnvelope(503, {
+                      ok: false,
+                      code: 'EVIDENCE_UNEXPECTED_API_BLOCKED',
+                      message: 'Unexpected API blocked by evidence harness.',
+                      details: { url }
+                    });
+                  }
+                  apiRequests.push({ method: request.method, url, responseCode: response.responseCode });
+                  await cdp.send('Fetch.fulfillRequest', { requestId: msg.params.requestId, ...response }, sessionId);
+                })().catch((error) => pageErrors.push({ text: `Fetch interception error: ${error.stack ?? error}` }));
+              }
+            });
+
+            await Promise.all([
+              cdp.send('Page.enable', {}, sessionId),
+              cdp.send('Runtime.enable', {}, sessionId),
+              cdp.send('Log.enable', {}, sessionId),
+              cdp.send('Fetch.enable', { patterns: [{ urlPattern: '*://*/api/*', requestStage: 'Request' }] }, sessionId),
+              cdp.send('Emulation.setDeviceMetricsOverride', { width: 1365, height: 768, deviceScaleFactor: 1, mobile: false }, sessionId)
+            ]);
+
+            await cdp.send('Page.navigate', { url: 'http://127.0.0.1:3120/sync' }, sessionId);
+            await Promise.race([loaded, sleep(30000)]);
+            await sleep(5000);
+
+            await cdp.send('Runtime.evaluate', {
+              expression: `(() => {
+                for (const details of document.querySelectorAll('details')) {
+                  const summary = details.querySelector('summary');
+                  if (summary?.textContent?.includes('Cuenta y equipos')) details.open = true;
+                }
+              })()`,
+              returnByValue: true
+            }, sessionId);
+            await sleep(500);
+
+            const inspected = await cdp.send('Runtime.evaluate', {
+              expression: `(() => {
+                const pill = document.querySelector('[data-prisma-component="StatusPill"]');
+                const kpiSection = [...document.querySelectorAll('section')].find((node) => String(node.className).includes('kpis'));
+                const kpis = kpiSection ? [...kpiSection.querySelectorAll('article')].map((article) => ({
+                  label: article.querySelector('span')?.textContent?.trim() ?? '',
+                  value: article.querySelector('strong')?.textContent?.trim() ?? ''
+                })) : [];
+                return {
+                  title: document.title,
+                  innerText: document.body.innerText,
+                  textContent: document.body.textContent ?? '',
+                  pill: pill ? {
+                    text: pill.textContent?.trim() ?? '',
+                    className: pill.className,
+                    color: getComputedStyle(pill).color,
+                    borderColor: getComputedStyle(pill).borderColor
+                  } : null,
+                  kpis
+                };
+              })()`,
+              returnByValue: true
+            }, sessionId);
+            const dom = inspected.result.value;
+
+            const assertions = {
+              unverifiedHeadlineVisible: dom.innerText.includes('Estado de pendientes sin confirmar'),
+              queueUnconfirmedVisible: dom.innerText.includes('Cola sin confirmar'),
+              expected503CopyVisible: dom.innerText.includes('No se pudo confirmar el estado de pendientes a tiempo'),
+              neutralPillClass: Boolean(dom.pill?.className?.includes('status_neutral')),
+              okPillClassAbsent: !Boolean(dom.pill?.className?.includes('status_ok')),
+              noFakeHealthyHeadline: !dom.innerText.includes('Pendientes al día'),
+              noFakeEmptyQueueClaim: !dom.innerText.includes('No hay pendientes para enviar.'),
+              kpisRemainUnknown: dom.kpis.length >= 4 && dom.kpis.every((row) => row.value === '—'),
+              pcOfflineProjected: dom.innerText.includes('PC sin respuesta'),
+              localFirstCopyPreserved: dom.textContent.includes('Venta local disponible aunque PC no responda'),
+              sync503Observed: apiRequests.some((row) => row.url.includes('/api/pos/sync/panel') && row.responseCode === 503),
+              licenseAllowFixtureObserved: apiRequests.some((row) => row.url.includes('/api/license/status') && row.responseCode === 200),
+              pcOfflineFixtureObserved: apiRequests.some((row) => row.url.includes('/api/pos/sync/health/pc') && row.responseCode === 200),
+              noUnexpectedApi: unexpectedApis.length === 0,
+              noPageExceptions: pageErrors.length === 0
+            };
+
+            const layout = await cdp.send('Page.getLayoutMetrics', {}, sessionId);
+            const contentSize = layout.cssContentSize ?? layout.contentSize;
+            const width = Math.max(1, Math.min(5000, Math.ceil(contentSize.width)));
+            const height = Math.max(1, Math.min(12000, Math.ceil(contentSize.height)));
+            const shot = await cdp.send('Page.captureScreenshot', {
+              format: 'png',
+              fromSurface: true,
+              captureBeyondViewport: true,
+              clip: { x: 0, y: 0, width, height, scale: 1 }
+            }, sessionId);
+            fs.writeFileSync(path.join(evidenceDir, 'sync-unverified.png'), Buffer.from(shot.data, 'base64'));
+
+            const evidence = {
+              schemaVersion: 'tablet_sync_truth_runtime_evidence.v1',
+              targetSha,
+              authorityMainSha: process.env.AUTHORITY_MAIN_SHA,
+              authorityMeshRequestId: '54e08127e1395ef4',
+              evidenceSemantics: {
+                routeBehavior: 'SOURCE_AND_FOCUSED_VERIFIER_PROOF; DB-backed route not executed because V5 forbids hot Prisma generation and real DB mutation.',
+                browserProjection: 'RUNTIME_PAGE_PROJECTION_AGAINST_EXPLICIT_HTTP_503_SYNC_PANEL_CONTRACT_FIXTURE',
+                pcHealth: 'RUNTIME_UI_PROJECTION_AGAINST_EXPLICIT_OFFLINE_PC_FIXTURE',
+                license: 'RUNTIME_UI_CONTEXT_AGAINST_EXPLICIT_ALLOWED_LICENSE_FIXTURE; source gates separately verify governed license semantics.'
+              },
+              assertions,
+              dom: { pill: dom.pill, kpis: dom.kpis },
+              apiRequests,
+              unexpectedApis,
+              pageConsole,
+              pageErrors,
+              logEntries
+            };
+            fs.writeFileSync(path.join(evidenceDir, 'browser-evidence.json'), JSON.stringify(evidence, null, 2) + '\n');
+            fs.writeFileSync(path.join(evidenceDir, 'page-console.json'), JSON.stringify(pageConsole, null, 2) + '\n');
+            fs.writeFileSync(path.join(evidenceDir, 'page-errors.json'), JSON.stringify(pageErrors, null, 2) + '\n');
+            fs.writeFileSync(path.join(evidenceDir, 'api-fixture-evidence.json'), JSON.stringify({ apiRequests, unexpectedApis }, null, 2) + '\n');
+            const failed = Object.entries(assertions).filter(([, ok]) => !ok).map(([name]) => name);
+            const md = [
+              '# Tablet Sync Truth Runtime Evidence',
+              '',
+              `- target: \`${targetSha}\``,
+              `- authority main: \`${process.env.AUTHORITY_MAIN_SHA}\``,
+              '- Authority Mesh request: `54e08127e1395ef4`',
+              '- Route proof: source + focused verifier only; no DB-backed route execution.',
+              '- Browser proof: real `/sync` runtime with explicit intercepted API contract fixtures.',
+              '- Hot Prisma generation: not executed.',
+              '- Real DB mutation: not executed.',
+              '',
+              '## Assertions',
+              ...Object.entries(assertions).map(([name, ok]) => `- ${ok ? 'PASS' : 'FAIL'} ${name}`),
+              '',
+              `Final: ${failed.length ? `BLOCKED (${failed.join(', ')})` : 'PASS_RUNTIME_NO_FAKE_GREEN'}`,
+              ''
+            ].join('\n');
+            fs.writeFileSync(path.join(evidenceDir, 'RUNTIME_EVIDENCE.md'), md);
+            if (failed.length) throw new Error(`Runtime assertions failed: ${failed.join(', ')}`);
+            await cdp.send('Browser.close');
+          } catch (error) {
+            fs.writeFileSync(path.join(evidenceDir, 'browser-failure.txt'), String(error?.stack ?? error) + '\n');
+            throw error;
+          } finally {
+            if (!chrome.killed) chrome.kill('SIGTERM');
+            fs.closeSync(chromeLog);
+          }
+          JS
+          node "$RUNNER_TEMP/tablet-sync-capture.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+
+      - name: Server log fail-closed scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden='PrismaClientKnownRequestError|unhandledRejection|no such table|Cannot find module.*\.generated/prisma-client|Module not found.*\.generated/prisma-client'
+          if grep -Ein "$forbidden" "$EVIDENCE_DIR/server.log" > "$EVIDENCE_DIR/server-log-forbidden.txt"; then
+            cat "$EVIDENCE_DIR/server-log-forbidden.txt"
+            echo "BLOCKED server log contains forbidden runtime/database errors"
+            exit 1
+          fi
+          printf '%s\n' 'PASS server log contains no forbidden Prisma/database/unhandled errors' > "$EVIDENCE_DIR/server-log-forbidden.txt"
+
+      - name: Build final evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path(os.environ['EVIDENCE_DIR'])
+          files = []
+          for path in sorted(root.rglob('*')):
+              if not path.is_file():
+                  continue
+              data = path.read_bytes()
+              files.append({
+                  'path': path.relative_to(root).as_posix(),
+                  'bytes': len(data),
+                  'sha256': hashlib.sha256(data).hexdigest(),
+              })
+          manifest = {
+              'schemaVersion': 'tablet_sync_truth_evidence_manifest.v1',
+              'targetSha': os.environ['TARGET_SHA'],
+              'authorityMainSha': os.environ['AUTHORITY_MAIN_SHA'],
+              'authorityMeshRequestId': '54e08127e1395ef4',
+              'runId': os.environ['GITHUB_RUN_ID'],
+              'runAttempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'artifactName': os.environ['ARTIFACT_NAME'],
+              'workflowIsEvidenceOnly': True,
+              'workflowMustNeverMergeToProductPR': True,
+              'hotPrismaGenerateExecuted': False,
+              'realDatabaseMutationExecuted': False,
+              'files': files,
+          }
+          (root / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+          lines = [
+              '# Evidence Manifest', '',
+              f"- target: `{manifest['targetSha']}`",
+              f"- authority main: `{manifest['authorityMainSha']}`",
+              f"- run: `{manifest['runId']}` attempt `{manifest['runAttempt']}`",
+              f"- artifact: `{manifest['artifactName']}`",
+              '- hot Prisma generate: `false`',
+              '- real DB mutation: `false`',
+              '- workflow branch: evidence-only / never merge',
+              '', '## Files',
+          ]
+          lines.extend(f"- `{row['path']}` — {row['bytes']} bytes — `{row['sha256']}`" for row in files)
+          (root / 'manifest.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+
+      - name: Upload immutable evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          if-no-files-found: error
+          retention-days: 14
+          path: evidence/tablet-sync-truth-pr298-v5/**
+
+      - name: Stop only runner-local Tablet process group
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          pid_file="$EVIDENCE_DIR/server.pid"
+          if [ -f "$pid_file" ]; then
+            pid="$(cat "$pid_file")"
+            if [ -n "$pid" ]; then
+              kill -TERM -- "-$pid" >/dev/null 2>&1 || kill -TERM "$pid" >/dev/null 2>&1 || true
+              sleep 2
+              kill -KILL -- "-$pid" >/dev/null 2>&1 || kill -KILL "$pid" >/dev/null 2>&1 || true
+            fi
+          fi
+          echo "cleanup limited to recorded runner-local process group"
+
+      - name: Publish final retrievable pointer
+        if: always()
+        continue-on-error: true
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -euo pipefail
+          python - <<'PY' > "$RUNNER_TEMP/final-comment.json"
+          import json, os
+          body = (
+              "TABLET_RUNTIME_EVIDENCE_FINISHED\n"
+              f"run_id={os.environ['GITHUB_RUN_ID']}\n"
+              f"run_attempt={os.environ['GITHUB_RUN_ATTEMPT']}\n"
+              f"job_status={os.environ['JOB_STATUS']}\n"
+              f"target_sha={os.environ['TARGET_SHA']}\n"
+              f"authority_main_sha={os.environ['AUTHORITY_MAIN_SHA']}\n"
+              "authority_mesh_request_id=54e08127e1395ef4\n"
+              f"artifact_name={os.environ['ARTIFACT_NAME']}\n"
+              "evidence_semantics=source/verifier route proof + browser runtime projection against explicit fixtures; no DB-backed route E2E claim\n"
+              "hot_prisma_generate=false\n"
+              "real_db_mutation=false\n"
+              "workflow_branch=evidence-only; never merge"
+          )
+          print(json.dumps({"body": body}))
+          PY
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/298/comments" \
+            --data-binary @"$RUNNER_TEMP/final-comment.json" >/dev/null
