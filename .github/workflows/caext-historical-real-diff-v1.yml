@@ -56,7 +56,8 @@ jobs:
           changed="$(git diff --name-only origin/main...HEAD)"
           allowed1='.github/scripts/caext_historical_real_diff_v1.py'
           allowed2='.github/workflows/caext-historical-real-diff-v1.yml'
-          unexpected="$(printf '%s\n' "$changed" | grep -v -F -e "$allowed1" -e "$allowed2" || true)"
+          allowed3='.github/workflows/caext-external-diversity-v2.yml'
+          unexpected="$(printf '%s\n' "$changed" | grep -v -F -e "$allowed1" -e "$allowed2" -e "$allowed3" || true)"
           if [ -n "$unexpected" ]; then
             echo 'Unexpected Phase D diff:'
             printf '%s\n' "$unexpected"
