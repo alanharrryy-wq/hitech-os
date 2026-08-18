@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import os
 import re
-import shutil
 import tempfile
 from hashlib import sha256
 from pathlib import Path
@@ -75,6 +74,7 @@ _SECRET_KEYS = {
     "token",
     "tokenvalue",
 }
+_COMPACT_SECRET_KEYS = {item.replace("_", "") for item in _SECRET_KEYS}
 _EMAIL = re.compile(r"[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}", re.I)
 _PRIVATE_KEY = re.compile(
     r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----.*?-----END (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----",
@@ -103,14 +103,14 @@ def _sha256_bytes(data: bytes) -> str:
 def _secret_key(name: Any) -> bool:
     normalized = str(name).replace("-", "_").replace(" ", "").lower()
     compact = normalized.replace("_", "")
-    return normalized in _SECRET_KEYS or compact in {item.replace("_", "") for item in _SECRET_KEYS}
+    return normalized in _SECRET_KEYS or compact in _COMPACT_SECRET_KEYS
 
 
 def _redact_json(value: Any, findings: dict[str, int]) -> Any:
     if isinstance(value, Mapping):
         out: dict[str, Any] = {}
         for key, item in value.items():
-            if _secret_key(key) and item not in {None, ""}:
+            if _secret_key(key) and item is not None and item != "":
                 findings["json-secret-key"] = findings.get("json-secret-key", 0) + 1
                 out[str(key)] = "<REDACTED_SECRET>"
             else:
@@ -178,7 +178,7 @@ def sanitize_artifact_bytes(*, name: str, kind: str, content: bytes) -> tuple[by
         raise ContractError(f"artifact is not valid UTF-8 text: {normalized_name}") from exc
 
     findings: dict[str, int] = {}
-    if suffix == ".json" or suffix == ".sarif":
+    if suffix in {".json", ".sarif"}:
         try:
             parsed = json.loads(text)
         except json.JSONDecodeError as exc:
