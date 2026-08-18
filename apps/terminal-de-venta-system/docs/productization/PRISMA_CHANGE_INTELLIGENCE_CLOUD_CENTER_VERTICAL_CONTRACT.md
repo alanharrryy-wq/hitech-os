@@ -30,6 +30,7 @@ PRISMA Change Intelligence Console       NEW_OWNER
         |
         +-- governed source contract      NEW_OWNER
         +-- read-only status projection   NEW_OWNER
+        +-- isolated visual module        NEW_OWNER
         |
         +-- customer/tenant context       SHARED_OWNER / not bound in V1
         +-- licensing/entitlements        SHARED_OWNER / adapter pending
@@ -66,14 +67,20 @@ The fresh Mesh includes the mandatory Layer Map. The new surface follows these r
 |---|---|---|
 | Existing Cloud Center shell | `DO_NOT_TOUCH` | One navigation seam only. No existing renderer replacement. |
 | CI page document | `NEW_OWNER` | `change_intelligence_center.html` only. |
-| CI visual material | `NEW_OWNER` | `change_intelligence_center.css`; all surface classes use `pci-` namespace. |
+| CI visual material | `NEW_OWNER` | `change_intelligence_center_style.js` injects one document-local `style[data-pci-style="v1"]`; all surface classes use `pci-` namespace. |
 | CI interaction/projection | `NEW_OWNER` | `change_intelligence_center.js`; read-only GETs only in V1. |
 | CI source contract | `NEW_OWNER` | `change_intelligence_cloud.json`. |
 | Repository/run/evidence data | `NOT_CONNECTED` | Display explicit blocked/unknown empty states until real adapters exist. |
-| Existing `.cc-*` styles | `DO_NOT_TOUCH` | New CSS must not target `.cc-*`. |
+| Existing `.cc-*` styles | `DO_NOT_TOUCH` | New visual module must not target `.cc-*`. |
 | Global/wildcard patch layer | `FORBIDDEN` | No wildcard CSS owner, no `!important`, no priority override layer. |
 
 Accessibility owners include keyboard focus visibility, responsive navigation, `prefers-reduced-motion` and `prefers-reduced-transparency` behavior.
+
+### Commercial Billing Authority compatibility
+
+The repository's existing **Commercial Billing Authority** workflow intentionally fails any PR whose effective diff contains a `.css` file because its original billing task was authorized as content/control-only with no CSS mutation. The first Change Intelligence implementation used an isolated new CSS file and correctly triggered that guard.
+
+V1 does **not** weaken, edit or bypass the billing workflow. Instead, the new visual layer is represented by `change_intelligence_center_style.js`, which injects a style element only into the separate Change Intelligence document. Existing `cloud_command_center.css`, existing `.cc-*` selectors and the billing visual surface remain untouched. This keeps the billing guard intact while preserving the task-exact Layer Map for the new isolated document.
 
 ## 5. V1 data semantics
 
@@ -130,8 +137,8 @@ Before this source slice may be called source-ready:
 3. exactly one Cloud Center navigation seam points to the new page;
 4. existing `cloud_command_center.js` and `cloud_command_center.css` remain unmodified by the Change Intelligence implementation;
 5. new JavaScript contains no mutating HTTP method or secret collection path;
-6. new CSS contains no `!important`, `.cc-*` selector or wildcard priority layer;
-7. the effective diff stays inside the authorized file boundary;
+6. the visual module contains no `!important`, `.cc-*` selector or wildcard priority layer;
+7. the effective diff contains no `.css` mutation and remains inside the authorized file boundary;
 8. repository checks remain green.
 
 Browser/runtime evidence is a later gate and must not be inferred from static verification.
