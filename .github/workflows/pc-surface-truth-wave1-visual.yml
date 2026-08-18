@@ -31,6 +31,36 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Pin canonical SQLite datasource
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/db
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          db = (workspace / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db").resolve()
+          database_url = f"file:{db.as_posix()}"
+
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
+              fh.write(f"DATABASE_URL={database_url}\n")
+
+          report = {
+              "workspace": str(workspace),
+              "database": str(db),
+              "databaseUrl": database_url,
+              "source": "pc-surface-truth-wave1-visual",
+              "pass": True,
+          }
+          Path("artifacts/db/CANONICAL_DATASOURCE_PIN.json").write_text(
+              json.dumps(report, indent=2), encoding="utf-8"
+          )
+          print(json.dumps(report, indent=2))
+          PY
+
       - name: Generate PC Prisma client in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
@@ -43,42 +73,84 @@ jobs:
           set -euo pipefail
           mkdir -p artifacts/db
           python - <<'PY'
-          import json, sqlite3, sys
+          import json
+          import os
+          import sqlite3
+          import sys
           from pathlib import Path
+          from urllib.parse import unquote
 
-          db = Path("tools/_local/data/terminal-de-venta-system/canonical.db").resolve()
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          expected_db = (workspace / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db").resolve()
+          database_url = os.environ.get("DATABASE_URL", "")
+          if not database_url.startswith("file:"):
+              raise SystemExit("DATABASE_URL must be an explicit file: URL for this isolated SQLite gate")
+
+          raw_path = unquote(database_url[len("file:"):])
+          runtime_db = Path(raw_path).resolve()
+          same_database = runtime_db == expected_db
+          database_exists = runtime_db.is_file()
+
           required_tables = [
               "Business", "Product", "Sale", "SaleLine", "CashSession",
               "PurchaseOrder", "GoodsReceipt", "ReplenishmentSignal",
               "OutboxEvent", "AuditCount"
           ]
           required_columns = {"Product": ["mediaRef"]}
-          conn = sqlite3.connect(db)
-          existing = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-          missing_tables = [name for name in required_tables if name not in existing]
-          missing_columns = {}
-          for table, columns in required_columns.items():
-              if table not in existing:
-                  missing_columns[table] = columns
-                  continue
-              present = {row[1] for row in conn.execute(f'PRAGMA table_info("{table}")')}
-              absent = [column for column in columns if column not in present]
-              if absent:
-                  missing_columns[table] = absent
-          conn.close()
+          missing_tables = list(required_tables)
+          missing_columns = dict(required_columns)
+
+          if same_database and database_exists:
+              uri = f"file:{runtime_db.as_posix()}?mode=ro"
+              conn = sqlite3.connect(uri, uri=True)
+              try:
+                  existing = {
+                      row[0]
+                      for row in conn.execute(
+                          "SELECT name FROM sqlite_master WHERE type='table'"
+                      )
+                  }
+                  missing_tables = [
+                      name for name in required_tables if name not in existing
+                  ]
+                  missing_columns = {}
+                  for table, columns in required_columns.items():
+                      if table not in existing:
+                          missing_columns[table] = columns
+                          continue
+                      present = {
+                          row[1]
+                          for row in conn.execute(f'PRAGMA table_info("{table}")')
+                      }
+                      absent = [column for column in columns if column not in present]
+                      if absent:
+                          missing_columns[table] = absent
+              finally:
+                  conn.close()
+
+          passed = (
+              same_database
+              and database_exists
+              and not missing_tables
+              and not missing_columns
+          )
           report = {
-              "database": str(db),
+              "databaseUrl": database_url,
+              "database": str(runtime_db),
+              "expectedDatabase": str(expected_db),
+              "sameDatabase": same_database,
+              "databaseExists": database_exists,
               "requiredTables": required_tables,
               "missingTables": missing_tables,
               "requiredColumns": required_columns,
               "missingColumns": missing_columns,
-              "pass": not missing_tables and not missing_columns,
+              "pass": passed,
           }
           Path("artifacts/db/CANONICAL_SCHEMA_BOOTSTRAP.json").write_text(
               json.dumps(report, indent=2), encoding="utf-8"
           )
           print(json.dumps(report, indent=2))
-          if not report["pass"]:
+          if not passed:
               sys.exit(1)
           PY
 
@@ -90,6 +162,61 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p artifacts/db
+          python - <<'PY'
+          import json
+          import os
+          import sqlite3
+          import sys
+          from pathlib import Path
+          from urllib.parse import unquote
+
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          expected_db = (workspace / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db").resolve()
+          database_url = os.environ.get("DATABASE_URL", "")
+          if not database_url.startswith("file:"):
+              raise SystemExit("PC runtime did not inherit an explicit file: DATABASE_URL")
+
+          runtime_db = Path(unquote(database_url[len("file:"):])).resolve()
+          same_database = runtime_db == expected_db
+          database_exists = runtime_db.is_file()
+          product_table = False
+          product_media_ref = False
+
+          if same_database and database_exists:
+              uri = f"file:{runtime_db.as_posix()}?mode=ro"
+              conn = sqlite3.connect(uri, uri=True)
+              try:
+                  product_table = conn.execute(
+                      "SELECT 1 FROM sqlite_master WHERE type='table' AND name='Product' LIMIT 1"
+                  ).fetchone() is not None
+                  if product_table:
+                      product_columns = {
+                          row[1] for row in conn.execute('PRAGMA table_info("Product")')
+                      }
+                      product_media_ref = "mediaRef" in product_columns
+              finally:
+                  conn.close()
+
+          passed = same_database and database_exists and product_table and product_media_ref
+          report = {
+              "databaseUrl": database_url,
+              "database": str(runtime_db),
+              "expectedDatabase": str(expected_db),
+              "sameDatabase": same_database,
+              "databaseExists": database_exists,
+              "productTable": product_table,
+              "productMediaRef": product_media_ref,
+              "pass": passed,
+          }
+          Path("artifacts/db/RUNTIME_DATASOURCE_INHERITANCE.json").write_text(
+              json.dumps(report, indent=2), encoding="utf-8"
+          )
+          print(json.dumps(report, indent=2))
+          if not passed:
+              sys.exit(1)
+          PY
+
           pnpm -C apps/terminal-de-venta-system/products/pc/app dev > "$RUNNER_TEMP/pc-3130.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/pc-3130.pid"
 
