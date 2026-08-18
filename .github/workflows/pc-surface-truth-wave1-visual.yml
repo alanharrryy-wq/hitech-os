@@ -1,0 +1,93 @@
+name: PC Surface Truth Wave 1 Visual Gate
+
+'on':
+  pull_request:
+    paths:
+      - "apps/terminal-de-venta-system/products/pc/app/**"
+      - ".github/workflows/pc-surface-truth-wave1-visual.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  pc-surface-truth-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate PC Prisma client in isolated runner
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
+
+      - name: Install Playwright Chromium
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
+
+      - name: Start PC on canonical port 3130
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C apps/terminal-de-venta-system/products/pc/app dev > "$RUNNER_TEMP/pc-3130.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/pc-3130.pid"
+
+      - name: Wait for PC runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 90); do
+            if curl -fsS http://127.0.0.1:3130/ >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "PC runtime did not become ready on 3130"
+          cat "$RUNNER_TEMP/pc-3130.log" || true
+          exit 1
+
+      - name: Run existing V03 visual gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd apps/terminal-de-venta-system/products/pc/app
+          node tools/visual/verify_pc_uiux_visual_gate_v03.mjs \
+            --root ../../.. \
+            --url http://127.0.0.1:3130 \
+            --out "$GITHUB_WORKSPACE/artifacts/pc-v03" \
+            --strict true
+
+      - name: Run Wave 1 runtime assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd apps/terminal-de-venta-system/products/pc/app
+          node tools/visual/verify_pc_surface_truth_wave1_runtime.mjs \
+            tools/visual/pc-surface-truth-wave1-routes.json \
+            "$GITHUB_WORKSPACE/artifacts/pc-surface-truth-wave1"
+
+      - name: Capture PC server log
+        if: always()
+        run: |
+          mkdir -p artifacts/server
+          cp "$RUNNER_TEMP/pc-3130.log" artifacts/server/pc-3130.log || true
+
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-surface-truth-wave1-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          path: artifacts/**
