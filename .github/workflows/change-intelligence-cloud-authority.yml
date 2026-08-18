@@ -1,0 +1,89 @@
+name: Change Intelligence Cloud Authority
+
+on:
+  pull_request:
+    paths:
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center*'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html'
+      - 'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md'
+      - 'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-*'
+      - '.github/workflows/change-intelligence-cloud-authority.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  change-intelligence-cloud-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify source contract
+        run: python apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
+
+      - name: Install Playwright runtime without mutating lockfiles
+        run: |
+          mkdir -p .ci-pci-runtime
+          cd .ci-pci-runtime
+          npm init -y >/dev/null 2>&1
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start isolated Cloud Center static server
+        working-directory: apps/terminal-de-venta-system/Prisma Cloud Ctr
+        run: |
+          python -m http.server 8316 --bind 127.0.0.1 > "$RUNNER_TEMP/pci-http.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/pci-http.pid"
+          python - <<'PY'
+          import time, urllib.request
+          url='http://127.0.0.1:8316/internal/web/change_intelligence_center.html'
+          for _ in range(60):
+              try:
+                  with urllib.request.urlopen(url, timeout=1) as response:
+                      if response.status == 200:
+                          raise SystemExit(0)
+              except Exception:
+                  time.sleep(0.25)
+          raise SystemExit('Cloud Center static server did not become ready')
+          PY
+
+      - name: Verify browser runtime desktop and mobile
+        env:
+          NODE_PATH: ${{ github.workspace }}/.ci-pci-runtime/node_modules
+          PCI_BASE_URL: http://127.0.0.1:8316
+          PCI_EVIDENCE_DIR: ${{ github.workspace }}/pci-runtime-evidence
+        run: node apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-runtime-01.mjs
+
+      - name: Stop isolated static server
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/pci-http.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/pci-http.pid")" 2>/dev/null || true
+          fi
+
+      - name: Upload Change Intelligence runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: change-intelligence-cloud-runtime-evidence
+          path: |
+            pci-runtime-evidence/
+            ${{ runner.temp }}/pci-http.log
+          if-no-files-found: warn
+          retention-days: 14
