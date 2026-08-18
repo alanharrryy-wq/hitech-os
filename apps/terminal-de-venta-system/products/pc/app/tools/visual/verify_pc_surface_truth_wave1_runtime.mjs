@@ -64,6 +64,26 @@ for (const entry of cfg.routes) {
 
     const response = await page.goto(baseUrl + entry.route, { waitUntil: "domcontentloaded", timeout: 45000 });
     await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
+
+    if (entry.mode === "redirect") {
+      const expectedTokens = entry.expectedText || [];
+      if (expectedTokens.length > 0) {
+        await page.waitForFunction(
+          tokens => {
+            const haystack = String(document.body?.innerText || "").toLowerCase();
+            return tokens.every(token => haystack.includes(String(token).toLowerCase()));
+          },
+          expectedTokens,
+          { timeout: 15000 }
+        ).catch(() => {});
+      } else {
+        await page.waitForURL(
+          url => url.pathname === entry.target,
+          { timeout: 15000 }
+        ).catch(() => {});
+      }
+    }
+
     await page.waitForTimeout(500);
     responseStatus = response?.status() || 0;
     finalUrl = page.url();
