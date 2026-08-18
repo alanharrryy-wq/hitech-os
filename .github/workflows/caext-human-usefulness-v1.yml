@@ -1,0 +1,161 @@
+name: Code Atlas Human Usefulness Study Kit V1
+
+on:
+  pull_request:
+    paths:
+      - '.github/scripts/caext_human_usefulness_v1.py'
+      - '.github/workflows/caext-human-usefulness-v1.yml'
+      - 'tools/code-atlas/docs/CODE_ATLAS_HUMAN_USEFULNESS_V1.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+  PYTHONPATH: tools/code-atlas/src
+  CAEXT_WORKERS: '18'
+
+jobs:
+  protocol-regression:
+    name: Human usefulness protocol / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile human study kit
+        run: python -m py_compile .github/scripts/caext_human_usefulness_v1.py
+
+      - name: Run fail-closed protocol self-test
+        run: python .github/scripts/caext_human_usefulness_v1.py selftest
+
+      - name: Guard exact additive scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only origin/main...HEAD)"
+          while IFS= read -r path; do
+            [ -z "$path" ] && continue
+            case "$path" in
+              .github/scripts/caext_human_usefulness_v1.py|.github/workflows/caext-human-usefulness-v1.yml|tools/code-atlas/docs/CODE_ATLAS_HUMAN_USEFULNESS_V1.md) ;;
+              *) echo "Unauthorized human usefulness kit path: $path"; exit 1 ;;
+            esac
+          done <<< "$changed"
+          if printf '%s\n' "$changed" | grep -E '^tools/code-atlas/src/code_atlas/'; then
+            echo 'Code Atlas product core was touched.'
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -E '^tools/code-atlas/src/code_atlas/(ui_bridge/|app_map/uimap/)'; then
+            echo 'PR #273 reserved paths were touched.'
+            exit 1
+          fi
+          if printf '%s\n' "$changed" | grep -F -e '.github/scripts/caext_usefulness_pilot_v1.py' -e '.github/workflows/caext-usefulness-pilot-v1.yml'; then
+            echo 'Historical external-agent usefulness evidence was modified.'
+            exit 1
+          fi
+          echo 'PASS_CAEXT_HUMAN_USEFULNESS_EXACT_ADDITIVE_SCOPE'
+
+  prepare-study-kit:
+    name: Prepare paired reviewer and sealed scoring bundles
+    needs: protocol-regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Prepare paired same-task study
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="${RUNNER_TEMP}/caext-human-usefulness-v1"
+          rm -rf "$root"
+          mkdir -p "$root"
+          python .github/scripts/caext_human_usefulness_v1.py prepare \
+            --output "$root" \
+            --repo-root . \
+            --seed 'ca-human-usefulness-v1'
+
+      - name: Verify reviewer / ground-truth separation
+        shell: python
+        run: |
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'caext-human-usefulness-v1'
+          reviewer = root / 'reviewer_bundle'
+          sealed = root / 'sealed_scoring_bundle'
+          manifest = json.loads((reviewer / 'MANIFEST.json').read_text(encoding='utf-8'))
+          if manifest.get('humanUsefulness') != 'NOT_MEASURED':
+              raise SystemExit('Prepare artifact must not claim human usefulness measured')
+          if manifest.get('packetCount') != 12 or manifest.get('taskPairCount') != 6:
+              raise SystemExit(f"Unexpected paired study size: {manifest.get('packetCount')} / {manifest.get('taskPairCount')}")
+          if manifest.get('conditionLabelsExposed') is not False:
+              raise SystemExit('Condition labels must remain hidden')
+          if manifest.get('groundTruthSeparated') is not True:
+              raise SystemExit('Ground truth separation flag missing')
+          top_forbidden = {
+              'condition', 'historicalCommit', 'actualChangedPaths', 'actualCompanionPaths',
+              'actualChangedTestPaths', 'groundTruthDigest', 'futureDiff',
+          }
+          nested_forbidden = {
+              'actualChangedPaths', 'actualCompanionPaths', 'actualChangedTestPaths',
+              'groundTruthDigest', 'futureDiff',
+          }
+          def scan(value, where, root=False):
+              if isinstance(value, dict):
+                  forbidden = top_forbidden if root else nested_forbidden
+                  overlap = forbidden & set(value)
+                  if overlap:
+                      raise SystemExit(f'Ground truth leak in {where}: {sorted(overlap)}')
+                  for key, child in value.items():
+                      scan(child, f'{where}.{key}', False)
+              elif isinstance(value, list):
+                  for idx, child in enumerate(value):
+                      scan(child, f'{where}[{idx}]', False)
+          packets = list((reviewer / 'packets').glob('P*.json'))
+          if len(packets) != 12:
+              raise SystemExit(f'Expected 12 reviewer packets, got {len(packets)}')
+          for path in packets:
+              scan(json.loads(path.read_text(encoding='utf-8')), path.name, True)
+          if not (sealed / 'STUDY_MAP.json').is_file() or not (sealed / 'SCORING_MANIFEST.json').is_file():
+              raise SystemExit('Sealed scoring map/manifest missing')
+          if len(list((sealed / 'truth').glob('C*.json'))) != 6:
+              raise SystemExit('Expected 6 sealed ground-truth cases')
+          if any(path.name in {'STUDY_MAP.json', 'SCORING_MANIFEST.json'} for path in reviewer.rglob('*')):
+              raise SystemExit('Sealed scoring metadata leaked into reviewer bundle')
+          print('PASS_CAEXT_HUMAN_USEFULNESS_REVIEWER_SEALED_BOUNDARY')
+
+      - name: Upload reviewer-only study bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-human-usefulness-reviewer-kit-v1
+          if-no-files-found: error
+          retention-days: 14
+          path: ${{ runner.temp }}/caext-human-usefulness-v1/reviewer_bundle/**
+
+      - name: Upload sealed scoring bundle separately
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-human-usefulness-scoring-sealed-v1
+          if-no-files-found: error
+          retention-days: 14
+          path: ${{ runner.temp }}/caext-human-usefulness-v1/sealed_scoring_bundle/**
