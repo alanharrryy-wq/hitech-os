@@ -74,16 +74,21 @@ check(
 check("timeout never returns stale cache as current truth", timeoutBody.length > 0 && !timeoutBody.includes("prismaTabboom1Clone"));
 check("timeout cannot manufacture unknown success payload", !route.includes('risk: "unknown"') && !route.includes("summary: { total: 0, pending: 0"));
 check("timeout response is not cached", route.includes("if (response.status < 500 && body.length > 0)") && timeoutBody.includes('"cache-control", "no-store"'));
+check("route preserves POS API error translation", route.includes("catch (error)") && route.includes("return toPosApiError(error)"));
 
 check(
-  "UI has explicit confirmed-state gate",
-  screen.includes("const panelConfirmed = Boolean(panel && !error && actionMode === null)")
+  "UI tracks panel verification independently from action errors",
+  screen.includes("const [panelUnverified, setPanelUnverified] = useState(true)") &&
+    screen.includes("setPanelUnverified(false)") &&
+    screen.includes("setPanelUnverified(true)") &&
+    screen.includes("const panelConfirmed = Boolean(panel && !panelUnverified && actionMode === null)")
 );
 check(
   "UI unknown or unconfirmed state is neutral, never implicit ok",
   screen.includes('summaryRisk === "ok" ? "ok"') &&
     screen.includes(': "neutral"') &&
-    screen.includes("Estado de pendientes sin confirmar")
+    screen.includes("Estado de pendientes sin confirmar") &&
+    screen.includes("panelUnverified && actionMode === null")
 );
 check(
   "UI does not fabricate zero queue counts while unconfirmed",
