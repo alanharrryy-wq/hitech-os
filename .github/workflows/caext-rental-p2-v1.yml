@@ -1,0 +1,96 @@
+name: Code Atlas Rental P2 External Replay V1
+
+on:
+  pull_request:
+    paths:
+      - '.github/scripts/caext_rental_p2_v1.py'
+      - '.github/workflows/caext-rental-p2-v1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONPATH: tools/code-atlas/src
+  CAEXT_RENTAL_P2_PIN: 409d518bec233dbe29aafe1d4ef9b3b07d8dd650
+  CAEXT_WORKERS: '18'
+
+jobs:
+  rental-p2:
+    name: Rental P2 / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile and self-test P2 harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            .github/scripts/caext_rental_p2_v1.py \
+            .github/scripts/caext_historical_real_diff_v1.py \
+            .github/scripts/caext_external_gate_v2.py
+          python .github/scripts/caext_rental_p2_v1.py --self-test
+
+      - name: Guard P2 verify-only scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet "$CAEXT_RENTAL_P2_PIN" -- tools/code-atlas/src/code_atlas; then
+            echo 'Code Atlas product core differs from the P2 governed pin.'
+            git diff --name-only "$CAEXT_RENTAL_P2_PIN" -- tools/code-atlas/src/code_atlas
+            exit 1
+          fi
+          if git diff --name-only origin/main...HEAD | grep -E '^tools/code-atlas/src/code_atlas/(ui_bridge/|app_map/uimap/)'; then
+            echo 'PR #273 reserved paths were touched.'
+            exit 1
+          fi
+          changed="$(git diff --name-only origin/main...HEAD)"
+          allowed1='.github/scripts/caext_rental_p2_v1.py'
+          allowed2='.github/workflows/caext-rental-p2-v1.yml'
+          unexpected="$(printf '%s\n' "$changed" | grep -v -F -e "$allowed1" -e "$allowed2" || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Unexpected P2 diff:'
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+          echo 'PASS_CAEXT_RENTAL_P2_VERIFY_ONLY_SCOPE'
+
+      - name: Run pinned external rental replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/caext-rental-p2"
+          pin_root="${RUNNER_TEMP}/code-atlas-governed-pin"
+          mkdir -p "$out"
+          git worktree add --detach "$pin_root" "$CAEXT_RENTAL_P2_PIN"
+          cleanup_worktree() {
+            git worktree remove --force "$pin_root" >/dev/null 2>&1 || true
+          }
+          trap cleanup_worktree EXIT
+          test "$(git -C "$pin_root" rev-parse HEAD)" = "$CAEXT_RENTAL_P2_PIN"
+          python .github/scripts/caext_rental_p2_v1.py --output "$out" --hitech-root "$pin_root"
+
+      - name: Upload sanitized P2 evidence even when red
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-rental-p2-${{ matrix.os }}
+          if-no-files-found: error
+          retention-days: 14
+          path: ${{ runner.temp }}/caext-rental-p2/*.zip
