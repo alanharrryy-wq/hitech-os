@@ -65,7 +65,7 @@ jobs:
 
       - name: Verify browser runtime desktop and mobile
         env:
-          NODE_PATH: ${{ github.workspace }}/.ci-pci-runtime/node_modules
+          PCI_PLAYWRIGHT_ROOT: ${{ github.workspace }}/.ci-pci-runtime/node_modules/playwright
           PCI_BASE_URL: http://127.0.0.1:8316
           PCI_EVIDENCE_DIR: ${{ github.workspace }}/pci-runtime-evidence
         run: node apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-runtime-01.mjs
