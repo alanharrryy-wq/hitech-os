@@ -42,6 +42,8 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
     return <CashSessionsOperationalView model={model} />;
   }
 
+  const wave2CustomerSurface = model.currentPath === "/sync" || model.currentPath === "/devices";
+
   return (
     <AppShell currentPath={model.currentPath}>
       <section className="hero">
@@ -52,15 +54,17 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
             <p>{model.description}</p>
           </div>
           <div className="inline-list">
-            <span className="chip">PC gobierna</span>
-            <span className="chip">Tablet opera independiente</span>
+            {wave2CustomerSurface ? null : <span className="chip">PC gobierna</span>}
+            {wave2CustomerSurface ? null : <span className="chip">Tablet opera independiente</span>}
             {model.periodLabel ? <span className="chip">{model.periodLabel}</span> : null}
           </div>
         </div>
-        <div className="hero-badges">
-          <span className="alert-chip">{model.sourceLine}</span>
-          <span className="alert-chip">{model.independenceLine}</span>
-        </div>
+        {wave2CustomerSurface ? null : (
+          <div className="hero-badges">
+            <span className="alert-chip">{model.sourceLine}</span>
+            <span className="alert-chip">{model.independenceLine}</span>
+          </div>
+        )}
       </section>
 
       {model.actions?.length ? (
@@ -68,8 +72,8 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
           <div className="section-head">
             <div>
               <div className="kicker">acciones</div>
-              <h2 className="section-title">Zona de accion</h2>
-              <p className="section-copy">Solo se muestran acciones con ruta real o razon de bloqueo.</p>
+              <h2 className="section-title">{wave2CustomerSurface ? "Acciones disponibles" : "Zona de accion"}</h2>
+              <p className="section-copy">{wave2CustomerSurface ? "Las acciones disponibles muestran su resultado; las restringidas explican por qué no pueden ejecutarse." : "Solo se muestran acciones con ruta real o razon de bloqueo."}</p>
             </div>
           </div>
           <PcCommandActions actions={model.actions} />
@@ -99,7 +103,7 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
           <DataTable columns={table.columns} rows={table.rows} emptyMessage={table.emptyMessage} />
         </section>
       )) : (
-        <EmptyState title="Sin datos disponibles." description="La pantalla queda honesta: no usa datos fake ni estados de exito inventados." />
+        <EmptyState title="Sin datos disponibles." description={wave2CustomerSurface ? "No hay información disponible para mostrar en este momento." : "La pantalla queda honesta: no usa datos fake ni estados de exito inventados."} />
       )}
     </AppShell>
   );
