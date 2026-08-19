@@ -28,19 +28,19 @@ export const PC_ROUTE_MAP = [
     "route": "/ajustes-inventario",
     "humanName": "Ajustes de inventario",
     "group": "inventario",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/alertas-ejecutivas",
     "humanName": "Alertas ejecutivas",
     "group": "hoy",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/alertas-operativas",
     "humanName": "Alertas operativas",
     "group": "hoy",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/audit",
@@ -76,13 +76,13 @@ export const PC_ROUTE_MAP = [
     "route": "/catalogo-activo",
     "humanName": "Productos activos",
     "group": "inventario",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/conteos-operativos",
     "humanName": "Conteos operativos",
     "group": "inventario",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/contratos-reporte",
@@ -106,7 +106,7 @@ export const PC_ROUTE_MAP = [
     "route": "/data-quality",
     "humanName": "Revisión de datos",
     "group": "sistema",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/detalle-registros",
@@ -178,7 +178,7 @@ export const PC_ROUTE_MAP = [
     "route": "/integridad-barcodes",
     "humanName": "Códigos repetidos",
     "group": "inventario",
-    "status": "secondary"
+    "status": "internal"
   },
 
   {
@@ -221,7 +221,7 @@ export const PC_ROUTE_MAP = [
     "route": "/license-runtime",
     "humanName": "Licencia",
     "group": "sistema",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/metricas-dia",
@@ -251,7 +251,7 @@ export const PC_ROUTE_MAP = [
     "route": "/politica-precios",
     "humanName": "Política de precios",
     "group": "inventario",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/prisma-insights",
@@ -353,7 +353,7 @@ export const PC_ROUTE_MAP = [
     "route": "/sync-operativo",
     "humanName": "Sincronización operativa",
     "group": "sincronizacion",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/tablas-operativas",
@@ -371,13 +371,13 @@ export const PC_ROUTE_MAP = [
     "route": "/tablet-communication",
     "humanName": "Tablet",
     "group": "sincronizacion",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/validacion-catalogo",
     "humanName": "Validación de catálogo",
     "group": "inventario",
-    "status": "secondary"
+    "status": "internal"
   },
   {
     "route": "/vistas-ejecutivas",
