@@ -1,0 +1,59 @@
+name: PRISMA Factory Anti-Rework Gate
+
+on:
+  pull_request:
+    paths:
+      - 'PRISMA Factory Ledger/**'
+      - '.github/workflows/prisma-factory-anti-rework-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  universal-anti-rework-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile universal gate
+        run: python -m py_compile "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py"
+
+      - name: Validate live canonical Factory Ledger authority
+        run: python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
+
+      - name: Run fail-closed universal negative self-test
+        run: python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+
+      - name: Verify mandatory universal Agent Gate binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          gate='PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
+          grep -Fq 'verify_prisma_anti_rework_gate.py' "$gate"
+          grep -Fq 'BLOCKED_ANTI_REWORK' "$gate"
+          grep -Fq 'PRISMA_FACTORY_LEDGER.json' "$gate"
+          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$gate"
+          grep -Fq 'PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' "$gate"
+
+      - name: Verify the Change Intelligence supplemental guard remains present
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
+          test -f 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          test -f '.github/workflows/change-intelligence-capability-gate.yml'
