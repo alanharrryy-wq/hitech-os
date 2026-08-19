@@ -72,6 +72,12 @@
       "reason": "Change Intelligence Cloud Center isolated runtime slice merged in PR #303. Build only declared adapters/projections; do not rebuild the surface.",
       "evidence": "PR #303",
       "updatedAt": "2026-08-18T20:46:00-06:00"
+    },
+    "change_intelligence.capability_anti_rework_gate": {
+      "value": true,
+      "reason": "PR #311 capability map validation, fail-closed negative self-tests, and mandatory Agent Gate binding passed. Reuse this gate before every future Change Intelligence technical proposal/mutation.",
+      "evidence": "PR #311 / Change Intelligence Capability Anti-Rework Gate run 32211016746",
+      "updatedAt": "2026-08-18T21:10:00-06:00"
     }
   },
   "verifyOrFix": {
@@ -96,5 +102,5 @@
       "updatedAt": "2026-08-18T20:46:00-06:00"
     }
   },
-  "updatedAt": "2026-08-18T20:46:00-06:00"
+  "updatedAt": "2026-08-18T21:10:00-06:00"
 }
