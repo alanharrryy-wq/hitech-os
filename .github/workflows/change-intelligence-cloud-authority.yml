@@ -39,8 +39,8 @@ jobs:
 
       - name: Install Playwright runtime without mutating lockfiles
         run: |
-          mkdir -p .ci-pci-runtime
-          cd .ci-pci-runtime
+          mkdir -p "$RUNNER_TEMP/pci-playwright"
+          cd "$RUNNER_TEMP/pci-playwright"
           npm init -y >/dev/null 2>&1
           npm install --no-save --no-package-lock playwright@1.55.0
           npx playwright install --with-deps chromium
@@ -65,7 +65,7 @@ jobs:
 
       - name: Verify browser runtime desktop and mobile
         env:
-          PCI_PLAYWRIGHT_ROOT: ${{ github.workspace }}/.ci-pci-runtime/node_modules/playwright
+          PCI_PLAYWRIGHT_ROOT: ${{ runner.temp }}/pci-playwright/node_modules/playwright
           PCI_BASE_URL: http://127.0.0.1:8316
           PCI_EVIDENCE_DIR: ${{ github.workspace }}/pci-runtime-evidence
         run: node apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-runtime-01.mjs
