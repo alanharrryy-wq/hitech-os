@@ -41,7 +41,7 @@ function toItem(r: RawEvent): SyncPanelItem {
     risk: riskForStatus(status, r.attempts),
     attempts: r.attempts,
     createdAt: r.createdAt.toISOString(),
-    canRetry: status === "pending" || status === "failed" || status === "conflict"
+    canRetry: status === "pending" || status === "failed"
   };
 }
 
@@ -64,7 +64,7 @@ export async function buildPendingOfflineSyncPanel(input: { businessId: string; 
 }
 
 export async function requestPendingRetry(input: { businessId: string; ids?: string[]; includeFailed?: boolean; includePending?: boolean }) {
-  const states = ["conflict", "CONFLICT"];
+  const states: string[] = [];
   if (input.includeFailed !== false) states.push("failed", "FAILED");
   if (input.includePending) states.push("pending", "PENDING");
   const where: any = { businessId: input.businessId, status: { in: states } };
@@ -76,10 +76,7 @@ export async function requestPendingRetry(input: { businessId: string; ids?: str
       attempts: { increment: 1 },
       nextRetryAt: null,
       failedAt: null,
-      conflictedAt: null,
-      lastError: null,
-      remoteConflictCode: null,
-      remoteRejectedReason: null
+      lastError: null
     }
   });
   return {
