@@ -41,7 +41,7 @@ export function PcCommandActions({ actions, customerSafe = false }: { actions: C
       setState({ busyKey: null, ok: action.successMessage ?? `${action.label} completado.`, error: null });
       router.refresh();
     } catch (error) {
-      setState({ busyKey: null, ok: null, error: error instanceof Error ? error.message : "Acción no completada." });
+      setState({ busyKey: null, ok: null, error: error instanceof Error ? error.message : (customerSafe ? "No pudimos completar la acción." : "Accion no completada.") });
     }
   }
 
@@ -70,8 +70,8 @@ export function PcCommandActions({ actions, customerSafe = false }: { actions: C
           );
         })}
       </div>
-      {state.ok ? <div className="alert-strip" role="status"><strong>Acción aplicada</strong><span className="subtle">{state.ok}</span></div> : null}
-      {state.error ? <div className="alert-strip" role="alert"><strong>No se completó</strong><span className="subtle">{state.error}</span></div> : null}
+      {state.ok ? <div className="alert-strip" role="status"><strong>{customerSafe ? "Acción aplicada" : "Accion aplicada"}</strong><span className="subtle">{state.ok}</span></div> : null}
+      {state.error ? <div className="alert-strip" role="alert"><strong>{customerSafe ? "No se completó" : "No se completo"}</strong><span className="subtle">{state.error}</span></div> : null}
     </>
   );
 }
