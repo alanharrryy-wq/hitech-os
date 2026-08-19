@@ -10,6 +10,19 @@
       "result": "PASS_COMPOSED_AUTHORITY_MESH",
       "requiredAuthorityCoverage": "100%",
       "layerMapPresent": true
+    },
+    "repositoryProjectionAuthority": {
+      "baseHead": "081e014ee143e05ce72b06b5e2f5e9c0e89e69da",
+      "profile": "ci-cloud-repository-registry-adapter-p1-v1",
+      "runId": 32233951337,
+      "artifactId": 9358279345,
+      "artifactDigest": "sha256:5b06a7998076818e04c8268a7956c2d5cbdaf52e471c8cf18bb8f3c7097c8166",
+      "requestId": "6adaa6d6bf157595",
+      "result": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true
     }
   },
   "product": {
@@ -133,9 +146,46 @@
       "items": []
     },
     "repositories": {
-      "status": "NOT_CONNECTED",
-      "items": [],
-      "nextGate": "Bind a read-only repository registry adapter without storing customer source in the Cloud Center UI layer."
+      "status": "SOURCE_VERIFIED_READ_ONLY",
+      "items": [
+        {
+          "Repository": "prismahitech/hitech-os",
+          "Status": "SOURCE_VERIFIED_READ_ONLY",
+          "Mode": "READ_ONLY",
+          "repositoryIdentity": "prismahitech/hitech-os",
+          "provider": "github",
+          "authorization": {
+            "state": "VERIFIED_AT_CAPTURE",
+            "evidenceSource": "CONNECTED_GITHUB_ACCOUNT_PERMISSION_CHECK",
+            "observedPermission": "admin",
+            "appliedAccessMode": "READ_ONLY",
+            "capturedAt": "2026-08-19",
+            "freshness": "SNAPSHOT",
+            "doesNotProve": [
+              "future permission persistence",
+              "authorization for any other repository",
+              "hosted multi-tenant execution"
+            ]
+          },
+          "provenance": {
+            "repositoryId": "1160894477",
+            "defaultBranch": "main",
+            "capturedHead": "081e014ee143e05ce72b06b5e2f5e9c0e89e69da",
+            "visibility": "public"
+          },
+          "rentalBoundary": {
+            "capability": "ci.rental.private_repo_v2",
+            "reuseMode": "REFERENCE_ONLY",
+            "sourceCodeEgress": false,
+            "credentialsInBrowser": false,
+            "retention": "EPHEMERAL_OR_BOUNDED_BY_RUNNER_PLAN",
+            "cleanupEvidenceRequired": true
+          }
+        }
+      ],
+      "projectionRule": "Only source-backed registrations with explicit authorization provenance may appear. Repository access is constrained to READ_ONLY even when the observed provider permission is broader.",
+      "freshnessRule": "Authorization is a captured fact, not a perpetual permission claim. Re-check provider authority before private-repository execution or when evidence becomes stale.",
+      "nextGate": "Project real Code Atlas analysis-run manifests and statuses for source-backed registered repositories."
     },
     "analysisRuns": {
       "status": "NOT_CONNECTED",
@@ -201,6 +251,7 @@
     "apps/terminal-de-venta-system/docs/business/PRISMA_CHANGE_INTELLIGENCE_COMMERCIAL_LEDGER.md",
     "apps/terminal-de-venta-system/Prisma Cloud Ctr/ARCHITECTURE.md",
     "apps/terminal-de-venta-system/Prisma Cloud Ctr/SECURITY.md",
+    "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
     "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
     "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
   ]
