@@ -11,6 +11,8 @@ from typing import Any
 
 BASE_HEAD = "d14effee1a1223cc772247ea9d7ec8547dc15c78"
 CONFIG_PATH_LITERAL = "/internal/config/change_intelligence_cloud.json"
+REPOSITORY_PROJECTION_PROFILE = "ci-cloud-repository-registry-adapter-p1-v1"
+REPOSITORY_CONNECTED_STATUS = "SOURCE_VERIFIED_READ_ONLY"
 
 REL = {
     "main_html": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html"),
@@ -30,6 +32,30 @@ ALLOWED_DIFF = {
     REL[key].as_posix()
     for key in ("main_html", "ci_html", "ci_style_js", "ci_js", "ci_config", "contract", "verifier", "runtime_verifier", "workflow")
 }
+CANONICAL_CLOUD_CENTER_READ_ONLY = {
+    REL["main_html"].as_posix(),
+    REL["main_css"].as_posix(),
+    REL["main_js"].as_posix(),
+}
+FORBIDDEN_REPOSITORY_FIELD_KEYS = {
+    "accesstoken",
+    "admintoken",
+    "authorizationheader",
+    "checkoutpath",
+    "cloneurl",
+    "credential",
+    "credentials",
+    "headers",
+    "localpath",
+    "password",
+    "privatekey",
+    "rawheaders",
+    "secret",
+    "secretpath",
+    "sourcecontent",
+    "sshurl",
+    "token",
+}
 
 
 def repo_root() -> Path:
@@ -44,8 +70,16 @@ def text(path: Path) -> str:
 
 
 def git(root: Path, *args: str) -> tuple[int, str]:
-    p = subprocess.run(["git", *args], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                       text=True, encoding="utf-8", errors="replace", check=False)
+    p = subprocess.run(
+        ["git", *args],
+        cwd=root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
     return p.returncode, p.stdout.strip()
 
 
@@ -72,6 +106,24 @@ def resolve_diff_base(root: Path) -> tuple[str | None, str]:
             return ref, "git_ref"
 
     return None, "unavailable"
+
+
+def normalized_key(value: Any) -> str:
+    return re.sub(r"[^a-z0-9]", "", str(value).lower())
+
+
+def forbidden_repository_fields(value: Any, prefix: str = "") -> list[str]:
+    findings: list[str] = []
+    if isinstance(value, dict):
+        for key, child in value.items():
+            path = f"{prefix}.{key}" if prefix else str(key)
+            if normalized_key(key) in FORBIDDEN_REPOSITORY_FIELD_KEYS:
+                findings.append(path)
+            findings.extend(forbidden_repository_fields(child, path))
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            findings.extend(forbidden_repository_fields(child, f"{prefix}[{index}]"))
+    return findings
 
 
 def main() -> int:
@@ -103,11 +155,13 @@ def main() -> int:
     else:
         check("config_json_parse", True, "change_intelligence_cloud.json")
 
-    mesh = cfg.get("generatedFrom", {}).get("authorityMesh", {})
+    generated_from = cfg.get("generatedFrom", {})
+    mesh = generated_from.get("authorityMesh", {})
+    repository_projection_authority = generated_from.get("repositoryProjectionAuthority", {})
     maturity = cfg.get("maturity", {})
     safety = cfg.get("safety", {})
     check("config_schema", cfg.get("schemaVersion") == "prisma.change_intelligence.cloud_center.vertical.v1", str(cfg.get("schemaVersion")))
-    check("authority_base", cfg.get("generatedFrom", {}).get("baseHead") == BASE_HEAD, str(cfg.get("generatedFrom", {}).get("baseHead")))
+    check("authority_base", generated_from.get("baseHead") == BASE_HEAD, str(generated_from.get("baseHead")))
     check("authority_mesh_run", mesh.get("runId") == 32156981312, str(mesh.get("runId")))
     check("authority_mesh_artifact", mesh.get("artifactId") == 9332162633, str(mesh.get("artifactId")))
     check("authority_layer_map", mesh.get("layerMapPresent") is True, str(mesh.get("layerMapPresent")))
@@ -129,11 +183,96 @@ def main() -> int:
     }
     for oid, mode in required.items():
         o = owners.get(oid, {})
-        check(f"shared_owner:{oid}", o.get("reuseMode") == mode and o.get("doNotRebuild") is True,
-              f"reuse={o.get('reuseMode')} doNotRebuild={o.get('doNotRebuild')}")
+        check(
+            f"shared_owner:{oid}",
+            o.get("reuseMode") == mode and o.get("doNotRebuild") is True,
+            f"reuse={o.get('reuseMode')} doNotRebuild={o.get('doNotRebuild')}",
+        )
 
     cp = cfg.get("controlPlane", {})
-    for key in ("repositories", "analysisRuns", "authorityPacks", "evidenceReferences"):
+    repositories = cp.get("repositories", {})
+    repository_status = repositories.get("status")
+    check(
+        "repositories_state_supported",
+        repository_status in {"NOT_CONNECTED", REPOSITORY_CONNECTED_STATUS},
+        str(repository_status),
+    )
+    if repository_status == "NOT_CONNECTED":
+        check("repositories_unbound_items_empty", repositories.get("items") == [], str(repositories.get("items")))
+    elif repository_status == REPOSITORY_CONNECTED_STATUS:
+        rows = repositories.get("items")
+        check("repositories_source_rows_non_empty", isinstance(rows, list) and len(rows) == 1, f"count={len(rows) if isinstance(rows, list) else 'invalid'}")
+        check(
+            "repository_projection_authority_profile",
+            repository_projection_authority.get("profile") == REPOSITORY_PROJECTION_PROFILE,
+            str(repository_projection_authority.get("profile")),
+        )
+        check(
+            "repository_projection_authority_result",
+            repository_projection_authority.get("result") == "PASS_COMPOSED_AUTHORITY_MESH",
+            str(repository_projection_authority.get("result")),
+        )
+        check(
+            "repository_projection_authority_coverage",
+            repository_projection_authority.get("requiredAuthorityCoverage") == "100%",
+            str(repository_projection_authority.get("requiredAuthorityCoverage")),
+        )
+        check("repository_projection_authority_blockers", repository_projection_authority.get("blockers") == 0, str(repository_projection_authority.get("blockers")))
+        check("repository_projection_authority_drift", repository_projection_authority.get("repoDriftStable") is True, str(repository_projection_authority.get("repoDriftStable")))
+        check("repository_projection_authority_lanes", isinstance(repository_projection_authority.get("laneCount"), int) and repository_projection_authority.get("laneCount") >= 2, str(repository_projection_authority.get("laneCount")))
+        check("repository_projection_authority_run", isinstance(repository_projection_authority.get("runId"), int) and repository_projection_authority.get("runId") > 0, str(repository_projection_authority.get("runId")))
+        check("repository_projection_authority_artifact", isinstance(repository_projection_authority.get("artifactId"), int) and repository_projection_authority.get("artifactId") > 0, str(repository_projection_authority.get("artifactId")))
+        check("repository_projection_authority_digest", re.fullmatch(r"sha256:[0-9a-f]{64}", str(repository_projection_authority.get("artifactDigest", ""))) is not None, str(repository_projection_authority.get("artifactDigest")))
+        projection_head = str(repository_projection_authority.get("baseHead", ""))
+        check("repository_projection_authority_head", re.fullmatch(r"[0-9a-f]{40}", projection_head) is not None, projection_head)
+
+        if isinstance(rows, list):
+            for index, row in enumerate(rows):
+                prefix = f"repository_row:{index}"
+                if not isinstance(row, dict):
+                    check(prefix, False, "row must be object")
+                    continue
+                repository_identity = row.get("repositoryIdentity")
+                check(f"{prefix}:identity", isinstance(repository_identity, str) and repository_identity == generated_from.get("repository") and row.get("Repository") == repository_identity, str(repository_identity))
+                check(f"{prefix}:status", row.get("Status") == REPOSITORY_CONNECTED_STATUS, str(row.get("Status")))
+                check(f"{prefix}:mode", row.get("Mode") == "READ_ONLY", str(row.get("Mode")))
+                check(f"{prefix}:provider", isinstance(row.get("provider"), str) and bool(row.get("provider")), str(row.get("provider")))
+
+                authorization = row.get("authorization") if isinstance(row.get("authorization"), dict) else {}
+                check(f"{prefix}:authorization_state", authorization.get("state") == "VERIFIED_AT_CAPTURE", str(authorization.get("state")))
+                check(f"{prefix}:authorization_source", isinstance(authorization.get("evidenceSource"), str) and bool(authorization.get("evidenceSource")), str(authorization.get("evidenceSource")))
+                check(f"{prefix}:authorization_applied_read_only", authorization.get("appliedAccessMode") == "READ_ONLY", str(authorization.get("appliedAccessMode")))
+                check(f"{prefix}:authorization_freshness", authorization.get("freshness") == "SNAPSHOT", str(authorization.get("freshness")))
+                check(f"{prefix}:authorization_capture_date", re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(authorization.get("capturedAt", ""))) is not None, str(authorization.get("capturedAt")))
+                does_not_prove = authorization.get("doesNotProve") if isinstance(authorization.get("doesNotProve"), list) else []
+                for boundary in (
+                    "future permission persistence",
+                    "authorization for any other repository",
+                    "hosted multi-tenant execution",
+                ):
+                    check(f"{prefix}:does_not_prove:{boundary}", boundary in does_not_prove, str(does_not_prove))
+
+                provenance = row.get("provenance") if isinstance(row.get("provenance"), dict) else {}
+                check(f"{prefix}:provenance_repository_id", isinstance(provenance.get("repositoryId"), str) and bool(provenance.get("repositoryId")), str(provenance.get("repositoryId")))
+                check(f"{prefix}:provenance_default_branch", isinstance(provenance.get("defaultBranch"), str) and bool(provenance.get("defaultBranch")), str(provenance.get("defaultBranch")))
+                check(f"{prefix}:provenance_head", provenance.get("capturedHead") == projection_head, str(provenance.get("capturedHead")))
+                check(f"{prefix}:provenance_visibility", provenance.get("visibility") in {"public", "private", "internal"}, str(provenance.get("visibility")))
+
+                rental = row.get("rentalBoundary") if isinstance(row.get("rentalBoundary"), dict) else {}
+                check(f"{prefix}:rental_capability", rental.get("capability") == "ci.rental.private_repo_v2", str(rental.get("capability")))
+                check(f"{prefix}:rental_reference_only", rental.get("reuseMode") == "REFERENCE_ONLY", str(rental.get("reuseMode")))
+                check(f"{prefix}:source_egress_denied", rental.get("sourceCodeEgress") is False, str(rental.get("sourceCodeEgress")))
+                check(f"{prefix}:browser_credentials_denied", rental.get("credentialsInBrowser") is False, str(rental.get("credentialsInBrowser")))
+                check(f"{prefix}:cleanup_evidence_required", rental.get("cleanupEvidenceRequired") is True, str(rental.get("cleanupEvidenceRequired")))
+                forbidden = forbidden_repository_fields(row)
+                check(f"{prefix}:forbidden_fields_absent", not forbidden, str(forbidden))
+
+        projection_rule = str(repositories.get("projectionRule", ""))
+        freshness_rule = str(repositories.get("freshnessRule", ""))
+        check("repositories_projection_rule_read_only", "READ_ONLY" in projection_rule and "source-backed" in projection_rule, projection_rule)
+        check("repositories_freshness_rule_recheck", "Re-check" in freshness_rule and "stale" in freshness_rule, freshness_rule)
+
+    for key in ("analysisRuns", "authorityPacks", "evidenceReferences"):
         check(f"unbound_is_explicit:{key}", cp.get(key, {}).get("status") == "NOT_CONNECTED", str(cp.get(key, {}).get("status")))
 
     links = re.findall(r'<a\b(?=[^>]*data-ci-entry=["\']v1["\'])(?=[^>]*href=["\']/internal/web/change_intelligence_center\.html["\'])[^>]*>', main_html, re.I)
@@ -162,7 +301,7 @@ def main() -> int:
 
     check("runtime_chromium", "chromium" in runtime_js and "playwright" in runtime_js)
     check("runtime_desktop_mobile", "desktop" in runtime_js and "mobile" in runtime_js)
-    check("runtime_all_views", all(view in runtime_js for view in ("overview","repositories","runs","discover","guard","control","authority","evidence","roi","entitlements")))
+    check("runtime_all_views", all(view in runtime_js for view in ("overview", "repositories", "runs", "discover", "guard", "control", "authority", "evidence", "roi", "entitlements")))
     check("runtime_fail_closed_semantics", "UNKNOWN|NOT_CONNECTED|BLOCKED" in runtime_js)
     check("runtime_screenshots", "page.screenshot" in runtime_js)
     check("workflow_source_gate", "verify-cloud-center-change-intelligence-01.py" in workflow)
@@ -179,9 +318,17 @@ def main() -> int:
             check("git_diff_boundary", False, f"base={diff_base} source={diff_base_source} error={output}")
         else:
             changed = {x.strip().replace("\\", "/") for x in output.splitlines() if x.strip()}
-            check("git_diff_boundary", not (changed - ALLOWED_DIFF),
-                  f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}")
-            check("git_diff_expected_files", not (ALLOWED_DIFF - changed), f"missing={sorted(ALLOWED_DIFF - changed)}")
+            check("git_diff_non_empty", bool(changed), f"base={diff_base} source={diff_base_source} changed={len(changed)}")
+            check(
+                "git_diff_boundary",
+                not (changed - ALLOWED_DIFF),
+                f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}",
+            )
+            check(
+                "git_diff_canonical_cloud_center_read_only",
+                not (changed & CANONICAL_CLOUD_CENTER_READ_ONLY),
+                f"canonicalChanged={sorted(changed & CANONICAL_CLOUD_CENTER_READ_ONLY)}",
+            )
             check("git_diff_no_css", not any(x.lower().endswith(".css") for x in changed), "Commercial Billing Authority no-CSS boundary")
     else:
         check("git_diff_boundary", False, "CURRENT_PR_BASE_UNAVAILABLE")
