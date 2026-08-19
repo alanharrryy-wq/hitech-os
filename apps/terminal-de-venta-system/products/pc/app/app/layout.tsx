@@ -3,8 +3,8 @@ import "./globals.css";
 import "./suppliers-ux-v08.css";
 import { headers } from "next/headers";
 import { pcMessages } from "@/lib/i18n/messages/es";
-import { PcLicenseSurfaceProvider } from "@/components/licensing/pc-license-surface-provider";
-import { resolvePcFeature } from "@/src/server/licensing/pc-license-service";
+import { PcLicenseSurfaceProvider } from "@components/licensing/pc-license-surface-provider";
+import { resolvePcFeature } from "@/server/licensing/pc-license-service";
 import { PrismaDevIssueBadgeCleaner } from "./prisma-dev-issue-badge-cleaner";
 import styles from "./layout.module.css";
 
