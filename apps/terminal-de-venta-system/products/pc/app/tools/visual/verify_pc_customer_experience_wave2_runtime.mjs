@@ -125,7 +125,8 @@ for (const viewport of viewports) {
 
   for (const route of routes) {
     const response = await page.goto(`${baseUrl}${route}`, { waitUntil: "domcontentloaded", timeout: 45_000 });
-    await page.waitForTimeout(350);
+    await page.waitForFunction(() => document.readyState === "complete", undefined, { timeout: 10_000 }).catch(() => null);
+    await page.waitForTimeout(650);
     const status = response?.status() ?? 0;
     const routeKey = route === "/" ? "root" : route.slice(1).replaceAll("/", "-");
     record(`route.${viewport.label}.${route}.http`, status === 200, `${route} => ${status}`);
@@ -155,7 +156,10 @@ for (const viewport of viewports) {
     }
 
     const screenshotPath = path.join(outDir, `${viewport.label}-${routeKey}.png`);
-    await page.screenshot({ path: screenshotPath, fullPage: true });
+    // Playwright's default caret hiding temporarily mutates focused controls with
+    // style="caret-color: transparent". During React hydration that mutation can
+    // create a test-induced mismatch. Preserve the real DOM instead.
+    await page.screenshot({ path: screenshotPath, fullPage: true, caret: "initial" });
     screenshots.push(path.relative(outDir, screenshotPath).replaceAll("\\", "/"));
   }
 
