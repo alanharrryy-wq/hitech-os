@@ -3,6 +3,7 @@
 
   const CONFIG_PATH = "/internal/config/change_intelligence_cloud.json";
   const HOST_HEALTH_PATH = "/api/health";
+  const REPOSITORY_RUNTIME_PATH = "/api/command-center/change-intelligence/repository";
 
   const VIEW_META = {
     overview: {
@@ -60,6 +61,8 @@
   const state = {
     config: null,
     hostHealth: null,
+    repositoryRuntime: null,
+    repositoryRuntimeError: null,
     configError: null,
     view: "overview"
   };
@@ -87,8 +90,8 @@
   function tone(value) {
     const text = String(value || "").toUpperCase();
     if (text.includes("BLOCK") || text.includes("FAIL") || text.includes("ERROR")) return "bad";
-    if (text.includes("UNKNOWN") || text.includes("NOT_CONNECTED") || text.includes("NOT_MEASURED") || text.includes("PENDING") || text.includes("NOT_CERTIFIED") || text.includes("NOT_CLAIMED")) return "unknown";
-    if (text.includes("LOCAL_VERIFIED") || text.includes("RUNTIME_VERIFIED") || text.includes("PASS") || text.includes("SOURCE_AVAILABLE") || text.includes("READY")) return "ok";
+    if (text.includes("UNKNOWN") || text.includes("NOT_CONNECTED") || text.includes("NOT_MEASURED") || text.includes("PENDING") || text.includes("NOT_CERTIFIED") || text.includes("NOT_CLAIMED") || text.includes("SNAPSHOT_FALLBACK")) return "unknown";
+    if (text.includes("LOCAL_VERIFIED") || text.includes("RUNTIME_VERIFIED") || text.includes("RUNTIME_SOURCE_READ_ONLY") || text.includes("PASS") || text.includes("SOURCE_AVAILABLE") || text.includes("READY")) return "ok";
     if (text.includes("VERIFY") || text.includes("ADAPT") || text.includes("SHARED") || text.includes("REVIEW") || text.includes("BOUNDED")) return "warn";
     return "unknown";
   }
@@ -141,8 +144,76 @@
     return state.config || {};
   }
 
-  function controlPlane(key) {
+  function staticControlPlane(key) {
     return config().controlPlane?.[key] || { status: "UNKNOWN", items: [] };
+  }
+
+  function snapshotRepositoryFallback(base, reason) {
+    const items = Array.isArray(base.items) ? base.items.map((item) => ({
+      ...item,
+      Status: "SNAPSHOT_FALLBACK",
+      Mode: "READ_ONLY · SNAPSHOT"
+    })) : [];
+    return {
+      ...base,
+      status: "SNAPSHOT_FALLBACK",
+      items,
+      runtimeStatus: "BLOCKED",
+      runtimeError: reason || "Repository runtime projection unavailable."
+    };
+  }
+
+  function liveRepositoryProjection(base) {
+    const runtime = state.repositoryRuntime;
+    if (!runtime) {
+      return state.repositoryRuntimeError ? snapshotRepositoryFallback(base, state.repositoryRuntimeError) : base;
+    }
+
+    const registered = Array.isArray(base.items) ? base.items[0] : null;
+    const expectedIdentity = registered?.repositoryIdentity || registered?.Repository;
+    const repository = runtime.repository || {};
+    const provenance = runtime.provenance || {};
+    const contractOk = runtime.schemaVersion === "prisma.change_intelligence.repository_runtime.v1"
+      && runtime.ok === true
+      && runtime.status === "RUNTIME_SOURCE_READ_ONLY"
+      && runtime.readOnly === true
+      && runtime.productionCertified === false
+      && runtime.certifiable === false
+      && provenance.source === "code_atlas.intelligence.resolve_intelligence_context"
+      && provenance.runtimeEnvelope === true
+      && provenance.rawContextExposed === false;
+
+    if (!contractOk) return snapshotRepositoryFallback(base, "Runtime envelope failed the conservative projection contract.");
+    if (!expectedIdentity || repository.identity !== expectedIdentity) {
+      return snapshotRepositoryFallback(base, "Runtime repository identity does not match the registered repository snapshot.");
+    }
+
+    const head = String(repository.head || "UNKNOWN");
+    const branch = String(repository.branch || "UNKNOWN");
+    const items = (Array.isArray(base.items) ? base.items : []).map((item, index) => index === 0 ? ({
+      ...item,
+      Repository: repository.identity,
+      Status: runtime.status,
+      Mode: `READ_ONLY · LIVE_SCAN · ${branch} · ${head.slice(0, 12)}`,
+      runtimeHead: repository.head,
+      runtimeTree: repository.tree,
+      runtimeBranch: repository.branch,
+      runtimeFreshness: runtime.freshness?.status,
+      runtimeProvenance: provenance.source
+    }) : item);
+
+    return {
+      ...base,
+      status: runtime.status,
+      items,
+      runtimeStatus: runtime.status,
+      runtime
+    };
+  }
+
+  function controlPlane(key) {
+    const base = staticControlPlane(key);
+    return key === "repositories" ? liveRepositoryProjection(base) : base;
   }
 
   function product(id) {
@@ -256,7 +327,7 @@
     const repo = controlPlane("repositories");
     const rental = sharedOwner("private-repository-rental");
     return [
-      card("Repository Registry", "No fake tenants, no fake repos.", repo.items?.length ? table(["Repository", "Status", "Mode"], repo.items) : empty(repo.status, repo.nextGate || "A read-only registry adapter is required."), { span: 8, tag: repo.status, tone: repo.status === "NOT_CONNECTED" ? "blocked" : "accent" }),
+      card("Repository Registry", "No fake tenants, no fake repos.", repo.items?.length ? table(["Repository", "Status", "Mode"], repo.items) : empty(repo.status, repo.nextGate || "A read-only registry adapter is required."), { span: 8, tag: repo.status, tone: repo.status === "NOT_CONNECTED" || repo.status === "SNAPSHOT_FALLBACK" ? "blocked" : "accent" }),
       card("Rental boundary", "Private-repository handling already has a hardened source owner from PR #299.", list([
         ["Reuse", rental.reuseMode],
         ["Maturity", rental.maturity],
@@ -494,6 +565,18 @@
       state.hostHealth = await getJson(HOST_HEALTH_PATH);
     } catch (_) {
       state.hostHealth = { ok: false, status: "UNKNOWN" };
+    }
+
+    if (!state.configError) {
+      try {
+        state.repositoryRuntime = await getJson(REPOSITORY_RUNTIME_PATH);
+        state.repositoryRuntimeError = null;
+        document.documentElement.dataset.pciRepositoryRuntime = "received";
+      } catch (error) {
+        state.repositoryRuntime = null;
+        state.repositoryRuntimeError = String(error?.message || error);
+        document.documentElement.dataset.pciRepositoryRuntime = "snapshot-fallback";
+      }
     }
 
     updateChrome();
