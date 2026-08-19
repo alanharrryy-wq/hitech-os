@@ -14,6 +14,37 @@ Do not mix forbidden surfaces.
 At the end, update PRISMA_FACTORY_LEDGER.json and PRISMA_EVIDENCE_INDEX.json or explain exactly why no update was appropriate.
 ```
 
+## Mandatory universal PRISMA anti-rework gate
+
+For **every PRISMA technical proposal, prompt/plan that authorizes technical work, package/injector that can change the repository, or repository mutation**, run the universal Factory Ledger gate before authorizing BUILD/FIX or touching files.
+
+1. Treat `PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json` as the single canonical capability truth. The do-not-rebuild map and registration index are supplemental reconciliation evidence only; they never create capability authority by themselves.
+2. Name every affected canonical capability ID and its requested action: `REUSE`, `VERIFY`, `ADVANCE`, `FIX`, `BUILD`, `REBUILD`, or `EXTERNAL`.
+3. If the needed capability ID is absent from the canonical Ledger, stop with `BLOCKED_ANTI_REWORK`. Register/classify the capability in a separate governed task before proposing source work. Do not promote a supplemental/shadow record into authority by inference.
+4. Run `python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request <request.json>` in `PROPOSAL` mode. Only `PASS_ANTI_REWORK_GATE` authorizes the technical proposal. The decision is bound to the current repo HEAD and exact live authority digests.
+5. `DONE + doNotRebuild=true` means reuse or advance to `nextGate`; it never authorizes BUILD/REBUILD. `SOURCE_READY` and `LOCAL_VERIFIED` are not `NOT_STARTED`. `EXTERNAL_BLOCKED` never authorizes an internal source substitute.
+6. Contradictory overlapping Ledger/DNR/registration state, duplicate IDs, missing evidence/`doesNotProve`, dirty authority files, stale HEAD, unknown capability, or shadow-only capability state must remain `BLOCKED_ANTI_REWORK`.
+7. Before any repository mutation, obtain a fresh task-exact Authority Mesh on the exact current HEAD, then rerun the same gate in `MUTATION` mode with `authorityMesh.status=PASS_COMPOSED_AUTHORITY_MESH`, 100% required authority coverage, zero blockers, request/artifact digests, and the exact Mesh HEAD. Visual mutation additionally requires `layerMapPresent=true`.
+8. A previous decision is not reusable after repo HEAD or Factory Ledger authority changes. Generate a new decision.
+9. This universal gate does not replace stricter domain gates. Change Intelligence technical work must pass both the universal gate and the Change Intelligence capability gate below.
+
+Minimal proposal request shape:
+
+```json
+{
+  "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+  "mode": "PROPOSAL",
+  "expectedHead": "<git rev-parse HEAD>",
+  "task": "<exact technical proposal>",
+  "capabilities": [
+    {"id": "<canonical capability id>", "requestedAction": "VERIFY"}
+  ],
+  "visualMutation": false
+}
+```
+
+A `MUTATION` request uses the same fields plus the reviewed Authority Mesh summary. If the machine decision is not `PASS_ANTI_REWORK_GATE`, stop. No prose override is allowed.
+
 ## Mandatory PRISMA Change Intelligence anti-rework gate
 
 For **every PRISMA Change Intelligence technical proposal, prompt/plan that authorizes technical work, or repository mutation**, before proposing BUILD/FIX or touching files:
