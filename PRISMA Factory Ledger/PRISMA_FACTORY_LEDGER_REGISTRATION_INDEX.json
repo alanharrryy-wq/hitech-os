@@ -70,7 +70,63 @@
       "verifierSha256": "fa5914d0fe015fe64d43ce2f91028ff4e71fd3478f712288dcb9b782428dd23d",
       "doNotRebuild": true,
       "nextGate": "CUSTOMER_CLOUD_ACTIVATION"
+    },
+    "code_atlas.change_intelligence.customer_wow_v1": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json",
+      "doNotRebuild": true,
+      "nextGate": "REUSE_EXISTING_CAPABILITIES_AND_ADVANCE_ONLY_TASK_EXACT_EVIDENCE_GATES"
+    },
+    "ci.cloud.vertical_surface": {
+      "status": "DONE_RUNTIME_VERIFIED_SLICE",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #303",
+      "doNotRebuild": true,
+      "nextGate": "ADAPTER_PROJECTION_GATES_ONLY_NO_SURFACE_REBUILD"
+    },
+    "ci.rental.private_repo_v2": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #299",
+      "doNotRebuild": true,
+      "nextGate": "EXTERNAL_PRIVATE_REPO_OPERATIONAL_VALIDATION_WITHOUT_SOURCE_REBUILD"
+    },
+    "ci.impact.go_actionable_review": {
+      "status": "DONE_LOCAL_VERIFIED_EXTERNAL_REPLAY",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #308",
+      "doNotRebuild": true,
+      "nextGate": "EXPAND_ONLY_FROM_FRESH_EXTERNAL_EVIDENCE_NOT_BENCHMARK_CHASING"
+    },
+    "ci.human.study_kit": {
+      "status": "DONE_SOURCE_READY_NOT_MEASURED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #310",
+      "doNotRebuild": true,
+      "nextGate": "EXTERNAL_HUMAN_PAIRED_STUDY_EXECUTION"
+    },
+    "ci.human.external_measurement": {
+      "status": "EXTERNAL_NOT_MEASURED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #310",
+      "doNotRebuild": true,
+      "nextGate": "REAL_EXTERNAL_HUMAN_RESPONSE_AND_SCORING"
+    },
+    "ci.agent.independent_replication": {
+      "status": "EXTERNAL_BLOCKED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json",
+      "doNotRebuild": true,
+      "nextGate": "AVAILABLE_INDEPENDENT_EVALUATOR_THEN_PAIRED_REPLICATION"
+    },
+    "change_intelligence.capability_anti_rework_gate": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-18T21:10:00-06:00",
+      "evidence": "PR #311 / Change Intelligence Capability Anti-Rework Gate run 32211016746",
+      "doNotRebuild": true,
+      "nextGate": "REUSE_GATE_AND_UPDATE_CAPABILITY_MAP_ONLY_WHEN_EVIDENCE_CHANGES"
     }
   },
-  "updatedAt": "2026-08-14T08:48:10-06:00"
+  "updatedAt": "2026-08-18T21:10:00-06:00"
 }

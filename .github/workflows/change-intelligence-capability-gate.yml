@@ -1,0 +1,58 @@
+name: Change Intelligence Capability Anti-Rework Gate
+
+on:
+  pull_request:
+    paths:
+      - 'tools/code-atlas/**'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/**change_intelligence*'
+      - 'apps/terminal-de-venta-system/docs/business/PRISMA_CHANGE_INTELLIGENCE*'
+      - 'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE*'
+      - '.github/scripts/caext*'
+      - '.github/workflows/caext*'
+      - 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.*'
+      - 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
+      - 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json'
+      - 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
+      - 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
+      - '.github/workflows/change-intelligence-capability-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  anti-rework-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile gate
+        run: python -m py_compile "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py"
+
+      - name: Validate canonical capability map
+        run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --validate-map
+
+      - name: Run fail-closed negative self-test
+        run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --self-test
+
+      - name: Verify mandatory Agent Gate binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
+          grep -Fq 'BLOCKED_ANTI_REWORK' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
+          grep -Fq 'capability IDs' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
