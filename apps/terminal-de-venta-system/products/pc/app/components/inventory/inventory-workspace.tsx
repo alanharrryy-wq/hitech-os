@@ -28,9 +28,9 @@ function titleFor(view: InventoryWorkspaceViewName) {
 }
 
 function copyFor(view: InventoryWorkspaceViewName) {
-  if (view === "counts") return "Conteos, variaciones y evidencia. Aquí no necesitas veinte selects: necesitas cerrar diferencias con motivo.";
-  if (view === "audit") return "Línea de tiempo para entender quién movió qué, cuándo, por qué y con qué impacto.";
-  return "Estado físico por SKU y ubicación. Buscar, detectar bajo/cero/sobrante y actuar.";
+  if (view === "counts") return "Revisa conteos, variaciones y evidencia para cerrar diferencias con un motivo claro.";
+  if (view === "audit") return "Consulta quién movió inventario, cuándo ocurrió, qué cambió y por qué.";
+  return "Consulta existencias por producto y ubicación, detecta faltantes o sobrantes y revisa las acciones disponibles.";
 }
 
 function queryHref(path: string, params: Record<string, string>) {
@@ -126,10 +126,9 @@ function StockFicha({ snapshot }: { snapshot: StockSnapshotView | null }) {
       </div>
       <div className={styles.actionRail} data-pcinv-action-rail="stock">
         <a href={queryHref("/counts", { q: snapshot.sku })}>Crear conteo</a>
-        <a href={queryHref("/ajustes-inventario", { q: snapshot.sku })}>Preparar ajuste</a>
-        <a href={queryHref("/stock", { q: snapshot.sku, state: "critical" })}>Mandar a reabasto</a>
+        <a href={queryHref("/stock", { q: snapshot.sku, state: "critical" })}>Revisar reabasto</a>
         <a href={queryHref("/auditoria-inventario", { q: snapshot.sku })}>Auditoría</a>
-        <span aria-disabled="true" title="Ajustar stock requiere endpoint auditable con actor, motivo y before/after.">Ajuste directo bloqueado</span>
+        <span aria-disabled="true" title="El ajuste directo todavía no está disponible desde esta pantalla.">Ajuste directo no disponible</span>
       </div>
     </section>
   );
@@ -176,7 +175,7 @@ function InventoryIntentBar({ view, workspace, path }: { view: InventoryWorkspac
   return (
     <section className={styles.intentBar} data-pcinv-search-first="stock">
       <form className={styles.searchBox} action={path}>
-        <label htmlFor="stock-q">Buscar SKU, producto o barcode</label>
+        <label htmlFor="stock-q">Buscar SKU, producto o código</label>
         <input id="stock-q" name="q" defaultValue={workspace.filters.q === "all" ? "" : workspace.filters.q} placeholder="Ej. SKU, nombre o código..." />
         <button type="submit">Buscar</button>
       </form>
@@ -228,7 +227,7 @@ export function InventoryWorkspaceView({
 
         {workspace.meta.warnings.length ? (
           <div className={styles.honestBlock} role="status">
-            <strong>Limitación visible</strong>
+            <strong>Información temporalmente no disponible</strong>
             <p>{workspace.meta.warnings.join(" · ")}</p>
           </div>
         ) : null}
@@ -247,9 +246,9 @@ function StockPanel({ workspace, selectedSnapshot }: { workspace: InventoryWorks
       <section className={styles.productLedger}>
         <div className={styles.ledgerHeader}>
           <div>
-            <span className={styles.kicker}>ledger físico</span>
+            <span className={styles.kicker}>existencias</span>
             <h2>Existencias por SKU y ubicación</h2>
-            <p>Menos filtros, más lectura: disponible, reservado, cobertura y acción inmediata.</p>
+            <p>Disponible, reservado, cobertura y estado por ubicación.</p>
           </div>
           <StatusBadge value={workspace.summary.criticalStockCount ? "crítico" : "ok"} />
         </div>
@@ -267,9 +266,9 @@ function StockPanel({ workspace, selectedSnapshot }: { workspace: InventoryWorks
               __rowDetailTitle: row.productName,
               __rowDetailTone: snapshotTone(row),
               __rowDetailItems: [
-                `On hand ${qty(row.onHand)} y reservado ${qty(row.reserved)}`,
+                `Existencia ${qty(row.onHand)} y reservado ${qty(row.reserved)}`,
                 `Corte ${row.snapshotAtLabel}`,
-                row.state === "critical" ? "Siguiente acción: conteo o reabasto sugerido" : "Siguiente acción: mantener seguimiento"
+                row.state === "critical" ? "Siguiente acción: revisar conteo o reabasto" : "Siguiente acción: mantener seguimiento"
               ],
               __rowActionHref: queryHref("/stock", { q: row.sku, location: row.location }),
               __rowActionLabel: "Abrir acción"
@@ -290,18 +289,17 @@ function StockPanel({ workspace, selectedSnapshot }: { workspace: InventoryWorks
         </div>
         <div className={styles.tableFrame}>
           <DataTable
-            columns={["Fecha", "SKU", "Movimiento", "Cantidad", "Antes", "Después", "Motivo", "Origen"]}
+            columns={["Fecha", "SKU", "Movimiento", "Cantidad", "Antes", "Después", "Motivo"]}
             rows={workspace.ledger.slice(0, 18).map((row) => ({
               Fecha: row.createdAtLabel,
               SKU: row.sku,
               Movimiento: row.movement,
               Cantidad: qty(row.quantityDelta),
-              Antes: row.beforeQty === null ? "derivado" : qty(row.beforeQty),
-              Después: row.afterQty === null ? "derivado" : qty(row.afterQty),
-              Motivo: row.reason,
-              Origen: row.source
+              Antes: row.beforeQty === null ? "calculado" : qty(row.beforeQty),
+              Después: row.afterQty === null ? "calculado" : qty(row.afterQty),
+              Motivo: row.reason
             }))}
-            emptyMessage="No hay movimientos trazables para los criterios actuales."
+            emptyMessage="No hay movimientos para los criterios actuales."
           />
         </div>
       </section>
@@ -320,7 +318,7 @@ function CountsPanel({ workspace }: { workspace: InventoryWorkspace }) {
           {["Elegir ubicación", "Capturar conteo", "Comparar diferencia", "Asignar motivo", "Cerrar con evidencia"].map((label, index) => (
             <div className={styles.workflowStep} key={label}>
               <span className={styles.stepIndex}>{index + 1}</span>
-              <div><strong>{label}</strong><span>{index < 3 ? "Disponible como lectura operativa" : "Requiere endpoint auditable antes de escribir"}</span></div>
+              <div><strong>{label}</strong><span>{index < 3 ? "Disponible para consulta" : "Esta acción todavía no está disponible desde esta pantalla"}</span></div>
             </div>
           ))}
         </div>
@@ -343,7 +341,7 @@ function CountsPanel({ workspace }: { workspace: InventoryWorkspace }) {
               Estado: row.status,
               __rowDetailTitle: `Conteo en ${row.location}`,
               __rowDetailTone: Math.abs(row.variance) > 0 ? "warn" : "ok",
-              __rowDetailItems: [`Variación ${qty(row.variance)}`, `Responsable ${row.countedBy}`, "Cierre requiere motivo si hay diferencia."],
+              __rowDetailItems: [`Variación ${qty(row.variance)}`, `Responsable ${row.countedBy}`, "Si existe diferencia, el cierre debe incluir un motivo."],
               __rowActionHref: queryHref("/counts", { location: row.location, status: row.status }),
               __rowActionLabel: "Abrir conteo"
             }))}
@@ -397,7 +395,7 @@ function AuditPanel({ workspace }: { workspace: InventoryWorkspace }) {
 
       <section className={styles.workflowPanel}>
         <div className={styles.panelHeader}>
-          <div><span className={styles.kicker}>timeline</span><h2>Movimientos sensibles</h2></div>
+          <div><span className={styles.kicker}>historial</span><h2>Movimientos sensibles</h2></div>
         </div>
         <div className={styles.timelineStack} data-pcinv-timeline="audit">
           {workspace.ledger.slice(0, 20).map((row) => (
@@ -405,15 +403,15 @@ function AuditPanel({ workspace }: { workspace: InventoryWorkspace }) {
               <span className={styles.timelineDot} />
               <div>
                 <strong>{row.movement} · {row.sku}</strong>
-                <span>{row.createdAtLabel} · {row.actor} · {row.source}</span>
-                <p>Antes: {row.beforeQty === null ? "derivado" : qty(row.beforeQty)} · Después: {row.afterQty === null ? "derivado" : qty(row.afterQty)} · Motivo: {row.reason}</p>
+                <span>{row.createdAtLabel} · {row.actor}</span>
+                <p>Antes: {row.beforeQty === null ? "calculado" : qty(row.beforeQty)} · Después: {row.afterQty === null ? "calculado" : qty(row.afterQty)} · Motivo: {row.reason}</p>
               </div>
             </article>
           ))}
         </div>
         <div className={styles.honestBlock} style={{ marginTop: 14 }}>
-          <strong>Acción sensible bloqueada</strong>
-          <p>Corregir inventario desde auditoría requiere endpoint con actor, permiso, motivo, before/after y rollback de negocio.</p>
+          <strong>Corrección no disponible desde esta vista</strong>
+          <p>La auditoría permite revisar el historial. Los cambios de inventario deben realizarse desde una acción autorizada que registre responsable, motivo y valores antes y después.</p>
         </div>
       </section>
     </section>
