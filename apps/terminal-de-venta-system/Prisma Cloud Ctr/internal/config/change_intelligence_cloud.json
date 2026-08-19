@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "prisma.change_intelligence.cloud_center.vertical.v1",
+  "generatedFrom": {
+    "repository": "prismahitech/hitech-os",
+    "baseHead": "d14effee1a1223cc772247ea9d7ec8547dc15c78",
+    "authorityMesh": {
+      "runId": 32156981312,
+      "artifactId": 9332162633,
+      "profile": "ci-cloud-vertical-v3",
+      "result": "PASS_COMPOSED_AUTHORITY_MESH",
+      "requiredAuthorityCoverage": "100%",
+      "layerMapPresent": true
+    }
+  },
+  "product": {
+    "commercialName": "PRISMA Change Intelligence",
+    "internalEngine": "Code Atlas Engine",
+    "category": "Change Intelligence & Agent Assurance",
+    "masterPromise": "Know the system. Control the change. Prove the result.",
+    "identityRule": "Use PRISMA Change Intelligence externally. Keep Code Atlas Engine as the internal technology name."
+  },
+  "maturity": {
+    "engineStatus": "LOCAL_VERIFIED",
+    "engineClassification": "VERIFY",
+    "doNotRebuild": true,
+    "certifiable": false,
+    "productionCertified": false,
+    "paidPilotReady": "NOT_CERTIFIED_BY_CURRENT_EVIDENCE",
+    "humanUsefulness": "NOT_MEASURED",
+    "independentEvaluator": "BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR",
+    "hostedMultiTenant": "NOT_CLAIMED",
+    "enterpriseIam": "NOT_CLAIMED",
+    "legalPrivacyCompliance": "NOT_CLAIMED"
+  },
+  "products": [
+    {
+      "id": "discover",
+      "name": "Discover",
+      "question": "What is actually here?",
+      "promise": "See the truth before you touch the code.",
+      "status": "SOURCE_AVAILABLE_LOCAL_VERIFIED_CORE",
+      "outputs": [
+        "repository reality",
+        "architecture and dependencies",
+        "authority candidates",
+        "ownership and evidence relationships",
+        "critical gaps and unknowns"
+      ]
+    },
+    {
+      "id": "guard",
+      "name": "Guard",
+      "question": "What happens if we change it?",
+      "promise": "Know the blast radius before it becomes an incident.",
+      "status": "SOURCE_AVAILABLE_BOUNDED_EXTERNAL_EVIDENCE",
+      "outputs": [
+        "change readiness",
+        "impact radius",
+        "allowed and protected scope",
+        "required evidence",
+        "PASS, BLOCKED or UNKNOWN"
+      ],
+      "evidenceBoundary": "Historical companion-path recall remains bounded and is not represented as universal coverage."
+    },
+    {
+      "id": "control",
+      "name": "Control",
+      "question": "What may this agent change and how must it prove success?",
+      "promise": "Give AI agents authority, not just context.",
+      "status": "LOCAL_VERIFIED_INDEPENDENT_REPLICATION_BLOCKED",
+      "outputs": [
+        "Agent Authority Pack",
+        "explicit target and allowed scope",
+        "protected boundaries",
+        "compatibility locks",
+        "Verify and Evidence Report"
+      ]
+    }
+  ],
+  "sharedOwners": [
+    {
+      "id": "customer-registration",
+      "capability": "cloud_center.customer_registration_runtime",
+      "maturity": "RUNTIME_VERIFIED",
+      "reuseMode": "REUSE_AS_IS",
+      "doNotRebuild": true,
+      "boundary": "Change Intelligence may reference customer or tenant context through an adapter contract. It must not rebuild customer registration."
+    },
+    {
+      "id": "licensing-contract-alignment",
+      "capability": "licensing.source_contract_alignment",
+      "maturity": "LOCAL_VERIFIED",
+      "reuseMode": "SHARED_OWNER",
+      "doNotRebuild": true,
+      "boundary": "Entitlements may be projected read-only. License mutation remains owned by the existing licensing flows."
+    },
+    {
+      "id": "customer-setup",
+      "capability": "licensing.customer_setup.plan_based_onboarding",
+      "maturity": "LOCAL_VERIFIED",
+      "reuseMode": "SHARED_OWNER",
+      "doNotRebuild": true,
+      "boundary": "Do not repurpose setup codes as repository credentials or authorization."
+    },
+    {
+      "id": "commercial-billing",
+      "capability": "commercial.billing.collections",
+      "maturity": "LOCAL_VERIFIED",
+      "reuseMode": "SHARED_OWNER",
+      "doNotRebuild": true,
+      "boundary": "Pricing and product entitlements may reference the commercial contract. Change Intelligence does not rebuild collections or CFDI."
+    },
+    {
+      "id": "private-repository-rental",
+      "capability": "code_atlas.external_repository_rental_v2",
+      "maturity": "SOURCE_HARDENED_PR299",
+      "reuseMode": "ADAPT",
+      "doNotRebuild": true,
+      "boundary": "Read-only, bounded workspace lifecycle, sanitization before egress, no source-code egress by default, explicit retention and cleanup evidence."
+    },
+    {
+      "id": "change-intelligence-engine",
+      "capability": "code_atlas.change_intelligence.customer_wow_v1",
+      "maturity": "LOCAL_VERIFIED",
+      "reuseMode": "REUSE_AS_IS",
+      "doNotRebuild": true,
+      "boundary": "The Cloud surface consumes engine contracts. It does not duplicate repository discovery, graphs, Authority Pack, Verify or Evidence Report logic."
+    }
+  ],
+  "controlPlane": {
+    "organizationContext": {
+      "status": "SHARED_OWNER_NOT_BOUND_IN_V1",
+      "items": []
+    },
+    "repositories": {
+      "status": "NOT_CONNECTED",
+      "items": [],
+      "nextGate": "Bind a read-only repository registry adapter without storing customer source in the Cloud Center UI layer."
+    },
+    "analysisRuns": {
+      "status": "NOT_CONNECTED",
+      "items": [],
+      "nextGate": "Project real engine run manifests and statuses; do not manufacture demo runs as production evidence."
+    },
+    "authorityPacks": {
+      "status": "NOT_CONNECTED",
+      "items": []
+    },
+    "evidenceReferences": {
+      "status": "NOT_CONNECTED",
+      "items": []
+    },
+    "usageEntitlements": {
+      "status": "SHARED_OWNER_CONTRACT_PENDING",
+      "items": [],
+      "nextGate": "Map Change Intelligence product entitlements onto the existing licensing owner without changing license mutation semantics."
+    },
+    "roi": {
+      "status": "INPUT_DRIVEN_NO_ESTIMATE",
+      "currency": "MXN",
+      "monthlyBenefitFormula": "Discovery + Rework + Agent Supervision + Release/Evidence",
+      "netMonthlyValueFormula": "Measured Monthly Benefit - Price",
+      "roiPercentFormula": "(Measured Monthly Benefit - Price) / Price * 100",
+      "requiredCustomerInputs": [
+        "loaded engineering cost",
+        "discovery hours saved",
+        "avoided rework events and hours",
+        "agent review minutes saved",
+        "release or evidence hours saved"
+      ]
+    }
+  },
+  "commercialReference": {
+    "foundingPilotMxn": 9900,
+    "foundingGuardMonthlyMxn": 6900,
+    "foundingGuardMonths": 3,
+    "standardGuardTargetMonthlyMxn": 12500,
+    "maturePilotTargetMxn": 35000,
+    "controlDesignPartnerMonthlyRangeMxn": [25000, 40000],
+    "pricingEvidenceRule": "These values are commercial hypotheses or founding terms as documented. Do not present future targets as proven willingness-to-pay."
+  },
+  "safety": {
+    "readOnlyDefault": true,
+    "sourceCodeEgressDefault": false,
+    "failClosed": true,
+    "noFakeGreen": true,
+    "unknownRemainsUnknown": true,
+    "impactRadiusIsNotAuthorization": true,
+    "retrievalIsNotProof": true,
+    "derivedIndexIsNotAuthority": true,
+    "noFrontendSecrets": true,
+    "noCloudflareOrD1MutationFromThisSurface": true,
+    "noProcessOrPortMutation": true,
+    "noHostedMultiTenantClaim": true,
+    "noProductionCertificationClaim": true
+  },
+  "sourceRefs": [
+    "tools/code-atlas/README.md",
+    "tools/code-atlas/src/code_atlas/intelligence/",
+    "tools/code-atlas/src/code_atlas/change_intelligence/",
+    "apps/terminal-de-venta-system/docs/business/PRISMA_CHANGE_INTELLIGENCE_COMMERCIAL_LEDGER.md",
+    "apps/terminal-de-venta-system/Prisma Cloud Ctr/ARCHITECTURE.md",
+    "apps/terminal-de-venta-system/Prisma Cloud Ctr/SECURITY.md",
+    "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+    "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+  ]
+}
