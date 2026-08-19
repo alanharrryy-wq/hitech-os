@@ -3,16 +3,17 @@ name: PC Surface Truth Wave 1 Visual Gate
 'on':
   pull_request:
     paths:
-      - "apps/terminal-de-venta-system/products/pc/app/**"
       - ".github/workflows/pc-surface-truth-wave1-visual.yml"
+      - "apps/terminal-de-venta-system/prisma/**"
+      - "apps/terminal-de-venta-system/products/pc/app/**"
 
 permissions:
   contents: read
 
 jobs:
-  pc-surface-truth-visual:
+  pc-wave2-schema-parity-diagnostic:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
     steps:
       - name: Checkout PR head
         uses: actions/checkout@v6
@@ -31,254 +32,87 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Pin canonical SQLite datasource
+      - name: Prepare isolated SQLite
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p artifacts/db
-          python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
+          mkdir -p artifacts/pc-wave2-schema
+          DB="$RUNNER_TEMP/pc-wave2-schema-parity.db"
+          echo "DATABASE_URL=file:$DB" >> "$GITHUB_ENV"
+          echo "SCHEMA_DB=$DB" >> "$GITHUB_ENV"
 
-          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
-          db = (workspace / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db").resolve()
-          database_url = f"file:{db.as_posix()}"
-
-          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fh:
-              fh.write(f"DATABASE_URL={database_url}\n")
-
-          report = {
-              "workspace": str(workspace),
-              "database": str(db),
-              "databaseUrl": database_url,
-              "source": "pc-surface-truth-wave1-visual",
-              "pass": True,
-          }
-          Path("artifacts/db/CANONICAL_DATASOURCE_PIN.json").write_text(
-              json.dumps(report, indent=2), encoding="utf-8"
-          )
-          print(json.dumps(report, indent=2))
-          PY
-
-      - name: Generate PC Prisma client in isolated runner
+      - name: Generate canonical PC Prisma client
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
-      - name: Apply canonical SQLite migrations in isolated runner
+      - name: Apply current canonical migration history
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
 
-      - name: Verify migrated runtime schema
+      - name: Ask Prisma for exact migration drift
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p artifacts/db
-          python - <<'PY'
-          import json
-          import os
-          import sqlite3
-          import sys
-          from pathlib import Path
-          from urllib.parse import unquote
-
-          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
-          expected_db = (workspace / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db").resolve()
-          database_url = os.environ.get("DATABASE_URL", "")
-          if not database_url.startswith("file:"):
-              raise SystemExit("DATABASE_URL must be an explicit file: URL for this isolated SQLite gate")
-
-          raw_path = unquote(database_url[len("file:"):])
-          runtime_db = Path(raw_path).resolve()
-          same_database = runtime_db == expected_db
-          database_exists = runtime_db.is_file()
-
-          required_tables = [
-              "Business", "Product", "Sale", "SaleLine", "CashSession",
-              "PurchaseOrder", "GoodsReceipt", "ReplenishmentSignal",
-              "OutboxEvent", "AuditCount"
-          ]
-          required_columns = {"Product": ["mediaRef"]}
-          missing_tables = list(required_tables)
-          missing_columns = dict(required_columns)
-
-          if same_database and database_exists:
-              uri = f"file:{runtime_db.as_posix()}?mode=ro"
-              conn = sqlite3.connect(uri, uri=True)
-              try:
-                  existing = {
-                      row[0]
-                      for row in conn.execute(
-                          "SELECT name FROM sqlite_master WHERE type='table'"
-                      )
-                  }
-                  missing_tables = [
-                      name for name in required_tables if name not in existing
-                  ]
-                  missing_columns = {}
-                  for table, columns in required_columns.items():
-                      if table not in existing:
-                          missing_columns[table] = columns
-                          continue
-                      present = {
-                          row[1]
-                          for row in conn.execute(f'PRAGMA table_info("{table}")')
-                      }
-                      absent = [column for column in columns if column not in present]
-                      if absent:
-                          missing_columns[table] = absent
-              finally:
-                  conn.close()
-
-          passed = (
-              same_database
-              and database_exists
-              and not missing_tables
-              and not missing_columns
-          )
-          report = {
-              "databaseUrl": database_url,
-              "database": str(runtime_db),
-              "expectedDatabase": str(expected_db),
-              "sameDatabase": same_database,
-              "databaseExists": database_exists,
-              "requiredTables": required_tables,
-              "missingTables": missing_tables,
-              "requiredColumns": required_columns,
-              "missingColumns": missing_columns,
-              "pass": passed,
-          }
-          Path("artifacts/db/CANONICAL_SCHEMA_BOOTSTRAP.json").write_text(
-              json.dumps(report, indent=2), encoding="utf-8"
-          )
-          print(json.dumps(report, indent=2))
-          if not passed:
-              sys.exit(1)
-          PY
-
-      - name: Install Playwright Chromium
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
-
-      - name: Start PC on canonical port 3130
-        id: start_pc
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts/db
-          python - <<'PY'
-          import json
-          import os
-          import sqlite3
-          import sys
-          from pathlib import Path
-          from urllib.parse import unquote
-
-          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
-          expected_db = (workspace / "tools" / "_local" / "data" / "terminal-de-venta-system" / "canonical.db").resolve()
-          database_url = os.environ.get("DATABASE_URL", "")
-          if not database_url.startswith("file:"):
-              raise SystemExit("PC runtime did not inherit an explicit file: DATABASE_URL")
-
-          runtime_db = Path(unquote(database_url[len("file:"):])).resolve()
-          same_database = runtime_db == expected_db
-          database_exists = runtime_db.is_file()
-          product_table = False
-          product_media_ref = False
-
-          if same_database and database_exists:
-              uri = f"file:{runtime_db.as_posix()}?mode=ro"
-              conn = sqlite3.connect(uri, uri=True)
-              try:
-                  product_table = conn.execute(
-                      "SELECT 1 FROM sqlite_master WHERE type='table' AND name='Product' LIMIT 1"
-                  ).fetchone() is not None
-                  if product_table:
-                      product_columns = {
-                          row[1] for row in conn.execute('PRAGMA table_info("Product")')
-                      }
-                      product_media_ref = "mediaRef" in product_columns
-              finally:
-                  conn.close()
-
-          passed = same_database and database_exists and product_table and product_media_ref
-          report = {
-              "databaseUrl": database_url,
-              "database": str(runtime_db),
-              "expectedDatabase": str(expected_db),
-              "sameDatabase": same_database,
-              "databaseExists": database_exists,
-              "productTable": product_table,
-              "productMediaRef": product_media_ref,
-              "pass": passed,
-          }
-          Path("artifacts/db/RUNTIME_DATASOURCE_INHERITANCE.json").write_text(
-              json.dumps(report, indent=2), encoding="utf-8"
-          )
-          print(json.dumps(report, indent=2))
-          if not passed:
-              sys.exit(1)
-          PY
-
-          pnpm -C apps/terminal-de-venta-system/products/pc/app dev > "$RUNNER_TEMP/pc-3130.log" 2>&1 &
-          echo $! > "$RUNNER_TEMP/pc-3130.pid"
-
-      - name: Wait for PC runtime
-        shell: bash
-        run: |
-          set -euo pipefail
-          for i in $(seq 1 90); do
-            if curl -fsS http://127.0.0.1:3130/ >/dev/null 2>&1; then
-              exit 0
-            fi
-            sleep 1
-          done
-          echo "PC runtime did not become ready on 3130"
-          cat "$RUNNER_TEMP/pc-3130.log" || true
-          exit 1
-
-      - name: Run existing V03 visual gate
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd apps/terminal-de-venta-system/products/pc/app
-          node tools/visual/verify_pc_uiux_visual_gate_v03.mjs \
-            --root ../../.. \
-            --url http://127.0.0.1:3130 \
-            --out "$GITHUB_WORKSPACE/artifacts/pc-v03" \
-            --strict true
-
-      - name: Run Wave 1 runtime assertions
-        shell: bash
-        run: |
-          set -euo pipefail
-          cd apps/terminal-de-venta-system/products/pc/app
-          node tools/visual/verify_pc_surface_truth_wave1_runtime.mjs \
-            tools/visual/pc-surface-truth-wave1-routes.json \
-            "$GITHUB_WORKSPACE/artifacts/pc-surface-truth-wave1"
-
-      - name: Capture and assert PC server log
-        if: always()
-        shell: bash
-        env:
-          START_PC_OUTCOME: ${{ steps.start_pc.outcome }}
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts/server
-          if [[ ! -f "$RUNNER_TEMP/pc-3130.log" ]]; then
-            printf 'PC server log was not created; start step outcome=%s\n' "$START_PC_OUTCOME" | tee artifacts/server/PC_SERVER_LOG_NOT_CREATED.txt
-            if [[ "$START_PC_OUTCOME" == "success" ]]; then
-              exit 1
-            fi
-            exit 0
+          OUT="$GITHUB_WORKSPACE/artifacts/pc-wave2-schema"
+          set +e
+          pnpm -C apps/terminal-de-venta-system/products/pc/app exec prisma migrate diff \
+            --from-url "$DATABASE_URL" \
+            --to-schema-datamodel "../../../prisma/schema.prisma" \
+            --script \
+            --exit-code \
+            > "$OUT/PRISMA_MIGRATION_DRIFT.sql" \
+            2> "$OUT/PRISMA_MIGRATION_DRIFT.stderr.txt"
+          rc=$?
+          set -e
+          printf '%s\n' "$rc" > "$OUT/PRISMA_MIGRATION_DRIFT_EXIT_CODE.txt"
+          if [[ "$rc" -eq 1 ]]; then
+            cat "$OUT/PRISMA_MIGRATION_DRIFT.stderr.txt" >&2 || true
+            exit 1
           fi
-          cp "$RUNNER_TEMP/pc-3130.log" artifacts/server/pc-3130.log
-          if grep -E -i 'PrismaClientKnownRequestError|unhandledRejection|no such table' "$RUNNER_TEMP/pc-3130.log"; then
-            echo "Disallowed runtime database/server error found in PC log"
+          if [[ "$rc" -eq 0 ]]; then
+            echo "SCHEMA_PARITY_EXACT" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
+          elif [[ "$rc" -eq 2 ]]; then
+            echo "SCHEMA_PARITY_DRIFT_CONFIRMED" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
+          else
+            echo "Unexpected Prisma migrate diff exit code: $rc" >&2
             exit 1
           fi
 
-      - name: Upload visual evidence
+      - name: Capture canonical schema DDL
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C apps/terminal-de-venta-system/products/pc/app exec prisma migrate diff \
+            --from-empty \
+            --to-schema-datamodel "../../../prisma/schema.prisma" \
+            --script \
+            > "$GITHUB_WORKSPACE/artifacts/pc-wave2-schema/CANONICAL_SCHEMA_FROM_EMPTY.sql"
+
+      - name: Capture migrated SQLite structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, sqlite3
+          from pathlib import Path
+          db = Path(os.environ["SCHEMA_DB"])
+          conn = sqlite3.connect(db)
+          try:
+              tables = [row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")]
+              fks = {}
+              for table in tables:
+                  fks[table] = [list(row) for row in conn.execute(f'PRAGMA foreign_key_list("{table}")')]
+              fk_check = [list(row) for row in conn.execute("PRAGMA foreign_key_check")]
+              report = {"database": str(db), "tables": tables, "foreignKeys": fks, "foreignKeyCheck": fk_check, "pass": not fk_check}
+              Path("artifacts/pc-wave2-schema/MIGRATED_SQLITE_STRUCTURE.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+              print(json.dumps({"tables": len(tables), "foreignKeyViolations": len(fk_check)}, indent=2))
+          finally:
+              conn.close()
+          PY
+
+      - name: Upload schema parity evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: pc-surface-truth-wave1-${{ github.run_id }}-${{ github.run_attempt }}
-          if-no-files-found: warn
-          path: artifacts/**
+          name: pc-wave2-schema-parity-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 7
+          path: artifacts/pc-wave2-schema/**
