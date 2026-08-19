@@ -45,6 +45,7 @@ const outbox = readApp("src/server/pos-outbox/index.ts");
 const operationalGate = readApp("src/lib/operational-gate/can-sell.ts");
 const pcOrigin = readApp("src/server/sync/pc-origin.ts");
 const dispatcher = readApp("src/server/sync/dispatcher.ts");
+const posSyncPanel = readApp("src/server/pos-sync-panel/index.ts");
 const licenseNormalizer = readTerminal("shared/licensing/license-normalizer.ts");
 const licenseResolver = readTerminal("shared/licensing/feature-resolver.ts");
 
@@ -155,6 +156,39 @@ check(
     dispatcher.includes("idempotencyKey") &&
     dispatcher.includes('result.status === "conflict"') &&
     dispatcher.includes('status: "acked"')
+);
+
+check(
+  "automatic retry excludes conflict and preserves review semantics",
+  posSyncPanel.includes('canRetry: status === "pending" || status === "failed"') &&
+    !posSyncPanel.includes('canRetry: status === "pending" || status === "failed" || status === "conflict"')
+);
+const retryBody = functionBody(posSyncPanel, "requestPendingRetry");
+check(
+  "retry mutation cannot turn conflict into pending",
+  retryBody.includes("const states: string[] = []") &&
+    retryBody.includes('states.push("failed", "FAILED")') &&
+    retryBody.includes('states.push("pending", "PENDING")') &&
+    !retryBody.includes('"conflict"') &&
+    !retryBody.includes("remoteConflictCode") &&
+    !retryBody.includes("remoteRejectedReason")
+);
+check(
+  "UI retry action is failed-only while conflict remains review-only",
+  screen.includes("const retryableCount = panelConfirmed && panel ? panel.summary.failed : 0") &&
+    !screen.includes("panel.summary.failed + panel.summary.conflict") &&
+    screen.includes('item.status === "conflict" ? <em>Revisión requerida</em>')
+);
+check(
+  "sent truth is first-class in customer KPI projection",
+  screen.includes("<span>Enviados</span>") &&
+    screen.includes("queueMetric(panel?.summary.sent)") &&
+    screen.includes("Esperando confirmación")
+);
+check(
+  "customer-safe provenance uses stored timestamp without raw IDs",
+  screen.includes("Guardado {createdAtLabel(item.createdAt)}") &&
+    !screen.includes("{item.eventId}")
 );
 check("fix does not introduce !important", !route.includes("!important") && !screen.includes("!important"));
 
