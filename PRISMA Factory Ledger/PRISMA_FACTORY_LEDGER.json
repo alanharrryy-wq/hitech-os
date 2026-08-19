@@ -719,6 +719,51 @@
         "make PC availability a prerequisite for local Tablet selling",
         "claim DB-backed route E2E or catalog mutation certification from PR #298 evidence"
       ]
+    },
+    {
+      "id": "ci.cloud.repository_projection",
+      "displayName": "PRISMA Change Intelligence read-only repository projection",
+      "domain": "change_intelligence",
+      "surfaces": [
+        "cloud_center",
+        "change_intelligence",
+        "governance",
+        "quality"
+      ],
+      "classification": "BUILD",
+      "status": "NOT_STARTED",
+      "stateLabel": "P1_CANONICAL_REGISTERED_PRE_MERGE_NOT_STARTED",
+      "doNotRebuild": false,
+      "nextGate": "Reconcile open PR #314 against the current main branch under the universal Factory Ledger anti-rework gate, a fresh exact-task Authority Mesh, Change Intelligence source/runtime authority, and all normal repository checks before merge. Merge remains separately operator-authorized.",
+      "evidence": [
+        "PR #314 candidate implementation remains unmerged",
+        "P1 implementation Authority Mesh run 32233951337 artifact 9358279345",
+        "P1 verifier Authority Mesh run 32236858006 artifact 9359312907",
+        "P1 candidate exact-head runtime run 32237265140 artifact 9359494563",
+        "Canonical registration Authority Mesh profile ci-p1-canonical-registration-v1b run 32239843175 artifact 9360384594 sha256:1210d9969c3bd656c0898bc13b1c9d5a91ab7832af6142d7a85eafde71c21324"
+      ],
+      "doesNotProve": [
+        "PR #314 source merged into main",
+        "Repository permission persists after the captured authorization snapshot",
+        "Authorization for repositories other than the explicitly evidenced repository",
+        "Hosted multi-tenant repository execution",
+        "Private-repository production readiness",
+        "Paid-pilot readiness",
+        "Production or enterprise certification",
+        "Human usefulness measurement",
+        "Successful independent-agent replication"
+      ],
+      "allowedActions": [
+        "verify the canonical registration",
+        "reconcile PR #314 against current main under fresh exact authority",
+        "build only the bounded repository projection authorized by the next gate"
+      ],
+      "forbiddenActions": [
+        "promote this capability to DONE before merged source and post-merge evidence exist",
+        "rebuild Code Atlas repository discovery or private-repository rental owners",
+        "store repository credentials, tokens, clone URLs, SSH URLs, local checkout paths or source content in the browser projection",
+        "claim hosted, enterprise, production, paid-pilot, human-usefulness or independent-agent readiness from this registration"
+      ]
     }
   ],
   "updatedAt": "2026-08-19T03:53:42-06:00"
