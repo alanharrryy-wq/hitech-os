@@ -41,46 +41,54 @@ function humanSurface(value: unknown) {
   return raw ? "Equipo" : "No disponible";
 }
 
-function customerTableText(value: string) {
+function customerText(value: string) {
   return value
+    .replace(/Prisma Original Customer/gi, "tu negocio")
     .replace(/lifecycle/gi, "resultado")
     .replace(/checkpoint/gi, "avance")
     .replace(/outbox/gi, "pendientes")
     .replace(/heartbeat/gi, "conexión")
-    .replace(/payload/gi, "detalle");
+    .replace(/payload/gi, "detalle")
+    .replace(/canonical/gi, "principal")
+    .replace(/canonico/gi, "principal")
+    .replace(/canónico/gi, "principal");
+}
+
+function customerCell(value: CommandTableRow[string]): CommandTableRow[string] {
+  if (typeof value === "string") return customerText(value);
+  if (Array.isArray(value)) return value.map((item) => customerText(item));
+  return value;
 }
 
 function wave2CustomerTable(path: string, table: CommandTable): CommandTable {
   const hidden = path === "/devices"
-    ? new Set(["Fuente", "Modo"])
+    ? new Set(["Fuente", "Modo", "Dispositivo", "ID", "Id", "Código"])
     : new Set(["Fuente", "Evento", "Agregado", "Dispositivo", "Terminal", "Código", "ID", "Id", "Topic", "Tópico"]);
   const columns = table.columns.filter((column) => !hidden.has(column));
-  const rows = table.rows.map((row, rowIndex) => {
+  const rows = table.rows.map((row) => {
     const projected: CommandTableRow = {};
     for (const column of columns) {
       const value = row[column];
-      if (column === "Dispositivo") {
-        projected[column] = `Equipo ${rowIndex + 1}`;
-      } else if (column === "Superficie") {
+      if (column === "Superficie") {
         projected[column] = humanSurface(value);
       } else {
-        projected[column] = value;
+        projected[column] = customerCell(value);
       }
     }
     const href = typeof row.__rowActionHref === "string" && !row.__rowActionHref.startsWith("/api/") ? row.__rowActionHref : undefined;
     if (href) {
       projected.__rowActionHref = href;
-      projected.__rowActionLabel = row.__rowActionLabel || "Abrir detalle";
+      projected.__rowActionLabel = customerText(row.__rowActionLabel || "Abrir detalle");
     }
     return projected;
   });
   return {
     ...table,
-    title: customerTableText(table.title),
-    caption: customerTableText(table.caption),
+    title: customerText(table.title),
+    caption: customerText(table.caption),
     columns,
     rows,
-    emptyMessage: customerTableText(table.emptyMessage)
+    emptyMessage: customerText(table.emptyMessage)
   };
 }
 
@@ -94,8 +102,28 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
   }
 
   const wave2CustomerSurface = model.currentPath === "/sync" || model.currentPath === "/devices";
+  const visibleTitle = wave2CustomerSurface ? customerText(model.title) : model.title;
+  const visibleDescription = wave2CustomerSurface ? customerText(model.description) : model.description;
+  const visibleMetrics = wave2CustomerSurface
+    ? model.metrics.map((metric) => ({
+        ...metric,
+        label: customerText(metric.label),
+        value: customerText(metric.value),
+        note: customerText(metric.note)
+      }))
+    : model.metrics;
+  const visiblePanels = wave2CustomerSurface
+    ? model.panels.map((panel) => ({ ...panel, title: customerText(panel.title), body: customerText(panel.body) }))
+    : model.panels;
   const visibleActions = wave2CustomerSurface
-    ? (model.actions ?? []).filter((action) => action.method === "POST" || !action.href.startsWith("/api/"))
+    ? (model.actions ?? [])
+        .filter((action) => action.method === "POST" || !action.href.startsWith("/api/"))
+        .map((action) => ({
+          ...action,
+          label: customerText(action.label),
+          disabledReason: action.disabledReason ? customerText(action.disabledReason) : undefined,
+          successMessage: action.successMessage ? customerText(action.successMessage) : undefined
+        }))
     : (model.actions ?? []);
   const visibleTables = wave2CustomerSurface
     ? model.tables.map((table) => wave2CustomerTable(model.currentPath, table))
@@ -107,8 +135,8 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
         <div className="hero-header">
           <div className="hero-copy">
             <div className="kicker">{model.kicker}</div>
-            <h1 className="hero-title">{model.title}</h1>
-            <p>{model.description}</p>
+            <h1 className="hero-title">{visibleTitle}</h1>
+            <p>{visibleDescription}</p>
           </div>
           <div className="inline-list">
             {wave2CustomerSurface ? null : <span className="chip">PC gobierna</span>}
@@ -138,12 +166,12 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
       ) : null}
 
       <section className="dashboard-grid">
-        {model.metrics.map((metric) => <MetricCard key={metric.label} metric={metric} />)}
+        {visibleMetrics.map((metric) => <MetricCard key={metric.label} metric={metric} />)}
       </section>
 
-      {model.panels.length ? (
+      {visiblePanels.length ? (
         <section className="grid">
-          {model.panels.map((panel) => <Panel key={panel.title} panel={panel} />)}
+          {visiblePanels.map((panel) => <Panel key={panel.title} panel={panel} />)}
         </section>
       ) : null}
 
