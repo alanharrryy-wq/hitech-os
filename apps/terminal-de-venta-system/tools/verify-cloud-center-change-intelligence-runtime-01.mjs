@@ -13,11 +13,11 @@ const evidenceDir = process.env.PCI_EVIDENCE_DIR || 'pci-runtime-evidence';
 const repoRoot = process.env.PCI_REPO_ROOT || process.cwd();
 const expectedRepository = process.env.PCI_EXPECTED_REPOSITORY || 'prismahitech/hitech-os';
 const target = `${baseUrl}/internal/web/change_intelligence_center.html`;
-const expectedHealthUrl = `${baseUrl}/api/health`;
 const runtimeUrl = `${baseUrl}/api/command-center/change-intelligence/repository`;
 const expectedViews = ['overview','repositories','runs','discover','guard','control','authority','evidence','roi','entitlements'];
 const expectedHead = String(process.env.PCI_EXPECTED_HEAD || execFileSync('git', ['-C', repoRoot, 'rev-parse', 'HEAD'], { encoding: 'utf8' })).trim().toLowerCase();
 const expectedTree = String(process.env.PCI_EXPECTED_TREE || execFileSync('git', ['-C', repoRoot, 'rev-parse', 'HEAD^{tree}'], { encoding: 'utf8' })).trim().toLowerCase();
+const runtimeTimeoutMs = Number(process.env.PCI_RUNTIME_TIMEOUT_MS || 300000);
 
 await fs.mkdir(evidenceDir, { recursive: true });
 
@@ -75,9 +75,22 @@ function verifyRuntimeEnvelope(runtime, name) {
   assert(runtime?.provenance?.runtimeEnvelope === true, `${name}: runtimeEnvelope marker missing`);
   assert(runtime?.provenance?.rawContextExposed === false, `${name}: raw context exposure marker drift`);
   assert(runtime?.readiness?.sourceFactsAvailable === true, `${name}: source facts unavailable`);
-  const forbidden = collectForbidden(runtime);
-  assert(forbidden.length === 0, `${name}: forbidden runtime fields leaked: ${forbidden.join(', ')}`);
-  return forbidden;
+  const forbiddenRuntimeFields = collectForbidden(runtime);
+  assert(forbiddenRuntimeFields.length === 0, `${name}: forbidden runtime fields leaked: ${forbiddenRuntimeFields.join(', ')}`);
+  return forbiddenRuntimeFields;
+}
+
+async function requestRuntime(request, name) {
+  const response = await request.get(runtimeUrl, { timeout: runtimeTimeoutMs });
+  let payload = null;
+  try {
+    payload = await response.json();
+  } catch (_) {
+    payload = { parseError: true, text: await response.text().catch(() => '') };
+  }
+  assert(response.ok(), `${name}: runtime endpoint HTTP ${response.status()} payload=${JSON.stringify(payload)}`);
+  const forbiddenRuntimeFields = verifyRuntimeEnvelope(payload, name);
+  return { runtime: payload, forbiddenRuntimeFields };
 }
 
 const browser = await chromium.launch({ headless: true });
@@ -101,12 +114,18 @@ async function verifyProfile(name, viewport) {
     if (url.startsWith(baseUrl) && response.status() >= 400) badResponses.push({ url, status: response.status() });
   });
 
-  const response = await page.goto(target, { waitUntil: 'networkidle', timeout: 120000 });
+  // Warm and verify the canonical runtime projection before navigation. The
+  // first Code Atlas scan may legitimately take longer than browser network-idle.
+  const { runtime, forbiddenRuntimeFields } = await requestRuntime(context.request, `${name}:prewarm`);
+
+  const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
   assert(response && response.ok(), `${name}: document HTTP ${response?.status() ?? 'NO_RESPONSE'}`);
   await page.waitForSelector('body.pci-surface', { timeout: 10000 });
   await page.waitForSelector('style[data-pci-style="v1"]', { state: 'attached', timeout: 10000 });
   await page.waitForFunction(() => document.documentElement.dataset.pciState && document.documentElement.dataset.pciState !== 'booting');
-  await page.waitForFunction(() => document.documentElement.dataset.pciRepositoryRuntime === 'received', null, { timeout: 120000 });
+  await page.waitForFunction(() => ['received', 'snapshot-fallback'].includes(document.documentElement.dataset.pciRepositoryRuntime), null, { timeout: 30000 });
+  const repositoryRuntimeState = await page.evaluate(() => document.documentElement.dataset.pciRepositoryRuntime);
+  assert(repositoryRuntimeState === 'received', `${name}: browser repository runtime state ${repositoryRuntimeState}`);
 
   const configResponse = await page.request.get(`${baseUrl}/internal/config/change_intelligence_cloud.json`);
   assert(configResponse.ok(), `${name}: governed config HTTP ${configResponse.status()}`);
@@ -117,10 +136,9 @@ async function verifyProfile(name, viewport) {
   assert(config?.controlPlane?.authorityPacks?.status === 'NOT_CONNECTED', `${name}: P3 authorityPacks must remain NOT_CONNECTED`);
   assert(config?.controlPlane?.evidenceReferences?.status === 'NOT_CONNECTED', `${name}: P3 evidenceReferences must remain NOT_CONNECTED`);
 
-  const runtimeResponse = await page.request.get(runtimeUrl, { timeout: 120000 });
-  assert(runtimeResponse.ok(), `${name}: runtime endpoint HTTP ${runtimeResponse.status()}`);
-  const runtime = await runtimeResponse.json();
-  const forbiddenRuntimeFields = verifyRuntimeEnvelope(runtime, name);
+  const cachedRuntime = await page.request.get(runtimeUrl, { timeout: 30000 });
+  assert(cachedRuntime.ok(), `${name}: cached runtime endpoint HTTP ${cachedRuntime.status()}`);
+  verifyRuntimeEnvelope(await cachedRuntime.json(), `${name}:cached`);
 
   const navViews = await page.locator('[data-pci-view]').evaluateAll(nodes => nodes.map(n => n.getAttribute('data-pci-view')));
   const missingViews = expectedViews.filter(view => !navViews.includes(view));
@@ -157,7 +175,7 @@ async function verifyProfile(name, viewport) {
     viewport,
     documentStatus: response.status(),
     pciState: await page.evaluate(() => document.documentElement.dataset.pciState),
-    repositoryRuntimeState: await page.evaluate(() => document.documentElement.dataset.pciRepositoryRuntime),
+    repositoryRuntimeState,
     navViews,
     hostChipText,
     runtime: {
@@ -186,7 +204,7 @@ async function verifyFallback() {
   const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', err => pageErrors.push(String(err)));
-  const response = await page.goto(`${target}#repositories`, { waitUntil: 'networkidle', timeout: 30000 });
+  const response = await page.goto(`${target}#repositories`, { waitUntil: 'domcontentloaded', timeout: 30000 });
   assert(response && response.ok(), `fallback: document HTTP ${response?.status() ?? 'NO_RESPONSE'}`);
   await page.waitForFunction(() => document.documentElement.dataset.pciRepositoryRuntime === 'snapshot-fallback', null, { timeout: 15000 });
   const text = await page.locator('#pciContent').innerText();
