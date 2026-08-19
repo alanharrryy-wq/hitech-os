@@ -48,7 +48,7 @@ async function verifyProfile(name, viewport) {
   if (!response || !response.ok()) throw new Error(`${name}: document HTTP ${response?.status() ?? 'NO_RESPONSE'}`);
 
   await page.waitForSelector('body.pci-surface', { timeout: 10000 });
-  await page.waitForSelector('style[data-pci-style="v1"]', { timeout: 10000 });
+  await page.waitForSelector('style[data-pci-style="v1"]', { state: 'attached', timeout: 10000 });
   await page.waitForFunction(() => document.documentElement.dataset.pciState && document.documentElement.dataset.pciState !== 'booting');
 
   const configResponse = await page.request.get(`${baseUrl}/internal/config/change_intelligence_cloud.json`);
