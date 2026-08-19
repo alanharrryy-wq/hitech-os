@@ -67,8 +67,9 @@ body.pci-surface{min-height:100%;margin:0;color:var(--pci-text);font-family:Inte
 .pci-main{min-width:0;display:grid;gap:16px}
 .pci-hero,.pci-card,.pci-loading-card,.pci-alert{position:relative;overflow:hidden;min-width:0;border:1px solid var(--pci-line);border-radius:var(--pci-radius-lg);background:radial-gradient(circle at 12% 0%,rgba(143,225,255,.055),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.052),rgba(255,255,255,.014)),rgba(15,31,50,.20);box-shadow:var(--pci-shadow);backdrop-filter:blur(2px) saturate(108%) contrast(102%);-webkit-backdrop-filter:blur(2px) saturate(108%) contrast(102%)}
 .pci-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end;padding:clamp(20px,3vw,30px)}
+.pci-hero-copy-wrap{min-width:0}
 .pci-eyebrow{margin:0 0 6px}
-.pci-hero h1{margin:0;max-width:980px;font-size:clamp(36px,5vw,78px);line-height:.92;letter-spacing:0;text-shadow:0 1px 0 rgba(0,0,0,.36),0 0 6px rgba(255,255,255,.20),0 0 18px rgba(120,235,255,.55)}
+.pci-hero h1{margin:0;max-width:980px;font-size:clamp(36px,5vw,78px);line-height:.92;letter-spacing:0;overflow-wrap:anywhere;text-shadow:0 1px 0 rgba(0,0,0,.36),0 0 6px rgba(255,255,255,.20),0 0 18px rgba(120,235,255,.55)}
 .pci-hero-copy{max-width:860px;margin:12px 0 0;color:var(--pci-soft);font-size:15px;line-height:1.6}
 .pci-hero-seal{min-width:210px;display:grid;gap:5px;text-align:right}
 .pci-hero-seal span,.pci-hero-seal small{color:var(--pci-muted);font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
