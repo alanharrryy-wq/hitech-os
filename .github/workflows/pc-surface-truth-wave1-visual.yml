@@ -65,12 +65,14 @@ jobs:
           rc=$?
           set -e
           printf '%s\n' "$rc" > "$OUT/PRISMA_MIGRATION_DRIFT_EXIT_CODE.txt"
-          if [[ "$rc" -eq 1 ]]; then
+          if [[ "$rc" -eq 0 ]]; then
+            echo "SCHEMA_PARITY_EXACT" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
+          elif [[ "$rc" -eq 2 ]]; then
+            echo "SCHEMA_PARITY_DRIFT_CONFIRMED" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
+          else
             cat "$OUT/PRISMA_MIGRATION_DRIFT.stderr.txt" >&2 || true
             exit 1
           fi
-          [[ "$rc" -eq 2 ]] && echo "SCHEMA_PARITY_DRIFT_CONFIRMED" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
-          [[ "$rc" -eq 0 ]] && echo "SCHEMA_PARITY_EXACT" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
 
       - name: Capture canonical schema DDL
         shell: bash
