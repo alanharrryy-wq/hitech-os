@@ -36,7 +36,7 @@
     "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
     "prebuild": "pnpm run verify:zero-important",
     "pretypecheck": "pnpm run verify:zero-important",
-    "predev": "pnpm run verify:zero-important",
+    "predev": "pnpm run verify:zero-important && pnpm run verify:pc-customer-experience-wave2",
     "predev:turbopack": "pnpm run verify:zero-important",
     "verify:pcfunc-dropdowns": "node tools/verify_pcfunc_dropdowns_2406.mjs",
     "dev:webpack": "next dev --webpack -p 3130",
