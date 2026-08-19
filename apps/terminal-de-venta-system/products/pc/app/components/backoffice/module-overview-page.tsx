@@ -18,13 +18,86 @@ function settingsMetricNote(note: string) {
     .replace(/ disponibles\.?$/i, ".");
 }
 
+function FrozenWave1Overview({ overview, children }: { overview: BackofficeModuleOverview; children?: ReactNode }) {
+  return (
+    <AppShell currentPath={overview.route}>
+      <section className="hero">
+        <div className="hero-header">
+          <div className="hero-copy">
+            <div className="kicker">{overview.eyebrow}</div>
+            <h1 className="hero-title">{overview.title}</h1>
+            <p>{overview.description}</p>
+          </div>
+          <div className="inline-list">
+            <span className="chip">Panel administrativo</span>
+            <span className="chip">Persistencia: {persistenceLabel(overview.meta.persistence)}</span>
+          </div>
+        </div>
+        <div className="hero-badges">
+          <span className="alert-chip">Tablet vende local</span>
+          <span className="alert-chip">Eventos son verdad operacional</span>
+          <span className="alert-chip">Sin datos falsos</span>
+        </div>
+      </section>
+
+      {overview.meta.warnings.length ? (
+        <div className="alert-strip">
+          <strong>Limitación visible</strong>
+          <span className="subtle">{overview.meta.warnings[0]}</span>
+        </div>
+      ) : null}
+
+      <section className="dashboard-grid">
+        {overview.metrics.map((metric) => (
+          <article key={metric.label} className="card metric-card">
+            <div className="kicker">indicador</div>
+            <div className="card-title">{metric.label}</div>
+            <div className="metric">{metric.value}</div>
+            <div className="metric-note">{metric.note}</div>
+          </article>
+        ))}
+      </section>
+
+      <section className="card">
+        <div className="section-head">
+          <div>
+            <div className="kicker">vista consolidada</div>
+            <h2 className="section-title">{overview.table.title}</h2>
+            <div className="section-copy">Lectura administrativa; no ejecuta venta ni condiciona el POS Tablet.</div>
+          </div>
+        </div>
+        {overview.table.columns.length ? (
+          <DataTable columns={overview.table.columns} rows={overview.table.rows} emptyMessage={overview.table.emptyMessage} />
+        ) : (
+          <EmptyState title="Aún no hay eventos consolidados." description={overview.table.emptyMessage} />
+        )}
+      </section>
+
+      <section className="card">
+        <div className="section-head">
+          <div>
+            <div className="kicker">estado honesto</div>
+            <h2 className="section-title">Notas de alcance</h2>
+          </div>
+        </div>
+        <div className="list">
+          {overview.notes.map((note) => (
+            <div key={note} className="list-item">
+              <span>{note}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      {children}
+    </AppShell>
+  );
+}
+
 export function ModuleOverviewPage({ overview, children }: { overview: BackofficeModuleOverview; children?: ReactNode }) {
-  const wave2Settings = overview.route === "/settings";
-  const tableTitle = wave2Settings ? "Usuarios y roles" : overview.table.title;
-  const emptyMessage = wave2Settings ? "No hay usuarios registrados para mostrar." : overview.table.emptyMessage;
-  const notes = wave2Settings
-    ? ["Los cambios de permisos deben realizarse desde acciones autorizadas y quedar registrados para revisión."]
-    : overview.notes;
+  if (overview.route !== "/settings") return <FrozenWave1Overview overview={overview}>{children}</FrozenWave1Overview>;
+
+  const emptyMessage = "No hay usuarios registrados para mostrar.";
+  const notes = ["Los cambios de permisos deben realizarse desde acciones autorizadas y quedar registrados para revisión."];
 
   return (
     <AppShell currentPath={overview.route}>
@@ -33,7 +106,7 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
           <div className="hero-copy">
             <div className="kicker">{overview.eyebrow}</div>
             <h1 className="hero-title">{overview.title}</h1>
-            <p>{wave2Settings ? "Consulta usuarios, roles, permisos, tiendas y terminales configuradas." : overview.description}</p>
+            <p>Consulta usuarios, roles, permisos, tiendas y terminales configuradas.</p>
           </div>
           <div className="inline-list">
             <span className="chip">Panel administrativo</span>
@@ -55,7 +128,7 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
             <div className="kicker">indicador</div>
             <div className="card-title">{metric.label}</div>
             <div className="metric">{metric.value}</div>
-            <div className="metric-note">{wave2Settings ? settingsMetricNote(metric.note) : metric.note}</div>
+            <div className="metric-note">{settingsMetricNote(metric.note)}</div>
           </article>
         ))}
       </section>
@@ -64,7 +137,7 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
         <div className="section-head">
           <div>
             <div className="kicker">vista consolidada</div>
-            <h2 className="section-title">{tableTitle}</h2>
+            <h2 className="section-title">Usuarios y roles</h2>
             <div className="section-copy">Consulta la información administrativa disponible para esta área.</div>
           </div>
         </div>
@@ -75,23 +148,19 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
         )}
       </section>
 
-      {notes.length ? (
-        <section className="card">
-          <div className="section-head">
-            <div>
-              <div className="kicker">alcance</div>
-              <h2 className="section-title">Información importante</h2>
-            </div>
+      <section className="card">
+        <div className="section-head">
+          <div>
+            <div className="kicker">alcance</div>
+            <h2 className="section-title">Información importante</h2>
           </div>
-          <div className="list">
-            {notes.map((note) => (
-              <div key={note} className="list-item">
-                <span>{note}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
+        </div>
+        <div className="list">
+          {notes.map((note) => (
+            <div key={note} className="list-item"><span>{note}</span></div>
+          ))}
+        </div>
+      </section>
       {children}
     </AppShell>
   );
