@@ -22,6 +22,6 @@ export async function PATCH(request: Request, context: { params: Promise<{ varia
     if (code === "PRODUCT_VARIANT_STATUS_INVALID") return fail(code, "El estado solicitado no es válido.", 400);
     if (code === "PRODUCT_VARIANT_LABEL_REQUIRED") return fail(code, "Captura una etiqueta para la variante.", 400);
     if (code === "PRODUCT_VARIANT_VERSION_CONFLICT") return fail(code, "La variante cambió en otra sesión. Vuelve a cargarla antes de actualizar.", 409);
-    return toBackofficeError(error);
+    return toBackofficeError(error, { customerSafe: true });
   }
 }
