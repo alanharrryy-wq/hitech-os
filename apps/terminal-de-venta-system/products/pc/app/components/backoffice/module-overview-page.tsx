@@ -22,19 +22,14 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
           </div>
           <div className="inline-list">
             <span className="chip">Panel administrativo</span>
-            <span className="chip">Persistencia: {persistenceLabel(overview.meta.persistence)}</span>
+            <span className="chip">Información: {persistenceLabel(overview.meta.persistence)}</span>
           </div>
-        </div>
-        <div className="hero-badges">
-          <span className="alert-chip">Tablet vende local</span>
-          <span className="alert-chip">Eventos son verdad operacional</span>
-          <span className="alert-chip">Sin datos falsos</span>
         </div>
       </section>
 
       {overview.meta.warnings.length ? (
-        <div className="alert-strip">
-          <strong>Limitación visible</strong>
+        <div className="alert-strip" role="status">
+          <strong>Información temporalmente no disponible</strong>
           <span className="subtle">{overview.meta.warnings[0]}</span>
         </div>
       ) : null}
@@ -55,31 +50,33 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
           <div>
             <div className="kicker">vista consolidada</div>
             <h2 className="section-title">{overview.table.title}</h2>
-            <div className="section-copy">Lectura administrativa; no ejecuta venta ni condiciona el POS Tablet.</div>
+            <div className="section-copy">Consulta la información administrativa disponible para esta área.</div>
           </div>
         </div>
         {overview.table.columns.length ? (
           <DataTable columns={overview.table.columns} rows={overview.table.rows} emptyMessage={overview.table.emptyMessage} />
         ) : (
-          <EmptyState title="Aún no hay eventos consolidados." description={overview.table.emptyMessage} />
+          <EmptyState title="Aún no hay información para mostrar." description={overview.table.emptyMessage} />
         )}
       </section>
 
-      <section className="card">
-        <div className="section-head">
-          <div>
-            <div className="kicker">estado honesto</div>
-            <h2 className="section-title">Notas de alcance</h2>
-          </div>
-        </div>
-        <div className="list">
-          {overview.notes.map((note) => (
-            <div key={note} className="list-item">
-              <span>{note}</span>
+      {overview.notes.length ? (
+        <section className="card">
+          <div className="section-head">
+            <div>
+              <div className="kicker">alcance</div>
+              <h2 className="section-title">Información importante</h2>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+          <div className="list">
+            {overview.notes.map((note) => (
+              <div key={note} className="list-item">
+                <span>{note}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
       {children}
     </AppShell>
   );
