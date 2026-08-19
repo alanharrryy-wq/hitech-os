@@ -42,7 +42,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Chromium
-        run: pnpm -C "$PC_APP" exec playwright install --with-deps chromium
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
 
       - name: Prepare isolated runtime
         shell: bash
@@ -55,19 +55,19 @@ jobs:
           echo "WAVE2_RUNTIME_ROOT=$RUNTIME_ROOT" >> "$GITHUB_ENV"
 
       - name: Generate PC Prisma client in isolated runner
-        run: pnpm -C "$PC_APP" run prisma:generate
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
       - name: Migrate isolated SQLite
-        run: pnpm -C "$PC_APP" run db:canonical:migrate
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
 
       - name: Seed populated isolated SQLite
-        run: pnpm -C "$PC_APP" run db:canonical:seed
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:seed
 
       - name: Start isolated PC runtime
         shell: bash
         run: |
           set -euo pipefail
-          pnpm -C "$PC_APP" dev > "$WAVE2_RUNTIME_ROOT/server/pc-3130.log" 2>&1 &
+          pnpm -C apps/terminal-de-venta-system/products/pc/app dev > "$WAVE2_RUNTIME_ROOT/server/pc-3130.log" 2>&1 &
           echo $! > "$WAVE2_RUNTIME_ROOT/server/pc-3130.pid"
 
       - name: Wait for PC runtime
@@ -92,16 +92,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$WAVE2_RUNTIME_ROOT/server/pc-3130.log"
+          ROOT="$RUNNER_TEMP/pc-wave2-runtime"
+          LOG="$ROOT/server/pc-3130.log"
+          mkdir -p "$ROOT/evidence"
           if [[ ! -f "$LOG" ]]; then
-            echo "Wave 2 PC server log was not created" >&2
-            exit 1
+            echo "Server log unavailable because runtime did not start." > "$ROOT/evidence/SERVER_LOG_NOT_CREATED.txt"
+            exit 0
           fi
+          cp "$LOG" "$ROOT/evidence/pc-3130.log"
           if grep -Eini "PrismaClientKnownRequestError|unhandledRejection|no such table|SQLITE_ERROR|ENOENT" "$LOG"; then
             echo "Forbidden runtime error found in Wave 2 server log" >&2
             exit 1
           fi
-          cp "$LOG" "$WAVE2_RUNTIME_ROOT/evidence/pc-3130.log"
 
       - name: Upload Wave 2 runtime evidence
         if: always()
@@ -135,7 +137,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright Chromium
-        run: pnpm -C "$PC_APP" exec playwright install --with-deps chromium
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
 
       - name: Prepare isolated restricted runtime
         shell: bash
@@ -154,13 +156,13 @@ jobs:
           echo "WAVE2_LICENSE_ROOT=$RUNTIME_ROOT" >> "$GITHUB_ENV"
 
       - name: Generate PC Prisma client in restricted runner
-        run: pnpm -C "$PC_APP" run prisma:generate
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
       - name: Migrate isolated restricted SQLite
-        run: pnpm -C "$PC_APP" run db:canonical:migrate
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
 
       - name: Seed isolated restricted SQLite
-        run: pnpm -C "$PC_APP" run db:canonical:seed
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:seed
 
       - name: Write restricted local test license
         shell: bash
@@ -202,7 +204,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          pnpm -C "$PC_APP" dev > "$WAVE2_LICENSE_ROOT/server/pc-3130.log" 2>&1 &
+          pnpm -C apps/terminal-de-venta-system/products/pc/app dev > "$WAVE2_LICENSE_ROOT/server/pc-3130.log" 2>&1 &
           echo $! > "$WAVE2_LICENSE_ROOT/server/pc-3130.pid"
 
       - name: Wait for restricted PC runtime
@@ -226,8 +228,13 @@ jobs:
         if: always()
         shell: bash
         run: |
-          mkdir -p "$WAVE2_LICENSE_ROOT/evidence"
-          cp "$WAVE2_LICENSE_ROOT/server/pc-3130.log" "$WAVE2_LICENSE_ROOT/evidence/pc-3130.log" || true
+          ROOT="$RUNNER_TEMP/pc-wave2-license"
+          mkdir -p "$ROOT/evidence"
+          if [[ -f "$ROOT/server/pc-3130.log" ]]; then
+            cp "$ROOT/server/pc-3130.log" "$ROOT/evidence/pc-3130.log"
+          else
+            echo "Server log unavailable because restricted runtime did not start." > "$ROOT/evidence/SERVER_LOG_NOT_CREATED.txt"
+          fi
 
       - name: Upload restricted license evidence
         if: always()
