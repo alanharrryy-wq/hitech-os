@@ -1,7 +1,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { chromium } from "@playwright/test";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+let playwright;
+try {
+  playwright = await import("@playwright/test");
+} catch (firstError) {
+  const explicitModule = process.env.PRISMA_PLAYWRIGHT_TEST_MODULE;
+  if (!explicitModule) throw firstError;
+  playwright = require(explicitModule);
+}
+const chromium = playwright.chromium ?? playwright.default?.chromium;
+if (!chromium) throw new Error("PLAYWRIGHT_CHROMIUM_EXPORT_MISSING");
 
 function arg(name, fallback = "") {
   const index = process.argv.indexOf(name);
