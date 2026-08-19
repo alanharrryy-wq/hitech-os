@@ -22,6 +22,6 @@ export async function POST(request: Request) {
     if (code === "PRODUCT_VARIANT_PRODUCT_NOT_AVAILABLE") return fail(code, "Los dos productos deben existir y estar activos.", 422);
     if (code === "PRODUCT_VARIANT_NESTED_PARENT") return fail(code, "Una variante no puede contener otra variante.", 422);
     if (code === "PRODUCT_VARIANT_SELLABLE_ALREADY_LINKED") return fail(code, "Ese producto ya pertenece a otra variante.", 409);
-    return toBackofficeError(error);
+    return toBackofficeError(error, { customerSafe: true });
   }
 }
