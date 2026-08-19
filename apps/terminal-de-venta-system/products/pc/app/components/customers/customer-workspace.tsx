@@ -121,7 +121,7 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
       setSelected(data.customer);
       setCustomers((current) => current.map((customer) => customer.id === data.customer.id ? data.customer : customer).sort((a, b) => a.displayName.localeCompare(b.displayName, "es-MX")));
       setIsEditing(false);
-      setStatus("Cliente actualizado y releído desde la fuente canónica PC.");
+      setStatus("Cliente actualizado correctamente.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "No fue posible actualizar el cliente.");
     } finally {
@@ -149,7 +149,7 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
       setCustomers((current) => [...current.filter((customer) => customer.id !== data.customer.id), data.customer].sort((a, b) => a.displayName.localeCompare(b.displayName, "es-MX")));
       setSelected(data.customer);
       setForm({ displayName: "", phone: "", email: "", segment: "", legalName: "", rfc: "" });
-      setStatus("Cliente creado en la fuente canónica PC.");
+      setStatus("Cliente creado correctamente.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "No fue posible crear el cliente.");
     } finally {
@@ -164,11 +164,11 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
           <div className="hero-copy">
             <div className="kicker">clientes</div>
             <h1 className="hero-title">Clientes y venta identificada</h1>
-            <p>La PC conserva la ficha, datos fiscales e historial; Tablet sólo asocia un cliente proyectado al ticket.</p>
+            <p>Consulta y administra fichas de clientes, datos fiscales, contacto e historial de compra.</p>
           </div>
           <div className="inline-list">
             <span className="chip">Activos: {visibleCount}</span>
-            <span className="chip">Fuente: {initialWorkspace.meta.source === "canonical_prisma" ? "canónica PC" : "pendiente de migración"}</span>
+            <span className="chip">Información: {initialWorkspace.meta.source === "canonical_prisma" ? "disponible" : "no disponible"}</span>
           </div>
         </div>
       </section>
@@ -190,7 +190,7 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
           </form>
         </article>
         <article className="card">
-          <div className="section-head"><div><div className="kicker">alta canónica</div><h2 className="section-title">Nuevo cliente</h2></div></div>
+          <div className="section-head"><div><div className="kicker">nuevo registro</div><h2 className="section-title">Nuevo cliente</h2></div></div>
           <form onSubmit={createCustomer} className="stack-form">
             <label htmlFor="customer-name">Nombre</label>
             <input id="customer-name" value={form.displayName} onChange={(event) => setForm((current) => ({ ...current, displayName: event.target.value }))} minLength={2} maxLength={140} required />
@@ -210,7 +210,7 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
       </section>
 
       <section className="card">
-        <div className="section-head"><div><div className="kicker">directorio</div><h2 className="section-title">Clientes disponibles para POS</h2><div className="section-copy">Sólo se puede asociar al ticket un cliente activo que exista en la proyección local de Tablet.</div></div></div>
+        <div className="section-head"><div><div className="kicker">directorio</div><h2 className="section-title">Clientes disponibles</h2><div className="section-copy">Los clientes activos pueden utilizarse en las operaciones que admitan venta identificada.</div></div></div>
         <DataTable
           columns={["Nombre", "Contacto", "Segmento", "Crédito", "Estado"]}
           rows={customers.map((customer) => ({
@@ -222,7 +222,7 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
             __rowActionHref: `#customer-${customer.id}`,
             __rowActionLabel: "Abrir ficha"
           }))}
-          emptyMessage="Aún no hay clientes en la fuente canónica o falta aplicar la migración local."
+          emptyMessage="Aún no hay clientes disponibles para mostrar."
         />
         <div className="inline-list" style={{ marginTop: 12 }}>
           {customers.map((customer) => <button key={customer.id} type="button" className="button button-secondary" onClick={() => void openCustomer(customer.id)} disabled={isLoading}>Abrir {customer.displayName}</button>)}
@@ -231,11 +231,11 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
 
       {selected ? (
         <section className="card" id={`customer-${selected.id}`}>
-          <div className="section-head"><div><div className="kicker">ficha canónica</div><h2 className="section-title">{selected.displayName}</h2><div className="section-copy">Versión {selected.version} · actualizada {dateTime(selected.updatedAt)}</div></div><button className="button button-secondary" type="button" onClick={() => setIsEditing((current) => !current)}>{isEditing ? "Cerrar edición" : "Editar ficha"}</button></div>
+          <div className="section-head"><div><div className="kicker">ficha de cliente</div><h2 className="section-title">{selected.displayName}</h2><div className="section-copy">Actualizada {dateTime(selected.updatedAt)}</div></div><button className="button button-secondary" type="button" onClick={() => setIsEditing((current) => !current)}>{isEditing ? "Cerrar edición" : "Editar ficha"}</button></div>
           <div className="dashboard-grid">
             <article className="metric-card"><div className="card-title">Tickets</div><div className="metric">{selected.history.ticketCount}</div><div className="metric-note">Última venta: {dateTime(selected.history.lastSaleAt)}</div></article>
-            <article className="metric-card"><div className="card-title">Venta acumulada</div><div className="metric">{money(selected.history.totalCents)}</div><div className="metric-note">Sólo ventas asociadas a esta ficha.</div></article>
-            <article className="metric-card"><div className="card-title">Crédito</div><div className="metric">{money(selected.creditCents)}</div><div className="metric-note">Movimientos de crédito se auditan por separado.</div></article>
+            <article className="metric-card"><div className="card-title">Venta acumulada</div><div className="metric">{money(selected.history.totalCents)}</div><div className="metric-note">Ventas asociadas a esta ficha.</div></article>
+            <article className="metric-card"><div className="card-title">Crédito</div><div className="metric">{money(selected.creditCents)}</div><div className="metric-note">Saldo registrado para este cliente.</div></article>
           </div>
           <DataTable
             columns={["Dato", "Valor"]}
