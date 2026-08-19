@@ -53,7 +53,7 @@ function CatalogProductFicha({ product }: { product: CatalogProductRecord | null
             <h2>Sin SKU seleccionado</h2>
           </div>
         </div>
-        <EmptyState title="Selecciona un producto." description="Usa la búsqueda o la lista densa de SKUs para abrir una ficha lateral con precio, stock, códigos, margen y acciones honestas." />
+        <EmptyState title="Selecciona un producto." description="Usa la búsqueda o la lista de SKUs para abrir su ficha con precio, existencias, códigos, margen y acciones disponibles." />
       </section>
     );
   }
@@ -66,11 +66,6 @@ function CatalogProductFicha({ product }: { product: CatalogProductRecord | null
           <h2>{product.name}</h2>
         </div>
         <StatusBadge value={product.isActive ? "activo" : "inactivo"} />
-      </div>
-
-      <div className={mediaStyles.preview}>
-        {product.mediaRef ? <img src={product.mediaRef} alt={`Imagen de ${product.name}`} /> : <span>Sin imagen asignada</span>}
-        <div><strong>Imagen del catálogo</strong><small>{product.mediaRef ?? "Elige una imagen en la biblioteca inferior."}</small></div>
       </div>
 
       <div className={mediaStyles.preview}>
@@ -93,16 +88,16 @@ function CatalogProductFicha({ product }: { product: CatalogProductRecord | null
         <span>Resumen</span>
         <a href={queryHref("/stock", { q: product.sku })}>Stock</a>
         <a href={queryHref("/movements", { q: product.sku })}>Movimientos</a>
-        <a href={queryHref("/salud-barcodes", { q: product.sku })}>Barcodes</a>
+        <a href={queryHref("/salud-barcodes", { q: product.sku })}>Códigos</a>
         <a href={queryHref("/auditoria-inventario", { q: product.sku })}>Auditoría</a>
       </div>
 
       <div className={styles.actionRail} data-pcinv-action-rail="catalog">
         <a href={queryHref("/stock", { q: product.sku, state: "all" })}>Ajustar stock</a>
-        <a href={queryHref("/salud-barcodes", { q: product.sku })}>Agregar barcode</a>
+        <a href={queryHref("/salud-barcodes", { q: product.sku })}>Agregar código</a>
         <a href={queryHref("/counts", { q: product.sku })}>Crear conteo</a>
         <a href={queryHref("/stock", { q: product.sku, state: "critical" })}>Mandar a reabasto</a>
-        <span aria-disabled="true" title="Editar producto requiere endpoint auditable con rol, motivo y before/after.">Editar bloqueado hasta auditoría</span>
+        <span aria-disabled="true" title="La edición avanzada todavía no está disponible en esta pantalla.">Edición avanzada no disponible</span>
       </div>
 
       {product.issues.length ? (
@@ -163,7 +158,7 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
           <div>
             <span className={styles.kicker}>inventario maestro</span>
             <h1>Catálogo operativo</h1>
-            <p>Buscar, detectar problema, abrir ficha y actuar. Sin dock de selectores como aduana.</p>
+            <p>Busca productos, revisa incidencias y abre la ficha para actuar sobre inventario y catálogo.</p>
           </div>
           <div className={styles.miniStats}>
             <span><strong>{workspace.summary.totalProducts}</strong> SKUs</span>
@@ -174,7 +169,7 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
 
         <section className={styles.intentBar} data-pcinv-search-first="catalog">
           <form className={styles.searchBox} action="/catalog">
-            <label htmlFor="catalog-q">Buscar SKU, producto o barcode</label>
+            <label htmlFor="catalog-q">Buscar SKU, producto o código</label>
             <input id="catalog-q" name="q" defaultValue={workspace.filters.q === "all" ? "" : workspace.filters.q} placeholder="Ej. COCA600, Coca-Cola, 750105..." />
             <button type="submit">Buscar</button>
           </form>
@@ -188,7 +183,7 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
 
         {workspace.meta.warnings.length ? (
           <div className={styles.honestBlock} role="status">
-            <strong>Estado honesto</strong>
+            <strong>Información temporalmente no disponible</strong>
             <p>{workspace.meta.warnings.join(" · ")}</p>
           </div>
         ) : null}
@@ -197,9 +192,9 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
           <section className={styles.productLedger}>
             <div className={styles.ledgerHeader}>
               <div>
-                <span className={styles.kicker}>lista densa</span>
+                <span className={styles.kicker}>productos</span>
                 <h2>Productos operables</h2>
-                <p>La tabla manda. Los filtros finos viven dentro de búsqueda, chips o ficha.</p>
+                <p>Selecciona un producto para consultar su ficha y las acciones disponibles.</p>
               </div>
               <StatusBadge value={workspace.exceptions.length ? "riesgo" : "ok"} />
             </div>
@@ -225,7 +220,7 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
             <div>
               <span className={styles.kicker}>calidad de datos</span>
               <h2>Incidencias accionables</h2>
-              <p>Se revisa como cola de trabajo, no como otro tablero lleno de filtros.</p>
+              <p>Revisa los productos que requieren atención y abre su ficha para corregirlos.</p>
             </div>
             <a className="footer-chip" href="/validacion-catalogo">Abrir validación</a>
           </div>
