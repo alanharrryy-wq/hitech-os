@@ -5,6 +5,8 @@ on:
     paths:
       - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center*'
       - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/change_intelligence_runtime.py'
+      - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py'
       - 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html'
       - 'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md'
       - 'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-*'
@@ -17,7 +19,7 @@ permissions:
 jobs:
   change-intelligence-cloud-authority:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -34,6 +36,12 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Compile bounded runtime adapters
+        run: |
+          python -m py_compile \
+            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/change_intelligence_runtime.py" \
+            "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py"
+
       - name: Verify source contract
         run: python apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
 
@@ -45,32 +53,43 @@ jobs:
           npm install --no-save --no-package-lock playwright@1.55.0
           npx playwright install --with-deps chromium
 
-      - name: Start isolated Cloud Center static server
-        working-directory: apps/terminal-de-venta-system/Prisma Cloud Ctr
+      - name: Start isolated real Cloud Center host
+        env:
+          PRISMA_COMMAND_CENTER_DB_PATH: ${{ runner.temp }}/prisma-command-center.db
         run: |
-          python -m http.server 8316 --bind 127.0.0.1 > "$RUNNER_TEMP/pci-http.log" 2>&1 &
+          mkdir -p "$RUNNER_TEMP/protected-current" "$RUNNER_TEMP/prisma-cloud-runtime"
+          python "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" \
+            --serve \
+            --lab-root "$GITHUB_WORKSPACE/apps/terminal-de-venta-system/Prisma Cloud Ctr" \
+            --protected-current "$RUNNER_TEMP/protected-current" \
+            --out-dir "$RUNNER_TEMP/prisma-cloud-runtime" \
+            --host 127.0.0.1 \
+            --port 8316 \
+            > "$RUNNER_TEMP/pci-http.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/pci-http.pid"
           python - <<'PY'
           import time, urllib.request
-          url='http://127.0.0.1:8316/internal/web/change_intelligence_center.html'
-          for _ in range(60):
+          url='http://127.0.0.1:8316/api/health'
+          for _ in range(120):
               try:
                   with urllib.request.urlopen(url, timeout=1) as response:
                       if response.status == 200:
                           raise SystemExit(0)
               except Exception:
                   time.sleep(0.25)
-          raise SystemExit('Cloud Center static server did not become ready')
+          raise SystemExit('Real Cloud Center host did not become ready')
           PY
 
-      - name: Verify browser runtime desktop and mobile
+      - name: Verify browser runtime desktop mobile and fallback
         env:
           PCI_PLAYWRIGHT_ROOT: ${{ runner.temp }}/pci-playwright/node_modules/playwright
           PCI_BASE_URL: http://127.0.0.1:8316
           PCI_EVIDENCE_DIR: ${{ github.workspace }}/pci-runtime-evidence
+          PCI_REPO_ROOT: ${{ github.workspace }}
+          PCI_EXPECTED_REPOSITORY: prismahitech/hitech-os
         run: node apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-runtime-01.mjs
 
-      - name: Stop isolated static server
+      - name: Stop isolated real Cloud Center host
         if: always()
         run: |
           if [ -f "$RUNNER_TEMP/pci-http.pid" ]; then
