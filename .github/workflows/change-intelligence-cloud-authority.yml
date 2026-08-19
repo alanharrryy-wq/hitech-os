@@ -20,6 +20,8 @@ jobs:
   change-intelligence-cloud-authority:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      PYTHONPYCACHEPREFIX: ${{ runner.temp }}/pci-python-pycache
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -36,7 +38,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Compile bounded runtime adapters
+      - name: Compile bounded runtime adapters outside worktree
         run: |
           python -m py_compile \
             "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/change_intelligence_runtime.py" \
@@ -52,6 +54,15 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-save --no-package-lock playwright@1.55.0
           npx playwright install --with-deps chromium
+
+      - name: Verify runtime scan starts from a clean worktree
+        run: |
+          status="$(git status --porcelain=v1 --untracked-files=all)"
+          if [ -n "$status" ]; then
+            printf '%s\n' "$status"
+            echo "Runtime verification would start from a dirty worktree."
+            exit 1
+          fi
 
       - name: Start isolated real Cloud Center host
         env:
