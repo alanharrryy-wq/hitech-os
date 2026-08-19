@@ -10,7 +10,22 @@ function persistenceLabel(value: BackofficeModuleOverview["meta"]["persistence"]
   return "no requerida";
 }
 
+function settingsMetricNote(note: string) {
+  return note
+    .replace(/ canónicos?/gi, "")
+    .replace(/ persistidos?/gi, "")
+    .replace(/ para el negocio/gi, "")
+    .replace(/ disponibles\.?$/i, ".");
+}
+
 export function ModuleOverviewPage({ overview, children }: { overview: BackofficeModuleOverview; children?: ReactNode }) {
+  const wave2Settings = overview.route === "/settings";
+  const tableTitle = wave2Settings ? "Usuarios y roles" : overview.table.title;
+  const emptyMessage = wave2Settings ? "No hay usuarios registrados para mostrar." : overview.table.emptyMessage;
+  const notes = wave2Settings
+    ? ["Los cambios de permisos deben realizarse desde acciones autorizadas y quedar registrados para revisión."]
+    : overview.notes;
+
   return (
     <AppShell currentPath={overview.route}>
       <section className="hero">
@@ -18,7 +33,7 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
           <div className="hero-copy">
             <div className="kicker">{overview.eyebrow}</div>
             <h1 className="hero-title">{overview.title}</h1>
-            <p>{overview.description}</p>
+            <p>{wave2Settings ? "Consulta usuarios, roles, permisos, tiendas y terminales configuradas." : overview.description}</p>
           </div>
           <div className="inline-list">
             <span className="chip">Panel administrativo</span>
@@ -40,7 +55,7 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
             <div className="kicker">indicador</div>
             <div className="card-title">{metric.label}</div>
             <div className="metric">{metric.value}</div>
-            <div className="metric-note">{metric.note}</div>
+            <div className="metric-note">{wave2Settings ? settingsMetricNote(metric.note) : metric.note}</div>
           </article>
         ))}
       </section>
@@ -49,18 +64,18 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
         <div className="section-head">
           <div>
             <div className="kicker">vista consolidada</div>
-            <h2 className="section-title">{overview.table.title}</h2>
+            <h2 className="section-title">{tableTitle}</h2>
             <div className="section-copy">Consulta la información administrativa disponible para esta área.</div>
           </div>
         </div>
         {overview.table.columns.length ? (
-          <DataTable columns={overview.table.columns} rows={overview.table.rows} emptyMessage={overview.table.emptyMessage} />
+          <DataTable columns={overview.table.columns} rows={overview.table.rows} emptyMessage={emptyMessage} />
         ) : (
-          <EmptyState title="Aún no hay información para mostrar." description={overview.table.emptyMessage} />
+          <EmptyState title="Aún no hay información para mostrar." description={emptyMessage} />
         )}
       </section>
 
-      {overview.notes.length ? (
+      {notes.length ? (
         <section className="card">
           <div className="section-head">
             <div>
@@ -69,7 +84,7 @@ export function ModuleOverviewPage({ overview, children }: { overview: Backoffic
             </div>
           </div>
           <div className="list">
-            {overview.notes.map((note) => (
+            {notes.map((note) => (
               <div key={note} className="list-item">
                 <span>{note}</span>
               </div>
