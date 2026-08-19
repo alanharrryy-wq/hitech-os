@@ -20,6 +20,6 @@ export async function PATCH(request: Request) {
     if (code === "PRODUCT_MEDIA_VERSION_REQUIRED") return fail(code, "Vuelve a cargar el producto antes de guardar la imagen.", 400);
     if (code === "PRODUCT_MEDIA_REFERENCE_INVALID") return fail(code, "Usa una dirección HTTPS o selecciona una imagen de la biblioteca.", 400);
     if (code === "PRODUCT_MEDIA_VERSION_CONFLICT") return fail(code, "El producto cambió en otra sesión. Vuelve a cargarlo antes de guardar la imagen.", 409);
-    return toBackofficeError(error);
+    return toBackofficeError(error, { customerSafe: true });
   }
 }
