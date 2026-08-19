@@ -97,7 +97,7 @@ body.pci-surface{min-height:100%;margin:0;color:var(--pci-text);font-family:Inte
 @media(max-width:980px){.pci-card[data-span="8"],.pci-card[data-span="4"]{grid-column:span 12}.pci-card{grid-column:span 6}.pci-flow{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:680px){
   .pci-topbar,.pci-layout,.pci-noscript{width:calc(100% - 24px)}
-  .pci-topbar{padding:14px;border-radius:24px}
+  .pci-topbar{padding:14px}
   .pci-brand-mark{width:52px;height:52px}
   .pci-logo-word{font-size:15px}
   .pci-brand-copy strong{font-size:clamp(26px,9vw,38px)}
