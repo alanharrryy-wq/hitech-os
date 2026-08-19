@@ -67,6 +67,12 @@ function frozenBlob(id, parts, expectedSha) {
   record(id, actual === expectedSha, `${parts.join("/")} blob=${actual} expected=${expectedSha}`, actual === expectedSha ? "WAVE1_FROZEN" : "WAVE1_DRIFT");
 }
 
+function routeStatus(routeMapSource, route) {
+  const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = routeMapSource.match(new RegExp(`"route"\\s*:\\s*"${escaped}"[\\s\\S]{0,180}?"status"\\s*:\\s*"(primary|secondary|internal|lab)"`));
+  return match?.[1] ?? null;
+}
+
 for (const route of WAVE2_CUSTOMER_ROUTES) {
   const routeParts = route.slice(1).split("/");
   exists(`route.${route}.page`, "app", ...routeParts, "page.tsx");
@@ -76,6 +82,7 @@ for (const route of WAVE2_CUSTOMER_ROUTES) {
   excludes(`route.${route}.error.rawMessage`, errorSource, "error.message", `${route} error boundary does not render raw exception text`);
 }
 
+frozenBlob("wave1.freeze.navigation", ["src", "composition", "navigation.ts"], "a38b2e64abe65c0bdca66d7227d4f2e338078bc7");
 frozenBlob("wave1.freeze.settingsLicensePage", ["app", "settings", "license", "page.tsx"], "b3a4e75808edbbfe0913ed61f677259b2d01ab99");
 frozenBlob("wave1.freeze.licensePresentation", ["components", "license", "license-status-card.tsx"], "a7874b94979c2a9f9807808f3e9e668549bc074a");
 frozenBlob("wave1.freeze.dashboardTasks", ["src", "server", "services", "operational-task.service.ts"], "080f47eedc5065fc7b51ec434551c43a4eea7fd8");
@@ -84,8 +91,15 @@ const navigation = read("src", "composition", "navigation.ts");
 for (const route of ["/catalog", "/proveedores", "/clientes", "/sync", "/devices", "/settings"]) {
   includes(`nav.primary.${route}`, navigation, `"${route}"`, `primary navigation contains ${route}`);
 }
+
+const routeMap = read("src", "uiux", "route-map.ts");
 for (const route of WAVE2_INTERNALIZED_ROUTES) {
-  includes(`nav.internalized.${route}`, navigation, `"${route}"`, `${route} is fail-closed from customer secondary navigation`);
+  const status = routeStatus(routeMap, route);
+  record(`routeMap.internalized.${route}`, status === "internal", `${route} status=${status ?? "missing"}`, status === "internal" ? "INTERNALIZED" : "VISIBILITY_DRIFT");
+}
+for (const route of WAVE2_CUSTOMER_ROUTES) {
+  const status = routeStatus(routeMap, route);
+  record(`routeMap.customer.${route}`, status === "primary" || status === "secondary", `${route} status=${status ?? "missing"}`);
 }
 
 const customerService = read("src", "server", "services", "customer.service.ts");
@@ -171,7 +185,7 @@ for (const [name, file] of guardedApis) {
 const hypotheses = [
   { id: "P0.filesystem-enoent", classification: "FIXED_WAVE2", evidence: "Catalog/media workspaces no longer project raw exception text or filesystem guidance." },
   { id: "P0.prisma-sql-migration", classification: "FIXED_WAVE2_AND_WAVE1_FROZEN", evidence: "Wave 2 workspaces fail customer-safe; Dashboard task wording remains frozen under Wave 1 and is not reopened here." },
-  { id: "P0.orm-endpoint-owner-vocabulary", classification: "FIXED_OR_INTERNALIZED_WAVE2", evidence: "Visible Wave 2 surfaces were humanized; unproductized technical projections were removed from customer secondary navigation." },
+  { id: "P0.orm-endpoint-owner-vocabulary", classification: "FIXED_OR_INTERNALIZED_WAVE2", evidence: "Visible Wave 2 surfaces were humanized; unproductized technical projections are internal in the canonical route map." },
   { id: "P0.license-internal-ids", classification: "CONFIRMED_WAVE1_FROZEN", evidence: "/settings/license belongs to Wave 1; its certified projection is not rewritten by Wave 2." },
   { id: "P0.machine-sync-runtime-ids", classification: "FIXED_WAVE2", evidence: "Sync/Devices rebuild customer rows and do not forward diagnostic row metadata or direct API links." },
   { id: "P0.placeholder-identity", classification: "FIXED_WAVE2", evidence: "Sync/Devices project 'Prisma Original Customer' to neutral customer text." },
@@ -179,7 +193,7 @@ const hypotheses = [
   { id: "P0.clientes-focused-evidence", classification: "SOURCE_READY_RUNTIME_EVIDENCE_GAP", evidence: "CRUD wiring, fail-closed data service, loading/error boundaries and customer copy are source-verified; E2E runtime remains required." },
   { id: "P1.receiving-purpose-overlap", classification: "DONE_WAVE1_FROZEN", evidence: "Both relevant receiving routes are in the certified Wave 1 route set; no re-audit without drift." },
   { id: "P1.replenishment-purpose-overlap", classification: "DONE_WAVE1_FROZEN", evidence: "Both relevant replenishment routes are in the certified Wave 1 route set; no re-audit without drift." },
-  { id: "P1.duplicate-data-quality", classification: "FIXED_OR_INTERNALIZED_WAVE2", evidence: "Legacy validation/integrity/data-quality projections are hidden from customer secondary navigation; catalog and barcode health remain customer owners." },
+  { id: "P1.duplicate-data-quality", classification: "FIXED_OR_INTERNALIZED_WAVE2", evidence: "Legacy validation/integrity/data-quality projections are internal in the canonical route map; catalog and barcode health remain customer owners." },
   { id: "P1.hidden-filter-404", classification: "DONE_WAVE1_FROZEN", evidence: "Hidden filter routes were certified by Wave 1 and are not reopened without drift." },
   { id: "P1.generic-empty-states", classification: "FIXED_WAVE2_SOURCE", evidence: "All 11 customer Wave 2 routes have page/loading/error boundaries; visible workspaces expose honest empty/unavailable states." },
   { id: "P1.progressive-disclosure", classification: "PASS_SOURCE_RUNTIME_VISUAL_PENDING", evidence: "Catalog and inventory use master/detail or row details; customer-safe command center strips diagnostic expansion metadata." },
@@ -190,7 +204,7 @@ const hypotheses = [
 const evidenceGaps = hypotheses.filter((item) => item.classification.includes("EVIDENCE_GAP"));
 
 const report = {
-  verifier: "PC_CUSTOMER_EXPERIENCE_CLOSURE_WAVE2_SOURCE_GATE_V2",
+  verifier: "PC_CUSTOMER_EXPERIENCE_CLOSURE_WAVE2_SOURCE_GATE_V3",
   verdict: failures.length ? "FAIL" : "PASS_SOURCE_GATE_RUNTIME_PENDING",
   wave1: {
     status: "FROZEN_DO_NOT_REBUILD",
