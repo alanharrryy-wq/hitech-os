@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail-closed source verifier for PRISMA Change Intelligence Cloud Center V1."""
+"""Fail-closed source verifier for PRISMA Change Intelligence Cloud Center V1/P1C."""
 from __future__ import annotations
 
 import json
@@ -11,8 +11,11 @@ from typing import Any
 
 BASE_HEAD = "d14effee1a1223cc772247ea9d7ec8547dc15c78"
 CONFIG_PATH_LITERAL = "/internal/config/change_intelligence_cloud.json"
+RUNTIME_PATH_LITERAL = "/api/command-center/change-intelligence/repository"
 REPOSITORY_PROJECTION_PROFILE = "ci-cloud-repository-registry-adapter-p1-v1"
 REPOSITORY_CONNECTED_STATUS = "SOURCE_VERIFIED_READ_ONLY"
+RUNTIME_SCHEMA = "prisma.change_intelligence.repository_runtime.v1"
+RUNTIME_SOURCE = "code_atlas.intelligence.resolve_intelligence_context"
 
 REL = {
     "main_html": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html"),
@@ -22,6 +25,8 @@ REL = {
     "ci_style_js": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center_style.js"),
     "ci_js": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/change_intelligence_center.js"),
     "ci_config": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json"),
+    "runtime_adapter": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/change_intelligence_runtime.py"),
+    "command_center_store": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py"),
     "contract": Path("apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md"),
     "verifier": Path("apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py"),
     "runtime_verifier": Path("apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-runtime-01.mjs"),
@@ -30,7 +35,11 @@ REL = {
 
 ALLOWED_DIFF = {
     REL[key].as_posix()
-    for key in ("main_html", "ci_html", "ci_style_js", "ci_js", "ci_config", "contract", "verifier", "runtime_verifier", "workflow")
+    for key in (
+        "main_html", "ci_html", "ci_style_js", "ci_js", "ci_config",
+        "runtime_adapter", "command_center_store", "contract", "verifier",
+        "runtime_verifier", "workflow",
+    )
 }
 CANONICAL_CLOUD_CENTER_READ_ONLY = {
     REL["main_html"].as_posix(),
@@ -38,23 +47,10 @@ CANONICAL_CLOUD_CENTER_READ_ONLY = {
     REL["main_js"].as_posix(),
 }
 FORBIDDEN_REPOSITORY_FIELD_KEYS = {
-    "accesstoken",
-    "admintoken",
-    "authorizationheader",
-    "checkoutpath",
-    "cloneurl",
-    "credential",
-    "credentials",
-    "headers",
-    "localpath",
-    "password",
-    "privatekey",
-    "rawheaders",
-    "secret",
-    "secretpath",
-    "sourcecontent",
-    "sshurl",
-    "token",
+    "accesstoken", "admintoken", "authorizationheader", "checkoutpath", "cloneurl",
+    "credential", "credentials", "headers", "localpath", "password", "privatekey",
+    "rawheaders", "reporoot", "outputroot", "resultroot", "secret", "secretpath",
+    "sourcecontent", "sourcecode", "sshurl", "token",
 }
 
 
@@ -71,14 +67,8 @@ def text(path: Path) -> str:
 
 def git(root: Path, *args: str) -> tuple[int, str]:
     p = subprocess.run(
-        ["git", *args],
-        cwd=root,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        check=False,
+        ["git", *args], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        text=True, encoding="utf-8", errors="replace", check=False,
     )
     return p.returncode, p.stdout.strip()
 
@@ -95,7 +85,6 @@ def resolve_diff_base(root: Path) -> tuple[str | None, str]:
     if base_ref:
         candidates.extend((f"origin/{base_ref}", base_ref))
     candidates.extend(("origin/main", "main"))
-
     seen: set[str] = set()
     for ref in candidates:
         if not ref or ref in seen:
@@ -104,7 +93,6 @@ def resolve_diff_base(root: Path) -> tuple[str | None, str]:
         code, _ = git(root, "cat-file", "-e", f"{ref}^{{commit}}")
         if code == 0:
             return ref, "git_ref"
-
     return None, "unavailable"
 
 
@@ -145,6 +133,8 @@ def main() -> int:
 
     main_html, main_js, main_css = text(p["main_html"]), text(p["main_js"]), text(p["main_css"])
     ci_html, ci_style, ci_js = text(p["ci_html"]), text(p["ci_style_js"]), text(p["ci_js"])
+    runtime_adapter = text(p["runtime_adapter"])
+    command_center_store = text(p["command_center_store"])
     contract, runtime_js, workflow = text(p["contract"]), text(p["runtime_verifier"]), text(p["workflow"])
 
     try:
@@ -183,40 +173,21 @@ def main() -> int:
     }
     for oid, mode in required.items():
         o = owners.get(oid, {})
-        check(
-            f"shared_owner:{oid}",
-            o.get("reuseMode") == mode and o.get("doNotRebuild") is True,
-            f"reuse={o.get('reuseMode')} doNotRebuild={o.get('doNotRebuild')}",
-        )
+        check(f"shared_owner:{oid}", o.get("reuseMode") == mode and o.get("doNotRebuild") is True,
+              f"reuse={o.get('reuseMode')} doNotRebuild={o.get('doNotRebuild')}")
 
     cp = cfg.get("controlPlane", {})
     repositories = cp.get("repositories", {})
     repository_status = repositories.get("status")
-    check(
-        "repositories_state_supported",
-        repository_status in {"NOT_CONNECTED", REPOSITORY_CONNECTED_STATUS},
-        str(repository_status),
-    )
+    check("repositories_state_supported", repository_status in {"NOT_CONNECTED", REPOSITORY_CONNECTED_STATUS}, str(repository_status))
     if repository_status == "NOT_CONNECTED":
         check("repositories_unbound_items_empty", repositories.get("items") == [], str(repositories.get("items")))
     elif repository_status == REPOSITORY_CONNECTED_STATUS:
         rows = repositories.get("items")
         check("repositories_source_rows_non_empty", isinstance(rows, list) and len(rows) == 1, f"count={len(rows) if isinstance(rows, list) else 'invalid'}")
-        check(
-            "repository_projection_authority_profile",
-            repository_projection_authority.get("profile") == REPOSITORY_PROJECTION_PROFILE,
-            str(repository_projection_authority.get("profile")),
-        )
-        check(
-            "repository_projection_authority_result",
-            repository_projection_authority.get("result") == "PASS_COMPOSED_AUTHORITY_MESH",
-            str(repository_projection_authority.get("result")),
-        )
-        check(
-            "repository_projection_authority_coverage",
-            repository_projection_authority.get("requiredAuthorityCoverage") == "100%",
-            str(repository_projection_authority.get("requiredAuthorityCoverage")),
-        )
+        check("repository_projection_authority_profile", repository_projection_authority.get("profile") == REPOSITORY_PROJECTION_PROFILE, str(repository_projection_authority.get("profile")))
+        check("repository_projection_authority_result", repository_projection_authority.get("result") == "PASS_COMPOSED_AUTHORITY_MESH", str(repository_projection_authority.get("result")))
+        check("repository_projection_authority_coverage", repository_projection_authority.get("requiredAuthorityCoverage") == "100%", str(repository_projection_authority.get("requiredAuthorityCoverage")))
         check("repository_projection_authority_blockers", repository_projection_authority.get("blockers") == 0, str(repository_projection_authority.get("blockers")))
         check("repository_projection_authority_drift", repository_projection_authority.get("repoDriftStable") is True, str(repository_projection_authority.get("repoDriftStable")))
         check("repository_projection_authority_lanes", isinstance(repository_projection_authority.get("laneCount"), int) and repository_projection_authority.get("laneCount") >= 2, str(repository_projection_authority.get("laneCount")))
@@ -245,11 +216,7 @@ def main() -> int:
                 check(f"{prefix}:authorization_freshness", authorization.get("freshness") == "SNAPSHOT", str(authorization.get("freshness")))
                 check(f"{prefix}:authorization_capture_date", re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(authorization.get("capturedAt", ""))) is not None, str(authorization.get("capturedAt")))
                 does_not_prove = authorization.get("doesNotProve") if isinstance(authorization.get("doesNotProve"), list) else []
-                for boundary in (
-                    "future permission persistence",
-                    "authorization for any other repository",
-                    "hosted multi-tenant execution",
-                ):
+                for boundary in ("future permission persistence", "authorization for any other repository", "hosted multi-tenant execution"):
                     check(f"{prefix}:does_not_prove:{boundary}", boundary in does_not_prove, str(does_not_prove))
 
                 provenance = row.get("provenance") if isinstance(row.get("provenance"), dict) else {}
@@ -294,7 +261,23 @@ def main() -> int:
     check("js_read_only_http", re.search(r"method\s*:\s*[\"'](?:POST|PUT|PATCH|DELETE)[\"']", ci_js, re.I) is None)
     check("js_no_browser_persistence", "localStorage" not in ci_js and "sessionStorage" not in ci_js)
     check("js_governed_config", CONFIG_PATH_LITERAL in ci_js)
+    check("js_repository_runtime_path", RUNTIME_PATH_LITERAL in ci_js)
+    check("js_runtime_contract", RUNTIME_SCHEMA in ci_js and RUNTIME_SOURCE in ci_js)
+    check("js_runtime_ceiling", "runtime.productionCertified === false" in ci_js and "runtime.certifiable === false" in ci_js)
+    check("js_snapshot_fallback_visible", "SNAPSHOT_FALLBACK" in ci_js and "snapshot-fallback" in ci_js)
+    check("js_runtime_identity_match", "repository.identity !== expectedIdentity" in ci_js)
     check("js_fail_closed", "BLOCKED_CONFIG_UNAVAILABLE" in ci_js and "NOT_CONNECTED" in ci_js)
+
+    check("adapter_canonical_engine_seam", "resolve_intelligence_context" in runtime_adapter and RUNTIME_SOURCE in runtime_adapter)
+    check("adapter_route", RUNTIME_PATH_LITERAL in runtime_adapter)
+    check("adapter_schema", RUNTIME_SCHEMA in runtime_adapter)
+    check("adapter_read_only", '"readOnly": True' in runtime_adapter and '"productionCertified": False' in runtime_adapter and '"certifiable": False' in runtime_adapter)
+    check("adapter_fail_closed", '"status": "BLOCKED"' in runtime_adapter and '"identity": "UNKNOWN"' in runtime_adapter and "CODE_ATLAS_RUNTIME_UNAVAILABLE" in runtime_adapter)
+    check("adapter_no_process_or_network_owner", "subprocess" not in runtime_adapter and "urllib.request" not in runtime_adapter and "requests." not in runtime_adapter and "git clone" not in runtime_adapter.lower())
+    check("adapter_no_db_owner", "sqlite" not in runtime_adapter.lower() and "DB_PATH" not in runtime_adapter)
+    check("adapter_raw_context_not_exposed", '"rawContextExposed": False' in runtime_adapter)
+    check("adapter_forbidden_browser_keys_absent", all(token not in runtime_adapter for token in ('"repoRoot"', '"outputRoot"', '"cloneUrl"', '"sshUrl"', '"sourceContent"', '"privateKey"')))
+    check("store_installs_runtime_adapter", "from change_intelligence_runtime import install_runtime as _install_change_intelligence_runtime" in command_center_store and "_install_change_intelligence_runtime(globals())" in command_center_store)
 
     for term in ("REUSE_AS_IS", "SHARED_OWNER", "ADAPT", "DO_NOT_TOUCH", "NEW_OWNER", "Layer Map", "No-fake-green", "Commercial Billing Authority"):
         check(f"contract_term:{term}", term in contract, term)
@@ -303,10 +286,17 @@ def main() -> int:
     check("runtime_desktop_mobile", "desktop" in runtime_js and "mobile" in runtime_js)
     check("runtime_all_views", all(view in runtime_js for view in ("overview", "repositories", "runs", "discover", "guard", "control", "authority", "evidence", "roi", "entitlements")))
     check("runtime_fail_closed_semantics", "UNKNOWN|NOT_CONNECTED|BLOCKED" in runtime_js)
+    check("runtime_live_source", RUNTIME_SOURCE in runtime_js and "RUNTIME_SOURCE_READ_ONLY" in runtime_js)
+    check("runtime_git_identity_match", "expectedHead" in runtime_js and "expectedTree" in runtime_js and "expectedRepository" in runtime_js)
+    check("runtime_forbidden_egress_scan", "collectForbidden" in runtime_js and "forbiddenRuntimeFields" in runtime_js)
+    check("runtime_fallback_test", "verifyFallback" in runtime_js and "SNAPSHOT_FALLBACK" in runtime_js)
     check("runtime_screenshots", "page.screenshot" in runtime_js)
     check("workflow_source_gate", "verify-cloud-center-change-intelligence-01.py" in workflow)
     check("workflow_runtime_gate", "verify-cloud-center-change-intelligence-runtime-01.mjs" in workflow)
     check("workflow_browser_install", "playwright install --with-deps chromium" in workflow)
+    check("workflow_real_cloud_center", "prisma_unified_lab_v3.py" in workflow and "--serve" in workflow and "/api/health" in workflow)
+    check("workflow_temp_db", "PRISMA_COMMAND_CENTER_DB_PATH" in workflow and "runner.temp" in workflow)
+    check("workflow_repo_identity", "PCI_REPO_ROOT" in workflow and "PCI_EXPECTED_REPOSITORY" in workflow)
     check("workflow_evidence_upload", "change-intelligence-cloud-runtime-evidence" in workflow)
 
     diff_evaluated = False
@@ -319,16 +309,8 @@ def main() -> int:
         else:
             changed = {x.strip().replace("\\", "/") for x in output.splitlines() if x.strip()}
             check("git_diff_non_empty", bool(changed), f"base={diff_base} source={diff_base_source} changed={len(changed)}")
-            check(
-                "git_diff_boundary",
-                not (changed - ALLOWED_DIFF),
-                f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}",
-            )
-            check(
-                "git_diff_canonical_cloud_center_read_only",
-                not (changed & CANONICAL_CLOUD_CENTER_READ_ONLY),
-                f"canonicalChanged={sorted(changed & CANONICAL_CLOUD_CENTER_READ_ONLY)}",
-            )
+            check("git_diff_boundary", not (changed - ALLOWED_DIFF), f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}")
+            check("git_diff_canonical_cloud_center_read_only", not (changed & CANONICAL_CLOUD_CENTER_READ_ONLY), f"canonicalChanged={sorted(changed & CANONICAL_CLOUD_CENTER_READ_ONLY)}")
             check("git_diff_no_css", not any(x.lower().endswith(".css") for x in changed), "Commercial Billing Authority no-CSS boundary")
     else:
         check("git_diff_boundary", False, "CURRENT_PR_BASE_UNAVAILABLE")
@@ -338,7 +320,7 @@ def main() -> int:
 
 def emit(checks, errors, warnings, diff_evaluated):
     result = {
-        "schemaVersion": "prisma.change_intelligence.cloud_center.verify.v1",
+        "schemaVersion": "prisma.change_intelligence.cloud_center.verify.v2",
         "baseHead": BASE_HEAD,
         "result": "PASS_CHANGE_INTELLIGENCE_CLOUD_CENTER_SOURCE" if not errors else "FAIL_CHANGE_INTELLIGENCE_CLOUD_CENTER_SOURCE",
         "sourceReady": not errors,
