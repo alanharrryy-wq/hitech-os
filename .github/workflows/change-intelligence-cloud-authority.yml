@@ -20,8 +20,6 @@ jobs:
   change-intelligence-cloud-authority:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    env:
-      PYTHONPYCACHEPREFIX: ${{ runner.temp }}/pci-python-pycache
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -39,12 +37,16 @@ jobs:
           node-version: '22'
 
       - name: Compile bounded runtime adapters outside worktree
+        env:
+          PYTHONPYCACHEPREFIX: ${{ runner.temp }}/pci-python-pycache
         run: |
           python -m py_compile \
             "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/change_intelligence_runtime.py" \
             "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/command_center_store.py"
 
       - name: Verify source contract
+        env:
+          PYTHONPYCACHEPREFIX: ${{ runner.temp }}/pci-python-pycache
         run: python apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
 
       - name: Install Playwright runtime without mutating lockfiles
@@ -67,6 +69,7 @@ jobs:
       - name: Start isolated real Cloud Center host
         env:
           PRISMA_COMMAND_CENTER_DB_PATH: ${{ runner.temp }}/prisma-command-center.db
+          PYTHONPYCACHEPREFIX: ${{ runner.temp }}/pci-python-pycache
         run: |
           mkdir -p "$RUNNER_TEMP/protected-current" "$RUNNER_TEMP/prisma-cloud-runtime"
           python "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/py/prisma_unified_lab_v3.py" \
