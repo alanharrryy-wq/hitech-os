@@ -12,7 +12,7 @@ export default async function PricingPolicyPage() {
       <section className="hero">
         <div className="kicker">precios, impuestos y autorización</div>
         <h1 style={{ margin: 0 }}>Política de precios</h1>
-        <div className="subtle">Owners canónicos con auditoría, outbox, versionado e idempotencia.</div>
+        <div className="subtle">Consulta reglas de precio, impuestos y autorizaciones con historial de cambios.</div>
       </section>
       <PricingPolicyWorkspace initialWorkspace={workspace} />
     </AppShell>
