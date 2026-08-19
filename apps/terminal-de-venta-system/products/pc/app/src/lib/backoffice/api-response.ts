@@ -23,10 +23,14 @@ export function fail(code: string, message: string, status = 400, details: Recor
   return NextResponse.json(body, { status });
 }
 
-export function toBackofficeError(_error: unknown) {
-  return fail(
-    "BACKOFFICE_API_ERROR",
-    "No pudimos completar la operación. Intenta de nuevo. Si el problema continúa, contacta a soporte.",
-    500
-  );
+export function toBackofficeError(error: unknown, options: { customerSafe?: boolean } = {}) {
+  if (options.customerSafe) {
+    return fail(
+      "BACKOFFICE_API_ERROR",
+      "No pudimos completar la operación. Intenta de nuevo. Si el problema continúa, contacta a soporte.",
+      500
+    );
+  }
+  const message = error instanceof Error ? error.message : "Error desconocido.";
+  return fail("BACKOFFICE_API_ERROR", "No fue posible completar la operación de backoffice.", 500, { message });
 }
