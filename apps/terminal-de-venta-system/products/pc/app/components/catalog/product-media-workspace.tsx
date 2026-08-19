@@ -105,10 +105,10 @@ export function ProductMediaWorkspace({ initialWorkspace }: { initialWorkspace: 
       }));
       setProducts((current) => current.map((product) => product.id === data.product.id ? data.product : product));
       setNotice(data.product.mediaRef
-        ? "Imagen guardada. El catálogo PC→Tablet proyectará la misma referencia portable."
-        : "Imagen retirada. El POS conservará su fallback oscuro genérico.");
+        ? "Imagen guardada correctamente."
+        : "Imagen retirada. El producto seguirá disponible sin fotografía personalizada.");
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : "No fue posible guardar la referencia de imagen.");
+      setNotice(error instanceof Error ? error.message : "No fue posible guardar la imagen.");
     } finally {
       setIsSaving(false);
     }
@@ -120,9 +120,9 @@ export function ProductMediaWorkspace({ initialWorkspace }: { initialWorkspace: 
     <section className="card" data-prisma-component="ProductMediaWorkspace" data-prisma-surface="pc.catalog.media">
       <div className="section-head">
         <div>
-          <div className="kicker">biblioteca oscura administrada</div>
+          <div className="kicker">imágenes de producto</div>
           <h2 className="section-title">Imagen de producto</h2>
-          <div className="section-copy">Busca un SKU, elige una imagen genérica o conserva una referencia propia. La base guarda sólo la ruta portable.</div>
+          <div className="section-copy">Busca un producto y elige una imagen de la biblioteca, una imagen propia o déjalo sin foto.</div>
         </div>
         <span className="chip">{products.filter((product) => product.mediaRef).length} asignada(s) · {initialWorkspace.meta.libraryCount} opciones</span>
       </div>
@@ -172,12 +172,12 @@ export function ProductMediaWorkspace({ initialWorkspace }: { initialWorkspace: 
           ) : null}
 
           {mode === "CUSTOM" ? (
-            <label className="field"><span>URL HTTPS o ruta /product-media/</span><input value={customRef} maxLength={1200} onChange={(event) => setCustomRef(event.target.value)} placeholder="https://… o /product-media/…" /></label>
+            <label className="field"><span>Dirección HTTPS o ruta de imagen</span><input value={customRef} maxLength={1200} onChange={(event) => setCustomRef(event.target.value)} placeholder="https://… o /product-media/…" /></label>
           ) : null}
 
           <div className={styles.preview}>
             {preview ? <img src={preview} alt="Vista previa del producto seleccionado" /> : <span>Sin imagen asignada</span>}
-            <div><strong>{selected?.name ?? "Selecciona un producto"}</strong><small>{selected?.sku ?? "La selección no modifica inventario ni precio."}</small></div>
+            <div><strong>{selected?.name ?? "Selecciona un producto"}</strong><small>{selected?.sku ?? "La imagen no cambia precio ni existencias."}</small></div>
           </div>
 
           <button className="btn btn-primary" type="submit" disabled={!selected || isSaving || initialWorkspace.meta.source !== "canonical_prisma"}>
