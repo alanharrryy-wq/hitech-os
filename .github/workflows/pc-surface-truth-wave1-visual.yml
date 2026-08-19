@@ -193,7 +193,7 @@ jobs:
           PY
 
       - name: Install Playwright Chromium
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
+        run: python apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py
 
       - name: Start PC on canonical port 3130
         id: start_pc
@@ -352,11 +352,12 @@ jobs:
       - name: Compile Wave 2 Python gates
         run: |
           python -m py_compile \
+            apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py \
             apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
             apps/terminal-de-venta-system/products/pc/app/tools/verify_pc_wave2_schema_parity.py
 
       - name: Install Playwright Chromium
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
+        run: python apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py
 
       - name: Run governed Wave 2 certification
         run: |
