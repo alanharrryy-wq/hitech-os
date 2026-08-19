@@ -50,18 +50,11 @@ def git(root: Path, *args: str) -> tuple[int, str]:
 
 
 def resolve_diff_base(root: Path) -> tuple[str | None, str]:
-    """Resolve the current PR/base boundary without reinterpreting authority provenance."""
-    event_path = os.environ.get("GITHUB_EVENT_PATH", "").strip()
-    if event_path:
-        try:
-            event = json.loads(Path(event_path).read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            event = {}
-        base_sha = str(event.get("pull_request", {}).get("base", {}).get("sha") or "").strip()
-        if re.fullmatch(r"[0-9a-fA-F]{40}", base_sha):
-            code, _ = git(root, "cat-file", "-e", f"{base_sha}^{{commit}}")
-            if code == 0:
-                return base_sha, "github_event.pull_request.base.sha"
+    """Resolve the effective current PR base without reinterpreting authority provenance."""
+    if os.environ.get("GITHUB_EVENT_NAME", "").strip() == "pull_request":
+        code, parent = git(root, "rev-parse", "HEAD^1")
+        if code == 0 and re.fullmatch(r"[0-9a-fA-F]{40}", parent):
+            return parent, "github_pr_merge_first_parent"
 
     base_ref = os.environ.get("GITHUB_BASE_REF", "").strip()
     candidates: list[str] = []
