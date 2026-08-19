@@ -56,8 +56,13 @@ jobs:
         run: |
           set -euo pipefail
           RUNTIME_ROOT="$RUNNER_TEMP/pc-wave2-runtime"
+          LICENSE_PATH="$RUNTIME_ROOT/license.json"
           mkdir -p "$RUNTIME_ROOT/evidence" "$RUNTIME_ROOT/server"
           echo "DATABASE_URL=file:$RUNTIME_ROOT/canonical.db" >> "$GITHUB_ENV"
+          echo "PRISMA_LICENSE_PATH=$LICENSE_PATH" >> "$GITHUB_ENV"
+          echo "PRISMA_LICENSE_ALLOW_UNSIGNED=1" >> "$GITHUB_ENV"
+          echo "PRISMA_RUNTIME_MODE=dev" >> "$GITHUB_ENV"
+          echo "PRISMA_RUNTIME_ROLE=pc" >> "$GITHUB_ENV"
           echo "WAVE2_RUNTIME_ROOT=$RUNTIME_ROOT" >> "$GITHUB_ENV"
 
       - name: Generate PC Prisma client in isolated runner
@@ -158,6 +163,38 @@ jobs:
               conn.close()
           PY
 
+      - name: Write entitled PC test license
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from datetime import datetime, timezone, timedelta
+
+          now = datetime.now(timezone.utc)
+          payload = {
+            "schemaVersion": "1.0.0",
+            "licenseId": "lic_wave2_runtime_ci",
+            "customerId": "cust_wave2_runtime_ci",
+            "businessId": "biz_hitech_default",
+            "storeId": "store_obrera_04",
+            "plan": "TABLET_PC_MANAGED",
+            "state": "active",
+            "validFrom": (now - timedelta(days=1)).isoformat().replace("+00:00", "Z"),
+            "validUntil": (now + timedelta(days=30)).isoformat().replace("+00:00", "Z"),
+            "assignmentState": "assigned",
+            "limits": {"maxDevices": 2},
+            "features": {},
+            "capabilities": {},
+            "notes": ["Wave 2 isolated entitled PC runtime evidence fixture"]
+          }
+          target = Path(os.environ["PRISMA_LICENSE_PATH"])
+          target.parent.mkdir(parents=True, exist_ok=True)
+          target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(f"entitled PC license fixture written: {target}")
+          PY
+
       - name: Start isolated PC runtime
         shell: bash
         run: |
@@ -195,7 +232,7 @@ jobs:
             exit 0
           fi
           cp "$LOG" "$ROOT/evidence/pc-3130.log"
-          if grep -Eini "PrismaClientKnownRequestError|unhandledRejection|no such table|SQLITE_ERROR|ENOENT" "$LOG"; then
+          if grep -Eini "PrismaClientKnownRequestError|unhandledRejection|no such table|SQLITE_ERROR|Error: ENOENT|code[^A-Za-z0-9]+ENOENT" "$LOG"; then
             echo "Forbidden runtime error found in Wave 2 server log" >&2
             exit 1
           fi
