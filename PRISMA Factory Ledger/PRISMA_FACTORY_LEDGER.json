@@ -117,7 +117,7 @@
       "evidence": [
         "PRISMA_CUSTOMER_SETUP_MULTI_DEVICE_CONTRACT.md",
         "E2E_012_PLAN_BASED_CLIENT_ONBOARDING.md",
-        "PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICES.md"
+        "PRISMA_PLAN_BASED_CLIENT_ONBOARDING_MATRICIES.md"
       ],
       "doesNotProve": [
         "Hosted/live customer use unless Cloud License Gateway deploy and D1 migration are authorized and verified."
@@ -764,7 +764,205 @@
         "store repository credentials, tokens, clone URLs, SSH URLs, local checkout paths or source content in the browser projection",
         "claim hosted, enterprise, production, paid-pilot, human-usefulness or independent-agent readiness from this registration"
       ]
+    },
+    {
+      "id": "data.canonical_schema_reproducibility",
+      "displayName": "PRISMA canonical SQLite schema reproducibility and migration integrity",
+      "domain": "data",
+      "surfaces": [
+        "data",
+        "pc",
+        "sync",
+        "governance",
+        "quality"
+      ],
+      "classification": "FIX",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "BLOCKED_BY_CANONICAL_MIGRATION_HISTORY_DRIFT",
+      "doNotRebuild": false,
+      "nextGate": "Under a fresh exact-head MUTATION gate, repair only the ordered canonical SQLite migration history needed to reproduce the root canonical Prisma schema on a fresh isolated database; validate schema/table/index/FK equivalence, migration idempotency, rollback/backup, and affected PC customer CRUD. Do not mutate a live database or replace schema ownership.",
+      "evidence": [
+        "Closed unmerged PR #313 repeatable runtime evidence: fresh migration chain reports success while Customers POST returns 500 and no durable customer ID",
+        "apps/terminal-de-venta-system/docs/architecture/PRISMA_SCHEMA_OWNERSHIP.md",
+        "apps/terminal-de-venta-system/prisma/schema.prisma on main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
+        "apps/terminal-de-venta-system/prisma/migrations ordered history on main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
+        "PC Wave 2 capability registration Authority Mesh run 32272089223 / artifact 9372592160"
+      ],
+      "doesNotProve": [
+        "That a production or historical customer database is safe to mutate",
+        "That CustomerRepository source itself is defective after schema reproducibility is repaired",
+        "That all future Prisma schema changes are covered",
+        "Hosted production readiness"
+      ],
+      "allowedActions": [
+        "fresh isolated database reproduction",
+        "migration-history repair under exact authority",
+        "schema equivalence and foreign-key validation",
+        "rollback and backup verification"
+      ],
+      "forbiddenActions": [
+        "db push as a substitute for migration history",
+        "mutate a live customer database during repair certification",
+        "make the PC build-local Prisma schema canonical",
+        "hide missing canonical tables with seed-time ad hoc table creation"
+      ]
+    },
+    {
+      "id": "pc.customers.crud_runtime",
+      "displayName": "PRISMA PC Customers durable CRUD runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "data",
+        "governance",
+        "quality"
+      ],
+      "classification": "FIX",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "FAIL_CUSTOMER_CREATE_FRESH_DB_REPRODUCIBLE",
+      "doNotRebuild": false,
+      "nextGate": "First consume the canonical schema reproducibility repair on a fresh isolated database, then rerun create/search/detail/update/read-after-write. Change Customer source only for a residual evidence-backed defect; preserve transactional AuditEvent semantics and customer-safe error boundaries.",
+      "evidence": [
+        "Closed unmerged PR #313 repeated Customers runtime gate: POST /api/backoffice/customers => 500 and durable ID assertion failure on clean GitHub runners",
+        "apps/terminal-de-venta-system/products/pc/app/src/server/repositories/customer.repository.ts on main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
+        "PC Wave 2 capability registration Authority Mesh run 32272089223 / artifact 9372592160"
+      ],
+      "doesNotProve": [
+        "That CustomerRepository needs a source change if migration repair removes the failure",
+        "That all customer lifecycle operations are certified",
+        "That fiscal, credit, merge, or production data flows are certified",
+        "Hosted production readiness"
+      ],
+      "allowedActions": [
+        "fresh isolated Customers CRUD E2E",
+        "fix residual evidence-backed customer runtime defect",
+        "preserve audit and read-after-write contracts",
+        "customer-safe negative-path verification"
+      ],
+      "forbiddenActions": [
+        "disable or bypass AuditEvent to manufacture green",
+        "swallow durable-write failures",
+        "write customer test data to a live production database",
+        "claim full PC functional certification from Customers CRUD alone"
+      ]
+    },
+    {
+      "id": "pc.entitlement.surface_projection",
+      "displayName": "PRISMA PC license-aware customer surface projection",
+      "domain": "licensing",
+      "surfaces": [
+        "pc",
+        "licensing",
+        "governance",
+        "quality"
+      ],
+      "classification": "FIX",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "BLOCKED_SHARED_DEPENDENCY_RESTRICTED_LICENSE_NAV_VISIBLE",
+      "doNotRebuild": false,
+      "nextGate": "Under fresh exact-head authority, add the smallest fail-closed PC surface/navigation projection that consumes existing canonical licensing truth. TABLET_SOLO must not present customer PC navigation while protected PC APIs remain denied. Reuse licensing.source_contract_alignment and do not rebuild plan/license authority or frozen Wave 1 navigation semantics.",
+      "evidence": [
+        "Closed unmerged PR #313 restricted-license evidence: Devices and Sync APIs deny with LICENSE_FEATURE_DENIED while AppShell still exposes PC navigation",
+        "licensing.source_contract_alignment canonical Factory Ledger owner",
+        "PC Wave 2 capability registration Authority Mesh run 32272089223 / artifact 9372592160"
+      ],
+      "doesNotProve": [
+        "A defect in canonical licensing contracts or plan catalog",
+        "Authorization to rebuild License Governor or Customer Setup",
+        "All role/permission combinations",
+        "Hosted licensing production readiness"
+      ],
+      "allowedActions": [
+        "consume existing license entitlement truth",
+        "fail-closed PC customer navigation projection",
+        "negative restricted-license UI/API E2E",
+        "fix demonstrated projection drift"
+      ],
+      "forbiddenActions": [
+        "duplicate plan or entitlement logic in PC navigation",
+        "weaken API license denial",
+        "rebuild licensing.source_contract_alignment",
+        "re-expose internal or frozen Wave 1 routes"
+      ]
+    },
+    {
+      "id": "pc.customers.clientes_visual_usability",
+      "displayName": "PRISMA PC /clientes responsive visual usability",
+      "domain": "visual",
+      "surfaces": [
+        "pc",
+        "visual",
+        "governance",
+        "quality"
+      ],
+      "classification": "FIX",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "FAIL_CLIENTES_CARD_GRID_USABILITY_1440_1366",
+      "doNotRebuild": false,
+      "nextGate": "Under a fresh visual MUTATION gate with Layer Map, repair only the /clientes-owned layout/span behavior demonstrated broken at 1440x900 and 1366x768; preserve pc.visual.cloudglass, global dashboard-grid semantics, zero-important, minimum-container, frozen-navigation and generated/shared CSS boundaries; recertify screenshots and readability.",
+      "evidence": [
+        "Closed unmerged PR #313 screenshots at 1440x900 and 1366x768 showing Encontrar cliente / Nuevo cliente collapsed into narrow grid columns",
+        "Current main CustomerWorkspace/dashboard-grid source ownership reconnaissance",
+        "pc.visual.cloudglass canonical Factory Ledger owner",
+        "PC Wave 2 capability registration Authority Mesh run 32272089223 / artifact 9372592160 with Layer Map surface evidence"
+      ],
+      "doesNotProve": [
+        "Visual certification of all PC routes",
+        "Authorization to redesign the global PC Cloudglass system",
+        "Authorization to change shared/generated CSS",
+        "Functional Customers CRUD correctness"
+      ],
+      "allowedActions": [
+        "route-local visual source repair after fresh Layer Map",
+        "responsive screenshot certification",
+        "readability and minimum-width assertions",
+        "zero-important verification"
+      ],
+      "forbiddenActions": [
+        "global dashboard-grid rewrite to fix one route",
+        "add !important",
+        "increase nested container layers without optical necessity",
+        "rebuild pc.visual.cloudglass"
+      ]
+    },
+    {
+      "id": "pc.quality.customer_experience_wave2",
+      "displayName": "PRISMA PC customer-experience Wave 2 functional certification harness",
+      "domain": "quality",
+      "surfaces": [
+        "pc",
+        "quality",
+        "governance"
+      ],
+      "classification": "BUILD",
+      "status": "NOT_STARTED",
+      "stateLabel": "UNMERGED_PR313_HARNESS_NOT_PRESENT_ON_MAIN",
+      "doNotRebuild": false,
+      "nextGate": "Build a bounded certification harness on current main that reuses existing PC quality gates, separates presentation assertions from real business mutation E2E, adds critical customer-facing journeys only where isolated and rollback-safe, and reports truthful claim ceilings. PR #313 test source is reference evidence only because it closed unmerged.",
+      "evidence": [
+        "Current main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa package.json has no verify:pc-customer-experience-wave2 script",
+        "Closed unmerged PR #313 runtime verifier evidence and 332/334 result as non-authoritative reference",
+        "PC Wave 2 capability registration Authority Mesh run 32272089223 / artifact 9372592160"
+      ],
+      "doesNotProve": [
+        "That PR #313 verifier source is merged or authoritative",
+        "That assertion count equals functional coverage",
+        "That every PC business mutation can be safely automated",
+        "Production certification"
+      ],
+      "allowedActions": [
+        "reuse existing PC quality gates",
+        "build bounded Wave 2 verifier and explicit score families",
+        "add isolated non-destructive or rollback-safe business journeys",
+        "publish truthful claim ceilings and evidence"
+      ],
+      "forbiddenActions": [
+        "copy PR #313 wholesale without current-main reconciliation",
+        "count presentation checks as business functions",
+        "mutate live customer data for certification",
+        "duplicate existing quality owners unnecessarily"
+      ]
     }
   ],
-  "updatedAt": "2026-08-19T03:53:42-06:00"
+  "updatedAt": "2026-08-19T10:12:00-06:00"
 }
