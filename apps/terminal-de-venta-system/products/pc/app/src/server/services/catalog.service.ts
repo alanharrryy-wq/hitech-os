@@ -83,8 +83,7 @@ export async function getCatalogWorkspace(input: Partial<Record<keyof CatalogFil
         warnings: []
       }
     };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Error desconocido leyendo Prisma.";
+  } catch {
     return {
       filters,
       summary: {
@@ -106,7 +105,7 @@ export async function getCatalogWorkspace(input: Partial<Record<keyof CatalogFil
         confidence: "blocked",
         persistence: "unavailable",
         generatedAt,
-        warnings: ["No se pudo cargar la información. Revisa la sincronización o la base local."]
+        warnings: ["No pudimos cargar el catálogo. Intenta de nuevo. Si el problema continúa, contacta a soporte."]
       }
     };
   }
