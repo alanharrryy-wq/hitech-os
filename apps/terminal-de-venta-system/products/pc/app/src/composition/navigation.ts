@@ -85,28 +85,16 @@ const GROUP_DESCRIPTIONS: Record<string, string> = {
 // Surface Truth reconciliation: these routes remain addressable for compatibility,
 // redirects or honest blocked states, but they are not separate customer navigation
 // destinations because their canonical owner is another real-data surface or no
-// certified customer owner exists for the projection.
+// certified runtime owner exists yet.
 const PC_HIDDEN_SECONDARY_ROUTES = new Set([
   "/acciones-masivas",
-  "/ajustes-inventario",
-  "/alertas-ejecutivas",
-  "/alertas-operativas",
-  "/catalogo-activo",
-  "/conteos-operativos",
   "/contratos-reporte",
-  "/data-quality",
   "/detalle-registros",
   "/estados-operativos",
   "/forecast-basico",
-  "/integridad-barcodes",
-  "/license-runtime",
-  "/politica-precios",
   "/scorecards-negocio",
-  "/sync-operativo",
-  "/tablet-communication",
   "/tablas-operativas",
   "/tablero-kpi",
-  "/validacion-catalogo",
   "/vistas-ejecutivas"
 ]);
 
