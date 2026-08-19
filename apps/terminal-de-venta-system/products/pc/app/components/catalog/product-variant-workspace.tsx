@@ -65,7 +65,7 @@ export function ProductVariantWorkspace({ initialWorkspace }: { initialWorkspace
       }));
       setVariants((current) => [data.variant, ...current.filter((variant) => variant.id !== data.variant.id)]);
       setForm({ productId: "", variantProductId: "", label: "", color: "", size: "", sortOrder: "0" });
-      setNotice(data.replayed ? "La solicitud ya existía; se recuperó el vínculo de variante." : "Variante creada. El SKU hijo conserva el precio, stock, barcode y venta canónicos.");
+      setNotice(data.replayed ? "La solicitud ya existía y recuperamos la variante." : "Variante creada correctamente.");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "No fue posible crear la variante.");
     } finally {
@@ -83,7 +83,7 @@ export function ProductVariantWorkspace({ initialWorkspace }: { initialWorkspace
         body: JSON.stringify({ expectedVersion: variant.version, status: "INACTIVE" })
       }));
       setVariants((current) => current.map((item) => item.id === data.variant.id ? data.variant : item));
-      setNotice("Vínculo desactivado y releído desde la fuente canónica PC. No se borró ningún SKU ni movimiento.");
+      setNotice("Variante desactivada. Los productos y su historial se conservaron sin cambios.");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "No fue posible desactivar la variante.");
     } finally {
@@ -94,7 +94,7 @@ export function ProductVariantWorkspace({ initialWorkspace }: { initialWorkspace
   return (
     <section className="card" data-prisma-component="ProductVariantWorkspace" data-prisma-surface="pc.catalog.variants">
       <div className="section-head">
-        <div><div className="kicker">extensión de catálogo</div><h2 className="section-title">Variantes vendibles</h2><div className="section-copy">Agrupa SKUs existentes sin duplicar precio, existencia, barcode ni sale lines.</div></div>
+        <div><div className="kicker">variantes</div><h2 className="section-title">Variantes vendibles</h2><div className="section-copy">Relaciona productos existentes por color, talla u otra presentación sin duplicar su información comercial.</div></div>
         <span className="chip">{variants.filter((variant) => variant.status === "ACTIVE").length} activa(s)</span>
       </div>
 
@@ -102,14 +102,14 @@ export function ProductVariantWorkspace({ initialWorkspace }: { initialWorkspace
 
       <form className="inline-list" onSubmit={createVariant} aria-label="Crear variante de producto">
         <label className="field"><span>Producto base</span><select required value={form.productId} onChange={(event) => setForm((current) => ({ ...current, productId: event.target.value }))}><option value="">Seleccionar SKU</option>{initialWorkspace.products.map((product) => <option key={product.id} value={product.id}>{product.sku} · {product.name}</option>)}</select></label>
-        <label className="field"><span>SKU vendible</span><select required value={form.variantProductId} onChange={(event) => setForm((current) => ({ ...current, variantProductId: event.target.value }))}><option value="">Seleccionar SKU</option>{initialWorkspace.products.map((product) => <option key={product.id} value={product.id}>{product.sku} · {product.name}</option>)}</select></label>
+        <label className="field"><span>Producto variante</span><select required value={form.variantProductId} onChange={(event) => setForm((current) => ({ ...current, variantProductId: event.target.value }))}><option value="">Seleccionar SKU</option>{initialWorkspace.products.map((product) => <option key={product.id} value={product.id}>{product.sku} · {product.name}</option>)}</select></label>
         <label className="field"><span>Etiqueta</span><input required minLength={2} maxLength={140} value={form.label} onChange={(event) => setForm((current) => ({ ...current, label: event.target.value }))} placeholder="Ej. Azul · M" /></label>
         <label className="field"><span>Color</span><input maxLength={80} value={form.color} onChange={(event) => setForm((current) => ({ ...current, color: event.target.value }))} /></label>
         <label className="field"><span>Talla</span><input maxLength={80} value={form.size} onChange={(event) => setForm((current) => ({ ...current, size: event.target.value }))} /></label>
         <button className="btn btn-primary" type="submit" disabled={isCreating || initialWorkspace.meta.source !== "canonical_prisma"}>{isCreating ? "Creando…" : "Vincular variante"}</button>
       </form>
 
-      {!variants.length ? <p className="subtle">Aún no hay vínculos de variantes. Crea primero los SKUs vendibles en el catálogo canónico.</p> : <div className="list" aria-label="Variantes configuradas">
+      {!variants.length ? <p className="subtle">Aún no hay variantes configuradas.</p> : <div className="list" aria-label="Variantes configuradas">
         {variants.map((variant) => <article className="list-item" key={variant.id} data-product-variant-status={variant.status}>
           <div><strong>{variant.productSku} · {variant.productName}</strong><div>{variant.label} → {variant.variantSku} · {variant.variantName}</div><span className="subtle">{attributesLabel(variant.attributes)} · {variant.status === "ACTIVE" ? "Activa" : "Inactiva"}</span></div>
           {variant.status === "ACTIVE" ? <button className="btn" type="button" disabled={pendingId === variant.id} onClick={() => void deactivate(variant)}>{pendingId === variant.id ? "Guardando…" : "Desactivar"}</button> : <span className="chip">Historial conservado</span>}
