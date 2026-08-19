@@ -93,10 +93,10 @@ function CatalogProductFicha({ product }: { product: CatalogProductRecord | null
       </div>
 
       <div className={styles.actionRail} data-pcinv-action-rail="catalog">
-        <a href={queryHref("/stock", { q: product.sku, state: "all" })}>Ajustar stock</a>
-        <a href={queryHref("/salud-barcodes", { q: product.sku })}>Agregar código</a>
+        <a href={queryHref("/stock", { q: product.sku, state: "all" })}>Revisar stock</a>
+        <a href={queryHref("/salud-barcodes", { q: product.sku })}>Revisar códigos</a>
         <a href={queryHref("/counts", { q: product.sku })}>Crear conteo</a>
-        <a href={queryHref("/stock", { q: product.sku, state: "critical" })}>Mandar a reabasto</a>
+        <a href={queryHref("/stock", { q: product.sku, state: "critical" })}>Revisar reabasto</a>
         <span aria-disabled="true" title="La edición avanzada todavía no está disponible en esta pantalla.">Edición avanzada no disponible</span>
       </div>
 
@@ -222,7 +222,7 @@ export function CatalogDashboard({ workspace, productVariantWorkspace, productMe
               <h2>Incidencias accionables</h2>
               <p>Revisa los productos que requieren atención y abre su ficha para corregirlos.</p>
             </div>
-            <a className="footer-chip" href="/validacion-catalogo">Abrir validación</a>
+            <a className="footer-chip" href="/catalog?issue=problem">Ver productos con incidencias</a>
           </div>
           <div className={styles.tableFrame}>
             <DataTable
