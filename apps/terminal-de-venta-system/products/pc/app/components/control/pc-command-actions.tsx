@@ -14,7 +14,7 @@ function isPost(action: CommandAction) {
   return (action.method ?? "GET").toUpperCase() === "POST";
 }
 
-async function runPostAction(action: CommandAction) {
+async function runPostAction(action: CommandAction, customerSafe: boolean) {
   const response = await fetch(action.href, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -22,13 +22,14 @@ async function runPostAction(action: CommandAction) {
   });
   const payload = await response.json().catch(() => null);
   if (!response.ok || payload?.ok === false) {
+    if (customerSafe) throw new Error("No pudimos completar la acción. Intenta de nuevo o revisa el estado de la operación.");
     const message = typeof payload?.message === "string" ? payload.message : typeof payload?.error === "string" ? payload.error : `HTTP ${response.status}`;
     throw new Error(message);
   }
   return payload;
 }
 
-export function PcCommandActions({ actions }: { actions: CommandAction[] }) {
+export function PcCommandActions({ actions, customerSafe = false }: { actions: CommandAction[]; customerSafe?: boolean }) {
   const router = useRouter();
   const [state, setState] = useState<ActionState>({ busyKey: null, ok: null, error: null });
 
@@ -36,11 +37,11 @@ export function PcCommandActions({ actions }: { actions: CommandAction[] }) {
     const key = `${action.label}:${action.href}`;
     setState({ busyKey: key, ok: null, error: null });
     try {
-      await runPostAction(action);
+      await runPostAction(action, customerSafe);
       setState({ busyKey: null, ok: action.successMessage ?? `${action.label} completado.`, error: null });
       router.refresh();
     } catch (error) {
-      setState({ busyKey: null, ok: null, error: error instanceof Error ? error.message : "Accion no completada." });
+      setState({ busyKey: null, ok: null, error: error instanceof Error ? error.message : "Acción no completada." });
     }
   }
 
@@ -69,8 +70,8 @@ export function PcCommandActions({ actions }: { actions: CommandAction[] }) {
           );
         })}
       </div>
-      {state.ok ? <div className="alert-strip" role="status"><strong>Accion aplicada</strong><span className="subtle">{state.ok}</span></div> : null}
-      {state.error ? <div className="alert-strip" role="alert"><strong>No se completo</strong><span className="subtle">{state.error}</span></div> : null}
+      {state.ok ? <div className="alert-strip" role="status"><strong>Acción aplicada</strong><span className="subtle">{state.ok}</span></div> : null}
+      {state.error ? <div className="alert-strip" role="alert"><strong>No se completó</strong><span className="subtle">{state.error}</span></div> : null}
     </>
   );
 }
