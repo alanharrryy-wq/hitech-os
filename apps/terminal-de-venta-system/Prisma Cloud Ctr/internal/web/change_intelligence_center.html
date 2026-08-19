@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es-MX" data-pci-state="booting">
+<html lang="es-MX" data-pci-state="booting" data-pci-visual-contract="PRISMA_CLOUD_CENTER_STORMGLASS_LITE_V1">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,7 +7,8 @@
   <title>PRISMA Change Intelligence · Cloud Center</title>
   <link rel="preload" href="/internal/web/assets/simon-spring-zmMrlEHsFQY-unsplash.jpg" as="image">
   <link rel="preload" href="/internal/web/assets/prisma-logo-crystal-mark.png" as="image">
-  <script defer src="/internal/web/change_intelligence_center_style.js?v=ci-cloud-v1-20260818"></script>
+  <link rel="stylesheet" href="/internal/web/cloud_command_center.css?v=cclab11lite-20260819">
+  <script defer src="/internal/web/change_intelligence_center_style.js?v=ci-cloud-visual-parity-v2-20260819"></script>
   <script defer src="/internal/web/change_intelligence_center.js?v=ci-cloud-v1-20260818"></script>
 </head>
 <body class="pci-surface">
@@ -15,18 +16,23 @@
 
   <header class="pci-topbar">
     <a class="pci-brand" href="#overview" aria-label="PRISMA Change Intelligence overview">
-      <span class="pci-brand-mark" aria-hidden="true"><img src="/internal/web/assets/prisma-logo-crystal-mark.png" alt=""></span>
+      <span class="pci-brand-mark" aria-hidden="true">
+        <img src="/internal/web/assets/prisma-logo-crystal-mark.png" alt="">
+      </span>
       <span class="pci-brand-copy">
-        <span class="pci-brand-kicker">PRISMA · CLOUD CENTER VERTICAL</span>
+        <span class="pci-brand-line">
+          <span class="pci-logo-word">PRISMA</span>
+          <span class="pci-brand-kicker">CHANGE INTELLIGENCE</span>
+        </span>
         <strong>Change Intelligence</strong>
-        <small>Code Atlas Engine · internal technology</small>
+        <small>Code Atlas Engine · Prisma Cloud Center vertical</small>
       </span>
     </a>
 
-    <div class="pci-topbar-actions">
-      <span class="pci-status-chip" id="pciRuntimeChip" data-tone="unknown">Runtime · UNKNOWN</span>
-      <span class="pci-status-chip" id="pciMaturityChip" data-tone="unknown">Maturity · loading</span>
-      <a class="pci-back-link" href="/">← Prisma Cloud Center</a>
+    <div class="pci-topbar-actions" aria-label="Change Intelligence status">
+      <span class="pci-status-chip" id="pciRuntimeChip" data-tone="unknown">Cloud Center host · UNKNOWN</span>
+      <span class="pci-status-chip" id="pciMaturityChip" data-tone="unknown">Engine · loading</span>
+      <a class="pci-back-link" href="/">Prisma Cloud Center ↗</a>
     </div>
   </header>
 
@@ -56,7 +62,7 @@
 
     <main class="pci-main" id="pciMain">
       <section class="pci-hero" aria-labelledby="pciViewTitle">
-        <div>
+        <div class="pci-hero-copy-wrap">
           <p class="pci-eyebrow" id="pciViewKicker">CHANGE INTELLIGENCE</p>
           <h1 id="pciViewTitle">Know the system. Control the change. Prove the result.</h1>
           <p class="pci-hero-copy" id="pciViewSummary">Loading governed Change Intelligence contract…</p>

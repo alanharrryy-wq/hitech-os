@@ -11,6 +11,7 @@ from typing import Any
 
 BASE_HEAD = "d14effee1a1223cc772247ea9d7ec8547dc15c78"
 CONFIG_PATH_LITERAL = "/internal/config/change_intelligence_cloud.json"
+VISUAL_CONTRACT = "PRISMA_CLOUD_CENTER_STORMGLASS_LITE_V1"
 
 REL = {
     "main_html": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html"),
@@ -30,6 +31,11 @@ ALLOWED_DIFF = {
     REL[key].as_posix()
     for key in ("main_html", "ci_html", "ci_style_js", "ci_js", "ci_config", "contract", "verifier", "runtime_verifier", "workflow")
 }
+CANONICAL_VISUAL_READ_ONLY = {
+    REL["main_html"].as_posix(),
+    REL["main_css"].as_posix(),
+    REL["main_js"].as_posix(),
+}
 
 
 def repo_root() -> Path:
@@ -44,8 +50,16 @@ def text(path: Path) -> str:
 
 
 def git(root: Path, *args: str) -> tuple[int, str]:
-    p = subprocess.run(["git", *args], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                       text=True, encoding="utf-8", errors="replace", check=False)
+    p = subprocess.run(
+        ["git", *args],
+        cwd=root,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
     return p.returncode, p.stdout.strip()
 
 
@@ -129,35 +143,85 @@ def main() -> int:
     }
     for oid, mode in required.items():
         o = owners.get(oid, {})
-        check(f"shared_owner:{oid}", o.get("reuseMode") == mode and o.get("doNotRebuild") is True,
-              f"reuse={o.get('reuseMode')} doNotRebuild={o.get('doNotRebuild')}")
+        check(
+            f"shared_owner:{oid}",
+            o.get("reuseMode") == mode and o.get("doNotRebuild") is True,
+            f"reuse={o.get('reuseMode')} doNotRebuild={o.get('doNotRebuild')}",
+        )
 
     cp = cfg.get("controlPlane", {})
     for key in ("repositories", "analysisRuns", "authorityPacks", "evidenceReferences"):
         check(f"unbound_is_explicit:{key}", cp.get(key, {}).get("status") == "NOT_CONNECTED", str(cp.get(key, {}).get("status")))
 
-    links = re.findall(r'<a\b(?=[^>]*data-ci-entry=["\']v1["\'])(?=[^>]*href=["\']/internal/web/change_intelligence_center\.html["\'])[^>]*>', main_html, re.I)
+    links = re.findall(
+        r'<a\b(?=[^>]*data-ci-entry=["\']v1["\'])(?=[^>]*href=["\']/internal/web/change_intelligence_center\.html["\'])[^>]*>',
+        main_html,
+        re.I,
+    )
     check("single_navigation_seam", len(links) == 1, f"found={len(links)}")
     check("main_js_uncoupled", "change_intelligence_center" not in main_js and "pci-" not in main_js)
     check("main_css_uncoupled", "change_intelligence_center" not in main_css and "pci-" not in main_css)
 
+    for marker in (
+        "--cc-panel:",
+        "--cc-glass-fill:",
+        "--cc-blur:",
+        ".cc-topbar",
+        ".cc-mark",
+        ".cc-status-strip",
+        ".cc-nav",
+        ".cc-hero",
+        ".cc-surface",
+        "cclab11lite",
+    ):
+        check(f"canonical_visual_marker:{marker}", marker in main_css, marker)
+
     check("ci_html_namespace", 'class="pci-surface"' in ci_html)
+    check("ci_html_visual_contract", f'data-pci-visual-contract="{VISUAL_CONTRACT}"' in ci_html, VISUAL_CONTRACT)
+    check(
+        "ci_html_canonical_visual_dependency",
+        re.search(r'<link[^>]+rel=["\']stylesheet["\'][^>]+href=["\']/internal/web/cloud_command_center\.css(?:\?[^"\']*)?["\']', ci_html, re.I) is not None,
+        "cloud_command_center.css",
+    )
     check("ci_html_style_module", "change_intelligence_center_style.js" in ci_html)
     check("ci_html_projection_module", "change_intelligence_center.js" in ci_html)
-    check("ci_html_no_css_link", "change_intelligence_center.css" not in ci_html)
+    check("ci_html_no_standalone_css", "change_intelligence_center.css" not in ci_html)
+
     check("visual_no_important", "!important" not in ci_style)
     check("visual_no_cc_selector", re.search(r"\.cc[-_a-zA-Z0-9]", ci_style) is None)
     check("visual_reduced_motion", "prefers-reduced-motion" in ci_style)
     check("visual_reduced_transparency", "prefers-reduced-transparency" in ci_style)
     check("visual_focus", ":focus-visible" in ci_style)
     check("visual_scoped_injection", 'style.dataset.pciStyle = "v1"' in ci_style and "document.head.appendChild(style)" in ci_style)
+    check("visual_contract_marker", f'style.dataset.pciVisualContract = "{VISUAL_CONTRACT}"' in ci_style, VISUAL_CONTRACT)
+    for token in ("var(--cc-text", "var(--cc-muted", "var(--cc-radius-lg", "var(--cc-shadow", "var(--cc-blur"):
+        check(f"visual_inherits_token:{token}", token in ci_style, token)
+    check("visual_reject_old_dark_root", "--pci-bg:#060b12" not in ci_style and "--pci-deep:#03070d" not in ci_style)
+    check("visual_reject_sidebar_contract", "--pci-rail:250px" not in ci_style and "grid-template-columns:var(--pci-rail)" not in ci_style)
+    check("visual_floating_topbar_geometry", "width:min(1360px,calc(100% - 48px))" in ci_style and "border-radius:28px" in ci_style)
+    check("visual_unboxed_mark", ".pci-brand-mark{width:64px;height:64px" in ci_style and "border:0;border-radius:0;background:transparent" in ci_style)
+    check("visual_horizontal_navigation", ".pci-nav{display:flex;flex-wrap:wrap" in ci_style)
+    check("visual_stormglass_blur", "backdrop-filter:blur(2px) saturate(108%) contrast(102%)" in ci_style)
+    check("visual_mobile_horizontal_navigation", ".pci-nav{flex-wrap:nowrap;overflow-x:auto" in ci_style)
 
     check("js_read_only_http", re.search(r"method\s*:\s*[\"'](?:POST|PUT|PATCH|DELETE)[\"']", ci_js, re.I) is None)
     check("js_no_browser_persistence", "localStorage" not in ci_js and "sessionStorage" not in ci_js)
     check("js_governed_config", CONFIG_PATH_LITERAL in ci_js)
     check("js_fail_closed", "BLOCKED_CONFIG_UNAVAILABLE" in ci_js and "NOT_CONNECTED" in ci_js)
 
-    for term in ("REUSE_AS_IS", "SHARED_OWNER", "ADAPT", "DO_NOT_TOUCH", "NEW_OWNER", "Layer Map", "No-fake-green", "Commercial Billing Authority"):
+    for term in (
+        "REUSE_AS_IS",
+        "SHARED_OWNER",
+        "ADAPT",
+        "DO_NOT_TOUCH",
+        "NEW_OWNER",
+        "Layer Map",
+        "No-fake-green",
+        "Commercial Billing Authority",
+        "READ-ONLY visual authority",
+        VISUAL_CONTRACT,
+        "Stormglass Lite",
+    ):
         check(f"contract_term:{term}", term in contract, term)
 
     check("runtime_chromium", "chromium" in runtime_js and "playwright" in runtime_js)
@@ -165,6 +229,10 @@ def main() -> int:
     check("runtime_all_views", all(view in runtime_js for view in ("overview","repositories","runs","discover","guard","control","authority","evidence","roi","entitlements")))
     check("runtime_fail_closed_semantics", "UNKNOWN|NOT_CONNECTED|BLOCKED" in runtime_js)
     check("runtime_screenshots", "page.screenshot" in runtime_js)
+    check("runtime_visual_contract", VISUAL_CONTRACT in runtime_js and "visualContract" in runtime_js)
+    check("runtime_visual_css_dependency", "cloud_command_center.css" in runtime_js)
+    check("runtime_visual_computed_style", "getComputedStyle" in runtime_js and "borderRadius" in runtime_js and "backdropFilter" in runtime_js)
+
     check("workflow_source_gate", "verify-cloud-center-change-intelligence-01.py" in workflow)
     check("workflow_runtime_gate", "verify-cloud-center-change-intelligence-runtime-01.mjs" in workflow)
     check("workflow_browser_install", "playwright install --with-deps chromium" in workflow)
@@ -179,9 +247,17 @@ def main() -> int:
             check("git_diff_boundary", False, f"base={diff_base} source={diff_base_source} error={output}")
         else:
             changed = {x.strip().replace("\\", "/") for x in output.splitlines() if x.strip()}
-            check("git_diff_boundary", not (changed - ALLOWED_DIFF),
-                  f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}")
-            check("git_diff_expected_files", not (ALLOWED_DIFF - changed), f"missing={sorted(ALLOWED_DIFF - changed)}")
+            check("git_diff_non_empty", bool(changed), f"base={diff_base} source={diff_base_source} changed={len(changed)}")
+            check(
+                "git_diff_boundary",
+                not (changed - ALLOWED_DIFF),
+                f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}",
+            )
+            check(
+                "git_diff_canonical_visual_read_only",
+                not (changed & CANONICAL_VISUAL_READ_ONLY),
+                f"canonicalChanged={sorted(changed & CANONICAL_VISUAL_READ_ONLY)}",
+            )
             check("git_diff_no_css", not any(x.lower().endswith(".css") for x in changed), "Commercial Billing Authority no-CSS boundary")
     else:
         check("git_diff_boundary", False, "CURRENT_PR_BASE_UNAVAILABLE")
@@ -193,6 +269,7 @@ def emit(checks, errors, warnings, diff_evaluated):
     result = {
         "schemaVersion": "prisma.change_intelligence.cloud_center.verify.v1",
         "baseHead": BASE_HEAD,
+        "visualContract": VISUAL_CONTRACT,
         "result": "PASS_CHANGE_INTELLIGENCE_CLOUD_CENTER_SOURCE" if not errors else "FAIL_CHANGE_INTELLIGENCE_CLOUD_CENTER_SOURCE",
         "sourceReady": not errors,
         "runtimeVerified": False,

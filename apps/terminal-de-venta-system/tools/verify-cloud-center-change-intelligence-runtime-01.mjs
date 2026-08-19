@@ -12,6 +12,7 @@ const evidenceDir = process.env.PCI_EVIDENCE_DIR || 'pci-runtime-evidence';
 const target = `${baseUrl}/internal/web/change_intelligence_center.html`;
 const expectedHealthUrl = `${baseUrl}/api/health`;
 const expectedViews = ['overview','repositories','runs','discover','guard','control','authority','evidence','roi','entitlements'];
+const expectedVisualContract = 'PRISMA_CLOUD_CENTER_STORMGLASS_LITE_V1';
 
 await fs.mkdir(evidenceDir, { recursive: true });
 
@@ -22,12 +23,19 @@ const result = {
   runtimeVerified: false,
   productionCertified: false,
   certifiable: false,
+  visualContract: expectedVisualContract,
   viewCount: expectedViews.length,
   profiles: [],
   errors: [],
 };
 
 const browser = await chromium.launch({ headless: true });
+
+function countGridTracks(value) {
+  const text = String(value || '').trim();
+  if (!text || text === 'none') return 0;
+  return text.split(/\s+/).filter(Boolean).length;
+}
 
 async function verifyProfile(name, viewport) {
   const context = await browser.newContext({ viewport });
@@ -88,6 +96,103 @@ async function verifyProfile(name, viewport) {
     throw new Error(`${name}: disconnected host probe did not remain UNKNOWN (${hostChipText})`);
   }
 
+  const visualContract = await page.evaluate(() => {
+    const by = selector => document.querySelector(selector);
+    const style = selector => {
+      const node = by(selector);
+      return node ? getComputedStyle(node) : null;
+    };
+    const html = document.documentElement;
+    const topbar = style('.pci-topbar');
+    const mark = style('.pci-brand-mark');
+    const layout = style('.pci-layout');
+    const nav = style('.pci-nav');
+    const hero = style('.pci-hero');
+    const card = style('.pci-card');
+    const body = getComputedStyle(document.body);
+    const canonicalLink = by('link[rel="stylesheet"][href*="cloud_command_center.css"]');
+    return {
+      declared: html.dataset.pciVisualContract || '',
+      canonicalStylesheetHref: canonicalLink?.href || '',
+      bodyBackgroundImage: body.backgroundImage,
+      topbar: topbar ? {
+        position: topbar.position,
+        borderRadius: topbar.borderRadius,
+        backdropFilter: topbar.backdropFilter || topbar.webkitBackdropFilter || '',
+      } : null,
+      brandMark: mark ? {
+        borderTopWidth: mark.borderTopWidth,
+        borderTopStyle: mark.borderTopStyle,
+        backgroundColor: mark.backgroundColor,
+        width: mark.width,
+        height: mark.height,
+      } : null,
+      layout: layout ? {
+        display: layout.display,
+        gridTemplateColumns: layout.gridTemplateColumns,
+      } : null,
+      nav: nav ? {
+        display: nav.display,
+        flexWrap: nav.flexWrap,
+        overflowX: nav.overflowX,
+      } : null,
+      hero: hero ? {
+        display: hero.display,
+        gridTemplateColumns: hero.gridTemplateColumns,
+        borderRadius: hero.borderRadius,
+        backdropFilter: hero.backdropFilter || hero.webkitBackdropFilter || '',
+      } : null,
+      card: card ? {
+        borderRadius: card.borderRadius,
+        backdropFilter: card.backdropFilter || card.webkitBackdropFilter || '',
+      } : null,
+    };
+  });
+
+  if (visualContract.declared !== expectedVisualContract) {
+    throw new Error(`${name}: visual contract drift ${visualContract.declared}`);
+  }
+  if (!/cloud_command_center\.css/i.test(visualContract.canonicalStylesheetHref)) {
+    throw new Error(`${name}: canonical Cloud Center stylesheet not loaded`);
+  }
+  if (!/simon-spring-zmMrlEHsFQY-unsplash\.jpg/i.test(visualContract.bodyBackgroundImage)) {
+    throw new Error(`${name}: canonical Stormglass atmosphere photo not active`);
+  }
+  if (!visualContract.topbar || ['sticky','fixed'].includes(visualContract.topbar.position)) {
+    throw new Error(`${name}: topbar must remain floating, not sticky/fixed`);
+  }
+  if (visualContract.topbar.borderRadius !== '28px') {
+    throw new Error(`${name}: topbar radius drift ${visualContract.topbar.borderRadius}`);
+  }
+  if (!visualContract.brandMark || visualContract.brandMark.borderTopWidth !== '0px' || visualContract.brandMark.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+    throw new Error(`${name}: canonical unboxed crystal mark contract failed`);
+  }
+  if (!visualContract.nav || visualContract.nav.display !== 'flex') {
+    throw new Error(`${name}: navigation is not the canonical horizontal flex family`);
+  }
+  if (!visualContract.layout || countGridTracks(visualContract.layout.gridTemplateColumns) !== 1) {
+    throw new Error(`${name}: legacy sidebar layout still active (${visualContract.layout?.gridTemplateColumns})`);
+  }
+  if (!visualContract.hero || visualContract.hero.borderRadius !== '24px' || !/blur\(2px\)/.test(visualContract.hero.backdropFilter)) {
+    throw new Error(`${name}: hero Stormglass Lite geometry/material drift`);
+  }
+  if (!visualContract.card || visualContract.card.borderRadius !== '24px' || !/blur\(2px\)/.test(visualContract.card.backdropFilter)) {
+    throw new Error(`${name}: card Stormglass Lite geometry/material drift`);
+  }
+
+  const heroTracks = countGridTracks(visualContract.hero.gridTemplateColumns);
+  if (name === 'desktop' && heroTracks < 2) {
+    throw new Error(`${name}: desktop hero must preserve content + seal columns (${visualContract.hero.gridTemplateColumns})`);
+  }
+  if (name === 'mobile') {
+    if (visualContract.nav.flexWrap !== 'nowrap' || !['auto','scroll'].includes(visualContract.nav.overflowX)) {
+      throw new Error(`${name}: mobile navigation must remain horizontal scroll, got wrap=${visualContract.nav.flexWrap} overflowX=${visualContract.nav.overflowX}`);
+    }
+    if (heroTracks !== 1) {
+      throw new Error(`${name}: mobile hero must collapse to one column (${visualContract.hero.gridTemplateColumns})`);
+    }
+  }
+
   const expectedHealthResponses = badResponses.filter(entry => entry.url === expectedHealthUrl && entry.status === 404);
   const unexpectedBadResponses = badResponses.filter(entry => !(entry.url === expectedHealthUrl && entry.status === 404));
   if (expectedHealthResponses.length !== 1) {
@@ -113,6 +218,7 @@ async function verifyProfile(name, viewport) {
     pciState: await page.evaluate(() => document.documentElement.dataset.pciState),
     navViews,
     hostChipText,
+    visualContract,
     expectedHealthProbe: {
       url: expectedHealthUrl,
       expectedStatus: 404,
