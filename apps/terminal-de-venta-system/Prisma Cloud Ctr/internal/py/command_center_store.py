@@ -166,16 +166,16 @@ def _exec_schema(con):
         "CREATE TABLE IF NOT EXISTS DeactivationRequest(id TEXT PRIMARY KEY, internalId TEXT NOT NULL UNIQUE, humanCode TEXT NOT NULL UNIQUE, targetKind TEXT NOT NULL, targetCode TEXT, reasonCode TEXT NOT NULL, reasonOther TEXT, status TEXT DEFAULT 'prepared', impact TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)",
         "CREATE TABLE IF NOT EXISTS CommandAuditEvent(id TEXT PRIMARY KEY, eventType TEXT NOT NULL, actor TEXT DEFAULT 'local_operator', entityKind TEXT, entityCode TEXT, summary TEXT NOT NULL, payload TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)",
         "CREATE TABLE IF NOT EXISTS CommandCenterSettings(id TEXT PRIMARY KEY, key TEXT NOT NULL UNIQUE, value TEXT NOT NULL, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP)",
-        "CREATE TABLE IF NOT EXISTS CloudBridgeStatus(id TEXT PRIMARY KEY, mode TEXT DEFAULT 'local_prepared', cloudOrigin TEXT DEFAULT 'https://app.hitechrts.com', tokenState TEXT DEFAULT 'unknown', lastCheckedAt TEXT, payload TEXT)"
-        ,"CREATE TABLE IF NOT EXISTS SupportCase(id TEXT PRIMARY KEY, caseCode TEXT NOT NULL UNIQUE, clientRequestId TEXT UNIQUE, title TEXT NOT NULL, supportCode TEXT, severity TEXT NOT NULL DEFAULT 'warning', status TEXT NOT NULL DEFAULT 'CASE_OPEN', stage TEXT NOT NULL DEFAULT 'SCOPE_RESOLVING', assignedTo TEXT, scope TEXT NOT NULL DEFAULT '{}', expectedSourceRevision TEXT, revision INTEGER NOT NULL DEFAULT 1, createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP, closedAt TEXT)"
-        ,"CREATE TABLE IF NOT EXISTS SupportCaseEvent(id TEXT PRIMARY KEY, caseId TEXT NOT NULL, eventType TEXT NOT NULL, fromState TEXT, toState TEXT, correlationId TEXT NOT NULL, summary TEXT NOT NULL, payload TEXT NOT NULL DEFAULT '{}', createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
-        ,"CREATE INDEX IF NOT EXISTS idx_support_case_status_updated ON SupportCase(status, updatedAt DESC)"
-        ,"CREATE INDEX IF NOT EXISTS idx_support_case_event_case_created ON SupportCaseEvent(caseId, createdAt DESC)"
-        ,"CREATE TABLE IF NOT EXISTS SupportCommandRun(id TEXT PRIMARY KEY, caseId TEXT, commandId TEXT NOT NULL, idempotencyKey TEXT NOT NULL UNIQUE, expectedRevision INTEGER, beforeRevision INTEGER, afterRevision INTEGER, status TEXT NOT NULL, backupId TEXT, rollbackId TEXT, correlationId TEXT NOT NULL, payload TEXT NOT NULL DEFAULT '{}', result TEXT NOT NULL DEFAULT '{}', createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP)"
-        ,"CREATE INDEX IF NOT EXISTS idx_support_command_case_created ON SupportCommandRun(caseId, createdAt DESC)"
-        ,"CREATE TABLE IF NOT EXISTS SupportEvidence(id TEXT PRIMARY KEY, evidenceCode TEXT NOT NULL UNIQUE, caseId TEXT, evidenceType TEXT NOT NULL, source TEXT NOT NULL, sourceRevision TEXT, correlationId TEXT NOT NULL, sha256 TEXT NOT NULL, redacted INTEGER NOT NULL DEFAULT 1, payload TEXT NOT NULL DEFAULT '{}', observedAt TEXT NOT NULL, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
-        ,"CREATE INDEX IF NOT EXISTS idx_support_evidence_case_created ON SupportEvidence(caseId, createdAt DESC)"
-        ,"CREATE TABLE IF NOT EXISTS SupportRollbackSnapshot(id TEXT PRIMARY KEY, backupCode TEXT NOT NULL UNIQUE, caseId TEXT, commandId TEXT NOT NULL, correlationId TEXT NOT NULL, sourceRevision INTEGER, sha256 TEXT NOT NULL, snapshot TEXT NOT NULL, restoredAt TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
+        "CREATE TABLE IF NOT EXISTS CloudBridgeStatus(id TEXT PRIMARY KEY,mode TEXT DEFAULT 'local_prepared',cloudOrigin TEXT DEFAULT 'https://app.hitechrts.com',tokenState TEXT DEFAULT 'unknown',lastCheckedAt TEXT,payload TEXT)",
+        "CREATE TABLE IF NOT EXISTS SupportCase(id TEXT PRIMARY KEY, caseCode TEXT NOT NULL UNIQUE, clientRequestId TEXT UNIQUE, title TEXT NOT NULL, supportCode TEXT, severity TEXT NOT NULL DEFAULT 'warning', status TEXT NOT NULL DEFAULT 'CASE_OPEN', stage TEXT NOT NULL DEFAULT 'SCOPE_RESOLVING', assignedTo TEXT, scope TEXT NOT NULL DEFAULT '{}', expectedSourceRevision TEXT, revision INTEGER NOT NULL DEFAULT 1, createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP, closedAt TEXT)",
+        "CREATE TABLE IF NOT EXISTS SupportCaseEvent(id TEXT PRIMARY KEY, caseId TEXT NOT NULL, eventType TEXT NOT NULL, fromState TEXT, toState TEXT, correlationId TEXT NOT NULL, summary TEXT NOT NULL, payload TEXT NOT NULL DEFAULT '{}', createdAt TEXT DEFAULT CURRENT_TIMESTAMP)",
+        "CREATE INDEX IF NOT EXISTS idx_support_case_status_updated ON SupportCase(status, updatedAt DESC)",
+        "CREATE INDEX IF NOT EXISTS idx_support_case_event_case_created ON SupportCaseEvent(caseId, createdAt DESC)",
+        "CREATE TABLE IF NOT EXISTS SupportCommandRun(id TEXT PRIMARY KEY, caseId TEXT, commandId TEXT NOT NULL, idempotencyKey TEXT NOT NULL UNIQUE, expectedRevision INTEGER, beforeRevision INTEGER, afterRevision INTEGER, status TEXT NOT NULL, backupId TEXT, rollbackId TEXT, correlationId TEXT NOT NULL, payload TEXT NOT NULL DEFAULT '{}', result TEXT NOT NULL DEFAULT '{}', createdAt TEXT DEFAULT CURRENT_TIMESTAMP, updatedAt TEXT DEFAULT CURRENT_TIMESTAMP)",
+        "CREATE INDEX IF NOT EXISTS idx_support_command_case_created ON SupportCommandRun(caseId, createdAt DESC)",
+        "CREATE TABLE IF NOT EXISTS SupportEvidence(id TEXT PRIMARY KEY, evidenceCode TEXT NOT NULL UNIQUE, caseId TEXT, evidenceType TEXT NOT NULL, source TEXT NOT NULL, sourceRevision TEXT, correlationId TEXT NOT NULL, sha256 TEXT NOT NULL, redacted INTEGER NOT NULL DEFAULT 1, payload TEXT NOT NULL DEFAULT '{}', observedAt TEXT NOT NULL, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)",
+        "CREATE INDEX IF NOT EXISTS idx_support_evidence_case_created ON SupportEvidence(caseId, createdAt DESC)",
+        "CREATE TABLE IF NOT EXISTS SupportRollbackSnapshot(id TEXT PRIMARY KEY, backupCode TEXT NOT NULL UNIQUE, caseId TEXT, commandId TEXT NOT NULL, correlationId TEXT NOT NULL, sourceRevision INTEGER, sha256 TEXT NOT NULL, snapshot TEXT NOT NULL, restoredAt TEXT, createdAt TEXT DEFAULT CURRENT_TIMESTAMP)"
     ]
     for sql in statements:
         con.execute(sql)
@@ -930,3 +930,8 @@ if __name__ == "__main__":
     ensure_initialized()
     with db() as con:
         print(json.dumps(bootstrap(con), ensure_ascii=False, indent=2))
+
+# Governed Change Intelligence runtime adapter. It wraps only the read-only
+# repository projection route and leaves existing store owners untouched.
+from change_intelligence_runtime import install_runtime as _install_change_intelligence_runtime
+_install_change_intelligence_runtime(globals())
