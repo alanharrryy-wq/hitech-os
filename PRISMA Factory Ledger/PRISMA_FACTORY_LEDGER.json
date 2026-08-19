@@ -674,7 +674,52 @@
         "Successful independent-agent replication; the planned 12 sessions were not executed because the external evaluator was policy-blocked"
       ],
       "nextGate": "Prove availability of an independent external evaluator, then rerun the same-task paired replication; bounded human usefulness remains a separate future study. Do not rebuild Code Atlas core to work around GitHub Copilot policy settings."
+    },
+    {
+      "id": "tablet.sync.runtime_truth",
+      "displayName": "Tablet /sync runtime truth and no-fake-green operations baseline",
+      "domain": "runtime",
+      "surfaces": [
+        "tablet",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_TABLET_SYNC_TRUTH_RUNTIME_NO_FAKE_GREEN",
+      "doNotRebuild": true,
+      "nextGate": "TABLET_SYNC_OPERATIONS_CENTER_WAVE1_V1 as a governed reuse/advance UX projection over the existing /sync truth. Any visual mutation requires a fresh task-exact Authority Mesh with Layer Map and RIFAT-governed generation; do not rebuild sync, Outbox, dispatcher, licensing, or API truth.",
+      "evidence": [
+        "PR #298 Tablet: fail closed unverified sync panel state",
+        "merge commit 7f5745b4ad65804cceca0b743c741d406adde22f",
+        "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs 36/36 PASS",
+        "Tablet Sync Truth PR298 V5 R3 run 32160589642 artifact 9333495542",
+        "artifact sha256:9aaa85393119f73a95b9ebe866733c5e8f726e5f708c632a32e833dc97450c3d",
+        "apps/terminal-de-venta-system/products/tablet/app/app/sync/page.tsx",
+        "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx"
+      ],
+      "doesNotProve": [
+        "DB-backed E2E of the repaired /api/pos/sync/panel route",
+        "Catalog POST or catalog mutation behavior",
+        "Prisma generate, migration, seed, db push, or real database mutation",
+        "Hosted production deployment or future runtime behavior after source drift",
+        "Runtime or visual certification of PC, Mobile, Chart Lab, Shared UI, or unrelated Tablet routes",
+        "That an unverified or timed-out queue is healthy"
+      ],
+      "allowedActions": [
+        "read-only recertification against the current /sync owners",
+        "fix demonstrated drift without rebuilding the capability",
+        "advance to TABLET_SYNC_OPERATIONS_CENTER_WAVE1_V1 as a governed UX/projection over existing truth",
+        "apply visual changes only through fresh task-exact Layer Map and RIFAT-governed projection"
+      ],
+      "forbiddenActions": [
+        "rebuild sync, Outbox, dispatcher, licensing, or API truth from scratch",
+        "directly edit generated Tablet sync CSS",
+        "map unknown, unverified, or timed-out queue state to healthy/ok",
+        "make PC availability a prerequisite for local Tablet selling",
+        "claim DB-backed route E2E or catalog mutation certification from PR #298 evidence"
+      ]
     }
   ],
-  "updatedAt": "2026-08-16T00:09:11Z"
+  "updatedAt": "2026-08-19T03:53:42-06:00"
 }
