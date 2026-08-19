@@ -1,0 +1,216 @@
+name: PC Customer Experience Wave 2 Evidence
+
+on:
+  pull_request:
+    paths:
+      - "apps/terminal-de-venta-system/products/pc/app/**"
+      - ".github/workflows/pc-customer-experience-wave2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pc-customer-experience-wave2-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  PC_APP: apps/terminal-de-venta-system/products/pc/app
+  BASE_URL: http://127.0.0.1:3130
+
+jobs:
+  runtime-gate:
+    name: PC Wave 2 Runtime Visual Journey Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm --dir "$PC_APP" exec playwright install --with-deps chromium
+
+      - name: Prepare isolated runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          RUNTIME_ROOT="$RUNNER_TEMP/pc-wave2-runtime"
+          mkdir -p "$RUNTIME_ROOT/evidence" "$RUNTIME_ROOT/server"
+          echo "DATABASE_URL=file:$RUNTIME_ROOT/canonical.db" >> "$GITHUB_ENV"
+          echo "HITECH_PRISMA_ALLOW_NONLOCAL_SEED=1" >> "$GITHUB_ENV"
+          echo "WAVE2_RUNTIME_ROOT=$RUNTIME_ROOT" >> "$GITHUB_ENV"
+
+      - name: Migrate isolated SQLite
+        run: pnpm --dir "$PC_APP" db:canonical:migrate
+
+      - name: Seed populated isolated SQLite
+        run: pnpm --dir "$PC_APP" db:canonical:seed
+
+      - name: Start isolated PC runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm --dir "$PC_APP" dev > "$WAVE2_RUNTIME_ROOT/server/pc-3130.log" 2>&1 &
+          echo $! > "$WAVE2_RUNTIME_ROOT/server/pc-3130.pid"
+
+      - name: Wait for PC runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 120); do
+            if curl --fail --silent --show-error "$BASE_URL/catalog" >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "PC runtime did not become ready" >&2
+          cat "$WAVE2_RUNTIME_ROOT/server/pc-3130.log" >&2 || true
+          exit 1
+
+      - name: Run Wave 2 runtime visual and customer journeys
+        run: node "$PC_APP/tools/visual/verify_pc_customer_experience_wave2_runtime.mjs" --base-url "$BASE_URL" --out "$WAVE2_RUNTIME_ROOT/evidence"
+
+      - name: Assert clean Wave 2 server log
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$WAVE2_RUNTIME_ROOT/server/pc-3130.log"
+          if grep -Eini "PrismaClientKnownRequestError|unhandledRejection|no such table|SQLITE_ERROR|ENOENT" "$LOG"; then
+            echo "Forbidden runtime error found in Wave 2 server log" >&2
+            exit 1
+          fi
+          cp "$LOG" "$WAVE2_RUNTIME_ROOT/evidence/pc-3130.log"
+
+      - name: Upload Wave 2 runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-customer-experience-wave2-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.WAVE2_RUNTIME_ROOT }}/evidence
+          if-no-files-found: warn
+          retention-days: 14
+
+  restricted-license-evidence:
+    name: PC Wave 2 Restricted License Evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm --dir "$PC_APP" exec playwright install --with-deps chromium
+
+      - name: Prepare isolated restricted runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          RUNTIME_ROOT="$RUNNER_TEMP/pc-wave2-license"
+          DATA_ROOT="$RUNTIME_ROOT/data"
+          mkdir -p "$RUNTIME_ROOT/evidence" "$RUNTIME_ROOT/server" "$DATA_ROOT/terminal-de-venta-system/license"
+          echo "DATABASE_URL=file:$RUNTIME_ROOT/canonical.db" >> "$GITHUB_ENV"
+          echo "HITECH_PRISMA_ALLOW_NONLOCAL_SEED=1" >> "$GITHUB_ENV"
+          echo "HITECH_DATA_ROOT=$DATA_ROOT" >> "$GITHUB_ENV"
+          echo "PRISMA_LICENSE_ALLOW_UNSIGNED=true" >> "$GITHUB_ENV"
+          echo "WAVE2_LICENSE_ROOT=$RUNTIME_ROOT" >> "$GITHUB_ENV"
+
+      - name: Migrate isolated restricted SQLite
+        run: pnpm --dir "$PC_APP" db:canonical:migrate
+
+      - name: Seed isolated restricted SQLite
+        run: pnpm --dir "$PC_APP" db:canonical:seed
+
+      - name: Write restricted local test license
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from datetime import datetime, timezone, timedelta
+          now = datetime.now(timezone.utc)
+          payload = {
+            "version": 1,
+            "licenseId": "lic_wave2_restricted_ci",
+            "customerId": "cust_wave2_restricted_ci",
+            "tenantId": "tenant_wave2_restricted_ci",
+            "businessId": "biz_78b3c840796a4a4dad",
+            "storeId": "store_00728649f3804a9e82",
+            "deviceId": "pc_wave2_restricted_ci",
+            "plan": "TABLET_SOLO",
+            "state": "active",
+            "validFrom": (now - timedelta(days=1)).isoformat().replace("+00:00", "Z"),
+            "validUntil": (now + timedelta(days=30)).isoformat().replace("+00:00", "Z"),
+            "graceUntil": (now + timedelta(days=37)).isoformat().replace("+00:00", "Z"),
+            "assignmentState": "assigned",
+            "authorizedDevices": [
+              {"deviceId": "pc_wave2_restricted_ci", "role": "pc", "label": "PC Wave2 Restricted CI"}
+            ],
+            "limits": {"maxDevices": 1, "maxPcDevices": 1},
+            "features": [],
+            "metadata": {"purpose": "wave2 restricted license evidence", "environment": "github-actions"}
+          }
+          target = Path(os.environ["HITECH_DATA_ROOT"]) / "terminal-de-venta-system" / "license" / "license.json"
+          target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(f"restricted license fixture written: {target}")
+          PY
+
+      - name: Start restricted PC runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm --dir "$PC_APP" dev > "$WAVE2_LICENSE_ROOT/server/pc-3130.log" 2>&1 &
+          echo $! > "$WAVE2_LICENSE_ROOT/server/pc-3130.pid"
+
+      - name: Wait for restricted PC runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 120); do
+            if curl --silent --show-error "$BASE_URL/catalog" >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Restricted PC runtime did not become ready" >&2
+          cat "$WAVE2_LICENSE_ROOT/server/pc-3130.log" >&2 || true
+          exit 1
+
+      - name: Collect restricted license navigation evidence
+        run: node "$PC_APP/tools/visual/verify_pc_customer_experience_wave2_license.mjs" --base-url "$BASE_URL" --out "$WAVE2_LICENSE_ROOT/evidence"
+
+      - name: Preserve restricted runtime log
+        if: always()
+        shell: bash
+        run: cp "$WAVE2_LICENSE_ROOT/server/pc-3130.log" "$WAVE2_LICENSE_ROOT/evidence/pc-3130.log" || true
+
+      - name: Upload restricted license evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-customer-experience-wave2-license-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.WAVE2_LICENSE_ROOT }}/evidence
+          if-no-files-found: warn
+          retention-days: 14
