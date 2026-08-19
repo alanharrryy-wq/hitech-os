@@ -72,16 +72,9 @@ export async function getOperationalTaskWorkspace() {
       repository.listAssignees(businessId)
     ]);
     return { tasks, assignees, meta: { source: "canonical_prisma" as const, generatedAt: new Date().toISOString(), warning: null as string | null } };
-  } catch {
-    return {
-      tasks: [],
-      assignees: [],
-      meta: {
-        source: "unavailable" as const,
-        generatedAt: new Date().toISOString(),
-        warning: "No pudimos cargar las tareas operativas. Intenta de nuevo. Si el problema continúa, contacta a soporte."
-      }
-    };
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "lectura no disponible";
+    return { tasks: [], assignees: [], meta: { source: "unavailable" as const, generatedAt: new Date().toISOString(), warning: `No fue posible leer tareas operativas: ${reason}. Verifica que la migración canónica esté aplicada.` } };
   }
 }
 
