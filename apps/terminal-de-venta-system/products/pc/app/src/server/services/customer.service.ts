@@ -96,14 +96,13 @@ export async function getCustomerWorkspace(input: { query?: string; includeInact
       customers,
       meta: { source: "canonical_prisma", generatedAt: new Date().toISOString(), warnings: [] }
     };
-  } catch (error) {
-    const reason = error instanceof Error ? error.message : "lectura no disponible";
+  } catch {
     return {
       customers: [],
       meta: {
         source: "unavailable",
         generatedAt: new Date().toISOString(),
-        warnings: [`No fue posible leer Clientes: ${reason}. Verifica que la migración canónica esté aplicada en la base local.`]
+        warnings: ["No pudimos cargar Clientes en este momento. Intenta de nuevo. Si el problema continúa, contacta a soporte."]
       }
     };
   }
