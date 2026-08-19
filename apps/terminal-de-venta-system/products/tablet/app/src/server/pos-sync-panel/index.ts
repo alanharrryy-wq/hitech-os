@@ -17,7 +17,12 @@ type RawEvent = {
 };
 
 function safeDescription(r: RawEvent) {
-  const base = r.lastError ? "Necesita revisión antes de volver a enviar." : "Guardado localmente para continuidad de operación.";
+  const status = r.status.toLowerCase();
+  const base = status === "conflict"
+    ? "Requiere revisión; no se reintenta automáticamente."
+    : r.lastError
+      ? "Necesita revisión antes de volver a enviar."
+      : "Guardado localmente para continuidad de operación.";
   if (r.topic.includes("sale")) return `Venta registrada en la Tablet. ${base}`;
   if (r.topic.includes("stock") || r.topic.includes("inventory")) return `Movimiento de inventario guardado. ${base}`;
   if (r.topic.includes("shift")) return `Movimiento de turno guardado. ${base}`;
@@ -41,7 +46,7 @@ function toItem(r: RawEvent): SyncPanelItem {
     risk: riskForStatus(status, r.attempts),
     attempts: r.attempts,
     createdAt: r.createdAt.toISOString(),
-    canRetry: status === "pending" || status === "failed" || status === "conflict"
+    canRetry: status === "pending" || status === "failed"
   };
 }
 
@@ -64,9 +69,15 @@ export async function buildPendingOfflineSyncPanel(input: { businessId: string; 
 }
 
 export async function requestPendingRetry(input: { businessId: string; ids?: string[]; includeFailed?: boolean; includePending?: boolean }) {
-  const states = ["conflict", "CONFLICT"];
+  const states: string[] = [];
   if (input.includeFailed !== false) states.push("failed", "FAILED");
   if (input.includePending) states.push("pending", "PENDING");
+  if (states.length === 0) {
+    return {
+      updated: 0,
+      message: "No había eventos listos para reintentar."
+    };
+  }
   const where: any = { businessId: input.businessId, status: { in: states } };
   if (input.ids?.length) where.id = { in: input.ids };
   const result = await prisma.outboxEvent.updateMany({
@@ -76,9 +87,7 @@ export async function requestPendingRetry(input: { businessId: string; ids?: str
       attempts: { increment: 1 },
       nextRetryAt: null,
       failedAt: null,
-      conflictedAt: null,
       lastError: null,
-      remoteConflictCode: null,
       remoteRejectedReason: null
     }
   });
