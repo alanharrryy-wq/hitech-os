@@ -1,0 +1,158 @@
+name: PC Wave 2 Schema Parity Diagnostic
+
+on:
+  push:
+    branches:
+      - diagnostic/pc-wave2-schema-parity-1908
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pc-wave2-schema-parity-diagnostic-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PC_APP: apps/terminal-de-venta-system/products/pc/app
+  CANONICAL_SCHEMA: apps/terminal-de-venta-system/prisma/schema.prisma
+
+jobs:
+  schema-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout diagnostic branch
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prepare isolated SQLite
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pc-wave2-schema
+          DB="$RUNNER_TEMP/pc-wave2-schema-parity.db"
+          echo "DATABASE_URL=file:$DB" >> "$GITHUB_ENV"
+          echo "SCHEMA_DB=$DB" >> "$GITHUB_ENV"
+
+      - name: Generate canonical PC Prisma client
+        run: pnpm -C "$PC_APP" run prisma:generate
+
+      - name: Apply canonical migration history
+        run: pnpm -C "$PC_APP" run db:canonical:migrate
+
+      - name: Capture SQLite structural truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, sqlite3
+          from pathlib import Path
+
+          db = Path(os.environ["SCHEMA_DB"])
+          conn = sqlite3.connect(db)
+          try:
+              tables = [row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")]
+              indexes = [dict(name=row[0], table=row[1], sql=row[2]) for row in conn.execute("SELECT name, tbl_name, sql FROM sqlite_master WHERE type='index' AND name NOT LIKE 'sqlite_%' ORDER BY name")]
+              foreign_keys = {}
+              columns = {}
+              for table in tables:
+                  columns[table] = [dict(cid=row[0], name=row[1], type=row[2], notnull=row[3], default=row[4], pk=row[5]) for row in conn.execute(f'PRAGMA table_info("{table}")')]
+                  foreign_keys[table] = [dict(id=row[0], seq=row[1], table=row[2], fromColumn=row[3], toColumn=row[4], onUpdate=row[5], onDelete=row[6], match=row[7]) for row in conn.execute(f'PRAGMA foreign_key_list("{table}")')]
+              fk_check = [list(row) for row in conn.execute("PRAGMA foreign_key_check")]
+              report = {"database": str(db), "tables": tables, "columns": columns, "indexes": indexes, "foreignKeys": foreign_keys, "foreignKeyCheck": fk_check, "pass": not fk_check}
+              Path("artifacts/pc-wave2-schema/MIGRATED_SQLITE_STRUCTURE.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+              print(json.dumps({"tableCount": len(tables), "indexCount": len(indexes), "foreignKeyViolations": len(fk_check)}, indent=2))
+          finally:
+              conn.close()
+          PY
+
+      - name: Ask Prisma for exact drift SQL
+        id: drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP="$PC_APP"
+          OUT="$GITHUB_WORKSPACE/artifacts/pc-wave2-schema"
+          set +e
+          pnpm -C "$APP" exec prisma migrate diff \
+            --from-url "$DATABASE_URL" \
+            --to-schema-datamodel "../../../prisma/schema.prisma" \
+            --script \
+            --exit-code \
+            > "$OUT/PRISMA_MIGRATION_DRIFT.sql" \
+            2> "$OUT/PRISMA_MIGRATION_DRIFT.stderr.txt"
+          rc=$?
+          set -e
+          printf '%s\n' "$rc" > "$OUT/PRISMA_MIGRATION_DRIFT_EXIT_CODE.txt"
+          if [[ "$rc" -eq 1 ]]; then
+            echo "Prisma migrate diff failed to execute" >&2
+            cat "$OUT/PRISMA_MIGRATION_DRIFT.stderr.txt" >&2 || true
+            exit 1
+          fi
+          if [[ "$rc" -eq 0 ]]; then
+            echo "SCHEMA_PARITY_ALREADY_EXACT" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
+          elif [[ "$rc" -eq 2 ]]; then
+            echo "SCHEMA_PARITY_DRIFT_CONFIRMED" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
+          else
+            echo "Unexpected prisma migrate diff exit code: $rc" >&2
+            exit 1
+          fi
+
+      - name: Capture canonical schema DDL from empty
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$PC_APP" exec prisma migrate diff \
+            --from-empty \
+            --to-schema-datamodel "../../../prisma/schema.prisma" \
+            --script \
+            > "$GITHUB_WORKSPACE/artifacts/pc-wave2-schema/CANONICAL_SCHEMA_FROM_EMPTY.sql"
+
+      - name: Write diagnostic manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path("artifacts/pc-wave2-schema")
+          files = {}
+          for path in sorted(root.iterdir()):
+              if path.is_file():
+                  files[path.name] = {
+                      "bytes": path.stat().st_size,
+                      "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                  }
+          report = {
+              "kind": "PC_WAVE2_SCHEMA_PARITY_DIAGNOSTIC",
+              "repoHead": os.environ.get("GITHUB_SHA"),
+              "database": os.environ.get("SCHEMA_DB"),
+              "databaseIsIsolatedRunnerTemp": True,
+              "mutatedLiveDatabase": False,
+              "files": files,
+          }
+          (root / "DIAGNOSTIC_MANIFEST.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+          PY
+
+      - name: Upload schema parity evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave2-schema-parity-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 7
+          path: artifacts/pc-wave2-schema/**
