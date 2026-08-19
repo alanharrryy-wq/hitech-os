@@ -38,8 +38,10 @@ jobs:
           set -euo pipefail
           mkdir -p artifacts/pc-wave2-schema
           DB="$RUNNER_TEMP/pc-wave2-schema-parity.db"
+          TARGET="$RUNNER_TEMP/pc-wave2-schema-target.db"
           echo "DATABASE_URL=file:$DB" >> "$GITHUB_ENV"
           echo "SCHEMA_DB=$DB" >> "$GITHUB_ENV"
+          echo "TARGET_DB=$TARGET" >> "$GITHUB_ENV"
 
       - name: Generate canonical PC Prisma client
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
@@ -67,14 +69,8 @@ jobs:
             cat "$OUT/PRISMA_MIGRATION_DRIFT.stderr.txt" >&2 || true
             exit 1
           fi
-          if [[ "$rc" -eq 0 ]]; then
-            echo "SCHEMA_PARITY_EXACT" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
-          elif [[ "$rc" -eq 2 ]]; then
-            echo "SCHEMA_PARITY_DRIFT_CONFIRMED" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
-          else
-            echo "Unexpected Prisma migrate diff exit code: $rc" >&2
-            exit 1
-          fi
+          [[ "$rc" -eq 2 ]] && echo "SCHEMA_PARITY_DRIFT_CONFIRMED" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
+          [[ "$rc" -eq 0 ]] && echo "SCHEMA_PARITY_EXACT" > "$OUT/SCHEMA_PARITY_VERDICT.txt"
 
       - name: Capture canonical schema DDL
         shell: bash
@@ -86,7 +82,22 @@ jobs:
             --script \
             > "$GITHUB_WORKSPACE/artifacts/pc-wave2-schema/CANONICAL_SCHEMA_FROM_EMPTY.sql"
 
-      - name: Capture migrated SQLite structure
+      - name: Derive material-only migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          root = Path("artifacts/pc-wave2-schema")
+          drift = (root / "PRISMA_MIGRATION_DRIFT.sql").read_text(encoding="utf-8")
+          marker = "-- RedefineIndex\n"
+          material = drift.split(marker, 1)[0].rstrip() + "\n"
+          if "-- CreateTable" not in material or "-- RedefineTables" not in material:
+              raise SystemExit("material migration did not contain expected structural drift")
+          (root / "MATERIAL_MIGRATION.sql").write_text(material, encoding="utf-8")
+          PY
+
+      - name: Apply material migration to isolated migrated DB
         shell: bash
         run: |
           set -euo pipefail
@@ -94,18 +105,88 @@ jobs:
           import json, os, sqlite3
           from pathlib import Path
           db = Path(os.environ["SCHEMA_DB"])
+          sql = Path("artifacts/pc-wave2-schema/MATERIAL_MIGRATION.sql").read_text(encoding="utf-8")
+          result = {"database": str(db), "pass": False, "error": None}
           conn = sqlite3.connect(db)
           try:
-              tables = [row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")]
-              fks = {}
-              for table in tables:
-                  fks[table] = [list(row) for row in conn.execute(f'PRAGMA foreign_key_list("{table}")')]
-              fk_check = [list(row) for row in conn.execute("PRAGMA foreign_key_check")]
-              report = {"database": str(db), "tables": tables, "foreignKeys": fks, "foreignKeyCheck": fk_check, "pass": not fk_check}
-              Path("artifacts/pc-wave2-schema/MIGRATED_SQLITE_STRUCTURE.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-              print(json.dumps({"tables": len(tables), "foreignKeyViolations": len(fk_check)}, indent=2))
+              conn.executescript(sql)
+              violations = [list(row) for row in conn.execute("PRAGMA foreign_key_check")]
+              result["foreignKeyViolations"] = violations
+              result["pass"] = not violations
+          except Exception as exc:
+              result["error"] = f"{type(exc).__name__}: {exc}"
           finally:
               conn.close()
+          Path("artifacts/pc-wave2-schema/MATERIAL_MIGRATION_APPLY.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+          if not result["pass"]:
+              raise SystemExit(result["error"] or "material migration left FK violations")
+          PY
+
+      - name: Build isolated canonical reference DB
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, sqlite3
+          from pathlib import Path
+          target = Path(os.environ["TARGET_DB"])
+          ddl = Path("artifacts/pc-wave2-schema/CANONICAL_SCHEMA_FROM_EMPTY.sql").read_text(encoding="utf-8")
+          conn = sqlite3.connect(target)
+          try:
+              conn.executescript(ddl)
+          finally:
+              conn.close()
+          PY
+
+      - name: Compare migrated DB to canonical semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, sqlite3
+          from pathlib import Path
+
+          def snapshot(path):
+              conn = sqlite3.connect(path)
+              try:
+                  tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name") if r[0] != "_prisma_migrations"]
+                  columns, fks, indexes = {}, {}, {}
+                  for table in tables:
+                      columns[table] = [tuple(r[1:6]) for r in conn.execute(f'PRAGMA table_info("{table}")')]
+                      fks[table] = sorted((r[2], r[3], r[4], r[5], r[6]) for r in conn.execute(f'PRAGMA foreign_key_list("{table}")'))
+                      signatures = set()
+                      for idx in conn.execute(f'PRAGMA index_list("{table}")'):
+                          name, unique = idx[1], bool(idx[2])
+                          cols = tuple(r[2] for r in conn.execute(f'PRAGMA index_info("{name}")'))
+                          signatures.add((unique, cols))
+                      indexes[table] = sorted((int(unique), list(cols)) for unique, cols in signatures)
+                  violations = [list(r) for r in conn.execute("PRAGMA foreign_key_check")]
+                  return {"tables": tables, "columns": columns, "foreignKeys": fks, "indexSignatures": indexes, "foreignKeyCheck": violations}
+              finally:
+                  conn.close()
+
+          actual = snapshot(os.environ["SCHEMA_DB"])
+          target = snapshot(os.environ["TARGET_DB"])
+          report = {
+              "comparison": "semantic schema parity; index names ignored, uniqueness+column signatures enforced",
+              "tablesEqual": actual["tables"] == target["tables"],
+              "columnsEqual": actual["columns"] == target["columns"],
+              "foreignKeysEqual": actual["foreignKeys"] == target["foreignKeys"],
+              "indexSignaturesEqual": actual["indexSignatures"] == target["indexSignatures"],
+              "actualForeignKeyViolations": actual["foreignKeyCheck"],
+              "pass": False,
+          }
+          report["pass"] = all([
+              report["tablesEqual"], report["columnsEqual"], report["foreignKeysEqual"],
+              report["indexSignaturesEqual"], not report["actualForeignKeyViolations"]
+          ])
+          if not report["pass"]:
+              report["actual"] = actual
+              report["target"] = target
+          Path("artifacts/pc-wave2-schema/SEMANTIC_SCHEMA_PARITY.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+          print(json.dumps({k: v for k, v in report.items() if k not in {"actual", "target"}}, indent=2))
+          if not report["pass"]:
+              raise SystemExit("material migration did not reach canonical semantic parity")
           PY
 
       - name: Upload schema parity evidence
