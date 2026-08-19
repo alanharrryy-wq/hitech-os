@@ -1,23 +1,132 @@
 {
   "schemaVersion": "prisma.factory-ledger.registration-index.v1",
   "registrations": {
-    "licensing.admin_token_sync": {"status":"DONE","updatedAt":"2026-07-07T02:40:51-06:00","evidence":"evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","sourceEvidenceSha256":"9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206","doNotRebuild":true},
-    "licensing.admin_http_mutation_e2e": {"status":"DONE","updatedAt":"2026-07-07T02:40:51-06:00","evidence":"evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","sourceEvidenceSha256":"9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206","doNotRebuild":true},
-    "licensing.admin_note_mutation_persisted": {"status":"DONE","updatedAt":"2026-07-07T02:40:51-06:00","evidence":"evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","sourceEvidenceSha256":"9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206","doNotRebuild":true},
-    "licensing.admin_license_refresh_e2e": {"status":"VERIFY_FIX_NOT_DONE","updatedAt":"2026-07-07T02:40:51-06:00","evidence":"evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","sourceEvidenceSha256":"9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206","doNotRebuild":false},
-    "licensing.distributable_ready_current_scope": {"status":"DONE","updatedAt":"2026-07-07T02:40:51-06:00","evidence":"evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","sourceEvidenceSha256":"9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206","doNotRebuild":false},
-    "productization.local_first_data_custody_contract": {"status":"DONE_SOURCE_READY","updatedAt":"2026-07-17T19:27:40.449684-06:00","evidence":"apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md","sourceEvidenceSha256":"06EC52F9727343349670956AF4008046879FDCD2E2C7CB1F7BA0955109D2DB23","doNotRebuild":true,"nextGate":"RUNTIME_DATA_EGRESS_AND_SUPPORT_BUNDLE_CERTIFICATION"},
-    "commercial.billing.collections": {"status":"DONE_LOCAL_VERIFIED","updatedAt":"2026-08-14T03:45:09-06:00","evidence":"apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md","sourceEvidenceSha256":"C5728F4D3B241747D88519533BAE7D641F50E4E398F1F3E90B7F65B90A1B3657","verifierSha256":"AA464595208BFA03C8278202BA63C010408975C7D17DB7440B4A064D3063258A","doNotRebuild":true,"nextGate":"RUNTIME_OPERATOR_VERIFICATION"},
-    "commercial.billing.cfdi_external_gateway": {"status":"EXTERNAL_BLOCKED_SOURCE_READY","updatedAt":"2026-08-14T03:45:09-06:00","evidence":"apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md","sourceEvidenceSha256":"C5728F4D3B241747D88519533BAE7D641F50E4E398F1F3E90B7F65B90A1B3657","verifierSha256":"AA464595208BFA03C8278202BA63C010408975C7D17DB7440B4A064D3063258A","doNotRebuild":true,"nextGate":"EXPLICIT_SAT_PAC_LIVE_FISCAL_E2E"},
-    "cloud_center.customer_registration_runtime": {"status":"DONE_RUNTIME_VERIFIED","updatedAt":"2026-08-14T08:48:10-06:00","evidence":"apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py","sourceEvidenceSha256":"a656d85df4f2a6c43ec35539d74cd541fa941a0e70942403ab61f18dca889e9a","verifierSha256":"fa5914d0fe015fe64d43ce2f91028ff4e71fd3478f712288dcb9b782428dd23d","doNotRebuild":true,"nextGate":"CUSTOMER_CLOUD_ACTIVATION"},
-    "code_atlas.change_intelligence.customer_wow_v1": {"status":"DONE_LOCAL_VERIFIED","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json","doNotRebuild":true,"nextGate":"REUSE_EXISTING_CAPABILITIES_AND_ADVANCE_ONLY_TASK_EXACT_EVIDENCE_GATES"},
-    "ci.cloud.vertical_surface": {"status":"DONE_RUNTIME_VERIFIED_SLICE","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"PR #303","doNotRebuild":true,"nextGate":"ADAPTER_PROJECTION_GATES_ONLY_NO_SURFACE_REBUILD"},
-    "ci.rental.private_repo_v2": {"status":"DONE_LOCAL_VERIFIED","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"PR #299","doNotRebuild":true,"nextGate":"EXTERNAL_PRIVATE_REPO_OPERATIONAL_VALIDATION_WITHOUT_SOURCE_REBUILD"},
-    "ci.impact.go_actionable_review": {"status":"DONE_LOCAL_VERIFIED_EXTERNAL_REPLAY","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"PR #308","doNotRebuild":true,"nextGate":"EXPAND_ONLY_FROM_FRESH_EXTERNAL_EVIDENCE_NOT_BENCHMARK_CHASING"},
-    "ci.human.study_kit": {"status":"DONE_SOURCE_READY_NOT_MEASURED","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"PR #310","doNotRebuild":true,"nextGate":"EXTERNAL_HUMAN_PAIRED_STUDY_EXECUTION"},
-    "ci.human.external_measurement": {"status":"EXTERNAL_NOT_MEASURED","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"PR #310","doNotRebuild":true,"nextGate":"REAL_EXTERNAL_HUMAN_RESPONSE_AND_SCORING"},
-    "ci.agent.independent_replication": {"status":"EXTERNAL_BLOCKED","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json","doNotRebuild":true,"nextGate":"AVAILABLE_INDEPENDENT_EVALUATOR_THEN_PAIRED_REPLICATION"},
-    "change_intelligence.capability_anti_rework_gate": {"status":"BUILD_PENDING_PR_EVIDENCE","updatedAt":"2026-08-18T20:46:00-06:00","evidence":"PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json","doNotRebuild":false,"nextGate":"CI_AND_NEGATIVE_SELF_TEST_THEN_REGISTER_DONE"}
+    "licensing.admin_token_sync": {
+      "status": "DONE",
+      "updatedAt": "2026-07-07T02:40:51-06:00",
+      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
+      "sourceEvidenceSha256": "9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206",
+      "doNotRebuild": true
+    },
+    "licensing.admin_http_mutation_e2e": {
+      "status": "DONE",
+      "updatedAt": "2026-07-07T02:40:51-06:00",
+      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
+      "sourceEvidenceSha256": "9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206",
+      "doNotRebuild": true
+    },
+    "licensing.admin_note_mutation_persisted": {
+      "status": "DONE",
+      "updatedAt": "2026-07-07T02:40:51-06:00",
+      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
+      "sourceEvidenceSha256": "9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206",
+      "doNotRebuild": true
+    },
+    "licensing.admin_license_refresh_e2e": {
+      "status": "VERIFY_FIX_NOT_DONE",
+      "updatedAt": "2026-07-07T02:40:51-06:00",
+      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
+      "sourceEvidenceSha256": "9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206",
+      "doNotRebuild": false
+    },
+    "licensing.distributable_ready_current_scope": {
+      "status": "DONE",
+      "updatedAt": "2026-07-07T02:40:51-06:00",
+      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
+      "sourceEvidenceSha256": "9D6943C4CECBED86C180546C9C6C31C54350D96DCB3CC163E8E96037C3E2C206",
+      "doNotRebuild": false
+    },
+    "productization.local_first_data_custody_contract": {
+      "status": "DONE_SOURCE_READY",
+      "updatedAt": "2026-07-17T19:27:40.449684-06:00",
+      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md",
+      "sourceEvidenceSha256": "06EC52F9727343349670956AF4008046879FDCD2E2C7CB1F7BA0955109D2DB23",
+      "doNotRebuild": true,
+      "nextGate": "RUNTIME_DATA_EGRESS_AND_SUPPORT_BUNDLE_CERTIFICATION"
+    },
+    "commercial.billing.collections": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-14T03:45:09-06:00",
+      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+      "sourceEvidenceSha256": "C5728F4D3B241747D88519533BAE7D641F50E4E398F1F3E90B7F65B90A1B3657",
+      "verifierSha256": "AA464595208BFA03C8278202BA63C010408975C7D17DB7440B4A064D3063258A",
+      "doNotRebuild": true,
+      "nextGate": "RUNTIME_OPERATOR_VERIFICATION"
+    },
+    "commercial.billing.cfdi_external_gateway": {
+      "status": "EXTERNAL_BLOCKED_SOURCE_READY",
+      "updatedAt": "2026-08-14T03:45:09-06:00",
+      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
+      "sourceEvidenceSha256": "C5728F4D3B241747D88519533BAE7D641F50E4E398F1F3E90B7F65B90A1B3657",
+      "verifierSha256": "AA464595208BFA03C8278202BA63C010408975C7D17DB7440B4A064D3063258A",
+      "doNotRebuild": true,
+      "nextGate": "EXPLICIT_SAT_PAC_LIVE_FISCAL_E2E"
+    },
+    "cloud_center.customer_registration_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-14T08:48:10-06:00",
+      "evidence": "apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py",
+      "sourceEvidenceSha256": "a656d85df4f2a6c43ec35539d74cd541fa941a0e70942403ab61f18dca889e9a",
+      "verifierSha256": "fa5914d0fe015fe64d43ce2f91028ff4e71fd3478f712288dcb9b782428dd23d",
+      "doNotRebuild": true,
+      "nextGate": "CUSTOMER_CLOUD_ACTIVATION"
+    },
+    "code_atlas.change_intelligence.customer_wow_v1": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json",
+      "doNotRebuild": true,
+      "nextGate": "REUSE_EXISTING_CAPABILITIES_AND_ADVANCE_ONLY_TASK_EXACT_EVIDENCE_GATES"
+    },
+    "ci.cloud.vertical_surface": {
+      "status": "DONE_RUNTIME_VERIFIED_SLICE",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #303",
+      "doNotRebuild": true,
+      "nextGate": "ADAPTER_PROJECTION_GATES_ONLY_NO_SURFACE_REBUILD"
+    },
+    "ci.rental.private_repo_v2": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #299",
+      "doNotRebuild": true,
+      "nextGate": "EXTERNAL_PRIVATE_REPO_OPERATIONAL_VALIDATION_WITHOUT_SOURCE_REBUILD"
+    },
+    "ci.impact.go_actionable_review": {
+      "status": "DONE_LOCAL_VERIFIED_EXTERNAL_REPLAY",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #308",
+      "doNotRebuild": true,
+      "nextGate": "EXPAND_ONLY_FROM_FRESH_EXTERNAL_EVIDENCE_NOT_BENCHMARK_CHASING"
+    },
+    "ci.human.study_kit": {
+      "status": "DONE_SOURCE_READY_NOT_MEASURED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #310",
+      "doNotRebuild": true,
+      "nextGate": "EXTERNAL_HUMAN_PAIRED_STUDY_EXECUTION"
+    },
+    "ci.human.external_measurement": {
+      "status": "EXTERNAL_NOT_MEASURED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PR #310",
+      "doNotRebuild": true,
+      "nextGate": "REAL_EXTERNAL_HUMAN_RESPONSE_AND_SCORING"
+    },
+    "ci.agent.independent_replication": {
+      "status": "EXTERNAL_BLOCKED",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json",
+      "doNotRebuild": true,
+      "nextGate": "AVAILABLE_INDEPENDENT_EVALUATOR_THEN_PAIRED_REPLICATION"
+    },
+    "change_intelligence.capability_anti_rework_gate": {
+      "status": "BUILD_PENDING_PR_EVIDENCE",
+      "updatedAt": "2026-08-18T20:46:00-06:00",
+      "evidence": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+      "doNotRebuild": false,
+      "nextGate": "CI_AND_NEGATIVE_SELF_TEST_THEN_REGISTER_DONE"
+    }
   },
   "updatedAt": "2026-08-18T20:46:00-06:00"
 }
