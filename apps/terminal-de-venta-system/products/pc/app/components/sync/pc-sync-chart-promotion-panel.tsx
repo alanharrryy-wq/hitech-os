@@ -36,8 +36,7 @@ async function loadChart<T>(endpoint: string) {
   const response = await fetch(endpoint, { method: "GET", cache: "no-store" });
   const payload = await response.json().catch(() => null) as ApiOk<PrismaInsightEnvelope<T>> | ApiFail | null;
   if (!response.ok || !payload || !isApiOk(payload)) {
-    const message = payload && "message" in payload ? payload.message : `HTTP ${response.status}`;
-    throw new Error(message);
+    throw new Error("No pudimos cargar el estado de sincronización. Intenta de nuevo.");
   }
   return payload.data;
 }
@@ -50,7 +49,38 @@ function dateLabel(value: string | null | undefined) {
 }
 
 function statusLabel(value: string) {
+  const normalized = value.toLowerCase();
+  if (["fresh", "healthy", "ok", "success", "applied", "completed"].includes(normalized)) return "al día";
+  if (["stale", "warning", "partial"].includes(normalized)) return "requiere revisión";
+  if (["failed", "error", "rejected"].includes(normalized)) return "con problema";
+  if (["pending", "queued", "received", "sent"].includes(normalized)) return "pendiente";
+  if (["conflict", "conflicted"].includes(normalized)) return "con conflicto";
   return value.replaceAll("_", " ");
+}
+
+function entityLabel(value: string) {
+  const labels: Record<string, string> = {
+    Product: "Productos",
+    Barcode: "Códigos",
+    Brand: "Marcas",
+    TaxRate: "Impuestos",
+    Supplier: "Proveedores",
+    ProductSupplier: "Productos por proveedor",
+    PriceList: "Listas de precio",
+    PriceListItem: "Precios",
+    DropdownCatalog: "Opciones",
+    DropdownOption: "Valores"
+  };
+  return labels[value] ?? value.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
+function commandLabel(value: string) {
+  const normalized = value.toLowerCase();
+  if (normalized.includes("catalog")) return "Actualización de catálogo";
+  if (normalized.includes("sync")) return "Sincronización";
+  if (normalized.includes("pull")) return "Recepción de cambios";
+  if (normalized.includes("push")) return "Envío de cambios";
+  return "Actualización operativa";
 }
 
 function rowStatusClass(status: string) {
@@ -63,33 +93,30 @@ function sumLifecycle(events: SyncCommandLifecycleEvent[], key: keyof SyncComman
 
 function FreshnessChart({ envelope }: { envelope: PrismaInsightEnvelope<TabletCatalogFreshnessGridRow[]> | null }) {
   const rows = envelope?.data ?? [];
-  if (!envelope) return <div className={styles.stateBox}>Cargando frescura de catalogo.</div>;
-  if (!rows.length) return <div className={styles.stateBox}>Sin Tablets con heartbeat o checkpoint de catalogo visibles en PC.</div>;
+  if (!envelope) return <div className={styles.stateBox}>Cargando estado del catálogo.</div>;
+  if (!rows.length) return <div className={styles.stateBox}>No hay equipos con información reciente del catálogo.</div>;
   return (
     <div className={styles.freshnessRows} data-chart-id="pc.tablet-catalog-freshness-grid">
       {rows.map((row) => (
         <article className={styles.freshnessRow} key={row.terminalId}>
           <div className={styles.terminalBlock}>
             <span className={styles.terminalName}>{row.terminalLabel}</span>
-            <span className={styles.terminalMeta}>{row.terminalId}</span>
             <span className={`${styles.statusPill} ${rowStatusClass(row.freshnessStatus)}`}>{statusLabel(row.freshnessStatus)}</span>
-            <span className={styles.terminalMeta}>pull ok: {dateLabel(row.lastSuccessfulPullAt)}</span>
-            <span className={styles.terminalMeta}>cursor: {row.checkpointCursor ?? "sin cursor"}</span>
+            <span className={styles.terminalMeta}>Última actualización correcta: {dateLabel(row.lastSuccessfulPullAt)}</span>
             <div className={styles.countsLine}>
               <span className={styles.miniPill}>aplicados {row.counts.applied}</span>
               <span className={styles.miniPill}>rechazados {row.counts.rejected}</span>
               <span className={styles.miniPill}>conflictos {row.counts.conflicted}</span>
               <span className={styles.miniPill}>duplicados {row.counts.duplicated}</span>
-              <span className={styles.miniPill}>accion {row.recommendedAction}</span>
             </div>
-            {row.lastErrorSummary ? <span className={styles.terminalMeta}>error: {row.lastErrorSummary}</span> : null}
+            {row.lastErrorSummary ? <span className={styles.terminalMeta}>La última actualización reportó un problema. Reintenta o revisa el equipo.</span> : null}
           </div>
           <div className={styles.entityGrid}>
             {row.entityStatuses.map((entity) => (
               <div className={`${styles.entityCell} ${rowStatusClass(entity.status)}`} key={`${row.terminalId}:${entity.entityType}`}>
-                <span className={styles.entityName}>{entity.entityType}</span>
-                <span className={styles.entityCounts}>PC {entity.pcRowCount} / exp {entity.exportedCount}</span>
-                <span className={styles.entityCounts}>ok {entity.appliedCount} · rej {entity.rejectedCount} · con {entity.conflictedCount} · dup {entity.duplicatedCount}</span>
+                <span className={styles.entityName}>{entityLabel(entity.entityType)}</span>
+                <span className={styles.entityCounts}>{statusLabel(entity.status)}</span>
+                <span className={styles.entityCounts}>{entity.appliedCount} aplicados · {entity.rejectedCount} rechazados · {entity.conflictedCount} conflictos</span>
               </div>
             ))}
           </div>
@@ -101,8 +128,8 @@ function FreshnessChart({ envelope }: { envelope: PrismaInsightEnvelope<TabletCa
 
 function LifecycleChart({ envelope }: { envelope: PrismaInsightEnvelope<SyncCommandLifecycleEvent[]> | null }) {
   const events = envelope?.data ?? [];
-  if (!envelope) return <div className={styles.stateBox}>Cargando timeline de comandos.</div>;
-  if (!events.length) return <div className={styles.stateBox}>Sin eventos de lifecycle PC-visible para catalogo.</div>;
+  if (!envelope) return <div className={styles.stateBox}>Cargando actividad de sincronización.</div>;
+  if (!events.length) return <div className={styles.stateBox}>No hay actividad reciente de sincronización.</div>;
   return (
     <div className={styles.timelineRows} data-chart-id="pc.sync-command-lifecycle-timeline">
       {events.slice(0, 14).map((event) => (
@@ -110,18 +137,17 @@ function LifecycleChart({ envelope }: { envelope: PrismaInsightEnvelope<SyncComm
           <span className={`${styles.timelineMarker} ${rowStatusClass(event.status)}`} aria-hidden="true" />
           <div className={styles.timelineCard}>
             <div className={styles.timelineTop}>
-              <span>{event.commandType}</span>
+              <span>{commandLabel(event.commandType)}</span>
               <span className={`${styles.statusPill} ${rowStatusClass(event.status)}`}>{statusLabel(event.status)}</span>
             </div>
-            <div className={styles.timelineMeta}>{dateLabel(event.timestamp)} · {event.terminalLabel ?? event.terminalId ?? "all"} · {event.source}</div>
+            <div className={styles.timelineMeta}>{dateLabel(event.timestamp)} · {event.terminalLabel ?? "Todos los equipos"}</div>
             <div className={styles.countsLine}>
               <span className={styles.miniPill}>aplicados {event.resultCounts.applied}</span>
               <span className={styles.miniPill}>rechazados {event.resultCounts.rejected}</span>
               <span className={styles.miniPill}>conflictos {event.resultCounts.conflicted}</span>
               <span className={styles.miniPill}>duplicados {event.resultCounts.duplicated}</span>
-              <span className={styles.miniPill}>accion {event.recommendedAction}</span>
             </div>
-            {event.reason ? <div className={styles.timelineMeta}>razon: {event.reason}</div> : null}
+            {event.reason ? <div className={styles.timelineMeta}>La operación incluye una observación que requiere revisión.</div> : null}
           </div>
         </article>
       ))}
@@ -140,8 +166,8 @@ export function PcSyncChartPromotionPanel() {
         loadChart<SyncCommandLifecycleEvent[]>(LIFECYCLE_ENDPOINT)
       ]);
       setState({ loading: false, error: null, refreshedAt: new Date().toISOString(), freshness, lifecycle });
-    } catch (error) {
-      setState((current) => ({ ...current, loading: false, error: error instanceof Error ? error.message : "No fue posible cargar charts de sync PC." }));
+    } catch {
+      setState((current) => ({ ...current, loading: false, error: "No pudimos cargar el estado de sincronización. Intenta de nuevo.", freshness: current.freshness, lifecycle: current.lifecycle }));
     }
   }, []);
 
@@ -164,9 +190,9 @@ export function PcSyncChartPromotionPanel() {
       <div className={styles.panel}>
         <div className={styles.header}>
           <div className={styles.headerText}>
-            <p className={styles.eyebrow}>charts promovidos</p>
-            <h2 className={styles.title}>Catalogo PC a Tablet</h2>
-            <p className={styles.copy}>Frescura por Tablet, cursor, entidades, conflictos, duplicados y lifecycle de comandos desde endpoints PC reales.</p>
+            <p className={styles.eyebrow}>sincronización de catálogo</p>
+            <h2 className={styles.title}>Estado del catálogo por equipo</h2>
+            <p className={styles.copy}>Revisa qué equipos están al día, cuáles tienen conflictos y cómo avanzaron las últimas actualizaciones.</p>
           </div>
           <button className={styles.refreshButton} type="button" onClick={() => void refresh()} disabled={state.loading} aria-busy={state.loading}>
             {state.loading ? "Actualizando" : "Actualizar"}
@@ -174,9 +200,8 @@ export function PcSyncChartPromotionPanel() {
         </div>
 
         <div className={styles.statusLine} role={state.error ? "alert" : "status"}>
-          <span className={styles.statusPill}>{state.loading ? "cargando" : state.error ? "error" : "actualizado"}</span>
-          <span>Ultima lectura: {dateLabel(state.refreshedAt)}</span>
-          {state.freshness ? <span>{state.freshness.quality.sourceLabel}</span> : null}
+          <span className={styles.statusPill}>{state.loading ? "cargando" : state.error ? "con problema" : "actualizado"}</span>
+          <span>Última lectura: {dateLabel(state.refreshedAt)}</span>
           {state.error ? <span>{state.error}</span> : null}
         </div>
 
@@ -184,25 +209,19 @@ export function PcSyncChartPromotionPanel() {
           <article className={styles.chartCard}>
             <header className={styles.chartHeader}>
               <div>
-                <span>pc.tablet-catalog-freshness-grid</span>
-                <h3>Frescura de catalogo por Tablet</h3>
+                <h3>Estado por equipo</h3>
               </div>
-              <span>{state.freshness?.quality.dataStatus ?? "partial"}</span>
+              <span>{state.freshness?.data.length ?? 0} equipos</span>
             </header>
             <div className={styles.chartBody}>
               <FreshnessChart envelope={state.freshness} />
             </div>
-            <footer className={styles.footer}>
-              <span>{state.freshness?.quality.confidence.level ?? "low"} confianza</span>
-              <span>{state.freshness?.quality.fallbackReason ?? "server partial"}</span>
-            </footer>
           </article>
 
           <article className={styles.chartCard}>
             <header className={styles.chartHeader}>
               <div>
-                <span>pc.sync-command-lifecycle-timeline</span>
-                <h3>Lifecycle de comandos catalogo</h3>
+                <h3>Actividad reciente</h3>
               </div>
               <span>{state.lifecycle?.data.length ?? 0} eventos</span>
             </header>
@@ -210,8 +229,8 @@ export function PcSyncChartPromotionPanel() {
               <LifecycleChart envelope={state.lifecycle} />
             </div>
             <footer className={styles.footer}>
-              <span>ok {lifecycleSummary.applied} / rej {lifecycleSummary.rejected}</span>
-              <span>con {lifecycleSummary.conflicted} / dup {lifecycleSummary.duplicated}</span>
+              <span>Aplicados {lifecycleSummary.applied} · rechazados {lifecycleSummary.rejected}</span>
+              <span>Conflictos {lifecycleSummary.conflicted} · duplicados {lifecycleSummary.duplicated}</span>
             </footer>
           </article>
         </div>
