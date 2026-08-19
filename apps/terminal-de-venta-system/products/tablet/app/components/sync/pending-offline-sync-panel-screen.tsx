@@ -137,10 +137,16 @@ function filterTitle(filter: FilterMode) {
   if (filter === "needs_attention") return "Por atender";
   if (filter === "pending") return "Pendientes por enviar";
   if (filter === "failed") return "Fallidos";
-  if (filter === "conflict") return "En revision";
+  if (filter === "conflict") return "En revisión";
   if (filter === "sent") return "Enviados";
   if (filter === "acked") return "Confirmados";
   return "Todo";
+}
+
+function createdAtLabel(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "hora no disponible";
+  return new Intl.DateTimeFormat("es-MX", { dateStyle: "short", timeStyle: "short" }).format(date);
 }
 
 function licenseStateLabel(state: string | null | undefined) {
@@ -305,7 +311,7 @@ export function SyncWorkspace() {
   const pendingOrFailedCount = panelConfirmed && panel ? panel.summary.pending + panel.summary.failed : 0;
   const sentAwaitingAckCount = panelConfirmed && panel ? panel.summary.sent : 0;
   const sendableCount = pendingOrFailedCount + sentAwaitingAckCount;
-  const retryableCount = panelConfirmed && panel ? panel.summary.failed + panel.summary.conflict : 0;
+  const retryableCount = panelConfirmed && panel ? panel.summary.failed : 0;
   const primaryActionLabel = pendingOrFailedCount > 0 ? "Enviar pendientes" : sentAwaitingAckCount > 0 ? "Confirmar enviados" : "Enviar pendientes";
   const noteTone = dispatchTone(dispatchResult);
   const pcTone = pcConnectionTone(pcHealth);
@@ -371,6 +377,11 @@ export function SyncWorkspace() {
             <small>Requieren reintento</small>
           </article>
           <article>
+            <span>Enviados</span>
+            <strong>{queueMetric(panel?.summary.sent)}</strong>
+            <small>Esperando confirmación</small>
+          </article>
+          <article>
             <span>Revisión</span>
             <strong>{queueMetric(panel?.summary.conflict)}</strong>
             <small>Atención antes de enviar</small>
@@ -418,7 +429,8 @@ export function SyncWorkspace() {
                   <aside>
                     <strong>{item.attempts}</strong>
                     <small>intentos</small>
-                    {item.canRetry ? <em>Reintento disponible</em> : <em>Sin acción requerida</em>}
+                    <small>Guardado {createdAtLabel(item.createdAt)}</small>
+                    {item.status === "conflict" ? <em>Revisión requerida</em> : item.canRetry ? <em>Reintento disponible</em> : <em>Sin acción requerida</em>}
                   </aside>
                 </article>
               ))
