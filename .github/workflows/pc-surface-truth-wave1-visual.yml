@@ -4,6 +4,7 @@ name: PC Surface Truth Wave 1 Visual Gate
   pull_request:
     paths:
       - "apps/terminal-de-venta-system/products/pc/app/**"
+      - "apps/terminal-de-venta-system/prisma/**"
       - ".github/workflows/pc-surface-truth-wave1-visual.yml"
 
 permissions:
@@ -282,3 +283,55 @@ jobs:
           name: pc-surface-truth-wave1-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: artifacts/**
+
+  pc-wave2:
+    name: PC Wave 2 ${{ matrix.mode }} Certification
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        mode:
+          - entitled
+          - restricted
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Compile Wave 2 Python gates
+        run: |
+          python -m py_compile \
+            apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/verify_pc_wave2_schema_parity.py
+
+      - name: Install Playwright Chromium
+        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
+
+      - name: Run governed Wave 2 certification
+        run: |
+          python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+            --mode "${{ matrix.mode }}" \
+            --out "artifacts/pc-wave2-${{ matrix.mode }}"
+
+      - name: Upload Wave 2 evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave2-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: artifacts/pc-wave2-${{ matrix.mode }}/**
