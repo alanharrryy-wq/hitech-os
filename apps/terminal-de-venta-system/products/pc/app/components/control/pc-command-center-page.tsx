@@ -2,7 +2,7 @@ import { AppShell } from "@components/layout/app-shell";
 import { DataTable } from "@components/backoffice/data-table";
 import { EmptyState } from "@components/backoffice/empty-state";
 import { PcSyncChartPromotionPanel } from "@components/sync/pc-sync-chart-promotion-panel";
-import type { CommandCenterModel, CommandMetric, CommandPanel } from "@/server/services/pc-command-center.service";
+import type { CommandCenterModel, CommandMetric, CommandPanel, CommandTable, CommandTableRow } from "@/server/services/pc-command-center.service";
 import { PcCommandActions } from "./pc-command-actions";
 import { SalesControlBranchView } from "./sales-control-branch-view";
 import { CashSessionsOperationalView } from "./cash-sessions-operational-view";
@@ -33,6 +33,57 @@ function Panel({ panel }: { panel: CommandPanel }) {
   );
 }
 
+function humanSurface(value: unknown) {
+  const raw = String(value ?? "").toLowerCase();
+  if (raw.includes("tablet")) return "Tablet";
+  if (raw.includes("mobile")) return "Mobile";
+  if (raw.includes("pc")) return "PC";
+  return raw ? "Equipo" : "No disponible";
+}
+
+function customerTableText(value: string) {
+  return value
+    .replace(/lifecycle/gi, "resultado")
+    .replace(/checkpoint/gi, "avance")
+    .replace(/outbox/gi, "pendientes")
+    .replace(/heartbeat/gi, "conexión")
+    .replace(/payload/gi, "detalle");
+}
+
+function wave2CustomerTable(path: string, table: CommandTable): CommandTable {
+  const hidden = path === "/devices"
+    ? new Set(["Fuente", "Modo"])
+    : new Set(["Fuente", "Evento", "Agregado", "Dispositivo", "Terminal", "Código", "ID", "Id", "Topic", "Tópico"]);
+  const columns = table.columns.filter((column) => !hidden.has(column));
+  const rows = table.rows.map((row, rowIndex) => {
+    const projected: CommandTableRow = {};
+    for (const column of columns) {
+      const value = row[column];
+      if (column === "Dispositivo") {
+        projected[column] = `Equipo ${rowIndex + 1}`;
+      } else if (column === "Superficie") {
+        projected[column] = humanSurface(value);
+      } else {
+        projected[column] = value;
+      }
+    }
+    const href = typeof row.__rowActionHref === "string" && !row.__rowActionHref.startsWith("/api/") ? row.__rowActionHref : undefined;
+    if (href) {
+      projected.__rowActionHref = href;
+      projected.__rowActionLabel = row.__rowActionLabel || "Abrir detalle";
+    }
+    return projected;
+  });
+  return {
+    ...table,
+    title: customerTableText(table.title),
+    caption: customerTableText(table.caption),
+    columns,
+    rows,
+    emptyMessage: customerTableText(table.emptyMessage)
+  };
+}
+
 export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
   if (model.currentPath === "/sales-control" && model.salesControl) {
     return <SalesControlBranchView model={model} />;
@@ -43,6 +94,12 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
   }
 
   const wave2CustomerSurface = model.currentPath === "/sync" || model.currentPath === "/devices";
+  const visibleActions = wave2CustomerSurface
+    ? (model.actions ?? []).filter((action) => action.method === "POST" || !action.href.startsWith("/api/"))
+    : (model.actions ?? []);
+  const visibleTables = wave2CustomerSurface
+    ? model.tables.map((table) => wave2CustomerTable(model.currentPath, table))
+    : model.tables;
 
   return (
     <AppShell currentPath={model.currentPath}>
@@ -67,7 +124,7 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
         )}
       </section>
 
-      {model.actions?.length ? (
+      {visibleActions.length ? (
         <section className="card">
           <div className="section-head">
             <div>
@@ -76,7 +133,7 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
               <p className="section-copy">{wave2CustomerSurface ? "Las acciones disponibles muestran su resultado; las restringidas explican por qué no pueden ejecutarse." : "Solo se muestran acciones con ruta real o razon de bloqueo."}</p>
             </div>
           </div>
-          <PcCommandActions actions={model.actions} />
+          <PcCommandActions actions={visibleActions} customerSafe={wave2CustomerSurface} />
         </section>
       ) : null}
 
@@ -92,7 +149,7 @@ export function PcCommandCenterPage({ model }: { model: CommandCenterModel }) {
 
       {model.mode === "sync" ? <PcSyncChartPromotionPanel /> : null}
 
-      {model.tables.length ? model.tables.map((table) => (
+      {visibleTables.length ? visibleTables.map((table) => (
         <section className="card" key={table.title}>
           <div className="section-head">
             <div>
