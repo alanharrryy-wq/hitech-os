@@ -58,7 +58,6 @@ jobs:
           RUNTIME_ROOT="$RUNNER_TEMP/pc-wave2-runtime"
           mkdir -p "$RUNTIME_ROOT/evidence" "$RUNTIME_ROOT/server"
           echo "DATABASE_URL=file:$RUNTIME_ROOT/canonical.db" >> "$GITHUB_ENV"
-          echo "HITECH_PRISMA_ALLOW_NONLOCAL_SEED=1" >> "$GITHUB_ENV"
           echo "WAVE2_RUNTIME_ROOT=$RUNTIME_ROOT" >> "$GITHUB_ENV"
 
       - name: Generate PC Prisma client in isolated runner
@@ -67,8 +66,97 @@ jobs:
       - name: Migrate isolated SQLite
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
 
-      - name: Seed populated isolated SQLite
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:seed
+      - name: Seed populated isolated SQLite from canonical fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import sqlite3
+          from pathlib import Path
+          from urllib.parse import unquote
+
+          database_url = os.environ["DATABASE_URL"]
+          if not database_url.startswith("file:"):
+              raise SystemExit("Wave 2 evidence requires file: SQLite DATABASE_URL")
+          database_path = Path(unquote(database_url[5:])).resolve()
+          seed_path = Path("apps/terminal-de-venta-system/prisma/seeds/canonical.seed.json").resolve()
+          seed = json.loads(seed_path.read_text(encoding="utf-8"))
+
+          order = [
+              ("businesses", "Business"),
+              ("stores", "Store"),
+              ("terminals", "Terminal"),
+              ("taxRates", "TaxRate"),
+              ("priceLists", "PriceList"),
+              ("products", "Product"),
+              ("barcodes", "Barcode"),
+              ("priceListItems", "PriceListItem"),
+              ("stockSnapshots", "StockSnapshot"),
+              ("stockMovements", "StockMovement"),
+              ("suppliers", "Supplier"),
+              ("purchaseOrders", "PurchaseOrder"),
+              ("purchaseOrderLines", "PurchaseOrderLine"),
+              ("goodsReceipts", "GoodsReceipt"),
+              ("goodsReceiptLines", "GoodsReceiptLine"),
+              ("replenishmentSignals", "ReplenishmentSignal"),
+              ("cashSessions", "CashSession"),
+              ("cashMovements", "CashMovement"),
+              ("sales", "Sale"),
+              ("saleLines", "SaleLine"),
+              ("saleReturns", "SaleReturn"),
+              ("auditCounts", "AuditCount"),
+              ("outboxEvents", "OutboxEvent"),
+          ]
+
+          def normalize(value):
+              if isinstance(value, bool):
+                  return 1 if value else 0
+              if isinstance(value, (dict, list)):
+                  return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+              return value
+
+          conn = sqlite3.connect(database_path)
+          inserted = {}
+          try:
+              conn.execute("PRAGMA foreign_keys=ON")
+              for collection, table in order:
+                  rows = seed.get(collection, []) or []
+                  table_columns = {row[1] for row in conn.execute(f'PRAGMA table_info("{table}")')}
+                  if not table_columns:
+                      raise RuntimeError(f"missing migrated table: {table}")
+                  count = 0
+                  for row in rows:
+                      payload = {key: normalize(value) for key, value in row.items() if key in table_columns}
+                      if not payload:
+                          continue
+                      columns = list(payload)
+                      placeholders = ",".join("?" for _ in columns)
+                      quoted = ",".join(f'"{column}"' for column in columns)
+                      conn.execute(
+                          f'INSERT INTO "{table}" ({quoted}) VALUES ({placeholders})',
+                          [payload[column] for column in columns],
+                      )
+                      count += 1
+                  inserted[table] = count
+              conn.commit()
+
+              required_nonempty = ["Business", "Product", "Supplier", "StockSnapshot", "StockMovement", "AuditCount"]
+              observed = {
+                  table: conn.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone()[0]
+                  for table in required_nonempty
+              }
+              missing = {table: count for table, count in observed.items() if count <= 0}
+              if missing:
+                  raise RuntimeError(f"canonical fixture did not populate required tables: {missing}")
+              report = {"database": str(database_path), "seed": str(seed_path), "inserted": inserted, "observed": observed, "pass": True}
+              out = Path(os.environ["WAVE2_RUNTIME_ROOT"]) / "evidence" / "CANONICAL_FIXTURE_SEED.json"
+              out.write_text(json.dumps(report, indent=2), encoding="utf-8")
+              print(json.dumps(report, indent=2))
+          finally:
+              conn.close()
+          PY
 
       - name: Start isolated PC runtime
         shell: bash
@@ -161,7 +249,6 @@ jobs:
           LICENSE_PATH="$RUNTIME_ROOT/license.json"
           mkdir -p "$RUNTIME_ROOT/evidence" "$RUNTIME_ROOT/server"
           echo "DATABASE_URL=file:$RUNTIME_ROOT/canonical.db" >> "$GITHUB_ENV"
-          echo "HITECH_PRISMA_ALLOW_NONLOCAL_SEED=1" >> "$GITHUB_ENV"
           echo "PRISMA_LICENSE_PATH=$LICENSE_PATH" >> "$GITHUB_ENV"
           echo "PRISMA_LICENSE_ALLOW_UNSIGNED=1" >> "$GITHUB_ENV"
           echo "PRISMA_RUNTIME_MODE=dev" >> "$GITHUB_ENV"
@@ -175,8 +262,52 @@ jobs:
       - name: Migrate isolated restricted SQLite
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:migrate
 
-      - name: Seed isolated restricted SQLite
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app run db:canonical:seed
+      - name: Seed isolated restricted SQLite from canonical fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import sqlite3
+          from pathlib import Path
+          from urllib.parse import unquote
+
+          database_path = Path(unquote(os.environ["DATABASE_URL"][5:])).resolve()
+          seed_path = Path("apps/terminal-de-venta-system/prisma/seeds/canonical.seed.json").resolve()
+          seed = json.loads(seed_path.read_text(encoding="utf-8"))
+          order = [
+              ("businesses", "Business"), ("stores", "Store"), ("terminals", "Terminal"),
+              ("taxRates", "TaxRate"), ("priceLists", "PriceList"), ("products", "Product"),
+              ("barcodes", "Barcode"), ("priceListItems", "PriceListItem"), ("stockSnapshots", "StockSnapshot"),
+              ("stockMovements", "StockMovement"), ("suppliers", "Supplier"), ("purchaseOrders", "PurchaseOrder"),
+              ("purchaseOrderLines", "PurchaseOrderLine"), ("goodsReceipts", "GoodsReceipt"),
+              ("goodsReceiptLines", "GoodsReceiptLine"), ("replenishmentSignals", "ReplenishmentSignal"),
+              ("cashSessions", "CashSession"), ("cashMovements", "CashMovement"), ("sales", "Sale"),
+              ("saleLines", "SaleLine"), ("saleReturns", "SaleReturn"), ("auditCounts", "AuditCount"),
+              ("outboxEvents", "OutboxEvent"),
+          ]
+          def normalize(value):
+              if isinstance(value, bool): return 1 if value else 0
+              if isinstance(value, (dict, list)): return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+              return value
+          conn = sqlite3.connect(database_path)
+          try:
+              conn.execute("PRAGMA foreign_keys=ON")
+              for collection, table in order:
+                  columns = {row[1] for row in conn.execute(f'PRAGMA table_info("{table}")')}
+                  if not columns: raise RuntimeError(f"missing migrated table: {table}")
+                  for row in seed.get(collection, []) or []:
+                      payload = {key: normalize(value) for key, value in row.items() if key in columns}
+                      if not payload: continue
+                      names = list(payload)
+                      quoted = ",".join(f'"{name}"' for name in names)
+                      placeholders = ",".join("?" for _ in names)
+                      conn.execute(f'INSERT INTO "{table}" ({quoted}) VALUES ({placeholders})', [payload[name] for name in names])
+              conn.commit()
+          finally:
+              conn.close()
+          PY
 
       - name: Write restricted local test license
         shell: bash
@@ -192,8 +323,8 @@ jobs:
             "schemaVersion": "1.0.0",
             "licenseId": "lic_wave2_restricted_ci",
             "customerId": "cust_wave2_restricted_ci",
-            "businessId": "biz_78b3c840796a4a4dad",
-            "storeId": "store_00728649f3804a9e82",
+            "businessId": "biz_hitech_default",
+            "storeId": "store_obrera_04",
             "deviceId": "pc_wave2_restricted_ci",
             "plan": "TABLET_SOLO",
             "state": "active",
@@ -201,7 +332,7 @@ jobs:
             "validUntil": (now + timedelta(days=30)).isoformat().replace("+00:00", "Z"),
             "assignmentState": "assigned",
             "authorizedDevices": [
-              {"deviceId": "pc_wave2_restricted_ci", "role": "pc", "storeId": "store_00728649f3804a9e82"}
+              {"deviceId": "pc_wave2_restricted_ci", "role": "pc", "storeId": "store_obrera_04"}
             ],
             "limits": {"maxDevices": 1},
             "features": {},
