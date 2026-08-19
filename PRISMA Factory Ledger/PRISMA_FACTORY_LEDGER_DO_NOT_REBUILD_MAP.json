@@ -1,60 +1,24 @@
 {
   "schemaVersion": "prisma.factory-ledger.do-not-rebuild-map.v1",
   "doNotRebuild": {
-    "licensing.admin_token_sync": {
-      "value": true,
-      "reason": "licsync6 evidence registered",
-      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
-      "updatedAt": "2026-07-07T02:40:51-06:00"
-    },
-    "licensing.admin_http_mutation_e2e": {
-      "value": true,
-      "reason": "licsync6 evidence registered",
-      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
-      "updatedAt": "2026-07-07T02:40:51-06:00"
-    },
-    "licensing.admin_note_mutation_persisted": {
-      "value": true,
-      "reason": "licsync6 evidence registered",
-      "evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json",
-      "updatedAt": "2026-07-07T02:40:51-06:00"
-    },
-    "productization.local_first_data_custody_contract": {
-      "value": true,
-      "reason": "Canonical local-first custody source contract installed",
-      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md",
-      "updatedAt": "2026-07-17T19:27:40.449684-06:00"
-    },
-    "commercial.billing.collections": {
-      "value": true,
-      "reason": "Collections ledger passed 21 behavioral checks in temporary SQLite; advance to runtime verification, do not rebuild.",
-      "evidence": "apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py",
-      "updatedAt": "2026-08-14T03:45:09-06:00"
-    },
-    "commercial.billing.cfdi_external_gateway": {
-      "value": true,
-      "reason": "CFDI local draft/external-result gateway source is ready; the next gate is external SAT/PAC, not source rebuild.",
-      "evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md",
-      "updatedAt": "2026-08-14T03:45:09-06:00"
-    },
-    "cloud_center.customer_registration_runtime": {
-      "value": true,
-      "reason": "PR #254 customer registration runtime is merged and runtime-verified; advance to cloud activation instead of rebuilding.",
-      "evidence": "apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py",
-      "updatedAt": "2026-08-14T08:48:10-06:00"
-    }
+    "licensing.admin_token_sync": {"value": true,"reason": "licsync6 evidence registered","evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","updatedAt": "2026-07-07T02:40:51-06:00"},
+    "licensing.admin_http_mutation_e2e": {"value": true,"reason": "licsync6 evidence registered","evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","updatedAt": "2026-07-07T02:40:51-06:00"},
+    "licensing.admin_note_mutation_persisted": {"value": true,"reason": "licsync6 evidence registered","evidence": "evidence/licensing/admin_http_mutation_e2e/LICSYNC6_ADMIN_HTTP_MUTATION_E2E.cert.json","updatedAt": "2026-07-07T02:40:51-06:00"},
+    "productization.local_first_data_custody_contract": {"value": true,"reason": "Canonical local-first custody source contract installed","evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_LOCAL_FIRST_DATA_CUSTODY_CONTRACT.md","updatedAt": "2026-07-17T19:27:40.449684-06:00"},
+    "commercial.billing.collections": {"value": true,"reason": "Collections ledger passed 21 behavioral checks in temporary SQLite; advance to runtime verification, do not rebuild.","evidence": "apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py","updatedAt": "2026-08-14T03:45:09-06:00"},
+    "commercial.billing.cfdi_external_gateway": {"value": true,"reason": "CFDI local draft/external-result gateway source is ready; the next gate is external SAT/PAC, not source rebuild.","evidence": "apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md","updatedAt": "2026-08-14T03:45:09-06:00"},
+    "cloud_center.customer_registration_runtime": {"value": true,"reason": "PR #254 customer registration runtime is merged and runtime-verified; advance to cloud activation instead of rebuilding.","evidence": "apps/terminal-de-venta-system/tools/verify-cloud-center-customer-registration-01.py","updatedAt": "2026-08-14T08:48:10-06:00"},
+    "code_atlas.change_intelligence.customer_wow_v1": {"value": true,"reason": "Universal Intelligence-bound Customer Wow / Change Intelligence is LOCAL_VERIFIED. Reuse canonical repository/change/authority/verify/evidence/ROI owners and advance only to recorded gates.","evidence": "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json","updatedAt": "2026-08-18T20:46:00-06:00"},
+    "ci.rental.private_repo_v2": {"value": true,"reason": "Private-repository rental V2 hardening merged in PR #299. Reuse lifecycle, sanitation, egress and cleanup owners.","evidence": "PR #299","updatedAt": "2026-08-18T20:46:00-06:00"},
+    "ci.impact.go_actionable_review": {"value": true,"reason": "GO_BOUNDED_V1 actionableReview merged and externally replayed in PR #308. Do not weaken or rebuild merely to chase benchmark metrics.","evidence": "PR #308","updatedAt": "2026-08-18T20:46:00-06:00"},
+    "ci.human.study_kit": {"value": true,"reason": "Paired external human usefulness study kit merged in PR #310. Missing human measurement is an external evidence gate, not a kit rebuild.","evidence": "PR #310","updatedAt": "2026-08-18T20:46:00-06:00"},
+    "ci.cloud.vertical_surface": {"value": true,"reason": "Change Intelligence Cloud Center isolated runtime slice merged in PR #303. Build only declared adapters/projections; do not rebuild the surface.","evidence": "PR #303","updatedAt": "2026-08-18T20:46:00-06:00"}
   },
   "verifyOrFix": {
-    "licensing.admin_license_refresh_e2e": {
-      "value": true,
-      "reason": "not certified by licsync6; do not mark DONE",
-      "updatedAt": "2026-07-07T02:40:51-06:00"
-    },
-    "mobile.secure_projection_gateway_phase1": {
-      "value": true,
-      "reason": "Source boundary is locally verified; advance to runtime session E2E instead of rebuilding.",
-      "updatedAt": "2026-07-20T15:30:00-06:00"
-    }
+    "licensing.admin_license_refresh_e2e": {"value": true,"reason": "not certified by licsync6; do not mark DONE","updatedAt": "2026-07-07T02:40:51-06:00"},
+    "mobile.secure_projection_gateway_phase1": {"value": true,"reason": "Source boundary is locally verified; advance to runtime session E2E instead of rebuilding.","updatedAt": "2026-07-20T15:30:00-06:00"},
+    "ci.human.external_measurement": {"value": true,"reason": "Study kit exists, but human usefulness remains NOT_MEASURED. Advance only through real external human participation.","updatedAt": "2026-08-18T20:46:00-06:00"},
+    "ci.agent.independent_replication": {"value": true,"reason": "Blocked by missing independent evaluator. Do not create an internal source fix from the external policy blocker.","updatedAt": "2026-08-18T20:46:00-06:00"}
   },
-  "updatedAt": "2026-08-14T08:48:10-06:00"
+  "updatedAt": "2026-08-18T20:46:00-06:00"
 }
