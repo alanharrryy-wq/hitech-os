@@ -62,6 +62,43 @@ jobs:
           print(json.dumps(report, indent=2))
           PY
 
+      - name: Pin entitled PC license for Wave 1 baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          LICENSE_PATH="$RUNNER_TEMP/pc-wave1-license.json"
+          echo "PRISMA_LICENSE_PATH=$LICENSE_PATH" >> "$GITHUB_ENV"
+          echo "PRISMA_LICENSE_ALLOW_UNSIGNED=1" >> "$GITHUB_ENV"
+          echo "PRISMA_RUNTIME_MODE=dev" >> "$GITHUB_ENV"
+          echo "PRISMA_RUNTIME_ROLE=pc" >> "$GITHUB_ENV"
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timedelta, timezone
+          from pathlib import Path
+
+          now = datetime.now(timezone.utc)
+          payload = {
+              "schemaVersion": "1.0.0",
+              "licenseId": "lic_pc_wave1_visual_ci",
+              "customerId": "cust_pc_wave1_visual_ci",
+              "businessId": "biz_hitech_default",
+              "storeId": "store_obrera_04",
+              "plan": "TABLET_PC_MANAGED",
+              "state": "active",
+              "validFrom": (now - timedelta(days=1)).isoformat().replace("+00:00", "Z"),
+              "validUntil": (now + timedelta(days=30)).isoformat().replace("+00:00", "Z"),
+              "assignmentState": "assigned",
+              "limits": {"maxDevices": 2},
+              "features": {},
+              "capabilities": {},
+              "notes": ["Explicit entitled fixture for historical PC Wave 1 visual baseline"]
+          }
+          target = Path(os.environ["RUNNER_TEMP"]) / "pc-wave1-license.json"
+          target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(f"Wave 1 entitled license fixture written: {target}")
+          PY
+
       - name: Generate PC Prisma client in isolated runner
         run: pnpm -C apps/terminal-de-venta-system/products/pc/app run prisma:generate
 
