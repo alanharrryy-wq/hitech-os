@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     });
     return ok(workspace, { endpoint: "GET /api/backoffice/customers", bounded: true });
   } catch (error) {
-    return toBackofficeError(error);
+    return toBackofficeError(error, { customerSafe: true });
   }
 }
 
@@ -33,10 +33,10 @@ export async function POST(request: Request) {
     const customer = await createCustomer(readCustomerWriteInput(body));
     return ok({ customer }, { endpoint: "POST /api/backoffice/customers" }, { status: 201 });
   } catch (error) {
-    if (error instanceof Error && error.message === "INVALID_JSON_BODY") return fail("INVALID_JSON_BODY", "El cuerpo JSON no es válido.", 400);
+    if (error instanceof Error && error.message === "INVALID_JSON_BODY") return fail("INVALID_JSON_BODY", "No pudimos leer la solicitud. Intenta de nuevo.", 400);
     if (error instanceof Error && error.message === "CUSTOMER_NAME_REQUIRED") return fail("CUSTOMER_NAME_REQUIRED", "Captura el nombre del cliente.", 400);
     if (error instanceof Error && error.message === "CUSTOMER_EMAIL_INVALID") return fail("CUSTOMER_EMAIL_INVALID", "El correo del cliente no tiene un formato válido.", 400);
     if (error instanceof CustomerDuplicateError) return fail("CUSTOMER_DUPLICATE", "Ya existe una ficha activa con datos coincidentes.", 409, { duplicates: error.duplicates.map((customer) => ({ id: customer.id, displayName: customer.displayName })) });
-    return toBackofficeError(error);
+    return toBackofficeError(error, { customerSafe: true });
   }
 }
