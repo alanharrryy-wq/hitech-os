@@ -10,6 +10,7 @@ const { chromium } = require(playwrightRoot);
 const baseUrl = process.env.PCI_BASE_URL || 'http://127.0.0.1:8316';
 const evidenceDir = process.env.PCI_EVIDENCE_DIR || 'pci-runtime-evidence';
 const target = `${baseUrl}/internal/web/change_intelligence_center.html`;
+const expectedHealthUrl = `${baseUrl}/api/health`;
 const expectedViews = ['overview','repositories','runs','discover','guard','control','authority','evidence','roi','entitlements'];
 
 await fs.mkdir(evidenceDir, { recursive: true });
@@ -36,7 +37,15 @@ async function verifyProfile(name, viewport) {
   const badResponses = [];
 
   page.on('console', msg => {
-    if (msg.type() === 'error') consoleErrors.push(msg.text());
+    if (msg.type() === 'error') {
+      const location = msg.location();
+      consoleErrors.push({
+        text: msg.text(),
+        url: String(location?.url || ''),
+        lineNumber: location?.lineNumber ?? null,
+        columnNumber: location?.columnNumber ?? null,
+      });
+    }
   });
   page.on('pageerror', err => pageErrors.push(String(err)));
   page.on('response', response => {
@@ -74,6 +83,26 @@ async function verifyProfile(name, viewport) {
   const semanticText = await page.locator('body').innerText();
   if (!/UNKNOWN|NOT_CONNECTED|BLOCKED/i.test(semanticText)) throw new Error(`${name}: fail-closed state vocabulary not rendered`);
 
+  const hostChipText = (await page.locator('#pciRuntimeChip').innerText()).trim();
+  if (!/Cloud Center host\s*·\s*UNKNOWN/i.test(hostChipText)) {
+    throw new Error(`${name}: disconnected host probe did not remain UNKNOWN (${hostChipText})`);
+  }
+
+  const expectedHealthResponses = badResponses.filter(entry => entry.url === expectedHealthUrl && entry.status === 404);
+  const unexpectedBadResponses = badResponses.filter(entry => !(entry.url === expectedHealthUrl && entry.status === 404));
+  if (expectedHealthResponses.length !== 1) {
+    throw new Error(`${name}: expected exactly one fail-closed /api/health 404, found ${expectedHealthResponses.length}`);
+  }
+
+  const failedResource404 = entry => /Failed to load resource/i.test(entry.text) && /\b404\b/.test(entry.text);
+  const expectedHealthConsoleErrors = consoleErrors.length === 1 && failedResource404(consoleErrors[0])
+    ? [consoleErrors[0]]
+    : [];
+  const unexpectedConsoleErrors = expectedHealthConsoleErrors.length === 1 ? [] : consoleErrors;
+  if (expectedHealthConsoleErrors.length !== 1) {
+    throw new Error(`${name}: expected one Chromium failed-resource console event correlated with /api/health 404, found ${consoleErrors.length}`);
+  }
+
   const screenshot = `${evidenceDir}/change-intelligence-${name}.png`;
   await page.screenshot({ path: screenshot, fullPage: true });
 
@@ -83,14 +112,26 @@ async function verifyProfile(name, viewport) {
     documentStatus: response.status(),
     pciState: await page.evaluate(() => document.documentElement.dataset.pciState),
     navViews,
+    hostChipText,
+    expectedHealthProbe: {
+      url: expectedHealthUrl,
+      expectedStatus: 404,
+      responses: expectedHealthResponses,
+      consoleErrors: expectedHealthConsoleErrors,
+    },
     consoleErrors,
     pageErrors,
     badResponses,
+    unexpectedConsoleErrors,
+    unexpectedBadResponses,
     screenshot,
   };
-  if (consoleErrors.length || pageErrors.length || badResponses.length) throw new Error(`${name}: runtime errors console=${consoleErrors.length} page=${pageErrors.length} http=${badResponses.length}`);
-
   result.profiles.push(profile);
+
+  if (unexpectedConsoleErrors.length || pageErrors.length || unexpectedBadResponses.length) {
+    throw new Error(`${name}: unexpected runtime errors console=${unexpectedConsoleErrors.length} page=${pageErrors.length} http=${unexpectedBadResponses.length}`);
+  }
+
   await context.close();
 }
 
