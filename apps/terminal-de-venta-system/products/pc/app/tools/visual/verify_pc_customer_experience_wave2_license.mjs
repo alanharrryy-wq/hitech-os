@@ -57,7 +57,7 @@ const bodyNavigationState = await page.locator("body").getAttribute("data-prisma
 const bodyText = await page.locator("body").innerText();
 await page.screenshot({ path: path.join(outDir, "restricted-license-catalog-1440x900.png"), fullPage: true, caret: "initial" });
 
-const featureRows = Array.isArray(featuresBody?.data) ? featuresBody.data : [];
+const featureRows = Array.isArray(featuresBody?.data?.features) ? featuresBody.data.features : [];
 const pcOpen = featureRows.find((row) => row?.key === "pc.open");
 const checks = [
   { id: "api.devices.denied", pass: devicesResponse.status() === 403 && devicesBody?.code === "LICENSE_FEATURE_DENIED", detail: `status=${devicesResponse.status()} code=${devicesBody?.code ?? "missing"}` },
