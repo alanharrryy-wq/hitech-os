@@ -140,7 +140,7 @@ jobs:
               conn.close()
           PY
 
-      - name: Compare migrated DB to canonical semantics
+      - name: Compare migrated DB to canonical semantics and governed guardrails
         shell: bash
         run: |
           set -euo pipefail
@@ -148,47 +148,79 @@ jobs:
           import json, os, sqlite3
           from pathlib import Path
 
+          def norm_default(value):
+              if value is None:
+                  return None
+              text = str(value).strip().lower()
+              if text in {"0", "false"}:
+                  return "false"
+              if text in {"1", "true"}:
+                  return "true"
+              return text
+
           def snapshot(path):
               conn = sqlite3.connect(path)
               try:
                   tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name") if r[0] != "_prisma_migrations"]
                   columns, fks, indexes = {}, {}, {}
                   for table in tables:
-                      columns[table] = [tuple(r[1:6]) for r in conn.execute(f'PRAGMA table_info("{table}")')]
+                      columns[table] = sorted((r[1], str(r[2]).upper(), int(r[3]), norm_default(r[4]), int(r[5])) for r in conn.execute(f'PRAGMA table_info("{table}")'))
                       fks[table] = sorted((r[2], r[3], r[4], r[5], r[6]) for r in conn.execute(f'PRAGMA foreign_key_list("{table}")'))
                       signatures = set()
                       for idx in conn.execute(f'PRAGMA index_list("{table}")'):
                           name, unique = idx[1], bool(idx[2])
                           cols = tuple(r[2] for r in conn.execute(f'PRAGMA index_info("{name}")'))
                           signatures.add((unique, cols))
-                      indexes[table] = sorted((int(unique), list(cols)) for unique, cols in signatures)
+                      indexes[table] = signatures
                   violations = [list(r) for r in conn.execute("PRAGMA foreign_key_check")]
-                  return {"tables": tables, "columns": columns, "foreignKeys": fks, "indexSignatures": indexes, "foreignKeyCheck": violations}
+                  guardrail_names = [
+                      "uq_pricelist_single_default_per_business",
+                      "uq_taxrate_single_default_per_business",
+                      "uq_cashsession_single_open_per_terminal",
+                  ]
+                  guardrails = {}
+                  for name in guardrail_names:
+                      row = conn.execute("SELECT sql FROM sqlite_master WHERE type='index' AND name=?", (name,)).fetchone()
+                      guardrails[name] = row[0] if row else None
+                  triggers = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='trigger' ORDER BY name")]
+                  return {"tables": tables, "columns": columns, "foreignKeys": fks, "indexSignatures": indexes, "foreignKeyCheck": violations, "guardrails": guardrails, "triggers": triggers}
               finally:
                   conn.close()
 
           actual = snapshot(os.environ["SCHEMA_DB"])
           target = snapshot(os.environ["TARGET_DB"])
+          missing_target_indexes = {}
+          for table in target["tables"]:
+              missing = target["indexSignatures"][table] - actual["indexSignatures"].get(table, set())
+              if missing:
+                  missing_target_indexes[table] = sorted((int(unique), list(cols)) for unique, cols in missing)
+          missing_guardrails = [name for name, sql in actual["guardrails"].items() if not sql or " WHERE " not in sql.upper()]
+          required_triggers = {
+              "trg_purchase_order_line_ai", "trg_purchase_order_line_au", "trg_purchase_order_line_ad", "trg_purchase_order_totals_guard",
+              "trg_goods_receipt_line_ai", "trg_goods_receipt_line_au", "trg_goods_receipt_line_ad", "trg_goods_receipt_totals_guard",
+          }
+          missing_triggers = sorted(required_triggers - set(actual["triggers"]))
           report = {
-              "comparison": "semantic schema parity; index names ignored, uniqueness+column signatures enforced",
+              "comparison": "canonical schema semantics must be present; index names/column order ignored; governed partial-unique guardrails and accounting triggers must remain",
               "tablesEqual": actual["tables"] == target["tables"],
-              "columnsEqual": actual["columns"] == target["columns"],
+              "columnsEquivalent": actual["columns"] == target["columns"],
               "foreignKeysEqual": actual["foreignKeys"] == target["foreignKeys"],
-              "indexSignaturesEqual": actual["indexSignatures"] == target["indexSignatures"],
+              "missingTargetIndexSignatures": missing_target_indexes,
+              "governedPartialUniqueGuardrails": actual["guardrails"],
+              "missingGovernedGuardrails": missing_guardrails,
+              "missingRequiredTriggers": missing_triggers,
               "actualForeignKeyViolations": actual["foreignKeyCheck"],
               "pass": False,
           }
           report["pass"] = all([
-              report["tablesEqual"], report["columnsEqual"], report["foreignKeysEqual"],
-              report["indexSignaturesEqual"], not report["actualForeignKeyViolations"]
+              report["tablesEqual"], report["columnsEquivalent"], report["foreignKeysEqual"],
+              not missing_target_indexes, not missing_guardrails, not missing_triggers,
+              not report["actualForeignKeyViolations"],
           ])
-          if not report["pass"]:
-              report["actual"] = actual
-              report["target"] = target
           Path("artifacts/pc-wave2-schema/SEMANTIC_SCHEMA_PARITY.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-          print(json.dumps({k: v for k, v in report.items() if k not in {"actual", "target"}}, indent=2))
+          print(json.dumps(report, indent=2))
           if not report["pass"]:
-              raise SystemExit("material migration did not reach canonical semantic parity")
+              raise SystemExit("material migration did not reach governed canonical semantic parity")
           PY
 
       - name: Upload schema parity evidence
