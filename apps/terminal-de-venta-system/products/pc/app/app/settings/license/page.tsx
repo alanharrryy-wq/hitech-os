@@ -19,13 +19,19 @@ export default async function PcLicensePage() {
           <div className="hero-copy">
             <div className="kicker">licencia</div>
             <h1 className="hero-title">Licencia y funciones</h1>
-            <p>Estado real de licencia, actualización, setup y capacidades visibles. Sin filtros universales ni resumen ficticio.</p>
+            <p>Consulta el estado de tu plan, la vigencia de esta PC y las funciones disponibles para tu negocio.</p>
           </div>
         </div>
       </section>
 
       <section className="card" data-prisma-component="LicenseLiveStatus">
-        <div className="section-head"><div><div className="kicker">estado conectado</div><h2 className="section-title">Licencia, actualización y funciones visibles.</h2><div className="section-copy">La lectura conserva el estado real antes de tocar permisos o equipos.</div></div></div>
+        <div className="section-head">
+          <div>
+            <div className="kicker">estado actual</div>
+            <h2 className="section-title">Tu licencia en esta PC</h2>
+            <div className="section-copy">La pantalla muestra únicamente lo necesario para operar o resolver una restricción.</div>
+          </div>
+        </div>
         <div className="grid cols-2">
           <LicenseStatusCard status={status} />
           <LicenseReadinessCard readiness={readiness} />
@@ -35,14 +41,18 @@ export default async function PcLicensePage() {
 
       <section className="card" data-prisma-component="CustomerSetupEntrypoint">
         <div className="section-head">
-          <div><div className="kicker">Prisma Customer Setup</div><h2 className="section-title">Reclamar PC Admin Slot con Setup Code.</h2><div className="section-copy">El setup usa Setup Link, Setup Code y Device Claim. No usa admin token ni reemplaza License Admin Bridge.</div></div>
-          <a className="btn primary" href="/setup">Abrir setup</a>
+          <div>
+            <div className="kicker">activación</div>
+            <h2 className="section-title">Vincular esta PC con tu licencia</h2>
+            <div className="section-copy">Usa el código de activación de tu negocio para habilitar este equipo de forma segura.</div>
+          </div>
+          <a className="btn primary" href="/setup">Activar equipo</a>
         </div>
       </section>
 
       <section className="card" data-prisma-component="LicenseFeatureList">
         <div className="kicker">funciones disponibles</div>
-        <h2 className="section-title">Herramientas activas y restricciones explicadas.</h2>
+        <h2 className="section-title">Herramientas incluidas en tu plan</h2>
         <FeatureList features={features} />
       </section>
     </AppShell>
