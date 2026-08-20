@@ -11,17 +11,14 @@ on:
       - '.github/workflows/caext*'
       - 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.*'
       - 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
-      - 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
-      - '.github/workflows/change-intelligence-capability-gate.yml'
-  push:
-    branches: ['ca-assurance-v1-1908']
-    paths:
+      - 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json'
+      - 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
       - 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
       - '.github/workflows/change-intelligence-capability-gate.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -29,40 +26,7 @@ env:
   PYTHONUNBUFFERED: '1'
 
 jobs:
-  install-v2-registry:
-    if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          ref: ca-assurance-v1-1908
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-      - name: Migrate existing registry in place
-        run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --migrate-map-v2
-      - name: Prove migration is map-only
-        shell: bash
-        run: |
-          set -euo pipefail
-          changed="$(git diff --name-only)"
-          test "$changed" = 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
-          python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --validate-map
-          python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --self-test
-      - name: Commit migrated registry
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
-          git commit -m 'governance(ca): migrate canonical registry to v2'
-          git push origin HEAD:ca-assurance-v1-1908
-
   anti-rework-gate:
-    if: github.event_name != 'push'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -70,15 +34,49 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
+
       - name: Compile gate
         run: python -m py_compile "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py"
-      - name: Validate Change Assurance registry and contract
+
+      - name: Validate canonical Change Assurance capability map and product contract
         run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --validate-map
-      - name: Run fail-closed native negative tests
+
+      - name: Run fail-closed native negative self-test
         run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --self-test
-      - name: Block public reintroduction of deprecated product name
+
+      - name: Reject new public legacy product-name use
         if: github.event_name == 'pull_request'
-        run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --check-legacy-diff --base-ref "${{ github.event.pull_request.base.sha }}"
+        run: >-
+          python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py"
+          --check-legacy-diff
+          --base-ref "${{ github.event.pull_request.base.sha }}"
+
+      - name: Verify mandatory Agent Gate and contract binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          gate='PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
+          contract='tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json'
+          registry='PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          grep -Fq 'PRISMA Change Assurance' "$gate"
+          grep -Fq 'No evidence. No green.' "$gate"
+          grep -Fq 'BLOCKED_ANTI_REWORK' "$gate"
+          grep -Fq 'capability IDs' "$gate"
+          grep -Fq 'UNDERSTAND' "$gate"
+          test -f "$contract"
+          test -f "$registry"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json').read_text(encoding='utf-8'))
+          assert c['productIdentity']['productName']=='PRISMA Change Assurance'
+          assert c['productIdentity']['engineName']=='Code Atlas'
+          assert c['productIdentity']['principle']=='No evidence. No green.'
+          assert c['registry']['singleAuthorityPath']=='PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          assert c['registry']['createsSecondRegistry'] is False
+          PY
