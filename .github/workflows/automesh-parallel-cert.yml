@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,170 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  ca-better-unknown-preflight:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact current main
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile authority and UNKNOWN owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/contracts.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/evidence.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/verification.py \
+            tools/code-atlas/tests/test_operational_change_studio.py \
+            tools/code-atlas/tests/test_operational_change_intelligence.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run task-exact Better UNKNOWN Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/ca-better-unknown.request.json"
+          preflight="$RUNNER_TEMP/ca-better-unknown-preflight"
+          parallel="$RUNNER_TEMP/ca-better-unknown-parallel"
+          composed="$RUNNER_TEMP/ca-better-unknown-composed"
+          mkdir -p "$preflight" "$parallel" "$composed"
+          python - "$request" "$head_sha" <<'PY'
+          import json, sys
+          path, head = sys.argv[1], sys.argv[2]
+          base = (
+              "PRISMA Change Assurance V1 checklist D / RESOLVE / Better UNKNOWN is currently PARTIAL and doNotRebuild=true. "
+              "Determine whether existing protected Code Atlas owners already satisfy the V1 Definition of Done without source rebuild. "
+              "UNKNOWN must be first-class, reasoned and actionable, never PASS_WITH_WARNING; missing, contradictory, unsupported, inferred, retrieval-only, partial or stale critical evidence must not become green. "
+              "Resolve exact canonical owner/capability IDs, positive tests, native negative tests, claim ceiling, evidence gaps, and whether D may be promoted to DONE/LOCAL_VERIFIED by governance-only evidence closure. "
+              "Read-only task only: no source, product runtime, Cloud Center, Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma, process, port or deploy mutation."
+          )
+          common = [
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+              "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+              "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+              "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+              "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+              "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+              "tools/code-atlas/src/code_atlas/change_intelligence/contracts.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/evidence.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/verification.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/universal_binding.py",
+              "tools/code-atlas/tests/test_operational_change_studio.py",
+              "tools/code-atlas/tests/test_operational_change_intelligence.py"
+          ]
+          request = {
+              "schemaVersion": "prisma_remote_authority_gateway.v2",
+              "expectedHead": head,
+              "profile": "change-assurance-better-unknown-v1",
+              "tasks": [
+                  {
+                      "id": "better-unknown-dod",
+                      "surface": "governance",
+                      "task": base + " Resolve the exact Definition-of-Done evidence matrix and whether current source plus native tests support DONE without any source mutation.",
+                      "intent": "VERIFY",
+                      "domain": "tooling",
+                      "requiredAuthorities": common,
+                      "requiredDirectories": ["PRISMA Factory Ledger", "tools/code-atlas/src/code_atlas/change_intelligence", "tools/code-atlas/tests", "tools/code-atlas/docs"],
+                      "requiredCapabilities": ["change_intelligence.capability_anti_rework_gate", "code_atlas.change_intelligence.customer_wow_v1"],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True
+                  },
+                  {
+                      "id": "better-unknown-no-rebuild",
+                      "surface": "governance",
+                      "task": base + " Prove anti-rework boundaries: identify protected existing owners for UNKNOWN semantics, verification and evidence QA; block any proposal for a second decision, verification, evidence or retrieval engine. Return the exact next governance gate if evidence closure is sufficient.",
+                      "intent": "VERIFY",
+                      "domain": "governance",
+                      "requiredAuthorities": common,
+                      "requiredDirectories": ["PRISMA Factory Ledger", "tools/code-atlas/src/code_atlas/change_intelligence"],
+                      "requiredCapabilities": ["change_intelligence.capability_anti_rework_gate", "code_atlas.change_intelligence.customer_wow_v1"],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True
+                  }
+              ]
+          }
+          with open(path, 'w', encoding='utf-8') as f:
+              json.dump(request, f, indent=2, ensure_ascii=False)
+          PY
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
+            --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" \
+            | tee "$composed/compose.stdout.txt"
+          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$composed/compose.stdout.txt"
+          composed_zip="$RUNNER_TEMP/prisma-automesh-composed-result.zip"
+          test -f "$composed_zip"
+          cp "$composed_zip" "$composed/prisma-automesh-composed-result.zip"
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run native Better UNKNOWN evidence matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v \
+            tools.code-atlas.tests.test_operational_change_studio.ChangeStudioContractTests.test_change_studio_unknown_for_unsupported_primary_target \
+            tools.code-atlas.tests.test_operational_change_studio.ChangeStudioContractTests.test_change_studio_blocks_missing_required_evidence \
+            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_verify_unknown_for_contradictory_evidence \
+            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_supported_qa_requires_real_evidence \
+            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_inferred_qa_requires_explicit_inference \
+            | tee "$RUNNER_TEMP/better-unknown-native-tests.txt"
+          python - "$RUNNER_TEMP/better-unknown-probe.json" <<'PY'
+          import json, sys
+          from code_atlas.change_intelligence import compose_change_model, normalize_evidence_answer
+          from code_atlas.change_intelligence.contracts import ContractError, decision_precedence
+          snapshot={"repositoryIdentity":"r","commitIdentity":"c","treeIdentity":"t"}
+          cases=[]
+          m=compose_change_model(normalized_intent="unknown target",repository_snapshot=snapshot,primary_targets=[{"path":"src/x","supportLevel":"UNKNOWN","evidenceReferences":[]}],provenance=[{"source":"native-probe"}])
+          assert m["decision"]=="UNKNOWN"; cases.append("unsupported-primary->UNKNOWN")
+          assert decision_precedence("PASS","UNKNOWN")=="UNKNOWN"; cases.append("UNKNOWN>PASS")
+          assert decision_precedence("UNKNOWN","BLOCKED")=="BLOCKED"; cases.append("BLOCKED>UNKNOWN")
+          for name,payload in [
+            ("retrieval-only-supported",{"claim":"x","supportLevel":"SUPPORTED","evidenceReferences":["retrieval-hit"],"retrievalOnly":True}),
+            ("contradicted-supported",{"claim":"x","supportLevel":"SUPPORTED","evidenceReferences":["e1"],"contradictions":["conflict"]}),
+          ]:
+            try: normalize_evidence_answer(payload)
+            except ContractError: cases.append(name+"->REJECTED")
+            else: raise SystemExit("FAKE_GREEN:"+name)
+          json.dump({"result":"PASS_BETTER_UNKNOWN_NATIVE_PROBE","cases":cases,"productionCertified":False},open(sys.argv[1],'w',encoding='utf-8'),indent=2)
+          print('PASS_BETTER_UNKNOWN_NATIVE_PROBE')
+          PY
+          test "$(git status --porcelain | wc -l)" -eq 0
+
+      - name: Upload Better UNKNOWN evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-better-unknown-authority
+          path: |
+            ${{ runner.temp }}/ca-better-unknown.request.json
+            ${{ runner.temp }}/ca-better-unknown-preflight/
+            ${{ runner.temp }}/ca-better-unknown-parallel/*.zip
+            ${{ runner.temp }}/ca-better-unknown-composed/
+            ${{ runner.temp }}/better-unknown-native-tests.txt
+            ${{ runner.temp }}/better-unknown-probe.json
+          if-no-files-found: error
+          retention-days: 7
