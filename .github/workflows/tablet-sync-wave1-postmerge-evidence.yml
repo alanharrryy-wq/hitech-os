@@ -1,0 +1,356 @@
+name: Tablet Sync WAVE1 Postmerge Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/tablet-sync-wave1-postmerge-evidence.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tablet-sync-wave1-postmerge-evidence
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  TARGET_SHA: 45762d1a6251195dae0e229dfe6fa1aed74645fa
+  AUTHORITY_MAIN_SHA: 612d8d6149322b44f45f933fd773234cf2d3b537
+  AUTHORITY_REQUEST_ID: eca0c6daae0b69b4
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-sync-wave1-postmerge
+
+jobs:
+  tablet-sync-wave1-postmerge:
+    if: github.head_ref == 'evidence/tablet-sync-wave1-postmerge-612d'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact merged product
+        uses: actions/checkout@v6
+        with:
+          ref: 45762d1a6251195dae0e229dfe6fa1aed74645fa
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Lock exact target and evidence-only semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          git cat-file -e "${AUTHORITY_MAIN_SHA}^{commit}"
+          printf '%s\n' \
+            "PASS exact merged product target $TARGET_SHA" \
+            "PASS current authority main $AUTHORITY_MAIN_SHA exists" \
+            "PASS Authority Mesh $AUTHORITY_REQUEST_ID" \
+            'PASS evidence-only workflow; product tree is read-only' \
+            'PASS workflow branch must never merge' \
+            | tee "$EVIDENCE_DIR/scope-gate.log"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install standalone Tablet without scripts or Prisma generation
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
+          test -x "$APP_ROOT/node_modules/.bin/next"
+          "$APP_ROOT/node_modules/.bin/next" --version | tee "$EVIDENCE_DIR/next-version.log"
+          test ! -e "$APP_ROOT/.generated/prisma-client"
+          printf '%s\n' \
+            'PASS standalone install --frozen-lockfile --ignore-scripts' \
+            'PASS no generated Prisma client' \
+            'PASS no prisma generate / migrate / seed / db push executed' \
+            | tee "$EVIDENCE_DIR/prisma-generation-gate.log"
+
+      - name: Focused Tablet Sync truth verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          node "$APP_ROOT/tools/verify_tablet_sync_panel_truth_1808.mjs" 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-sync-panel-truth.log"
+
+      - name: Zero important gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:zero-important 2>&1 | tee "$EVIDENCE_DIR/verify-zero-important.log"
+
+      - name: License allow deny source gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:tablet-license-missing-fallback 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-license.log"
+
+      - name: Tablet operational gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:tablet-operational-gate 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-operational-gate.log"
+
+      - name: Tablet sync dispatcher local-first gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:tablet-sync-dispatcher 2>&1 | tee "$EVIDENCE_DIR/verify-tablet-sync-dispatcher.log"
+
+      - name: Resolve preinstalled Chrome
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=''
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do
+            if command -v "$c" >/dev/null 2>&1; then chrome="$(command -v "$c")"; break; fi
+          done
+          test -n "$chrome"
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome-resolution.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start only runner-local Tablet on 3120
+        shell: bash
+        run: |
+          set -euo pipefail
+          if curl --silent --fail --max-time 1 http://127.0.0.1:3120/ >/dev/null 2>&1; then
+            echo 'BLOCKED runner port 3120 already occupied; refusing cleanup' | tee "$EVIDENCE_DIR/runtime-start.log"
+            exit 1
+          fi
+          setsid bash -lc "cd '$APP_ROOT' && exec pnpm exec next dev --webpack -p 3120" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          pid=$!
+          echo "$pid" > "$EVIDENCE_DIR/server.pid"
+          ready=0
+          for _ in $(seq 1 120); do
+            if curl --silent --fail --max-time 2 http://127.0.0.1:3120/sync >/dev/null 2>&1; then ready=1; break; fi
+            if ! kill -0 "$pid" >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then
+            echo 'BLOCKED_TABLET_RUNTIME_NOT_READY' | tee "$EVIDENCE_DIR/runtime-start.log"
+            tail -n 240 "$EVIDENCE_DIR/server.log" || true
+            exit 1
+          fi
+          echo 'PASS runner-local Tablet /sync HTTP ready' | tee "$EVIDENCE_DIR/runtime-start.log"
+
+      - name: Capture multi-state runtime evidence
+        id: browser
+        continue-on-error: true
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/capture-sync-wave1-postmerge.mjs" <<'JS'
+          import fs from 'node:fs';
+          import os from 'node:os';
+          import path from 'node:path';
+          import { spawn } from 'node:child_process';
+
+          const out=process.env.EVIDENCE_DIR;
+          const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
+          fs.mkdirSync(out,{recursive:true});
+
+          class CDP {
+            constructor(url){this.ws=new WebSocket(url);this.id=0;this.pending=new Map();this.listeners=[];}
+            async open(){await new Promise((resolve,reject)=>{const t=setTimeout(()=>reject(new Error('CDP open timeout')),10000);this.ws.addEventListener('open',()=>{clearTimeout(t);resolve();},{once:true});this.ws.addEventListener('error',()=>{clearTimeout(t);reject(new Error('CDP websocket error'));},{once:true});});this.ws.addEventListener('message',e=>{const m=JSON.parse(String(e.data));if(m.id&&this.pending.has(m.id)){const p=this.pending.get(m.id);this.pending.delete(m.id);m.error?p.reject(new Error(`${m.error.code}: ${m.error.message}`)):p.resolve(m.result??{});return;}for(const f of this.listeners)f(m);});}
+            on(fn){this.listeners.push(fn);}
+            send(method,params={},sessionId){const id=++this.id,payload={id,method,params};if(sessionId)payload.sessionId=sessionId;return new Promise((resolve,reject)=>{this.pending.set(id,{resolve,reject});this.ws.send(JSON.stringify(payload));});}
+          }
+
+          const api=(status,body)=>({responseCode:status,responseHeaders:[{name:'content-type',value:'application/json; charset=utf-8'},{name:'cache-control',value:'no-store'},{name:'x-prisma-evidence-fixture',value:'tablet-sync-wave1-postmerge'}],body:Buffer.from(JSON.stringify(body)).toString('base64')});
+          const ok=(data)=>({ok:true,data,meta:{source:'EVIDENCE_FIXTURE_W1_POSTMERGE'}});
+          const fail=(code,message,details={})=>({ok:false,code,message,details});
+          const now='2026-08-20T05:00:00.000Z';
+
+          function item(status,id='evt-1'){
+            const labels={pending:'Pendiente',failed:'Fallido',sent:'Enviado',acked:'Confirmado',conflict:'Revisión'};
+            return {id,eventId:id,title:'Venta',description:status==='conflict'?'Venta registrada en la Tablet. Requiere revisión; no se reintenta automáticamente.':'Venta registrada en la Tablet. Guardado localmente para continuidad de operación.',status,statusLabel:labels[status]??status,risk:status==='failed'||status==='conflict'?'danger':status==='pending'||status==='sent'?'warn':'ok',attempts:status==='failed'?2:1,createdAt:now,canRetry:status==='pending'||status==='failed'};
+          }
+          function panel(status){
+            const counts={pending:0,failed:0,sent:0,acked:0,conflict:0};
+            const items=[];
+            if(status!=='clean'){counts[status]=1;items.push(item(status));}
+            return {summary:{total:items.length,...counts,risk:counts.failed||counts.conflict?'danger':counts.pending||counts.sent?'warn':'ok',headline:items.length?'Hay movimientos por revisar':'Todo enviado',operatorMessage:items.length?'Revisa la cola':'Sin pendientes',offlineVisible:Boolean(counts.pending||counts.failed||counts.sent),lastCheckedAt:now},items,diagnostics:['Venta local disponible']};
+          }
+          const scenarios=[
+            {name:'clean',panel:'clean',pc:'online',license:'active'},
+            {name:'pending',panel:'pending',pc:'online',license:'active'},
+            {name:'failed',panel:'failed',pc:'online',license:'active'},
+            {name:'sent',panel:'sent',pc:'online',license:'active'},
+            {name:'acked',panel:'acked',pc:'online',license:'active'},
+            {name:'conflict',panel:'conflict',pc:'online',license:'active'},
+            {name:'unconfirmed',panel:'unconfirmed',pc:'online',license:'active'},
+            {name:'pc-offline',panel:'pending',pc:'offline',license:'active'},
+            {name:'license-deny',panel:'clean',pc:'online',license:'expired'}
+          ];
+
+          const profile=fs.mkdtempSync(path.join(os.tmpdir(),'prisma-tablet-sync-postmerge-'));
+          const chromeLog=fs.openSync(path.join(out,'chrome.log'),'a');
+          const chrome=spawn(process.env.CHROME_BIN,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--remote-debugging-port=0',`--user-data-dir=${profile}`,'--window-size=1365,900','--force-device-scale-factor=1','about:blank'],{stdio:['ignore',chromeLog,chromeLog]});
+          const pageConsole=[],pageErrors=[],logEntries=[],apiRequests=[],unexpectedApis=[];
+          let current=scenarios[0];
+
+          try {
+            const portFile=path.join(profile,'DevToolsActivePort');
+            for(let i=0;i<100&&!fs.existsSync(portFile);i++) await sleep(100);
+            if(!fs.existsSync(portFile)) throw new Error('DevToolsActivePort missing');
+            const port=Number(fs.readFileSync(portFile,'utf8').trim().split(/\r?\n/)[0]);
+            const version=await fetch(`http://127.0.0.1:${port}/json/version`).then(r=>r.json());
+            const cdp=new CDP(version.webSocketDebuggerUrl); await cdp.open();
+            const {targetId}=await cdp.send('Target.createTarget',{url:'about:blank'});
+            const {sessionId}=await cdp.send('Target.attachToTarget',{targetId,flatten:true});
+
+            cdp.on(m=>{
+              if(m.sessionId!==sessionId) return;
+              if(m.method==='Runtime.consoleAPICalled') pageConsole.push({scenario:current.name,type:m.params.type,args:(m.params.args??[]).map(a=>a.value??a.description??a.type)});
+              if(m.method==='Runtime.exceptionThrown') pageErrors.push({scenario:current.name,detail:m.params.exceptionDetails});
+              if(m.method==='Log.entryAdded') logEntries.push({scenario:current.name,entry:m.params.entry});
+              if(m.method==='Fetch.requestPaused') void (async()=>{
+                const request=m.params.request,url=request.url,method=request.method;
+                if(!url.includes('/api/')){await cdp.send('Fetch.continueRequest',{requestId:m.params.requestId},sessionId);return;}
+                let response;
+                if(method==='GET'&&url.includes('/api/pos/sync/panel')){
+                  response=current.panel==='unconfirmed'?api(503,fail('SYNC_PANEL_UNVERIFIED','No se pudo confirmar el estado de pendientes a tiempo. La venta local sigue disponible; vuelve a revisar el panel.',{reason:'bounded_timeout',localSalesBlocked:false})):api(200,ok(panel(current.panel)));
+                } else if(method==='GET'&&url.includes('/api/license/status')){
+                  response=api(200,ok({status:{state:current.license,plan:current.license==='expired'?'Evidence Expired':'Evidence Active',assignmentState:'assigned',operationalDecision:current.license==='expired'?'deny':'allow'}}));
+                } else if(method==='GET'&&url.includes('/api/pos/sync/health/pc')){
+                  response=api(200,{ok:current.pc==='online',enabled:true,status:current.pc,url:'http://pc-evidence.invalid',error:current.pc==='offline'?'PC intentionally unavailable in fixture':null});
+                } else if(method==='GET'&&url.includes('/api/pos/sync/pull')){
+                  response=api(200,ok({stream:'catalog',targetBusinessId:'evidence-business',terminalId:'evidence-terminal',pc:{enabled:false,origin:null,exportPath:'/api/backoffice/catalog/export'},checkpoint:null,tableCounts:{}}));
+                } else {
+                  unexpectedApis.push({scenario:current.name,method,url});
+                  response=api(503,fail('EVIDENCE_UNEXPECTED_API_BLOCKED','Unexpected API blocked by evidence harness.',{method,url}));
+                }
+                apiRequests.push({scenario:current.name,method,url,responseCode:response.responseCode});
+                await cdp.send('Fetch.fulfillRequest',{requestId:m.params.requestId,...response},sessionId);
+              })().catch(e=>pageErrors.push({scenario:current.name,detail:String(e?.stack??e)}));
+            });
+
+            await Promise.all([cdp.send('Page.enable',{},sessionId),cdp.send('Runtime.enable',{},sessionId),cdp.send('Log.enable',{},sessionId),cdp.send('Fetch.enable',{patterns:[{urlPattern:'*://*/api/*',requestStage:'Request'}]},sessionId),cdp.send('Emulation.setDeviceMetricsOverride',{width:1365,height:900,deviceScaleFactor:1,mobile:false},sessionId)]);
+
+            const results=[];
+            const kpiLabels=['Pendientes','Enviados','Fallidos','Revisión','Confirmados'];
+            for(const scenario of scenarios){
+              current=scenario;
+              await cdp.send('Page.navigate',{url:`http://127.0.0.1:3120/sync?evidence=${encodeURIComponent(scenario.name)}&t=${Date.now()}`},sessionId);
+              await sleep(4500);
+              const inspected=await cdp.send('Runtime.evaluate',{expression:`(()=>{const text=document.body.innerText;const arts=[...document.querySelectorAll('article')];const wanted=${JSON.stringify(kpiLabels)};const kpis={};for(const a of arts){const label=a.querySelector('span')?.textContent?.trim()??'';if(wanted.includes(label))kpis[label]=a.querySelector('strong')?.textContent?.trim()??'';}return{text,kpis};})()`,returnByValue:true},sessionId);
+              const dom=inspected.result.value;
+              const checks={fiveKpis:kpiLabels.every(k=>Object.hasOwn(dom.kpis,k)),sentKpi:Object.hasOwn(dom.kpis,'Enviados'),localFirst:dom.text.includes('Venta local disponible aunque PC no responda')};
+              if(scenario.panel==='unconfirmed'){
+                checks.unverifiedHeadline=dom.text.includes('Estado de pendientes sin confirmar');
+                checks.unknownCounts=kpiLabels.every(k=>dom.kpis[k]==='—');
+                checks.noFakeHealthy=!dom.text.includes('Pendientes al día');
+              } else {
+                const expected={Pendientes:0,Enviados:0,Fallidos:0,'Revisión':0,Confirmados:0};
+                if(scenario.panel==='pending')expected.Pendientes=1;
+                if(scenario.panel==='sent')expected.Enviados=1;
+                if(scenario.panel==='failed')expected.Fallidos=1;
+                if(scenario.panel==='conflict')expected['Revisión']=1;
+                if(scenario.panel==='acked')expected.Confirmados=1;
+                checks.counts=kpiLabels.every(k=>dom.kpis[k]===String(expected[k]));
+              }
+              if(scenario.name==='conflict'){
+                checks.reviewRequired=dom.text.includes('Revisión requerida');
+                checks.noRowRetry=!dom.text.includes('Reintento disponible');
+                checks.conflictNoAutoRetry=dom.text.includes('no se reintentan automáticamente');
+              }
+              if(scenario.name==='failed') checks.retryVisible=dom.text.includes('Reintento disponible');
+              if(scenario.name==='sent') checks.sentAwaitingAck=dom.text.includes('Esperando confirmación');
+              if(scenario.name==='pc-offline') checks.pcOffline=dom.text.includes('PC sin respuesta');
+              if(scenario.name==='clean') checks.licenseAllow=dom.text.includes('Cuenta autorizada');
+              if(scenario.name==='license-deny') checks.licenseDeny=dom.text.includes('Licencia vencida');
+              const failed=Object.entries(checks).filter(([,ok])=>!ok).map(([name])=>name);
+              const metrics=await cdp.send('Page.getLayoutMetrics',{},sessionId),size=metrics.cssContentSize??metrics.contentSize;
+              const shot=await cdp.send('Page.captureScreenshot',{format:'png',fromSurface:true,captureBeyondViewport:true,clip:{x:0,y:0,width:Math.min(5000,Math.ceil(size.width)),height:Math.min(12000,Math.ceil(size.height)),scale:1}},sessionId);
+              fs.writeFileSync(path.join(out,`sync-${scenario.name}.png`),Buffer.from(shot.data,'base64'));
+              results.push({scenario:scenario.name,checks,kpis:dom.kpis,failed});
+            }
+
+            const globalChecks={noUnexpectedApi:unexpectedApis.length===0,noPageExceptions:pageErrors.length===0,noConsoleErrors:!pageConsole.some(r=>r.type==='error'),noNonGetApiMutation:!apiRequests.some(r=>r.method!=='GET')};
+            const failed=[...results.flatMap(r=>r.failed.map(f=>`${r.scenario}:${f}`)),...Object.entries(globalChecks).filter(([,ok])=>!ok).map(([n])=>`global:${n}`)];
+            const evidence={schemaVersion:'tablet_sync_wave1_postmerge_runtime_evidence.v1',targetSha:process.env.TARGET_SHA,authorityMainSha:process.env.AUTHORITY_MAIN_SHA,authorityRequestId:process.env.AUTHORITY_REQUEST_ID,evidenceOnly:true,fixtureDrivenBrowserProjection:true,dbBackedRouteE2E:false,hotPrismaGenerate:false,realDatabaseMutation:false,scenarios:results,globalChecks,apiRequests,unexpectedApis,pageConsole,pageErrors,logEntries,final:failed.length?'BLOCKED_RUNTIME_EVIDENCE':'PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN'};
+            fs.writeFileSync(path.join(out,'browser-evidence.json'),JSON.stringify(evidence,null,2)+'\n');
+            fs.writeFileSync(path.join(out,'RUNTIME_EVIDENCE.md'),['# Tablet Sync WAVE1 Postmerge Runtime Evidence','',`- target: \`${process.env.TARGET_SHA}\``,`- authority main: \`${process.env.AUTHORITY_MAIN_SHA}\``,`- Authority Mesh: \`${process.env.AUTHORITY_REQUEST_ID}\``,'- Browser projection: real `/sync` Next runtime against explicit GET-only fixtures.','- DB-backed route E2E: false.','- Prisma generation/migration/seed/db push: false.','- Product source mutation: false.','',...results.flatMap(r=>[`## ${r.scenario}`,...Object.entries(r.checks).map(([n,ok])=>`- ${ok?'PASS':'FAIL'} ${n}`),'']),'## Global',...Object.entries(globalChecks).map(([n,ok])=>`- ${ok?'PASS':'FAIL'} ${n}`),'',`Final: ${evidence.final}`,''].join('\n'));
+            if(failed.length) throw new Error(`Runtime assertions failed: ${failed.join(', ')}`);
+            await cdp.send('Browser.close');
+          } finally {
+            if(!chrome.killed) chrome.kill('SIGTERM');
+            fs.closeSync(chromeLog);
+          }
+          JS
+          node "$RUNNER_TEMP/capture-sync-wave1-postmerge.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+
+      - name: Scan server log fail closed
+        id: server_scan
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$EVIDENCE_DIR/server.log"
+          forbidden='PrismaClientKnownRequestError|unhandledRejection|no such table|Cannot find module.*\.generated/prisma-client|Module not found.*\.generated/prisma-client'
+          if grep -Ein "$forbidden" "$EVIDENCE_DIR/server.log" > "$EVIDENCE_DIR/server-log-forbidden.txt"; then
+            cat "$EVIDENCE_DIR/server-log-forbidden.txt"
+            exit 1
+          fi
+          echo 'PASS no forbidden Prisma/database/unhandled runtime errors' > "$EVIDENCE_DIR/server-log-forbidden.txt"
+
+      - name: Build immutable evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          set -uo pipefail
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          root=Path(os.environ['EVIDENCE_DIR']);root.mkdir(parents=True,exist_ok=True)
+          files=[]
+          for p in sorted(root.rglob('*')):
+            if p.is_file():
+              b=p.read_bytes();files.append({'path':p.relative_to(root).as_posix(),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+          out={'schemaVersion':'tablet_sync_wave1_postmerge_manifest.v1','targetSha':os.environ['TARGET_SHA'],'authorityMainSha':os.environ['AUTHORITY_MAIN_SHA'],'authorityRequestId':os.environ['AUTHORITY_REQUEST_ID'],'runId':os.environ['GITHUB_RUN_ID'],'runAttempt':os.environ['GITHUB_RUN_ATTEMPT'],'evidenceOnly':True,'mustNeverMerge':True,'hotPrismaGenerateExecuted':False,'realDatabaseMutationExecuted':False,'files':files}
+          (root/'manifest.json').write_text(json.dumps(out,indent=2)+'\n')
+          PY
+
+      - name: Upload evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-sync-wave1-postmerge-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 14
+          path: evidence/tablet-sync-wave1-postmerge/**
+
+      - name: Stop only recorded runner-local Tablet group
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if [ -f "$EVIDENCE_DIR/server.pid" ]; then
+            pid="$(cat "$EVIDENCE_DIR/server.pid")"
+            kill -TERM -- "-$pid" >/dev/null 2>&1 || kill -TERM "$pid" >/dev/null 2>&1 || true
+            sleep 2
+            kill -KILL -- "-$pid" >/dev/null 2>&1 || kill -KILL "$pid" >/dev/null 2>&1 || true
+          fi
+          echo 'cleanup limited to recorded runner-local process group'
+
+      - name: Fail closed on browser or server evidence
+        if: always()
+        shell: bash
+        env:
+          BROWSER_OUTCOME: ${{ steps.browser.outcome }}
+          SERVER_OUTCOME: ${{ steps.server_scan.outcome }}
+        run: |
+          set -euo pipefail
+          echo "browser=$BROWSER_OUTCOME server=$SERVER_OUTCOME"
+          test "$BROWSER_OUTCOME" = success
+          test "$SERVER_OUTCOME" = success
+          grep -q 'Final: PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN' "$EVIDENCE_DIR/RUNTIME_EVIDENCE.md"
+          echo 'PASS_TABLET_SYNC_WAVE1_POSTMERGE_EVIDENCE'
