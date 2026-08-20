@@ -44,7 +44,8 @@ jobs:
             tools/code-atlas/src/code_atlas/change_intelligence/authority_pack.py \
             tools/code-atlas/src/code_atlas/change_intelligence/universal_binding.py \
             tools/code-atlas/src/code_atlas/change_intelligence/verification.py \
-            tools/code-atlas/tests/test_operational_change_intelligence.py
+            tools/code-atlas/tests/test_operational_change_intelligence.py \
+            tools/code-atlas/tests/test_operational_change_intelligence_binding.py
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
           test "$(git status --porcelain | wc -l)" -eq 0
 
@@ -82,7 +83,7 @@ jobs:
               "tools/code-atlas/src/code_atlas/change_intelligence/universal_binding.py",
               "tools/code-atlas/src/code_atlas/change_intelligence/verification.py",
               "tools/code-atlas/tests/test_operational_change_intelligence.py",
-              "tools/code-atlas/tests/test_operational_universal_binding.py"
+              "tools/code-atlas/tests/test_operational_change_intelligence_binding.py"
           ]
           request = {
               "schemaVersion":"prisma_remote_authority_gateway.v2",
@@ -143,7 +144,6 @@ jobs:
           from code_atlas.change_intelligence.contracts import ContractError, sha256_json
 
           cases=[]
-          # A ranked candidate stays a candidate and retrieval stays non-proof.
           with tempfile.TemporaryDirectory() as td:
               repo=Path(td)
               (repo/'README.md').write_text('# candidate\n',encoding='utf-8')
@@ -155,7 +155,6 @@ jobs:
               assert ret['results'][0]['confidence']=='candidate' and ret['retrievalRule']=='SEMANTIC_RETRIEVAL_DISCOVERS_EVIDENCE_NOT_TRUTH'
               cases.append('candidate-ranking!=authority')
 
-          # Two repo declarations for the same scope are explicit conflict, not tie-breaking truth.
           with tempfile.TemporaryDirectory() as td:
               repo=Path(td); (repo/'.code-atlas').mkdir()
               (repo/'A.md').write_text('A',encoding='utf-8'); (repo/'B.md').write_text('B',encoding='utf-8')
@@ -166,13 +165,11 @@ jobs:
               assert states=={'A.md':'CONFLICTED','B.md':'CONFLICTED'}
               cases.append('declared-conflict->CONFLICTED')
 
-          # An Authority Pack cannot be issued with unresolved conflict.
           try:
               build_authority_pack(repository_identity='r',commit_identity='c',tree_identity='t',request_digest='q',normalized_task='task',allowed_scope=['src'],tool_version='1',profile_version='1',authority_resolution={'missing':[],'conflicted':['SECURITY.md']})
           except ContractError: cases.append('conflicted-required-authority->REJECTED')
           else: raise SystemExit('FAKE_GREEN_CONFLICTED_AUTHORITY')
 
-          # Compatibility authority drift blocks verification before green.
           good=sha256_json({'authority':'v1'}); bad=sha256_json({'authority':'v2'})
           pack=build_authority_pack(repository_identity='r',commit_identity='c',tree_identity='t',request_digest='q',normalized_task='task',allowed_scope=['src'],tool_version='1',profile_version='1',authority_resolution={'missing':[],'conflicted':[]},authority_digest=good)
           report=verify_change(authority_pack=pack,change_manifest={'changedPaths':['src/a.py']},current_snapshot={'repositoryIdentity':'r','commitIdentity':'c','treeIdentity':'t','authorityDigest':bad})
