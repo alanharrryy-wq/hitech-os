@@ -136,6 +136,29 @@ jobs:
               "The promotion must remain LOCAL_VERIFIED and must not claim customer production deployment, arbitrary infrastructure/container execution, legal/privacy/security certification, enterprise readiness, paid-pilot readiness or secure erase. "
               "Allowed mutation after PASS is limited to the single Change Assurance registry/checklist and its two human-readable canonical companions; no source/runtime/Cloud Center/Tablet/PC/Mobile/Chart Lab/Shared UI/DB/Prisma/process/port/deploy mutation."
           )
+          common_authorities = [
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+              "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+              "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md",
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+              "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+              "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+              "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+              "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+              "tools/code-atlas/src/code_atlas/change_intelligence/runner_contract.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/bundle.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/customer_lifecycle.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/artifact_hygiene.py",
+              "tools/code-atlas/tests/test_operational_rental_hardening.py",
+              ".github/workflows/code-atlas-operational-hardening.yml"
+          ]
+          common_dirs = [
+              "PRISMA Factory Ledger",
+              "tools/code-atlas/src/code_atlas/change_intelligence",
+              "tools/code-atlas/tests",
+              "tools/code-atlas/docs",
+              ".github/workflows"
+          ]
           request = {
               "schemaVersion": "prisma_remote_authority_gateway.v2",
               "expectedHead": head,
@@ -144,32 +167,26 @@ jobs:
                   {
                       "id": "prove-h-governance-promotion",
                       "surface": "governance",
-                      "task": task + " Resolve exact evidence requirements, allowed governance files, claim ceiling and anti-rework constraints.",
+                      "task": task + " Resolve exact evidence requirements, allowed governance files, claim ceiling and promotion constraints.",
                       "intent": "VERIFY",
                       "domain": "governance",
-                      "requiredAuthorities": [
-                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
-                          "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
-                          "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md",
-                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
-                          "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
-                          "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
-                          "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
-                          "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
-                          "tools/code-atlas/src/code_atlas/change_intelligence/runner_contract.py",
-                          "tools/code-atlas/src/code_atlas/change_intelligence/bundle.py",
-                          "tools/code-atlas/src/code_atlas/change_intelligence/customer_lifecycle.py",
-                          "tools/code-atlas/src/code_atlas/change_intelligence/artifact_hygiene.py",
-                          "tools/code-atlas/tests/test_operational_rental_hardening.py",
-                          ".github/workflows/code-atlas-operational-hardening.yml"
+                      "requiredAuthorities": common_authorities,
+                      "requiredDirectories": common_dirs,
+                      "requiredCapabilities": [
+                          "code_atlas.change_intelligence.customer_wow_v1",
+                          "change_intelligence.capability_anti_rework_gate"
                       ],
-                      "requiredDirectories": [
-                          "PRISMA Factory Ledger",
-                          "tools/code-atlas/src/code_atlas/change_intelligence",
-                          "tools/code-atlas/tests",
-                          "tools/code-atlas/docs",
-                          ".github/workflows"
-                      ],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True
+                  },
+                  {
+                      "id": "prove-h-protected-runner-owners",
+                      "surface": "governance",
+                      "task": task + " Prove the promotion is evidence-only and must not rebuild or modify LOCAL_ONLY, PORTABLE_EVIDENCE, rental V2, lifecycle, sanitization, bundle or runner owners; return fail-closed anti-rework boundaries.",
+                      "intent": "VERIFY",
+                      "domain": "tooling",
+                      "requiredAuthorities": common_authorities,
+                      "requiredDirectories": common_dirs,
                       "requiredCapabilities": [
                           "code_atlas.change_intelligence.customer_wow_v1",
                           "change_intelligence.capability_anti_rework_gate"
@@ -186,7 +203,7 @@ jobs:
           python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
             --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
-            --parallel 1 --workers 18 --shards 54
+            --parallel 2 --workers 18 --shards 54
           python -m code_atlas.motors.prisma_mesh_gateway compose \
             --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" \
             | tee "$composed/compose.stdout.txt"
