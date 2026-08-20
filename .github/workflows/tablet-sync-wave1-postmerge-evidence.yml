@@ -1,0 +1,152 @@
+name: Tablet Sync WAVE1 Postmerge Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [.github/workflows/tablet-sync-wave1-postmerge-evidence.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tablet-sync-wave1-postmerge-evidence
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  TARGET_SHA: 7d5637685b86e910e2dd5aaa00a61f88422d34d3
+  AUTHORITY_MESH_REQUEST_ID: 0c4e35332bcadda9
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-sync-wave1-postmerge
+  RUNTIME_PORT: '3120'
+
+jobs:
+  tablet-sync-wave1-postmerge:
+    if: github.head_ref == 'evidence/tablet-sync-wave1-postmerge'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact target
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Pin evidence scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          cat > "$EVIDENCE_DIR/scope.json" <<JSON
+          {"schemaVersion":"tablet.sync.wave1.postmerge.evidence.v1","targetSha":"$TARGET_SHA","authorityMeshRequestId":"$AUTHORITY_MESH_REQUEST_ID","productMutation":false,"dbMutation":false,"prismaGenerate":false,"workflowOnlyEvidenceBranch":true}
+          JSON
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install standalone Tablet safely
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
+          test -x "$APP_ROOT/node_modules/.bin/next"
+          test ! -e "$APP_ROOT/.generated/prisma-client"
+
+      - name: Run current truth gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          node "$APP_ROOT/tools/verify_tablet_sync_panel_truth_1808.mjs" 2>&1 | tee "$EVIDENCE_DIR/verify-sync.log"
+          pnpm -C "$APP_ROOT" run verify:zero-important 2>&1 | tee "$EVIDENCE_DIR/verify-zero-important.log"
+          pnpm -C "$APP_ROOT" run verify:tablet-license-missing-fallback 2>&1 | tee "$EVIDENCE_DIR/verify-license.log"
+          pnpm -C "$APP_ROOT" run verify:tablet-operational-gate 2>&1 | tee "$EVIDENCE_DIR/verify-operational.log"
+          pnpm -C "$APP_ROOT" run verify:tablet-sync-dispatcher 2>&1 | tee "$EVIDENCE_DIR/verify-dispatcher.log"
+
+      - name: Resolve preinstalled Chrome
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=''
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do
+            command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break
+          done
+          test -n "$chrome"
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start runner-local Tablet only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/" >/dev/null 2>&1; then
+            echo "BLOCKED occupied runner port $RUNTIME_PORT; refusing cleanup" | tee "$EVIDENCE_DIR/runtime-start.log"
+            exit 1
+          fi
+          setsid bash -lc "cd '$APP_ROOT' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/server.pid"
+          for _ in $(seq 1 120); do
+            curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/sync" >/dev/null 2>&1 && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break
+            sleep 1
+          done
+          tail -n 240 "$EVIDENCE_DIR/server.log" || true
+          exit 1
+
+      - name: Materialize governed runtime capture
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/capture.mjs.gz.b64" <<'B64'
+          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
+          B64
+          base64 -d "$RUNNER_TEMP/capture.mjs.gz.b64" | gzip -d > "$RUNNER_TEMP/capture-wave1-postmerge.mjs"
+          node --check "$RUNNER_TEMP/capture-wave1-postmerge.mjs"
+
+      - name: Capture fail-closed multi-state runtime evidence
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: node "$RUNNER_TEMP/capture-wave1-postmerge.mjs"
+
+      - name: Build immutable evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -d "$EVIDENCE_DIR" ] || exit 0
+          find "$EVIDENCE_DIR" -type f -print0 | sort -z | xargs -0 sha256sum > "$EVIDENCE_DIR/MANIFEST.sha256"
+          python - <<'PY2'
+          import hashlib,json,os
+          from pathlib import Path
+          r=Path(os.environ['EVIDENCE_DIR']); rows=[]
+          for p in sorted(r.rglob('*')):
+              if p.is_file() and p.name!='MANIFEST.json':
+                  b=p.read_bytes(); rows.append({'path':p.relative_to(r).as_posix(),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+          (r/'MANIFEST.json').write_text(json.dumps({'schemaVersion':'tablet.sync.wave1.postmerge.evidence-manifest.v1','targetSha':os.environ['TARGET_SHA'],'files':rows},indent=2),encoding='utf-8')
+          PY2
+
+      - name: Stop only runner-local process
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if [ -f "$EVIDENCE_DIR/server.pid" ]; then
+            pid="$(cat "$EVIDENCE_DIR/server.pid")"
+            kill -0 "$pid" >/dev/null 2>&1 && (kill -TERM -- "-$pid" >/dev/null 2>&1 || kill -TERM "$pid" >/dev/null 2>&1 || true)
+          fi
+
+      - name: Upload postmerge evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: tablet-sync-wave1-postmerge-${{ env.TARGET_SHA }}
+          path: ${{ env.EVIDENCE_DIR }}
+          if-no-files-found: error
+          retention-days: 14
