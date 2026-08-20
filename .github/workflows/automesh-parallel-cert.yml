@@ -3,191 +3,55 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
+      - '.github/workflows/automesh-parallel-cert.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  PYTHONDONTWRITEBYTECODE: '1'
-  PYTHONUNBUFFERED: '1'
-  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  e-governance-promotion:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 12
+  automesh-parallel-cert:
+    name: ${{ matrix.os }} / py${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.11']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     steps:
-      - name: Checkout governed branch
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
-          ref: governance/ca-authority-e-promote-2008
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
 
-      - name: Apply deterministic E governance promotion
-        shell: bash
-        run: |
-          set -euo pipefail
-          git fetch origin main --quiet
-          python - <<'PY'
-          import json
-          from pathlib import Path
+      - name: Compile AutoMesh tooling
+        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
 
-          map_json = Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json')
-          map_md = Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md')
-          v1_md = Path('tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md')
+      - name: Run legacy AutoMesh self-test
+        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
 
-          data = json.loads(map_json.read_text(encoding='utf-8'))
-          dod = data.get('v1DefinitionOfDone') or []
-          by_id = {row.get('id'): row for row in dod if isinstance(row, dict)}
-          if set('ABCDEFGHIJ') - set(by_id):
-              raise SystemExit('BLOCKED_V1_DOD_INCOMPLETE')
-          e = by_id['E']
-          if (e.get('stage'), e.get('title'), e.get('status'), e.get('owner'), e.get('doNotRebuild')) != ('AUTHORIZE', 'Conflict-first authority', 'PARTIAL', 'code_atlas.change_intelligence', True):
-              raise SystemExit('BLOCKED_E_CANON_DRIFT_REEVALUATE')
-          expected = {'D':'PARTIAL','F':'DONE','G':'PARTIAL','H':'DONE','I':'PARTIAL','J':'BLOCKED'}
-          for key, state in expected.items():
-              if by_id[key].get('status') != state:
-                  raise SystemExit(f'BLOCKED_NEIGHBOR_STATUS_DRIFT:{key}:{by_id[key].get("status")}')
-
-          e.update({
-              'status': 'DONE',
-              'claimBoundary': 'LOCAL_VERIFIED conflict-first authorization from existing protected authority owners: ranking-only candidates remain non-authoritative; repository-declared conflicts, missing required authority, stale snapshot or authority-lock drift fail closed; protected scope remains blocking even if allowed scope is broadened. Candidate != Authority, Retrieval != proof and Impact Radius != Authorization remain invariant. No production, enterprise, paid-pilot, arbitrary-repository-completeness, hosted, legal/privacy/security claim.',
-              'evidence': [
-                  'path:tools/code-atlas/src/code_atlas/intelligence/authority.py',
-                  'path:tools/code-atlas/src/code_atlas/intelligence/snapshot.py',
-                  'path:tools/code-atlas/src/code_atlas/change_intelligence/authority_pack.py',
-                  'path:tools/code-atlas/src/code_atlas/change_intelligence/verification.py',
-                  'path:tools/code-atlas/tests/test_operational_change_intelligence.py',
-                  'E focused falsification run 32342173554 / artifact 9396745950',
-                  'E focused artifact sha256:b3844e24e73ed817888dfb9d6971a1b592ae9f0b39b2feab9e0d4ba194417833',
-                  'E focused composed Authority Mesh sha256:975df11f03fa63bf50cdc40feab3da22822a0cefe9e89e1dfad28958889d0e13',
-                  'E governance authority run 32342601848 / artifact 9396888671',
-                  'E governance artifact sha256:dda8ab283b66d16853b7fdc789d35f4ca78031f519ecb7c23ae96b4c0a504f8b',
-                  'E governance composed Authority Mesh sha256:67f106dc5c8c1e35446066c32b09b9e1e845dc86ab0e9eb97d4a58f012845563',
-                  'Factory gate decision e59baddcc755b4d16dae45235a973f84d65d415cc4afe773c550e525e27b2124',
-                  'Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE'
-              ],
-              'tests': [
-                  'test_authority_pack_is_deterministically_checksummed',
-                  'test_verify_passes_only_complete_in_scope_change',
-                  'PASS_CONFLICT_FIRST_AUTHORITY_NATIVE_PROBE on run 32342173554'
-              ],
-              'negativeTests': [
-                  'test_authority_pack_rejects_missing_required_authority',
-                  'test_verify_blocks_stale_snapshot',
-                  'test_verify_blocks_protected_mutation_even_if_scope_is_broadened',
-                  'ranking-only candidate remains CANDIDATE and semantic retrieval remains non-proof',
-                  'duplicate repository declarations for one scope become CONFLICTED',
-                  'conflicted required authority prevents Authority Pack issuance',
-                  'authority compatibility digest drift blocks verification'
-              ],
-              'knownBlindSpots': [
-                  'LOCAL_VERIFIED evidence is bounded to the current authority, pack, snapshot and verification contracts; it does not prove arbitrary-repository authority completeness.',
-                  'Repository-declared authority quality still depends on the declarations and evidence available in the bounded repository context.',
-                  'This evidence does not prove production, enterprise IAM/security, hosted multi-tenant, legal/privacy, paid-pilot or customer deployment readiness.'
-              ],
-              'nextEvidence': 'REUSE_DONE_BASELINE; recertify after authority discovery, repository authority declaration, snapshot locking, Authority Pack, protected-scope or verification-contract drift.'
-          })
-          data['v1Complete'] = False
-          data['lastGovernanceMutation'] = {
-              'kind': 'AUTHORIZE_E_LOCAL_VERIFICATION_PROMOTION',
-              'sourceHead': '5747ce6bfa5f3c93183ff4cb96cd19841ee9bf89',
-              'technicalEvidenceRunId': 32342173554,
-              'technicalEvidenceArtifactId': 9396745950,
-              'technicalEvidenceArtifactSha256': 'b3844e24e73ed817888dfb9d6971a1b592ae9f0b39b2feab9e0d4ba194417833',
-              'technicalEvidenceComposedSha256': '975df11f03fa63bf50cdc40feab3da22822a0cefe9e89e1dfad28958889d0e13',
-              'authorityRunId': 32342601848,
-              'authorityArtifactId': 9396888671,
-              'authorityArtifactSha256': 'dda8ab283b66d16853b7fdc789d35f4ca78031f519ecb7c23ae96b4c0a504f8b',
-              'composedAuthoritySha256': '67f106dc5c8c1e35446066c32b09b9e1e845dc86ab0e9eb97d4a58f012845563',
-              'requestDigest': '08bbc1c042a3255ae4c19655fbcb521a09a02e9bc81dfafc4ca2a47bcb33f574',
-              'factoryGateDecisionDigest': 'e59baddcc755b4d16dae45235a973f84d65d415cc4afe773c550e525e27b2124',
-              'status': 'LOCAL_VERIFIED',
-              'productionCertified': False
-          }
-          map_json.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-
-          paragraph_map = ('E is `DONE / LOCAL_VERIFIED` from the existing protected authority-resolution, snapshot-locking, Authority Pack and Verify owners. Focused falsification run `32342173554` proved ranking-only candidates stay non-authoritative, declared authority conflicts remain `CONFLICTED`, missing/conflicted authority prevents pack issuance, stale or authority-drifted snapshots block, and protected scope cannot be bypassed by widening allowed scope. Governance authority run `32342601848` passed both anti-rework gates with source bytes unchanged. This does not certify arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.\n\n')
-          text = map_md.read_text(encoding='utf-8')
-          old = '| E | AUTHORIZE | Conflict-first authority | `PARTIAL` |'
-          new = '| E | AUTHORIZE | Conflict-first authority | `DONE` |'
-          if text.count(old) != 1 or paragraph_map in text:
-              raise SystemExit('BLOCKED_MAP_MD_E_ANCHOR_DRIFT')
-          text = text.replace(old, new, 1)
-          anchor = 'Therefore `v1Complete=false`.\n\n'
-          if text.count(anchor) != 1:
-              raise SystemExit('BLOCKED_MAP_MD_V1_ANCHOR_DRIFT')
-          text = text.replace(anchor, anchor + paragraph_map, 1)
-          map_md.write_text(text, encoding='utf-8')
-
-          paragraph_v1 = ('Checklist E is now `DONE / LOCAL_VERIFIED`: the existing authority discovery, snapshot locking, Authority Pack and Verify owners fail closed before mutation authorization. Ranking-only candidates remain candidates; repository-declared conflicts remain `CONFLICTED`; missing or conflicted required authority prevents pack issuance; stale snapshot, authority compatibility drift and protected-scope violations block. Focused run `32342173554` and governance authority run `32342601848` passed with source bytes unchanged. E preserves `Candidate != Authority`, `Retrieval != proof`, and `Impact Radius != Authorization`, and does not prove arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.\n\n')
-          text = v1_md.read_text(encoding='utf-8')
-          old = '| E | AUTHORIZE | Conflict-first authority | `PARTIAL` |'
-          new = '| E | AUTHORIZE | Conflict-first authority | `DONE` |'
-          if text.count(old) != 1 or paragraph_v1 in text:
-              raise SystemExit('BLOCKED_V1_MD_E_ANCHOR_DRIFT')
-          text = text.replace(old, new, 1)
-          anchor = '`V1 complete` is therefore **false**. This is intentional.\n\n'
-          if text.count(anchor) != 1:
-              raise SystemExit('BLOCKED_V1_MD_STATUS_ANCHOR_DRIFT')
-          text = text.replace(anchor, anchor + paragraph_v1, 1)
-          v1_md.write_text(text, encoding='utf-8')
-          print('PASS_E_GOVERNANCE_TRANSFORM')
-          PY
-
-      - name: Validate promotion and source immutability
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m py_compile 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test
-          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
-          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --self-test
-          python -m unittest -v \
-            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_authority_pack_is_deterministically_checksummed \
-            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_verify_passes_only_complete_in_scope_change \
-            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_authority_pack_rejects_missing_required_authority \
-            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_verify_blocks_stale_snapshot \
-            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_verify_blocks_protected_mutation_even_if_scope_is_broadened
-          git diff --exit-code origin/main -- tools/code-atlas/src/code_atlas
-          git diff --check
-          python - <<'PY'
-          import json
-          d=json.load(open('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json',encoding='utf-8'))
-          by={x['id']:x for x in d['v1DefinitionOfDone']}
-          assert by['E']['status']=='DONE' and by['E']['doNotRebuild'] is True
-          assert by['E']['evidence'] and by['E']['tests'] and by['E']['negativeTests']
-          assert by['F']['status']=='DONE' and by['H']['status']=='DONE'
-          assert by['I']['status']=='PARTIAL' and by['J']['status']=='BLOCKED'
-          assert d['v1Complete'] is False
-          assert d['lastGovernanceMutation']['kind']=='AUTHORIZE_E_LOCAL_VERIFICATION_PROMOTION'
-          print('PASS_E_CANONICAL_PROMOTION_VALIDATION')
-          PY
-
-      - name: Commit only three governance files
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'chatgpt-codex-connector[bot]'
-          git config user.email 'chatgpt-codex-connector[bot]@users.noreply.github.com'
-          git add -- \
-            'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' \
-            'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md' \
-            'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md'
-          git diff --cached --check
-          mapfile -t changed < <(git diff --cached --name-only)
-          test "${#changed[@]}" -eq 3
-          printf '%s\n' "${changed[@]}" | grep -Fx 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
-          printf '%s\n' "${changed[@]}" | grep -Fx 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md'
-          printf '%s\n' "${changed[@]}" | grep -Fx 'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md'
-          git commit -m 'governance(ca): certify conflict-first authority evidence'
-          git push origin HEAD:governance/ca-authority-e-promote-2008
+      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
+        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
