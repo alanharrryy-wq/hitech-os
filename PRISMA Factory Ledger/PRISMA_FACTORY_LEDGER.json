@@ -962,7 +962,54 @@
         "mutate live customer data for certification",
         "duplicate existing quality owners unnecessarily"
       ]
+    },
+    {
+      "id": "change_intelligence.capability_anti_rework_gate",
+      "displayName": "Code Atlas Change Assurance capability anti-rework gate",
+      "domain": "governance",
+      "surfaces": [
+        "code_atlas",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_CHANGE_INTELLIGENCE_CAPABILITY_ANTI_REWORK_GATE_LOCAL_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "REUSE_EXISTING_GATE_AND_EVOLVE_CURRENT_REGISTRY_TO_PRISMA_CHANGE_ASSURANCE_V1_WITHOUT_SECOND_SOURCE_OF_TRUTH",
+      "evidence": [
+        "PR #311 governance(ci): enforce capability anti-rework gate",
+        "merge commit 081e014ee143e05ce72b06b5e2f5e9c0e89e69da",
+        "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+        "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+        ".github/workflows/change-intelligence-capability-gate.yml",
+        "Change Intelligence Capability Anti-Rework Gate run 32211016746"
+      ],
+      "doesNotProve": [
+        "PRISMA Change Assurance V1 completion",
+        "Production, enterprise, paid-pilot or arbitrary-repository certification",
+        "Human usefulness measurement",
+        "Successful independent-agent replication",
+        "Any new Code Atlas runtime capability beyond the existing anti-rework governance gate"
+      ],
+      "allowedActions": [
+        "reuse the existing capability registry and verifier",
+        "advance the same registry to the frozen PRISMA Change Assurance identity under fresh task-exact authority",
+        "add bounded product-name, stage, claim and no-fake-green enforcement without rebuilding Code Atlas core",
+        "read-only recertification after authority or source drift"
+      ],
+      "forbiddenActions": [
+        "create a second capability registry or parallel anti-rework engine",
+        "rebuild Universal Intelligence or Customer Wow",
+        "treat Impact Radius as authorization",
+        "promote UNKNOWN or missing evidence to green",
+        "claim Change Assurance V1 DONE from governance registration alone"
+      ],
+      "forbiddenClaims": [
+        "Do not claim PRISMA Change Assurance V1 DONE from this canonical registration.",
+        "Do not claim production, enterprise, paid-pilot, hosted multi-tenant, arbitrary-repository or human-usefulness certification from this registration."
+      ]
     }
   ],
-  "updatedAt": "2026-08-19T09:58:22-06:00"
+  "updatedAt": "2026-08-20T04:58:04.252418Z"
 }
