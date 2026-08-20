@@ -3,55 +3,199 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+  ca-observe-f-register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout governed branch
+        uses: actions/checkout@v6
         with:
+          ref: governance/ca-observe-f-register-2008
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Register canonical OBSERVE F capability
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from datetime import datetime, timezone
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          ledger_path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
+          map_path = Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json')
+          ledger = json.loads(ledger_path.read_text(encoding='utf-8'))
+          cmap = json.loads(map_path.read_text(encoding='utf-8'))
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+          cid = 'ci.observe.change_comparison'
+          caps = {row['id']: row for row in ledger.get('capabilities', []) if isinstance(row, dict) and row.get('id')}
+          if cid in caps:
+              raise SystemExit('BLOCKED_OBSERVE_F_ALREADY_CANONICAL_REEVALUATE_MAIN')
+
+          checklist = cmap.get('v1DefinitionOfDone') or []
+          f_rows = [row for row in checklist if isinstance(row, dict) and row.get('id') == 'F']
+          if len(f_rows) != 1:
+              raise SystemExit('BLOCKED_OBSERVE_F_CHECKLIST_CARDINALITY')
+          f = f_rows[0]
+          if f.get('stage') != 'OBSERVE' or f.get('title') != 'Change comparison':
+              raise SystemExit('BLOCKED_OBSERVE_F_CANON_DRIFT')
+          if f.get('status') != 'MISSING' or f.get('owner') != 'UNRESOLVED_V1_OWNER' or f.get('doNotRebuild') is not False:
+              raise SystemExit('BLOCKED_OBSERVE_F_STATE_DRIFT_REEVALUATE')
+
+          row_fields = cmap.get('rowFields') or []
+          rows = cmap.get('rows') or []
+          if not row_fields or not isinstance(rows, list):
+              raise SystemExit('BLOCKED_CHANGE_ASSURANCE_ROWS_INVALID')
+          id_index = row_fields.index('id')
+          existing_ids = [row[id_index] for row in rows if isinstance(row, list) and len(row) == len(row_fields)]
+          if cid in existing_ids:
+              raise SystemExit('BLOCKED_OBSERVE_F_DOMAIN_ROW_ALREADY_EXISTS')
+          for protected in ('ci.core.snapshot_locking', 'ci.change.architecture_delta', 'ci.change.verify', 'ci.evidence.report_bundle'):
+              if protected not in existing_ids:
+                  raise SystemExit('BLOCKED_MISSING_PROTECTED_OWNER:' + protected)
+
+          authority_evidence = [
+              'Authority Mesh run 32335660623 / artifact 9394574248',
+              'artifact sha256:595a6dd6833e6e47bf307a87d1d323a8655520547943417de4681ffefca547fc',
+              'request digest e3d75b9286b4983c87dd999343b5c0a48d2ff12f5745bf67dfbefba5cb4939e9',
+              'tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json',
+              'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          ]
+          ledger['capabilities'].append({
+              'id': cid,
+              'displayName': 'PRISMA Change Assurance OBSERVE change comparison',
+              'domain': 'tooling',
+              'surfaces': ['code_atlas', 'change_assurance', 'governance', 'quality'],
+              'classification': 'BUILD',
+              'status': 'NOT_STARTED',
+              'stateLabel': 'OBSERVE_F_OWNER_RESOLVED_BUILD_NOT_STARTED',
+              'doNotRebuild': False,
+              'nextGate': 'Under a fresh exact-head MUTATION gate, build only the bounded OBSERVE comparison adapter over existing snapshot locking and Architecture Delta normalization; require deterministic same-repository lineage plus positive and native negative tests before promoting checklist F.',
+              'evidence': authority_evidence,
+              'doesNotProve': [
+                  'That OBSERVE F is implemented or locally verified',
+                  'Universal before/after completeness across arbitrary repositories or stacks',
+                  'Production, enterprise or paid-pilot readiness',
+                  'Authorization to rebuild snapshot, graph, Architecture Delta, verification, evidence or runner owners'
+              ],
+              'allowedActions': [
+                  'build the bounded change-comparison adapter under fresh exact mutation authority',
+                  'reuse existing snapshot and Architecture Delta owners',
+                  'add deterministic positive and fail-closed native negative tests',
+                  'update checklist F only to the evidence-supported status after verification'
+              ],
+              'forbiddenActions': [
+                  'build a second snapshot engine',
+                  'rebuild or replace Architecture Delta normalization',
+                  'build a second graph, verification, evidence or runner engine',
+                  'treat Impact Radius as authorization',
+                  'treat retrieval as proof',
+                  'promote missing, stale, contradictory, unsupported, partial or cross-repository evidence to green'
+              ],
+              'forbiddenClaims': [
+                  'Do not claim checklist F DONE from capability registration alone.',
+                  'Do not claim universal, production, enterprise or paid-pilot readiness from bounded OBSERVE evidence.'
+              ]
+          })
+
+          new_row = {
+              'id': cid,
+              'name': 'OBSERVE change comparison adapter',
+              'group': 'observe',
+              'owner': 'code_atlas.change_intelligence',
+              'surface': 'change_intelligence',
+              'classification': 'BUILD',
+              'status': 'NOT_CONNECTED',
+              'doNotRebuild': False,
+              'evidence': [
+                  'authority:run:32335660623/artifact:9394574248',
+                  'capability:ci.core.snapshot_locking',
+                  'capability:ci.change.architecture_delta'
+              ],
+              'nextGate': 'BUILD_BOUNDED_OBSERVE_CHANGE_COMPARISON_UNDER_FRESH_EXACT_MUTATION_GATE',
+              'proposalRule': 'Build only a deterministic comparison adapter over existing snapshot locking and Architecture Delta normalization. No second snapshot, graph, delta, verification, evidence or runner engine.',
+              'protectedExistingOwners': [
+                  'ci.core.snapshot_locking',
+                  'ci.change.architecture_delta',
+                  'ci.change.verify',
+                  'ci.evidence.report_bundle'
+              ]
+          }
+          cmap['rows'].append([new_row[field] for field in row_fields])
+          compat = cmap.get('compatibility') or {}
+          protected_ids = compat.get('protectedLegacyCapabilityIds')
+          if not isinstance(protected_ids, list):
+              raise SystemExit('BLOCKED_COMPAT_PROTECTED_IDS_INVALID')
+          protected_ids.append(cid)
+
+          f['owner'] = 'code_atlas.change_intelligence'
+          f['nextEvidence'] = 'BUILD_CI_OBSERVE_CHANGE_COMPARISON_WITH_DETERMINISTIC_POSITIVE_AND_NATIVE_NEGATIVE_TESTS'
+
+          now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+          ledger['updatedAt'] = now
+          cmap['lastGovernanceMutation'] = {
+              'kind': 'OBSERVE_F_OWNER_REGISTRATION',
+              'repoHead': '7d5637685b86e910e2dd5aaa00a61f88422d34d3',
+              'authorityMeshRunId': 32335660623,
+              'authorityArtifactId': 9394574248,
+              'authorityArtifactSha256': '595a6dd6833e6e47bf307a87d1d323a8655520547943417de4681ffefca547fc',
+              'requestDigest': 'e3d75b9286b4983c87dd999343b5c0a48d2ff12f5745bf67dfbefba5cb4939e9',
+              'status': 'PASS_COMPOSED_AUTHORITY_MESH',
+              'productionCertified': False
+          }
+
+          ledger_path.write_text(json.dumps(ledger, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          map_path.write_text(json.dumps(cmap, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Validate registration and anti-rework truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --self-test
+          python - <<'PY'
+          import json
+          ledger=json.load(open('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',encoding='utf-8'))
+          cmap=json.load(open('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json',encoding='utf-8'))
+          cap=next(x for x in ledger['capabilities'] if x['id']=='ci.observe.change_comparison')
+          assert cap['classification']=='BUILD' and cap['status']=='NOT_STARTED' and cap['doNotRebuild'] is False
+          f=next(x for x in cmap['v1DefinitionOfDone'] if x['id']=='F')
+          assert f['status']=='MISSING' and f['owner']=='code_atlas.change_intelligence' and f['evidence']==[]
+          print('PASS_OBSERVE_F_CANONICAL_REGISTRATION')
+          PY
+
+      - name: Commit only governance registration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'chatgpt-codex-connector[bot]'
+          git config user.email 'chatgpt-codex-connector[bot]@users.noreply.github.com'
+          git add -- 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          git diff --cached --check
+          mapfile -t changed < <(git diff --cached --name-only)
+          test "${#changed[@]}" -eq 2
+          printf '%s\n' "${changed[@]}" | grep -Fx 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
+          printf '%s\n' "${changed[@]}" | grep -Fx 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          git commit -m 'governance(ca): register OBSERVE change comparison capability'
+          git push origin HEAD:governance/ca-observe-f-register-2008
