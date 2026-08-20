@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,195 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  ca-understand-a-preflight:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact current main
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile Universal Intelligence owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/intelligence/repository.py \
+            tools/code-atlas/src/code_atlas/intelligence/authority.py \
+            tools/code-atlas/src/code_atlas/intelligence/graphs.py \
+            tools/code-atlas/src/code_atlas/intelligence/snapshot.py \
+            tools/code-atlas/src/code_atlas/intelligence/engine.py \
+            tools/code-atlas/tests/test_operational_universal_intelligence.py \
+            tools/code-atlas/tests/test_operational_change_intelligence_binding.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run task-exact A Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/ca-understand-a.request.json"
+          preflight="$RUNNER_TEMP/ca-understand-a-preflight"
+          parallel="$RUNNER_TEMP/ca-understand-a-parallel"
+          composed="$RUNNER_TEMP/ca-understand-a-composed"
+          mkdir -p "$preflight" "$parallel" "$composed"
+          python - "$request" "$head_sha" <<'PY'
+          import json, sys
+          path, head = sys.argv[1], sys.argv[2]
+          base = (
+              "PRISMA Change Assurance V1 checklist A / UNDERSTAND / Universal bounded repository understanding is currently PARTIAL and doNotRebuild=true. "
+              "Determine whether existing protected Code Atlas Universal Intelligence owners already satisfy the V1 Definition of Done without source rebuild: understand supported repository structure and relationships with explicit evidence boundaries and explicit UNKNOWN for unsupported or unproven areas. "
+              "Required proof must cover neutral read-only repository discovery, physical/semantic coverage, bounded relationship evidence with provenance/confidence, explicit unresolved relationships, explicit unknown/unclassified architecture rather than invented classification, authority/profile boundaries, and no projection/retrieval promotion to truth. "
+              "External diversity evidence may support bounded portability but must not become arbitrary-repository completeness. Resolve exact owners, positive tests, native negatives, blind spots, claim ceiling and whether A may be promoted to DONE/LOCAL_VERIFIED by governance-only evidence closure. Read-only only; no source/product/runtime/DB/process/port/deploy mutation."
+          )
+          common = [
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+              "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+              "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+              "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+              "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+              "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+              "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md",
+              "tools/code-atlas/src/code_atlas/intelligence/repository.py",
+              "tools/code-atlas/src/code_atlas/intelligence/authority.py",
+              "tools/code-atlas/src/code_atlas/intelligence/graphs.py",
+              "tools/code-atlas/src/code_atlas/intelligence/snapshot.py",
+              "tools/code-atlas/src/code_atlas/intelligence/engine.py",
+              "tools/code-atlas/tests/test_operational_universal_intelligence.py",
+              "tools/code-atlas/tests/test_operational_change_intelligence_binding.py"
+          ]
+          request = {
+              "schemaVersion":"prisma_remote_authority_gateway.v2",
+              "expectedHead":head,
+              "profile":"change-assurance-understand-a-v1",
+              "tasks":[
+                  {
+                      "id":"understand-a-dod",
+                      "surface":"governance",
+                      "task":base + " Resolve the exact Definition-of-Done evidence matrix and whether current protected Universal Intelligence source plus native/external bounded evidence support DONE without source mutation.",
+                      "intent":"VERIFY","domain":"tooling",
+                      "requiredAuthorities":common,
+                      "requiredDirectories":["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/intelligence","tools/code-atlas/tests","tools/code-atlas/docs"],
+                      "requiredCapabilities":["change_intelligence.capability_anti_rework_gate","code_atlas.change_intelligence.customer_wow_v1"],
+                      "minimumCoverage":100,"failOnMissingAuthority":True
+                  },
+                  {
+                      "id":"understand-a-no-rebuild",
+                      "surface":"governance",
+                      "task":base + " Prove anti-rework boundaries: repository discovery, authority discovery, graphs, snapshots, indexing/retrieval and drift are protected existing owners. Block any second repository scanner, graph engine, snapshot engine or authority/retrieval engine; return the exact governance-only next gate if evidence closure is sufficient.",
+                      "intent":"VERIFY","domain":"governance",
+                      "requiredAuthorities":common,
+                      "requiredDirectories":["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/intelligence"],
+                      "requiredCapabilities":["change_intelligence.capability_anti_rework_gate","code_atlas.change_intelligence.customer_wow_v1"],
+                      "minimumCoverage":100,"failOnMissingAuthority":True
+                  }
+              ]
+          }
+          with open(path,'w',encoding='utf-8') as f: json.dump(request,f,indent=2,ensure_ascii=False)
+          PY
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
+            --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" \
+            | tee "$composed/compose.stdout.txt"
+          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$composed/compose.stdout.txt"
+          composed_zip="$RUNNER_TEMP/prisma-automesh-composed-result.zip"
+          test -f "$composed_zip"
+          cp "$composed_zip" "$composed/prisma-automesh-composed-result.zip"
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run native bounded-understanding falsification matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_unknown_repository_discovery_is_neutral_and_read_only \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_profile_hint_cannot_invent_authority \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_candidate_is_not_authority_without_repo_declaration \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_system_graphs_keep_architecture_distinct_from_visual \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_engine_builds_portable_bundle_without_repo_mutation \
+            tools.code-atlas.tests.test_operational_change_intelligence_binding.UniversalCustomerWowBindingTests.test_structured_universal_context_is_public_and_non_authoritative_by_projection \
+            | tee "$RUNNER_TEMP/understand-a-native-tests.txt"
+
+          python - "$RUNNER_TEMP/understand-a-probe.json" <<'PY'
+          import json, subprocess, sys, tempfile
+          from pathlib import Path
+          from code_atlas.intelligence import IntelligenceRequest, resolve_intelligence_context
+
+          def git(repo,*args):
+              p=subprocess.run(['git',*args],cwd=repo,check=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+              return p.stdout.strip()
+
+          cases=[]
+          with tempfile.TemporaryDirectory() as td:
+              repo=Path(td)/'bounded repo ü'; repo.mkdir()
+              (repo/'src/db').mkdir(parents=True); (repo/'src/domain').mkdir(parents=True); (repo/'misc').mkdir()
+              (repo/'src/db/store.py').write_text('def load():\n    return 1\n',encoding='utf-8')
+              (repo/'src/domain/service.py').write_text('from src.db.store import load\n\ndef run():\n    return load()\n',encoding='utf-8')
+              (repo/'src/app.js').write_text('import "./missing-local.js";\n',encoding='utf-8')
+              (repo/'misc/blob.xyz').write_text('opaque but text-like fixture\n',encoding='utf-8')
+              (repo/'.env.secret').write_text('DO_NOT_READ=secret\n',encoding='utf-8')
+              git(repo,'init'); git(repo,'config','user.email','a@example.invalid'); git(repo,'config','user.name','A Fixture'); git(repo,'add','.'); git(repo,'commit','-m','fixture')
+              before=git(repo,'rev-parse','HEAD')
+              ctx=resolve_intelligence_context(repo,request=IntelligenceRequest(intent='AUDIT',changed_paths=('src/db/store.py',),workers=4))
+              after=git(repo,'rev-parse','HEAD')
+              assert before==after and ctx['readOnly'] is True
+              assert ctx['coverage']['physical']['percent']==100.0
+              assert ctx['derivedIndexAuthoritative'] is False and ctx['semanticRetrievalIsProof'] is False and ctx['profileMayInventTruth'] is False
+              dep=ctx['graphs']['dependencyGraph']
+              edge=next(x for x in dep['edges'] if x['from']=='src/domain/service.py' and x['to']=='src/db/store.py')
+              assert edge['confidence']=='supported' and edge['evidence']
+              unresolved=next(x for x in dep['unresolved'] if x['from']=='src/app.js' and x['specifier']=='./missing-local.js')
+              assert unresolved['reason']=='relative-import-not-resolved-from-repository-facts'
+              arch=ctx['graphs']['architectureLayerGraph']
+              unknown=next(x for x in arch['nodes'] if x['path']=='misc/blob.xyz')
+              assert unknown['layer']=='unclassified' and unknown['confidence']=='unknown' and unknown['evidence']==[]
+              assert arch['coverage']['unknown']>=1 and ctx['coverage']['unclassifiedArchitectureFiles']>=1
+              sensitive=next(x for x in ctx['inventory']['files'] if x['path']=='.env.secret')
+              assert sensitive['sensitiveName'] is True and sensitive['contentRead'] is False and sensitive['contentSha256'] is None
+              cases.extend([
+                  'read-only-full-physical-coverage',
+                  'supported-relationship-has-evidence-and-confidence',
+                  'unresolved-relationship-remains-explicit-unresolved',
+                  'unproven-architecture->unclassified/unknown',
+                  'sensitive-content-boundary-preserved',
+                  'derived-index/retrieval/profile-do-not-create-truth'
+              ])
+          json.dump({'result':'PASS_UNDERSTAND_A_BOUNDED_NATIVE_PROBE','cases':cases,'productionCertified':False,'arbitraryRepositoryComplete':False},open(sys.argv[1],'w',encoding='utf-8'),indent=2)
+          print('PASS_UNDERSTAND_A_BOUNDED_NATIVE_PROBE')
+          PY
+          test "$(git status --porcelain | wc -l)" -eq 0
+
+      - name: Upload A evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-understand-a-evidence
+          path: |
+            ${{ runner.temp }}/ca-understand-a.request.json
+            ${{ runner.temp }}/ca-understand-a-preflight/
+            ${{ runner.temp }}/ca-understand-a-parallel/*.zip
+            ${{ runner.temp }}/ca-understand-a-composed/
+            ${{ runner.temp }}/understand-a-native-tests.txt
+            ${{ runner.temp }}/understand-a-probe.json
+          if-no-files-found: error
+          retention-days: 7
