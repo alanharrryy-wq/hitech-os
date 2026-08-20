@@ -1009,7 +1009,54 @@
         "Do not claim PRISMA Change Assurance V1 DONE from this canonical registration.",
         "Do not claim production, enterprise, paid-pilot, hosted multi-tenant, arbitrary-repository or human-usefulness certification from this registration."
       ]
+    },
+    {
+      "id": "ci.observe.change_comparison",
+      "displayName": "PRISMA Change Assurance OBSERVE change comparison",
+      "domain": "tooling",
+      "surfaces": [
+        "code_atlas",
+        "change_assurance",
+        "governance",
+        "quality"
+      ],
+      "classification": "BUILD",
+      "status": "NOT_STARTED",
+      "stateLabel": "OBSERVE_F_OWNER_RESOLVED_BUILD_NOT_STARTED",
+      "doNotRebuild": false,
+      "nextGate": "Under a fresh exact-head MUTATION gate, build only the bounded OBSERVE comparison adapter over existing snapshot locking and Architecture Delta normalization; require deterministic same-repository lineage plus positive and native negative tests before promoting checklist F.",
+      "evidence": [
+        "Authority Mesh run 32335660623 / artifact 9394574248",
+        "artifact sha256:595a6dd6833e6e47bf307a87d1d323a8655520547943417de4681ffefca547fc",
+        "request digest e3d75b9286b4983c87dd999343b5c0a48d2ff12f5745bf67dfbefba5cb4939e9",
+        "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+        "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
+      ],
+      "doesNotProve": [
+        "That OBSERVE F is implemented or locally verified",
+        "Universal before/after completeness across arbitrary repositories or stacks",
+        "Production, enterprise or paid-pilot readiness",
+        "Authorization to rebuild snapshot, graph, Architecture Delta, verification, evidence or runner owners"
+      ],
+      "allowedActions": [
+        "build the bounded change-comparison adapter under fresh exact mutation authority",
+        "reuse existing snapshot and Architecture Delta owners",
+        "add deterministic positive and fail-closed native negative tests",
+        "update checklist F only to the evidence-supported status after verification"
+      ],
+      "forbiddenActions": [
+        "build a second snapshot engine",
+        "rebuild or replace Architecture Delta normalization",
+        "build a second graph, verification, evidence or runner engine",
+        "treat Impact Radius as authorization",
+        "treat retrieval as proof",
+        "promote missing, stale, contradictory, unsupported, partial or cross-repository evidence to green"
+      ],
+      "forbiddenClaims": [
+        "Do not claim checklist F DONE from capability registration alone.",
+        "Do not claim universal, production, enterprise or paid-pilot readiness from bounded OBSERVE evidence."
+      ]
     }
   ],
-  "updatedAt": "2026-08-20T04:58:04.252418Z"
+  "updatedAt": "2026-08-20T05:34:57.261489Z"
 }
