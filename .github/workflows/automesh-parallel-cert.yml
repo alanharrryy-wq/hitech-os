@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,186 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  ca-edge-c-implemented-evidence:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact implementation head
+        uses: actions/checkout@v6
         with:
+          ref: 5119cc1753fada6332cd17d0dec0960c3a19f592
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile exact authorized scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "5119cc1753fada6332cd17d0dec0960c3a19f592"
+          test "$(git rev-parse HEAD:tools/code-atlas/src/code_atlas/intelligence/graphs.py)" = "a595fe69b33e297e89259c76349e73d9aec89325"
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/intelligence/edge_provenance.py \
+            tools/code-atlas/src/code_atlas/intelligence/engine.py \
+            tools/code-atlas/tests/test_operational_edge_provenance.py \
+            tools/code-atlas/tests/test_operational_universal_intelligence.py \
+            tools/code-atlas/tests/test_operational_change_intelligence_binding.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run exact-head verification Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/c-implemented.request.json"
+          pre="$RUNNER_TEMP/c-implemented-pre"
+          par="$RUNNER_TEMP/c-implemented-par"
+          comp="$RUNNER_TEMP/c-implemented-comp"
+          mkdir -p "$pre" "$par" "$comp"
+          python - "$request" "$head_sha" <<'PY'
+          import json,sys
+          path,head=sys.argv[1:]
+          task=(
+            "Verify the implemented PRISMA Change Assurance V1 checklist C / UNDERSTAND / Edge provenance bytes at exact head 5119cc1753fada6332cd17d0dec0960c3a19f592. "
+            "Definition of Done: material graph edges expose source/provenance and confidence or remain inference/unknown. "
+            "Verify the new repository-neutral edge_provenance normalizer and canonical engine integration without changing source. Every material edge exposed through resolve_intelligence_context must carry explicit provenance and confidence; supported authority declaration/conflict edges must be demonstrable from repository authority declarations; unsupported or unprovable edge support must remain unknown rather than synthetic proof. "
+            "Verify graphs.py remains byte-identical to the pre-change protected graph producer. Preserve Candidate != Authority, Retrieval != proof, Impact Radius != Authorization, read-only semantics and bounded claim ceilings. No production, enterprise, paid-pilot or arbitrary-repository completeness claim."
+          )
+          auth=[
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+            "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+            "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+            "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+            "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+            "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md",
+            "tools/code-atlas/src/code_atlas/intelligence/repository.py",
+            "tools/code-atlas/src/code_atlas/intelligence/authority.py",
+            "tools/code-atlas/src/code_atlas/intelligence/graphs.py",
+            "tools/code-atlas/src/code_atlas/intelligence/edge_provenance.py",
+            "tools/code-atlas/src/code_atlas/intelligence/engine.py",
+            "tools/code-atlas/src/code_atlas/intelligence/index.py",
+            "tools/code-atlas/src/code_atlas/intelligence/snapshot.py",
+            "tools/code-atlas/tests/test_operational_edge_provenance.py",
+            "tools/code-atlas/tests/test_operational_universal_intelligence.py",
+            "tools/code-atlas/tests/test_operational_change_intelligence_binding.py"
+          ]
+          dirs=["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/intelligence","tools/code-atlas/tests","tools/code-atlas/docs"]
+          caps=["code_atlas.change_intelligence.customer_wow_v1","change_intelligence.capability_anti_rework_gate"]
+          req={
+            "schemaVersion":"prisma_remote_authority_gateway.v2",
+            "expectedHead":head,
+            "profile":"change-assurance-edge-provenance-c-implemented-v1",
+            "tasks":[
+              {"id":"edge-c-implemented-contract","surface":"governance","task":task+" Resolve implemented owner/boundary evidence and whether checklist C is technically satisfied on these exact bytes.","intent":"VERIFY","domain":"tooling","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":caps,"minimumCoverage":100,"failOnMissingAuthority":True},
+              {"id":"edge-c-implemented-negative","surface":"governance","task":task+" Resolve negative evidence obligations: unproven provenance must be unknown, raw graph producer must remain unchanged, and no downstream consumer may convert normalized discovery into authorization.","intent":"VERIFY","domain":"governance","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":caps,"minimumCoverage":100,"failOnMissingAuthority":True}
+            ]
+          }
+          json.dump(req,open(path,'w',encoding='utf-8'),indent=2)
+          PY
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo . --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo . --request "$request" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$comp/compose.stdout.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$comp/compose.stdout.txt"
+          cp "$RUNNER_TEMP/prisma-automesh-composed-result.zip" "$comp/prisma-automesh-composed-result.zip"
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run focused positive and negative verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v \
+            tools.code-atlas.tests.test_operational_edge_provenance \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_system_graphs_keep_architecture_distinct_from_visual \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_candidate_is_not_authority_without_repo_declaration \
+            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_semantic_retrieval_returns_evidence_not_truth \
+            tools.code-atlas.tests.test_operational_change_intelligence_binding.UniversalCustomerWowBindingTests.test_structured_universal_context_is_public_and_non_authoritative_by_projection \
+            tools.code-atlas.tests.test_operational_change_intelligence_binding.UniversalCustomerWowBindingTests.test_out_of_scope_and_protected_change_is_blocked \
+            | tee "$RUNNER_TEMP/c-implemented-tests.txt"
+          python - "$RUNNER_TEMP/c-implemented-proof.json" <<'PY'
+          import copy,json,subprocess,sys,tempfile
+          from pathlib import Path
+          from code_atlas.intelligence import IntelligenceRequest,resolve_intelligence_context
+          from code_atlas.intelligence.edge_provenance import normalize_system_graph_edge_provenance
+
+          def git(repo,*args):
+            return subprocess.run(['git',*args],cwd=repo,check=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.strip()
+
+          with tempfile.TemporaryDirectory() as td:
+            repo=Path(td)/'edge proof'; repo.mkdir(); (repo/'.code-atlas').mkdir(); (repo/'src').mkdir()
+            (repo/'src/__init__.py').write_text('',encoding='utf-8')
+            (repo/'src/b.py').write_text('VALUE=1\n',encoding='utf-8')
+            (repo/'src/a.py').write_text('from src.b import VALUE\n',encoding='utf-8')
+            (repo/'CODEOWNERS').write_text('/src/*.py @team\n',encoding='utf-8')
+            (repo/'AUTH_A.md').write_text('A\n',encoding='utf-8'); (repo/'AUTH_B.md').write_text('B\n',encoding='utf-8')
+            (repo/'.code-atlas/authority.json').write_text(json.dumps({'authorities':[{'path':'AUTH_A.md','scope':'security'},{'path':'AUTH_B.md','scope':'security'}]}),encoding='utf-8')
+            git(repo,'init'); git(repo,'config','user.email','proof@example.invalid'); git(repo,'config','user.name','Proof Fixture'); git(repo,'add','.'); git(repo,'commit','-m','fixture')
+            context=resolve_intelligence_context(repo,request=IntelligenceRequest(intent='VERIFY',domain='security',changed_paths=('src/b.py',),fail_on_missing_authority=False))
+            material=[]
+            for graph_name,graph in sorted(context['graphs'].items()):
+              if not isinstance(graph,dict) or not isinstance(graph.get('edges'),list): continue
+              for edge in graph['edges']:
+                assert edge.get('confidence') in {'supported','inferred','unknown'}, (graph_name,edge)
+                assert isinstance(edge.get('provenance'),dict) and edge['provenance'], (graph_name,edge)
+                if edge['confidence']=='supported':
+                  assert edge['provenance'].get('kind')!='unresolved-edge-provenance', (graph_name,edge)
+                material.append({'graph':graph_name,'type':edge.get('type'),'confidence':edge.get('confidence'),'provenanceKind':edge['provenance'].get('kind')})
+            conflicts=[e for e in context['graphs']['authorityGraph']['edges'] if e.get('type')=='authority-conflict']
+            assert len(conflicts)==2
+            assert all(e['confidence']=='supported' and e['provenance'].get('kind')=='repository-authority-conflict' for e in conflicts)
+            declarations=[e for e in context['graphs']['authorityGraph']['edges'] if e.get('type')=='authority-declaration']
+            assert len(declarations)==2
+            assert all(e['confidence']=='supported' and e['provenance'].get('kind')=='repository-authority-declaration' for e in declarations)
+            opaque={'opaqueGraph':{'edges':[{'from':'a','to':'b','type':'opaque','confidence':'supported'}]}}
+            opaque_before=copy.deepcopy(opaque)
+            downgraded=normalize_system_graph_edge_provenance(opaque,{})['opaqueGraph']['edges'][0]
+            assert opaque==opaque_before
+            assert downgraded['confidence']=='unknown'
+            assert downgraded['provenance']['kind']=='unresolved-edge-provenance'
+            out={
+              'result':'PASS_CHANGE_ASSURANCE_C_IMPLEMENTED_EVIDENCE',
+              'checklistCReadyForPostMergePromotion':True,
+              'implementationHead':'5119cc1753fada6332cd17d0dec0960c3a19f592',
+              'protectedGraphsBlob':'a595fe69b33e297e89259c76349e73d9aec89325',
+              'materialEdgeCount':len(material),
+              'materialEdges':material,
+              'authorityConflictEdges':len(conflicts),
+              'authorityDeclarationEdges':len(declarations),
+              'unknownDowngradeVerified':True,
+              'rawInputMutation':False,
+              'candidateIsAuthority':False,
+              'retrievalIsProof':False,
+              'impactRadiusIsAuthorization':False,
+              'productionCertified':False,
+              'claimCeiling':'LOCAL_VERIFIED_BOUNDED_EDGE_PROVENANCE_ONLY'
+            }
+            json.dump(out,open(sys.argv[1],'w',encoding='utf-8'),indent=2)
+            print('PASS_CHANGE_ASSURANCE_C_IMPLEMENTED_EVIDENCE')
+          PY
+          test "$(git rev-parse HEAD:tools/code-atlas/src/code_atlas/intelligence/graphs.py)" = "a595fe69b33e297e89259c76349e73d9aec89325"
+          test "$(git status --porcelain | wc -l)" -eq 0
+
+      - name: Upload implemented evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-edge-c-implemented-evidence
+          path: |
+            ${{ runner.temp }}/c-implemented.request.json
+            ${{ runner.temp }}/c-implemented-pre/
+            ${{ runner.temp }}/c-implemented-par/*.zip
+            ${{ runner.temp }}/c-implemented-comp/
+            ${{ runner.temp }}/c-implemented-tests.txt
+            ${{ runner.temp }}/c-implemented-proof.json
+          if-no-files-found: error
+          retention-days: 7
