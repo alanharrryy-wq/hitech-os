@@ -11,6 +11,7 @@ from code_atlas.core.runtime_context import RuntimeContext
 
 from .authority import AuthorityRequest, discover_authorities, semantic_retrieve
 from .common import sha256_file
+from .edge_provenance import normalize_system_graph_edge_provenance
 from .graphs import build_system_graphs
 from .index import build_derived_index
 from .repository import discover_repository
@@ -71,7 +72,8 @@ def resolve_intelligence_context(
     authorities = discover_authorities(
         repo, inventory, request=authority_request, profile_metadata=profile.metadata,
     )
-    graphs = build_system_graphs(repo, inventory, authorities, changed_paths=list(request.changed_paths))
+    raw_graphs = build_system_graphs(repo, inventory, authorities, changed_paths=list(request.changed_paths))
+    graphs = normalize_system_graph_edge_provenance(raw_graphs, authorities)
     profile_version = profile.metadata.get("profileVersion") if isinstance(profile.metadata, dict) else None
     snapshot = build_snapshot(
         repo,
