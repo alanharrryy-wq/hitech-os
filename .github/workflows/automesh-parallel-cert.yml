@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,157 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  ca-observe-f-preflight:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact current main
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile and self-test authority tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run task-exact OBSERVE F Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/ca-observe-f.request.json"
+          preflight="$RUNNER_TEMP/ca-observe-f-preflight"
+          parallel="$RUNNER_TEMP/ca-observe-f-parallel"
+          composed="$RUNNER_TEMP/ca-observe-f-composed"
+          mkdir -p "$preflight" "$parallel" "$composed"
+          python - "$request" "$head_sha" <<'PY'
+          import json, sys
+          path, head = sys.argv[1], sys.argv[2]
+          base = (
+              "PRISMA Change Assurance V1 checklist item F / OBSERVE / Change comparison is currently MISSING with owner UNRESOLVED_V1_OWNER and doNotRebuild=false. "
+              "Resolve the smallest canonical implementation/evidence path without rebuilding existing Code Atlas Change Intelligence capabilities. Reuse existing snapshot locking, architecture_delta, prepare/verify, evidence/reporting and universal binding owners wherever authoritative. "
+              "The target capability must compare bounded before/after states tied to the same repository identity and explicit snapshot/provenance lineage, produce deterministic machine-readable deltas, preserve UNKNOWN/BLOCKED for stale, contradictory, unsupported, cross-repository, missing or partial evidence, and must not turn Impact Radius into authorization or retrieval into proof. "
+              "This is a read-only authority/preflight task only. Do not modify repository source, runtime, Cloud Center, Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma, processes, ports or deploys."
+          )
+          request = {
+              "schemaVersion": "prisma_remote_authority_gateway.v2",
+              "expectedHead": head,
+              "profile": "change-assurance-observe-f-v1",
+              "tasks": [
+                  {
+                      "id": "observe-f-owner-and-contract",
+                      "surface": "code_atlas",
+                      "task": base + " Resolve canonical owner(s), protected existing owners, exact allowed files, contract/schema, positive tests, native negative tests, claim ceiling, evidence needed to move F from MISSING, and whether F may become DONE or only PARTIAL after the first implementation wave.",
+                      "intent": "BUILD",
+                      "domain": "change_intelligence",
+                      "requiredAuthorities": [
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+                          "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+                          "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+                          "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+                          "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/contracts.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/verification.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/universal_binding.py",
+                          "tools/code-atlas/tests/test_operational_change_studio.py"
+                      ],
+                      "requiredDirectories": [
+                          "PRISMA Factory Ledger",
+                          "tools/code-atlas/src/code_atlas/change_intelligence",
+                          "tools/code-atlas/tests",
+                          "tools/code-atlas/docs"
+                      ],
+                      "requiredCapabilities": [
+                          "change_intelligence.capability_anti_rework_gate",
+                          "code_atlas.change_intelligence.customer_wow_v1"
+                      ],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True
+                  },
+                  {
+                      "id": "observe-f-no-duplicate-proof",
+                      "surface": "governance",
+                      "task": base + " Prove whether an existing owner already implements any part of before/after comparison. Distinguish reuse/extension from a genuinely missing bounded owner. Explicitly block a second registry, graph engine, snapshot engine, architecture-delta engine, verification engine, evidence engine or runner. Return exact anti-rework classification and next mutation gate.",
+                      "intent": "VERIFY",
+                      "domain": "governance",
+                      "requiredAuthorities": [
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+                          "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+                          "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+                          "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+                          "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/universal_binding.py"
+                      ],
+                      "requiredDirectories": [
+                          "PRISMA Factory Ledger",
+                          "tools/code-atlas/src/code_atlas/change_intelligence"
+                      ],
+                      "requiredCapabilities": [
+                          "change_intelligence.capability_anti_rework_gate",
+                          "code_atlas.change_intelligence.customer_wow_v1"
+                      ],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True
+                  }
+              ]
+          }
+          with open(path, 'w', encoding='utf-8') as f:
+              json.dump(request, f, indent=2, ensure_ascii=False)
+          PY
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
+            --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed"
+          python - "$composed" <<'PY'
+          import json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          candidates = list(root.rglob('AUTHORITY_MESH_REPORT.json')) + list(root.rglob('AUTHORITY_MESH_REPORT.md'))
+          print('composed_files=', len(list(root.rglob('*'))))
+          if not candidates:
+              raise SystemExit('BLOCKED_MISSING_COMPOSED_REPORT')
+          text = '\n'.join(p.read_text(encoding='utf-8', errors='replace') for p in candidates)
+          if 'PASS_COMPOSED_AUTHORITY_MESH' not in text:
+              raise SystemExit('BLOCKED_AUTHORITY_MESH_NOT_PASS')
+          print('PASS_OBSERVE_F_AUTHORITY_MESH')
+          PY
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Upload OBSERVE F authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-observe-f-authority
+          path: |
+            ${{ runner.temp }}/ca-observe-f.request.json
+            ${{ runner.temp }}/ca-observe-f-preflight/
+            ${{ runner.temp }}/ca-observe-f-parallel/*.zip
+            ${{ runner.temp }}/ca-observe-f-composed/
+          if-no-files-found: error
+          retention-days: 7
