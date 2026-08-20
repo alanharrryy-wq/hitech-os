@@ -1,4 +1,4 @@
-name: Change Intelligence Capability Anti-Rework Gate
+name: Change Assurance Capability Anti-Rework Gate
 
 on:
   pull_request:
@@ -43,16 +43,40 @@ jobs:
       - name: Compile gate
         run: python -m py_compile "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py"
 
-      - name: Validate canonical capability map
+      - name: Validate canonical Change Assurance capability map and product contract
         run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --validate-map
 
-      - name: Run fail-closed negative self-test
+      - name: Run fail-closed native negative self-test
         run: python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py" --self-test
 
-      - name: Verify mandatory Agent Gate binding
+      - name: Reject new public legacy product-name use
+        if: github.event_name == 'pull_request'
+        run: >-
+          python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py"
+          --check-legacy-diff
+          --base-ref "${{ github.event.pull_request.base.sha }}"
+
+      - name: Verify mandatory Agent Gate and contract binding
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq 'PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
-          grep -Fq 'BLOCKED_ANTI_REWORK' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
-          grep -Fq 'capability IDs' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
+          gate='PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md'
+          contract='tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json'
+          registry='PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          grep -Fq 'PRISMA Change Assurance' "$gate"
+          grep -Fq 'No evidence. No green.' "$gate"
+          grep -Fq 'BLOCKED_ANTI_REWORK' "$gate"
+          grep -Fq 'capability IDs' "$gate"
+          grep -Fq 'UNDERSTAND' "$gate"
+          test -f "$contract"
+          test -f "$registry"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json').read_text(encoding='utf-8'))
+          assert c['productIdentity']['productName']=='PRISMA Change Assurance'
+          assert c['productIdentity']['engineName']=='Code Atlas'
+          assert c['productIdentity']['principle']=='No evidence. No green.'
+          assert c['registry']['singleAuthorityPath']=='PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
+          assert c['registry']['createsSecondRegistry'] is False
+          PY
