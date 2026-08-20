@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,161 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  ca-prove-hi-preflight:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact current main
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile and self-test authority tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run task-exact PROVE H/I evidence audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/ca-prove-hi.request.json"
+          preflight="$RUNNER_TEMP/ca-prove-hi-preflight"
+          parallel="$RUNNER_TEMP/ca-prove-hi-parallel"
+          composed="$RUNNER_TEMP/ca-prove-hi-composed"
+          mkdir -p "$preflight" "$parallel" "$composed"
+          python - "$request" "$head_sha" <<'PY'
+          import json, sys
+          path, head = sys.argv[1], sys.argv[2]
+          common = (
+              "Read-only PRISMA Change Assurance V1 evidence audit after checklist F merged. Do not rebuild existing Code Atlas Change Intelligence owners. "
+              "Current checklist H / PROVE / Portable reproducible runner and I / PROVE / Evidence Bundle are PARTIAL, owner code_atlas.change_intelligence, doNotRebuild=true. "
+              "Determine from current source, tests, historical evidence and current governance whether each item already satisfies its frozen V1 definition or whether one bounded evidence/test gap remains. "
+              "A DONE recommendation requires concrete repository evidence, named positive tests, named native negative tests, explicit blind spots and an evidence-bounded claim ceiling. Missing or merely plausible evidence must remain PARTIAL. "
+              "Do not modify source, governance, runtime, Cloud Center, Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma, processes, ports or deploys."
+          )
+          request = {
+              "schemaVersion": "prisma_remote_authority_gateway.v2",
+              "expectedHead": head,
+              "profile": "change-assurance-prove-hi-v1",
+              "tasks": [
+                  {
+                      "id": "prove-h-portable-runner-audit",
+                      "surface": "governance",
+                      "task": common + " For H specifically, test the frozen definition: documented runner modes replay from declared inputs without hidden founder-workstation dependencies. Reuse ci.runner.local_only, ci.runner.portable_evidence and ci.rental.private_repo_v2. Inspect portability/cross-OS evidence, egress, lifecycle, cleanup and fail-closed behavior. Return exact status recommendation DONE or PARTIAL, exact evidence/test names, claim boundary, and if PARTIAL the smallest next evidence gate. No implementation work in this lane.",
+                      "intent": "VERIFY",
+                      "domain": "tooling",
+                      "requiredAuthorities": [
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+                          "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+                          "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+                          "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+                          "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/runner_contract.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/customer_lifecycle.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/artifact_hygiene.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/bundle.py",
+                          "tools/code-atlas/tests/test_operational_rental_hardening.py",
+                          ".github/workflows/code-atlas-operational-hardening.yml"
+                      ],
+                      "requiredDirectories": [
+                          "PRISMA Factory Ledger",
+                          "tools/code-atlas/src/code_atlas/change_intelligence",
+                          "tools/code-atlas/tests",
+                          "tools/code-atlas/docs",
+                          ".github/workflows"
+                      ],
+                      "requiredCapabilities": [
+                          "code_atlas.change_intelligence.customer_wow_v1",
+                          "change_intelligence.capability_anti_rework_gate"
+                      ],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True
+                  },
+                  {
+                      "id": "prove-i-evidence-bundle-audit",
+                      "surface": "governance",
+                      "task": common + " For I specifically, test the frozen definition: portable evidence packages preserve provenance, gaps, classifications and replay/handoff context without pretending partial evidence is complete. Reuse ci.evidence.report_bundle plus existing authority pack, reporting, bundle, sanitization and runner contracts. Return exact status recommendation DONE or PARTIAL, exact evidence/test names, claim boundary, and if PARTIAL the smallest next evidence gate. No implementation work in this lane.",
+                      "intent": "VERIFY",
+                      "domain": "governance",
+                      "requiredAuthorities": [
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+                          "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+                          "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+                          "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/bundle.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/reporting.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/authority_pack.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/artifact_hygiene.py",
+                          "tools/code-atlas/src/code_atlas/change_intelligence/runner_contract.py",
+                          "tools/code-atlas/tests/test_operational_rental_hardening.py",
+                          "tools/code-atlas/tests/test_operational_change_intelligence.py",
+                          ".github/workflows/code-atlas-operational-hardening.yml"
+                      ],
+                      "requiredDirectories": [
+                          "PRISMA Factory Ledger",
+                          "tools/code-atlas/src/code_atlas/change_intelligence",
+                          "tools/code-atlas/tests",
+                          "tools/code-atlas/docs",
+                          ".github/workflows"
+                      ],
+                      "requiredCapabilities": [
+                          "code_atlas.change_intelligence.customer_wow_v1",
+                          "change_intelligence.capability_anti_rework_gate"
+                      ],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True
+                  }
+              ]
+          }
+          with open(path, 'w', encoding='utf-8') as f:
+              json.dump(request, f, indent=2, ensure_ascii=False)
+          PY
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
+            --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" \
+            | tee "$composed/compose.stdout.txt"
+          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$composed/compose.stdout.txt"
+          composed_zip="$RUNNER_TEMP/prisma-automesh-composed-result.zip"
+          test -f "$composed_zip"
+          cp "$composed_zip" "$composed/prisma-automesh-composed-result.zip"
+          test "$(git status --porcelain | wc -l)" -eq 0
+          echo 'PASS_PROVE_HI_AUTHORITY_MESH'
+
+      - name: Upload H/I audit evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-prove-hi-authority
+          path: |
+            ${{ runner.temp }}/ca-prove-hi.request.json
+            ${{ runner.temp }}/ca-prove-hi-preflight/
+            ${{ runner.temp }}/ca-prove-hi-parallel/*.zip
+            ${{ runner.temp }}/ca-prove-hi-composed/
+          if-no-files-found: error
+          retention-days: 7
