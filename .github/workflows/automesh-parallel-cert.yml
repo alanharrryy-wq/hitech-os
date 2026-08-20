@@ -3,151 +3,55 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
+      - '.github/workflows/automesh-parallel-cert.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  PYTHONDONTWRITEBYTECODE: '1'
-  PYTHONUNBUFFERED: '1'
 
 jobs:
-  ca-ledger-reconcile-apply:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  automesh-parallel-cert:
+    name: ${{ matrix.os }} / py${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.11']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     steps:
-      - name: Checkout governed branch
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
-          ref: governance/ca-authority-reconcile-1908
           fetch-depth: 0
 
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
 
-      - name: Apply governance-only authority reconciliation
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          from datetime import datetime, timezone
+      - name: Compile AutoMesh tooling
+        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
 
-          ledger_path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
-          reg_path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json')
-          dnr_path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json')
+      - name: Run legacy AutoMesh self-test
+        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
 
-          ledger = json.loads(ledger_path.read_text(encoding='utf-8'))
-          reg = json.loads(reg_path.read_text(encoding='utf-8'))
-          dnr = json.loads(dnr_path.read_text(encoding='utf-8'))
-
-          caps = {row['id']: row for row in ledger['capabilities']}
-          wow_id = 'code_atlas.change_intelligence.customer_wow_v1'
-          gate_id = 'change_intelligence.capability_anti_rework_gate'
-
-          if wow_id not in caps:
-              raise SystemExit('BLOCKED_MISSING_CANONICAL_CUSTOMER_WOW')
-          wow = caps[wow_id]
-          if wow.get('classification') != 'VERIFY' or wow.get('status') != 'LOCAL_VERIFIED' or wow.get('doNotRebuild') is not True:
-              raise SystemExit('BLOCKED_UNEXPECTED_CANONICAL_CUSTOMER_WOW_STATE')
-          if gate_id in caps:
-              raise SystemExit('BLOCKED_GATE_ALREADY_CANONICAL_REEVALUATE_MAIN')
-          if dnr.get('doNotRebuild', {}).get(gate_id, {}).get('value') is not True:
-              raise SystemExit('BLOCKED_MISSING_EXISTING_DNR_GATE_EVIDENCE')
-          gate_reg = reg.get('registrations', {}).get(gate_id)
-          if not gate_reg or gate_reg.get('status') != 'DONE_LOCAL_VERIFIED' or gate_reg.get('doNotRebuild') is not True:
-              raise SystemExit('BLOCKED_MISSING_EXISTING_GATE_REGISTRATION_EVIDENCE')
-          wow_reg = reg.get('registrations', {}).get(wow_id)
-          if not wow_reg or wow_reg.get('status') != 'DONE_LOCAL_VERIFIED':
-              raise SystemExit('BLOCKED_UNEXPECTED_WOW_SUPPLEMENTAL_STATE')
-
-          ledger['capabilities'].append({
-              'id': gate_id,
-              'displayName': 'Code Atlas Change Assurance capability anti-rework gate',
-              'domain': 'governance',
-              'surfaces': ['code_atlas', 'governance', 'quality'],
-              'classification': 'DONE',
-              'status': 'LOCAL_VERIFIED',
-              'stateLabel': 'PASS_CHANGE_INTELLIGENCE_CAPABILITY_ANTI_REWORK_GATE_LOCAL_VERIFIED',
-              'doNotRebuild': True,
-              'nextGate': 'REUSE_EXISTING_GATE_AND_EVOLVE_CURRENT_REGISTRY_TO_PRISMA_CHANGE_ASSURANCE_V1_WITHOUT_SECOND_SOURCE_OF_TRUTH',
-              'evidence': [
-                  'PR #311 governance(ci): enforce capability anti-rework gate',
-                  'merge commit 081e014ee143e05ce72b06b5e2f5e9c0e89e69da',
-                  'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json',
-                  'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py',
-                  '.github/workflows/change-intelligence-capability-gate.yml',
-                  'Change Intelligence Capability Anti-Rework Gate run 32211016746'
-              ],
-              'doesNotProve': [
-                  'PRISMA Change Assurance V1 completion',
-                  'Production, enterprise, paid-pilot or arbitrary-repository certification',
-                  'Human usefulness measurement',
-                  'Successful independent-agent replication',
-                  'Any new Code Atlas runtime capability beyond the existing anti-rework governance gate'
-              ],
-              'allowedActions': [
-                  'reuse the existing capability registry and verifier',
-                  'advance the same registry to the frozen PRISMA Change Assurance identity under fresh task-exact authority',
-                  'add bounded product-name, stage, claim and no-fake-green enforcement without rebuilding Code Atlas core',
-                  'read-only recertification after authority or source drift'
-              ],
-              'forbiddenActions': [
-                  'create a second capability registry or parallel anti-rework engine',
-                  'rebuild Universal Intelligence or Customer Wow',
-                  'treat Impact Radius as authorization',
-                  'promote UNKNOWN or missing evidence to green',
-                  'claim Change Assurance V1 DONE from governance registration alone'
-              ],
-              'forbiddenClaims': [
-                  'Do not claim PRISMA Change Assurance V1 DONE from this canonical registration.',
-                  'Do not claim production, enterprise, paid-pilot, hosted multi-tenant, arbitrary-repository or human-usefulness certification from this registration.'
-              ]
-          })
-
-          wow_reg['status'] = 'VERIFY_LOCAL_VERIFIED'
-          wow_reg['nextGate'] = 'REUSE_EXISTING_CAPABILITIES_AND_ADVANCE_ONLY_TASK_EXACT_EVIDENCE_GATES'
-          now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
-          wow_reg['updatedAt'] = now
-          reg['updatedAt'] = now
-          ledger['updatedAt'] = now
-
-          ledger_path.write_text(json.dumps(ledger, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-          reg_path.write_text(json.dumps(reg, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-          PY
-
-      - name: Validate reconciled Factory Ledger
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m py_compile 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py'
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test
-          python - <<'PY'
-          import json
-          ledger=json.load(open('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',encoding='utf-8'))
-          reg=json.load(open('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',encoding='utf-8'))
-          ids={x['id'] for x in ledger['capabilities']}
-          assert 'change_intelligence.capability_anti_rework_gate' in ids
-          assert reg['registrations']['code_atlas.change_intelligence.customer_wow_v1']['status']=='VERIFY_LOCAL_VERIFIED'
-          print('PASS_CA_LEDGER_RECONCILIATION_LOCAL')
-          PY
-
-      - name: Commit only reconciled governance projections
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'chatgpt-codex-connector[bot]'
-          git config user.email 'chatgpt-codex-connector[bot]@users.noreply.github.com'
-          git add -- 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
-          git diff --cached --check
-          test "$(git diff --cached --name-only | wc -l)" -eq 2
-          git diff --cached --name-only | grep -Fx 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
-          git diff --cached --name-only | grep -Fx 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
-          git commit -m 'governance(ca): reconcile canonical anti-rework authority'
-          git push origin HEAD:governance/ca-authority-reconcile-1908
+      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
+        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
