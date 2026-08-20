@@ -4,7 +4,7 @@ This package composes evidence-bearing repository intelligence without owning
 repository discovery, authority resolution, graphs, snapshots, indexing or drift.
 """
 
-from .architecture_delta import normalize_architecture_delta
+from .architecture_delta import compare_observed_states, normalize_architecture_delta
 from .artifact_hygiene import cleanup_published_artifacts, sanitize_artifact_bytes, sanitize_artifacts_for_egress
 from .authority_pack import build_authority_pack, validate_authority_pack
 from .bundle import build_hardened_portable_bundle_manifest, build_portable_bundle_manifest
@@ -34,6 +34,7 @@ __all__ = [
     "build_connector_envelope",
     "validate_connector_envelope",
     "compose_change_model",
+    "compare_observed_states",
     "normalize_architecture_delta",
     "parse_junit_xml",
     "parse_sarif",
