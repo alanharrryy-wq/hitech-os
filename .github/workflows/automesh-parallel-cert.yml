@@ -3,281 +3,55 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
+      - '.github/workflows/automesh-parallel-cert.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  PYTHONDONTWRITEBYTECODE: '1'
-  PYTHONUNBUFFERED: '1'
-  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  promote-observe-f:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
+  automesh-parallel-cert:
+    name: ${{ matrix.os }} / py${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.11']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     steps:
-      - name: Checkout governed implementation branch
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
-          ref: feat/ca-observe-change-comparison-2008
           fetch-depth: 0
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
 
-      - name: Reverify bounded implementation evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m py_compile \
-            tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py \
-            tools/code-atlas/src/code_atlas/change_intelligence/__init__.py \
-            tools/code-atlas/tests/test_operational_change_comparison.py
-          python -m unittest -v tools/code-atlas/tests/test_operational_change_comparison.py
+      - name: Compile AutoMesh tooling
+        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
 
-      - name: Promote canonical OBSERVE F evidence only
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json
-          from datetime import datetime, timezone
-          from pathlib import Path
+      - name: Run legacy AutoMesh self-test
+        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
 
-          cid = 'ci.observe.change_comparison'
-          ledger_path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
-          map_path = Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json')
-          map_md_path = Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md')
-          v1_md_path = Path('tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md')
-
-          ledger = json.loads(ledger_path.read_text(encoding='utf-8'))
-          cmap = json.loads(map_path.read_text(encoding='utf-8'))
-          caps = [row for row in ledger.get('capabilities', []) if isinstance(row, dict) and row.get('id') == cid]
-          if len(caps) != 1:
-              raise SystemExit('BLOCKED_OBSERVE_F_LEDGER_CARDINALITY')
-          cap = caps[0]
-
-          fields = cmap.get('rowFields') or []
-          if not fields or 'id' not in fields:
-              raise SystemExit('BLOCKED_CA_ROW_FIELDS_INVALID')
-          indexes = {field: fields.index(field) for field in fields}
-          rows = [row for row in cmap.get('rows', []) if isinstance(row, list) and len(row) == len(fields) and row[indexes['id']] == cid]
-          if len(rows) != 1:
-              raise SystemExit('BLOCKED_OBSERVE_F_MAP_ROW_CARDINALITY')
-          map_row = rows[0]
-          checklist = [row for row in cmap.get('v1DefinitionOfDone', []) if isinstance(row, dict) and row.get('id') == 'F']
-          if len(checklist) != 1:
-              raise SystemExit('BLOCKED_OBSERVE_F_CHECKLIST_CARDINALITY')
-          f = checklist[0]
-
-          already_done = (
-              cap.get('classification') == 'DONE'
-              and cap.get('status') == 'LOCAL_VERIFIED'
-              and cap.get('doNotRebuild') is True
-              and map_row[indexes['classification']] == 'DONE'
-              and map_row[indexes['status']] == 'LOCAL_VERIFIED'
-              and map_row[indexes['doNotRebuild']] is True
-              and f.get('status') == 'DONE'
-              and f.get('doNotRebuild') is True
-          )
-          if already_done:
-              print('OBSERVE_F_ALREADY_PROMOTED')
-              raise SystemExit(0)
-
-          if cap.get('classification') != 'BUILD' or cap.get('status') != 'NOT_STARTED' or cap.get('doNotRebuild') is not False:
-              raise SystemExit('BLOCKED_OBSERVE_F_LEDGER_STATE_DRIFT')
-          if map_row[indexes['classification']] != 'BUILD' or map_row[indexes['status']] != 'NOT_CONNECTED' or map_row[indexes['doNotRebuild']] is not False:
-              raise SystemExit('BLOCKED_OBSERVE_F_MAP_STATE_DRIFT')
-          if f.get('status') != 'MISSING' or f.get('doNotRebuild') is not False:
-              raise SystemExit('BLOCKED_OBSERVE_F_CHECKLIST_STATE_DRIFT')
-
-          evidence = [
-              'PR #337 feat(ca): implement OBSERVE deterministic change comparison',
-              'Code Atlas Operational Hardening run 32337152354: PASS on Ubuntu, Windows and macOS',
-              'Ubuntu operational hardening: 139/139 tests PASS including 12 OBSERVE comparison tests',
-              'path:tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py',
-              'path:tools/code-atlas/src/code_atlas/change_intelligence/__init__.py',
-              'path:tools/code-atlas/tests/test_operational_change_comparison.py',
-              'mutation authority run 32336508982 / artifact 9394853933',
-              'Factory Ledger mutation decision cd6a0e6958637aae33660fbaecd3f64af3bcb7d788da3ff815d7cbabbd1aa201'
-          ]
-          cap['classification'] = 'DONE'
-          cap['status'] = 'LOCAL_VERIFIED'
-          cap['stateLabel'] = 'PASS_OBSERVE_CHANGE_COMPARISON_LOCAL_VERIFIED'
-          cap['doNotRebuild'] = True
-          cap['nextGate'] = 'REUSE_BOUNDED_OBSERVE_CHANGE_COMPARISON; recertify only after comparison source, snapshot-lineage contract or evidence-boundary drift.'
-          cap['evidence'] = evidence
-          cap['doesNotProve'] = [
-              'Universal before/after completeness across arbitrary repositories or stacks',
-              'Automatic observation discovery; callers must supply bounded evidence states',
-              'Mutation authorization from a comparison result',
-              'Production, enterprise or paid-pilot readiness',
-              'Human usefulness or independent-agent replication'
-          ]
-          cap['allowedActions'] = [
-              'reuse compare_observed_states as the bounded OBSERVE baseline',
-              'read-only recertification after relevant drift',
-              'fix a demonstrated comparison defect under fresh exact mutation authority'
-          ]
-          cap['forbiddenActions'] = [
-              'rebuild the snapshot engine',
-              'rebuild or replace Architecture Delta normalization',
-              'build a second graph, verification, evidence or runner engine',
-              'treat Impact Radius as authorization',
-              'treat retrieval as proof',
-              'promote missing, stale, contradictory, inferred, unsupported or partial evidence to green'
-          ]
-          cap['forbiddenClaims'] = [
-              'Do not claim universal repository comparison from bounded caller-supplied observations.',
-              'Do not claim production, enterprise or paid-pilot readiness from LOCAL_VERIFIED comparison evidence.'
-          ]
-
-          map_row[indexes['classification']] = 'DONE'
-          map_row[indexes['status']] = 'LOCAL_VERIFIED'
-          map_row[indexes['doNotRebuild']] = True
-          map_row[indexes['evidence']] = [
-              'path:tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py',
-              'path:tools/code-atlas/tests/test_operational_change_comparison.py',
-              'run:32337152354',
-              'authority:run:32336508982/artifact:9394853933'
-          ]
-          map_row[indexes['nextGate']] = 'REUSE_BOUNDED_OBSERVE_COMPARISON_RECERTIFY_ON_SOURCE_LINEAGE_OR_EVIDENCE_CONTRACT_DRIFT'
-          map_row[indexes['proposalRule']] = 'Reuse compare_observed_states and protected snapshot/Architecture Delta owners. No second snapshot, graph, delta, verification, evidence or runner engine.'
-
-          f['status'] = 'DONE'
-          f['claimBoundary'] = 'LOCAL_VERIFIED bounded comparison of caller-supplied evidence states tied to explicit same-repository snapshot lineage; no mutation authorization, universal-completeness, production, enterprise or paid-pilot claim.'
-          f['evidence'] = [
-              'path:tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py',
-              'path:tools/code-atlas/tests/test_operational_change_comparison.py',
-              'Code Atlas Operational Hardening run 32337152354'
-          ]
-          f['tests'] = [
-              'test_compares_added_removed_changed_and_unchanged_deterministically',
-              'test_category_change_is_explicit_remove_and_add',
-              'Code Atlas Operational Hardening run 32337152354: 139/139 Ubuntu tests PASS; workflow PASS on Ubuntu/Windows/macOS'
-          ]
-          f['negativeTests'] = [
-              'test_rejects_cross_repository_comparison',
-              'test_rejects_missing_snapshot_lineage',
-              'test_rejects_missing_provenance',
-              'test_partial_state_is_unknown_and_does_not_invent_removal',
-              'test_stale_state_is_blocked',
-              'test_conflicted_observation_is_blocked',
-              'test_inferred_observation_is_unknown_not_proof',
-              'test_supported_observation_without_critical_evidence_is_unknown',
-              'test_duplicate_observation_identity_is_rejected',
-              'test_raw_secret_payload_is_rejected'
-          ]
-          f['knownBlindSpots'] = [
-              'The adapter compares bounded caller-supplied observations; it does not discover observations by itself.',
-              'LOCAL_VERIFIED evidence does not prove arbitrary-repository completeness, production, enterprise or paid-pilot readiness.'
-          ]
-          f['nextEvidence'] = 'REUSE_DONE_BASELINE; recertify after comparison source, snapshot-lineage contract or evidence-boundary drift.'
-          f['owner'] = 'code_atlas.change_intelligence'
-          f['doNotRebuild'] = True
-          cmap['v1Complete'] = all(
-              (not bool(row.get('requiredForV1'))) or row.get('status') == 'DONE'
-              for row in cmap.get('v1DefinitionOfDone', [])
-              if isinstance(row, dict)
-          )
-          if cmap['v1Complete']:
-              raise SystemExit('BLOCKED_UNEXPECTED_V1_COMPLETE_AFTER_F_ONLY')
-
-          now = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
-          ledger['updatedAt'] = now
-          cmap['lastGovernanceMutation'] = {
-              'kind': 'OBSERVE_F_LOCAL_VERIFICATION_PROMOTION',
-              'sourcePr': 337,
-              'sourceHead': '4869af1bf618ce0daf4f1919c060e4f158a274c2',
-              'operationalHardeningRunId': 32337152354,
-              'mutationAuthorityRunId': 32336508982,
-              'mutationAuthorityArtifactId': 9394853933,
-              'factoryGateDecisionDigest': 'cd6a0e6958637aae33660fbaecd3f64af3bcb7d788da3ff815d7cbabbd1aa201',
-              'status': 'LOCAL_VERIFIED',
-              'productionCertified': False
-          }
-
-          map_md = map_md_path.read_text(encoding='utf-8')
-          old_map_row = '| F | OBSERVE | Change comparison | `MISSING` |'
-          new_map_row = '| F | OBSERVE | Change comparison | `DONE` |'
-          if old_map_row not in map_md:
-              raise SystemExit('BLOCKED_HUMAN_MAP_F_ROW_DRIFT')
-          map_md = map_md.replace(old_map_row, new_map_row, 1)
-          map_marker = 'Therefore `v1Complete=false`.'
-          map_note = ('\n\nF is `DONE / LOCAL_VERIFIED` from `compare_observed_states` with deterministic same-repository snapshot-lineage comparison and native fail-closed negatives. Code Atlas Operational Hardening run `32337152354` passed on Ubuntu, Windows and macOS; the Ubuntu lane ran `139/139` operational tests including the 12 focused OBSERVE comparison tests. This does not promote any production, enterprise, paid-pilot or universal-completeness claim.')
-          if map_note.strip() not in map_md:
-              map_md = map_md.replace(map_marker, map_marker + map_note, 1)
-
-          v1_md = v1_md_path.read_text(encoding='utf-8')
-          old_v1_row = '| F | OBSERVE | Change comparison | `MISSING` |'
-          new_v1_row = '| F | OBSERVE | Change comparison | `DONE` |'
-          if old_v1_row not in v1_md:
-              raise SystemExit('BLOCKED_V1_DOC_F_ROW_DRIFT')
-          v1_md = v1_md.replace(old_v1_row, new_v1_row, 1)
-          v1_marker = '`V1 complete` is therefore **false**. This is intentional.'
-          v1_note = ('\n\nChecklist F is now `DONE / LOCAL_VERIFIED`: `compare_observed_states` produces deterministic added/removed/changed/unchanged deltas from explicit same-repository snapshot lineage and bounded caller-supplied evidence. Code Atlas Operational Hardening run `32337152354` passed on Ubuntu, Windows and macOS; Ubuntu reported `139/139` tests PASS, including all 12 focused OBSERVE comparison tests. Partial, stale, conflicted, inferred, missing-evidence, cross-repository and malformed lineage cases remain fail-closed. F does not authorize mutation and does not prove universal, production, enterprise or paid-pilot readiness.')
-          if v1_note.strip() not in v1_md:
-              v1_md = v1_md.replace(v1_marker, v1_marker + v1_note, 1)
-
-          ledger_path.write_text(json.dumps(ledger, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-          map_path.write_text(json.dumps(cmap, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-          map_md_path.write_text(map_md, encoding='utf-8')
-          v1_md_path.write_text(v1_md, encoding='utf-8')
-          print('PASS_OBSERVE_F_PROMOTION_GENERATED')
-          PY
-
-      - name: Validate promoted governance truth
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m py_compile \
-            'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' \
-            'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test
-          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
-          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --self-test
-          python - <<'PY'
-          import json
-          ledger=json.load(open('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',encoding='utf-8'))
-          cmap=json.load(open('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json',encoding='utf-8'))
-          cap=next(x for x in ledger['capabilities'] if x['id']=='ci.observe.change_comparison')
-          f=next(x for x in cmap['v1DefinitionOfDone'] if x['id']=='F')
-          fields=cmap['rowFields']; idx={k:fields.index(k) for k in fields}
-          row=next(x for x in cmap['rows'] if x[idx['id']]=='ci.observe.change_comparison')
-          assert cap['classification']=='DONE' and cap['status']=='LOCAL_VERIFIED' and cap['doNotRebuild'] is True
-          assert row[idx['classification']]=='DONE' and row[idx['status']]=='LOCAL_VERIFIED' and row[idx['doNotRebuild']] is True
-          assert f['status']=='DONE' and f['doNotRebuild'] is True and f['evidence'] and f['tests'] and f['negativeTests']
-          assert cmap['v1Complete'] is False
-          print('PASS_OBSERVE_F_LOCAL_VERIFIED_GOVERNANCE')
-          PY
-
-      - name: Commit only promoted governance evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'chatgpt-codex-connector[bot]'
-          git config user.email 'chatgpt-codex-connector[bot]@users.noreply.github.com'
-          paths=(
-            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
-            'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json'
-            'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md'
-            'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md'
-          )
-          if git diff --quiet -- "${paths[@]}"; then
-            echo 'OBSERVE_F_PROMOTION_NOOP'
-            exit 0
-          fi
-          git add -- "${paths[@]}"
-          git diff --cached --check
-          mapfile -t changed < <(git diff --cached --name-only)
-          test "${#changed[@]}" -eq 4
-          for path in "${paths[@]}"; do printf '%s\n' "${changed[@]}" | grep -Fx "$path"; done
-          git commit -m 'governance(ca): certify OBSERVE change comparison local evidence'
-          git push origin HEAD:feat/ca-observe-change-comparison-2008
+      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
+        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
