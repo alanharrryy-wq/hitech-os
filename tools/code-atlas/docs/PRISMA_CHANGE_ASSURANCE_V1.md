@@ -34,7 +34,7 @@ The canonical live status for every item lives in the single capability registry
 | B | RESOLVE | Useful Impact Radius | `PARTIAL` |
 | C | UNDERSTAND | Edge provenance | `PARTIAL` |
 | D | RESOLVE | Better UNKNOWN | `PARTIAL` |
-| E | AUTHORIZE | Conflict-first authority | `PARTIAL` |
+| E | AUTHORIZE | Conflict-first authority | `DONE` |
 | F | OBSERVE | Change comparison | `DONE` |
 | G | VERIFY | Agent-neutral independent verification | `PARTIAL` |
 | H | PROVE | Portable reproducible runner | `DONE` |
@@ -42,6 +42,8 @@ The canonical live status for every item lives in the single capability registry
 | J | PROVE | Utility evidence | `BLOCKED` |
 
 `V1 complete` is therefore **false**. This is intentional.
+
+Checklist E is now `DONE / LOCAL_VERIFIED`: the existing authority discovery, snapshot locking, Authority Pack and Verify owners fail closed before mutation authorization. Ranking-only candidates remain candidates; repository-declared conflicts remain `CONFLICTED`; missing or conflicted required authority prevents pack issuance; stale snapshot, authority compatibility drift and protected-scope violations block. Focused run `32342173554` and governance authority run `32342601848` passed with source bytes unchanged. E preserves `Candidate != Authority`, `Retrieval != proof`, and `Impact Radius != Authorization`, and does not prove arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
 Checklist H is now `DONE / LOCAL_VERIFIED`: the existing LOCAL_ONLY, PORTABLE_EVIDENCE and rental V2 runner contracts replay declared inputs deterministically, remain read-only, prohibit source-code egress and operational mutations, and require lifecycle/cleanup and fail-closed portable-evidence handling. Focused run `32338490273` passed on Ubuntu, Windows and macOS. Governance authority run `32338688480` passed the universal Factory Ledger and Change Assurance gates with source bytes unchanged. H does not prove customer production deployment, arbitrary infrastructure/container execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness or secure erase.
 

@@ -763,22 +763,44 @@
       "id": "E",
       "stage": "AUTHORIZE",
       "title": "Conflict-first authority",
-      "status": "PARTIAL",
+      "status": "DONE",
       "requiredForV1": true,
-      "claimBoundary": "Evidence-bounded; UNKNOWN/BLOCKED is valid and no stronger claim is permitted without proof.",
+      "claimBoundary": "LOCAL_VERIFIED conflict-first authorization from existing protected authority owners: ranking-only candidates remain non-authoritative; repository-declared conflicts, missing required authority, stale snapshot or authority-lock drift fail closed; protected scope remains blocking even if allowed scope is broadened. Candidate != Authority, Retrieval != proof and Impact Radius != Authorization remain invariant. No production, enterprise, paid-pilot, arbitrary-repository-completeness, hosted, legal/privacy/security claim.",
       "evidence": [
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "path:tools/code-atlas/src/code_atlas/intelligence/authority.py",
+        "path:tools/code-atlas/src/code_atlas/intelligence/snapshot.py",
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/authority_pack.py",
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/verification.py",
+        "path:tools/code-atlas/tests/test_operational_change_intelligence.py",
+        "E focused falsification run 32342173554 / artifact 9396745950",
+        "E focused artifact sha256:b3844e24e73ed817888dfb9d6971a1b592ae9f0b39b2feab9e0d4ba194417833",
+        "E focused composed Authority Mesh sha256:975df11f03fa63bf50cdc40feab3da22822a0cefe9e89e1dfad28958889d0e13",
+        "E governance authority run 32342601848 / artifact 9396888671",
+        "E governance artifact sha256:dda8ab283b66d16853b7fdc789d35f4ca78031f519ecb7c23ae96b4c0a504f8b",
+        "E governance composed Authority Mesh sha256:67f106dc5c8c1e35446066c32b09b9e1e845dc86ab0e9eb97d4a58f012845563",
+        "Factory gate decision e59baddcc755b4d16dae45235a973f84d65d415cc4afe773c550e525e27b2124",
+        "Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE"
       ],
       "tests": [
-        "bounded positive evidence"
+        "test_authority_pack_is_deterministically_checksummed",
+        "test_verify_passes_only_complete_in_scope_change",
+        "PASS_CONFLICT_FIRST_AUTHORITY_NATIVE_PROBE on run 32342173554"
       ],
       "negativeTests": [
-        "missing/contradictory/unsupported evidence must not become green"
+        "test_authority_pack_rejects_missing_required_authority",
+        "test_verify_blocks_stale_snapshot",
+        "test_verify_blocks_protected_mutation_even_if_scope_is_broadened",
+        "ranking-only candidate remains CANDIDATE and semantic retrieval remains non-proof",
+        "duplicate repository declarations for one scope become CONFLICTED",
+        "conflicted required authority prevents Authority Pack issuance",
+        "authority compatibility digest drift blocks verification"
       ],
       "knownBlindSpots": [
-        "bounded evidence does not prove universal completeness"
+        "LOCAL_VERIFIED evidence is bounded to the current authority, pack, snapshot and verification contracts; it does not prove arbitrary-repository authority completeness.",
+        "Repository-declared authority quality still depends on the declarations and evidence available in the bounded repository context.",
+        "This evidence does not prove production, enterprise IAM/security, hosted multi-tenant, legal/privacy, paid-pilot or customer deployment readiness."
       ],
-      "nextEvidence": "advance only through the next evidence gate recorded for this item",
+      "nextEvidence": "REUSE_DONE_BASELINE; recertify after authority discovery, repository authority declaration, snapshot locking, Authority Pack, protected-scope or verification-contract drift.",
       "owner": "code_atlas.change_intelligence",
       "doNotRebuild": true
     },
@@ -1023,15 +1045,18 @@
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
   },
   "lastGovernanceMutation": {
-    "kind": "PROVE_H_LOCAL_VERIFICATION_PROMOTION",
-    "sourceHead": "08fa275c14444385b1d1811d712dcf319a38df97",
-    "technicalEvidenceRunId": 32338490273,
-    "authorityRunId": 32338688480,
-    "authorityArtifactId": 9395575133,
-    "authorityArtifactSha256": "f01a4f838f973ad52ff1a8abab75af9fc5ece48d8f3c7c055b11cba5d1cb7e07",
-    "composedAuthoritySha256": "d52c5d62ae0ac3b1074578b6464156929eafead55aa386e79658ad298f90a611",
-    "requestDigest": "86e75f366e36eeeabca3b9b0cd720b25909edc8be1ee69ca02ebca4279e6277c",
-    "factoryGateDecisionDigest": "f4dd91099d46b280e4c2f68c7392c6f6c193c69a6e1d7ca050281ad49e556071",
+    "kind": "AUTHORIZE_E_LOCAL_VERIFICATION_PROMOTION",
+    "sourceHead": "5747ce6bfa5f3c93183ff4cb96cd19841ee9bf89",
+    "technicalEvidenceRunId": 32342173554,
+    "technicalEvidenceArtifactId": 9396745950,
+    "technicalEvidenceArtifactSha256": "b3844e24e73ed817888dfb9d6971a1b592ae9f0b39b2feab9e0d4ba194417833",
+    "technicalEvidenceComposedSha256": "975df11f03fa63bf50cdc40feab3da22822a0cefe9e89e1dfad28958889d0e13",
+    "authorityRunId": 32342601848,
+    "authorityArtifactId": 9396888671,
+    "authorityArtifactSha256": "dda8ab283b66d16853b7fdc789d35f4ca78031f519ecb7c23ae96b4c0a504f8b",
+    "composedAuthoritySha256": "67f106dc5c8c1e35446066c32b09b9e1e845dc86ab0e9eb97d4a58f012845563",
+    "requestDigest": "08bbc1c042a3255ae4c19655fbcb521a09a02e9bc81dfafc4ca2a47bcb33f574",
+    "factoryGateDecisionDigest": "e59baddcc755b4d16dae45235a973f84d65d415cc4afe773c550e525e27b2124",
     "status": "LOCAL_VERIFIED",
     "productionCertified": false
   }
