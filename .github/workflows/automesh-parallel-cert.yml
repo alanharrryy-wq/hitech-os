@@ -139,22 +139,17 @@ jobs:
             --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
             --parallel 2 --workers 18 --shards 54
           python -m code_atlas.motors.prisma_mesh_gateway compose \
-            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed"
-          python - "$composed" <<'PY'
-          import pathlib, sys
-          root = pathlib.Path(sys.argv[1])
-          candidates = list(root.rglob('AUTHORITY_MESH_REPORT.json')) + list(root.rglob('AUTHORITY_MESH_REPORT.md'))
-          print('composed_files=', len(list(root.rglob('*'))))
-          if not candidates:
-              raise SystemExit('BLOCKED_MISSING_COMPOSED_REPORT')
-          text = '\n'.join(p.read_text(encoding='utf-8', errors='replace') for p in candidates)
-          if 'PASS_COMPOSED_AUTHORITY_MESH' not in text:
-              raise SystemExit('BLOCKED_AUTHORITY_MESH_NOT_PASS')
-          print('PASS_OBSERVE_F_AUTHORITY_MESH')
-          PY
+            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" \
+            | tee "$composed/compose.stdout.txt"
+          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$composed/compose.stdout.txt"
+          composed_zip="$RUNNER_TEMP/prisma-automesh-composed-result.zip"
+          test -f "$composed_zip"
+          cp "$composed_zip" "$composed/prisma-automesh-composed-result.zip"
+          echo 'PASS_OBSERVE_F_AUTHORITY_MESH'
           test "$(git status --porcelain | wc -l)" -eq 0
 
       - name: Upload OBSERVE F authority evidence
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: ca-observe-f-authority
