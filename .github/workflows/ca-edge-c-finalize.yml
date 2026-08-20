@@ -1,0 +1,238 @@
+name: CA Edge C One-Shot Finalizer
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ca-edge-c-finalize.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize-c-governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      EXPECTED_MAIN: c32644cdc0691668b9a1a27251af10b03aecf167
+      BRANCH: governance/ca-edge-c-final-2008
+    steps:
+      - name: Checkout finalizer branch
+        uses: actions/checkout@v6
+        with:
+          ref: governance/ca-edge-c-final-2008
+          fetch-depth: 0
+
+      - name: Validate frozen authority baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_MAIN"
+          test "$(git rev-parse origin/main:'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json')" = "645947c78411914935cc9e47ea05599e4dec5e74"
+          test "$(git rev-parse origin/main:'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md')" = "2192f1df5bb505d6e78b31d6afa2f74ed8141d90"
+          test "$(git rev-parse origin/main:'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md')" = "358a74216648c9e626e059362a5a051d0c06a406"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/intelligence/graphs.py')" = "a595fe69b33e297e89259c76349e73d9aec89325"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/intelligence/edge_provenance.py')" = "e8f40df38a0e31d4a09b5e5c50e0cfde6e7db42e"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/intelligence/engine.py')" = "435acff53f832f2a47f11605c08ca2e94bafdb67"
+          test "$(git rev-parse origin/main:'tools/code-atlas/tests/test_operational_edge_provenance.py')" = "51b55fc9d8cfee0850b17a389f5c34f3108a06ee"
+          changed="$(git diff --name-only origin/main...HEAD)"
+          test "$changed" = ".github/workflows/ca-edge-c-finalize.yml"
+
+      - name: Apply authorized structured promotion
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import copy
+          import json
+          from pathlib import Path
+
+          registry = Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json')
+          map_md = Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md')
+          v1_md = Path('tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md')
+
+          raw = registry.read_text(encoding='utf-8')
+          data = json.loads(raw)
+          before = copy.deepcopy(data)
+
+          matches = []
+          def walk(node):
+              if isinstance(node, dict):
+                  if node.get('id') == 'C' and node.get('stage') == 'UNDERSTAND' and node.get('title') == 'Edge provenance':
+                      matches.append(node)
+                  for value in node.values():
+                      walk(value)
+              elif isinstance(node, list):
+                  for value in node:
+                      walk(value)
+          walk(data)
+          if len(matches) != 1:
+              raise SystemExit(f'EXPECTED_ONE_C_ROW_GOT_{len(matches)}')
+          c = matches[0]
+          if c.get('status') != 'PARTIAL':
+              raise SystemExit(f'C_STATUS_NOT_PARTIAL:{c.get("status")}')
+
+          c['status'] = 'DONE'
+          c['claimBoundary'] = (
+              'LOCAL_VERIFIED bounded edge provenance only: the canonical intelligence context normalizes material graph edges with explicit provenance and confidence; existing edge evidence becomes structured provenance without mutating the raw graph producer; repository authority declaration/conflict edges are supported only from repository declaration facts; and any otherwise-supported edge lacking demonstrable edge-level provenance is downgraded to explicit unknown. This does not prove arbitrary-repository or all-language graph completeness, dynamic/runtime dependency completeness, production, enterprise, hosted, paid-pilot, legal/privacy or security readiness.'
+          )
+          c['evidence'] = [
+              'path:tools/code-atlas/src/code_atlas/intelligence/edge_provenance.py',
+              'path:tools/code-atlas/src/code_atlas/intelligence/engine.py',
+              'path:tools/code-atlas/src/code_atlas/intelligence/graphs.py',
+              'path:tools/code-atlas/tests/test_operational_edge_provenance.py',
+              'PR #352 / merge c32644cdc0691668b9a1a27251af10b03aecf167',
+              'C implemented-byte evidence run 32406412712 / artifact 9420480680',
+              'C implemented artifact sha256:63aed1b79031a3f50354c862c2fcd5fcc74842fc28c8b5fc5e44b4d540d2fb12',
+              'C implemented composed Authority Mesh sha256:82be3a4175333cdafb482d21d06941ee42ca25d0827d6b81fad64ccc1f32f6e1',
+              'C focused evidence: 9/9 tests; Code Atlas operational hardening 143/143 on Ubuntu with Windows/macOS lanes green',
+              'protected raw graph producer graphs.py remained blob a595fe69b33e297e89259c76349e73d9aec89325',
+              'C promotion authority run 32407301388 / artifact 9420787014',
+              'C promotion artifact sha256:202157e1649e2bfcdacb09bc34595d4852fd8fbdc7f8ceeba3d71c788fcfe623',
+              'C promotion composed Authority Mesh sha256:9dc5ea2c0f06d57afe3eb65696ee0a1e78ea39838744868f701caa06c755f459',
+              'C promotion request digest d5f044f312c9a1a1f39a53797506634e62a07093d02db5c392fdd58ec7659e37',
+              'Factory gate decision 9e141e3fabe715b9c70c11a2e7bfa7f6d91695143a92ed3d625fb326487c5b94',
+              'Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE for ci.core.system_graphs'
+          ]
+          c['tests'] = [
+              'test_authority_declaration_and_conflict_use_repository_declaration_provenance',
+              'test_engine_exposes_normalized_edges_from_repository_facts',
+              'test_existing_evidence_becomes_structured_provenance_without_mutating_raw_graph',
+              'test_unproven_supported_edge_is_downgraded_to_unknown',
+              'PASS_CHANGE_ASSURANCE_C_IMPLEMENTED_EVIDENCE on run 32406412712'
+          ]
+          c['negativeTests'] = [
+              'supported edge without demonstrable edge-level provenance is downgraded to confidence=unknown with an explicit unresolved reason',
+              'authority declaration/conflict edges cannot become supported from candidates, retrieval, profiles or inference; repository declaration facts are required',
+              'normalization returns a copy and does not mutate the protected raw graph output',
+              'missing, contradictory or unsupported provenance must not become green'
+          ]
+          c['knownBlindSpots'] = [
+              'Bounded repository facts do not prove arbitrary-repository or all-language graph completeness.',
+              'Static edge provenance does not prove complete dynamic/runtime dependency behavior or runtime-only relationships.',
+              'The normalizer can only preserve or downgrade what canonical repository evidence exposes; it does not manufacture missing relationships.',
+              'This evidence does not prove production, enterprise IAM/security, hosted multi-tenant, legal/privacy, paid-pilot or customer deployment readiness.'
+          ]
+          c['nextEvidence'] = 'REUSE_DONE_BASELINE; recertify only after graph edge schema, authority declaration/conflict semantics, edge-provenance normalization, canonical graph exposure or confidence downgrade rules change. Keep the raw graph producer protected and do not rebuild canonical graph extraction.'
+
+          data['lastGovernanceMutation'] = {
+              'kind': 'UNDERSTAND_C_EDGE_PROVENANCE_LOCAL_VERIFICATION_PROMOTION',
+              'sourceHead': 'c32644cdc0691668b9a1a27251af10b03aecf167',
+              'technicalEvidenceRunId': 32406412712,
+              'technicalEvidenceArtifactId': 9420480680,
+              'technicalEvidenceArtifactSha256': '63aed1b79031a3f50354c862c2fcd5fcc74842fc28c8b5fc5e44b4d540d2fb12',
+              'technicalEvidenceComposedSha256': '82be3a4175333cdafb482d21d06941ee42ca25d0827d6b81fad64ccc1f32f6e1',
+              'authorityRunId': 32407301388,
+              'authorityArtifactId': 9420787014,
+              'authorityArtifactSha256': '202157e1649e2bfcdacb09bc34595d4852fd8fbdc7f8ceeba3d71c788fcfe623',
+              'composedAuthoritySha256': '9dc5ea2c0f06d57afe3eb65696ee0a1e78ea39838744868f701caa06c755f459',
+              'requestDigest': 'd5f044f312c9a1a1f39a53797506634e62a07093d02db5c392fdd58ec7659e37',
+              'factoryGateDecisionDigest': '9e141e3fabe715b9c70c11a2e7bfa7f6d91695143a92ed3d625fb326487c5b94',
+              'status': 'LOCAL_VERIFIED',
+              'productionCertified': False
+          }
+
+          def collect_checklist(root):
+              out = {}
+              def rec(node):
+                  if isinstance(node, dict):
+                      ident = node.get('id')
+                      if ident in set('ABCDEFGHIJ') and 'stage' in node and 'status' in node:
+                          out[ident] = node.get('status')
+                      for value in node.values(): rec(value)
+                  elif isinstance(node, list):
+                      for value in node: rec(value)
+              rec(root)
+              return out
+          before_status = collect_checklist(before)
+          after_status = collect_checklist(data)
+          if before_status.get('C') != 'PARTIAL' or after_status.get('C') != 'DONE':
+              raise SystemExit('C_STATUS_TRANSITION_INVALID')
+          for ident, status in before_status.items():
+              if ident != 'C' and after_status.get(ident) != status:
+                  raise SystemExit(f'UNAUTHORIZED_STATUS_CHANGE:{ident}:{status}->{after_status.get(ident)}')
+
+          v1_values = []
+          def collect_v1(node):
+              if isinstance(node, dict):
+                  if 'v1Complete' in node: v1_values.append(node['v1Complete'])
+                  for value in node.values(): collect_v1(value)
+              elif isinstance(node, list):
+                  for value in node: collect_v1(value)
+          collect_v1(data)
+          if not v1_values or any(value is not False for value in v1_values):
+              raise SystemExit(f'V1_COMPLETE_NOT_FALSE:{v1_values}')
+
+          registry.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          text = map_md.read_text(encoding='utf-8')
+          old = '| C | UNDERSTAND | Edge provenance | `PARTIAL` |'
+          new = '| C | UNDERSTAND | Edge provenance | `DONE` |'
+          if text.count(old) != 1 or new in text:
+              raise SystemExit('MAP_MD_C_TABLE_ANCHOR_INVALID')
+          text = text.replace(old, new, 1)
+          anchor = 'E is `DONE / LOCAL_VERIFIED` from the existing protected authority-resolution'
+          if text.count(anchor) != 1 or 'C is `DONE / LOCAL_VERIFIED`' in text:
+              raise SystemExit('MAP_MD_C_PARAGRAPH_ANCHOR_INVALID')
+          paragraph = (
+              'C is `DONE / LOCAL_VERIFIED` from the canonical fail-closed edge-provenance view integrated at `code_atlas.intelligence.engine`. '
+              'PR #352 merged the bounded normalizer while leaving the protected raw graph producer byte-identical; implemented-byte evidence run `32406412712` proved material canonical edges expose provenance plus confidence, repository authority declaration/conflict edges require repository declaration facts, and unproven supported edges downgrade to explicit `unknown`. '
+              'Promotion authority run `32407301388` passed the exact-head Authority Mesh plus both anti-rework gates. This is bounded static repository evidence only and does not certify arbitrary-repository/all-language completeness, dynamic runtime relationships, production, enterprise, hosted, paid-pilot, legal/privacy or security readiness.\n\n'
+          )
+          text = text.replace(anchor, paragraph + anchor, 1)
+          map_md.write_text(text, encoding='utf-8')
+
+          text = v1_md.read_text(encoding='utf-8')
+          if text.count(old) != 1 or new in text:
+              raise SystemExit('V1_MD_C_TABLE_ANCHOR_INVALID')
+          text = text.replace(old, new, 1)
+          anchor = 'Checklist E is now `DONE / LOCAL_VERIFIED`:'
+          if text.count(anchor) != 1 or 'Checklist C is now `DONE / LOCAL_VERIFIED`:' in text:
+              raise SystemExit('V1_MD_C_PARAGRAPH_ANCHOR_INVALID')
+          paragraph = (
+              'Checklist C is now `DONE / LOCAL_VERIFIED`: the canonical intelligence context applies a fail-closed edge-provenance normalization layer without mutating the protected raw graph producer. '
+              'Existing edge evidence is exposed as structured provenance with confidence; authority declaration/conflict edges are supported only from repository declaration facts; and any otherwise-supported edge lacking demonstrable edge-level provenance is downgraded to explicit `unknown`. '
+              'PR #352 merged at `c32644cdc0691668b9a1a27251af10b03aecf167`; implemented-byte evidence run `32406412712` passed 9/9 focused tests and the 143/143 Ubuntu operational suite with Windows/macOS lanes green. Promotion authority run `32407301388` passed the exact-head Authority Mesh, Factory Ledger and Change Assurance gates. '
+              'C does not prove arbitrary-repository/all-language graph completeness, complete dynamic/runtime relationships, production, enterprise, hosted, paid-pilot, legal/privacy or security readiness.\n\n'
+          )
+          text = text.replace(anchor, paragraph + anchor, 1)
+          v1_md.write_text(text, encoding='utf-8')
+          PY
+
+          python -m json.tool 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' >/dev/null
+          rm -f .github/workflows/ca-edge-c-finalize.yml
+
+      - name: Prove exact final diff and push atomically
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=$(cat <<'EOF'
+          PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json
+          PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md
+          tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md
+          EOF
+          )
+          actual="$(git diff origin/main --name-only | sort)"
+          expected_sorted="$(printf '%s\n' "$expected" | sort)"
+          test "$actual" = "$expected_sorted"
+
+          # Source/test bytes remain exactly frozen.
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/intelligence/graphs.py')" = "a595fe69b33e297e89259c76349e73d9aec89325"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/intelligence/edge_provenance.py')" = "e8f40df38a0e31d4a09b5e5c50e0cfde6e7db42e"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/intelligence/engine.py')" = "435acff53f832f2a47f11605c08ca2e94bafdb67"
+          test "$(git rev-parse origin/main:'tools/code-atlas/tests/test_operational_edge_provenance.py')" = "51b55fc9d8cfee0850b17a389f5c34f3108a06ee"
+
+          # Guard against accidental whole-file normalization explosions.
+          json_changes="$(git diff --numstat origin/main -- 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' | awk '{print $1+$2}')"
+          test -n "$json_changes"
+          test "$json_changes" -lt 180
+
+          git diff --check origin/main --
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'governance(ca): certify bounded edge provenance'
+          test "$(git diff --name-only origin/main...HEAD | sort)" = "$expected_sorted"
+          git push origin "HEAD:$BRANCH"
+          echo 'PASS_C_GOVERNANCE_PROMOTION_APPLIED'
