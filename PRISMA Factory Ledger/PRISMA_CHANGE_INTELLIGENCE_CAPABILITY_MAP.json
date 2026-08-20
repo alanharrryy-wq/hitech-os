@@ -846,22 +846,37 @@
       "id": "H",
       "stage": "PROVE",
       "title": "Portable reproducible runner",
-      "status": "PARTIAL",
+      "status": "DONE",
       "requiredForV1": true,
-      "claimBoundary": "Evidence-bounded; UNKNOWN/BLOCKED is valid and no stronger claim is permitted without proof.",
+      "claimBoundary": "LOCAL_VERIFIED portable runner contracts replay declared inputs deterministically across fresh Ubuntu, Windows and macOS evidence while preserving read-only, no-source-egress, lifecycle, cleanup and fail-closed boundaries. No production, enterprise, paid-pilot, arbitrary-infrastructure, legal/privacy/security or secure-erase claim.",
       "evidence": [
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/runner_contract.py",
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/customer_lifecycle.py",
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/artifact_hygiene.py",
+        "path:tools/code-atlas/tests/test_operational_rental_hardening.py",
+        "H focused cross-platform evidence run 32338490273: Ubuntu/Windows/macOS SUCCESS",
+        "H governance authority run 32338688480 / artifact 9395575133",
+        "Authority Mesh artifact sha256:d52c5d62ae0ac3b1074578b6464156929eafead55aa386e79658ad298f90a611",
+        "Factory gate decision f4dd91099d46b280e4c2f68c7392c6f6c193c69a6e1d7ca050281ad49e556071",
+        "Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE"
       ],
       "tests": [
-        "bounded positive evidence"
+        "test_rental_v2_requires_sanitized_bundle_and_matching_lifecycle",
+        "test_ephemeral_workspace_is_expired_and_cleanup_is_verifiable",
+        "PASS_H_DECLARED_INPUT_REPRODUCIBILITY on Ubuntu/Windows/macOS run 32338490273"
       ],
       "negativeTests": [
-        "missing/contradictory/unsupported evidence must not become green"
+        "test_source_code_and_unknown_binary_formats_fail_closed",
+        "test_batch_failure_publishes_nothing",
+        "test_hardened_manifest_rejects_attestation_tampering",
+        "test_bounded_retention_is_capped"
       ],
       "knownBlindSpots": [
-        "bounded evidence does not prove universal completeness"
+        "LOCAL_VERIFIED runner evidence does not prove customer production deployment or arbitrary infrastructure/container environments.",
+        "Cleanup evidence proves governed cleanup behavior, not cryptographic secure erase.",
+        "This evidence does not prove enterprise IAM/security, legal/privacy compliance, paid-pilot readiness, human usefulness or independent-agent replication."
       ],
-      "nextEvidence": "advance only through the next evidence gate recorded for this item",
+      "nextEvidence": "REUSE_DONE_BASELINE; recertify after runner mode, lifecycle, sanitization, bundle, cleanup or portability-contract drift.",
       "owner": "code_atlas.change_intelligence",
       "doNotRebuild": true
     },
@@ -1008,13 +1023,15 @@
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
   },
   "lastGovernanceMutation": {
-    "kind": "OBSERVE_F_LOCAL_VERIFICATION_PROMOTION",
-    "sourcePr": 337,
-    "sourceHead": "4869af1bf618ce0daf4f1919c060e4f158a274c2",
-    "operationalHardeningRunId": 32337152354,
-    "mutationAuthorityRunId": 32336508982,
-    "mutationAuthorityArtifactId": 9394853933,
-    "factoryGateDecisionDigest": "cd6a0e6958637aae33660fbaecd3f64af3bcb7d788da3ff815d7cbabbd1aa201",
+    "kind": "PROVE_H_LOCAL_VERIFICATION_PROMOTION",
+    "sourceHead": "08fa275c14444385b1d1811d712dcf319a38df97",
+    "technicalEvidenceRunId": 32338490273,
+    "authorityRunId": 32338688480,
+    "authorityArtifactId": 9395575133,
+    "authorityArtifactSha256": "f01a4f838f973ad52ff1a8abab75af9fc5ece48d8f3c7c055b11cba5d1cb7e07",
+    "composedAuthoritySha256": "d52c5d62ae0ac3b1074578b6464156929eafead55aa386e79658ad298f90a611",
+    "requestDigest": "86e75f366e36eeeabca3b9b0cd720b25909edc8be1ee69ca02ebca4279e6277c",
+    "factoryGateDecisionDigest": "f4dd91099d46b280e4c2f68c7392c6f6c193c69a6e1d7ca050281ad49e556071",
     "status": "LOCAL_VERIFIED",
     "productionCertified": false
   }

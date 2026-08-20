@@ -49,11 +49,13 @@ Current bounded state:
 | E | AUTHORIZE | Conflict-first authority | `PARTIAL` |
 | F | OBSERVE | Change comparison | `DONE` |
 | G | VERIFY | Agent-neutral independent verification | `PARTIAL` |
-| H | PROVE | Portable reproducible runner | `PARTIAL` |
+| H | PROVE | Portable reproducible runner | `DONE` |
 | I | PROVE | Evidence Bundle | `PARTIAL` |
 | J | PROVE | Utility evidence | `BLOCKED` |
 
 Therefore `v1Complete=false`.
+
+H is `DONE / LOCAL_VERIFIED` from the existing protected runner owners. Focused run `32338490273` passed the rental/portability contract on Ubuntu, Windows and macOS, including deterministic declared-input normalization plus fail-closed source-egress, artifact-format, lifecycle, cleanup and retention negatives. Governance authority run `32338688480` passed both anti-rework gates with source bytes unchanged. This does not certify production, enterprise, paid-pilot, arbitrary infrastructure, legal/privacy/security or secure erase.
 
 F is `DONE / LOCAL_VERIFIED` from `compare_observed_states` with deterministic same-repository snapshot-lineage comparison and native fail-closed negatives. Code Atlas Operational Hardening run `32337152354` passed on Ubuntu, Windows and macOS; the Ubuntu lane ran `139/139` operational tests including the 12 focused OBSERVE comparison tests. This does not promote any production, enterprise, paid-pilot or universal-completeness claim.
 

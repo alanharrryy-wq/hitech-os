@@ -37,11 +37,13 @@ The canonical live status for every item lives in the single capability registry
 | E | AUTHORIZE | Conflict-first authority | `PARTIAL` |
 | F | OBSERVE | Change comparison | `DONE` |
 | G | VERIFY | Agent-neutral independent verification | `PARTIAL` |
-| H | PROVE | Portable reproducible runner | `PARTIAL` |
+| H | PROVE | Portable reproducible runner | `DONE` |
 | I | PROVE | Evidence Bundle | `PARTIAL` |
 | J | PROVE | Utility evidence | `BLOCKED` |
 
 `V1 complete` is therefore **false**. This is intentional.
+
+Checklist H is now `DONE / LOCAL_VERIFIED`: the existing LOCAL_ONLY, PORTABLE_EVIDENCE and rental V2 runner contracts replay declared inputs deterministically, remain read-only, prohibit source-code egress and operational mutations, and require lifecycle/cleanup and fail-closed portable-evidence handling. Focused run `32338490273` passed on Ubuntu, Windows and macOS. Governance authority run `32338688480` passed the universal Factory Ledger and Change Assurance gates with source bytes unchanged. H does not prove customer production deployment, arbitrary infrastructure/container execution, enterprise IAM/security, legal/privacy compliance, paid-pilot readiness or secure erase.
 
 Checklist F is now `DONE / LOCAL_VERIFIED`: `compare_observed_states` produces deterministic added/removed/changed/unchanged deltas from explicit same-repository snapshot lineage and bounded caller-supplied evidence. Code Atlas Operational Hardening run `32337152354` passed on Ubuntu, Windows and macOS; Ubuntu reported `139/139` tests PASS, including all 12 focused OBSERVE comparison tests. Partial, stale, conflicted, inferred, missing-evidence, cross-repository and malformed lineage cases remain fail-closed. F does not authorize mutation and does not prove universal, production, enterprise or paid-pilot readiness. A V1 item becomes `DONE` only when its registry row carries evidence, positive tests and native negative tests. Missing external evidence stays blocked instead of being painted green with a roller from the tianguis.
 
