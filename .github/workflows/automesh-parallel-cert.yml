@@ -151,8 +151,10 @@ jobs:
               auth=discover_authorities(repo,inv,request=AuthorityRequest(fail_on_missing=False))
               row=next(x for x in auth['candidates'] if x['path']=='README.md')
               assert row['state']=='CANDIDATE'
-              ret=semantic_retrieve('README',auth)
-              assert ret['results'][0]['confidence']=='candidate' and ret['retrievalRule']=='SEMANTIC_RETRIEVAL_DISCOVERS_EVIDENCE_NOT_TRUTH'
+              ret=semantic_retrieve('',auth)
+              rr=next(x for x in ret['results'] if x['path']=='README.md')
+              assert rr['confidence']=='candidate'
+              assert ret['retrievalRule']=='SEMANTIC_RETRIEVAL_DISCOVERS_EVIDENCE_NOT_TRUTH'
               cases.append('candidate-ranking!=authority')
 
           with tempfile.TemporaryDirectory() as td:
