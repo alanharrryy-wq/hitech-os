@@ -1,21 +1,24 @@
-# PRISMA Change Intelligence — Commercial Ledger V1.1
+# PRISMA Change Assurance — Commercial Ledger V1.1
 
 **Status:** 12/12 CLOSED V1 + FOUNDING CUSTOMER PRICING AMENDMENT V1.1  
 **Date:** 2026-08-14  
-**Internal engine:** Code Atlas Engine  
-**Commercial identity:** PRISMA Change Intelligence  
+**Product:** PRISMA Change Assurance  
+**Engine:** Code Atlas  
+**Principle:** No evidence. No green.  
+**Tagline:** Know what can change. Control what does. Prove the result.  
 **Canonical source intent:** repository commercial continuity  
+**Compatibility:** legacy filename retained as `COMPAT_ALIAS_KEEP`  
 **Living-source provenance:** GitHub Issue #250 + 2026-08-14 V1.1 Founding Customer amendment
 
-> V1.1 changes the **first external validation cohort pricing**, not the product identity, readiness gates, technical claims or mature/reference pricing hypotheses. Historical V1 prices remain documented as hypotheses and are not treated as proven willingness-to-pay.
+> V1.1 changed the **first external validation cohort pricing**. This identity migration changes only the current public product identity; it does not alter readiness gates, technical claims or mature/reference pricing hypotheses. Historical V1 prices remain documented as hypotheses and are not treated as proven willingness-to-pay.
 
 ## 0. Identity
 
 ### Category
-**Change Intelligence & Agent Assurance**
+**Change Assurance & Agent Assurance**
 
 ### Master promise
-> **Know the system. Control the change. Prove the result.**
+> **Know what can change. Control what does. Prove the result.**
 
 ### Strategic wedge
 Compete on **change authority**, not generic code search or code generation:
@@ -75,7 +78,7 @@ Historical business inference from the earlier audit:
 
 # 2. Commercial Products ✅
 
-## PRISMA Change Intelligence Discover
+## PRISMA Change Assurance Discover
 **Repository Intelligence & Technical Forensics**
 
 Question: **What is actually here?**  
@@ -85,7 +88,7 @@ Outputs: architecture, dependencies, DB reality, APIs, ownership, critical files
 
 **Commercial job:** Discover gets us in.
 
-## PRISMA Change Intelligence Guard
+## PRISMA Change Assurance Guard
 **Change Readiness & Release Assurance**
 
 Question: **What happens if we change it?**  
@@ -97,7 +100,7 @@ Principle: **No evidence. No green.**
 
 **Commercial job:** Guard creates recurring need.
 
-## PRISMA Change Intelligence Control
+## PRISMA Change Assurance Control
 **AI Agent Change Control**
 
 Question: **What is this agent allowed to change, and how must it prove success?**  
@@ -109,13 +112,13 @@ Flow:
 
 Key message:
 
-> **Your AI can write the code. PRISMA Change Intelligence controls the change.**
+> **Your AI can write the code. PRISMA Change Assurance controls the change.**
 
-**Commercial job:** Control can make Change Intelligence infrastructure rather than a one-time tool.
+**Commercial job:** Control can make Change Assurance infrastructure rather than a one-time tool.
 
 Platform narrative:
 
-> **Map the system. Secure the change. Govern the agent.**
+> **Know what can change. Control what does. Prove the result.**
 
 > **Discover gets you in. Guard keeps you in. Control makes you infrastructure.**
 
@@ -125,7 +128,7 @@ Platform narrative:
 
 Governing principle:
 
-> **PRISMA Change Intelligence must be able to justify its price using engineering time alone. Risk reduction is upside, not the sales gimmick.**
+> **PRISMA Change Assurance must be able to justify its price using engineering time alone. Risk reduction is upside, not the sales gimmick.**
 
 Hard ROI:
 
@@ -160,7 +163,7 @@ Before/after pilot metrics:
 
 # 4. First Paid Pilot ✅
 
-## PRISMA Change Intelligence — Repository Intelligence Pilot
+## PRISMA Change Assurance — Repository Intelligence Pilot
 
 Commercial promise:
 
@@ -208,7 +211,7 @@ Never require production credentials/write access as normal pilot prerequisite.
 
 ### Deliverables
 
-1. Executive Change Intelligence Brief
+1. Executive Change Assurance Brief
 2. Repository Reality Atlas
 3. Risk & Unknowns Register
 4. Up to 3 Change Readiness analyses
@@ -355,13 +358,13 @@ No change to Control pricing in V1.1.
 - 2 Pilot → Guard conversions × MXN $6,900 = **MXN $13,800 MRR** during the founding period
 - if both later validate standard Guard pricing: **MXN $25,000 MRR / MXN $300,000 ARR run-rate**
 
-The strategically valuable event is not merely selling the first pilot. It is proving that unrelated external organizations pay recurrently for Change Intelligence and renew because measured value exceeds price.
+The strategically valuable event is not merely selling the first pilot. It is proving that unrelated external organizations pay recurrently for Change Assurance and renew because measured value exceeds price.
 
 ## Future pricing after evidence, NOT launch pricing
 After ≥5 external customers, renewal and measured ROI:
 
 - Team/Guard: ~MXN $15k–$25k/month
-- Enterprise Change Intelligence: ~MXN $300k–$600k+/year
+- Enterprise Change Assurance: ~MXN $300k–$600k+/year
 
 Do not publish these as current offers without evidence.
 
@@ -428,23 +431,23 @@ Qualification questions:
 
 # 8. Commercial Narrative & Pitch ✅
 
-Category: **Change Intelligence & Agent Assurance**.
+Category: **Change Assurance & Agent Assurance**.
 
 Differentiation: **Verified Change Authority**.
 
 10-second pitch:
 
-> **PRISMA Change Intelligence tells engineering teams and coding agents what may change, what must not change, what could be affected, and what must be proven before the work is called done.**
+> **PRISMA Change Assurance tells engineering teams and coding agents what may change, what must not change, what could be affected, and what must be proven before the work is called done.**
 
 30-second CTO pitch:
 
-> **Your coding agents can already write code fast. The dangerous part is whether they understand the right system, stay inside the right scope and prove the change actually worked. PRISMA Change Intelligence maps repository reality, calculates change boundaries and blast radius, and produces evidence-backed authority packages for humans and AI agents before they modify complex software.**
+> **Your coding agents can already write code fast. The dangerous part is whether they understand the right system, stay inside the right scope and prove the change actually worked. PRISMA Change Assurance maps repository reality, calculates change boundaries and blast radius, and produces evidence-backed authority packages for humans and AI agents before they modify complex software.**
 
 Homepage hero:
 
-# **Know the system. Control the change. Prove the result.**
+# **Know what can change. Control what does. Prove the result.**
 
-**Your developers and AI agents are moving faster than your codebase knowledge. PRISMA Change Intelligence turns repository reality into verified change authority, giving every change explicit targets, boundaries, blast radius and evidence requirements before the work is called done.**
+**Your developers and AI agents are moving faster than your codebase knowledge. PRISMA Change Assurance turns repository reality into verified change authority, giving every change explicit targets, boundaries, blast radius and evidence requirements before the work is called done.**
 
 Primary CTA: **Run a Repository Intelligence Pilot**  
 Secondary CTA: **See a Change Readiness Example**
@@ -453,7 +456,7 @@ Competitive positioning:
 
 > **We are not trying to replace your coding agent, code search, developer portal or security scanner. We give the change itself an evidence-backed authority envelope.**
 
-Naming rule: use full **PRISMA Change Intelligence**. Avoid `PCI` and standalone `CI` abbreviations.
+Naming rule: use full **PRISMA Change Assurance**. Avoid legacy product abbreviations and standalone `CI` as the product name.
 
 ---
 
@@ -529,7 +532,7 @@ Fastest value-creation path:
 
 ---
 
-# 11. Economic Separation: Change Intelligence / Operations OS ✅
+# 11. Economic Separation: Change Assurance / Operations OS ✅
 
 Never value the same capability twice.
 
@@ -539,7 +542,7 @@ Use three buckets:
 Merchant/POS/operations workflows, Tablet/PC/Mobile product surfaces, store/device/sale/cashier models, merchant pricing/subscriptions/licensing, customer contracts/renewals, merchant-facing runtime and PRISMA-specific adapters.
 
 ## CHANGE_INTELLIGENCE
-Generalizable Code Atlas core, repository reality, architecture/dependency intelligence, coverage/important-file gates, generalized DB reality, change authority, Safe Scope/Do Not Touch/CAN_PATCH/Impact Radius, evidence confidence, continuation, generalized UIMAP/Surface Target concepts and Discover/Guard/Control commercial IP.
+Compatibility economic bucket for the generalizable Code Atlas core, repository reality, architecture/dependency intelligence, coverage/important-file gates, generalized DB reality, change authority, Safe Scope/Do Not Touch/CAN_PATCH/Impact Radius, evidence confidence, continuation, generalized UIMAP/Surface Target concepts and Discover/Guard/Control commercial IP.
 
 ## SHARED_PLATFORM
 Authority Mesh/AutoMesh, shared evidence orchestration, Factory Ledger/field-learning when company-internal, shared packaging/continuity, generic QA/release governance and CI/security/deployment substrate.
@@ -548,8 +551,8 @@ Shared assets count once at group level.
 
 Economic ownership test:
 
-1. If Operations OS vanished, could the capability still sell to unrelated software companies? → leans Change Intelligence.
-2. If Change Intelligence vanished, would it still create direct merchant value? → leans Operations OS.
+1. If Operations OS vanished, could the capability still sell to unrelated software companies? → leans Change Assurance.
+2. If Change Assurance vanished, would it still create direct merchant value? → leans Operations OS.
 3. If both need it and neither owns the economic reason → Shared.
 
 Track revenue and costs separately from the first peso:
@@ -566,7 +569,7 @@ No legal spin-out needed yet unless investors, buyers, recurring revenue, liabil
 Working standalone bands before overlap:
 
 - Operations OS: ~MXN **0.5M–1.5M**
-- Change Intelligence strategic fit: ~MXN **0.8M–1.8M**
+- Change Assurance strategic fit: ~MXN **0.8M–1.8M**
 
 Do not simply add the top ends because shared IP/infrastructure and founder/productization uncertainty overlap.
 
@@ -580,13 +583,13 @@ Combined working ranges:
 Milestone combined ladder:
 
 - current: ~MXN 1.2M–2.8M
-- Operations renewal and/or 3 paid Change Intelligence pilots: ~MXN 2M–4M can become more defensible
+- Operations renewal and/or 3 paid Change Assurance pilots: ~MXN 2M–4M can become more defensible
 - ~3 Operations OS customers + 1–2 recurring Guard customers: ~MXN 3M–6M depending on retention/margins/founder dependency
-- meaningful renewals on both lines + ~5+ recurring Change Intelligence customers: MXN 5M–10M+ becomes plausible, but real SaaS metrics should then replace handcrafted ranges
+- meaningful renewals on both lines + ~5+ recurring Change Assurance customers: MXN 5M–10M+ becomes plausible, but real SaaS metrics should then replace handcrafted ranges
 
 Anti-double-count formula:
 
-`PRISMA GROUP VALUE = Operations OS standalone economic value + Change Intelligence standalone economic value + evidenced synergy premium − shared-IP/uncertainty overlap`
+`PRISMA GROUP VALUE = Operations OS standalone economic value + Change Assurance standalone economic value + evidenced synergy premium − shared-IP/uncertainty overlap`
 
 Never:
 
@@ -624,11 +627,31 @@ Commercial V1 is now coherent enough to stop adding speculative strategy. V2 sho
 
 # Governed write provenance
 
-This canonical repository document was prepared from the durable commercial continuity in **GitHub Issue #250** and the 2026-08-14 **Commercial Pricing Amendment V1.1 — Founding Customer Validation**.
+This canonical repository document preserves the durable commercial continuity in **GitHub Issue #250** and the 2026-08-14 **Commercial Pricing Amendment V1.1 — Founding Customer Validation**. The current public identity migration is governed separately and does not rewrite historical evidence.
 
-## Authority Mesh
+## Current identity migration Authority Mesh
 
-Fresh task-exact read-only Authority Mesh:
+Fresh task-exact read-only Authority Mesh for this exact Commercial Ledger rename:
+
+- GitHub Actions run: `32334973892`
+- `main` base SHA: `7d5637685b86e910e2dd5aaa00a61f88422d34d3`
+- base tree: `8d7beb0fa1839be5553d926718a3c319f2de9782`
+- artifact: `prisma-automesh-d515c6b566798f81-32334973892-1`
+- artifact id: `9394329818`
+- request digest: `21eb3c332b3cea7a8929774d7bab4633411f97e599257c31f809816c3832ac7c`
+- downloaded artifact digest: `sha256:2810f8ba033f0baf6b9095079bcd88dcd10a9c3a505f4901164af3a8b5586e9d`
+- composed result digest: `sha256:02634446c0541c103e4e439722141fe3e71a55e623718767e7b08eee2857a657`
+- lanes: `2/2 PASS`
+- required authority coverage: `100%`
+- blockers: `0`
+- repository drift during Mesh: none
+- read-only: `true`
+- production certified by this Mesh: `false`
+- Authority Mesh result: `PASS_COMPOSED_AUTHORITY_MESH`
+
+## Historical commercial write Authority Mesh
+
+The original commercial repository write remains historical provenance:
 
 - GitHub Actions run: `31807935907`
 - `main` base SHA: `119c9ed86db3079dff2ab34d7cbdb749559e5b92`
@@ -637,10 +660,10 @@ Fresh task-exact read-only Authority Mesh:
 - included surface: `governance`
 - explicitly excluded: `tablet`, `pc`, `mobile`, `chart_lab`, `shared_ui`
 - missing expected authority files: none
-- canonical commercial file before this write: explicitly missing
+- canonical commercial file before that write: explicitly missing
 - Authority Mesh result: PASS
-- repository drift during Mesh: none
+- repository drift during that Mesh: none
 
 ## Technical claim boundary
 
-Commercial pricing changes do not promote Code Atlas capabilities, do not change `certifiable=false` / `productionCertified=false`, and do not imply `PAID_PILOT_READY`. Those statuses remain evidence-gated under the Commercial Readiness Scorecard and current technical authority.
+Commercial naming or pricing changes do not promote Code Atlas capabilities, do not change `certifiable=false` / `productionCertified=false`, and do not imply `PAID_PILOT_READY`. Those statuses remain evidence-gated under the Commercial Readiness Scorecard and current technical authority. `UNKNOWN` remains a valid result and cannot be promoted to `PASS_WITH_WARNING`.
