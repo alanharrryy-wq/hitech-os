@@ -42,7 +42,7 @@ Current bounded state:
 
 | ID | Stage | Item | Status |
 |---|---|---|---|
-| A | UNDERSTAND | Universal bounded repository understanding | `PARTIAL` |
+| A | UNDERSTAND | Universal bounded repository understanding | `DONE` |
 | B | RESOLVE | Useful Impact Radius | `PARTIAL` |
 | C | UNDERSTAND | Edge provenance | `PARTIAL` |
 | D | RESOLVE | Better UNKNOWN | `PARTIAL` |
@@ -54,6 +54,8 @@ Current bounded state:
 | J | PROVE | Utility evidence | `BLOCKED` |
 
 Therefore `v1Complete=false`.
+
+A is `DONE / LOCAL_VERIFIED` from the existing protected Universal Intelligence owners. Focused run `32343790105` proved neutral read-only discovery, explicit coverage, evidence/confidence on supported repository-local relationships, explicit unresolved relationships, `unclassified / confidence=unknown` for unproven architecture, sensitive-content boundaries, and non-authoritative profiles/index/retrieval projections. Promotion authority run `32344110362` passed both anti-rework gates with source bytes unchanged. Existing external diversity remains bounded and explicitly records zero-edge cases rather than fabricating relationships. This does not certify arbitrary-repository completeness, all-language semantic completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
 E is `DONE / LOCAL_VERIFIED` from the existing protected authority-resolution, snapshot-locking, Authority Pack and Verify owners. Focused falsification run `32342173554` proved ranking-only candidates stay non-authoritative, declared authority conflicts remain `CONFLICTED`, missing/conflicted authority prevents pack issuance, stale or authority-drifted snapshots block, and protected scope cannot be bypassed by widening allowed scope. Governance authority run `32342601848` passed both anti-rework gates with source bytes unchanged. This does not certify arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
