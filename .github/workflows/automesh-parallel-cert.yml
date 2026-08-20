@@ -3,6 +3,22 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
+      - '.github/workflows/automesh-parallel-cert.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
+      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
+      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
+      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -11,119 +27,31 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  PYTHONDONTWRITEBYTECODE: '1'
-  PYTHONUNBUFFERED: '1'
-  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  ca-ledger-reconcile-refresh:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
+  automesh-parallel-cert:
+    name: ${{ matrix.os }} / py${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.11']
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     steps:
-      - name: Checkout exact current main
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
-          ref: main
           fetch-depth: 0
 
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
 
-      - name: Compile and self-test authority tooling
-        run: |
-          python -m py_compile \
-            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
-            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
-            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
-            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py
-          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Compile AutoMesh tooling
+        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
 
-      - name: Run refreshed task-exact Factory Ledger reconciliation Authority Mesh
-        shell: bash
-        run: |
-          set -euo pipefail
-          head_sha="$(git rev-parse HEAD)"
-          request="$RUNNER_TEMP/ca-ledger-refresh.request.json"
-          preflight="$RUNNER_TEMP/ca-ledger-refresh-preflight"
-          parallel="$RUNNER_TEMP/ca-ledger-refresh-parallel"
-          composed="$RUNNER_TEMP/ca-ledger-refresh-composed"
-          mkdir -p "$preflight" "$parallel" "$composed/payload"
-          python - "$request" "$head_sha" <<'PY'
-          import json, sys
-          path, head = sys.argv[1], sys.argv[2]
-          base = (
-            "Post-PR326 governance-only prerequisite for PRISMA Change Assurance V1. Current main already contains the frozen Change Assurance product contract, single-registry migration, fail-closed domain gate, negative tests, legacy-name policy and Agent Gate binding. Reconcile only the universal Factory Ledger authority underneath that merged state. "
-            "Register the already-merged change_intelligence.capability_anti_rework_gate as a canonical Factory Ledger capability using existing PR #311 evidence, and reconcile the supplemental registration status of code_atlas.change_intelligence.customer_wow_v1 with its canonical VERIFY / LOCAL_VERIFIED classification. "
-            "Do not modify or rebuild Change Assurance V1 source, Universal Intelligence, Customer Wow, Cloud Center, Tablet, PC, Mobile, Chart Lab, Shared UI, DB, Prisma, processes, ports, deploys, or production claims. Preserve PRISMA_FACTORY_LEDGER.json as the sole canonical capability truth and treat DNR/Registration/Evidence as supplemental projections."
-          )
-          request = {
-            "schemaVersion": "prisma_remote_authority_gateway.v2",
-            "expectedHead": head,
-            "profile": "change-assurance-authority-reconcile-v2",
-            "tasks": [
-              {
-                "id": "ca-authority-reconcile-v2",
-                "surface": "governance",
-                "task": base + " Resolve the exact canonical row, classification, status, doNotRebuild, evidence, doesNotProve, allowed/forbidden actions and next gate after PR #326 merged.",
-                "intent": "FIX",
-                "domain": "governance",
-                "requiredAuthorities": [
-                  "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
-                  "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
-                  "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
-                  "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
-                  "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
-                  "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
-                  "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json"
-                ],
-                "requiredDirectories": ["PRISMA Factory Ledger", "tools/code-atlas"],
-                "requiredCapabilities": ["code_atlas.change_intelligence.customer_wow_v1"],
-                "minimumCoverage": 100,
-                "failOnMissingAuthority": True
-              },
-              {
-                "id": "ca-registration-consistency-v2",
-                "surface": "governance",
-                "task": base + " Audit overlap/contradiction rules after PR #326 and prove the smallest governance-only mutation needed so the universal anti-rework gate sees one aligned canonical truth with no shadow-only or contradictory registration blocker.",
-                "intent": "FIX",
-                "domain": "governance",
-                "requiredAuthorities": [
-                  "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
-                  "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
-                  "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
-                  "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
-                  ".github/workflows/prisma-factory-anti-rework-gate.yml",
-                  ".github/workflows/change-intelligence-capability-gate.yml",
-                  "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
-                  "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py"
-                ],
-                "requiredDirectories": ["PRISMA Factory Ledger", ".github/workflows", "tools/code-atlas"],
-                "requiredCapabilities": ["code_atlas.change_intelligence.customer_wow_v1"],
-                "minimumCoverage": 100,
-                "failOnMissingAuthority": True
-              }
-            ]
-          }
-          with open(path, "w", encoding="utf-8") as f:
-              json.dump(request, f, indent=2, ensure_ascii=False)
-          PY
-          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
-          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
-            --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
-            --parallel 2 --workers 18 --shards 54
-          python -m code_atlas.motors.prisma_mesh_gateway compose \
-            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed/payload"
+      - name: Run legacy AutoMesh self-test
+        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
 
-      - name: Upload refreshed Authority Mesh evidence
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: ca-ledger-reconcile-authority-v2
-          path: |
-            ${{ runner.temp }}/ca-ledger-refresh.request.json
-            ${{ runner.temp }}/ca-ledger-refresh-preflight/
-            ${{ runner.temp }}/ca-ledger-refresh-parallel/*.zip
-            ${{ runner.temp }}/ca-ledger-refresh-composed/
-          if-no-files-found: warn
-          retention-days: 7
+      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
+        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
