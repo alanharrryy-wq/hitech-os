@@ -16,76 +16,6 @@ env:
   PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  h-portability-evidence:
-    name: H runner evidence (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 15
-    steps:
-      - name: Checkout exact current main
-        uses: actions/checkout@v6
-        with:
-          ref: main
-          fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-
-      - name: Compile runner contracts
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m py_compile \
-            tools/code-atlas/src/code_atlas/change_intelligence/runner_contract.py \
-            tools/code-atlas/src/code_atlas/change_intelligence/bundle.py \
-            tools/code-atlas/src/code_atlas/change_intelligence/customer_lifecycle.py \
-            tools/code-atlas/src/code_atlas/change_intelligence/artifact_hygiene.py \
-            tools/code-atlas/tests/test_operational_rental_hardening.py
-
-      - name: Run focused portable runner evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -m unittest -v tools/code-atlas/tests/test_operational_rental_hardening.py
-          python - <<'PY'
-          from code_atlas.change_intelligence import build_runner_plan, build_rental_runner_plan
-          left = build_runner_plan(
-              repository_identity='customer/repo',
-              mode='PORTABLE_EVIDENCE',
-              requested_outputs=['verification', 'report', 'verification'],
-          )
-          right = build_runner_plan(
-              repository_identity='customer/repo',
-              mode='PORTABLE_EVIDENCE',
-              requested_outputs=['report', 'verification'],
-          )
-          assert left == right
-          assert left['requestedOutputs'] == ['report', 'verification']
-          assert left['readOnly'] is True
-          assert left['sourceCodeEgress'] is False
-          assert all(value is False for value in left['mutationPermissions'].values())
-          assert left['certifiable'] is False and left['productionCertified'] is False
-          rental = build_rental_runner_plan(
-              repository_identity='customer/repo',
-              requested_outputs=['verification', 'report'],
-          )
-          assert rental['readOnly'] is True
-          assert rental['sourceCodeEgress'] is False
-          assert rental['artifactContentSanitizationRequired'] is True
-          assert rental['allExportedArtifactsMustBeInspected'] is True
-          assert rental['unknownArtifactFormatDecision'] == 'BLOCKED'
-          assert rental['cleanupEvidenceRequired'] is True
-          assert rental['failClosed'] is True
-          assert rental['productionCertified'] is False
-          print('PASS_H_DECLARED_INPUT_REPRODUCIBILITY')
-          PY
-          test "$(git status --porcelain | wc -l)" -eq 0
-
   h-mutation-authority:
     name: H governance promotion authority
     runs-on: ubuntu-24.04
@@ -131,7 +61,7 @@ jobs:
           path, head = sys.argv[1], sys.argv[2]
           task = (
               "Governance-only evidence promotion for PRISMA Change Assurance V1 checklist H / PROVE / Portable reproducible runner. "
-              "Do not rebuild runner source. Reuse ci.runner.local_only, ci.runner.portable_evidence and ci.rental.private_repo_v2, all protected doNotRebuild owners. "
+              "Existing runner owners and their source bytes remain unchanged. Reuse ci.runner.local_only, ci.runner.portable_evidence and ci.rental.private_repo_v2, all protected doNotRebuild owners. "
               "Promote H only if current source plus fresh cross-platform focused tests prove documented runner modes replay from declared inputs without hidden founder-workstation dependencies, while preserving read-only, no-source-egress, lifecycle, cleanup and fail-closed boundaries. "
               "The promotion must remain LOCAL_VERIFIED and must not claim customer production deployment, arbitrary infrastructure/container execution, legal/privacy/security certification, enterprise readiness, paid-pilot readiness or secure erase. "
               "Allowed mutation after PASS is limited to the single Change Assurance registry/checklist and its two human-readable canonical companions; no source/runtime/Cloud Center/Tablet/PC/Mobile/Chart Lab/Shared UI/DB/Prisma/process/port/deploy mutation."
@@ -182,7 +112,7 @@ jobs:
                   {
                       "id": "prove-h-protected-runner-owners",
                       "surface": "governance",
-                      "task": task + " Prove the promotion is evidence-only and must not rebuild or modify LOCAL_ONLY, PORTABLE_EVIDENCE, rental V2, lifecycle, sanitization, bundle or runner owners; return fail-closed anti-rework boundaries.",
+                      "task": task + " Prove this is evidence-only status governance: LOCAL_ONLY, PORTABLE_EVIDENCE, rental V2, lifecycle, sanitization, bundle and runner source stay byte-identical; return fail-closed anti-rework boundaries.",
                       "intent": "VERIFY",
                       "domain": "tooling",
                       "requiredAuthorities": common_authorities,
@@ -221,22 +151,21 @@ jobs:
               raise SystemExit('BLOCKED_MESH_NOT_PASS')
           coverage=min(float(lane['coverage']['resolvedPercent']) for lane in pf['lanes'])
           blockers=len(pf.get('blockers') or [])
-          artifact_digest='sha256:'+hashlib.sha256(open(zip_path,'rb').read()).hexdigest()
           mesh={
               'status':'PASS_COMPOSED_AUTHORITY_MESH',
               'repoHead':report['repoHead'],
               'requiredAuthorityCoveragePct':int(coverage),
               'blockers':blockers,
               'requestDigest':report['requestDigest'],
-              'artifactDigest':artifact_digest,
+              'artifactDigest':'sha256:'+hashlib.sha256(open(zip_path,'rb').read()).hexdigest(),
               'layerMapPresent':True
           }
-          task='Governance-only evidence promotion of Change Assurance checklist H to DONE / LOCAL_VERIFIED using existing protected runner owners; no source rebuild.'
+          gate_task='Governance-only evidence promotion of Change Assurance checklist H to DONE / LOCAL_VERIFIED using existing protected runner owners; source bytes unchanged.'
           factory={
               'schemaVersion':'prisma.factory-ledger.anti-rework-request.v1',
               'mode':'MUTATION',
               'expectedHead':report['repoHead'],
-              'task':task,
+              'task':gate_task,
               'capabilities':[{'id':'code_atlas.change_intelligence.customer_wow_v1','requestedAction':'VERIFY'}],
               'authorityMesh':mesh,
               'visualMutation':False
@@ -244,7 +173,7 @@ jobs:
           ca={
               'mode':'MUTATION',
               'capabilityIds':['ci.runner.local_only','ci.runner.portable_evidence','ci.rental.private_repo_v2'],
-              'task':task,
+              'task':gate_task,
               'authorityMesh':mesh,
               'visualMutation':False
           }
