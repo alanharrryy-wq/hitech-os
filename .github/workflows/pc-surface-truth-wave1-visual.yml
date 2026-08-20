@@ -4,6 +4,7 @@ name: PC Surface Truth Wave 1 Visual Gate
   pull_request:
     paths:
       - "apps/terminal-de-venta-system/products/pc/app/**"
+      - "apps/terminal-de-venta-system/prisma/**"
       - ".github/workflows/pc-surface-truth-wave1-visual.yml"
 
 permissions:
@@ -59,6 +60,43 @@ jobs:
               json.dumps(report, indent=2), encoding="utf-8"
           )
           print(json.dumps(report, indent=2))
+          PY
+
+      - name: Pin entitled PC license for Wave 1 baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          LICENSE_PATH="$RUNNER_TEMP/pc-wave1-license.json"
+          echo "PRISMA_LICENSE_PATH=$LICENSE_PATH" >> "$GITHUB_ENV"
+          echo "PRISMA_LICENSE_ALLOW_UNSIGNED=1" >> "$GITHUB_ENV"
+          echo "PRISMA_RUNTIME_MODE=dev" >> "$GITHUB_ENV"
+          echo "PRISMA_RUNTIME_ROLE=pc" >> "$GITHUB_ENV"
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timedelta, timezone
+          from pathlib import Path
+
+          now = datetime.now(timezone.utc)
+          payload = {
+              "schemaVersion": "1.0.0",
+              "licenseId": "lic_pc_wave1_visual_ci",
+              "customerId": "cust_pc_wave1_visual_ci",
+              "businessId": "biz_hitech_default",
+              "storeId": "store_obrera_04",
+              "plan": "TABLET_PC_MANAGED",
+              "state": "active",
+              "validFrom": (now - timedelta(days=1)).isoformat().replace("+00:00", "Z"),
+              "validUntil": (now + timedelta(days=30)).isoformat().replace("+00:00", "Z"),
+              "assignmentState": "assigned",
+              "limits": {"maxDevices": 2},
+              "features": {},
+              "capabilities": {},
+              "notes": ["Explicit entitled fixture for historical PC Wave 1 visual baseline"]
+          }
+          target = Path(os.environ["RUNNER_TEMP"]) / "pc-wave1-license.json"
+          target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+          print(f"Wave 1 entitled license fixture written: {target}")
           PY
 
       - name: Generate PC Prisma client in isolated runner
@@ -155,7 +193,7 @@ jobs:
           PY
 
       - name: Install Playwright Chromium
-        run: pnpm -C apps/terminal-de-venta-system/products/pc/app exec playwright install --with-deps chromium
+        run: python apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py
 
       - name: Start PC on canonical port 3130
         id: start_pc
@@ -282,3 +320,56 @@ jobs:
           name: pc-surface-truth-wave1-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: artifacts/**
+
+  pc-wave2:
+    name: PC Wave 2 ${{ matrix.mode }} Certification
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        mode:
+          - entitled
+          - restricted
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Compile Wave 2 Python gates
+        run: |
+          python -m py_compile \
+            apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/verify_pc_wave2_schema_parity.py
+
+      - name: Install Playwright Chromium
+        run: python apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py
+
+      - name: Run governed Wave 2 certification
+        run: |
+          python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+            --mode "${{ matrix.mode }}" \
+            --out "artifacts/pc-wave2-${{ matrix.mode }}"
+
+      - name: Upload Wave 2 evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave2-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: artifacts/pc-wave2-${{ matrix.mode }}/**

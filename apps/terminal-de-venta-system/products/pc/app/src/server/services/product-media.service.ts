@@ -45,14 +45,13 @@ export async function getProductMediaWorkspace() {
         libraryCount: library.items.length
       }
     };
-  } catch (error) {
-    const reason = error instanceof Error ? error.message : "lectura no disponible";
+  } catch {
     return {
       products: [],
       library: [],
       meta: {
         source: "unavailable" as const,
-        warning: `No fue posible leer referencias de imagen: ${reason}. Verifica la migración canónica y la biblioteca administrada.`,
+        warning: "No fue posible cargar las referencias visuales del catálogo. Reintenta más tarde.",
         generatedAt: new Date().toISOString(),
         libraryId: "",
         libraryCount: 0
