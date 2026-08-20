@@ -4,6 +4,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import { clsx } from "clsx";
 import { PanelsTopLeft } from "lucide-react";
 import { getCurrentRouteMeta, getPrimaryNavigation, getSecondaryNavigationForPath } from "@/composition/navigation";
+import { PcLicenseNavigationGate } from "../licensing/pc-license-surface-provider";
 import { NavLink } from "./nav-link";
 import styles from "./app-shell.module.css";
 
@@ -152,37 +153,47 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           </div>
         </div>
 
-        <section
-          className={styles.navPanel}
-          data-prisma-component="PrimaryHumanNavigation"
-          data-uiux-first-level="human-only"
+        <PcLicenseNavigationGate
+          fallback={(
+            <section className={styles.navPanel} data-prisma-component="PcLicenseNavigationGate" data-license-navigation="denied">
+              <p className={styles.navHeading}>Navegación principal</p>
+              <p>Navegación PC no disponible para esta licencia.</p>
+            </section>
+          )}
         >
-          <p className={styles.navHeading}>Navegación principal</p>
-          <nav className={styles.nav} aria-label="Áreas principales">
-            {groupedNavigation.map((group) => {
-              const groupId = `pc-nav-${stableId(group.label)}`;
-              return (
-                <div className={styles.navSection} key={group.label} role="group" aria-labelledby={groupId}>
-                  <span className={styles.navSectionTitle} id={groupId}>
-                    {group.label}
-                  </span>
-                  <div className={styles.navItems}>
-                    {group.items.map((item) => (
-                      <NavLink
-                        key={item.href}
-                        href={item.href}
-                        title={item.title}
-                        description={item.description}
-                        active={current.group === item.group || isActive(currentPath, item.href)}
-                        icon={item.icon}
-                      />
-                    ))}
+          <section
+            className={styles.navPanel}
+            data-prisma-component="PrimaryHumanNavigation"
+            data-uiux-first-level="human-only"
+            data-license-navigation="allowed"
+          >
+            <p className={styles.navHeading}>Navegación principal</p>
+            <nav className={styles.nav} aria-label="Áreas principales">
+              {groupedNavigation.map((group) => {
+                const groupId = `pc-nav-${stableId(group.label)}`;
+                return (
+                  <div className={styles.navSection} key={group.label} role="group" aria-labelledby={groupId}>
+                    <span className={styles.navSectionTitle} id={groupId}>
+                      {group.label}
+                    </span>
+                    <div className={styles.navItems}>
+                      {group.items.map((item) => (
+                        <NavLink
+                          key={item.href}
+                          href={item.href}
+                          title={item.title}
+                          description={item.description}
+                          active={current.group === item.group || isActive(currentPath, item.href)}
+                          icon={item.icon}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </nav>
-        </section>
+                );
+              })}
+            </nav>
+          </section>
+        </PcLicenseNavigationGate>
       </aside>
 
       <main
@@ -208,7 +219,9 @@ export function AppShell({ currentPath, children }: { currentPath: string; child
           </div>
         </header>
 
-        <SurfaceContextStrip currentPath={currentPath} groupLabel={current.groupLabel} secondaryNav={secondaryNav} />
+        <PcLicenseNavigationGate>
+          <SurfaceContextStrip currentPath={currentPath} groupLabel={current.groupLabel} secondaryNav={secondaryNav} />
+        </PcLicenseNavigationGate>
 
         {!hideRouteIntentStrip ? (
           <section className={styles.routeIntent} data-prisma-component="RouteIntentStrip" aria-label="Pregunta de esta pantalla">

@@ -176,7 +176,7 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
       {status ? <div className="alert-strip" role="status" aria-live="polite"><strong>Clientes</strong><span className="subtle">{status}</span></div> : null}
 
       <section className="dashboard-grid">
-        <article className="card">
+        <article className="card grid-span-4" data-prisma-customer-panel="search">
           <div className="section-head"><div><div className="kicker">buscar</div><h2 className="section-title">Encontrar cliente</h2></div></div>
           <form onSubmit={searchCustomers} className="stack-form">
             <label htmlFor="customer-query">Nombre, teléfono o correo</label>
@@ -189,7 +189,7 @@ export function CustomerWorkspace({ initialWorkspace }: { initialWorkspace: Cust
             <button className="button button-secondary" type="submit" disabled={isLoading}>{isLoading ? "Buscando…" : "Buscar"}</button>
           </form>
         </article>
-        <article className="card">
+        <article className="card grid-span-8" data-prisma-customer-panel="create">
           <div className="section-head"><div><div className="kicker">alta canónica</div><h2 className="section-title">Nuevo cliente</h2></div></div>
           <form onSubmit={createCustomer} className="stack-form">
             <label htmlFor="customer-name">Nombre</label>
