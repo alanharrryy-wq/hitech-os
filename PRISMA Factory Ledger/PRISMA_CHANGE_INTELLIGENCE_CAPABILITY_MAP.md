@@ -47,13 +47,15 @@ Current bounded state:
 | C | UNDERSTAND | Edge provenance | `PARTIAL` |
 | D | RESOLVE | Better UNKNOWN | `PARTIAL` |
 | E | AUTHORIZE | Conflict-first authority | `PARTIAL` |
-| F | OBSERVE | Change comparison | `MISSING` |
+| F | OBSERVE | Change comparison | `DONE` |
 | G | VERIFY | Agent-neutral independent verification | `PARTIAL` |
 | H | PROVE | Portable reproducible runner | `PARTIAL` |
 | I | PROVE | Evidence Bundle | `PARTIAL` |
 | J | PROVE | Utility evidence | `BLOCKED` |
 
 Therefore `v1Complete=false`.
+
+F is `DONE / LOCAL_VERIFIED` from `compare_observed_states` with deterministic same-repository snapshot-lineage comparison and native fail-closed negatives. Code Atlas Operational Hardening run `32337152354` passed on Ubuntu, Windows and macOS; the Ubuntu lane ran `139/139` operational tests including the 12 focused OBSERVE comparison tests. This does not promote any production, enterprise, paid-pilot or universal-completeness claim.
 
 A required checklist row may be `DONE` only when its evidence, positive tests and native negative tests are populated. External missing evidence cannot be substituted by internal code work.
 

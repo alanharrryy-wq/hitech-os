@@ -35,13 +35,15 @@ The canonical live status for every item lives in the single capability registry
 | C | UNDERSTAND | Edge provenance | `PARTIAL` |
 | D | RESOLVE | Better UNKNOWN | `PARTIAL` |
 | E | AUTHORIZE | Conflict-first authority | `PARTIAL` |
-| F | OBSERVE | Change comparison | `MISSING` |
+| F | OBSERVE | Change comparison | `DONE` |
 | G | VERIFY | Agent-neutral independent verification | `PARTIAL` |
 | H | PROVE | Portable reproducible runner | `PARTIAL` |
 | I | PROVE | Evidence Bundle | `PARTIAL` |
 | J | PROVE | Utility evidence | `BLOCKED` |
 
-`V1 complete` is therefore **false**. This is intentional. A V1 item becomes `DONE` only when its registry row carries evidence, positive tests and native negative tests. Missing external evidence stays blocked instead of being painted green with a roller from the tianguis.
+`V1 complete` is therefore **false**. This is intentional.
+
+Checklist F is now `DONE / LOCAL_VERIFIED`: `compare_observed_states` produces deterministic added/removed/changed/unchanged deltas from explicit same-repository snapshot lineage and bounded caller-supplied evidence. Code Atlas Operational Hardening run `32337152354` passed on Ubuntu, Windows and macOS; Ubuntu reported `139/139` tests PASS, including all 12 focused OBSERVE comparison tests. Partial, stale, conflicted, inferred, missing-evidence, cross-repository and malformed lineage cases remain fail-closed. F does not authorize mutation and does not prove universal, production, enterprise or paid-pilot readiness. A V1 item becomes `DONE` only when its registry row carries evidence, positive tests and native negative tests. Missing external evidence stays blocked instead of being painted green with a roller from the tianguis.
 
 Allowed V1 statuses are `DONE`, `PARTIAL`, `MISSING`, `BLOCKED`, `NOT_REQUIRED_V1`, and `EXPERIMENTAL`.
 

@@ -622,16 +622,17 @@
       "observe",
       "code_atlas.change_intelligence",
       "change_intelligence",
-      "BUILD",
-      "NOT_CONNECTED",
-      false,
+      "DONE",
+      "LOCAL_VERIFIED",
+      true,
       [
-        "authority:run:32335660623/artifact:9394574248",
-        "capability:ci.core.snapshot_locking",
-        "capability:ci.change.architecture_delta"
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py",
+        "path:tools/code-atlas/tests/test_operational_change_comparison.py",
+        "run:32337152354",
+        "authority:run:32336508982/artifact:9394853933"
       ],
-      "BUILD_BOUNDED_OBSERVE_CHANGE_COMPARISON_UNDER_FRESH_EXACT_MUTATION_GATE",
-      "Build only a deterministic comparison adapter over existing snapshot locking and Architecture Delta normalization. No second snapshot, graph, delta, verification, evidence or runner engine.",
+      "REUSE_BOUNDED_OBSERVE_COMPARISON_RECERTIFY_ON_SOURCE_LINEAGE_OR_EVIDENCE_CONTRACT_DRIFT",
+      "Reuse compare_observed_states and protected snapshot/Architecture Delta owners. No second snapshot, graph, delta, verification, evidence or runner engine.",
       [
         "ci.core.snapshot_locking",
         "ci.change.architecture_delta",
@@ -785,20 +786,38 @@
       "id": "F",
       "stage": "OBSERVE",
       "title": "Change comparison",
-      "status": "MISSING",
+      "status": "DONE",
       "requiredForV1": true,
-      "claimBoundary": "Evidence-bounded; UNKNOWN/BLOCKED is valid and no stronger claim is permitted without proof.",
-      "evidence": [],
-      "tests": [],
+      "claimBoundary": "LOCAL_VERIFIED bounded comparison of caller-supplied evidence states tied to explicit same-repository snapshot lineage; no mutation authorization, universal-completeness, production, enterprise or paid-pilot claim.",
+      "evidence": [
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/architecture_delta.py",
+        "path:tools/code-atlas/tests/test_operational_change_comparison.py",
+        "Code Atlas Operational Hardening run 32337152354"
+      ],
+      "tests": [
+        "test_compares_added_removed_changed_and_unchanged_deterministically",
+        "test_category_change_is_explicit_remove_and_add",
+        "Code Atlas Operational Hardening run 32337152354: 139/139 Ubuntu tests PASS; workflow PASS on Ubuntu/Windows/macOS"
+      ],
       "negativeTests": [
-        "missing/contradictory/unsupported evidence must not become green"
+        "test_rejects_cross_repository_comparison",
+        "test_rejects_missing_snapshot_lineage",
+        "test_rejects_missing_provenance",
+        "test_partial_state_is_unknown_and_does_not_invent_removal",
+        "test_stale_state_is_blocked",
+        "test_conflicted_observation_is_blocked",
+        "test_inferred_observation_is_unknown_not_proof",
+        "test_supported_observation_without_critical_evidence_is_unknown",
+        "test_duplicate_observation_identity_is_rejected",
+        "test_raw_secret_payload_is_rejected"
       ],
       "knownBlindSpots": [
-        "bounded evidence does not prove universal completeness"
+        "The adapter compares bounded caller-supplied observations; it does not discover observations by itself.",
+        "LOCAL_VERIFIED evidence does not prove arbitrary-repository completeness, production, enterprise or paid-pilot readiness."
       ],
-      "nextEvidence": "BUILD_CI_OBSERVE_CHANGE_COMPARISON_WITH_DETERMINISTIC_POSITIVE_AND_NATIVE_NEGATIVE_TESTS",
+      "nextEvidence": "REUSE_DONE_BASELINE; recertify after comparison source, snapshot-lineage contract or evidence-boundary drift.",
       "owner": "code_atlas.change_intelligence",
-      "doNotRebuild": false
+      "doNotRebuild": true
     },
     {
       "id": "G",
@@ -989,13 +1008,14 @@
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
   },
   "lastGovernanceMutation": {
-    "kind": "OBSERVE_F_OWNER_REGISTRATION",
-    "repoHead": "7d5637685b86e910e2dd5aaa00a61f88422d34d3",
-    "authorityMeshRunId": 32335660623,
-    "authorityArtifactId": 9394574248,
-    "authorityArtifactSha256": "595a6dd6833e6e47bf307a87d1d323a8655520547943417de4681ffefca547fc",
-    "requestDigest": "e3d75b9286b4983c87dd999343b5c0a48d2ff12f5745bf67dfbefba5cb4939e9",
-    "status": "PASS_COMPOSED_AUTHORITY_MESH",
+    "kind": "OBSERVE_F_LOCAL_VERIFICATION_PROMOTION",
+    "sourcePr": 337,
+    "sourceHead": "4869af1bf618ce0daf4f1919c060e4f158a274c2",
+    "operationalHardeningRunId": 32337152354,
+    "mutationAuthorityRunId": 32336508982,
+    "mutationAuthorityArtifactId": 9394853933,
+    "factoryGateDecisionDigest": "cd6a0e6958637aae33660fbaecd3f64af3bcb7d788da3ff815d7cbabbd1aa201",
+    "status": "LOCAL_VERIFIED",
     "productionCertified": false
   }
 }
