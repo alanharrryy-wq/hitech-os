@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "code_atlas.change_assurance.product_contract.v1",
+  "contractId": "CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT",
+  "productIdentity": {
+    "productName": "PRISMA Change Assurance",
+    "engineName": "Code Atlas",
+    "principle": "No evidence. No green.",
+    "tagline": "Know what can change. Control what does. Prove the result.",
+    "renamingLocked": true,
+    "legacyProductName": "PRISMA Change Intelligence",
+    "legacyProductNamePolicy": "COMPAT_OR_HISTORICAL_ONLY"
+  },
+  "stages": [
+    "UNDERSTAND",
+    "RESOLVE",
+    "AUTHORIZE",
+    "OBSERVE",
+    "VERIFY",
+    "PROVE"
+  ],
+  "definitionOfDone": [
+    {
+      "id": "A",
+      "stage": "UNDERSTAND",
+      "title": "Universal bounded repository understanding",
+      "definition": "Understand supported repository structure and relationships with explicit evidence boundaries and explicit UNKNOWN for unsupported or unproven areas."
+    },
+    {
+      "id": "B",
+      "stage": "RESOLVE",
+      "title": "Useful Impact Radius",
+      "definition": "Resolve a useful conservative blast radius with evidence and unknowns, without converting impact into authorization."
+    },
+    {
+      "id": "C",
+      "stage": "UNDERSTAND",
+      "title": "Edge provenance",
+      "definition": "Material graph edges expose source/provenance and confidence or remain inference/unknown."
+    },
+    {
+      "id": "D",
+      "stage": "RESOLVE",
+      "title": "Better UNKNOWN",
+      "definition": "UNKNOWN is first-class, reasoned and actionable with next evidence. It is never PASS_WITH_WARNING."
+    },
+    {
+      "id": "E",
+      "stage": "AUTHORIZE",
+      "title": "Conflict-first authority",
+      "definition": "Authority candidates, conflicts, staleness and protected boundaries are resolved fail-closed before mutation authorization."
+    },
+    {
+      "id": "F",
+      "stage": "OBSERVE",
+      "title": "Change comparison",
+      "definition": "Comparable before/after states produce deterministic bounded deltas tied to the same repository/snapshot lineage."
+    },
+    {
+      "id": "G",
+      "stage": "VERIFY",
+      "title": "Agent-neutral independent verification",
+      "definition": "Verification consumes evidence through agent-neutral contracts; independent replication requires an actually independent evaluator."
+    },
+    {
+      "id": "H",
+      "stage": "PROVE",
+      "title": "Portable reproducible runner",
+      "definition": "Documented runner modes replay from declared inputs without hidden founder-workstation dependencies."
+    },
+    {
+      "id": "I",
+      "stage": "PROVE",
+      "title": "Evidence Bundle",
+      "definition": "Portable evidence packages preserve provenance, gaps, classifications and replay/handoff context without pretending partial evidence is complete."
+    },
+    {
+      "id": "J",
+      "stage": "PROVE",
+      "title": "Utility evidence",
+      "definition": "Human and agent utility claims require external measured evidence, not feature count, plausibility or internal demos."
+    }
+  ],
+  "registry": {
+    "singleAuthorityPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+    "pathClassification": "COMPAT_ALIAS_KEEP",
+    "liveV1StatusLivesInRegistry": true,
+    "createsSecondRegistry": false
+  },
+  "invariants": [
+    "Candidate != Authority",
+    "Impact Radius != Authorization",
+    "Retrieval != proof",
+    "UNKNOWN != PASS_WITH_WARNING",
+    "Snapshot/provenance lock is required for proof-bearing claims",
+    "Verification must be agent-neutral; same-agent assertion is not independent verification"
+  ],
+  "noFakeGreen": {
+    "principle": "No evidence. No green.",
+    "allowedResultStates": [
+      "PASS",
+      "BLOCKED",
+      "UNKNOWN",
+      "NOT_EVALUATED"
+    ],
+    "forbidden": [
+      "PASS_WITH_WARNING as a substitute for UNKNOWN",
+      "PASS from missing critical evidence",
+      "PASS from partial scan presented as complete",
+      "UNIVERSAL claims from bounded evidence",
+      "production/enterprise/paid-pilot claims from this contract alone"
+    ]
+  },
+  "nonGoals": [
+    "Rebuild Universal Intelligence or Customer Wow capabilities that are already DONE/VERIFY and doNotRebuild.",
+    "Treat Candidate as Authority.",
+    "Treat Impact Radius as Authorization.",
+    "Treat retrieval as proof.",
+    "Rewrite historical evidence to erase the deprecated product name.",
+    "Break internal imports, persisted schemas or stable automation paths for cosmetic renaming.",
+    "Claim production certification, enterprise readiness or paid-pilot readiness from source/governance documents alone."
+  ],
+  "renamePolicy": {
+    "classificationEnum": [
+      "PUBLIC_IDENTITY_RENAME",
+      "CANONICAL_DOC_RENAME",
+      "MACHINE_CONTRACT_RENAME",
+      "INTERNAL_SYMBOL_MIGRATE",
+      "COMPAT_ALIAS_KEEP",
+      "HISTORICAL_EVIDENCE_KEEP",
+      "FALSE_POSITIVE"
+    ],
+    "allowedLegacyCurrentContexts": [
+      "COMPAT_ALIAS_KEEP",
+      "HISTORICAL_EVIDENCE_KEEP"
+    ],
+    "newPublicLegacyIdentityForbidden": true,
+    "historyIsImmutableEvidence": true
+  },
+  "authorityProvenance": {
+    "repoHead": "45762d1a6251195dae0e229dfe6fa1aed74645fa",
+    "repoTree": "ce37544fb6f431586bc5f472124c0d6a3bc1c2a8",
+    "authorityMeshRunId": 32332472480,
+    "authorityMeshArtifactId": 9393519072,
+    "requestDigest": "81bf9492592090b52cc2a07b0138aa09454a423b7eca07abac9f65b1ab2798e7",
+    "downloadedArtifactSha256": "c8e67ab317a2ad47b296434cfe1818fd5d3634ce0eead115fa70b5c2b9ed6ae0",
+    "status": "PASS_COMPOSED_AUTHORITY_MESH",
+    "requiredAuthorityCoveragePct": 100,
+    "blockers": 0,
+    "productionCertified": false
+  }
+}
