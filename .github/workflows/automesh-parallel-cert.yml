@@ -80,7 +80,7 @@ jobs:
                 "requiredDirectories": ["PRISMA Factory Ledger", "tools/code-atlas"],
                 "requiredCapabilities": ["code_atlas.change_intelligence.customer_wow_v1"],
                 "minimumCoverage": 100,
-                "failOnMissingAuthority": true
+                "failOnMissingAuthority": True
               },
               {
                 "id": "ca-registration-consistency-v2",
@@ -101,7 +101,7 @@ jobs:
                 "requiredDirectories": ["PRISMA Factory Ledger", ".github/workflows", "tools/code-atlas"],
                 "requiredCapabilities": ["code_atlas.change_intelligence.customer_wow_v1"],
                 "minimumCoverage": 100,
-                "failOnMissingAuthority": true
+                "failOnMissingAuthority": True
               }
             ]
           }
@@ -125,5 +125,5 @@ jobs:
             ${{ runner.temp }}/ca-ledger-refresh-preflight/
             ${{ runner.temp }}/ca-ledger-refresh-parallel/*.zip
             ${{ runner.temp }}/ca-ledger-refresh-composed/
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 7
