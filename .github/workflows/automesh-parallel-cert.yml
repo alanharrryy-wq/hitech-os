@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,132 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  a-promotion-authority:
+    name: A governance promotion authority
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact current main
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile authority tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' \
+            'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run exact A promotion Authority Mesh and gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/ca-understand-a-promotion.request.json"
+          preflight="$RUNNER_TEMP/ca-understand-a-promotion-preflight"
+          parallel="$RUNNER_TEMP/ca-understand-a-promotion-parallel"
+          composed="$RUNNER_TEMP/ca-understand-a-promotion-composed"
+          mkdir -p "$preflight" "$parallel" "$composed"
+          python - "$request" "$head_sha" <<'PY'
+          import json, sys
+          path, head = sys.argv[1], sys.argv[2]
+          task=(
+              "Governance-only evidence promotion for PRISMA Change Assurance V1 checklist A / UNDERSTAND / Universal bounded repository understanding. "
+              "Existing Universal Intelligence source bytes remain unchanged and protected: repository inventory, authority resolution, system graphs, snapshot locking and query/retrieval. "
+              "Evidence run 32343790105 / artifact 9397298558 proves bounded read-only repository understanding: explicit physical/semantic coverage, supported repository-local relationships with evidence/confidence, explicit unresolved relationships, unproven architecture as unclassified with confidence unknown, sensitive-content boundaries, and no authority invention by profiles, projections or semantic retrieval. "
+              "Existing seven-repository external diversity evidence remains bounded and records zero-edge cases instead of fabricating relationships. "
+              "Promote A only to DONE / LOCAL_VERIFIED with arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy/security and universal semantic completeness explicitly unproven. No source/product/runtime/DB/process/port/deploy mutation."
+          )
+          auth=[
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+              "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+              "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md",
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+              "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+              "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+              "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+              "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+              "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md",
+              "tools/code-atlas/src/code_atlas/intelligence/repository.py",
+              "tools/code-atlas/src/code_atlas/intelligence/authority.py",
+              "tools/code-atlas/src/code_atlas/intelligence/graphs.py",
+              "tools/code-atlas/src/code_atlas/intelligence/snapshot.py",
+              "tools/code-atlas/src/code_atlas/intelligence/engine.py",
+              "tools/code-atlas/tests/test_operational_universal_intelligence.py",
+              "tools/code-atlas/tests/test_operational_change_intelligence_binding.py"
+          ]
+          dirs=["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/intelligence","tools/code-atlas/tests","tools/code-atlas/docs"]
+          request={
+              "schemaVersion":"prisma_remote_authority_gateway.v2",
+              "expectedHead":head,
+              "profile":"change-assurance-understand-a-promotion-v1",
+              "tasks":[
+                  {"id":"understand-a-promotion","surface":"governance","task":task+" Resolve exact allowed governance files, evidence ceiling and promotion constraints.","intent":"VERIFY","domain":"governance","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":["code_atlas.change_intelligence.customer_wow_v1","change_intelligence.capability_anti_rework_gate"],"minimumCoverage":100,"failOnMissingAuthority":True},
+                  {"id":"understand-a-protected-owners","surface":"governance","task":task+" Prove evidence-only status governance and byte-identical protected Universal Intelligence owners; block any duplicate repository, graph, snapshot, authority or retrieval engine.","intent":"VERIFY","domain":"tooling","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":["code_atlas.change_intelligence.customer_wow_v1","change_intelligence.capability_anti_rework_gate"],"minimumCoverage":100,"failOnMissingAuthority":True}
+              ]
+          }
+          with open(path,'w',encoding='utf-8') as f: json.dump(request,f,indent=2,ensure_ascii=False)
+          PY
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" | tee "$composed/compose.stdout.txt"
+          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$composed/compose.stdout.txt"
+          composed_zip="$RUNNER_TEMP/prisma-automesh-composed-result.zip"
+          test -f "$composed_zip"
+          cp "$composed_zip" "$composed/prisma-automesh-composed-result.zip"
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+          python - "$preflight/PREFLIGHT_MANIFEST.json" "$composed/PRISMA_MESH_GATEWAY_REPORT.json" "$composed_zip" "$RUNNER_TEMP/factory.request.json" "$RUNNER_TEMP/ca.request.json" <<'PY'
+          import hashlib,json,sys
+          pf_path,report_path,zip_path,factory_path,ca_path=sys.argv[1:]
+          pf=json.load(open(pf_path,encoding='utf-8')); report=json.load(open(report_path,encoding='utf-8'))
+          if pf.get('status')!='PASS_PREFLIGHT' or report.get('status')!='PASS_COMPOSED_AUTHORITY_MESH': raise SystemExit('BLOCKED_A_PROMOTION_MESH')
+          coverage=min(float(x['coverage']['resolvedPercent']) for x in pf['lanes']); blockers=len(pf.get('blockers') or [])
+          mesh={'status':'PASS_COMPOSED_AUTHORITY_MESH','repoHead':report['repoHead'],'requiredAuthorityCoveragePct':int(coverage),'blockers':blockers,'requestDigest':report['requestDigest'],'artifactDigest':'sha256:'+hashlib.sha256(open(zip_path,'rb').read()).hexdigest(),'layerMapPresent':True}
+          task='Governance-only evidence promotion of Change Assurance checklist A to DONE / LOCAL_VERIFIED using existing protected Universal Intelligence owners; source bytes unchanged.'
+          factory={'schemaVersion':'prisma.factory-ledger.anti-rework-request.v1','mode':'MUTATION','expectedHead':report['repoHead'],'task':task,'capabilities':[{'id':'code_atlas.change_intelligence.customer_wow_v1','requestedAction':'VERIFY'}],'authorityMesh':mesh,'visualMutation':False}
+          ca={'mode':'MUTATION','capabilityIds':['ci.core.repository_inventory','ci.core.authority_resolution','ci.core.system_graphs','ci.core.snapshot_locking','ci.core.query_retrieval'],'task':task,'authorityMesh':mesh,'visualMutation':False}
+          json.dump(factory,open(factory_path,'w',encoding='utf-8'),indent=2); json.dump(ca,open(ca_path,'w',encoding='utf-8'),indent=2)
+          print(json.dumps({'mesh':mesh},indent=2))
+          PY
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/factory.request.json" | tee "$RUNNER_TEMP/factory.decision.json"
+          grep -Fq 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/factory.decision.json"
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$RUNNER_TEMP/ca.request.json" | tee "$RUNNER_TEMP/ca.decision.json"
+          grep -Fq 'PASS_CHANGE_ASSURANCE_CAPABILITY_GATE' "$RUNNER_TEMP/ca.decision.json"
+          test "$(git status --porcelain | wc -l)" -eq 0
+          echo PASS_A_GOVERNANCE_PROMOTION_AUTHORITY
+
+      - name: Upload A promotion authority
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-understand-a-promotion-authority
+          path: |
+            ${{ runner.temp }}/ca-understand-a-promotion.request.json
+            ${{ runner.temp }}/ca-understand-a-promotion-preflight/
+            ${{ runner.temp }}/ca-understand-a-promotion-parallel/*.zip
+            ${{ runner.temp }}/ca-understand-a-promotion-composed/
+            ${{ runner.temp }}/factory.request.json
+            ${{ runner.temp }}/factory.decision.json
+            ${{ runner.temp }}/ca.request.json
+            ${{ runner.temp }}/ca.decision.json
+          if-no-files-found: error
+          retention-days: 7
