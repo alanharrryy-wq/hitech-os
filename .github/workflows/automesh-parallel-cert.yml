@@ -55,3 +55,25 @@ jobs:
 
       - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
         run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+
+      - name: Run task-exact Change Assurance Authority Mesh
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/ca-authority-mesh"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            --repo . \
+            --out "$RUNNER_TEMP/ca-authority-mesh" \
+            --surface governance \
+            --workers 18 \
+            --shards 54 \
+            --task "Formalizar PRISMA Change Assurance como nombre comercial definitivo de Code Atlas, instalar o completar un capability checklist V1 machine-enforced basado en UNDERSTAND/RESOLVE/AUTHORIZE/OBSERVE/VERIFY/PROVE y A–J Definition of Done, conectar product-name/capability/claim/no-fake-green gates a CI, y migrar referencias actuales de PRISMA Change Intelligence conservando únicamente aliases de compatibilidad y evidencia histórica explícita. No reconstruir Universal Intelligence ni Customer Wow; no ampliar runtime/product scope fuera de Code Atlas y su documentación/quality/contracts."
+
+      - name: Upload task-exact Authority Mesh evidence
+        if: always() && runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ca-authority-mesh-preflight
+          path: ${{ runner.temp }}/ca-authority-mesh/*.zip
+          if-no-files-found: error
+          retention-days: 7
