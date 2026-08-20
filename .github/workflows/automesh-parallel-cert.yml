@@ -2,8 +2,7 @@ name: AutoMesh Parallel Certification
 
 on:
   pull_request:
-    paths:
-      - '.github/workflows/automesh-parallel-cert.yml'
+    paths: ['.github/workflows/automesh-parallel-cert.yml']
   workflow_dispatch:
 
 permissions:
@@ -20,158 +19,82 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - name: Checkout exact current main
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-
-      - name: Compile graph owners
+      - name: Compile and self-test
         shell: bash
         run: |
           set -euo pipefail
-          python -m py_compile \
-            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
-            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
-            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
-            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
-            tools/code-atlas/src/code_atlas/intelligence/repository.py \
-            tools/code-atlas/src/code_atlas/intelligence/authority.py \
-            tools/code-atlas/src/code_atlas/intelligence/graphs.py \
-            tools/code-atlas/src/code_atlas/intelligence/engine.py \
-            tools/code-atlas/tests/test_operational_universal_intelligence.py \
-            tools/code-atlas/tests/test_operational_change_intelligence_binding.py
+          python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/src/code_atlas/intelligence/repository.py tools/code-atlas/src/code_atlas/intelligence/authority.py tools/code-atlas/src/code_atlas/intelligence/graphs.py
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
           test "$(git status --porcelain | wc -l)" -eq 0
-
-      - name: Run task-exact C Authority Mesh
+      - name: Run task-exact C mesh
         shell: bash
         run: |
           set -euo pipefail
           head_sha="$(git rev-parse HEAD)"
-          request="$RUNNER_TEMP/ca-edge-c.request.json"
-          preflight="$RUNNER_TEMP/ca-edge-c-preflight"
-          parallel="$RUNNER_TEMP/ca-edge-c-parallel"
-          composed="$RUNNER_TEMP/ca-edge-c-composed"
-          mkdir -p "$preflight" "$parallel" "$composed"
+          request="$RUNNER_TEMP/c.request.json"; pre="$RUNNER_TEMP/c-pre"; par="$RUNNER_TEMP/c-par"; comp="$RUNNER_TEMP/c-comp"
+          mkdir -p "$pre" "$par" "$comp"
           python - "$request" "$head_sha" <<'PY'
           import json,sys
-          path,head=sys.argv[1],sys.argv[2]
-          base=(
-            "PRISMA Change Assurance V1 checklist C / UNDERSTAND / Edge provenance is currently PARTIAL and doNotRebuild=true. "
-            "Definition of Done: material graph edges expose source/provenance and confidence or remain inference/unknown. "
-            "Inspect existing protected Universal Intelligence graph owners without rebuilding them. Determine exact edge families that already carry explicit evidence/provenance/confidence, exact edge families that omit confidence or provenance, whether omissions are material to checklist C, and whether the canonical next path is a bounded adapter/normalizer under ci.core.system_graphs rather than modifying or duplicating repository discovery, authority discovery, graphs, snapshots, indexing or retrieval. "
-            "Any future adapter must preserve Candidate != Authority, Retrieval != proof, Impact Radius != Authorization, and must mark unsupported/unprovable edge support as inferred/unknown rather than inventing provenance. "
-            "This preflight is read-only only. No source, governance, product runtime, DB, Prisma, process, port or deploy mutation."
-          )
-          common=[
-            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
-            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
-            "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
-            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
-            "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
-            "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
-            "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
-            "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md",
-            "tools/code-atlas/src/code_atlas/intelligence/repository.py",
-            "tools/code-atlas/src/code_atlas/intelligence/authority.py",
-            "tools/code-atlas/src/code_atlas/intelligence/graphs.py",
-            "tools/code-atlas/src/code_atlas/intelligence/engine.py",
-            "tools/code-atlas/tests/test_operational_universal_intelligence.py",
-            "tools/code-atlas/tests/test_operational_change_intelligence_binding.py"
-          ]
+          path,head=sys.argv[1:]
+          base=("PRISMA Change Assurance V1 checklist C / UNDERSTAND / Edge provenance is PARTIAL and doNotRebuild=true. Definition of Done: material graph edges expose source/provenance and confidence or remain inference/unknown. Inspect existing protected Universal Intelligence graph owners read-only. Determine edge families that omit confidence/provenance, whether omissions are material, and whether the canonical next path is only a bounded adapter under existing ci.core.system_graphs, never a second graph engine. Any unsupported edge support must remain inferred/unknown. No source, governance, product/runtime, DB, process, port or deploy mutation.")
+          auth=["PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json","PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md","PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json","PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py","PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py","tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json","tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md","tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md","tools/code-atlas/src/code_atlas/intelligence/repository.py","tools/code-atlas/src/code_atlas/intelligence/authority.py","tools/code-atlas/src/code_atlas/intelligence/graphs.py","tools/code-atlas/src/code_atlas/intelligence/engine.py","tools/code-atlas/tests/test_operational_universal_intelligence.py","tools/code-atlas/tests/test_operational_change_intelligence_binding.py"]
           dirs=["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/intelligence","tools/code-atlas/tests","tools/code-atlas/docs"]
-          request={
-            "schemaVersion":"prisma_remote_authority_gateway.v2",
-            "expectedHead":head,
-            "profile":"change-assurance-edge-provenance-c-v1",
-            "tasks":[
-              {"id":"edge-c-gap-matrix","surface":"governance","task":base+" Resolve the edge-family evidence matrix and whether current source already satisfies C or must remain PARTIAL.","intent":"VERIFY","domain":"tooling","requiredAuthorities":common,"requiredDirectories":dirs,"requiredCapabilities":["ci.core.system_graphs","change_intelligence.capability_anti_rework_gate"],"minimumCoverage":100,"failOnMissingAuthority":True},
-              {"id":"edge-c-next-gate","surface":"governance","task":base+" Resolve anti-rework boundaries and the exact next gate if a gap is proven. Specifically determine whether a bounded adapter under the existing ci.core.system_graphs owner is the allowed extension, with exact files/tests/claim ceiling, while a second graph engine remains forbidden.","intent":"VERIFY","domain":"governance","requiredAuthorities":common,"requiredDirectories":dirs,"requiredCapabilities":["ci.core.system_graphs","change_intelligence.capability_anti_rework_gate"],"minimumCoverage":100,"failOnMissingAuthority":True}
-            ]
-          }
-          with open(path,'w',encoding='utf-8') as f: json.dump(request,f,indent=2,ensure_ascii=False)
+          caps=["code_atlas.change_intelligence.customer_wow_v1","change_intelligence.capability_anti_rework_gate"]
+          req={"schemaVersion":"prisma_remote_authority_gateway.v2","expectedHead":head,"profile":"change-assurance-edge-provenance-c-v1","tasks":[{"id":"edge-c-gap-matrix","surface":"governance","task":base+" Resolve the exact edge-family gap matrix and checklist status.","intent":"VERIFY","domain":"tooling","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":caps,"minimumCoverage":100,"failOnMissingAuthority":True},{"id":"edge-c-next-gate","surface":"governance","task":base+" Resolve anti-rework boundaries, exact allowed adapter files/tests and the next gate if the gap is proven.","intent":"VERIFY","domain":"governance","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":caps,"minimumCoverage":100,"failOnMissingAuthority":True}]}
+          json.dump(req,open(path,'w',encoding='utf-8'),indent=2)
           PY
-          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
-          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" --parallel 2 --workers 18 --shards 54
-          python -m code_atlas.motors.prisma_mesh_gateway compose --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" | tee "$composed/compose.stdout.txt"
-          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$composed/compose.stdout.txt"
-          composed_zip="$RUNNER_TEMP/prisma-automesh-composed-result.zip"
-          test -f "$composed_zip"
-          cp "$composed_zip" "$composed/prisma-automesh-composed-result.zip"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo . --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo . --request "$request" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$comp/compose.stdout.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$comp/compose.stdout.txt"
+          cp "$RUNNER_TEMP/prisma-automesh-composed-result.zip" "$comp/prisma-automesh-composed-result.zip"
           test "$(git status --porcelain | wc -l)" -eq 0
-
-      - name: Run edge provenance gap probe
+      - name: Probe raw edge provenance gaps
         shell: bash
         run: |
           set -euo pipefail
-          python -m unittest -v \
-            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_candidate_is_not_authority_without_repo_declaration \
-            tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_system_graphs_keep_architecture_distinct_from_visual \
-            tools.code-atlas.tests.test_operational_change_intelligence_binding.UniversalCustomerWowBindingTests.test_structured_universal_context_is_public_and_non_authoritative_by_projection \
-            | tee "$RUNNER_TEMP/edge-c-native-tests.txt"
-          python - "$RUNNER_TEMP/edge-c-gap-probe.json" <<'PY'
+          python -m unittest -v tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_candidate_is_not_authority_without_repo_declaration tools.code-atlas.tests.test_operational_universal_intelligence.UniversalIntelligenceTests.test_system_graphs_keep_architecture_distinct_from_visual tools.code-atlas.tests.test_operational_change_intelligence_binding.UniversalCustomerWowBindingTests.test_structured_universal_context_is_public_and_non_authoritative_by_projection | tee "$RUNNER_TEMP/c-tests.txt"
+          python - "$RUNNER_TEMP/c-probe.json" <<'PY'
           import json,subprocess,sys,tempfile
           from pathlib import Path
           from code_atlas.intelligence.repository import discover_repository
           from code_atlas.intelligence.authority import AuthorityRequest,discover_authorities
           from code_atlas.intelligence.graphs import build_system_graphs
-
-          def git(repo,*args):
-            return subprocess.run(['git',*args],cwd=repo,check=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.strip()
-
+          def git(repo,*a): return subprocess.run(['git',*a],cwd=repo,check=True,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.strip()
           with tempfile.TemporaryDirectory() as td:
-            repo=Path(td)/'edge fixture'; repo.mkdir(); (repo/'.code-atlas').mkdir(); (repo/'src').mkdir()
-            (repo/'src/b.py').write_text('VALUE=1\n',encoding='utf-8')
-            (repo/'src/a.py').write_text('from src.b import VALUE\n',encoding='utf-8')
-            (repo/'CODEOWNERS').write_text('/src/*.py @team\n',encoding='utf-8')
-            (repo/'AUTH_A.md').write_text('A\n',encoding='utf-8'); (repo/'AUTH_B.md').write_text('B\n',encoding='utf-8')
-            (repo/'.code-atlas/authority.json').write_text(json.dumps({'authorities':[{'path':'AUTH_A.md','scope':'security'},{'path':'AUTH_B.md','scope':'security'}]}),encoding='utf-8')
-            git(repo,'init'); git(repo,'config','user.email','c@example.invalid'); git(repo,'config','user.name','C Fixture'); git(repo,'add','.'); git(repo,'commit','-m','fixture')
-            inv=discover_repository(repo)
-            auth=discover_authorities(repo,inv,request=AuthorityRequest(fail_on_missing=False))
-            graphs=build_system_graphs(repo,inv,auth,changed_paths=['src/b.py'])
-            families={}
-            for name in ('dependencyGraph','ownershipGraph','evidenceGraph','authorityGraph'):
-              edges=graphs[name].get('edges') or []
-              families[name]={
-                'edgeCount':len(edges),
-                'missingConfidence':[e for e in edges if not str(e.get('confidence') or '').strip()],
-                'missingExplicitEvidenceOrProvenance':[e for e in edges if not any(str(e.get(k) or '').strip() for k in ('evidence','provenance','source'))],
-                'types':sorted({str(e.get('type') or '') for e in edges}),
-              }
-            assert families['dependencyGraph']['edgeCount']>=1 and not families['dependencyGraph']['missingConfidence']
-            assert families['ownershipGraph']['edgeCount']>=1 and not families['ownershipGraph']['missingConfidence']
-            assert families['authorityGraph']['edgeCount']>=1 and families['authorityGraph']['missingConfidence']
-            assert any(e.get('type')=='authority-conflict' for e in families['authorityGraph']['missingConfidence'])
-            result={
-              'result':'PASS_EDGE_C_GAP_PROBE',
-              'checklistCReady':False,
-              'reason':'MATERIAL_AUTHORITY_GRAPH_EDGES_LACK_EXPLICIT_CONFIDENCE_AND_SOME_GRAPH_EDGES_LACK_EXPLICIT_PROVENANCE_FIELDS',
-              'families':families,
-              'allowedInference':'Missing edge support must remain inferred/unknown; no synthetic proof is authorized.',
-              'productionCertified':False
-            }
-            json.dump(result,open(sys.argv[1],'w',encoding='utf-8'),indent=2)
-            print('PASS_EDGE_C_GAP_PROBE')
+            r=Path(td)/'edge fixture'; r.mkdir(); (r/'.code-atlas').mkdir(); (r/'src').mkdir()
+            (r/'src/b.py').write_text('VALUE=1\n'); (r/'src/a.py').write_text('from src.b import VALUE\n'); (r/'CODEOWNERS').write_text('/src/*.py @team\n'); (r/'AUTH_A.md').write_text('A\n'); (r/'AUTH_B.md').write_text('B\n')
+            (r/'.code-atlas/authority.json').write_text(json.dumps({'authorities':[{'path':'AUTH_A.md','scope':'security'},{'path':'AUTH_B.md','scope':'security'}]}))
+            git(r,'init'); git(r,'config','user.email','c@example.invalid'); git(r,'config','user.name','C Fixture'); git(r,'add','.'); git(r,'commit','-m','fixture')
+            inv=discover_repository(r); au=discover_authorities(r,inv,request=AuthorityRequest(fail_on_missing=False)); g=build_system_graphs(r,inv,au,changed_paths=['src/b.py'])
+            fam={}
+            for n in ('dependencyGraph','ownershipGraph','evidenceGraph','authorityGraph'):
+              es=g[n].get('edges') or []; fam[n]={'edgeCount':len(es),'missingConfidence':[e for e in es if not str(e.get('confidence') or '').strip()],'missingExplicitEvidenceOrProvenance':[e for e in es if not any(str(e.get(k) or '').strip() for k in ('evidence','provenance','source'))],'types':sorted({str(e.get('type') or '') for e in es})}
+            assert fam['dependencyGraph']['edgeCount'] and not fam['dependencyGraph']['missingConfidence']
+            assert fam['ownershipGraph']['edgeCount'] and not fam['ownershipGraph']['missingConfidence']
+            assert fam['authorityGraph']['edgeCount'] and fam['authorityGraph']['missingConfidence']
+            assert any(e.get('type')=='authority-conflict' for e in fam['authorityGraph']['missingConfidence'])
+            out={'result':'PASS_EDGE_C_GAP_PROBE','checklistCReady':False,'reason':'MATERIAL_AUTHORITY_GRAPH_EDGES_LACK_EXPLICIT_CONFIDENCE_AND_SOME_GRAPH_EDGES_LACK_EXPLICIT_PROVENANCE_FIELDS','families':fam,'productionCertified':False}
+            json.dump(out,open(sys.argv[1],'w'),indent=2); print('PASS_EDGE_C_GAP_PROBE')
           PY
           test "$(git status --porcelain | wc -l)" -eq 0
-
       - name: Upload C evidence
         uses: actions/upload-artifact@v7
         with:
           name: ca-edge-c-evidence
           path: |
-            ${{ runner.temp }}/ca-edge-c.request.json
-            ${{ runner.temp }}/ca-edge-c-preflight/
-            ${{ runner.temp }}/ca-edge-c-parallel/*.zip
-            ${{ runner.temp }}/ca-edge-c-composed/
-            ${{ runner.temp }}/edge-c-native-tests.txt
-            ${{ runner.temp }}/edge-c-gap-probe.json
+            ${{ runner.temp }}/c.request.json
+            ${{ runner.temp }}/c-pre/
+            ${{ runner.temp }}/c-par/*.zip
+            ${{ runner.temp }}/c-comp/
+            ${{ runner.temp }}/c-tests.txt
+            ${{ runner.temp }}/c-probe.json
           if-no-files-found: error
           retention-days: 7
