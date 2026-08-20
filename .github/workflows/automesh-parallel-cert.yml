@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,189 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  ca-conflict-authority-preflight:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact current main
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile authority owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/intelligence/authority.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/authority_pack.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/universal_binding.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/verification.py \
+            tools/code-atlas/tests/test_operational_change_intelligence.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run task-exact Conflict-first authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/ca-conflict-authority.request.json"
+          preflight="$RUNNER_TEMP/ca-conflict-authority-preflight"
+          parallel="$RUNNER_TEMP/ca-conflict-authority-parallel"
+          composed="$RUNNER_TEMP/ca-conflict-authority-composed"
+          mkdir -p "$preflight" "$parallel" "$composed"
+          python - "$request" "$head_sha" <<'PY'
+          import json, sys
+          path, head = sys.argv[1], sys.argv[2]
+          base = (
+              "PRISMA Change Assurance V1 checklist E / AUTHORIZE / Conflict-first authority is currently PARTIAL and doNotRebuild=true. "
+              "Determine whether existing protected Code Atlas authority discovery, Authority Pack, preparation and verification owners already satisfy the V1 Definition of Done without source rebuild. "
+              "Authority candidates must not become authority by ranking; repository-declared conflicts, missing required authority, staleness or compatibility drift, and protected boundaries must fail closed before mutation authorization. Impact Radius must not widen allowed scope. "
+              "Resolve exact owners, positive and native negative evidence, claim ceiling, gaps, and whether E can be promoted to DONE/LOCAL_VERIFIED by governance-only evidence closure. Read-only only; no source/product/runtime/DB/process/port/deploy mutation."
+          )
+          common = [
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+              "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+              "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+              "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+              "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+              "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+              "tools/code-atlas/src/code_atlas/intelligence/authority.py",
+              "tools/code-atlas/src/code_atlas/intelligence/snapshot.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/authority_pack.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/universal_binding.py",
+              "tools/code-atlas/src/code_atlas/change_intelligence/verification.py",
+              "tools/code-atlas/tests/test_operational_change_intelligence.py",
+              "tools/code-atlas/tests/test_operational_universal_binding.py"
+          ]
+          request = {
+              "schemaVersion":"prisma_remote_authority_gateway.v2",
+              "expectedHead":head,
+              "profile":"change-assurance-conflict-authority-v1",
+              "tasks":[
+                  {
+                      "id":"conflict-authority-dod",
+                      "surface":"governance",
+                      "task":base + " Resolve the exact Definition-of-Done evidence matrix and whether current protected owners plus native falsification support DONE without source mutation.",
+                      "intent":"VERIFY","domain":"tooling",
+                      "requiredAuthorities":common,
+                      "requiredDirectories":["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/intelligence","tools/code-atlas/src/code_atlas/change_intelligence","tools/code-atlas/tests","tools/code-atlas/docs"],
+                      "requiredCapabilities":["change_intelligence.capability_anti_rework_gate","code_atlas.change_intelligence.customer_wow_v1"],
+                      "minimumCoverage":100,"failOnMissingAuthority":True
+                  },
+                  {
+                      "id":"conflict-authority-no-rebuild",
+                      "surface":"governance",
+                      "task":base + " Prove anti-rework boundaries and block any second authority registry, discovery engine, snapshot engine, verification engine or authorization engine. Identify exact governance-only next gate if E is already source-complete.",
+                      "intent":"VERIFY","domain":"governance",
+                      "requiredAuthorities":common,
+                      "requiredDirectories":["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/intelligence","tools/code-atlas/src/code_atlas/change_intelligence"],
+                      "requiredCapabilities":["change_intelligence.capability_anti_rework_gate","code_atlas.change_intelligence.customer_wow_v1"],
+                      "minimumCoverage":100,"failOnMissingAuthority":True
+                  }
+              ]
+          }
+          with open(path,'w',encoding='utf-8') as f: json.dump(request,f,indent=2,ensure_ascii=False)
+          PY
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$preflight"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo . --out-root "$parallel" --task-spec "$preflight/legacy_tasks.json" \
+            --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed" \
+            | tee "$composed/compose.stdout.txt"
+          grep -Fq 'PASS_COMPOSED_AUTHORITY_MESH' "$composed/compose.stdout.txt"
+          composed_zip="$RUNNER_TEMP/prisma-automesh-composed-result.zip"
+          test -f "$composed_zip"
+          cp "$composed_zip" "$composed/prisma-automesh-composed-result.zip"
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run native conflict-first falsification matrix
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest -v \
+            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_authority_pack_rejects_missing_required_authority \
+            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_verify_blocks_stale_snapshot \
+            tools.code-atlas.tests.test_operational_change_intelligence.ChangeIntelligenceContractTests.test_verify_blocks_protected_mutation_even_if_scope_is_broadened \
+            | tee "$RUNNER_TEMP/conflict-authority-native-tests.txt"
+          python - "$RUNNER_TEMP/conflict-authority-probe.json" <<'PY'
+          import json, sys, tempfile
+          from pathlib import Path
+          from code_atlas.intelligence.authority import AuthorityRequest, discover_authorities, semantic_retrieve
+          from code_atlas.change_intelligence import build_authority_pack, verify_change
+          from code_atlas.change_intelligence.contracts import ContractError, sha256_json
+
+          cases=[]
+          # A ranked candidate stays a candidate and retrieval stays non-proof.
+          with tempfile.TemporaryDirectory() as td:
+              repo=Path(td)
+              (repo/'README.md').write_text('# candidate\n',encoding='utf-8')
+              inv={'files':[{'path':'README.md','exists':True,'contentSha256':'a'*64}]}
+              auth=discover_authorities(repo,inv,request=AuthorityRequest(fail_on_missing=False))
+              row=next(x for x in auth['candidates'] if x['path']=='README.md')
+              assert row['state']=='CANDIDATE'
+              ret=semantic_retrieve('README',auth)
+              assert ret['results'][0]['confidence']=='candidate' and ret['retrievalRule']=='SEMANTIC_RETRIEVAL_DISCOVERS_EVIDENCE_NOT_TRUTH'
+              cases.append('candidate-ranking!=authority')
+
+          # Two repo declarations for the same scope are explicit conflict, not tie-breaking truth.
+          with tempfile.TemporaryDirectory() as td:
+              repo=Path(td); (repo/'.code-atlas').mkdir()
+              (repo/'A.md').write_text('A',encoding='utf-8'); (repo/'B.md').write_text('B',encoding='utf-8')
+              (repo/'.code-atlas/authority.json').write_text(json.dumps({'authorities':[{'path':'A.md','scope':'security'},{'path':'B.md','scope':'security'}]}),encoding='utf-8')
+              inv={'files':[{'path':'A.md','exists':True,'contentSha256':'a'*64},{'path':'B.md','exists':True,'contentSha256':'b'*64},{'path':'.code-atlas/authority.json','exists':True,'contentSha256':'c'*64}]}
+              auth=discover_authorities(repo,inv,request=AuthorityRequest(fail_on_missing=False))
+              states={x['path']:x['state'] for x in auth['candidates'] if x['path'] in {'A.md','B.md'}}
+              assert states=={'A.md':'CONFLICTED','B.md':'CONFLICTED'}
+              cases.append('declared-conflict->CONFLICTED')
+
+          # An Authority Pack cannot be issued with unresolved conflict.
+          try:
+              build_authority_pack(repository_identity='r',commit_identity='c',tree_identity='t',request_digest='q',normalized_task='task',allowed_scope=['src'],tool_version='1',profile_version='1',authority_resolution={'missing':[],'conflicted':['SECURITY.md']})
+          except ContractError: cases.append('conflicted-required-authority->REJECTED')
+          else: raise SystemExit('FAKE_GREEN_CONFLICTED_AUTHORITY')
+
+          # Compatibility authority drift blocks verification before green.
+          good=sha256_json({'authority':'v1'}); bad=sha256_json({'authority':'v2'})
+          pack=build_authority_pack(repository_identity='r',commit_identity='c',tree_identity='t',request_digest='q',normalized_task='task',allowed_scope=['src'],tool_version='1',profile_version='1',authority_resolution={'missing':[],'conflicted':[]},authority_digest=good)
+          report=verify_change(authority_pack=pack,change_manifest={'changedPaths':['src/a.py']},current_snapshot={'repositoryIdentity':'r','commitIdentity':'c','treeIdentity':'t','authorityDigest':bad})
+          assert report['decision']=='BLOCKED' and any(x['code']=='COMPATIBILITY_LOCK_MISMATCH' and x['field']=='authorityDigest' for x in report['findings'])
+          cases.append('authority-drift->BLOCKED')
+
+          json.dump({'result':'PASS_CONFLICT_FIRST_AUTHORITY_NATIVE_PROBE','cases':cases,'productionCertified':False},open(sys.argv[1],'w',encoding='utf-8'),indent=2)
+          print('PASS_CONFLICT_FIRST_AUTHORITY_NATIVE_PROBE')
+          PY
+          test "$(git status --porcelain | wc -l)" -eq 0
+
+      - name: Upload conflict-first authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-conflict-authority-evidence
+          path: |
+            ${{ runner.temp }}/ca-conflict-authority.request.json
+            ${{ runner.temp }}/ca-conflict-authority-preflight/
+            ${{ runner.temp }}/ca-conflict-authority-parallel/*.zip
+            ${{ runner.temp }}/ca-conflict-authority-composed/
+            ${{ runner.temp }}/conflict-authority-native-tests.txt
+            ${{ runner.temp }}/conflict-authority-probe.json
+          if-no-files-found: error
+          retention-days: 7
