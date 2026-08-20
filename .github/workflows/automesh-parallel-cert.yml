@@ -69,10 +69,10 @@ jobs:
               "tasks": [
                   {
                       "id": "observe-f-owner-and-contract",
-                      "surface": "code_atlas",
+                      "surface": "governance",
                       "task": base + " Resolve canonical owner(s), protected existing owners, exact allowed files, contract/schema, positive tests, native negative tests, claim ceiling, evidence needed to move F from MISSING, and whether F may become DONE or only PARTIAL after the first implementation wave.",
                       "intent": "BUILD",
-                      "domain": "change_intelligence",
+                      "domain": "tooling",
                       "requiredAuthorities": [
                           "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
                           "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
@@ -141,7 +141,7 @@ jobs:
           python -m code_atlas.motors.prisma_mesh_gateway compose \
             --repo . --request "$request" --preflight "$preflight" --mesh-result "$parallel" --out "$composed"
           python - "$composed" <<'PY'
-          import json, pathlib, sys
+          import pathlib, sys
           root = pathlib.Path(sys.argv[1])
           candidates = list(root.rglob('AUTHORITY_MESH_REPORT.json')) + list(root.rglob('AUTHORITY_MESH_REPORT.md'))
           print('composed_files=', len(list(root.rglob('*'))))
