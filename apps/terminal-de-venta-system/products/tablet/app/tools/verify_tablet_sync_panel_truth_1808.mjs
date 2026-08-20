@@ -42,6 +42,7 @@ const route = readApp("app/api/pos/sync/panel/route.ts");
 const screen = readApp("components/sync/pending-offline-sync-panel-screen.tsx");
 const contract = readApp("src/lib/pending-offline-sync/sync-panel-contract.ts");
 const outbox = readApp("src/server/pos-outbox/index.ts");
+const syncPanel = readApp("src/server/pos-sync-panel/index.ts");
 const operationalGate = readApp("src/lib/operational-gate/can-sell.ts");
 const pcOrigin = readApp("src/server/sync/pc-origin.ts");
 const dispatcher = readApp("src/server/sync/dispatcher.ts");
@@ -120,6 +121,18 @@ check(
     screen.includes("if (!confirmed) return \"Estado de cola sin confirmar") &&
     screen.includes("emptyQueueMessage(filter, panelConfirmed)")
 );
+check(
+  "sent state is projected as a customer-facing KPI",
+  screen.includes("<span>Enviados</span>") &&
+    screen.includes("queueMetric(panel?.summary.sent)") &&
+    screen.includes("Esperando confirmación")
+);
+check(
+  "conflict is review-only in the customer surface",
+  screen.includes('const retryableCount = panelConfirmed && panel ? panel.summary.failed : 0') &&
+    screen.includes('item.status === "conflict" ? <em>Revisión requerida</em>') &&
+    screen.includes("no se reintentan automáticamente")
+);
 
 check(
   "SyncRisk contract remains governed ok-warn-danger only",
@@ -130,6 +143,28 @@ for (const state of ["PENDING", "SENT", "FAILED", "ACKED", "CONFLICT"]) {
 }
 check("Outbox preserves business scoping", outbox.includes("businessId: input.businessId"));
 check("Outbox preserves idempotency key", outbox.includes("idempotencyKey"));
+check(
+  "panel never advertises conflict as retryable",
+  syncPanel.includes('canRetry: status === "pending" || status === "failed"') &&
+    !syncPanel.includes('canRetry: status === "pending" || status === "failed" || status === "conflict"')
+);
+check(
+  "retry mutation excludes conflict states",
+  syncPanel.includes("const states: string[] = []") &&
+    syncPanel.includes('states.push("failed", "FAILED")') &&
+    syncPanel.includes('states.push("pending", "PENDING")') &&
+    !syncPanel.includes('["conflict", "CONFLICT"]') &&
+    !syncPanel.includes('states.push("conflict", "CONFLICT")')
+);
+check(
+  "retry mutation does not erase conflict evidence",
+  !syncPanel.includes("conflictedAt: null") &&
+    !syncPanel.includes("remoteConflictCode: null")
+);
+check(
+  "conflict copy is explicit and review-only",
+  syncPanel.includes("Requiere revisión; no se reintenta automáticamente.")
+);
 
 check(
   "license deny semantics remain present",
@@ -156,7 +191,12 @@ check(
     dispatcher.includes('result.status === "conflict"') &&
     dispatcher.includes('status: "acked"')
 );
-check("fix does not introduce !important", !route.includes("!important") && !screen.includes("!important"));
+check(
+  "dispatcher keeps conflict outside dispatchable statuses",
+  dispatcher.includes('const DISPATCHABLE_OUTBOX_STATUSES = ["pending", "failed", "PENDING", "FAILED"]') &&
+    !dispatcher.includes('const DISPATCHABLE_OUTBOX_STATUSES = ["pending", "failed", "conflict"')
+);
+check("fix does not introduce !important", !route.includes("!important") && !screen.includes("!important") && !syncPanel.includes("!important"));
 
 const failed = checks.filter((item) => !item.ok);
 for (const item of checks) {

@@ -137,7 +137,7 @@ function filterTitle(filter: FilterMode) {
   if (filter === "needs_attention") return "Por atender";
   if (filter === "pending") return "Pendientes por enviar";
   if (filter === "failed") return "Fallidos";
-  if (filter === "conflict") return "En revision";
+  if (filter === "conflict") return "En revisión";
   if (filter === "sent") return "Enviados";
   if (filter === "acked") return "Confirmados";
   return "Todo";
@@ -161,7 +161,7 @@ function assignmentLabel(state: string | null | undefined) {
 }
 
 function pcConnectionLabel(health: TabletPcHealth | null) {
-  if (!health) return "Revisando conexion";
+  if (!health) return "Revisando conexión";
   if (health.enabled === false) return "PC no configurada";
   if (health.ok || health.status === "online") return "PC disponible";
   if (health.status === "degraded") return "PC con aviso";
@@ -305,7 +305,7 @@ export function SyncWorkspace() {
   const pendingOrFailedCount = panelConfirmed && panel ? panel.summary.pending + panel.summary.failed : 0;
   const sentAwaitingAckCount = panelConfirmed && panel ? panel.summary.sent : 0;
   const sendableCount = pendingOrFailedCount + sentAwaitingAckCount;
-  const retryableCount = panelConfirmed && panel ? panel.summary.failed + panel.summary.conflict : 0;
+  const retryableCount = panelConfirmed && panel ? panel.summary.failed : 0;
   const primaryActionLabel = pendingOrFailedCount > 0 ? "Enviar pendientes" : sentAwaitingAckCount > 0 ? "Confirmar enviados" : "Enviar pendientes";
   const noteTone = dispatchTone(dispatchResult);
   const pcTone = pcConnectionTone(pcHealth);
@@ -336,7 +336,7 @@ export function SyncWorkspace() {
           <div>
             <span>Continuidad operativa</span>
             <h1>{headline}</h1>
-            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar, reintentar o revisar.</p>
+            <p>La Tablet puede seguir vendiendo; aquí ves qué falta por enviar, confirmar, reintentar o revisar.</p>
             <div className={styles.heroMeta} aria-label="Estado de conexión y revisión">
               <span className={[styles.metaPill, styles[`metaPill_${pcTone}`]].join(" ")}>{pcConnectionLabel(pcHealth)}</span>
               <span className={styles.metaPill}>Revisado {lastCheckedLabel}</span>
@@ -366,6 +366,11 @@ export function SyncWorkspace() {
             <small>Guardados para enviar</small>
           </article>
           <article>
+            <span>Enviados</span>
+            <strong>{queueMetric(panel?.summary.sent)}</strong>
+            <small>Esperando confirmación</small>
+          </article>
+          <article>
             <span>Fallidos</span>
             <strong>{queueMetric(panel?.summary.failed)}</strong>
             <small>Requieren reintento</small>
@@ -373,7 +378,7 @@ export function SyncWorkspace() {
           <article>
             <span>Revisión</span>
             <strong>{queueMetric(panel?.summary.conflict)}</strong>
-            <small>Atención antes de enviar</small>
+            <small>Requieren revisión; no se reintentan automáticamente</small>
           </article>
           <article>
             <span>Confirmados</span>
@@ -418,7 +423,7 @@ export function SyncWorkspace() {
                   <aside>
                     <strong>{item.attempts}</strong>
                     <small>intentos</small>
-                    {item.canRetry ? <em>Reintento disponible</em> : <em>Sin acción requerida</em>}
+                    {item.canRetry ? <em>Reintento disponible</em> : item.status === "conflict" ? <em>Revisión requerida</em> : <em>Sin acción requerida</em>}
                   </aside>
                 </article>
               ))
@@ -461,7 +466,7 @@ export function SyncWorkspace() {
           <summary>Detalle adicional</summary>
           <section className={styles.diagnostics}>
             <span>Cliente: {PRISMA_ORIGINAL_CUSTOMER.displayName}</span>
-            <span>Ultima revision: {lastCheckedLabel}</span>
+            <span>Última revisión: {lastCheckedLabel}</span>
             {pcHealth?.url ? <span>Destino PC configurado</span> : null}
             {panelConfirmed ? panel?.diagnostics.map((note) => <span key={note}>{note}</span>) : <span>Estado de cola sin confirmar</span>}
           </section>
