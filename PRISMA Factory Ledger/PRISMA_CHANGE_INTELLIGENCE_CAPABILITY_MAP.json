@@ -744,22 +744,47 @@
       "id": "C",
       "stage": "UNDERSTAND",
       "title": "Edge provenance",
-      "status": "PARTIAL",
+      "status": "DONE",
       "requiredForV1": true,
-      "claimBoundary": "Evidence-bounded; UNKNOWN/BLOCKED is valid and no stronger claim is permitted without proof.",
+      "claimBoundary": "LOCAL_VERIFIED bounded edge provenance only: the canonical intelligence context normalizes material graph edges with explicit provenance and confidence; existing edge evidence becomes structured provenance without mutating the raw graph producer; repository authority declaration/conflict edges are supported only from repository declaration facts; and any otherwise-supported edge lacking demonstrable edge-level provenance is downgraded to explicit unknown. This does not prove arbitrary-repository or all-language graph completeness, dynamic/runtime dependency completeness, production, enterprise, hosted, paid-pilot, legal/privacy or security readiness.",
       "evidence": [
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "path:tools/code-atlas/src/code_atlas/intelligence/edge_provenance.py",
+        "path:tools/code-atlas/src/code_atlas/intelligence/engine.py",
+        "path:tools/code-atlas/src/code_atlas/intelligence/graphs.py",
+        "path:tools/code-atlas/tests/test_operational_edge_provenance.py",
+        "PR #352 / merge c32644cdc0691668b9a1a27251af10b03aecf167",
+        "C implemented-byte evidence run 32406412712 / artifact 9420480680",
+        "C implemented artifact sha256:63aed1b79031a3f50354c862c2fcd5fcc74842fc28c8b5fc5e44b4d540d2fb12",
+        "C implemented composed Authority Mesh sha256:82be3a4175333cdafb482d21d06941ee42ca25d0827d6b81fad64ccc1f32f6e1",
+        "C focused evidence: 9/9 tests; Code Atlas operational hardening 143/143 on Ubuntu with Windows/macOS lanes green",
+        "protected raw graph producer graphs.py remained blob a595fe69b33e297e89259c76349e73d9aec89325",
+        "C promotion authority run 32407301388 / artifact 9420787014",
+        "C promotion artifact sha256:202157e1649e2bfcdacb09bc34595d4852fd8fbdc7f8ceeba3d71c788fcfe623",
+        "C promotion composed Authority Mesh sha256:9dc5ea2c0f06d57afe3eb65696ee0a1e78ea39838744868f701caa06c755f459",
+        "C promotion request digest d5f044f312c9a1a1f39a53797506634e62a07093d02db5c392fdd58ec7659e37",
+        "Factory gate decision 9e141e3fabe715b9c70c11a2e7bfa7f6d91695143a92ed3d625fb326487c5b94",
+        "Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE for ci.core.system_graphs"
       ],
       "tests": [
-        "bounded positive evidence"
+        "test_authority_declaration_and_conflict_use_repository_declaration_provenance",
+        "test_engine_exposes_normalized_edges_from_repository_facts",
+        "test_existing_evidence_becomes_structured_provenance_without_mutating_raw_graph",
+        "test_unproven_supported_edge_is_downgraded_to_unknown",
+        "PASS_CHANGE_ASSURANCE_C_IMPLEMENTED_EVIDENCE on run 32406412712"
       ],
       "negativeTests": [
-        "missing/contradictory/unsupported evidence must not become green"
+        "supported edge without demonstrable edge-level provenance is downgraded to confidence=unknown with an explicit unresolved reason",
+        "authority declaration/conflict edges cannot become supported from candidates, retrieval, profiles or inference; repository declaration facts are required",
+        "normalization returns a copy and does not mutate the protected raw graph output",
+        "missing, contradictory or unsupported provenance must not become green"
       ],
       "knownBlindSpots": [
-        "bounded evidence does not prove universal completeness"
+        "Bounded repository facts do not prove arbitrary-repository or all-language graph completeness.",
+        "Static edge provenance does not prove complete dynamic/runtime dependency behavior or runtime-only relationships.",
+        "The normalizer can only preserve or downgrade what canonical repository evidence exposes; it does not manufacture missing relationships.",
+        "This evidence does not prove production, enterprise IAM/security, hosted multi-tenant, legal/privacy, paid-pilot or customer deployment readiness."
       ],
-      "nextEvidence": "advance only through the next evidence gate recorded for this item",
+      "nextEvidence": "REUSE_DONE_BASELINE; recertify only after graph edge schema, authority declaration/conflict semantics, edge-provenance normalization, canonical graph exposure or confidence downgrade rules change. Keep the raw graph producer protected and do not rebuild canonical graph extraction.",
       "owner": "code_atlas.intelligence",
       "doNotRebuild": true
     },
@@ -1072,18 +1097,18 @@
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
   },
   "lastGovernanceMutation": {
-    "kind": "UNDERSTAND_A_LOCAL_VERIFICATION_PROMOTION",
-    "sourceHead": "4696cfb09cd86697272d2ae6c8414b6f68bf689a",
-    "technicalEvidenceRunId": 32343790105,
-    "technicalEvidenceArtifactId": 9397298558,
-    "technicalEvidenceArtifactSha256": "bc02dd95e08df5514a4e3e841a5f25946a2763ac3405dcc8291e7551cffb44fc",
-    "technicalEvidenceComposedSha256": "822564dd715b839e2ef7de9a96ec8681c0d311d0174ddf911f5b0c987cc7571d",
-    "authorityRunId": 32344110362,
-    "authorityArtifactId": 9397402597,
-    "authorityArtifactSha256": "2efed86736438909bf9537c2a14689e39a2c9e3c7860312b0e797edc7c6d22da",
-    "composedAuthoritySha256": "8be5152e3ae7a30fb084f17981f157f58b4caa15373cfe7cfd5d5f23e6d98bde",
-    "requestDigest": "af4d8a8e79cccbcadb12479ededf85e3020e6958132eeac617e4add88ea3ea02",
-    "factoryGateDecisionDigest": "1803aafdc371a4c40cca514f387b2ef2bfe47ae09ddbb0e1e6ec3a86149900e0",
+    "kind": "UNDERSTAND_C_EDGE_PROVENANCE_LOCAL_VERIFICATION_PROMOTION",
+    "sourceHead": "c32644cdc0691668b9a1a27251af10b03aecf167",
+    "technicalEvidenceRunId": 32406412712,
+    "technicalEvidenceArtifactId": 9420480680,
+    "technicalEvidenceArtifactSha256": "63aed1b79031a3f50354c862c2fcd5fcc74842fc28c8b5fc5e44b4d540d2fb12",
+    "technicalEvidenceComposedSha256": "82be3a4175333cdafb482d21d06941ee42ca25d0827d6b81fad64ccc1f32f6e1",
+    "authorityRunId": 32407301388,
+    "authorityArtifactId": 9420787014,
+    "authorityArtifactSha256": "202157e1649e2bfcdacb09bc34595d4852fd8fbdc7f8ceeba3d71c788fcfe623",
+    "composedAuthoritySha256": "9dc5ea2c0f06d57afe3eb65696ee0a1e78ea39838744868f701caa06c755f459",
+    "requestDigest": "d5f044f312c9a1a1f39a53797506634e62a07093d02db5c392fdd58ec7659e37",
+    "factoryGateDecisionDigest": "9e141e3fabe715b9c70c11a2e7bfa7f6d91695143a92ed3d625fb326487c5b94",
     "status": "LOCAL_VERIFIED",
     "productionCertified": false
   }
