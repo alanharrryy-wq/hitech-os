@@ -615,6 +615,29 @@
       [
         "code_atlas.change_intelligence.customer_wow_v1"
       ]
+    ],
+    [
+      "ci.observe.change_comparison",
+      "OBSERVE change comparison adapter",
+      "observe",
+      "code_atlas.change_intelligence",
+      "change_intelligence",
+      "BUILD",
+      "NOT_CONNECTED",
+      false,
+      [
+        "authority:run:32335660623/artifact:9394574248",
+        "capability:ci.core.snapshot_locking",
+        "capability:ci.change.architecture_delta"
+      ],
+      "BUILD_BOUNDED_OBSERVE_CHANGE_COMPARISON_UNDER_FRESH_EXACT_MUTATION_GATE",
+      "Build only a deterministic comparison adapter over existing snapshot locking and Architecture Delta normalization. No second snapshot, graph, delta, verification, evidence or runner engine.",
+      [
+        "ci.core.snapshot_locking",
+        "ci.change.architecture_delta",
+        "ci.change.verify",
+        "ci.evidence.report_bundle"
+      ]
     ]
   ],
   "productIdentity": {
@@ -773,8 +796,8 @@
       "knownBlindSpots": [
         "bounded evidence does not prove universal completeness"
       ],
-      "nextEvidence": "advance only through the next evidence gate recorded for this item",
-      "owner": "UNRESOLVED_V1_OWNER",
+      "nextEvidence": "BUILD_CI_OBSERVE_CHANGE_COMPARISON_WITH_DETERMINISTIC_POSITIVE_AND_NATIVE_NEGATIVE_TESTS",
+      "owner": "code_atlas.change_intelligence",
       "doNotRebuild": false
     },
     {
@@ -958,10 +981,21 @@
       "ci.human.external_measurement",
       "ci.agent.independent_replication",
       "ci.hosted.multi_tenant",
-      "ci.enterprise.iam_security"
+      "ci.enterprise.iam_security",
+      "ci.observe.change_comparison"
     ],
     "protectedLegacyCapabilityRowCountAtMigration": 31,
     "createsSecondRegistry": false,
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
+  },
+  "lastGovernanceMutation": {
+    "kind": "OBSERVE_F_OWNER_REGISTRATION",
+    "repoHead": "7d5637685b86e910e2dd5aaa00a61f88422d34d3",
+    "authorityMeshRunId": 32335660623,
+    "authorityArtifactId": 9394574248,
+    "authorityArtifactSha256": "595a6dd6833e6e47bf307a87d1d323a8655520547943417de4681ffefca547fc",
+    "requestDigest": "e3d75b9286b4983c87dd999343b5c0a48d2ff12f5745bf67dfbefba5cb4939e9",
+    "status": "PASS_COMPOSED_AUTHORITY_MESH",
+    "productionCertified": false
   }
 }
