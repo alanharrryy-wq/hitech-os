@@ -16,8 +16,8 @@ concurrency:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   TARGET_SHA: 45762d1a6251195dae0e229dfe6fa1aed74645fa
-  AUTHORITY_MAIN_SHA: 612d8d6149322b44f45f933fd773234cf2d3b537
-  AUTHORITY_REQUEST_ID: eca0c6daae0b69b4
+  AUTHORITY_MAIN_SHA: 7d5637685b86e910e2dd5aaa00a61f88422d34d3
+  AUTHORITY_REQUEST_ID: 2fc8eba4c2059ef7
   APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
   EVIDENCE_DIR: evidence/tablet-sync-wave1-postmerge
 
@@ -240,6 +240,8 @@ jobs:
               current=scenario;
               await cdp.send('Page.navigate',{url:`http://127.0.0.1:3120/sync?evidence=${encodeURIComponent(scenario.name)}&t=${Date.now()}`},sessionId);
               await sleep(4500);
+              await cdp.send('Runtime.evaluate',{expression:`(()=>{for(const d of document.querySelectorAll('details')) d.open=true;return true;})()`,returnByValue:true},sessionId);
+              await sleep(250);
               const inspected=await cdp.send('Runtime.evaluate',{expression:`(()=>{const text=document.body.innerText;const arts=[...document.querySelectorAll('article')];const wanted=${JSON.stringify(kpiLabels)};const kpis={};for(const a of arts){const label=a.querySelector('span')?.textContent?.trim()??'';if(wanted.includes(label))kpis[label]=a.querySelector('strong')?.textContent?.trim()??'';}return{text,kpis};})()`,returnByValue:true},sessionId);
               const dom=inspected.result.value;
               const checks={fiveKpis:kpiLabels.every(k=>Object.hasOwn(dom.kpis,k)),sentKpi:Object.hasOwn(dom.kpis,'Enviados'),localFirst:dom.text.includes('Venta local disponible aunque PC no responda')};
