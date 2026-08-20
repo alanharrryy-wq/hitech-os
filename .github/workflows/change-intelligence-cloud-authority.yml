@@ -98,7 +98,7 @@ jobs:
         env:
           PCI_PLAYWRIGHT_ROOT: ${{ runner.temp }}/pci-playwright/node_modules/playwright
           PCI_BASE_URL: http://127.0.0.1:8316
-          PCI_EVIDENCE_DIR: ${{ github.workspace }}/pci-runtime-evidence
+          PCI_EVIDENCE_DIR: ${{ runner.temp }}/pci-runtime-evidence
           PCI_REPO_ROOT: ${{ github.workspace }}
           PCI_EXPECTED_REPOSITORY: prismahitech/hitech-os
         run: node apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-runtime-01.mjs
@@ -116,7 +116,7 @@ jobs:
         with:
           name: change-intelligence-cloud-runtime-evidence
           path: |
-            pci-runtime-evidence/
+            ${{ runner.temp }}/pci-runtime-evidence/
             ${{ runner.temp }}/pci-http.log
           if-no-files-found: warn
           retention-days: 14
