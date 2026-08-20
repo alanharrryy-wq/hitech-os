@@ -30,7 +30,7 @@ The canonical live status for every item lives in the single capability registry
 
 | ID | Stage | Definition of Done | Current governed status |
 |---|---|---|---|
-| A | UNDERSTAND | Universal bounded repository understanding | `PARTIAL` |
+| A | UNDERSTAND | Universal bounded repository understanding | `DONE` |
 | B | RESOLVE | Useful Impact Radius | `PARTIAL` |
 | C | UNDERSTAND | Edge provenance | `PARTIAL` |
 | D | RESOLVE | Better UNKNOWN | `PARTIAL` |
@@ -42,6 +42,8 @@ The canonical live status for every item lives in the single capability registry
 | J | PROVE | Utility evidence | `BLOCKED` |
 
 `V1 complete` is therefore **false**. This is intentional.
+
+Checklist A is now `DONE / LOCAL_VERIFIED`: existing Universal Intelligence owners provide neutral read-only repository discovery, explicit coverage, supported relationship evidence/confidence, explicit unresolved relationships, and `unclassified / confidence=unknown` for architecture not proven by repository facts. Sensitive-content boundaries remain intact, and profiles, derived indexes, projections and semantic retrieval cannot invent authority or truth. Focused run `32343790105` and promotion authority run `32344110362` passed with source bytes unchanged. Bounded external diversity is supporting evidence only and explicitly preserves zero-edge limitations. A does not prove arbitrary-repository completeness, complete semantics for every stack, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
 Checklist E is now `DONE / LOCAL_VERIFIED`: the existing authority discovery, snapshot locking, Authority Pack and Verify owners fail closed before mutation authorization. Ranking-only candidates remain candidates; repository-declared conflicts remain `CONFLICTED`; missing or conflicted required authority prevents pack issuance; stale snapshot, authority compatibility drift and protected-scope violations block. Focused run `32342173554` and governance authority run `32342601848` passed with source bytes unchanged. E preserves `Candidate != Authority`, `Retrieval != proof`, and `Impact Radius != Authorization`, and does not prove arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
