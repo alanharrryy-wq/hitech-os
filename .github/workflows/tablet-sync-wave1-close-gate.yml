@@ -1,0 +1,255 @@
+name: Tablet Sync WAVE1 Canonical Close Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/tablet-sync-wave1-close-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+jobs:
+  wave1-canonical-close-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
+        with:
+          ref: 6a3569bfbd7a853a3a9769412833aff79a78e78a
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify immutable baseline and gate tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "6a3569bfbd7a853a3a9769412833aff79a78e78a"
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build exact WAVE1 closure authority request
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/wave1-close.request.json"
+          python - "$request" <<'PY'
+          import json, sys
+          path = sys.argv[1]
+          head = "6a3569bfbd7a853a3a9769412833aff79a78e78a"
+          ledger = "PRISMA Factory Ledger/"
+          common = [
+              ledger + "PRISMA_FACTORY_LEDGER.json",
+              ledger + "PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+              ledger + "PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+              ledger + "PRISMA_EVIDENCE_INDEX.json",
+              ledger + "PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+              ledger + "tools/verify_prisma_anti_rework_gate.py",
+          ]
+          request = {
+              "schemaVersion": "v2",
+              "profile": "tablet-sync-wave1-canonical-close-gate-v1",
+              "expectedHead": head,
+              "tasks": [
+                  {
+                      "id": "wave1-ledger-close",
+                      "surface": "governance",
+                      "intent": "FIX",
+                      "domain": "governance",
+                      "task": (
+                          "TABLET_SYNC_OPERATIONS_CENTER_WAVE1_V1 canonical governance closure using merged product "
+                          "PR #322 (merge 45762d1a6251195dae0e229dfe6fa1aed74645fa) and strongest audited post-merge "
+                          "evidence PR #332: run 32336243809 attempt 2, artifact 9394817154, "
+                          "digest sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026, "
+                          "Authority Mesh run 32335709638 artifact 9394591369 id 2fc8eba4c2059ef7, focused verifier "
+                          "44/44, final PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN. Authorize only minimal "
+                          "non-visual governance reconciliation so WAVE1 is no longer a future nextGate. Preserve canonical "
+                          "capability tablet.sync.runtime_truth classification DONE, doNotRebuild=true and truthful "
+                          "RUNTIME_VERIFIED maturity ceiling. Preserve explicit claim ceilings: no DB-backed route E2E, "
+                          "no hosted production, no real PC transport certification, no conflict-resolution ownership/action, "
+                          "no future drift, no unrelated Tablet surfaces. Candidate write set only: PRISMA Factory Ledger/"
+                          "PRISMA_FACTORY_LEDGER.json; PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json; "
+                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json; PRISMA Factory Ledger/"
+                          "PRISMA_EVIDENCE_INDEX.json. No product source/runtime/CSS/RIFAT/DB/Prisma/workflow/deploy/process/"
+                          "port/Tablet/PC/Mobile/Shared UI/Chart Lab/licensing architecture mutation. Return exact minimal "
+                          "write set and blockers; no implementation."
+                      ),
+                      "requiredAuthorities": common + [
+                          "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+                          "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs",
+                      ],
+                      "requiredDirectories": [
+                          "PRISMA Factory Ledger",
+                          "apps/terminal-de-venta-system/products/tablet/app/tools",
+                      ],
+                      "requiredCapabilities": ["tablet.sync.runtime_truth"],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True,
+                  },
+                  {
+                      "id": "wave1-claim-ceiling-guard",
+                      "surface": "governance",
+                      "intent": "VERIFY",
+                      "domain": "testing",
+                      "task": (
+                          "Independent no-fake-green and anti-rework guard for Tablet Sync WAVE1 canonical closure on exact "
+                          "current HEAD. Verify canonical and supplemental Factory Ledger records can reconcile merged PR #322 "
+                          "plus audited PR #332 evidence without rebuilding tablet.sync.runtime_truth, without promoting above "
+                          "RUNTIME_VERIFIED, and without claiming DB-backed route E2E, hosted production, real PC transport, "
+                          "conflict-resolution ownership/action, future drift, or unrelated Tablet surfaces. Verify WAVE1 is "
+                          "removed from future nextGate and the post-WAVE1 nextGate is bounded to WAVE2 authority/discovery or "
+                          "read-only recertification, never BUILD/REBUILD of the DONE capability. Return exact safe write "
+                          "boundaries and blockers only; no implementation."
+                      ),
+                      "requiredAuthorities": common + [
+                          "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs"
+                      ],
+                      "requiredDirectories": ["PRISMA Factory Ledger"],
+                      "requiredCapabilities": ["tablet.sync.runtime_truth"],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True,
+                  },
+              ],
+          }
+          with open(path, "w", encoding="utf-8") as fh:
+              json.dump(request, fh, ensure_ascii=False, indent=2)
+              fh.write("\n")
+          PY
+
+      - name: Run fresh exact-task Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/wave1-close.request.json"
+          pre="$RUNNER_TEMP/wave1-close-pre"
+          par="$RUNNER_TEMP/wave1-close-par"
+          comp="$RUNNER_TEMP/wave1-close-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --out-root "$par" \
+            --task-spec "$pre/legacy_tasks.json" \
+            --parallel 2 \
+            --workers 18 \
+            --shards 54 \
+            --max-files 120 \
+            --max-mb 40
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --preflight "$pre" \
+            --mesh-result "$par" \
+            --out "$comp" | tee "$RUNNER_TEMP/wave1-close-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/wave1-close-compose.txt"
+          test -f "$RUNNER_TEMP/wave1-close-comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Run universal Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          factory_request="$RUNNER_TEMP/wave1-factory-mutation.request.json"
+          python - \
+            "$RUNNER_TEMP/wave1-close-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/wave1-close-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/wave1-close-comp/prisma-automesh-composed-result.zip" \
+            "$factory_request" <<'PY'
+          import hashlib, json, sys
+          report_path, preflight_path, artifact_path, out_path = sys.argv[1:]
+          report = json.load(open(report_path, encoding="utf-8"))
+          pre = json.load(open(preflight_path, encoding="utf-8"))
+          artifact_digest = hashlib.sha256(open(artifact_path, "rb").read()).hexdigest()
+          coverage = min(float((lane.get("coverage") or {}).get("resolvedPercent", 0)) for lane in pre["lanes"])
+          mesh = {
+              "status": report["status"],
+              "repoHead": report["repoHead"],
+              "requiredAuthorityCoveragePct": coverage,
+              "blockers": len(pre.get("blockers") or []),
+              "requestDigest": report["requestDigest"],
+              "artifactDigest": artifact_digest,
+              "layerMapPresent": False,
+          }
+          request = {
+              "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+              "mode": "MUTATION",
+              "expectedHead": "6a3569bfbd7a853a3a9769412833aff79a78e78a",
+              "task": (
+                  "Close TABLET_SYNC_OPERATIONS_CENTER_WAVE1_V1 canonically by reconciling only the four Factory Ledger "
+                  "governance JSON records with merged PR #322 and audited post-merge PR #332 evidence. Preserve "
+                  "tablet.sync.runtime_truth as DONE / RUNTIME_VERIFIED / doNotRebuild=true; advance only to bounded "
+                  "post-WAVE1 discovery or read-only recertification and preserve all explicit claim ceilings."
+              ),
+              "capabilities": [
+                  {"id": "tablet.sync.runtime_truth", "requestedAction": "ADVANCE"}
+              ],
+              "authorityMesh": mesh,
+              "visualMutation": False,
+          }
+          with open(out_path, "w", encoding="utf-8") as fh:
+              json.dump(request, fh, ensure_ascii=False, indent=2)
+              fh.write("\n")
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            --request "$factory_request" | tee "$RUNNER_TEMP/wave1-factory-gate.txt"
+          grep -Fq PASS_ANTI_REWORK_GATE "$RUNNER_TEMP/wave1-factory-gate.txt"
+          grep -Fq '"errors": \[\]' "$RUNNER_TEMP/wave1-factory-gate.txt"
+          test -z "$(git status --porcelain)"
+
+      - name: Stage immutable gate evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/wave1-close-evidence"
+          mkdir -p "$out"
+          for path in \
+            "$RUNNER_TEMP/wave1-close.request.json" \
+            "$RUNNER_TEMP/wave1-close-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/wave1-close-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/wave1-close-comp/payload/MANIFEST.json" \
+            "$RUNNER_TEMP/wave1-close-comp/prisma-automesh-composed-result.zip" \
+            "$RUNNER_TEMP/wave1-factory-mutation.request.json" \
+            "$RUNNER_TEMP/wave1-factory-gate.txt"; do
+            if [ -f "$path" ]; then
+              cp "$path" "$out/$(basename "$path")"
+            fi
+          done
+          find "$out" -maxdepth 1 -type f -print
+
+      - name: Upload WAVE1 canonical close gate evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-sync-wave1-canonical-close-gate
+          path: ${{ runner.temp }}/wave1-close-evidence/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed unless machine gate passed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$RUNNER_TEMP/wave1-factory-gate.txt"
+          grep -Fq PASS_ANTI_REWORK_GATE "$RUNNER_TEMP/wave1-factory-gate.txt"
