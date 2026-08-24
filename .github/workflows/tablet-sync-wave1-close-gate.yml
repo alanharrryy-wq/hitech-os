@@ -212,8 +212,14 @@ jobs:
           PY
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
             --request "$factory_request" | tee "$RUNNER_TEMP/wave1-factory-gate.txt"
-          grep -Fq PASS_ANTI_REWORK_GATE "$RUNNER_TEMP/wave1-factory-gate.txt"
-          grep -Fq '"errors": \[\]' "$RUNNER_TEMP/wave1-factory-gate.txt"
+          python - "$RUNNER_TEMP/wave1-factory-gate.txt" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          if data.get("result") != "PASS_ANTI_REWORK_GATE":
+              raise SystemExit("FACTORY_GATE_RESULT_NOT_PASS")
+          if data.get("errors") != []:
+              raise SystemExit("FACTORY_GATE_ERRORS_NOT_EMPTY")
+          PY
           test -z "$(git status --porcelain)"
 
       - name: Stage immutable gate evidence
@@ -252,4 +258,9 @@ jobs:
         run: |
           set -euo pipefail
           test -f "$RUNNER_TEMP/wave1-factory-gate.txt"
-          grep -Fq PASS_ANTI_REWORK_GATE "$RUNNER_TEMP/wave1-factory-gate.txt"
+          python - "$RUNNER_TEMP/wave1-factory-gate.txt" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          if data.get("result") != "PASS_ANTI_REWORK_GATE" or data.get("errors") != []:
+              raise SystemExit("FACTORY_GATE_NOT_CLEAN_PASS")
+          PY
