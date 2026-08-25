@@ -1,25 +1,11 @@
 # PRISMA_APP_MOBILE_02_SECTIONS
 
-Entrega de iteración 02 para PRISMA App.
+**Authority status:** `SUPERSEDED_PRIMARY_IA`  
+**Superseded by:** `PRISMA_MOBILE_INTERFACE_CANON.md`  
+**Historical source:** `apps/terminal-de-venta-system/products/mobile/app/docs/prisma-app/archive/interface-history/PRISMA_APP_MOBILE_02_SECTIONS.md`
 
-## Resumen
+This compatibility path is intentionally retained so historical references do not break. The pre-canon document is preserved byte-for-byte at the historical source above.
 
-Convierte `/prisma-app` en una experiencia móvil organizada por secciones:
+Its former statements about primary navigation, ordering or mandatory sections are no longer normative. Current Mobile interface authority is `products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md` plus its contract.
 
-- Hoy
-- Ventas
-- Caja
-- Inventario
-- Alertas
-- Reportes
-- MultiSucursal
-
-## Decisión clave
-
-MultiSucursal queda separado como módulo avanzado. La app base debe ser entendible para cualquier cliente.
-
-## Verificación
-
-```powershell
-node "F:\repos\hitech-os\apps\terminal-de-venta-system\products\pc\app\tools\verify_prisma_app_mobile_02_sections.mjs" "F:\repos\hitech-os\apps\terminal-de-venta-system"
-```
+This tombstone does not delete or disable product code, APIs, runtime or verifiers.

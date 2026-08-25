@@ -1,37 +1,9 @@
 # PRISMA App Mobile 22 - Daily Brief
 
-## Objetivo
+**Authority status:** `HISTORICAL_CAPABILITY_EVIDENCE`  
+**Superseded by:** `PRISMA_MOBILE_INTERFACE_CANON.md`  
+**Historical source:** `archive/interface-history/PRISMA_APP_MOBILE_22_DAILY_BRIEF.md`
 
-Agregar un resumen ejecutivo móvil que el dueño pueda compartir por WhatsApp, correo o cierre de turno sin abrir PC ni hacer capturas manuales.
+This compatibility path remains for historical references and verifier file-dependencies. The original document is preserved byte-for-byte in the archive.
 
-## Alcance
-
-- Nuevo motor puro `prisma-mobile-daily-brief.ts`.
-- Nuevo componente `PrismaMobileDailyBrief`.
-- Nuevo endpoint `GET /api/mobile/daily-brief` con `no-store`.
-- Integración visual debajo de la Bandeja del Dueño.
-- Script `verify:daily-brief`.
-
-## Contrato
-
-El brief se deriva del snapshot móvil, Centro de Mando v20 y Bandeja del Dueño v21. No toca Tablet, PC ni `shared-kernel`.
-
-## Salida de producto
-
-El usuario ve:
-
-- resumen listo para WhatsApp;
-- asunto/cuerpo para correo;
-- KPIs compactos;
-- secciones por dueño, acciones inmediatas, seguimiento e inventario;
-- texto exportable para cierre operativo.
-
-## Validación
-
-```powershell
-pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system\products\mobile\app" run verify:daily-brief
-```
-
-## Riesgo residual
-
-El envío por WhatsApp/correo usa enlaces del navegador. Si el dispositivo no tiene app o cliente configurado, el navegador decide el destino. La generación del resumen sí queda dentro de PRISMA.
+Daily Brief code/API evidence may remain valid. Its former dashboard placement is no longer normative.

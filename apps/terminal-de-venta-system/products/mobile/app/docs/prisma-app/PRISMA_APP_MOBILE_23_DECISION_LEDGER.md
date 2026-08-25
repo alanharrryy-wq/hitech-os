@@ -1,19 +1,9 @@
 # PRISMA App Mobile 23 - Decision Ledger
 
-## Objetivo
-Agregar una bitácora móvil de decisiones para que el dueño vea qué señales se convirtieron en acciones, con evidencia, responsable sugerido, vencimiento operativo y texto auditable para cierre.
+**Authority status:** `HISTORICAL_CAPABILITY_EVIDENCE`  
+**Superseded by:** `PRISMA_MOBILE_INTERFACE_CANON.md`  
+**Historical source:** `archive/interface-history/PRISMA_APP_MOBILE_23_DECISION_LEDGER.md`
 
-## Alcance
-- Endpoint `/api/mobile/decision-ledger`.
-- Builder puro `buildPrismaMobileDecisionLedger`.
-- Componente `PrismaMobileDecisionLedger` integrado al dashboard móvil.
-- Gate `verify:decision-ledger`.
+This compatibility path remains for historical references and verifier file-dependencies. The original document is preserved byte-for-byte in the archive.
 
-## Criterio de salida
-- La bitácora se deriva de Centro de Mando, Bandeja del Dueño y Brief Diario.
-- No toca Tablet, PC ni `shared-kernel`.
-- No introduce copy de estado inconcluso.
-- Mantiene endpoint `no-store` y lectura dinámica.
-
-## Uso operativo
-La bitácora sirve para cierre, seguimiento del encargado y evidencia ligera de por qué se sugirió una acción.
+Decision Ledger code/API evidence may remain valid. Its former dashboard integration statement is no longer normative.
