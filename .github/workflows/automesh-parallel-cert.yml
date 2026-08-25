@@ -1,57 +1,203 @@
-name: AutoMesh Parallel Certification
+name: PC Wave 2 Canonical Close Authority
 
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: c5c84ed61c9dd24be70e761e5480a059b32e6ee8
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+  pc-wave2-close-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
         with:
+          ref: c5c84ed61c9dd24be70e761e5480a059b32e6ee8
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Verify immutable baseline and Wave 2 no-product-drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          changed="$(git diff --name-only 62c27a612b7647a72f673994846384dba510a193..HEAD -- \
+            apps/terminal-de-venta-system/prisma/migrations/20260819000000_canonical_schema_reproducibility/migration.sql \
+            apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices/route.ts \
+            apps/terminal-de-venta-system/products/pc/app/app/layout.tsx \
+            apps/terminal-de-venta-system/products/pc/app/components/customers/customer-workspace.tsx \
+            apps/terminal-de-venta-system/products/pc/app/components/layout/app-shell.tsx \
+            apps/terminal-de-venta-system/products/pc/app/components/licensing/pc-license-surface-provider.tsx \
+            apps/terminal-de-venta-system/products/pc/app/src/server/services/product-media.service.ts \
+            apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/verify_pc_wave2_schema_parity.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_license.mjs \
+            apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_runtime.mjs)"
+          test -z "$changed"
+          test -z "$(git status --porcelain)"
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Build task-exact closure request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/pc-wave2-close.request.json" <<'PY'
+          import json, sys
+          head = "c5c84ed61c9dd24be70e761e5480a059b32e6ee8"
+          ledger = [
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+            "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+          ]
+          wave2 = [
+            "apps/terminal-de-venta-system/prisma/migrations/20260819000000_canonical_schema_reproducibility/migration.sql",
+            "apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices/route.ts",
+            "apps/terminal-de-venta-system/products/pc/app/app/layout.tsx",
+            "apps/terminal-de-venta-system/products/pc/app/components/customers/customer-workspace.tsx",
+            "apps/terminal-de-venta-system/products/pc/app/components/layout/app-shell.tsx",
+            "apps/terminal-de-venta-system/products/pc/app/components/licensing/pc-license-surface-provider.tsx",
+            "apps/terminal-de-venta-system/products/pc/app/src/server/services/product-media.service.ts",
+            "apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py",
+            "apps/terminal-de-venta-system/products/pc/app/tools/verify_pc_wave2_schema_parity.py",
+            "apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_license.mjs",
+            "apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_runtime.mjs",
+          ]
+          caps = [
+            "data.canonical_schema_reproducibility",
+            "pc.customers.crud_runtime",
+            "pc.entitlement.surface_projection",
+            "pc.customers.clientes_visual_usability",
+            "pc.quality.customer_experience_wave2",
+          ]
+          task = (
+            "PC Wave 2 canonical governance closure only. Reconcile the already merged and certified PR #325 result into the canonical Factory Ledger projections. "
+            "PR #325 merged as 62c27a612b7647a72f673994846384dba510a193 and final certification workflow run 32330104885 passed Wave 1 regression, restricted Wave 2 and entitled Wave 2. "
+            "Entitled evidence artifact 9392771819 digest sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc; restricted artifact 9392756710 digest sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad. "
+            "The entitled bounded result is 300/300 assertions, 22 screenshots, zero console errors and zero page errors, and explicitly does not certify catalog CRUD, supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke, settings writes or hosted production. "
+            "No PC product/runtime/source mutation is authorized in this closure. No DB, Prisma, CSS, navigation, licensing rebuild, process, port or deploy mutation. Preserve claim ceilings and promote only evidence already demonstrated. "
+            "The next gate is PC enterprise mutations Wave 3 under fresh authority."
+          )
+          request = {
+            "schemaVersion":"v2",
+            "profile":"pc-wave2-canonical-close-v1",
+            "expectedHead":head,
+            "tasks":[
+              {
+                "id":"pc-wave2-canonical-close",
+                "surface":"governance",
+                "intent":"FIX",
+                "domain":"governance",
+                "task":task,
+                "requiredAuthorities":ledger + wave2,
+                "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/pc/app/tools","apps/terminal-de-venta-system/products/pc/app/components","apps/terminal-de-venta-system/prisma/migrations"],
+                "requiredCapabilities":caps,
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              },
+              {
+                "id":"pc-wave2-evidence-provenance",
+                "surface":"quality",
+                "intent":"VERIFY",
+                "domain":"quality",
+                "task":task + " Verify that the canonical close records what Wave 2 proves and the exact mutation journeys that remain outside its evidence ceiling.",
+                "requiredAuthorities":ledger + [wave2[7], wave2[8], wave2[9], wave2[10]],
+                "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/pc/app/tools"],
+                "requiredCapabilities":caps,
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              }
+            ]
+          }
+          with open(sys.argv[1],"w",encoding="utf-8") as f:
+            json.dump(request,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run fresh Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/pcw2-pre"; par="$RUNNER_TEMP/pcw2-par"; comp="$RUNNER_TEMP/pcw2-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/pc-wave2-close.request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54 --max-files 160 --max-mb 50
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/pc-wave2-close.request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/pcw2-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/pcw2-compose.txt"
+          test -f "$RUNNER_TEMP/pcw2-comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Run universal Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/pcw2-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/pcw2-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/pcw2-comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/pc-wave2-factory.request.json" <<'PY'
+          import hashlib, json, sys
+          report=json.load(open(sys.argv[1],encoding="utf-8")); pre=json.load(open(sys.argv[2],encoding="utf-8"))
+          coverage=min(float((lane.get("coverage") or {}).get("resolvedPercent",0)) for lane in pre["lanes"])
+          mesh={"status":report["status"],"repoHead":report["repoHead"],"requiredAuthorityCoveragePct":coverage,"blockers":len(pre.get("blockers") or []),"requestDigest":report["requestDigest"],"artifactDigest":hashlib.sha256(open(sys.argv[3],"rb").read()).hexdigest(),"layerMapPresent":False}
+          req={
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"c5c84ed61c9dd24be70e761e5480a059b32e6ee8",
+            "task":"Canonical governance-only closure of already merged and runtime-certified PC Wave 2. Promote only proven Wave 2 facts, preserve explicit uncertified Wave 3 mutations, and make Wave 2 do-not-rebuild. No product/runtime mutation.",
+            "capabilities":[
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"ADVANCE"},
+              {"id":"pc.customers.crud_runtime","requestedAction":"ADVANCE"},
+              {"id":"pc.entitlement.surface_projection","requestedAction":"ADVANCE"},
+              {"id":"pc.customers.clientes_visual_usability","requestedAction":"ADVANCE"},
+              {"id":"pc.quality.customer_experience_wave2","requestedAction":"ADVANCE"}
+            ],
+            "authorityMesh":mesh,
+            "visualMutation":False
+          }
+          with open(sys.argv[4],"w",encoding="utf-8") as f: json.dump(req,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/pc-wave2-factory.request.json" | tee "$RUNNER_TEMP/pc-wave2-factory-gate.json"
+          python - "$RUNNER_TEMP/pc-wave2-factory-gate.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding="utf-8")); assert d.get("result")=="PASS_ANTI_REWORK_GATE",d; assert d.get("errors")==[],d
+          PY
+          test -z "$(git status --porcelain)"
+          echo PASS_PC_WAVE2_CANONICAL_CLOSE_AUTHORITY
+
+      - name: Stage authority evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/pc-wave2-close-authority"; mkdir -p "$out"
+          for p in "$RUNNER_TEMP/pc-wave2-close.request.json" "$RUNNER_TEMP/pcw2-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/pcw2-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/pcw2-comp/payload/MANIFEST.json" "$RUNNER_TEMP/pcw2-comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/pc-wave2-factory.request.json" "$RUNNER_TEMP/pc-wave2-factory-gate.json" "$RUNNER_TEMP/pcw2-compose.txt"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+
+      - name: Upload PC Wave 2 closure authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave2-canonical-close-authority
+          path: ${{ runner.temp }}/pc-wave2-close-authority/**
+          if-no-files-found: error
+          retention-days: 14
