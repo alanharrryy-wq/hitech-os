@@ -65,7 +65,7 @@ jobs:
           d=json.load(open(sys.argv[1],encoding='utf-8'))
           assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
           assert d.get('errors')==[],d
-          assert d.get('decisionDigest')=='adb02b11f49cfc122706dfee69dd960b72280ee6d118c71eb30f1499a7496eda',d
+          assert d.get('repoHead')=='28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab',d
           PY
 
       - name: Build mutation contract reconnaissance
@@ -112,7 +112,6 @@ jobs:
             journeys[name]={'routes':rr,'fetches':ff,'mutationRoutes':[r for r in rr if any(m in r['methods'] for m in ('POST','PUT','PATCH','DELETE'))]}
           report={'schemaVersion':'pc.wave3.mutation-contract-discovery.v1','repoHead':__import__('subprocess').check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip(),'routes':routes,'fetches':fetches,'journeys':journeys}
           (out/'PC_WAVE3_MUTATION_CONTRACT_DISCOVERY.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          # Copy source-owned candidates, not generated/vendor files.
           copied=[]
           for name,j in journeys.items():
             candidates={x['path'] for x in j['routes']} | {x['source'] for x in j['fetches']}
