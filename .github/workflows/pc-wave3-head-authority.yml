@@ -1,0 +1,165 @@
+name: PC Wave 3 Head Authority
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave3-head-authority.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: 22302607410d5100c062ba3f9e50b1db7d7cb464
+
+jobs:
+  authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact Wave 3 head
+        uses: actions/checkout@v6
+        with:
+          ref: 22302607410d5100c062ba3f9e50b1db7d7cb464
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact head and governance owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test -f "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+          test -f "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build task exact request
+        shell: bash
+        run: |
+          python - "$RUNNER_TEMP/request.json" <<'PY'
+          import json,sys
+          head='22302607410d5100c062ba3f9e50b1db7d7cb464'
+          core=[
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
+            'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py',
+            'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+            'apps/terminal-de-venta-system/prisma/schema.prisma',
+            'apps/terminal-de-venta-system/products/pc/app/package.json',
+            'apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py'
+          ]
+          caps=['pc.quality.customer_experience_wave2','data.canonical_schema_reproducibility','pc.entitlement.surface_projection']
+          task=(
+            'PC Enterprise Mutations Wave 3 continuation on current implementation head. Add only the isolated runtime certification runner, verifier and workflow needed to prove catalog CRUD, supplier CRUD, stock adjustment, inventory count lifecycle, sync dispatch/replay, device claim/revoke and Settings durable writes. '
+            'Reuse frozen Wave 2 and current Wave 3 domain owners. Do not mutate live/customer databases, do not deploy, do not touch unrelated processes, and do not mutate Tablet, Mobile, Chart Lab, Shared UI or Control Center. Repair only reproducible evidence-backed defects found by the isolated certification.'
+          )
+          lanes=[
+            {'id':'wave3-runtime-cert','surface':'pc','intent':'VERIFY','domain':'runtime','task':task,'requiredAuthorities':core,'requiredDirectories':['apps/terminal-de-venta-system/products/pc/app/app/api/backoffice','apps/terminal-de-venta-system/products/pc/app/tools','apps/terminal-de-venta-system/products/pc/app/src/server/services'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},
+            {'id':'wave3-persistence-cert','surface':'pc','intent':'VERIFY','domain':'data','task':task+' Prove read-after-write and audit persistence against fresh canonical SQLite only.','requiredAuthorities':core,'requiredDirectories':['apps/terminal-de-venta-system/prisma/migrations','apps/terminal-de-venta-system/products/pc/app/src/server/repositories','apps/terminal-de-venta-system/products/pc/app/src/server/services'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},
+            {'id':'wave3-sync-device-settings-cert','surface':'pc','intent':'VERIFY','domain':'runtime','task':task+' Reuse existing catalog delta export and sync retry owners; certify device and settings owners without rebuilding licensing.','requiredAuthorities':core,'requiredDirectories':['apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sync','apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices','apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/settings','apps/terminal-de-venta-system/products/pc/app/src/server/licensing'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},
+            {'id':'wave3-layer-boundaries','surface':'pc','intent':'AUDIT','domain':'visual','task':task+' Reconfirm exact route/API/service/repository layers and excluded-surface boundaries. No visual mutation is authorized by this continuation.','requiredAuthorities':core+['apps/terminal-de-venta-system/products/pc/app/src/uiux/route-map.ts','apps/terminal-de-venta-system/products/pc/app/src/uiux/page-contracts.ts','apps/terminal-de-venta-system/products/pc/app/src/composition/navigation.ts'],'requiredDirectories':['apps/terminal-de-venta-system/products/pc/app/app','apps/terminal-de-venta-system/products/pc/app/components','apps/terminal-de-venta-system/products/pc/app/src/uiux'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True}
+          ]
+          with open(sys.argv[1],'w',encoding='utf-8') as f:
+            json.dump({'schemaVersion':'v2','profile':'pc-wave3-current-head-certification-v1','expectedHead':head,'tasks':lanes},f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+
+      - name: Compose fresh Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/pre"; par="$RUNNER_TEMP/par"; comp="$RUNNER_TEMP/comp/payload"; mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 4 --workers 18 --shards 54 --max-files 180 --max-mb 55
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/compose.txt"
+          test -f "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Generate Wave 3 Layer Map
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/PC_WAVE3_HEAD_LAYER_MAP.json" <<'PY'
+          import json,re,subprocess,sys
+          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          pc=[p for p in files if p.startswith('apps/terminal-de-venta-system/products/pc/app/')]
+          journeys={
+            'catalog':r'/(catalog|product|products)',
+            'suppliers':r'/(supplier|suppliers|proveedor)',
+            'stock_adjustment':r'/(stock|inventory|movement|adjust)',
+            'count_lifecycle':r'/(count|audit-count|inventory-count)',
+            'sync_dispatch_replay':r'/(sync|outbox|replay|retry)',
+            'device_claim_revoke':r'/(device|devices|claim|revoke)',
+            'settings_writes':r'/(settings|configuration|configuracion|preference)'
+          }
+          def layer(p):
+            if '/app/api/' in p: return 'api_route'
+            if '/src/server/repositories/' in p: return 'repository'
+            if '/src/server/services/' in p: return 'service'
+            if '/components/' in p: return 'ui_component'
+            if '/app/' in p and p.endswith(('page.tsx','layout.tsx')): return 'ui_route'
+            if '/tools/' in p: return 'quality'
+            if '/src/uiux/' in p or '/src/composition/' in p: return 'ui_governance'
+            return 'supporting_source'
+          out={'schemaVersion':'prisma.pc-wave3.layer-map.v2','repoHead':'22302607410d5100c062ba3f9e50b1db7d7cb464','surface':'pc','excludedSurfaces':['tablet','mobile','chart_lab','shared_ui','control_center'],'visualMutationAuthorized':False,'journeys':{},'persistenceOwners':['apps/terminal-de-venta-system/prisma/schema.prisma','apps/terminal-de-venta-system/prisma/migrations'],'rules':['certification runner may mutate isolated runner temp only','no product visual mutation','no !important','no excluded-surface mutation','no live/customer DB mutation']}
+          unresolved=[]
+          for name,rx in journeys.items():
+            matches=[p for p in pc if re.search(rx,p,re.I)]
+            buckets={}
+            for p in matches[:200]: buckets.setdefault(layer(p),[]).append(p)
+            out['journeys'][name]={'matchCount':len(matches),'layers':buckets,'ownerCandidates':matches[:60]}
+            if not matches: unresolved.append(name)
+          out['unresolvedJourneys']=unresolved; out['layerMapPresent']=True
+          with open(sys.argv[1],'w',encoding='utf-8') as f: json.dump(out,f,ensure_ascii=False,indent=2); f.write('\n')
+          print(json.dumps({'unresolvedJourneys':unresolved,'counts':{k:v['matchCount'] for k,v in out['journeys'].items()}},indent=2))
+          if unresolved: raise SystemExit('LAYER_MAP_UNRESOLVED:'+','.join(unresolved))
+          PY
+
+      - name: Universal Factory Ledger mutation authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/factory.request.json" <<'PY'
+          import hashlib,json,sys
+          report=json.load(open(sys.argv[1],encoding='utf-8')); pre=json.load(open(sys.argv[2],encoding='utf-8'))
+          coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in pre['lanes'])
+          mesh={'status':report['status'],'repoHead':report['repoHead'],'requiredAuthorityCoveragePct':coverage,'blockers':len(pre.get('blockers') or []),'requestDigest':report['requestDigest'],'artifactDigest':hashlib.sha256(open(sys.argv[3],'rb').read()).hexdigest(),'layerMapPresent':True}
+          req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':'22302607410d5100c062ba3f9e50b1db7d7cb464','task':'PC Enterprise Mutations Wave 3 continuation: add isolated runtime certification runner/verifier/workflow and repair only reproducible defects on current PC owners.','capabilities':[{'id':'pc.quality.customer_experience_wave2','requestedAction':'ADVANCE'},{'id':'data.canonical_schema_reproducibility','requestedAction':'ADVANCE'},{'id':'pc.entitlement.surface_projection','requestedAction':'ADVANCE'}],'authorityMesh':mesh,'visualMutation':False}
+          with open(sys.argv[4],'w',encoding='utf-8') as f: json.dump(req,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/factory.request.json" | tee "$RUNNER_TEMP/gate.json"
+          python - "$RUNNER_TEMP/gate.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert d.get('repoHead')=='22302607410d5100c062ba3f9e50b1db7d7cb464',d
+          PY
+          echo PASS_PC_WAVE3_CURRENT_HEAD_AUTHORITY
+
+      - name: Stage evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/pc-wave3-head-authority"; mkdir -p "$out"
+          for p in "$RUNNER_TEMP/request.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/comp/payload/MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/PC_WAVE3_HEAD_LAYER_MAP.json" "$RUNNER_TEMP/factory.request.json" "$RUNNER_TEMP/gate.json" "$RUNNER_TEMP/compose.txt"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+
+      - name: Upload current-head authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave3-current-head-authority
+          path: ${{ runner.temp }}/pc-wave3-head-authority/**
+          if-no-files-found: error
+          retention-days: 14
