@@ -122,9 +122,9 @@ jobs:
               },
               {
                 "id":"pc-wave2-evidence-provenance",
-                "surface":"quality",
+                "surface":"pc",
                 "intent":"VERIFY",
-                "domain":"quality",
+                "domain":"testing",
                 "task":task + " Verify that the canonical close records what Wave 2 proves and the exact mutation journeys that remain outside its evidence ceiling.",
                 "requiredAuthorities":ledger + [wave2[7], wave2[8], wave2[9], wave2[10]],
                 "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/pc/app/tools"],
