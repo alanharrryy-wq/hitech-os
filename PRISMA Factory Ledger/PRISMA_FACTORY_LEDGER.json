@@ -686,9 +686,9 @@
       ],
       "classification": "DONE",
       "status": "RUNTIME_VERIFIED",
-      "stateLabel": "PASS_TABLET_SYNC_TRUTH_RUNTIME_NO_FAKE_GREEN",
+      "stateLabel": "PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
       "doNotRebuild": true,
-      "nextGate": "TABLET_SYNC_OPERATIONS_CENTER_WAVE1_V1 as a governed reuse/advance UX projection over the existing /sync truth. Any visual mutation requires a fresh task-exact Authority Mesh with Layer Map and RIFAT-governed generation; do not rebuild sync, Outbox, dispatcher, licensing, or API truth.",
+      "nextGate": "WAVE2 authority/discovery or read-only recertification only after a fresh exact-task gate; WAVE1 and tablet.sync.runtime_truth remain DONE / RUNTIME_VERIFIED / doNotRebuild and must not be rebuilt.",
       "evidence": [
         "PR #298 Tablet: fail closed unverified sync panel state",
         "merge commit 7f5745b4ad65804cceca0b743c741d406adde22f",
@@ -696,7 +696,10 @@
         "Tablet Sync Truth PR298 V5 R3 run 32160589642 artifact 9333495542",
         "artifact sha256:9aaa85393119f73a95b9ebe866733c5e8f726e5f708c632a32e833dc97450c3d",
         "apps/terminal-de-venta-system/products/tablet/app/app/sync/page.tsx",
-        "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx"
+        "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
+        "PR #322 Tablet Sync Operations Center WAVE1 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa",
+        "PR #332 post-merge runtime certification run 32336243809 attempt 2 artifact 9394817154 sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026 verifier 44/44",
+        "WAVE1 canonical close gate run 32757733642 artifact 9531515396 sha256:b9af91b468e963593c44f27a207a7cbde252ac73148e18d14149e315dd9eaa4e decision f402aa5cc58e18e896067cfb281a7db5dada2a8d504593ae23607522cff38b68"
       ],
       "doesNotProve": [
         "DB-backed E2E of the repaired /api/pos/sync/panel route",
@@ -704,13 +707,17 @@
         "Prisma generate, migration, seed, db push, or real database mutation",
         "Hosted production deployment or future runtime behavior after source drift",
         "Runtime or visual certification of PC, Mobile, Chart Lab, Shared UI, or unrelated Tablet routes",
-        "That an unverified or timed-out queue is healthy"
+        "That an unverified or timed-out queue is healthy",
+        "Hosted production deployment",
+        "Real PC transport certification",
+        "Conflict-resolution ownership or action",
+        "Future runtime behavior after source drift",
+        "Runtime or visual certification of unrelated Tablet routes or other PRISMA surfaces"
       ],
       "allowedActions": [
-        "read-only recertification against the current /sync owners",
-        "fix demonstrated drift without rebuilding the capability",
-        "advance to TABLET_SYNC_OPERATIONS_CENTER_WAVE1_V1 as a governed UX/projection over existing truth",
-        "apply visual changes only through fresh task-exact Layer Map and RIFAT-governed projection"
+        "read-only recertification",
+        "WAVE2 authority/discovery after a fresh exact-task gate",
+        "reference merged WAVE1 evidence"
       ],
       "forbiddenActions": [
         "rebuild sync, Outbox, dispatcher, licensing, or API truth from scratch",
