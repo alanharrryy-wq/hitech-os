@@ -1,4 +1,4 @@
-name: Tablet Sync WAVE2 Finalize Carrier
+name: Tablet Sync WAVE2 Finalize Payload
 
 on:
   pull_request:
@@ -6,25 +6,23 @@ on:
       - '.github/workflows/automesh-parallel-cert.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   AUTHORIZED_MAIN: 5c805bc2f448af0b2742b52e19055b05f1859bab
-  GOV_BRANCH: governance/tablet-sync-wave2-canonical-close-2508-r2
-  DOC_BRANCH: docs/prisma-parallel-work-rule-2508
 
 jobs:
-  finalize:
+  payload:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 10
     steps:
       - name: Checkout exact authorized main
         uses: actions/checkout@v6
         with:
           ref: 5c805bc2f448af0b2742b52e19055b05f1859bab
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Verify authority is still current
         shell: bash
@@ -32,30 +30,34 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$AUTHORIZED_MAIN"
           test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$AUTHORIZED_MAIN"
-          test -z "$(git ls-remote --heads origin "refs/heads/$GOV_BRANCH")"
-          test -z "$(git ls-remote --heads origin "refs/heads/$DOC_BRANCH")"
           test -z "$(git status --porcelain)"
 
-      - name: Create canonical WAVE2 closure branch
+      - name: Build bounded finalization payload
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "prisma-governance-bot"
-          git config user.email "prisma-governance-bot@users.noreply.github.com"
-          git switch -c "$GOV_BRANCH"
-          python - <<'PY'
-          import json
+          OUT="$RUNNER_TEMP/w2-finalize"
+          mkdir -p "$OUT/PRISMA Factory Ledger" "$OUT/apps/terminal-de-venta-system/docs/ops"
+          cp 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' "$OUT/PRISMA Factory Ledger/"
+          cp 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' "$OUT/PRISMA Factory Ledger/"
+          cp 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json' "$OUT/PRISMA Factory Ledger/"
+          cp 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' "$OUT/PRISMA Factory Ledger/"
+          cp 'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md' "$OUT/apps/terminal-de-venta-system/docs/ops/"
+          python - "$OUT" <<'PY'
+          import hashlib, json, sys
           from datetime import datetime, timezone, timedelta
           from pathlib import Path
 
+          out = Path(sys.argv[1])
           cap_id = "tablet.sync.runtime_truth"
           marker = "PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN"
           now = datetime.now(timezone(timedelta(hours=-6))).isoformat(timespec="seconds")
-          root = Path("PRISMA Factory Ledger")
+          root = out / "PRISMA Factory Ledger"
           ledger_p = root / "PRISMA_FACTORY_LEDGER.json"
           dnr_p = root / "PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json"
           reg_p = root / "PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json"
           evid_p = root / "PRISMA_EVIDENCE_INDEX.json"
+          manual_p = out / "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
 
           runtime_evidence = [
               "WAVE2 product PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19",
@@ -75,134 +77,42 @@ jobs:
           ]
           next_gate = "Run final Tablet ScreensQA; then distribution/release readiness; then runtime data-custody/egress certification. WAVE2 itself is closed and must not be rebuilt."
 
-          def load(p):
-              return json.loads(p.read_text(encoding="utf-8"))
-          def save(p, data):
-              p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          def load(p): return json.loads(p.read_text(encoding="utf-8"))
+          def save(p, data): p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
           ledger = load(ledger_p)
           matches = [c for c in ledger.get("capabilities", []) if c.get("id") == cap_id]
-          if len(matches) != 1:
-              raise SystemExit(f"LEDGER_CAPABILITY_MATCH_COUNT:{len(matches)}")
+          if len(matches) != 1: raise SystemExit(f"LEDGER_CAPABILITY_MATCH_COUNT:{len(matches)}")
           c = matches[0]
-          c["classification"] = "DONE"
-          c["status"] = "RUNTIME_VERIFIED"
-          c["stateLabel"] = marker
-          c["doNotRebuild"] = True
-          c["nextGate"] = next_gate
-          evidence = c.setdefault("evidence", [])
+          c.update({"classification":"DONE","status":"RUNTIME_VERIFIED","stateLabel":marker,"doNotRebuild":True,"nextGate":next_gate})
           for item in runtime_evidence:
-              if item not in evidence:
-                  evidence.append(item)
-          dnp = c.setdefault("doesNotProve", [])
+              if item not in c.setdefault("evidence", []): c["evidence"].append(item)
           for item in claim_ceiling:
-              if item not in dnp:
-                  dnp.append(item)
-          allowed = c.setdefault("allowedActions", [])
-          for item in [
-              "final Tablet ScreensQA",
-              "distribution/release readiness after final ScreensQA",
-              "runtime data-custody/egress certification after release readiness",
-              "read-only recertification after relevant drift"
-          ]:
-              if item not in allowed:
-                  allowed.append(item)
+              if item not in c.setdefault("doesNotProve", []): c["doesNotProve"].append(item)
+          for item in ["final Tablet ScreensQA","distribution/release readiness after final ScreensQA","runtime data-custody/egress certification after release readiness","read-only recertification after relevant drift"]:
+              if item not in c.setdefault("allowedActions", []): c["allowedActions"].append(item)
           save(ledger_p, ledger)
 
-          dnr = load(dnr_p)
-          row = dnr.get("doNotRebuild", {}).get(cap_id)
-          if not isinstance(row, dict):
-              raise SystemExit("DNR_CAPABILITY_MISSING")
-          row.update({
-              "value": True,
-              "reason": "Tablet Sync WAVE2 is merged and isolated post-merge runtime-certified. Reuse existing Outbox/projection/reconciliation/dispatcher/licensing truth; WAVE1 and WAVE2 are closed and must not be rebuilt.",
-              "evidence": "PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119 / PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
-              "updatedAt": now
-          })
-          dnr["updatedAt"] = now
-          save(dnr_p, dnr)
+          dnr = load(dnr_p); row = dnr.get("doNotRebuild", {}).get(cap_id)
+          if not isinstance(row, dict): raise SystemExit("DNR_CAPABILITY_MISSING")
+          row.update({"value":True,"reason":"Tablet Sync WAVE2 is merged and isolated post-merge runtime-certified. Reuse existing Outbox/projection/reconciliation/dispatcher/licensing truth; WAVE1 and WAVE2 are closed and must not be rebuilt.","evidence":"PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119 / PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN","updatedAt":now})
+          dnr["updatedAt"] = now; save(dnr_p, dnr)
 
-          reg = load(reg_p)
-          row = reg.get("registrations", {}).get(cap_id)
-          if not isinstance(row, dict):
-              raise SystemExit("REG_CAPABILITY_MISSING")
-          row.update({
-              "status": "DONE_RUNTIME_VERIFIED",
-              "updatedAt": now,
-              "evidence": "PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / WAVE2 post-merge runtime run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119",
-              "sourceEvidenceSha256": "F06087C14951010BB782C6FED46D6620EC2A063CDBCEC6B233A387E6F21B35E4",
-              "doNotRebuild": True,
-              "nextGate": "TABLET_FINAL_SCREENSQA_THEN_DISTRIBUTION_RELEASE_READINESS_THEN_RUNTIME_DATA_CUSTODY_EGRESS_CERTIFICATION"
-          })
-          reg["updatedAt"] = now
-          save(reg_p, reg)
+          reg = load(reg_p); row = reg.get("registrations", {}).get(cap_id)
+          if not isinstance(row, dict): raise SystemExit("REG_CAPABILITY_MISSING")
+          row.update({"status":"DONE_RUNTIME_VERIFIED","updatedAt":now,"evidence":"PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / WAVE2 post-merge runtime run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119","sourceEvidenceSha256":"F06087C14951010BB782C6FED46D6620EC2A063CDBCEC6B233A387E6F21B35E4","doNotRebuild":True,"nextGate":"TABLET_FINAL_SCREENSQA_THEN_DISTRIBUTION_RELEASE_READINESS_THEN_RUNTIME_DATA_CUSTODY_EGRESS_CERTIFICATION"})
+          reg["updatedAt"] = now; save(reg_p, reg)
 
-          evid = load(evid_p)
-          artifacts = evid.get("artifacts")
-          if not isinstance(artifacts, list):
-              raise SystemExit("EVIDENCE_ARTIFACTS_NOT_LIST")
+          evid = load(evid_p); artifacts = evid.get("artifacts")
+          if not isinstance(artifacts, list): raise SystemExit("EVIDENCE_ARTIFACTS_NOT_LIST")
           artifact_name = "Tablet Sync WAVE2 postmerge runtime run 32866793273 / artifact 9570464455"
-          if not any(a.get("artifact") == artifact_name for a in artifacts if isinstance(a, dict)):
-              artifacts.append({
-                  "artifact": artifact_name,
-                  "type": "tablet_sync_wave2_postmerge_runtime_certification",
-                  "scope": ["tablet", "sync", "outbox", "runtime", "governance"],
-                  "status": marker,
-                  "proves": [
-                      "Merged WAVE2 product source at 1a83d5decb4e946021b9acf95f1a49479d6abf19 passes the focused sync truth verifier 55/55",
-                      "Isolated Next/Chrome runtime captured 10/10 required /sync states",
-                      "Per-operation provenance and persisted ACK/conflict evidence are visible without schema invention",
-                      "Selected retry result truth remains bounded to retryable operations and conflicts stay review-only",
-                      "PC/Backoffice is the explicit conflict-resolution owner while Tablet remains local-first and review-only",
-                      "Runtime exceptions, console errors and unexpected network errors are zero; the unconfirmed panel 503 is intentional and fails closed"
-                  ],
-                  "doesNotProve": claim_ceiling,
-                  "evidence": [
-                      "PR #377",
-                      "merge 1a83d5decb4e946021b9acf95f1a49479d6abf19",
-                      "run 32866793273",
-                      "artifact 9570464455",
-                      "sha256:f06087c14951010bb782c6fed46d6620ec2a063cdbcec6b233a387e6f21b35e4",
-                      "closure Authority run 32868230568 artifact 9571018119"
-                  ]
-              })
+          if not any(isinstance(a, dict) and a.get("artifact") == artifact_name for a in artifacts):
+              artifacts.append({"artifact":artifact_name,"type":"tablet_sync_wave2_postmerge_runtime_certification","scope":["tablet","sync","outbox","runtime","governance"],"status":marker,"proves":["Merged WAVE2 product source at 1a83d5decb4e946021b9acf95f1a49479d6abf19 passes the focused sync truth verifier 55/55","Isolated Next/Chrome runtime captured 10/10 required /sync states","Per-operation provenance and persisted ACK/conflict evidence are visible without schema invention","Selected retry result truth remains bounded to retryable operations and conflicts stay review-only","PC/Backoffice is the explicit conflict-resolution owner while Tablet remains local-first and review-only","Runtime exceptions, console errors and unexpected network errors are zero; the unconfirmed panel 503 is intentional and fails closed"],"doesNotProve":claim_ceiling,"evidence":["PR #377","merge 1a83d5decb4e946021b9acf95f1a49479d6abf19","run 32866793273","artifact 9570464455","sha256:f06087c14951010bb782c6fed46d6620ec2a063cdbcec6b233a387e6f21b35e4","closure Authority run 32868230568 artifact 9571018119"]})
           save(evid_p, evid)
 
-          assert marker in ledger_p.read_text(encoding="utf-8")
-          assert marker in dnr_p.read_text(encoding="utf-8")
-          assert "9570464455" in reg_p.read_text(encoding="utf-8")
-          assert marker in evid_p.read_text(encoding="utf-8")
-          for p in [ledger_p, dnr_p, reg_p, evid_p]:
-              json.loads(p.read_text(encoding="utf-8"))
-          PY
-          expected=$(cat <<'EOF'
-          PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json
-          PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json
-          PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json
-          PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json
-          EOF
-          )
-          actual="$(git diff --name-only | sort)"
-          test "$actual" = "$(printf '%s\n' "$expected" | sed 's/^          //' | sort)"
-          git diff --check
-          git add -- 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json' 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
-          git commit -m "governance(tablet): close Sync Operations Center WAVE2"
-          test "$(git diff --name-only "$AUTHORIZED_MAIN"..HEAD | wc -l)" -eq 4
-          git push origin "HEAD:refs/heads/$GOV_BRANCH"
-
-      - name: Create parallelism Field Manual branch
-        shell: bash
-        run: |
-          set -euo pipefail
-          git switch --detach "$AUTHORIZED_MAIN"
-          git switch -c "$DOC_BRANCH"
-          python - <<'PY'
-          from pathlib import Path
-          p = Path("apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md")
-          marker = "PARALLEL_WORK_RULE_20260825"
-          text = p.read_text(encoding="utf-8")
-          if marker in text:
-              raise SystemExit("PARALLEL_RULE_ALREADY_PRESENT")
+          manual = manual_p.read_text(encoding="utf-8")
+          manual_marker = "PARALLEL_WORK_RULE_20260825"
+          if manual_marker in manual: raise SystemExit("PARALLEL_RULE_ALREADY_PRESENT")
           entry = r'''
 
 ---
@@ -211,7 +121,7 @@ jobs:
 
 **Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / GOTCHA  
 **Superficie:** Governance / Tooling / Todas las superficies  
-**Contexto:** Durante el cierre de Tablet Sync WAVE2, un evidence carrier comparó un `PRODUCT_TARGET` fijo contra el `HEAD` completo del carrier. `main` había avanzado con cambios canónicos y después con cambios de Change Assurance en archivos ajenos al scope de Tablet Sync. El guard confundió avance paralelo legítimo con contaminación del carrier.  
+**Contexto:** Durante el cierre de Tablet Sync WAVE2, un evidence carrier comparó un `PRODUCT_TARGET` fijo contra el `HEAD` completo del carrier. `main` había avanzado con cambios ajenos al scope de Tablet Sync y el guard confundió avance paralelo legítimo con contaminación.  
 **Resultado observado:** PARTIAL -> PASS después de separar la base del producto de la base del carrier.  
 **Causa real:** La concurrencia se estaba evaluando por existencia de commits nuevos, no por ownership de archivos, solapamiento semántico y base correcta de comparación.  
 **Regla nueva (`PARALLEL_WORK_RULE_20260825`):**
@@ -220,7 +130,7 @@ jobs:
 2. Un evidence carrier debe comparar **su propio delta contra su `EVIDENCE_BASE` correcto**. No debe usar `PRODUCT_TARGET..HEAD` como detector universal de contaminación cuando `PRODUCT_TARGET` es sólo el commit que se está certificando.
 3. Un `PRODUCT_TARGET` fijo puede seguir siendo el objeto exacto de certificación aunque `main` avance independientemente, siempre que el harness esté aislado y la evidencia declare ese SHA.
 4. Si dos agentes tocan el **mismo archivo**, el segundo debe releer el blob/SHA actual, comparar el cambio fresco y reconciliar el solapamiento semántico. Nunca sobrescribir silenciosamente trabajo ajeno.
-5. Si el mismo archivo cambió pero las regiones/owners son independientes, se permite reconciliación explícita. Si el solapamiento no puede resolverse con certeza, **fail closed** y pedir/obtener evidencia fresca.
+5. Si el mismo archivo cambió pero las regiones/owners son independientes, se permite reconciliación explícita. Si el solapamiento no puede resolverse con certeza, **fail closed** y obtener evidencia fresca.
 6. El paralelismo seguro **no elimina** la regla de Authority Mesh exacto: una mutación gobernada que exige autoridad sobre el HEAD canónico debe refrescar su Authority Mesh/anti-rework gate si ese HEAD cambió antes de la mutación, incluso cuando el drift sea ajeno y seguro.
 7. Distinguir siempre tres conceptos: `PRODUCT_TARGET` = qué commit se certifica; `EVIDENCE_BASE` = contra qué base se mide el carrier; `CANONICAL_HEAD` = HEAD actual que autoriza una nueva mutación gobernada.
 
@@ -229,21 +139,28 @@ jobs:
 **Evidencia:** Tablet Sync WAVE2 product PR #377; runtime run `32866793273`; closure Authority run `32868230568`; disposable preflight PRs #387/#388.  
 **Regla corta:** **paralelismo se decide por overlap real y autoridad, no por miedo a que `main` tenga commits nuevos.**
 '''
-          p.write_text(text.rstrip() + entry + "\n", encoding="utf-8")
-          PY
-          test "$(git diff --name-only | wc -l)" -eq 1
-          test "$(git diff --name-only)" = 'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
-          grep -Fq 'PARALLEL_WORK_RULE_20260825' 'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
-          git diff --check
-          git add -- 'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
-          git commit -m "docs(ops): record safe parallel-work rule"
-          test "$(git diff --name-only "$AUTHORIZED_MAIN"..HEAD | wc -l)" -eq 1
-          git push origin "HEAD:refs/heads/$DOC_BRANCH"
+          manual_p.write_text(manual.rstrip() + entry + "\n", encoding="utf-8")
 
-      - name: Final carrier result
+          for p in [ledger_p,dnr_p,reg_p,evid_p]: json.loads(p.read_text(encoding="utf-8"))
+          if marker not in ledger_p.read_text(encoding="utf-8") or marker not in dnr_p.read_text(encoding="utf-8") or marker not in evid_p.read_text(encoding="utf-8"): raise SystemExit("MARKER_MISSING")
+          if "9570464455" not in reg_p.read_text(encoding="utf-8"): raise SystemExit("REG_EVIDENCE_MISSING")
+          if manual_marker not in manual_p.read_text(encoding="utf-8"): raise SystemExit("MANUAL_MARKER_MISSING")
+
+          files = [ledger_p,dnr_p,reg_p,evid_p,manual_p]
+          manifest = {"schemaVersion":"tablet.sync.wave2.finalize.payload.v1","authorizedMain":"5c805bc2f448af0b2742b52e19055b05f1859bab","authorityRun":32868230568,"authorityArtifact":9571018119,"runtimeRun":32866793273,"runtimeArtifact":9570464455,"finalMarker":marker,"files":[{"path":str(p.relative_to(out)).replace('\\','/'),"bytes":p.stat().st_size,"sha256":hashlib.sha256(p.read_bytes()).hexdigest()} for p in files]}
+          (out/"MANIFEST.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          (out/"FINAL_RESULT.txt").write_text("PASS_TABLET_SYNC_WAVE2_FINALIZE_PAYLOAD\n",encoding="utf-8")
+          PY
+          grep -Fxq 'PASS_TABLET_SYNC_WAVE2_FINALIZE_PAYLOAD' "$OUT/FINAL_RESULT.txt"
+
+      - name: Upload bounded payload
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-sync-wave2-finalize-payload
+          path: ${{ runner.temp }}/w2-finalize/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Final payload gate
         shell: bash
-        run: |
-          set -euo pipefail
-          test -n "$(git ls-remote --heads origin "refs/heads/$GOV_BRANCH")"
-          test -n "$(git ls-remote --heads origin "refs/heads/$DOC_BRANCH")"
-          printf '%s\n' 'PASS_TABLET_SYNC_WAVE2_FINALIZE_BRANCHES_CREATED'
+        run: grep -Fxq 'PASS_TABLET_SYNC_WAVE2_FINALIZE_PAYLOAD' "$RUNNER_TEMP/w2-finalize/FINAL_RESULT.txt"
