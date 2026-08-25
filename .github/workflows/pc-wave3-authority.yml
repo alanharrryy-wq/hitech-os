@@ -1,0 +1,212 @@
+name: PC Wave 3 Authority Discovery
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave3-authority.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: 28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab
+
+jobs:
+  pc-wave3-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
+        with:
+          ref: 28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify baseline and governance owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          test -f "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+          test -f "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build Wave 3 task-exact request
+        shell: bash
+        run: |
+          python - "$RUNNER_TEMP/request.json" <<'PY'
+          import json,sys
+          head='28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab'
+          core=[
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
+            'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py',
+            'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+            'apps/terminal-de-venta-system/prisma/schema.prisma',
+            'apps/terminal-de-venta-system/products/pc/app/package.json',
+            'apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py'
+          ]
+          caps=['pc.quality.customer_experience_wave2','data.canonical_schema_reproducibility','pc.entitlement.surface_projection']
+          task=(
+            'PC Enterprise Mutations Wave 3 after canonical Wave 2 closure. Certify, on a fresh isolated canonical SQLite database and an owned PC runtime only, '
+            'catalog create/update/delete, supplier create/update/delete, stock adjustment with persisted balance/movement truth, full inventory count lifecycle, '
+            'PC sync dispatch/replay behavior, PC device claim/revoke behavior, and customer-visible Settings writes with durable read-after-write. '
+            'Reuse the frozen Wave 2 schema, Customers CRUD, entitlement projection and visual /clientes result. Do not rebuild those capabilities. '
+            'No live/customer database mutation, no deploy, no port/process mutation outside the owned runner, no Tablet/Mobile/Chart Lab product mutation, no fake green. '
+            'If a journey already works, certify it without source changes. If it fails, repair only the evidence-backed canonical owner. Any UI mutation must obey the attached Layer Map and zero-important rules.'
+          )
+          lanes=[
+            {
+              'id':'pc-wave3-business-mutations','surface':'pc','intent':'AUDIT','domain':'runtime','task':task,
+              'requiredAuthorities':core,
+              'requiredDirectories':[
+                'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/catalog',
+                'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/suppliers',
+                'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/stock',
+                'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/counts',
+                'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/inventory'
+              ],
+              'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True
+            },
+            {
+              'id':'pc-wave3-sync-device-settings','surface':'pc','intent':'AUDIT','domain':'runtime','task':task + ' Resolve the exact source owners and mutation contracts for sync, devices and settings/configuracion before any repair.',
+              'requiredAuthorities':core,
+              'requiredDirectories':[
+                'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sync',
+                'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices',
+                'apps/terminal-de-venta-system/products/pc/app/src/server',
+                'apps/terminal-de-venta-system/products/pc/app/src/uiux'
+              ],
+              'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True
+            },
+            {
+              'id':'pc-wave3-persistence-provenance','surface':'pc','intent':'VERIFY','domain':'data','task':task + ' Trace DB tables, repository/service owners, transactions, audit semantics and read-after-write evidence for all seven journeys.',
+              'requiredAuthorities':core,
+              'requiredDirectories':[
+                'apps/terminal-de-venta-system/prisma/migrations',
+                'apps/terminal-de-venta-system/products/pc/app/src/server/repositories',
+                'apps/terminal-de-venta-system/products/pc/app/src/server/services'
+              ],
+              'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True
+            },
+            {
+              'id':'pc-wave3-layer-owners','surface':'pc','intent':'AUDIT','domain':'visual','task':task + ' Produce exact route/component/API/service/repository/persistence ownership and excluded-surface boundaries. No visual mutation is performed in this carrier.',
+              'requiredAuthorities':core + [
+                'apps/terminal-de-venta-system/products/pc/app/src/uiux/route-map.ts',
+                'apps/terminal-de-venta-system/products/pc/app/src/uiux/page-contracts.ts',
+                'apps/terminal-de-venta-system/products/pc/app/src/composition/navigation.ts'
+              ],
+              'requiredDirectories':[
+                'apps/terminal-de-venta-system/products/pc/app/app',
+                'apps/terminal-de-venta-system/products/pc/app/components',
+                'apps/terminal-de-venta-system/products/pc/app/src/uiux'
+              ],
+              'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True
+            }
+          ]
+          req={'schemaVersion':'v2','profile':'pc-wave3-enterprise-mutations-v1','expectedHead':head,'tasks':lanes}
+          with open(sys.argv[1],'w',encoding='utf-8') as f: json.dump(req,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+
+      - name: Compose fresh Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/pre"; par="$RUNNER_TEMP/par"; comp="$RUNNER_TEMP/comp/payload"; mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 4 --workers 18 --shards 54 --max-files 180 --max-mb 55
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/compose.txt"
+          test -f "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Generate task-exact Layer Map
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/PC_WAVE3_LAYER_MAP.json" <<'PY'
+          import json,re,subprocess,sys
+          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          pc=[p for p in files if p.startswith('apps/terminal-de-venta-system/products/pc/app/')]
+          journeys={
+            'catalog':r'/(catalog|product-|products?/|product\.)',
+            'suppliers':r'/(suppliers?|supplier\.)',
+            'stock_adjustment':r'/(stock|inventory|movements?)',
+            'count_lifecycle':r'/(counts?|audit-count|inventory-count)',
+            'sync_dispatch_replay':r'/(sync|outbox|replay)',
+            'device_claim_revoke':r'/(devices?|device-|claim|revoke)',
+            'settings_writes':r'/(settings?|configuracion|configuration|preferences?)'
+          }
+          def layer(p):
+            if '/app/api/' in p: return 'api_route'
+            if '/src/server/repositories/' in p: return 'repository'
+            if '/src/server/services/' in p: return 'service'
+            if '/components/' in p: return 'ui_component'
+            if '/app/' in p and p.endswith(('page.tsx','layout.tsx')): return 'ui_route'
+            if '/tools/' in p: return 'quality'
+            if '/src/uiux/' in p or '/src/composition/' in p: return 'ui_governance'
+            return 'supporting_source'
+          out={'schemaVersion':'prisma.pc-wave3.layer-map.v1','repoHead':'28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab','surface':'pc','excludedSurfaces':['tablet','mobile','chart_lab','shared_ui','control_center'],'journeys':{},'persistenceOwners':['apps/terminal-de-venta-system/prisma/schema.prisma','apps/terminal-de-venta-system/prisma/migrations'],'rules':['meaning/business truth stays canonical; specific files are projections/owners','no visual mutation outside resolved PC route/component owners','no !important hotfix','do not mutate Tablet/Mobile/Chart Lab/Shared UI','live/customer DB is excluded; runtime evidence uses isolated SQLite']}
+          unresolved=[]
+          for name,rx in journeys.items():
+            matches=[p for p in pc if re.search(rx,p,re.I)]
+            buckets={}
+            for p in matches[:160]: buckets.setdefault(layer(p),[]).append(p)
+            out['journeys'][name]={'matchCount':len(matches),'layers':buckets,'ownerCandidates':matches[:40]}
+            if not matches: unresolved.append(name)
+          out['unresolvedJourneys']=unresolved
+          out['layerMapPresent']=True
+          with open(sys.argv[1],'w',encoding='utf-8') as f: json.dump(out,f,ensure_ascii=False,indent=2); f.write('\n')
+          print(json.dumps({'layerMapPresent':True,'unresolvedJourneys':unresolved,'counts':{k:v['matchCount'] for k,v in out['journeys'].items()}},indent=2))
+          if unresolved: raise SystemExit('LAYER_MAP_UNRESOLVED:'+','.join(unresolved))
+          PY
+
+      - name: Universal Factory Ledger mutation authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/factory.request.json" <<'PY'
+          import hashlib,json,sys
+          report=json.load(open(sys.argv[1],encoding='utf-8')); pre=json.load(open(sys.argv[2],encoding='utf-8'))
+          coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in pre['lanes'])
+          mesh={'status':report['status'],'repoHead':report['repoHead'],'requiredAuthorityCoveragePct':coverage,'blockers':len(pre.get('blockers') or []),'requestDigest':report['requestDigest'],'artifactDigest':hashlib.sha256(open(sys.argv[3],'rb').read()).hexdigest(),'layerMapPresent':True}
+          req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':'28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab','task':'PC Enterprise Mutations Wave 3: certify seven bounded mutation journeys on isolated persistence; change only evidence-backed PC owners and preserve frozen Wave 2. Layer Map is mandatory for any visual mutation.','capabilities':[{'id':'pc.quality.customer_experience_wave2','requestedAction':'ADVANCE'},{'id':'data.canonical_schema_reproducibility','requestedAction':'ADVANCE'},{'id':'pc.entitlement.surface_projection','requestedAction':'ADVANCE'}],'authorityMesh':mesh,'visualMutation':True}
+          with open(sys.argv[4],'w',encoding='utf-8') as f: json.dump(req,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/factory.request.json" | tee "$RUNNER_TEMP/gate.json"
+          python - "$RUNNER_TEMP/gate.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8')); assert d.get('result')=='PASS_ANTI_REWORK_GATE',d; assert d.get('errors')==[],d
+          PY
+          test -z "$(git status --porcelain)"
+          echo PASS_PC_WAVE3_AUTHORITY_DISCOVERY
+
+      - name: Stage evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/pc-wave3-authority"; mkdir -p "$out"
+          for p in "$RUNNER_TEMP/request.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/comp/payload/MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/PC_WAVE3_LAYER_MAP.json" "$RUNNER_TEMP/factory.request.json" "$RUNNER_TEMP/gate.json" "$RUNNER_TEMP/compose.txt"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+
+      - name: Upload Wave 3 authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave3-authority-discovery
+          path: ${{ runner.temp }}/pc-wave3-authority/**
+          if-no-files-found: error
+          retention-days: 14
