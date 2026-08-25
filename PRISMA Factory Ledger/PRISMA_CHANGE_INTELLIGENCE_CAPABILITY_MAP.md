@@ -43,7 +43,7 @@ Current bounded state:
 | ID | Stage | Item | Status |
 |---|---|---|---|
 | A | UNDERSTAND | Universal bounded repository understanding | `DONE` |
-| B | RESOLVE | Useful Impact Radius | `PARTIAL` |
+| B | RESOLVE | Useful Impact Radius | `DONE` |
 | C | UNDERSTAND | Edge provenance | `DONE` |
 | D | RESOLVE | Better UNKNOWN | `DONE` |
 | E | AUTHORIZE | Conflict-first authority | `DONE` |
@@ -56,6 +56,8 @@ Current bounded state:
 Therefore `v1Complete=false`.
 
 A is `DONE / LOCAL_VERIFIED` from the existing protected Universal Intelligence owners. Focused run `32343790105` proved neutral read-only discovery, explicit coverage, evidence/confidence on supported repository-local relationships, explicit unresolved relationships, `unclassified / confidence=unknown` for unproven architecture, sensitive-content boundaries, and non-authoritative profiles/index/retrieval projections. Promotion authority run `32344110362` passed both anti-rework gates with source bytes unchanged. Existing external diversity remains bounded and explicitly records zero-edge cases rather than fabricating relationships. This does not certify arbitrary-repository completeness, all-language semantic completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
+
+B is `DONE / LOCAL_VERIFIED` from the existing conservative impact owner plus its additive bounded Go actionable-review projection. The full static transitive reverse-dependency radius remains conservative and informational; `GO_BOUNDED_V1` separates exact direct Go relationships and test companions without deleting structural evidence or expanding edit authority. Current-code historical real-diff run `32807231102` passed read-only/repeatability on Ubuntu and Windows: Spring Java measured 100/100/100 recall/precision/companion recall; Cobra full radius remained 75% / 9.38% / 66.67% while bounded actionable review measured 75% recall / 75% precision; pybind remained explicitly weak at 33.33% recall / 100% precision / 0% companion recall; and the Kubernetes missing-parent new-path case remained fail-closed. Promotion Authority Mesh run `32843157359` passed the frozen main head. `Impact Radius != Authorization` remains invariant. This does not certify arbitrary-repository or all-language completeness, generalized companion recall, dynamic runtime dependencies, production, enterprise, hosted, paid-pilot, human usefulness or independent-agent verification.
 
 C is `DONE / LOCAL_VERIFIED` from the canonical fail-closed edge-provenance view integrated at `code_atlas.intelligence.engine`. PR #352 merged the bounded normalizer while leaving the protected raw graph producer byte-identical; implemented-byte evidence run `32406412712` proved material canonical edges expose provenance plus confidence, repository authority declaration/conflict edges require repository declaration facts, and unproven supported edges downgrade to explicit `unknown`. Promotion authority run `32407301388` passed the exact-head Authority Mesh plus both anti-rework gates. This is bounded static repository evidence only and does not certify arbitrary-repository/all-language completeness, dynamic runtime relationships, production, enterprise, hosted, paid-pilot, legal/privacy or security readiness.
 
