@@ -14,6 +14,7 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONPATH: tools/code-atlas/src
   CAEXT_WORKERS: '18'
+  CAEXT_HISTORICAL_CODE_ATLAS_PIN: '2ee6c9053e3eea024cad4715e4ec3172f02de341'
 
 jobs:
   current-real-diff:
@@ -42,6 +43,7 @@ jobs:
           test "$(git merge-base HEAD origin/main)" = "2ee6c9053e3eea024cad4715e4ec3172f02de341"
           changed="$(git diff --name-only origin/main...HEAD)"
           test "$changed" = ".github/workflows/ca-impact-b-current-evidence.yml"
+          test "$CAEXT_HISTORICAL_CODE_ATLAS_PIN" = "2ee6c9053e3eea024cad4715e4ec3172f02de341"
           python -m py_compile .github/scripts/caext_historical_real_diff_v1.py
           python .github/scripts/caext_historical_real_diff_v1.py --self-test
           git diff --exit-code
