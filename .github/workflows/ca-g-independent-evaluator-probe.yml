@@ -1,0 +1,119 @@
+name: CA G Independent Evaluator Availability Probe
+
+on:
+  push:
+    branches:
+      - 'preflight/ca-verify-g-independent-2508'
+    paths:
+      - '.github/workflows/ca-g-independent-evaluator-probe.yml'
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  EXPECTED_MAIN: c5c84ed61c9dd24be70e761e5480a059b32e6ee8
+  AUTHORITY_MESH_RUN_ID: '32844033046'
+  AUTHORITY_MESH_ARTIFACT_ID: '9561637126'
+  AUTHORITY_MESH_ARTIFACT_SHA256: '6fecf94aa3c753e677b95098c945e5cd56593065fdb30c22b874241009714bdf'
+  AUTHORITY_MESH_COMPOSED_SHA256: '76d387e07823943d1049fb38c9942805b0fe7de0f4534848cbe54e8847a45221'
+  AUTHORITY_MESH_REQUEST_DIGEST: '80c816e67466af5eb8e4a32148e573eec71169ac13b8bf6ad61842913625f673'
+
+jobs:
+  independent-evaluator-availability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Freeze external-evidence baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$EXPECTED_MAIN" = "c5c84ed61c9dd24be70e761e5480a059b32e6ee8"
+          echo "G probe is external availability evidence only."
+          echo "No repository checkout, source mutation, paired response, usefulness score, or production claim is performed."
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Probe GitHub Copilot CLI availability
+        id: probe
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          npm install -g @github/copilot
+          copilot --version | tee copilot-version.txt
+          set +e
+          copilot -s --no-ask-user --deny-tool='shell,write,read,url,memory' \
+            -p 'Return exactly this JSON object and no other content: {"status":"COPILOT_AVAILABLE"}' \
+            > >(tee copilot-availability.txt) 2>&1
+          rc=$?
+          set -e
+          echo "$rc" > copilot-exit-code.txt
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          text=Path('copilot-availability.txt').read_text(encoding='utf-8',errors='replace')
+          version=Path('copilot-version.txt').read_text(encoding='utf-8',errors='replace').strip()
+          rc=int(Path('copilot-exit-code.txt').read_text().strip())
+          status='UNAVAILABLE_OTHER'
+          if rc == 0 and '{"status":"COPILOT_AVAILABLE"}' in text.replace(' ',''):
+              status='AVAILABLE'
+          elif 'Access denied by policy settings' in text:
+              status='BLOCKED_BY_POLICY_SETTINGS'
+          elif 'not found' in text.lower() or 'command not found' in text.lower():
+              status='UNAVAILABLE_CLI'
+          result={
+            'schemaVersion':'prisma.ca.g.independent_evaluator_availability.v1',
+            'checklistId':'G',
+            'stage':'VERIFY',
+            'mainHead':os.environ['EXPECTED_MAIN'],
+            'authorityMesh':{
+              'status':'PASS_COMPOSED_AUTHORITY_MESH',
+              'runId':int(os.environ['AUTHORITY_MESH_RUN_ID']),
+              'artifactId':int(os.environ['AUTHORITY_MESH_ARTIFACT_ID']),
+              'artifactSha256':os.environ['AUTHORITY_MESH_ARTIFACT_SHA256'],
+              'composedSha256':os.environ['AUTHORITY_MESH_COMPOSED_SHA256'],
+              'requestDigest':os.environ['AUTHORITY_MESH_REQUEST_DIGEST'],
+            },
+            'evaluator':'GitHub Copilot CLI via isolated GitHub Actions job',
+            'copilotVersion':version,
+            'exitCode':rc,
+            'availabilityStatus':status,
+            'independentSessionsExecuted':0,
+            'pairedReplicationScoreProduced':False,
+            'humanUsefulness':'NOT_MEASURED',
+            'sameAgentSubstitutionAllowed':False,
+            'productionCertified':False,
+            'nextGate': 'RUN_6_TASK_12_SESSION_PAIRED_REPLICATION' if status=='AVAILABLE' else 'BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR',
+          }
+          Path('G_EVALUATOR_AVAILABILITY.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+          print(json.dumps(result,indent=2,sort_keys=True))
+          PY
+
+      - name: Upload G availability evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-g-independent-evaluator-availability
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            copilot-version.txt
+            copilot-availability.txt
+            copilot-exit-code.txt
+            G_EVALUATOR_AVAILABILITY.json
+
+      - name: Fail closed if independent evaluator is unavailable
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          result=json.loads(Path('G_EVALUATOR_AVAILABILITY.json').read_text(encoding='utf-8'))
+          if result.get('availabilityStatus') != 'AVAILABLE':
+              raise SystemExit('BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR:' + str(result.get('availabilityStatus')))
+          print('PASS_G_INDEPENDENT_EVALUATOR_AVAILABLE')
