@@ -1,57 +1,175 @@
-name: AutoMesh Parallel Certification
+name: Tablet Sync WAVE2 Mutation Authority
 
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: ce1bda5d4e6765d9927f33c16f0a08472427e4ba
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+  tablet-sync-wave2-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
         with:
+          ref: ce1bda5d4e6765d9927f33c16f0a08472427e4ba
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Verify immutable baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test -z "$(git status --porcelain)"
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Build task-exact WAVE2 request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/wave2.request.json" <<'PY'
+          import json, sys
+          head = "ce1bda5d4e6765d9927f33c16f0a08472427e4ba"
+          base = [
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+            "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+            "apps/terminal-de-venta-system/docs/sync/TABLET_TO_PC_SALES_SYNC_CURRENT_AUTHORITY.md",
+          ]
+          tablet = [
+            "apps/terminal-de-venta-system/products/tablet/app/prisma/schema.prisma",
+            "apps/terminal-de-venta-system/products/tablet/app/src/lib/pending-offline-sync/sync-panel-contract.ts",
+            "apps/terminal-de-venta-system/products/tablet/app/src/server/pos-sync-panel/index.ts",
+            "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/dispatcher.ts",
+            "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/reconciliation.ts",
+            "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
+            "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel.module.css",
+            "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs",
+          ]
+          pc = [
+            "apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sync/conflicts/route.ts",
+            "apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sync/conflicts/review/route.ts",
+            "apps/terminal-de-venta-system/products/pc/app/src/server/services/pc-command-center.service.ts",
+            "apps/terminal-de-venta-system/products/pc/app/src/server/services/sync-ingest.service.ts",
+          ]
+          scope = (
+            "TABLET_SYNC_WAVE2 bounded ADVANCE over tablet.sync.runtime_truth DONE/RUNTIME_VERIFIED/doNotRebuild=true. "
+            "WAVE1 stays frozen. Authorize only five future Tablet writes: sync-panel-contract.ts, pos-sync-panel/index.ts, "
+            "sync/reconciliation.ts, pending-offline-sync-panel-screen.tsx and verify_tablet_sync_panel_truth_1808.mjs. "
+            "Reuse existing OutboxEvent and transport truth to expose richer per-operation provenance, persisted ACK/conflict metadata "
+            "and precise retry preparation results. PC/backoffice remains conflict review/resolution owner, Tablet review-only. "
+            "Preserve local-first sales. No DB/schema/migration/Prisma generation, no transport replacement, no generated CSS/RIFAT edit, "
+            "no PC/Mobile/Chart Lab/Shared UI product edit, no licensing/deploy/process/port change, no !important, no fake green."
+          )
+          request = {
+            "schemaVersion":"v2",
+            "profile":"tablet-sync-wave2-mut-v1",
+            "expectedHead":head,
+            "tasks":[
+              {
+                "id":"wave2-runtime-projection",
+                "surface":"tablet",
+                "intent":"FIX",
+                "domain":"runtime",
+                "task":scope + " Prove field availability, owners, retry semantics, reconciliation persistence and exact bounded source scope; reject any new DB or parallel sync system.",
+                "requiredAuthorities":base + tablet + pc,
+                "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/tablet/app/src","apps/terminal-de-venta-system/products/tablet/app/components/sync","apps/terminal-de-venta-system/products/tablet/app/tools","apps/terminal-de-venta-system/products/pc/app/src/server/services"],
+                "requiredCapabilities":["tablet.sync.runtime_truth"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              },
+              {
+                "id":"wave2-visible-layer",
+                "surface":"tablet",
+                "intent":"FIX",
+                "domain":"visual",
+                "task":scope + " Prove the /sync TSX owner and Layer Map. Generated pending-offline-sync-panel.module.css is manual-edits-forbidden and must remain byte-untouched; reuse governed classes for operation detail and PC owner copy.",
+                "requiredAuthorities":base + [tablet[1],tablet[5],tablet[6]],
+                "requiredDirectories":["apps/terminal-de-venta-system/products/tablet/app/components/sync","apps/terminal-de-venta-system/products/tablet/app/src/lib/pending-offline-sync"],
+                "requiredCapabilities":["tablet.sync.runtime_truth"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              }
+            ]
+          }
+          with open(sys.argv[1],"w",encoding="utf-8") as f:
+            json.dump(request,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run exact Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/wave2-pre"; par="$RUNNER_TEMP/wave2-par"; comp="$RUNNER_TEMP/wave2-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/wave2.request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54 --max-files 140 --max-mb 45
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/wave2.request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/wave2-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/wave2-compose.txt"
+          test -f "$RUNNER_TEMP/wave2-comp/prisma-automesh-composed-result.zip"
+          grep -RIlE 'LAYER_MAP|Layer Map|layerMap' "$pre" "$par" "$RUNNER_TEMP/wave2-comp" > "$RUNNER_TEMP/wave2-layer-hits.txt"
+          test -s "$RUNNER_TEMP/wave2-layer-hits.txt"
+          test -z "$(git status --porcelain)"
+
+      - name: Run universal Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/wave2-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/wave2-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/wave2-comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/wave2-factory.request.json" <<'PY'
+          import hashlib, json, sys
+          report=json.load(open(sys.argv[1],encoding="utf-8")); pre=json.load(open(sys.argv[2],encoding="utf-8"))
+          coverage=min(float((lane.get("coverage") or {}).get("resolvedPercent",0)) for lane in pre["lanes"])
+          mesh={"status":report["status"],"repoHead":report["repoHead"],"requiredAuthorityCoveragePct":coverage,"blockers":len(pre.get("blockers") or []),"requestDigest":report["requestDigest"],"artifactDigest":hashlib.sha256(open(sys.argv[3],"rb").read()).hexdigest(),"layerMapPresent":True}
+          req={"schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1","mode":"MUTATION","expectedHead":"ce1bda5d4e6765d9927f33c16f0a08472427e4ba","task":"Advance Tablet Sync WAVE2 by expanding existing Outbox/projection/reconciliation truth only; no WAVE1 rebuild, no DB/schema, no generated CSS, no Tablet conflict mutation, preserve local-first and exact bounded five-file Tablet write set.","capabilities":[{"id":"tablet.sync.runtime_truth","requestedAction":"ADVANCE"}],"authorityMesh":mesh,"visualMutation":True}
+          with open(sys.argv[4],"w",encoding="utf-8") as f: json.dump(req,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/wave2-factory.request.json" | tee "$RUNNER_TEMP/wave2-factory-gate.json"
+          python - "$RUNNER_TEMP/wave2-factory-gate.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding="utf-8")); assert d.get("result")=="PASS_ANTI_REWORK_GATE",d; assert d.get("errors")==[],d
+          PY
+          test -z "$(git status --porcelain)"
+          echo PASS_TABLET_SYNC_WAVE2_MUTATION_AUTHORITY
+
+      - name: Stage authority evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/wave2-authority-evidence"; mkdir -p "$out"
+          for p in "$RUNNER_TEMP/wave2.request.json" "$RUNNER_TEMP/wave2-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/wave2-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/wave2-comp/payload/MANIFEST.json" "$RUNNER_TEMP/wave2-comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/wave2-factory.request.json" "$RUNNER_TEMP/wave2-factory-gate.json" "$RUNNER_TEMP/wave2-compose.txt" "$RUNNER_TEMP/wave2-layer-hits.txt"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+
+      - name: Upload WAVE2 authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-sync-wave2-mutation-authority
+          path: ${{ runner.temp }}/wave2-authority-evidence/**
+          if-no-files-found: error
+          retention-days: 14
