@@ -90,9 +90,9 @@ jobs:
               },
               {
                 "id":"prisma-parallel-work-operational-rule",
-                "surface":"tooling",
+                "surface":"governance",
                 "intent":"FIX",
-                "domain":"governance",
+                "domain":"tooling",
                 "task":"Record a durable operational rule in the PRISMA Field Manual: unrelated files and non-overlapping semantic scopes may proceed in parallel even when main advances; evidence carriers must compare their own branch delta against the correct evidence base rather than treating all commits since a fixed product target as contamination. Same-file work is allowed only with fresh re-read/blob SHA, semantic reconciliation, and fail-closed behavior on unresolved overlap. Never silently overwrite another agent's work. A fixed PRODUCT_TARGET may continue to be certified while main advances independently. Documentation-only update; no product or runtime mutation.",
                 "requiredAuthorities":ledger + [manual],
                 "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/docs/ops"],
