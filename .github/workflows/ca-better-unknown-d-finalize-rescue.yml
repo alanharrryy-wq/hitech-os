@@ -1,0 +1,139 @@
+name: CA Better UNKNOWN D Finalizer Rescue
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ca-better-unknown-d-finalize-rescue.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+jobs:
+  rescue-finalize-d:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: governance/ca-better-unknown-d-final-2408
+          fetch-depth: 0
+
+      - name: Validate exact authorized base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          test "$(git rev-parse origin/main)" = "2ee6c9053e3eea024cad4715e4ec3172f02de341"
+          test "$(git rev-parse origin/main:'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json')" = "8a3123ef7534ff5b808aede3a22ebf5cc59af1d3"
+          test "$(git rev-parse origin/main:'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md')" = "0bcabb53334fb96ed0897313c79ad76cb0ba2c6c"
+          test "$(git rev-parse origin/main:'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md')" = "76332b890be966d60b59cda23c532bea678b3afa"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/change_intelligence/unknown_obligations.py')" = "2cc36c6854a3ee826d8cef6eb7197398a10219ca"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py')" = "a978a8a8302cbbfd26decb3cb3bd9cf8701ca65d"
+          test "$(git rev-parse origin/main:'tools/code-atlas/src/code_atlas/change_intelligence/verification.py')" = "d8ceeaa06ae05357536f2b8fb0995ebeface56a2"
+          test "$(git rev-parse origin/main:'tools/code-atlas/tests/test_operational_better_unknown.py')" = "40405d35a3735ca63b809c417974bc728e07b058"
+
+      - name: Apply same validated D promotion
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import copy, json
+          from pathlib import Path
+          registry=Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json')
+          map_md=Path('PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md')
+          v1_md=Path('tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md')
+          data=json.loads(registry.read_text(encoding='utf-8')); before=copy.deepcopy(data)
+          rows=[]
+          def walk(n):
+              if isinstance(n,dict):
+                  if n.get('id')=='D' and n.get('stage')=='RESOLVE' and n.get('title')=='Better UNKNOWN': rows.append(n)
+                  for v in n.values(): walk(v)
+              elif isinstance(n,list):
+                  for v in n: walk(v)
+          walk(data)
+          if len(rows)!=1 or rows[0].get('status')!='PARTIAL': raise SystemExit('D_BASELINE_INVALID')
+          d=rows[0]
+          d.update({
+            'status':'DONE',
+            'claimBoundary':'LOCAL_VERIFIED bounded Better UNKNOWN only: canonical Change Studio and Verify outputs preserve UNKNOWN as fail-closed while attaching deterministic structured obligations with code, source, reason and actionable nextEvidence. Guidance is evidence-seeking metadata, not proof, and does not promote UNKNOWN to PASS. This does not prove arbitrary-repository completeness, complete semantics for every stack, production, enterprise, hosted, paid-pilot, legal/privacy/security, human usefulness or independent-agent verification.',
+            'evidence':[
+              'path:tools/code-atlas/src/code_atlas/change_intelligence/unknown_obligations.py',
+              'path:tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py',
+              'path:tools/code-atlas/src/code_atlas/change_intelligence/verification.py',
+              'path:tools/code-atlas/tests/test_operational_better_unknown.py',
+              'PR #361 / merge 2ee6c9053e3eea024cad4715e4ec3172f02de341',
+              'D fresh mutation authority run 32806300949 / artifact 9548279982 / sha256:c89168c27fd29661c1575e76481385c2972eefc1c7e9d264ce6925f29bbe92b0',
+              'Code Atlas Operational Hardening run 32806525566: 148/148 tests PASS on Ubuntu including five focused Better UNKNOWN tests; Windows/macOS lanes green; neutrality blockingCount=0',
+              'D promotion authority run 32806776961 / artifact 9548433806',
+              'D promotion artifact sha256:8bff0587feb192e7ba80eb5fca34c70df2c3a50c4e94f03fe6070794b1bdd840',
+              'D promotion composed Authority Mesh sha256:ade2822d6550c04d23476973b57fc6b3c5507240b1ad5d10224570aeb35b8ee0',
+              'D promotion request digest eac2dbbaa007c04b86d22f449637259b271acb557a799ada84f0da603ec88655',
+              'Factory gate decision e5aaa9ceb0adc8a9ac096fb9e6c19f61068be814e66d198784f49fa34b49333b',
+              'Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE for ci.change.prepare, ci.change.verify and ci.change.evidence_qa'],
+            'tests':['test_change_model_unknown_conditions_are_actionable_and_stay_unknown','test_supported_change_model_has_no_unknown_obligations','test_verify_contradiction_exposes_next_evidence_without_promoting_unknown','test_pack_and_new_unknowns_remain_unknown_with_actionable_obligations','test_unknown_obligation_normalization_is_deterministic_and_deduplicated'],
+            'negativeTests':['contradictory evidence with actionable guidance remains decision=UNKNOWN','authority-pack and newly observed unknowns remain UNKNOWN even when nextEvidence is populated','unsupported primary target remains UNKNOWN until repository evidence supports it','SUPPORTED path without unknowns emits no synthetic unknown obligation','nextEvidence is never interpreted as proof and cannot promote UNKNOWN to PASS'],
+            'knownBlindSpots':['Actionable next-evidence guidance does not guarantee that the requested evidence exists or will resolve the unknown.','Bounded local tests do not prove perfect guidance quality for arbitrary repositories, languages or external systems.','This evidence does not measure human usefulness or independent-agent success.','This evidence does not prove production, enterprise IAM/security, hosted multi-tenant, legal/privacy or paid-pilot readiness.'],
+            'nextEvidence':'REUSE_DONE_BASELINE; recertify only if UNKNOWN decision precedence, obligation schema/codes, Change Studio unknown derivation, Verify unknown derivation or evidence-support semantics change. Do not rebuild Change Studio, Verify or Evidence Q&A.'})
+          data['lastGovernanceMutation']={'kind':'RESOLVE_D_BETTER_UNKNOWN_LOCAL_VERIFICATION_PROMOTION','sourceHead':'2ee6c9053e3eea024cad4715e4ec3172f02de341','technicalEvidenceRunId':32806525566,'authorityRunId':32806776961,'authorityArtifactId':9548433806,'authorityArtifactSha256':'8bff0587feb192e7ba80eb5fca34c70df2c3a50c4e94f03fe6070794b1bdd840','composedAuthoritySha256':'ade2822d6550c04d23476973b57fc6b3c5507240b1ad5d10224570aeb35b8ee0','requestDigest':'eac2dbbaa007c04b86d22f449637259b271acb557a799ada84f0da603ec88655','factoryGateDecisionDigest':'e5aaa9ceb0adc8a9ac096fb9e6c19f61068be814e66d198784f49fa34b49333b','status':'LOCAL_VERIFIED','productionCertified':False}
+          def statuses(root):
+              out={}
+              def rec(n):
+                  if isinstance(n,dict):
+                      if n.get('id') in set('ABCDEFGHIJ') and 'stage' in n and 'status' in n: out[n['id']]=n['status']
+                      for v in n.values(): rec(v)
+                  elif isinstance(n,list):
+                      for v in n: rec(v)
+              rec(root); return out
+          b,a=statuses(before),statuses(data)
+          if b.get('D')!='PARTIAL' or a.get('D')!='DONE': raise SystemExit('D_TRANSITION_INVALID')
+          for k,v in b.items():
+              if k!='D' and a.get(k)!=v: raise SystemExit(f'UNAUTHORIZED_STATUS:{k}')
+          if data.get('v1Complete') is not False: raise SystemExit('V1_COMPLETE_NOT_FALSE')
+          registry.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          old='| D | RESOLVE | Better UNKNOWN | `PARTIAL` |'; new='| D | RESOLVE | Better UNKNOWN | `DONE` |'
+          text=map_md.read_text(encoding='utf-8')
+          if text.count(old)!=1 or new in text: raise SystemExit('MAP_D_ANCHOR_INVALID')
+          text=text.replace(old,new,1)
+          anchor='E is `DONE / LOCAL_VERIFIED` from the existing protected authority-resolution'
+          paragraph=('D is `DONE / LOCAL_VERIFIED` from the bounded Better UNKNOWN obligations integrated into existing Change Studio and Verify owners. PR #361 merged deterministic `code/source/reason/nextEvidence` obligations while preserving fail-closed decision precedence; Operational Hardening run `32806525566` passed 148/148 tests on Ubuntu with Windows/macOS lanes green, including five focused D tests proving guidance does not promote UNKNOWN to PASS. Promotion authority run `32806776961` passed exact-head Authority Mesh plus both anti-rework gates. This does not certify arbitrary-repository completeness, production, enterprise, hosted, paid-pilot, human usefulness or independent-agent verification.\n\n')
+          if text.count(anchor)!=1 or 'D is `DONE / LOCAL_VERIFIED`' in text: raise SystemExit('MAP_D_PARAGRAPH_INVALID')
+          map_md.write_text(text.replace(anchor,paragraph+anchor,1),encoding='utf-8')
+          text=v1_md.read_text(encoding='utf-8')
+          if text.count(old)!=1 or new in text: raise SystemExit('V1_D_ANCHOR_INVALID')
+          text=text.replace(old,new,1)
+          anchor='Checklist E is now `DONE / LOCAL_VERIFIED`:'
+          paragraph=('Checklist D is now `DONE / LOCAL_VERIFIED`: UNKNOWN remains a first-class fail-closed result, but canonical Change Studio and Verify outputs now attach deterministic structured obligations containing `code`, `source`, `reason` and actionable `nextEvidence`. These obligations are guidance for acquiring proof, never proof themselves. PR #361 merged at `2ee6c9053e3eea024cad4715e4ec3172f02de341`; Operational Hardening run `32806525566` passed 148/148 Ubuntu tests including all five focused Better UNKNOWN tests, with Windows/macOS lanes green. Promotion authority run `32806776961` passed exact-head Authority Mesh, Factory Ledger and Change Assurance gates. D does not prove arbitrary-repository completeness, production, enterprise, hosted, paid-pilot, human usefulness or independent-agent verification.\n\n')
+          if text.count(anchor)!=1 or 'Checklist D is now `DONE / LOCAL_VERIFIED`:' in text: raise SystemExit('V1_D_PARAGRAPH_INVALID')
+          v1_md.write_text(text.replace(anchor,paragraph+anchor,1),encoding='utf-8')
+          PY
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --self-test
+          PYTHONPATH=tools/code-atlas/src python tools/code-atlas/tests/test_operational_better_unknown.py
+
+      - name: Remove both carriers and prove cumulative three-file diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/ca-better-unknown-d-finalize.yml
+          rm .github/workflows/ca-better-unknown-d-finalize-rescue.yml
+          expected=$(printf '%s\n' 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md' 'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md' | sort)
+          actual=$(git diff --name-only origin/main | sort)
+          test "$actual" = "$expected"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          staged=$(git diff --cached --name-only | sort)
+          expected_staged=$(printf '%s\n' '.github/workflows/ca-better-unknown-d-finalize-rescue.yml' '.github/workflows/ca-better-unknown-d-finalize.yml' 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md' 'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md' | sort)
+          test "$staged" = "$expected_staged"
+          git commit -m 'governance(ca): certify Better UNKNOWN'
+          final=$(git diff --name-only origin/main...HEAD | sort)
+          test "$final" = "$expected"
+          test "$(git rev-parse HEAD:tools/code-atlas/src/code_atlas/change_intelligence/unknown_obligations.py)" = "2cc36c6854a3ee826d8cef6eb7197398a10219ca"
+          test "$(git rev-parse HEAD:tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py)" = "a978a8a8302cbbfd26decb3cb3bd9cf8701ca65d"
+          test "$(git rev-parse HEAD:tools/code-atlas/src/code_atlas/change_intelligence/verification.py)" = "d8ceeaa06ae05357536f2b8fb0995ebeface56a2"
+          git push origin HEAD:governance/ca-better-unknown-d-final-2408
