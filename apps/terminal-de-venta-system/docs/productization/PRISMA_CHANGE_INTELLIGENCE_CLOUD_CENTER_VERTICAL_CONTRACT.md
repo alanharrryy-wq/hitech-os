@@ -49,13 +49,13 @@ Repository Registry adapter P1 authority:
 
 Analysis Runs adapter P2 authority:
 
-- base: `main@1a83d5decb4e946021b9acf95f1a49479d6abf19`
-- tree: `aef9288e64471d0f93b46bf1a83b1b3761a7ed87`
-- Authority Mesh run: `32857996548`
-- Authority Mesh artifact: `9567071237`
-- Authority Mesh artifact digest: `sha256:57ecf78ed943207dd9863656bdf0691973a9b6ab55dbe27b7337dde033f75f98`
-- request digest: `2b7f419913ed27976aa58020fd2d0dabd4847f7aa24259a3eace3e5e1f4c1613`
-- profile: `ci-cloud-analysis-p2-v1`
+- base: `main@28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab`
+- tree: `f02a5c495d982155d18febc0b81d8a11c0201144`
+- Authority Mesh run: `32865050216`
+- Authority Mesh artifact: `9569864211`
+- Authority Mesh artifact digest: `sha256:677d5e2d93d9a5b23c5cc683e9572645bdd2763f575752af2c628dcb1df9d4ed`
+- request digest: `bb146156461837525776f6f40e637a1215ba38581759da4ebb448aea97a08769`
+- profile: `ci-cloud-analysis-run-projection-p2-v2`
 - composed result: `PASS_COMPOSED_AUTHORITY_MESH`
 - lanes: `2/2 PASS`
 - required authority coverage: `100%`
@@ -65,14 +65,14 @@ Analysis Runs adapter P2 authority:
 
 Fresh immutable Code Atlas P2 evidence:
 
-- workflow run: `32858536493`
-- evidence artifact: `9567186079`
-- evidence artifact digest: `sha256:4696ca6b5d9bd9ee5672a0ce876607e5359d78a73d8142a7a64441c36eabc86c`
-- engine artifact SHA-256: `7dc6034b34638f3d3a699d52cf53c3357f0296f6d5630a156582548e2644e826`
+- workflow run: `32865503690`
+- evidence artifact: `9569959132`
+- evidence artifact digest: `sha256:cd8cd3b5f35a81e9608c0d8aae42fde76a9a822122d292a6a19c2a4973cf0868`
+- engine artifact SHA-256: `2630c723aaa6d2f692218cb30648020fd41a5eade35d10f4d49129d0c5304103`
 - engine result: `PASS_UNIVERSAL_INTELLIGENCE_SOURCE_READY`
 - engine request digest: `08e828680e7a1afdb26d37cf44e23f2a9fd718249c7011095644b9e9da9e0460`
-- snapshot digest: `c431cdbae2097a1b66b5ecece80c5851c757186babd3d7e749299c8252622a2a`
-- exact source HEAD/tree: `1a83d5decb4e946021b9acf95f1a49479d6abf19` / `aef9288e64471d0f93b46bf1a83b1b3761a7ed87`
+- snapshot digest: `7a2893d86119ad6d49bc7bb3bdff08689a6abcbb2c77343399a9cc671bc08913`
+- exact source HEAD/tree: `28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab` / `f02a5c495d982155d18febc0b81d8a11c0201144`
 - read-only: `true`
 - production certified: `false`
 
