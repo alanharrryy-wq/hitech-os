@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "prisma.mobile.interface-authority-layer-map.v1",
+  "status": "PASS",
+  "repoHead": "72637e9702ad0d9bbfa9dc523ef09a56c910ecd1",
+  "visualImplementationMutation": false,
+  "layers": [
+    {"id":"L0","authority":"products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md","role":"aspirational_product_interface_truth","canOverrideCanon":true},
+    {"id":"L1","authority":"products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON_MIGRATION_20260825.md","role":"migration_supersession_rollback","canOverrideCanon":false},
+    {"id":"L2","authority":"products/mobile/app/docs/atlas/**","role":"current_implementation_inventory","canOverrideCanon":false},
+    {"id":"L3","authority":"products/mobile/app/docs/PRISMA_MOBILE_FUTURE_EDIT_MAP.md","role":"engineering_ownership_map","canOverrideCanon":false},
+    {"id":"L4","authority":"products/mobile/app/app/** + products/mobile/app/src/**","role":"current_runtime_implementation_and_drift_evidence","canOverrideCanon":false},
+    {"id":"L5","authority":"mobile technical contracts/runtime/PWA/release docs","role":"bounded_technical_truth","canOverrideCanon":false},
+    {"id":"L6","authority":"products/mobile/app/tools/** + QA corpora","role":"technical_regression_gates","canOverrideCanon":false},
+    {"id":"L7","authority":"Factory Ledger + Quality + Authority Mesh + Field Manual","role":"change_governance_and_truthfulness","canOverrideCanon":false},
+    {"id":"L8","authority":"Git history + prisma-salvage + historical evidence","role":"provenance_and_recovery","canOverrideCanon":false}
+  ],
+  "rules": [
+    "Only L0 defines aspirational Mobile product hierarchy and screen intent.",
+    "L4 mismatch is implementation drift, not authority promotion.",
+    "Legacy verifier-required doc paths may exist only as non-authoritative pointers to L0.",
+    "No lower layer may revive a deleted navigation model by citation alone."
+  ],
+  "excludedMutationSurfaces": ["tablet","pc","shared-ui","shared-core","chart-lab","control-center","database","sync","licensing","runtime","verifier-code"]
+}

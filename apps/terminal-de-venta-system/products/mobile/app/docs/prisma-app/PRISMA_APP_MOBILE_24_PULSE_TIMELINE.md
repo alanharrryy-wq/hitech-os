@@ -1,26 +1,13 @@
-# PRISMA App Mobile 24 - Pulse Timeline
+# PRISMA Mobile legacy compatibility pointer
 
-## Objetivo
+**Status:** `NON_AUTHORITATIVE_COMPATIBILITY_POINTER`
 
-Agregar una línea de pulso operativo móvil que ordena señales del día por fase: apertura, operación, pico, seguimiento y cierre.
+Canonical product-interface authority:
 
-## Alcance
+`PRISMA_MOBILE_INTERFACE_CANON.md`
 
-- Nuevo endpoint `/api/mobile/pulse-timeline`.
-- Nuevo motor puro `buildPrismaMobilePulseTimeline`.
-- Nuevo componente `PrismaMobilePulseTimeline`.
-- Integración visual debajo de la bitácora de decisiones.
-- Verificador `verify:pulse-timeline`.
+This file contains **no independent PRISMA Mobile product, UI, UX, navigation, screen, or visual specification**. Its only purpose is compatibility with current technical verifier paths that still require an iteration-era documentation file to exist.
 
-## Criterios de salida
+If this file and the canonical interface document differ, the canon wins. Current runtime/source differences are implementation drift, not authority to revive a legacy specification.
 
-- El timeline usa snapshot móvil conectado.
-- Reutiliza Centro de Mando, Bandeja del Dueño y Bitácora de Decisiones.
-- No toca Tablet, PC ni shared-kernel.
-- No introduce copy demo ni referencias a código inconcluso.
-
-## Uso
-
-```powershell
-pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system\products\mobile\app" run verify:pulse-timeline
-```
+The legacy path may be removed later only together with an explicitly authorized verifier-path cleanup.

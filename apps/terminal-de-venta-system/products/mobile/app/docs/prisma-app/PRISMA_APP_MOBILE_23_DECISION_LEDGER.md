@@ -1,19 +1,13 @@
-# PRISMA App Mobile 23 - Decision Ledger
+# PRISMA Mobile legacy compatibility pointer
 
-## Objetivo
-Agregar una bitácora móvil de decisiones para que el dueño vea qué señales se convirtieron en acciones, con evidencia, responsable sugerido, vencimiento operativo y texto auditable para cierre.
+**Status:** `NON_AUTHORITATIVE_COMPATIBILITY_POINTER`
 
-## Alcance
-- Endpoint `/api/mobile/decision-ledger`.
-- Builder puro `buildPrismaMobileDecisionLedger`.
-- Componente `PrismaMobileDecisionLedger` integrado al dashboard móvil.
-- Gate `verify:decision-ledger`.
+Canonical product-interface authority:
 
-## Criterio de salida
-- La bitácora se deriva de Centro de Mando, Bandeja del Dueño y Brief Diario.
-- No toca Tablet, PC ni `shared-kernel`.
-- No introduce copy de estado inconcluso.
-- Mantiene endpoint `no-store` y lectura dinámica.
+`PRISMA_MOBILE_INTERFACE_CANON.md`
 
-## Uso operativo
-La bitácora sirve para cierre, seguimiento del encargado y evidencia ligera de por qué se sugirió una acción.
+This file contains **no independent PRISMA Mobile product, UI, UX, navigation, screen, or visual specification**. Its only purpose is compatibility with current technical verifier paths that still require an iteration-era documentation file to exist.
+
+If this file and the canonical interface document differ, the canon wins. Current runtime/source differences are implementation drift, not authority to revive a legacy specification.
+
+The legacy path may be removed later only together with an explicitly authorized verifier-path cleanup.
