@@ -45,7 +45,7 @@ Current bounded state:
 | A | UNDERSTAND | Universal bounded repository understanding | `DONE` |
 | B | RESOLVE | Useful Impact Radius | `PARTIAL` |
 | C | UNDERSTAND | Edge provenance | `DONE` |
-| D | RESOLVE | Better UNKNOWN | `PARTIAL` |
+| D | RESOLVE | Better UNKNOWN | `DONE` |
 | E | AUTHORIZE | Conflict-first authority | `DONE` |
 | F | OBSERVE | Change comparison | `DONE` |
 | G | VERIFY | Agent-neutral independent verification | `PARTIAL` |
@@ -58,6 +58,8 @@ Therefore `v1Complete=false`.
 A is `DONE / LOCAL_VERIFIED` from the existing protected Universal Intelligence owners. Focused run `32343790105` proved neutral read-only discovery, explicit coverage, evidence/confidence on supported repository-local relationships, explicit unresolved relationships, `unclassified / confidence=unknown` for unproven architecture, sensitive-content boundaries, and non-authoritative profiles/index/retrieval projections. Promotion authority run `32344110362` passed both anti-rework gates with source bytes unchanged. Existing external diversity remains bounded and explicitly records zero-edge cases rather than fabricating relationships. This does not certify arbitrary-repository completeness, all-language semantic completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
 C is `DONE / LOCAL_VERIFIED` from the canonical fail-closed edge-provenance view integrated at `code_atlas.intelligence.engine`. PR #352 merged the bounded normalizer while leaving the protected raw graph producer byte-identical; implemented-byte evidence run `32406412712` proved material canonical edges expose provenance plus confidence, repository authority declaration/conflict edges require repository declaration facts, and unproven supported edges downgrade to explicit `unknown`. Promotion authority run `32407301388` passed the exact-head Authority Mesh plus both anti-rework gates. This is bounded static repository evidence only and does not certify arbitrary-repository/all-language completeness, dynamic runtime relationships, production, enterprise, hosted, paid-pilot, legal/privacy or security readiness.
+
+D is `DONE / LOCAL_VERIFIED` from the bounded Better UNKNOWN obligations integrated into existing Change Studio and Verify owners. PR #361 merged deterministic `code/source/reason/nextEvidence` obligations while preserving fail-closed decision precedence; Operational Hardening run `32806525566` passed 148/148 tests on Ubuntu with Windows/macOS lanes green, including five focused D tests proving guidance does not promote UNKNOWN to PASS. Promotion authority run `32806776961` passed exact-head Authority Mesh plus both anti-rework gates. This does not certify arbitrary-repository completeness, production, enterprise, hosted, paid-pilot, human usefulness or independent-agent verification.
 
 E is `DONE / LOCAL_VERIFIED` from the existing protected authority-resolution, snapshot-locking, Authority Pack and Verify owners. Focused falsification run `32342173554` proved ranking-only candidates stay non-authoritative, declared authority conflicts remain `CONFLICTED`, missing/conflicted authority prevents pack issuance, stale or authority-drifted snapshots block, and protected scope cannot be bypassed by widening allowed scope. Governance authority run `32342601848` passed both anti-rework gates with source bytes unchanged. This does not certify arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
