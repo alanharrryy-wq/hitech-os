@@ -1,0 +1,233 @@
+name: Tablet Sync WAVE2 Postmerge Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tablet-sync-wave2-postmerge-evidence.yml'
+      - '.github/evidence/tablet-sync-wave2-capture.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tablet-sync-wave2-postmerge-evidence
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  TARGET_SHA: 1a83d5decb4e946021b9acf95f1a49479d6abf19
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-sync-wave2-postmerge
+  RUNTIME_PORT: '3120'
+  CHROME_DEBUG_PORT: '9223'
+
+jobs:
+  tablet-sync-wave2-postmerge:
+    if: github.head_ref == 'evidence/tablet-sync-wave2-postmerge'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout evidence carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Preserve evidence harness and pin exact product target
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/wave2-harness"
+          cp .github/evidence/tablet-sync-wave2-capture.mjs "$RUNNER_TEMP/wave2-harness/capture.mjs"
+          python - <<'PY'
+          import subprocess
+          allowed = {
+            '.github/workflows/tablet-sync-wave2-postmerge-evidence.yml',
+            '.github/evidence/tablet-sync-wave2-capture.mjs',
+          }
+          target = '1a83d5decb4e946021b9acf95f1a49479d6abf19'
+          changed = set(subprocess.check_output(['git','diff','--name-only',target+'..HEAD'], text=True).splitlines())
+          if changed != allowed:
+              raise SystemExit(f'EVIDENCE_CARRIER_SCOPE_DRIFT:{sorted(changed)}')
+          PY
+          git checkout --detach "$TARGET_SHA"
+          test "$(git rev-parse HEAD)" = "$TARGET_SHA"
+          test -z "$(git status --porcelain)"
+          mkdir -p "$EVIDENCE_DIR"
+          cat > "$EVIDENCE_DIR/scope.json" <<JSON
+          {"schemaVersion":"tablet.sync.wave2.postmerge.evidence.v1","targetSha":"$TARGET_SHA","productMutation":false,"dbMutation":false,"prismaGenerate":false,"runtime":"runner-local-isolated","browserFixtureTransport":"CDP Fetch interception","screenshotsRequired":true}
+          JSON
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install standalone Tablet safely
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
+          test -x "$APP_ROOT/node_modules/.bin/next"
+          test ! -e "$APP_ROOT/.generated/prisma-client"
+
+      - name: Run WAVE2 and protected truth gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          node "$APP_ROOT/tools/verify_tablet_sync_panel_truth_1808.mjs" 2>&1 | tee "$EVIDENCE_DIR/verify-sync.log"
+          grep -Fq 'PASS TABLET_SYNC_PANEL_TRUTH_1808 55/55' "$EVIDENCE_DIR/verify-sync.log"
+          pnpm -C "$APP_ROOT" run verify:zero-important 2>&1 | tee "$EVIDENCE_DIR/verify-zero-important.log"
+          pnpm -C "$APP_ROOT" run verify:tablet-license-missing-fallback 2>&1 | tee "$EVIDENCE_DIR/verify-license.log"
+          pnpm -C "$APP_ROOT" run verify:tablet-operational-gate 2>&1 | tee "$EVIDENCE_DIR/verify-operational.log"
+          pnpm -C "$APP_ROOT" run verify:tablet-sync-dispatcher 2>&1 | tee "$EVIDENCE_DIR/verify-dispatcher.log"
+
+      - name: Resolve preinstalled Chrome
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=''
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do
+            command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break
+          done
+          test -n "$chrome"
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome-version.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start isolated Tablet runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/" >/dev/null 2>&1; then
+            echo "BLOCKED occupied runner port $RUNTIME_PORT; refusing cleanup" | tee "$EVIDENCE_DIR/runtime-start.log"
+            exit 1
+          fi
+          setsid bash -lc "cd '$APP_ROOT' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/server.pid"
+          for _ in $(seq 1 120); do
+            curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/sync" >/dev/null 2>&1 && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break
+            sleep 1
+          done
+          tail -n 240 "$EVIDENCE_DIR/server.log" || true
+          exit 1
+
+      - name: Start isolated headless Chrome
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: |
+          set -euo pipefail
+          "$CHROME_BIN" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --remote-debugging-address=127.0.0.1 \
+            --remote-debugging-port="$CHROME_DEBUG_PORT" \
+            --user-data-dir="$RUNNER_TEMP/wave2-chrome-profile" \
+            about:blank > "$EVIDENCE_DIR/chrome-runtime.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/chrome.pid"
+          for _ in $(seq 1 80); do
+            curl -sf --max-time 1 "http://127.0.0.1:$CHROME_DEBUG_PORT/json/version" > "$EVIDENCE_DIR/chrome-debug.json" 2>/dev/null && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/chrome.pid")" >/dev/null 2>&1 || break
+            sleep 0.25
+          done
+          cat "$EVIDENCE_DIR/chrome-runtime.log" || true
+          exit 1
+
+      - name: Capture WAVE2 browser states and screenshots
+        shell: bash
+        env:
+          RUNTIME_URL: http://127.0.0.1:3120
+        run: |
+          set -euo pipefail
+          node "$RUNNER_TEMP/wave2-harness/capture.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+          grep -Fq 'PASS_TABLET_SYNC_WAVE2_BROWSER_SCREENSHOTS 10/10' "$EVIDENCE_DIR/browser-capture.log"
+          test "$(find "$EVIDENCE_DIR/screenshots" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 10
+
+      - name: Fail closed on runtime anomalies
+        shell: bash
+        run: |
+          set -euo pipefail
+          node -e 'const fs=require("fs"); const p=process.argv[1]; const x=JSON.parse(fs.readFileSync(p,"utf8")); if((x.runtimeErrors||[]).length || (x.consoleErrors||[]).length) process.exit(1)' "$EVIDENCE_DIR/browser-runtime-errors.json"
+          if grep -E '(^|[^A-Za-z])(TypeError|ReferenceError|SyntaxError|Unhandled|Internal Server Error)([^A-Za-z]|$)|^[[:space:]]*⨯' "$EVIDENCE_DIR/server.log" > "$EVIDENCE_DIR/server-anomalies.log"; then
+            cat "$EVIDENCE_DIR/server-anomalies.log"
+            exit 1
+          fi
+          printf 'PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN\n' | tee "$EVIDENCE_DIR/FINAL_RESULT.txt"
+
+      - name: Build evidence summary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path('evidence/tablet-sync-wave2-postmerge')
+          shots = sorted((root/'screenshots').glob('*.png')) if (root/'screenshots').exists() else []
+          manifest = []
+          for p in shots:
+              manifest.append({'name': p.name, 'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()})
+          report = {
+              'schemaVersion': 'tablet.sync.wave2.postmerge.evidence.report.v1',
+              'targetSha': '1a83d5decb4e946021b9acf95f1a49479d6abf19',
+              'focusedVerifierExpected': '55/55',
+              'screenshots': manifest,
+              'screenshotCount': len(manifest),
+              'finalMarker': (root/'FINAL_RESULT.txt').read_text(encoding='utf-8').strip() if (root/'FINAL_RESULT.txt').exists() else 'NOT_REACHED',
+              'claimCeiling': [
+                  'runner-local isolated browser/runtime evidence only',
+                  'does not prove hosted production',
+                  'does not prove a real deployed PC transport',
+                  'does not mutate or certify a production database',
+                  'does not certify unrelated PRISMA surfaces or future drift'
+              ]
+          }
+          root.mkdir(parents=True, exist_ok=True)
+          (root/'RUNTIME_EVIDENCE.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+          (root/'RUNTIME_EVIDENCE.md').write_text(
+              '# Tablet Sync WAVE2 Postmerge Runtime Evidence\n\n'
+              f'- Target: `{report["targetSha"]}`\n'
+              f'- Screenshots: **{len(manifest)}**\n'
+              f'- Final marker: `{report["finalMarker"]}`\n'
+              '- Browser: preinstalled Chrome, runner-local, 1365x900, CDP fixture interception.\n'
+              '- DB/Prisma mutation: **none**.\n'
+              '- Product mutation: **none**.\n\n'
+              'This evidence validates the exact merged WAVE2 source in an isolated browser/runtime harness; it does not claim hosted production or a real deployed PC/database E2E.\n',
+              encoding='utf-8'
+          )
+          PY
+
+      - name: Stop only runner-owned processes
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          for pidfile in "$EVIDENCE_DIR/chrome.pid" "$EVIDENCE_DIR/server.pid"; do
+            [ ! -f "$pidfile" ] || kill "$(cat "$pidfile")" >/dev/null 2>&1 || true
+          done
+
+      - name: Upload WAVE2 postmerge evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-sync-wave2-postmerge-runtime
+          path: ${{ env.EVIDENCE_DIR }}/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Final certification gate
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$EVIDENCE_DIR/FINAL_RESULT.txt"
+          grep -Fxq 'PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN' "$EVIDENCE_DIR/FINAL_RESULT.txt"
+          test "$(find "$EVIDENCE_DIR/screenshots" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 10
