@@ -981,22 +981,40 @@
       "id": "I",
       "stage": "PROVE",
       "title": "Evidence Bundle",
-      "status": "PARTIAL",
+      "status": "DONE",
       "requiredForV1": true,
-      "claimBoundary": "Evidence-bounded; UNKNOWN/BLOCKED is valid and no stronger claim is permitted without proof.",
+      "claimBoundary": "LOCAL_VERIFIED bounded Evidence Bundle semantics only: the existing hardened portable bundle optionally binds typed decision/classification, gaps/unknowns, and replay/handoff roles to current sanitized artifacts and the exact repository snapshot. Missing, duplicate, contradictory, stale or tampered semantic evidence fails closed; UNKNOWN remains UNKNOWN; packaging cannot promote decisions or create certification; legacy hardened V2 manifests remain compatible when semantic roles are omitted. This does not prove arbitrary-repository completeness, production, enterprise, hosted, paid-pilot, human usefulness, independent-agent verification, legal/privacy/security readiness or secure erase.",
       "evidence": [
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/bundle.py",
+        "path:tools/code-atlas/tests/test_operational_evidence_bundle_semantics.py",
+        "path:tools/code-atlas/tests/test_operational_rental_hardening.py",
+        "PR #366 / merge ce1bda5d4e6765d9927f33c16f0a08472427e4ba",
+        "Code Atlas Operational Hardening run 32829741184: 155/155 tests PASS on Ubuntu including seven focused Evidence Bundle semantic tests; Windows/macOS lanes green; neutrality blockingCount=0",
+        "I promotion authority run 32838245862 / artifact 9559506266",
+        "I promotion artifact sha256:3567eafc2ab9b893ec17d0ff93eefbc4e8e254e6f035f1a57784edacbe86a2bf",
+        "I promotion composed Authority Mesh sha256:c5a3114cc46853697d31dba085edb525d991749386a8e83c5708f73eb615c6e5",
+        "I promotion request digest 01b08aaaff3e0da278583fc4596b7b914392967cdabbd8a7987b3fe529949423",
+        "Factory gate decision 2b90fb7fa88666225f55655c11d7fa5bbc479ac5eb43e21e9f1a5cea225d74bd",
+        "Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE for ci.evidence.report_bundle"
       ],
       "tests": [
-        "bounded positive evidence"
+        "test_valid_semantic_roles_are_complete_canonical_and_replayable",
+        "test_unknown_decision_is_preserved_and_never_promoted_by_packaging",
+        "test_legacy_hardened_v2_shape_remains_compatible_without_semantic_roles"
       ],
       "negativeTests": [
-        "missing/contradictory/unsupported evidence must not become green"
+        "test_each_missing_required_semantic_role_fails_closed",
+        "test_duplicate_or_contradictory_semantic_roles_fail_closed",
+        "test_stale_semantic_snapshot_fails_closed",
+        "test_tampered_artifact_descriptor_still_fails_before_semantic_acceptance"
       ],
       "knownBlindSpots": [
-        "bounded evidence does not prove universal completeness"
+        "Typed semantic roles prove bounded packaging semantics, not truth or completeness of the underlying evidence.",
+        "Caller-supplied replay/handoff identifiers and digests must refer to real evidence; package binding does not execute an independent replay.",
+        "Backward-compatible omission keeps legacy hardened V2 manifests valid but does not claim semantic-role completeness for those manifests.",
+        "This evidence does not prove production, enterprise IAM/security, hosted multi-tenant, legal/privacy, paid-pilot, human usefulness, independent-agent success or secure erase."
       ],
-      "nextEvidence": "advance only through the next evidence gate recorded for this item",
+      "nextEvidence": "REUSE_DONE_BASELINE; recertify after portable-bundle schema, semantic-role taxonomy, snapshot/artifact binding, sanitization, decision-preservation, replay/handoff or compatibility-contract drift. Do not duplicate report/bundle, Authority Pack, Verify, runner, snapshot or sanitization owners.",
       "owner": "code_atlas.change_intelligence",
       "doNotRebuild": true
     },
@@ -1120,15 +1138,15 @@
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
   },
   "lastGovernanceMutation": {
-    "kind": "RESOLVE_D_BETTER_UNKNOWN_LOCAL_VERIFICATION_PROMOTION",
-    "sourceHead": "2ee6c9053e3eea024cad4715e4ec3172f02de341",
-    "technicalEvidenceRunId": 32806525566,
-    "authorityRunId": 32806776961,
-    "authorityArtifactId": 9548433806,
-    "authorityArtifactSha256": "8bff0587feb192e7ba80eb5fca34c70df2c3a50c4e94f03fe6070794b1bdd840",
-    "composedAuthoritySha256": "ade2822d6550c04d23476973b57fc6b3c5507240b1ad5d10224570aeb35b8ee0",
-    "requestDigest": "eac2dbbaa007c04b86d22f449637259b271acb557a799ada84f0da603ec88655",
-    "factoryGateDecisionDigest": "e5aaa9ceb0adc8a9ac096fb9e6c19f61068be814e66d198784f49fa34b49333b",
+    "kind": "PROVE_I_EVIDENCE_BUNDLE_LOCAL_VERIFICATION_PROMOTION",
+    "sourceHead": "ce1bda5d4e6765d9927f33c16f0a08472427e4ba",
+    "technicalEvidenceRunId": 32829741184,
+    "authorityRunId": 32838245862,
+    "authorityArtifactId": 9559506266,
+    "authorityArtifactSha256": "3567eafc2ab9b893ec17d0ff93eefbc4e8e254e6f035f1a57784edacbe86a2bf",
+    "composedAuthoritySha256": "c5a3114cc46853697d31dba085edb525d991749386a8e83c5708f73eb615c6e5",
+    "requestDigest": "01b08aaaff3e0da278583fc4596b7b914392967cdabbd8a7987b3fe529949423",
+    "factoryGateDecisionDigest": "2b90fb7fa88666225f55655c11d7fa5bbc479ac5eb43e21e9f1a5cea225d74bd",
     "status": "LOCAL_VERIFIED",
     "productionCertified": false
   }

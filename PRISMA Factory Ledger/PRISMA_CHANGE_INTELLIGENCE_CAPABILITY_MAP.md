@@ -50,7 +50,7 @@ Current bounded state:
 | F | OBSERVE | Change comparison | `DONE` |
 | G | VERIFY | Agent-neutral independent verification | `PARTIAL` |
 | H | PROVE | Portable reproducible runner | `DONE` |
-| I | PROVE | Evidence Bundle | `PARTIAL` |
+| I | PROVE | Evidence Bundle | `DONE` |
 | J | PROVE | Utility evidence | `BLOCKED` |
 
 Therefore `v1Complete=false`.
@@ -64,6 +64,8 @@ D is `DONE / LOCAL_VERIFIED` from the bounded Better UNKNOWN obligations integra
 E is `DONE / LOCAL_VERIFIED` from the existing protected authority-resolution, snapshot-locking, Authority Pack and Verify owners. Focused falsification run `32342173554` proved ranking-only candidates stay non-authoritative, declared authority conflicts remain `CONFLICTED`, missing/conflicted authority prevents pack issuance, stale or authority-drifted snapshots block, and protected scope cannot be bypassed by widening allowed scope. Governance authority run `32342601848` passed both anti-rework gates with source bytes unchanged. This does not certify arbitrary-repository completeness, production, enterprise, paid-pilot, hosted, legal/privacy or security readiness.
 
 H is `DONE / LOCAL_VERIFIED` from the existing protected runner owners. Focused run `32338490273` passed the rental/portability contract on Ubuntu, Windows and macOS, including deterministic declared-input normalization plus fail-closed source-egress, artifact-format, lifecycle, cleanup and retention negatives. Governance authority run `32338688480` passed both anti-rework gates with source bytes unchanged. This does not certify production, enterprise, paid-pilot, arbitrary infrastructure, legal/privacy/security or secure erase.
+
+I is `DONE / LOCAL_VERIFIED` from the additive semantic-role hardening merged in PR #366 over the existing protected Evidence Reports and portable-bundle owner. The hardened bundle can bind `decision_classification`, `gaps_unknowns`, and `replay_handoff` to sanitized artifacts and the exact repository snapshot; missing, duplicate, contradictory, stale or tampered semantic evidence fails closed, UNKNOWN is preserved, packaging cannot promote decisions or create certification, and legacy hardened V2 manifests remain compatible when roles are omitted. Operational Hardening run `32829741184` passed 155/155 tests on Ubuntu including all seven focused Evidence Bundle semantic tests, with Windows/macOS lanes green and neutrality blockers at zero. Promotion authority run `32838245862` passed exact-head Authority Mesh. This does not certify arbitrary-repository completeness, production, enterprise, hosted, paid-pilot, human usefulness, independent-agent verification, legal/privacy/security readiness or secure erase.
 
 F is `DONE / LOCAL_VERIFIED` from `compare_observed_states` with deterministic same-repository snapshot-lineage comparison and native fail-closed negatives. Code Atlas Operational Hardening run `32337152354` passed on Ubuntu, Windows and macOS; the Ubuntu lane ran `139/139` operational tests including the 12 focused OBSERVE comparison tests. This does not promote any production, enterprise, paid-pilot or universal-completeness claim.
 
