@@ -1,0 +1,241 @@
+name: PC Wave 2 Current Canonical Close
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave2-close-current-finalizer.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PINNED_MAIN: 1a83d5decb4e946021b9acf95f1a49479d6abf19
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  close-wave2:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail closed on drift and revalidate authorized decision
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_MAIN"
+          changed="$(git diff --name-only "$PINNED_MAIN"..HEAD)"
+          test "$changed" = ".github/workflows/pc-wave2-close-current-finalizer.yml"
+          cat > "$RUNNER_TEMP/gate.request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+            "mode": "MUTATION",
+            "expectedHead": "1a83d5decb4e946021b9acf95f1a49479d6abf19",
+            "task": "Governance-only canonical closure of already certified PC Wave 2, preserving Wave 3 evidence ceiling and making proven Wave 2 do-not-rebuild.",
+            "capabilities": [
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"ADVANCE"},
+              {"id":"pc.customers.crud_runtime","requestedAction":"ADVANCE"},
+              {"id":"pc.entitlement.surface_projection","requestedAction":"ADVANCE"},
+              {"id":"pc.customers.clientes_visual_usability","requestedAction":"ADVANCE"},
+              {"id":"pc.quality.customer_experience_wave2","requestedAction":"ADVANCE"}
+            ],
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "1a83d5decb4e946021b9acf95f1a49479d6abf19",
+              "requiredAuthorityCoveragePct": 100.0,
+              "blockers": 0,
+              "requestDigest": "7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596",
+              "artifactDigest": "da4e4ec2dda0f0fde10031a1ba5ebf3542c5193d0d0fd3da91f491ff32c8ae9c",
+              "layerMapPresent": false
+            },
+            "visualMutation": false
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/gate.request.json" | tee "$RUNNER_TEMP/gate.result.json"
+          python - "$RUNNER_TEMP/gate.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert d.get('decisionDigest')=='1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d',d
+          PY
+
+      - name: Promote demonstrated Wave 2 truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          stamp='2026-08-25T08:17:09-06:00'
+          root=Path('PRISMA Factory Ledger')
+          ledger_p=root/'PRISMA_FACTORY_LEDGER.json'
+          dnr_p=root/'PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json'
+          reg_p=root/'PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
+          ev_p=root/'PRISMA_EVIDENCE_INDEX.json'
+          def load(p): return json.loads(p.read_text(encoding='utf-8'))
+          def save(p,d): p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          def add_unique(dst,items):
+              for item in items:
+                  if item not in dst: dst.append(item)
+
+          ledger,dnr,reg,ev=map(load,(ledger_p,dnr_p,reg_p,ev_p))
+          caps={c['id']:c for c in ledger['capabilities']}
+          ids=[
+            'data.canonical_schema_reproducibility',
+            'pc.customers.crud_runtime',
+            'pc.entitlement.surface_projection',
+            'pc.customers.clientes_visual_usability',
+            'pc.quality.customer_experience_wave2',
+          ]
+          assert all(cid in caps for cid in ids)
+          assert all(caps[cid].get('doNotRebuild') is False for cid in ids), 'unexpected already-closed Wave 2 state'
+
+          common=[
+            'PR #325 merge 62c27a612b7647a72f673994846384dba510a193',
+            'PC Wave 2 final certification workflow run 32330104885',
+            'entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc',
+            'restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad',
+            'current-head close Authority run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5',
+            'current-head Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / anti-rework decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d',
+            'No PC Wave 2 product-file drift from merge 62c27a612b7647a72f673994846384dba510a193 through main@1a83d5decb4e946021b9acf95f1a49479d6abf19',
+          ]
+          wave3=[
+            'Catalog create/update/delete mutations',
+            'Supplier create/update/delete mutations',
+            'Stock adjustment mutation',
+            'Inventory count full lifecycle',
+            'Sync dispatch/replay mutation',
+            'Device claim/revoke mutation',
+            'Settings writes',
+            'Hosted production readiness or future behavior after source drift',
+          ]
+          spec={
+            'data.canonical_schema_reproducibility':{
+              'status':'LOCAL_VERIFIED','state':'PASS_PC_WAVE2_CANONICAL_SCHEMA_REPRODUCIBILITY',
+              'next':'Reuse this frozen schema baseline in PC Wave 3; do not rebuild the Wave 2 migration repair. Only recertify read-only or repair future evidence-backed drift under fresh authority.',
+              'extra':['PC_WAVE2_SCHEMA_PARITY.json passed on clean isolated SQLite: expected tables/columns/foreign keys/index guardrails/triggers matched and foreign-key violations were empty.'],
+              'not':['A live or historical customer database is safe to mutate','All future Prisma schema changes','Hosted production readiness'],
+              'reg':'DONE_LOCAL_VERIFIED'
+            },
+            'pc.customers.crud_runtime':{
+              'status':'RUNTIME_VERIFIED','state':'PASS_PC_WAVE2_CUSTOMERS_DURABLE_CRUD',
+              'next':'Reuse durable Customers CRUD as a frozen prerequisite in PC Wave 3. Do not rebuild it; repair only demonstrated future drift under fresh exact authority.',
+              'extra':['Wave 2 businessMutationE2E proved customer create -> durable ID -> search -> detail/version -> update -> read-after-write -> persisted reread on isolated SQLite.'],
+              'not':['Fiscal, credit, merge or production customer flows','All customer lifecycle operations beyond the bounded Wave 2 journey'],
+              'reg':'DONE_RUNTIME_VERIFIED'
+            },
+            'pc.entitlement.surface_projection':{
+              'status':'RUNTIME_VERIFIED','state':'PASS_PC_WAVE2_ENTITLEMENT_SURFACE_PROJECTION',
+              'next':'Reuse the fail-closed PC entitlement projection in Wave 3. Do not rebuild License Governor or duplicate plan logic; future changes require fresh authority and evidence-backed drift.',
+              'extra':['Restricted Wave 2 proved TABLET_SOLO hides PC navigation and protected Devices/Sync contracts deny LICENSE_FEATURE_DENIED; TABLET_PC_MANAGED permits the bounded PC contracts.'],
+              'not':['All role/permission combinations','Hosted licensing production readiness'],
+              'reg':'DONE_RUNTIME_VERIFIED'
+            },
+            'pc.customers.clientes_visual_usability':{
+              'status':'VISUAL_CERTIFIED','state':'PASS_PC_WAVE2_CLIENTES_VISUAL_USABILITY',
+              'next':'Keep /clientes Wave 2 layout frozen. Reuse it in Wave 3 without redesign; any future visual mutation requires a fresh task-exact Authority Mesh with Layer Map.',
+              'extra':['Wave 2 visual certification covered /clientes at 1440x900 and 1366x768 with corrected panel widths, no overflow and no !important.'],
+              'not':['Visual certification of all PC routes','Authorization to redesign global PC Cloudglass or shared/generated CSS'],
+              'reg':'DONE_VISUAL_CERTIFIED'
+            },
+            'pc.quality.customer_experience_wave2':{
+              'status':'RUNTIME_VERIFIED','state':'PASS_BOUNDED_PC_WAVE2_CERTIFICATION',
+              'next':'PC_ENTERPRISE_MUTATIONS_WAVE3: certify catalog and supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke and Settings writes on isolated persistence under fresh exact authority. Wave 2 itself is closed and must not be rebuilt.',
+              'extra':['Entitled result PASS_BOUNDED_WAVE2_CERTIFICATION: 300/300 assertions, 22 screenshots, 0 console errors and 0 page errors; restricted certification PASS; Wave 1 regression stayed green.'],
+              'not':wave3,
+              'reg':'DONE_RUNTIME_VERIFIED'
+            }
+          }
+          for cid,cfg in spec.items():
+              c=caps[cid]
+              c['classification']='DONE'; c['status']=cfg['status']; c['stateLabel']=cfg['state']; c['doNotRebuild']=True; c['nextGate']=cfg['next']
+              c.setdefault('evidence',[]); add_unique(c['evidence'],common+cfg['extra'])
+              c.setdefault('doesNotProve',[]); add_unique(c['doesNotProve'],cfg['not'])
+              c['allowedActions']=['read-only recertification against current authority','reuse this proven Wave 2 capability as a prerequisite','repair only demonstrated future drift under fresh exact-task Authority Mesh and anti-rework gate']
+              c['forbiddenActions']=['rebuild this proven Wave 2 capability without evidence-backed drift','weaken proven fail-closed or persistence contracts','claim Wave 3 enterprise mutations from Wave 2 evidence','claim hosted production readiness from this closure']
+
+          evidence_ref='PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916'
+          reasons={cid:spec[cid]['state'] for cid in ids}
+          runtime_sha='9943DC813B1268A6C0DC70644B9052DBA3C52FCFAE8FA2E44C46F9CDF8BCF2BC'
+          restricted_sha='D39007E9CD5EE660C41E8FA0882996054500128F00AF36B1BBC3FB8181550AAD'
+          for cid in ids:
+              dnr['doNotRebuild'][cid]={'value':True,'reason':reasons[cid],'evidence':evidence_ref,'updatedAt':stamp}
+              reg['registrations'][cid]={
+                'status':spec[cid]['reg'],'updatedAt':stamp,'evidence':evidence_ref,
+                'sourceEvidenceSha256':restricted_sha if cid=='pc.entitlement.surface_projection' else runtime_sha,
+                'doNotRebuild':True,'nextGate':spec[cid]['next']
+              }
+
+          artifact='PC Wave 2 canonical closure — PR #325 / run 32330104885 / current close run 32858397075'
+          assert not any(a.get('artifact')==artifact for a in ev['artifacts'])
+          ev['artifacts'].append({
+            'artifact':artifact,'type':'pc_customer_experience_wave2_canonical_closure',
+            'scope':['pc','customers','licensing','data','visual','governance','quality'],'status':'PASS_RUNTIME_VERIFIED',
+            'proves':[
+              'PR #325 merged the bounded PC Wave 2 repair and its PC Wave 2 product files have no drift through main@1a83d5decb4e946021b9acf95f1a49479d6abf19',
+              'Canonical fresh SQLite migration parity passed for the repaired schema history',
+              'Customers durable create -> ID -> search -> detail/version -> update -> read-after-write -> persisted reread passed E2E',
+              'TABLET_PC_MANAGED permits the bounded PC surface while TABLET_SOLO fails closed and hides PC navigation; protected Devices/Sync restricted contracts return LICENSE_FEATURE_DENIED',
+              '/clientes visual usability passed at 1440x900 and 1366x768 without overflow or !important',
+              '/catalog no longer leaks ENOENT, runner paths or local technical details in the bounded customer-facing path',
+              'Final entitled certification passed 300/300 assertions with 22 screenshots, zero console errors and zero page errors; restricted certification and Wave 1 regression also passed',
+              'Fresh current-head Authority Mesh reached two lanes at 100% required authority with zero blockers and universal Factory Ledger MUTATION gate returned PASS_ANTI_REWORK_GATE with errors empty'
+            ],
+            'doesNotProve':wave3,
+            'evidence':[
+              'PR #325 merge 62c27a612b7647a72f673994846384dba510a193',
+              'run 32330104885 entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc',
+              'run 32330104885 restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad',
+              'current-head close run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5',
+              'Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / composed da4e4ec2dda0f0fde10031a1ba5ebf3542c5193d0d0fd3da91f491ff32c8ae9c / decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d'
+            ]
+          })
+          for d in (ledger,dnr,reg,ev): d['updatedAt']=stamp
+          for p,d in ((ledger_p,ledger),(dnr_p,dnr),(reg_p,reg),(ev_p,ev)): save(p,d)
+          PY
+
+      - name: Validate exact four-file closure and self-remove
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('PRISMA Factory Ledger')
+          ledger=json.loads((root/'PRISMA_FACTORY_LEDGER.json').read_text(encoding='utf-8'))
+          dnr=json.loads((root/'PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json').read_text(encoding='utf-8'))
+          reg=json.loads((root/'PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json').read_text(encoding='utf-8'))
+          ev=json.loads((root/'PRISMA_EVIDENCE_INDEX.json').read_text(encoding='utf-8'))
+          ids=['data.canonical_schema_reproducibility','pc.customers.crud_runtime','pc.entitlement.surface_projection','pc.customers.clientes_visual_usability','pc.quality.customer_experience_wave2']
+          caps={c['id']:c for c in ledger['capabilities']}
+          for cid in ids:
+              assert caps[cid]['classification']=='DONE'
+              assert caps[cid]['doNotRebuild'] is True
+              assert dnr['doNotRebuild'][cid]['value'] is True
+              assert reg['registrations'][cid]['doNotRebuild'] is True
+          assert caps['pc.customers.clientes_visual_usability']['status']=='VISUAL_CERTIFIED'
+          assert caps['pc.quality.customer_experience_wave2']['status']=='RUNTIME_VERIFIED'
+          a=[x for x in ev['artifacts'] if x.get('type')=='pc_customer_experience_wave2_canonical_closure']
+          assert len(a)==1,a
+          assert 'Catalog create/update/delete mutations' in a[0]['doesNotProve']
+          assert 'Settings writes' in a[0]['doesNotProve']
+          PY
+          expected=$'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json\nPRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json\nPRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json\nPRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
+          actual="$(git diff --name-only | grep -v '^.github/workflows/pc-wave2-close-current-finalizer.yml$' | sort)"
+          test "$actual" = "$expected"
+          git rm .github/workflows/pc-wave2-close-current-finalizer.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json' 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+          git commit -m 'governance(pc): close customer experience Wave 2'
+          git push origin "HEAD:${GITHUB_HEAD_REF}"
+          echo PASS_PC_WAVE2_CANONICAL_CLOSE_APPLIED
