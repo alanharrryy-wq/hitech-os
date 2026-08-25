@@ -7,16 +7,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
   PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: 6a3569bfbd7a853a3a9769412833aff79a78e78a
+  TARGET_BRANCH: governance/tablet-sync-wave1-canonical-close-2408
 
 jobs:
   wave1-canonical-close-gate:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.number == 356 && github.head_ref == 'evidence/tablet-sync-wave1-canonical-close-gate')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
 
@@ -26,17 +29,22 @@ jobs:
         with:
           ref: 6a3569bfbd7a853a3a9769412833aff79a78e78a
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
-      - name: Verify immutable baseline and gate tooling
+      - name: Verify immutable baseline and target branch
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "6a3569bfbd7a853a3a9769412833aff79a78e78a"
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          main_remote="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          target_remote="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          test "$main_remote" = "$PINNED_HEAD"
+          test "$target_remote" = "$PINNED_HEAD"
           python -m py_compile \
             "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
             tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
@@ -65,7 +73,7 @@ jobs:
           ]
           request = {
               "schemaVersion": "v2",
-              "profile": "tablet-sync-wave1-canonical-close-gate-v1",
+              "profile": "tablet-sync-wave1-canonical-close-apply-v1",
               "expectedHead": head,
               "tasks": [
                   {
@@ -78,18 +86,15 @@ jobs:
                           "PR #322 (merge 45762d1a6251195dae0e229dfe6fa1aed74645fa) and strongest audited post-merge "
                           "evidence PR #332: run 32336243809 attempt 2, artifact 9394817154, "
                           "digest sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026, "
-                          "Authority Mesh run 32335709638 artifact 9394591369 id 2fc8eba4c2059ef7, focused verifier "
-                          "44/44, final PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN. Authorize only minimal "
-                          "non-visual governance reconciliation so WAVE1 is no longer a future nextGate. Preserve canonical "
-                          "capability tablet.sync.runtime_truth classification DONE, doNotRebuild=true and truthful "
-                          "RUNTIME_VERIFIED maturity ceiling. Preserve explicit claim ceilings: no DB-backed route E2E, "
-                          "no hosted production, no real PC transport certification, no conflict-resolution ownership/action, "
-                          "no future drift, no unrelated Tablet surfaces. Candidate write set only: PRISMA Factory Ledger/"
-                          "PRISMA_FACTORY_LEDGER.json; PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json; "
-                          "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json; PRISMA Factory Ledger/"
-                          "PRISMA_EVIDENCE_INDEX.json. No product source/runtime/CSS/RIFAT/DB/Prisma/workflow/deploy/process/"
-                          "port/Tablet/PC/Mobile/Shared UI/Chart Lab/licensing architecture mutation. Return exact minimal "
-                          "write set and blockers; no implementation."
+                          "focused verifier 44/44, final PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN. "
+                          "Authorize only minimal non-visual governance reconciliation so WAVE1 is no longer a future nextGate. "
+                          "Preserve canonical capability tablet.sync.runtime_truth classification DONE, doNotRebuild=true and "
+                          "RUNTIME_VERIFIED maturity ceiling. Preserve claim ceilings: no DB-backed route E2E, hosted production, "
+                          "real PC transport certification, conflict-resolution ownership/action, future drift, or unrelated Tablet surfaces. "
+                          "Exact write set only: PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json; PRISMA Factory Ledger/"
+                          "PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json; PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json; "
+                          "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json. No product/runtime/CSS/RIFAT/DB/Prisma/workflow/deploy/process/"
+                          "port/Tablet/PC/Mobile/Shared UI/Chart Lab/licensing architecture mutation."
                       ),
                       "requiredAuthorities": common + [
                           "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
@@ -109,14 +114,11 @@ jobs:
                       "intent": "VERIFY",
                       "domain": "testing",
                       "task": (
-                          "Independent no-fake-green and anti-rework guard for Tablet Sync WAVE1 canonical closure on exact "
-                          "current HEAD. Verify canonical and supplemental Factory Ledger records can reconcile merged PR #322 "
-                          "plus audited PR #332 evidence without rebuilding tablet.sync.runtime_truth, without promoting above "
-                          "RUNTIME_VERIFIED, and without claiming DB-backed route E2E, hosted production, real PC transport, "
-                          "conflict-resolution ownership/action, future drift, or unrelated Tablet surfaces. Verify WAVE1 is "
-                          "removed from future nextGate and the post-WAVE1 nextGate is bounded to WAVE2 authority/discovery or "
-                          "read-only recertification, never BUILD/REBUILD of the DONE capability. Return exact safe write "
-                          "boundaries and blockers only; no implementation."
+                          "Independent no-fake-green and anti-rework guard for Tablet Sync WAVE1 canonical closure. Verify merged PR #322 "
+                          "plus audited PR #332 evidence can be reconciled without rebuilding tablet.sync.runtime_truth, without promoting "
+                          "above RUNTIME_VERIFIED, and without claiming DB-backed route E2E, hosted production, real PC transport, "
+                          "conflict-resolution ownership/action, future drift, or unrelated Tablet surfaces. Verify WAVE1 is removed from "
+                          "future nextGate and post-WAVE1 work is bounded to fresh WAVE2 authority/discovery or read-only recertification."
                       ),
                       "requiredAuthorities": common + [
                           "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs"
@@ -200,9 +202,7 @@ jobs:
                   "tablet.sync.runtime_truth as DONE / RUNTIME_VERIFIED / doNotRebuild=true; advance only to bounded "
                   "post-WAVE1 discovery or read-only recertification and preserve all explicit claim ceilings."
               ),
-              "capabilities": [
-                  {"id": "tablet.sync.runtime_truth", "requestedAction": "ADVANCE"}
-              ],
+              "capabilities": [{"id": "tablet.sync.runtime_truth", "requestedAction": "ADVANCE"}],
               "authorityMesh": mesh,
               "visualMutation": False,
           }
@@ -215,12 +215,181 @@ jobs:
           python - "$RUNNER_TEMP/wave1-factory-gate.txt" <<'PY'
           import json, sys
           data = json.load(open(sys.argv[1], encoding="utf-8"))
-          if data.get("result") != "PASS_ANTI_REWORK_GATE":
-              raise SystemExit("FACTORY_GATE_RESULT_NOT_PASS")
-          if data.get("errors") != []:
-              raise SystemExit("FACTORY_GATE_ERRORS_NOT_EMPTY")
+          assert data.get("result") == "PASS_ANTI_REWORK_GATE", data
+          assert data.get("errors") == [], data
           PY
           test -z "$(git status --porcelain)"
+
+      - name: Apply exact four-file canonical reconciliation
+        shell: bash
+        run: |
+          set -euo pipefail
+          main_remote="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          target_remote="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          test "$main_remote" = "$PINNED_HEAD"
+          test "$target_remote" = "$PINNED_HEAD"
+          git checkout -B "$TARGET_BRANCH" "$PINNED_HEAD"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          stamp = "2026-08-24T21:33:00-06:00"
+          root = Path("PRISMA Factory Ledger")
+          ledger_path = root / "PRISMA_FACTORY_LEDGER.json"
+          dnr_path = root / "PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json"
+          reg_path = root / "PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json"
+          evidence_path = root / "PRISMA_EVIDENCE_INDEX.json"
+
+          ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+          dnr = json.loads(dnr_path.read_text(encoding="utf-8"))
+          reg = json.loads(reg_path.read_text(encoding="utf-8"))
+          evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+
+          caps = [c for c in ledger.get("capabilities", []) if c.get("id") == "tablet.sync.runtime_truth"]
+          if len(caps) != 1:
+              raise SystemExit(f"EXPECTED_ONE_CANONICAL_CAPABILITY_GOT_{len(caps)}")
+          cap = caps[0]
+          if cap.get("classification") != "DONE" or cap.get("status") != "RUNTIME_VERIFIED" or cap.get("doNotRebuild") is not True:
+              raise SystemExit("CANONICAL_BASELINE_DRIFT")
+
+          def append_unique(seq, value):
+              if value not in seq:
+                  seq.append(value)
+
+          cap["stateLabel"] = "PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN"
+          cap["nextGate"] = (
+              "WAVE2 authority/discovery or read-only recertification only after a fresh exact-task gate; "
+              "WAVE1 and tablet.sync.runtime_truth remain DONE / RUNTIME_VERIFIED / doNotRebuild and must not be rebuilt."
+          )
+          cap.setdefault("evidence", [])
+          append_unique(cap["evidence"], "PR #322 Tablet Sync Operations Center WAVE1 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa")
+          append_unique(cap["evidence"], "PR #332 post-merge runtime certification run 32336243809 attempt 2 artifact 9394817154 sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026 verifier 44/44")
+          append_unique(cap["evidence"], "WAVE1 canonical close gate run 32757733642 artifact 9531515396 sha256:b9af91b468e963593c44f27a207a7cbde252ac73148e18d14149e315dd9eaa4e decision f402aa5cc58e18e896067cfb281a7db5dada2a8d504593ae23607522cff38b68")
+          cap.setdefault("doesNotProve", [])
+          for claim in (
+              "DB-backed E2E of the repaired /api/pos/sync/panel route",
+              "Hosted production deployment",
+              "Real PC transport certification",
+              "Conflict-resolution ownership or action",
+              "Future runtime behavior after source drift",
+              "Runtime or visual certification of unrelated Tablet routes or other PRISMA surfaces",
+          ):
+              append_unique(cap["doesNotProve"], claim)
+          cap["allowedActions"] = [
+              "read-only recertification",
+              "WAVE2 authority/discovery after a fresh exact-task gate",
+              "reference merged WAVE1 evidence",
+          ]
+
+          dnr_entry = dnr.setdefault("doNotRebuild", {}).get("tablet.sync.runtime_truth")
+          if not dnr_entry or dnr_entry.get("value") is not True:
+              raise SystemExit("DNR_BASELINE_DRIFT")
+          dnr_entry.update({
+              "value": True,
+              "reason": "WAVE1 Operations Center merged in PR #322 and passed audited post-merge runtime recertification in PR #332 plus the canonical close MUTATION gate. Reuse existing sync/Outbox/dispatcher/licensing/API truth; WAVE1 is closed and must not be rebuilt.",
+              "evidence": "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa / PR #332 artifact 9394817154 / WAVE1 close gate run 32757733642 artifact 9531515396",
+              "updatedAt": stamp,
+          })
+          if "updatedAt" in dnr:
+              dnr["updatedAt"] = stamp
+
+          reg_entry = reg.setdefault("registrations", {}).get("tablet.sync.runtime_truth")
+          if not reg_entry or reg_entry.get("doNotRebuild") is not True or reg_entry.get("status") != "DONE_RUNTIME_VERIFIED":
+              raise SystemExit("REGISTRATION_BASELINE_DRIFT")
+          reg_entry.update({
+              "status": "DONE_RUNTIME_VERIFIED",
+              "updatedAt": stamp,
+              "evidence": "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa / PR #332 post-merge runtime artifact 9394817154 / WAVE1 close gate artifact 9531515396",
+              "sourceEvidenceSha256": "B59AB032FB461C4B5D5897E64EE4CF51B4A492E5218DC14D45EB5E6B09E4B026",
+              "doNotRebuild": True,
+              "nextGate": "TABLET_SYNC_WAVE2_AUTHORITY_DISCOVERY_OR_READ_ONLY_RECERTIFICATION_NO_WAVE1_REBUILD",
+          })
+          if "updatedAt" in reg:
+              reg["updatedAt"] = stamp
+
+          artifact_name = "Tablet Sync WAVE1 canonical closure — PR #322 / PR #332 / run 32757733642"
+          artifacts = evidence.setdefault("artifacts", [])
+          matches = [a for a in artifacts if a.get("artifact") == artifact_name]
+          if len(matches) > 1:
+              raise SystemExit("DUPLICATE_WAVE1_CLOSURE_EVIDENCE")
+          closure = {
+              "artifact": artifact_name,
+              "type": "tablet_sync_wave1_canonical_closure",
+              "scope": ["tablet", "sync", "operations_center", "governance", "quality"],
+              "status": "PASS_RUNTIME_VERIFIED",
+              "proves": [
+                  "PR #322 merged the bounded Tablet Sync Operations Center WAVE1 change without rebuilding the existing sync/Outbox/dispatcher/licensing/API truth",
+                  "Retry eligibility remains pending/failed only and conflict remains review-only rather than hidden retry resolution",
+                  "PR #332 post-merge isolated browser/runtime evidence completed the focused verifier at 44/44 with final PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
+                  "The canonical close Authority Mesh reached 100% required authority with zero blockers and the universal Factory Ledger MUTATION gate returned PASS_ANTI_REWORK_GATE with errors empty",
+                  "Canonical maturity remains DONE / RUNTIME_VERIFIED / doNotRebuild=true and WAVE1 is no longer a future nextGate",
+              ],
+              "doesNotProve": [
+                  "Hosted production deployment",
+                  "DB-backed route E2E beyond the isolated evidence contract",
+                  "Real PC transport certification",
+                  "Conflict-resolution ownership or action",
+                  "Future behavior after source or authority drift",
+                  "Runtime or visual certification of unrelated Tablet routes, PC, Mobile, Chart Lab, Shared UI, or other surfaces",
+              ],
+              "evidence": [
+                  "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa",
+                  "PR #332 run 32336243809 attempt 2 artifact 9394817154 sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026 verifier 44/44",
+                  "WAVE1 close gate run 32757733642 artifact 9531515396 sha256:b9af91b468e963593c44f27a207a7cbde252ac73148e18d14149e315dd9eaa4e decision f402aa5cc58e18e896067cfb281a7db5dada2a8d504593ae23607522cff38b68",
+              ],
+          }
+          if matches:
+              matches[0].clear()
+              matches[0].update(closure)
+          else:
+              artifacts.append(closure)
+
+          for path, data in ((ledger_path, ledger), (dnr_path, dnr), (reg_path, reg), (evidence_path, evidence)):
+              path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          expected = {
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+              "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+              "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
+          }
+          changed = set(subprocess.check_output(["git", "diff", "--name-only"], text=True).splitlines())
+          if changed != expected:
+              raise SystemExit(f"EXACT_FOUR_FILE_DIFF_REQUIRED:{sorted(changed)}")
+          for path in expected:
+              json.loads(Path(path).read_text(encoding="utf-8"))
+          ledger = json.loads(Path("PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json").read_text(encoding="utf-8"))
+          cap = next(c for c in ledger["capabilities"] if c.get("id") == "tablet.sync.runtime_truth")
+          assert cap["classification"] == "DONE"
+          assert cap["status"] == "RUNTIME_VERIFIED"
+          assert cap["doNotRebuild"] is True
+          assert "OPERATIONS_CENTER_WAVE1" not in cap["nextGate"]
+          assert "WAVE1_V1" not in cap["nextGate"]
+          dnr = json.loads(Path("PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json").read_text(encoding="utf-8"))
+          assert dnr["doNotRebuild"]["tablet.sync.runtime_truth"]["value"] is True
+          reg = json.loads(Path("PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json").read_text(encoding="utf-8"))
+          r = reg["registrations"]["tablet.sync.runtime_truth"]
+          assert r["status"] == "DONE_RUNTIME_VERIFIED" and r["doNotRebuild"] is True
+          evidence = json.loads(Path("PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json").read_text(encoding="utf-8"))
+          name = "Tablet Sync WAVE1 canonical closure — PR #322 / PR #332 / run 32757733642"
+          assert sum(1 for a in evidence["artifacts"] if a.get("artifact") == name) == 1
+          print("PASS_TABLET_SYNC_WAVE1_CANONICAL_LEDGER_RECONCILIATION")
+          PY
+          git diff --check
+          git add \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json" \
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+          test "$(git diff --cached --name-only | wc -l)" -eq 4
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "governance(tablet): close sync operations center wave1"
+          git push origin "HEAD:$TARGET_BRANCH"
 
       - name: Stage immutable gate evidence
         if: always()
@@ -241,18 +410,19 @@ jobs:
               cp "$path" "$out/$(basename "$path")"
             fi
           done
-          find "$out" -maxdepth 1 -type f -print
+          git status --short > "$out/git-status.txt" || true
+          git log -1 --oneline > "$out/final-commit.txt" || true
 
-      - name: Upload WAVE1 canonical close gate evidence
+      - name: Upload WAVE1 canonical close evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: tablet-sync-wave1-canonical-close-gate
+          name: tablet-sync-wave1-canonical-close-apply
           path: ${{ runner.temp }}/wave1-close-evidence/**
           if-no-files-found: error
           retention-days: 14
 
-      - name: Fail closed unless machine gate passed
+      - name: Fail closed unless final branch advanced exactly once
         if: always()
         shell: bash
         run: |
@@ -264,3 +434,8 @@ jobs:
           if data.get("result") != "PASS_ANTI_REWORK_GATE" or data.get("errors") != []:
               raise SystemExit("FACTORY_GATE_NOT_CLEAN_PASS")
           PY
+          main_remote="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          target_remote="$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')"
+          test "$main_remote" = "$PINNED_HEAD"
+          test -n "$target_remote"
+          test "$target_remote" != "$PINNED_HEAD"
