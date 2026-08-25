@@ -74,7 +74,7 @@ jobs:
               {
                 "id":"tablet-sync-wave2-canonical-close",
                 "surface":"tablet",
-                "intent":"ADVANCE",
+                "intent":"CERTIFY",
                 "domain":"governance",
                 "task":"Close Tablet Sync WAVE2 canonically after merged product PR #377 at 1a83d5decb4e946021b9acf95f1a49479d6abf19 and successful isolated postmerge runtime evidence run 32866793273, artifact 9570464455, digest f06087c14951010bb782c6fed46d6620ec2a063cdbcec6b233a387e6f21b35e4, marker PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN, 10/10 screenshots, 55/55 focused verifier, zero runtime/console/network anomalies except the intentional unconfirmed 503. Update only the four canonical Factory Ledger JSONs. Preserve DONE / RUNTIME_VERIFIED / doNotRebuild=true. Do not claim hosted production, real deployed PC transport, production DB E2E, distribution readiness, zero-custody certification, or unrelated surfaces. Next gate after closure is final Tablet ScreensQA, then distribution/release readiness, then runtime data-custody/egress certification.",
                 "requiredAuthorities":ledger + tablet + [manual],
