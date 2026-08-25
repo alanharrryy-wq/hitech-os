@@ -46,6 +46,7 @@ const syncPanel = readApp("src/server/pos-sync-panel/index.ts");
 const operationalGate = readApp("src/lib/operational-gate/can-sell.ts");
 const pcOrigin = readApp("src/server/sync/pc-origin.ts");
 const dispatcher = readApp("src/server/sync/dispatcher.ts");
+const reconciliation = readApp("src/server/sync/reconciliation.ts");
 const licenseNormalizer = readTerminal("shared/licensing/license-normalizer.ts");
 const licenseResolver = readTerminal("shared/licensing/feature-resolver.ts");
 
@@ -197,6 +198,79 @@ check(
     !dispatcher.includes('const DISPATCHABLE_OUTBOX_STATUSES = ["pending", "failed", "conflict"')
 );
 check("fix does not introduce !important", !route.includes("!important") && !screen.includes("!important") && !syncPanel.includes("!important"));
+
+check(
+  "WAVE2 contract exposes per-operation provenance and persisted delivery evidence",
+  contract.includes("export type SyncOperationProvenance") &&
+    contract.includes("export type SyncDeliveryEvidence") &&
+    contract.includes('resolutionOwner: "pc_backoffice" | null') &&
+    contract.includes("remoteLifecycleStatus: string | null")
+);
+check(
+  "WAVE2 panel projects existing Outbox provenance without schema invention",
+  syncPanel.includes("terminalId: string | null") &&
+    syncPanel.includes("idempotencyKey: string") &&
+    syncPanel.includes("remoteLedgerId: string | null") &&
+    syncPanel.includes("storeId: pickString(envelope.storeId, payload.storeId)")
+);
+check(
+  "WAVE2 conflict owner is explicit PC backoffice and Tablet remains review-only",
+  syncPanel.includes('resolutionOwner: status === "conflict" ? "pc_backoffice" : null') &&
+    screen.includes("Revisión en PC / Backoffice") &&
+    screen.includes("Tablet conserva la evidencia; no resuelve conflictos aquí.") &&
+    !screen.includes("/api/backoffice/sync/conflicts/review")
+);
+check(
+  "WAVE2 selected retry reports eligible and skipped operations precisely",
+  contract.includes('scope: "selected" | "all_failed"') &&
+    syncPanel.includes("eligibleIds") &&
+    syncPanel.includes("skippedIds") &&
+    syncPanel.includes("requestedIds.filter") &&
+    syncPanel.includes("allowed.has(String(row.status).toLowerCase())")
+);
+check(
+  "WAVE2 retry result cannot promote nonretryable selected states",
+  syncPanel.includes('states.push("failed", "FAILED")') &&
+    syncPanel.includes('states.push("pending", "PENDING")') &&
+    !syncPanel.includes('states.push("sent", "SENT")') &&
+    !syncPanel.includes('states.push("acked", "ACKED")') &&
+    !syncPanel.includes('states.push("conflict", "CONFLICT")')
+);
+check(
+  "WAVE2 reconciliation persists ACK lifecycle evidence in existing Outbox columns",
+  reconciliation.includes('status: nextStatus') &&
+    reconciliation.includes("syncedAt: stamp") &&
+    reconciliation.includes("ackedAt: stamp") &&
+    reconciliation.includes("remoteLedgerId: ledgerId") &&
+    reconciliation.includes("remoteLifecycleStatus: lifecycleStatus")
+);
+check(
+  "WAVE2 reconciliation persists conflict evidence without automatic retry",
+  reconciliation.includes('nextStatus === "conflict"') &&
+    reconciliation.includes("conflictedAt: stamp") &&
+    reconciliation.includes('remoteConflictCode: issueCode ?? "remote_conflict"') &&
+    reconciliation.includes("nextRetryAt: null")
+);
+check(
+  "WAVE2 reconciliation exposes per-event remote evidence to its caller",
+  reconciliation.includes("remoteEventId: asString(remote?.remoteEventId ?? remote?.eventId) || null") &&
+    reconciliation.includes("remoteLedgerId: remoteLedgerId(remote) || null") &&
+    reconciliation.includes("conflictCode: conflictCode(remote) || null") &&
+    reconciliation.includes("rejectedReason: rejectedReason(remote) || null")
+);
+check(
+  "WAVE2 UI renders operation details from persisted projection",
+  screen.includes("Detalles de operación") &&
+    screen.includes("item.provenance.storeId") &&
+    screen.includes("item.delivery.remoteLifecycleStatus") &&
+    screen.includes("item.delivery.remoteLedgerId")
+);
+check(
+  "WAVE2 UI reports retry preparation separately from dispatch truth",
+  screen.includes("SyncRetryPreparationResult") &&
+    screen.includes("setRetryResult(prepared.data)") &&
+    screen.includes("retryPreparationMessage(retryResult)")
+);
 
 const failed = checks.filter((item) => !item.ok);
 for (const item of checks) {

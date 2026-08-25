@@ -23,6 +23,10 @@ export type TabletSentReconciliationResult = {
     status: ReconcileStatus;
     remoteStatus: string | null;
     lifecycleStatus: string | null;
+    remoteEventId: string | null;
+    remoteLedgerId: string | null;
+    conflictCode: string | null;
+    rejectedReason: string | null;
     reason: string;
   }>;
   errors: string[];
@@ -102,12 +106,42 @@ function extractRemoteResults(payload: any): any[] {
 }
 
 function remoteKey(result: any) {
-  return asString(result?.eventId ?? result?.id);
+  return asString(result?.eventId ?? result?.remoteEventId ?? result?.id);
+}
+
+function diagnostics(result: any): string[] {
+  return Array.isArray(result?.diagnostics) ? result.diagnostics.map(asString).filter(Boolean) : [];
 }
 
 function diagnosticsContain(result: any, token: string) {
-  const diagnostics = Array.isArray(result?.diagnostics) ? result.diagnostics : [];
-  return diagnostics.some((item: unknown) => asString(item).toUpperCase().includes(token));
+  return diagnostics(result).some((item) => item.toUpperCase().includes(token));
+}
+
+function diagnosticValue(result: any, prefix: string) {
+  const hit = diagnostics(result).find((item) => item.startsWith(prefix));
+  return hit ? hit.slice(prefix.length).trim() : "";
+}
+
+function remoteLedgerId(result: any) {
+  return asString(result?.remoteLedgerId) || diagnosticValue(result, "REMOTE_LEDGER_ID:") || "";
+}
+
+function conflictCode(result: any) {
+  const conflicts = Array.isArray(result?.conflicts) ? result.conflicts : [];
+  return asString(result?.conflictCode ?? result?.rejectionCode ?? conflicts.find((item: any) => asString(item?.code))?.code);
+}
+
+function rejectedReason(result: any) {
+  const errors = Array.isArray(result?.errors) ? result.errors : [];
+  return asString(result?.rejectedReason ?? result?.rejectionCode ?? errors.find((item: unknown) => asString(item)));
+}
+
+function toJson(value: unknown) {
+  try {
+    return JSON.stringify(value ?? null).slice(0, 6000);
+  } catch {
+    return String(value ?? "").slice(0, 6000);
+  }
 }
 
 function classifyRemoteResult(result: any): { status: ReconcileStatus; reason: string } {
@@ -134,20 +168,70 @@ function classifyRemoteResult(result: any): { status: ReconcileStatus; reason: s
 
 async function updateLocalStatus(rowId: string, nextStatus: Exclude<ReconcileStatus, "skipped">, remote: any) {
   const db = prisma as any;
-  const payload = JSON.stringify({
-    source: "tablet.sent.reconciliation",
-    remoteStatus: remote?.status ?? null,
-    lifecycleStatus: remote?.lifecycleStatus ?? null,
-    diagnostics: Array.isArray(remote?.diagnostics) ? remote.diagnostics : []
-  });
-  const data: Record<string, unknown> = { status: nextStatus };
-  if (nextStatus === "acked") data.lastError = null;
-  if (nextStatus !== "acked") data.lastError = payload;
+  const stamp = new Date();
+  const remoteStatus = asString(remote?.status) || null;
+  const lifecycleStatus = asString(remote?.lifecycleStatus) || remoteStatus;
+  const remoteEventId = asString(remote?.remoteEventId ?? remote?.eventId) || null;
+  const ledgerId = remoteLedgerId(remote) || null;
+  const issueCode = conflictCode(remote) || null;
+  const rejection = rejectedReason(remote) || null;
+  const diagnosticPayload = toJson(diagnostics(remote));
+  const data: Record<string, unknown> = {
+    status: nextStatus,
+    lastAttemptAt: stamp,
+    nextRetryAt: null,
+    remoteEventId,
+    remoteLedgerId: ledgerId,
+    remoteLifecycleStatus: lifecycleStatus,
+    remoteDiagnosticsJson: diagnosticPayload
+  };
+
+  if (nextStatus === "acked") {
+    Object.assign(data, {
+      syncedAt: stamp,
+      ackedAt: stamp,
+      failedAt: null,
+      conflictedAt: null,
+      remoteConflictCode: null,
+      remoteRejectedReason: null,
+      lastError: null
+    });
+  } else if (nextStatus === "conflict") {
+    Object.assign(data, {
+      conflictedAt: stamp,
+      failedAt: null,
+      remoteConflictCode: issueCode ?? "remote_conflict",
+      remoteRejectedReason: null,
+      lastError: issueCode ?? "Remote conflict"
+    });
+  } else {
+    Object.assign(data, {
+      failedAt: stamp,
+      remoteConflictCode: null,
+      remoteRejectedReason: rejection ?? issueCode ?? "pc_rejected_or_dead_letter",
+      lastError: rejection ?? issueCode ?? "PC rejected or dead-lettered the event"
+    });
+  }
 
   try {
     await db.outboxEvent.update({ where: { id: rowId }, data });
   } catch {
-    await db.outboxEvent.update({ where: { id: rowId }, data: { status: nextStatus } });
+    await db.outboxEvent.update({
+      where: { id: rowId },
+      data: {
+        status: nextStatus,
+        lastError: nextStatus === "acked" ? null : toJson({
+          source: "tablet.sent.reconciliation",
+          remoteStatus,
+          lifecycleStatus,
+          remoteEventId,
+          remoteLedgerId: ledgerId,
+          conflictCode: issueCode,
+          rejectedReason: rejection,
+          diagnostics: diagnostics(remote)
+        })
+      }
+    });
   }
 }
 
@@ -236,6 +320,10 @@ export async function reconcileTabletSentOutboxWithPc(input: TabletSentReconcili
       status: classified.status,
       remoteStatus: asString(remote?.status) || null,
       lifecycleStatus: asString(remote?.lifecycleStatus) || null,
+      remoteEventId: asString(remote?.remoteEventId ?? remote?.eventId) || null,
+      remoteLedgerId: remoteLedgerId(remote) || null,
+      conflictCode: conflictCode(remote) || null,
+      rejectedReason: rejectedReason(remote) || null,
       reason: classified.reason
     });
     if (classified.status !== "skipped") await updateLocalStatus(asString(row.id), classified.status, remote);
