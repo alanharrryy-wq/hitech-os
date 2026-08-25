@@ -1,0 +1,110 @@
+name: CA Cloud Analysis Runs P2 Evidence
+
+on:
+  push:
+    branches:
+      - evidence/ca-cloud-analysis-p2-run-2508
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONPATH: tools/code-atlas/src
+  EXPECTED_MAIN: 1a83d5decb4e946021b9acf95f1a49479d6abf19
+
+jobs:
+  immutable-analysis-run:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Freeze exact source head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_MAIN"
+          test -z "$(git status --porcelain)"
+          echo "READ_ONLY_EVIDENCE_RUN_HEAD=$EXPECTED_MAIN"
+
+      - name: Run neutral Code Atlas intelligence
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/ca-cloud-p2"
+          mkdir -p "$RUNNER_TEMP/ca-cloud-p2"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from code_atlas.intelligence.engine import IntelligenceRequest, run_intelligence
+
+          root = Path.cwd().resolve()
+          out = Path(os.environ['RUNNER_TEMP']) / 'ca-cloud-p2'
+          result = run_intelligence(
+              root,
+              out,
+              request=IntelligenceRequest(intent='DISCOVER', domain='runtime', workers=18),
+          )
+          expected = os.environ['EXPECTED_MAIN']
+          if result.get('repoHead') != expected:
+              raise SystemExit(f"STALE_RUN_HEAD:{result.get('repoHead')}:{expected}")
+          if result.get('readOnly') is not True:
+              raise SystemExit('READ_ONLY_NOT_TRUE')
+          if result.get('productionCertified') is not False:
+              raise SystemExit('PRODUCTION_CERTIFICATION_MUST_REMAIN_FALSE')
+          if result.get('status') != 'PASS_UNIVERSAL_INTELLIGENCE_SOURCE_READY':
+              raise SystemExit('UNEXPECTED_ENGINE_STATUS:' + str(result.get('status')))
+          if not result.get('repoTree') or not result.get('requestDigest') or not result.get('snapshotDigest') or not result.get('artifactSha256'):
+              raise SystemExit('MISSING_PROVENANCE_DIGEST')
+          public = {
+              'schemaVersion': 'prisma.ca.cloud.analysis_run_projection_evidence.v1',
+              'repository': 'prismahitech/hitech-os',
+              'repoHead': result['repoHead'],
+              'repoTree': result['repoTree'],
+              'intent': 'DISCOVER',
+              'domain': 'runtime',
+              'engineStatus': result['status'],
+              'profileId': result.get('profileId'),
+              'requestDigest': result['requestDigest'],
+              'snapshotDigest': result['snapshotDigest'],
+              'artifactSha256': result['artifactSha256'],
+              'readOnly': True,
+              'derivedIndexAuthoritative': False,
+              'semanticRetrievalIsProof': False,
+              'profileMayInventTruth': False,
+              'productionCertified': False,
+              'doesNotProve': [
+                  'production readiness',
+                  'hosted multi-tenant execution',
+                  'enterprise IAM or security readiness',
+                  'human usefulness',
+                  'independent-agent verification',
+                  'authorization to mutate the repository'
+              ]
+          }
+          (out / 'analysis-run-projection.json').write_text(json.dumps(public, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(json.dumps(public, indent=2, sort_keys=True))
+          PY
+          test -z "$(git status --porcelain)"
+
+      - name: Upload immutable analysis evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-cloud-analysis-p2-evidence
+          path: |
+            ${{ runner.temp }}/ca-cloud-p2/analysis-run-projection.json
+            ${{ runner.temp }}/ca-cloud-p2/code-atlas-intelligence-result.zip
+          if-no-files-found: error
+          retention-days: 14
