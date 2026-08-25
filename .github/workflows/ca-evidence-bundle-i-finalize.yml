@@ -48,10 +48,13 @@ jobs:
           changed="$(git diff --name-only origin/main...HEAD)"
           test "$changed" = ".github/workflows/ca-evidence-bundle-i-finalize.yml"
 
-      - name: Run universal Factory Ledger mutation gate before changes
+      - name: Run universal Factory Ledger mutation gate on frozen main
         shell: bash
         run: |
           set -euo pipefail
+          gate_root="$RUNNER_TEMP/i-gate-main"
+          git worktree add --detach "$gate_root" origin/main
+          echo "GATE_ROOT=$gate_root" >> "$GITHUB_ENV"
           request="$RUNNER_TEMP/i-factory-request.json"
           result="$RUNNER_TEMP/i-factory-result.json"
           python - "$request" <<'PY'
@@ -80,7 +83,7 @@ jobs:
           }
           with open(path,'w',encoding='utf-8') as f: json.dump(request,f,indent=2)
           PY
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$request" | tee "$result"
+          (cd "$gate_root" && python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$request") | tee "$result"
           python - "$result" >> "$GITHUB_ENV" <<'PY'
           import json, sys
           d=json.load(open(sys.argv[1],encoding='utf-8'))
@@ -205,6 +208,10 @@ jobs:
           python tools/code-atlas/tests/test_operational_evidence_bundle_semantics.py
           python tools/code-atlas/tests/test_operational_rental_hardening.py
 
+          cp 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' "$GATE_ROOT/PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
+          cp 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md' "$GATE_ROOT/PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md"
+          cp 'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md' "$GATE_ROOT/tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md"
+
           ca_request="$RUNNER_TEMP/i-ca-request.json"
           ca_result="$RUNNER_TEMP/i-ca-result.json"
           python - "$ca_request" <<'PY'
@@ -227,7 +234,9 @@ jobs:
           }
           with open(sys.argv[1],'w',encoding='utf-8') as f: json.dump(request,f,indent=2)
           PY
-          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$ca_request" | tee "$ca_result"
+          (cd "$GATE_ROOT" && python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map)
+          (cd "$GATE_ROOT" && python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --self-test)
+          (cd "$GATE_ROOT" && python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$ca_request") | tee "$ca_result"
           python - "$ca_result" <<'PY'
           import json, sys
           d=json.load(open(sys.argv[1],encoding='utf-8'))
@@ -236,13 +245,14 @@ jobs:
 
           factory_request="$RUNNER_TEMP/i-factory-request.json"
           factory_result2="$RUNNER_TEMP/i-factory-result-after.json"
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$factory_request" | tee "$factory_result2"
+          (cd "$GATE_ROOT" && python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$factory_request") | tee "$factory_result2"
           python - "$factory_result2" <<'PY'
           import json, os, sys
           d=json.load(open(sys.argv[1],encoding='utf-8'))
           if d.get('result')!='PASS_ANTI_REWORK_GATE': raise SystemExit(d)
           if d.get('decisionDigest')!=os.environ['FACTORY_DECISION_DIGEST']: raise SystemExit('FACTORY_DECISION_DRIFT')
           PY
+          git worktree remove --force "$GATE_ROOT"
           echo 'Factory Ledger files intentionally unchanged: this promotion changes only the canonical Change Assurance V1 checklist projection, as authorized by the task-exact Mesh.'
 
       - name: Prove exact final diff and push atomically
