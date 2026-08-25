@@ -4,6 +4,7 @@ from copy import deepcopy
 from typing import Any, Mapping
 
 from .contracts import ContractError, SUPPORT_LEVELS, decision_precedence, normalize_repo_path, sha256_json, utc_now_iso
+from .unknown_obligations import build_unknown_obligation, normalize_unknown_obligations
 
 _EVIDENCE_STATES = {"SATISFIED", "PENDING", "MISSING", "UNKNOWN", "CONFLICTED"}
 
@@ -65,6 +66,7 @@ def compose_change_model(
     inference_rows = deepcopy(inferences or [])
     required = deepcopy(required_evidence or [])
     missing_required: list[str] = []
+    unknown_obligations: list[dict[str, Any]] = []
     for index, item in enumerate(required):
         if not isinstance(item, Mapping):
             raise ContractError(f"required_evidence[{index}] must be an object")
@@ -75,8 +77,37 @@ def compose_change_model(
             raise ContractError(f"required_evidence[{index}].status is invalid")
         if item.get("status") in {"MISSING", "CONFLICTED"}:
             missing_required.append(evidence_id)
+        if item.get("status") == "UNKNOWN":
+            unknown_obligations.append(build_unknown_obligation(
+                code="REQUIRED_EVIDENCE_UNKNOWN",
+                source="change_model.requiredEvidence",
+                reason=f"required evidence {evidence_id} is UNKNOWN",
+                subject=evidence_id,
+                next_evidence=item.get("nextEvidence") if isinstance(item.get("nextEvidence"), str) else None,
+            ))
 
     unsupported_primary = [row["path"] for row in primary if row["supportLevel"] in {"UNKNOWN", "CONFLICTED"}]
+    for path in unsupported_primary:
+        row = next(item for item in primary if item["path"] == path)
+        unknown_obligations.append(build_unknown_obligation(
+            code="UNSUPPORTED_PRIMARY_TARGET",
+            source="change_model.primaryTargets",
+            reason=row.get("reason") or f"primary target {path} is not supported by repository evidence",
+            subject=path,
+        ))
+    for item in unknowns or []:
+        unknown_obligations.append(build_unknown_obligation(
+            code="DECLARED_UNKNOWN",
+            source="change_model.unknowns",
+            reason=str(item),
+        ))
+    for item in contradictions or []:
+        unknown_obligations.append(build_unknown_obligation(
+            code="CONTRADICTORY_EVIDENCE",
+            source="change_model.contradictions",
+            reason=str(item),
+        ))
+
     blocking_items = list(blockers or [])
     if missing_required:
         blocking_items.append("required evidence missing or conflicted")
@@ -108,6 +139,7 @@ def compose_change_model(
         "requiredEvidence": required,
         "missingRequiredEvidence": missing_required,
         "unsupportedPrimaryTargets": unsupported_primary,
+        "unknownObligations": normalize_unknown_obligations(unknown_obligations),
         "blockers": blocking_items,
         "decision": decision,
         "provenance": deepcopy(provenance),

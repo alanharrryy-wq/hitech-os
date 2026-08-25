@@ -13,6 +13,7 @@ from .contracts import (
     sha256_json,
     utc_now_iso,
 )
+from .unknown_obligations import build_unknown_obligation, normalize_unknown_obligations
 
 
 def _evidence_ids(produced: Iterable[Any]) -> set[str]:
@@ -44,6 +45,7 @@ def verify_change(
         raise ContractError("current_snapshot must be an object")
 
     findings: list[dict[str, Any]] = []
+    unknown_obligations: list[dict[str, Any]] = []
     blocking = False
     uncertain = False
 
@@ -107,13 +109,40 @@ def verify_change(
 
     if contradictions:
         uncertain = True
-        findings.append({"code": "CONTRADICTORY_EVIDENCE", "items": list(contradictions)})
+        obligations = [
+            build_unknown_obligation(
+                code="CONTRADICTORY_EVIDENCE",
+                source="verify.contradictions",
+                reason=str(item),
+            )
+            for item in contradictions
+        ]
+        unknown_obligations.extend(obligations)
+        findings.append({"code": "CONTRADICTORY_EVIDENCE", "items": list(contradictions), "unknownObligations": obligations})
     if new_unknowns:
         uncertain = True
-        findings.append({"code": "NEW_UNKNOWNS", "items": list(new_unknowns)})
+        obligations = [
+            build_unknown_obligation(
+                code="NEW_UNKNOWN",
+                source="verify.newUnknowns",
+                reason=str(item),
+            )
+            for item in new_unknowns
+        ]
+        unknown_obligations.extend(obligations)
+        findings.append({"code": "NEW_UNKNOWNS", "items": list(new_unknowns), "unknownObligations": obligations})
     if pack.get("unknowns"):
         uncertain = True
-        findings.append({"code": "PACK_UNKNOWNS_REMAIN", "items": list(pack["unknowns"])})
+        obligations = [
+            build_unknown_obligation(
+                code="PACK_UNKNOWN",
+                source="authority_pack.unknowns",
+                reason=str(item),
+            )
+            for item in pack["unknowns"]
+        ]
+        unknown_obligations.extend(obligations)
+        findings.append({"code": "PACK_UNKNOWNS_REMAIN", "items": list(pack["unknowns"]), "unknownObligations": obligations})
 
     if agent_session is not None:
         session_pack = agent_session.get("packId") if isinstance(agent_session, Mapping) else None
@@ -131,6 +160,7 @@ def verify_change(
         "currentSnapshot": dict(current_snapshot),
         "fileCompliance": file_compliance,
         "findings": findings,
+        "unknownObligations": normalize_unknown_obligations(unknown_obligations),
         "missingChecks": missing_checks,
         "missingEvidence": missing_evidence,
         "outOfScopeMutations": sorted(set(out_of_scope)),
