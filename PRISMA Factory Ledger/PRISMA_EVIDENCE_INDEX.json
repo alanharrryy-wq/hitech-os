@@ -504,6 +504,38 @@
         "artifact 9333495542",
         "sha256:9aaa85393119f73a95b9ebe866733c5e8f726e5f708c632a32e833dc97450c3d"
       ]
+    },
+    {
+      "artifact": "Tablet Sync WAVE1 canonical closure — PR #322 / PR #332 / run 32757733642",
+      "type": "tablet_sync_wave1_canonical_closure",
+      "scope": [
+        "tablet",
+        "sync",
+        "operations_center",
+        "governance",
+        "quality"
+      ],
+      "status": "PASS_RUNTIME_VERIFIED",
+      "proves": [
+        "PR #322 merged the bounded Tablet Sync Operations Center WAVE1 change without rebuilding the existing sync/Outbox/dispatcher/licensing/API truth",
+        "Retry eligibility remains pending/failed only and conflict remains review-only rather than hidden retry resolution",
+        "PR #332 post-merge isolated browser/runtime evidence completed the focused verifier at 44/44 with final PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
+        "The canonical close Authority Mesh reached 100% required authority with zero blockers and the universal Factory Ledger MUTATION gate returned PASS_ANTI_REWORK_GATE with errors empty",
+        "Canonical maturity remains DONE / RUNTIME_VERIFIED / doNotRebuild=true and WAVE1 is no longer a future nextGate"
+      ],
+      "doesNotProve": [
+        "Hosted production deployment",
+        "DB-backed route E2E beyond the isolated evidence contract",
+        "Real PC transport certification",
+        "Conflict-resolution ownership or action",
+        "Future behavior after source or authority drift",
+        "Runtime or visual certification of unrelated Tablet routes, PC, Mobile, Chart Lab, Shared UI, or other surfaces"
+      ],
+      "evidence": [
+        "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa",
+        "PR #332 run 32336243809 attempt 2 artifact 9394817154 sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026 verifier 44/44",
+        "WAVE1 close gate run 32757733642 artifact 9531515396 sha256:b9af91b468e963593c44f27a207a7cbde252ac73148e18d14149e315dd9eaa4e decision f402aa5cc58e18e896067cfb281a7db5dada2a8d504593ae23607522cff38b68"
+      ]
     }
   ],
   "updatedAt": "2026-08-19T03:53:42-06:00",

@@ -81,9 +81,9 @@
     },
     "tablet.sync.runtime_truth": {
       "value": true,
-      "reason": "PR #298 merged Tablet /sync runtime truth is runtime-verified and fail-closed. Reuse the existing sync/Outbox/dispatcher/licensing/API owners and advance only to the governed Operations Center projection.",
-      "evidence": "PR #298 / Tablet Sync Truth PR298 V5 R3 artifact 9333495542",
-      "updatedAt": "2026-08-19T03:53:42-06:00"
+      "reason": "WAVE1 Operations Center merged in PR #322 and passed audited post-merge runtime recertification in PR #332 plus the canonical close MUTATION gate. Reuse existing sync/Outbox/dispatcher/licensing/API truth; WAVE1 is closed and must not be rebuilt.",
+      "evidence": "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa / PR #332 artifact 9394817154 / WAVE1 close gate run 32757733642 artifact 9531515396",
+      "updatedAt": "2026-08-24T21:33:00-06:00"
     }
   },
   "verifyOrFix": {
@@ -108,5 +108,5 @@
       "updatedAt": "2026-08-18T20:46:00-06:00"
     }
   },
-  "updatedAt": "2026-08-19T03:53:42-06:00"
+  "updatedAt": "2026-08-24T21:33:00-06:00"
 }
