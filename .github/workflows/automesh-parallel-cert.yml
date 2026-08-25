@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/automesh-parallel-cert.yml'
       - 'tools/tablet_sync_wave2_apply_carrier.py'
+      - 'tools/tablet_sync_wave2_apply_carrier_fix1.py'
 
 permissions:
   contents: write
@@ -27,12 +28,13 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Preserve carrier engine and verify pins
+      - name: Preserve carrier engines and verify pins
         shell: bash
         run: |
           set -euo pipefail
           cp tools/tablet_sync_wave2_apply_carrier.py "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier.py"
-          python -m py_compile "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier.py"
+          cp tools/tablet_sync_wave2_apply_carrier_fix1.py "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier_fix1.py"
+          python -m py_compile "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier.py" "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier_fix1.py"
           test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
           test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | awk '{print $1}')" = "$PINNED_HEAD"
 
@@ -42,7 +44,14 @@ jobs:
           set -euo pipefail
           git checkout -B "$TARGET_BRANCH" "$PINNED_HEAD"
           test -z "$(git status --porcelain)"
-          python "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier.py"
+          cp "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier.py" "$RUNNER_TEMP/wave2_engine.py"
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("$RUNNER_TEMP/tablet_sync_wave2_apply_carrier_fix1.py")
+          text=p.read_text(encoding="utf-8").replace('ENGINE = Path(__file__).with_name("tablet_sync_wave2_apply_carrier.py")','ENGINE = Path(__file__).with_name("wave2_engine.py")')
+          p.write_text(text, encoding="utf-8")
+          PY
+          python "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier_fix1.py"
 
       - name: Verify exact scope and generated-owner protection
         shell: bash
