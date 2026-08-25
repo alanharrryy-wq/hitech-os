@@ -1,4 +1,4 @@
-name: Tablet Sync WAVE2 Authorized Finalizer
+name: PRISMA Parallel Work Rule Finalizer
 
 on:
   pull_request:
@@ -15,9 +15,9 @@ env:
   DOC_BRANCH: docs/prisma-parallel-work-rule-2508
 
 jobs:
-  finalize:
+  finalize-doc:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 8
     steps:
       - name: Checkout exact authorized main
         uses: actions/checkout@v6
@@ -26,75 +26,22 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Verify fresh authorized state
+      - name: Verify parallel state
         shell: bash
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$AUTHORIZED_MAIN"
           test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$AUTHORIZED_MAIN"
-          test -z "$(git ls-remote --heads origin "refs/heads/$GOV_BRANCH")"
+          test -n "$(git ls-remote --heads origin "refs/heads/$GOV_BRANCH")"
           test -z "$(git ls-remote --heads origin "refs/heads/$DOC_BRANCH")"
           test -z "$(git status --porcelain)"
-
-      - name: Create exact four-file WAVE2 canonical closure
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "prisma-governance-bot"
-          git config user.email "prisma-governance-bot@users.noreply.github.com"
-          git switch -c "$GOV_BRANCH"
-          python - <<'PY'
-          import json
-          from datetime import datetime, timezone, timedelta
-          from pathlib import Path
-          cap_id="tablet.sync.runtime_truth"; marker="PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN"; now=datetime.now(timezone(timedelta(hours=-6))).isoformat(timespec="seconds")
-          root=Path("PRISMA Factory Ledger"); ledger_p=root/"PRISMA_FACTORY_LEDGER.json"; dnr_p=root/"PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json"; reg_p=root/"PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json"; evid_p=root/"PRISMA_EVIDENCE_INDEX.json"
-          runtime_evidence=["WAVE2 product PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19","WAVE2 post-merge runtime run 32866793273 artifact 9570464455 digest sha256:f06087c14951010bb782c6fed46d6620ec2a063cdbcec6b233a387e6f21b35e4","apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs 55/55 PASS","WAVE2 isolated browser/runtime evidence 10/10 screenshots; runtime exceptions 0; console errors 0; unexpected network errors 0; intentional unconfirmed panel 503 only","WAVE2 canonical-close Authority run 32868230568 artifact 9571018119 digest sha256:9d35191c7c190d98e916e54668c99666dced6ff5913d36fe96d7d23ad6c60aec"]
-          claim_ceiling=["Hosted production deployment","Real deployed PC transport end-to-end certification","Production database end-to-end certification","Distribution/release readiness","Runtime zero-custody or data-egress certification","Runtime or visual certification of unrelated Tablet routes or other PRISMA surfaces","Future runtime behavior after source drift"]
-          next_gate="Run final Tablet ScreensQA; then distribution/release readiness; then runtime data-custody/egress certification. WAVE2 itself is closed and must not be rebuilt."
-          load=lambda p: json.loads(p.read_text(encoding="utf-8"))
-          def save(p,d): p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-          ledger=load(ledger_p); matches=[c for c in ledger.get("capabilities",[]) if c.get("id")==cap_id]
-          if len(matches)!=1: raise SystemExit(f"LEDGER_CAPABILITY_MATCH_COUNT:{len(matches)}")
-          c=matches[0]; c.update({"classification":"DONE","status":"RUNTIME_VERIFIED","stateLabel":marker,"doNotRebuild":True,"nextGate":next_gate})
-          for x in runtime_evidence:
-              if x not in c.setdefault("evidence",[]): c["evidence"].append(x)
-          for x in claim_ceiling:
-              if x not in c.setdefault("doesNotProve",[]): c["doesNotProve"].append(x)
-          for x in ["final Tablet ScreensQA","distribution/release readiness after final ScreensQA","runtime data-custody/egress certification after release readiness","read-only recertification after relevant drift"]:
-              if x not in c.setdefault("allowedActions",[]): c["allowedActions"].append(x)
-          save(ledger_p,ledger)
-          dnr=load(dnr_p); row=dnr.get("doNotRebuild",{}).get(cap_id)
-          if not isinstance(row,dict): raise SystemExit("DNR_CAPABILITY_MISSING")
-          row.update({"value":True,"reason":"Tablet Sync WAVE2 is merged and isolated post-merge runtime-certified. Reuse existing Outbox/projection/reconciliation/dispatcher/licensing truth; WAVE1 and WAVE2 are closed and must not be rebuilt.","evidence":"PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119 / PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN","updatedAt":now}); dnr["updatedAt"]=now; save(dnr_p,dnr)
-          reg=load(reg_p); row=reg.get("registrations",{}).get(cap_id)
-          if not isinstance(row,dict): raise SystemExit("REG_CAPABILITY_MISSING")
-          row.update({"status":"DONE_RUNTIME_VERIFIED","updatedAt":now,"evidence":"PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / WAVE2 post-merge runtime run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119","sourceEvidenceSha256":"F06087C14951010BB782C6FED46D6620EC2A063CDBCEC6B233A387E6F21B35E4","doNotRebuild":True,"nextGate":"TABLET_FINAL_SCREENSQA_THEN_DISTRIBUTION_RELEASE_READINESS_THEN_RUNTIME_DATA_CUSTODY_EGRESS_CERTIFICATION"}); reg["updatedAt"]=now; save(reg_p,reg)
-          evid=load(evid_p); artifacts=evid.get("artifacts")
-          if not isinstance(artifacts,list): raise SystemExit("EVIDENCE_ARTIFACTS_NOT_LIST")
-          artifact_name="Tablet Sync WAVE2 postmerge runtime run 32866793273 / artifact 9570464455"
-          if not any(isinstance(a,dict) and a.get("artifact")==artifact_name for a in artifacts): artifacts.append({"artifact":artifact_name,"type":"tablet_sync_wave2_postmerge_runtime_certification","scope":["tablet","sync","outbox","runtime","governance"],"status":marker,"proves":["Merged WAVE2 product source at 1a83d5decb4e946021b9acf95f1a49479d6abf19 passes the focused sync truth verifier 55/55","Isolated Next/Chrome runtime captured 10/10 required /sync states","Per-operation provenance and persisted ACK/conflict evidence are visible without schema invention","Selected retry result truth remains bounded to retryable operations and conflicts stay review-only","PC/Backoffice is the explicit conflict-resolution owner while Tablet remains local-first and review-only","Runtime exceptions, console errors and unexpected network errors are zero; the unconfirmed panel 503 is intentional and fails closed"],"doesNotProve":claim_ceiling,"evidence":["PR #377","merge 1a83d5decb4e946021b9acf95f1a49479d6abf19","run 32866793273","artifact 9570464455","sha256:f06087c14951010bb782c6fed46d6620ec2a063cdbcec6b233a387e6f21b35e4","closure Authority run 32868230568 artifact 9571018119"]})
-          save(evid_p,evid)
-          for p in [ledger_p,dnr_p,reg_p,evid_p]: json.loads(p.read_text(encoding="utf-8"))
-          assert marker in ledger_p.read_text(encoding="utf-8"); assert marker in dnr_p.read_text(encoding="utf-8"); assert "9570464455" in reg_p.read_text(encoding="utf-8"); assert marker in evid_p.read_text(encoding="utf-8")
-          PY
-          python - <<'PY'
-          import subprocess
-          expected=sorted(["PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json","PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json","PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json","PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json"])
-          actual=sorted(subprocess.check_output(["git","diff","--name-only"],text=True).splitlines())
-          if actual!=expected: raise SystemExit(f"GOV_DIFF_SCOPE:{actual}")
-          PY
-          git diff --check
-          git add -- 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json' 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
-          git commit -m "governance(tablet): close Sync Operations Center WAVE2"
-          test "$(git diff --name-only "$AUTHORIZED_MAIN"..HEAD | wc -l)" -eq 4
-          git push origin "HEAD:refs/heads/$GOV_BRANCH"
 
       - name: Create exact one-file parallelism manual branch
         shell: bash
         run: |
           set -euo pipefail
-          git switch --detach "$AUTHORIZED_MAIN"
+          git config user.name "prisma-governance-bot"
+          git config user.email "prisma-governance-bot@users.noreply.github.com"
           git switch -c "$DOC_BRANCH"
           python - <<'PY'
           import base64
@@ -102,7 +49,9 @@ jobs:
           p=Path("apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"); marker="PARALLEL_WORK_RULE_20260825"; text=p.read_text(encoding="utf-8")
           if marker in text: raise SystemExit("PARALLEL_RULE_ALREADY_PRESENT")
           b64="CgotLS0KCiMjIyAyMDI2LTA4LTI1IC0gUGFyYWxlbGlzbW8gc2VndXJvIGVudHJlIGFnZW50ZXMsIGNhcnJpZXJzIHkgYG1haW5gCgoqKlRpcG86KiogR09WRVJOQU5DRV9MRUFSTklORyAvIEVWSURFTkNFX0xFQVJOSU5HIC8gR09UQ0hBICAKKipTdXBlcmZpY2llOioqIEdvdmVybmFuY2UgLyBUb29saW5nIC8gVG9kYXMgbGFzIHN1cGVyZmljaWVzICAKKipDb250ZXh0bzoqKiBEdXJhbnRlIGVsIGNpZXJyZSBkZSBUYWJsZXQgU3luYyBXQVZFMiwgdW4gZXZpZGVuY2UgY2FycmllciBjb21wYXLDsyB1biBgUFJPRFVDVF9UQVJHRVRgIGZpam8gY29udHJhIGVsIGBIRUFEYCBjb21wbGV0byBkZWwgY2Fycmllci4gYG1haW5gIGhhYsOtYSBhdmFuemFkbyBjb24gY2FtYmlvcyBhamVub3MgYWwgc2NvcGUgZGUgVGFibGV0IFN5bmMgeSBlbCBndWFyZCBjb25mdW5kacOzIGF2YW5jZSBwYXJhbGVsbyBsZWfDrXRpbW8gY29uIGNvbnRhbWluYWNpw7NuLiAgCioqUmVzdWx0YWRvIG9ic2VydmFkbzoqKiBQQVJUSUFMIC0+IFBBU1MgZGVzcHXDqXMgZGUgc2VwYXJhciBsYSBiYXNlIGRlbCBwcm9kdWN0byBkZSBsYSBiYXNlIGRlbCBjYXJyaWVyLiAgCioqQ2F1c2EgcmVhbDoqKiBMYSBjb25jdXJyZW5jaWEgc2UgZXN0YWJhIGV2YWx1YW5kbyBwb3IgZXhpc3RlbmNpYSBkZSBjb21taXRzIG51ZXZvcywgbm8gcG9yIG93bmVyc2hpcCBkZSBhcmNoaXZvcywgc29sYXBhbWllbnRvIHNlbcOhbnRpY28geSBiYXNlIGNvcnJlY3RhIGRlIGNvbXBhcmFjacOzbi4gIAoqKlJlZ2xhIG51ZXZhIChgUEFSQUxMRUxfV09SS19SVUxFXzIwMjYwODI1YCk6KioKCjEuIENhbWJpb3MgZW4gYXJjaGl2b3MgZGlzdGludG9zIHkgc2NvcGVzIHNlbcOhbnRpY29zIG5vIHNvbGFwYWRvcyAqKnB1ZWRlbiBhdmFuemFyIGVuIHBhcmFsZWxvIGF1bnF1ZSBgbWFpbmAgY2FtYmllKiouIE5vIGJsb3F1ZWFyIHBvciBlbCBzaW1wbGUgaGVjaG8gZGUgcXVlIGV4aXN0YW4gY29tbWl0cyBudWV2b3MuCjIuIFVuIGV2aWRlbmNlIGNhcnJpZXIgZGViZSBjb21wYXJhciAqKnN1IHByb3BpbyBkZWx0YSBjb250cmEgc3UgYEVWSURFTkNFX0JBU0VgIGNvcnJlY3RvKiouIE5vIGRlYmUgdXNhciBgUFJPRFVDVF9UQVJHRVQuLkhFQURgIGNvbW8gZGV0ZWN0b3IgdW5pdmVyc2FsIGRlIGNvbnRhbWluYWNpw7NuIGN1YW5kbyBgUFJPRFVDVF9UQVJHRVRgIGVzIHPDs2xvIGVsIGNvbW1pdCBxdWUgc2UgZXN0w6EgY2VydGlmaWNhbmRvLgozLiBVbiBgUFJPRFVDVF9UQVJHRVRgIGZpam8gcHVlZGUgc2VndWlyIHNpZW5kbyBlbCBvYmpldG8gZXhhY3RvIGRlIGNlcnRpZmljYWNpw7NuIGF1bnF1ZSBgbWFpbmAgYXZhbmNlIGluZGVwZW5kaWVudGVtZW50ZSwgc2llbXByZSBxdWUgZWwgaGFybmVzcyBlc3TDqSBhaXNsYWRvIHkgbGEgZXZpZGVuY2lhIGRlY2xhcmUgZXNlIFNIQS4KNC4gU2kgZG9zIGFnZW50ZXMgdG9jYW4gZWwgKiptaXNtbyBhcmNoaXZvKiosIGVsIHNlZ3VuZG8gZGViZSByZWxlZXIgZWwgYmxvYi9TSEEgYWN0dWFsLCBjb21wYXJhciBlbCBjYW1iaW8gZnJlc2NvIHkgcmVjb25jaWxpYXIgZWwgc29sYXBhbWllbnRvIHNlbcOhbnRpY28uIE51bmNhIHNvYnJlc2NyaWJpciBzaWxlbmNpb3NhbWVudGUgdHJhYmFqbyBhamVuby4KNS4gU2kgZWwgbWlzbW8gYXJjaGl2byBjYW1iacOzIHBlcm8gbGFzIHJlZ2lvbmVzL293bmVycyBzb24gaW5kZXBlbmRpZW50ZXMsIHNlIHBlcm1pdGUgcmVjb25jaWxpYWNpw7NuIGV4cGzDrWNpdGEuIFNpIGVsIHNvbGFwYW1pZW50byBubyBwdWVkZSByZXNvbHZlcnNlIGNvbiBjZXJ0ZXphLCAqKmZhaWwgY2xvc2VkKiogeSBvYnRlbmVyIGV2aWRlbmNpYSBmcmVzY2EuCjYuIEVsIHBhcmFsZWxpc21vIHNlZ3VybyAqKm5vIGVsaW1pbmEqKiBsYSByZWdsYSBkZSBBdXRob3JpdHkgTWVzaCBleGFjdG86IHVuYSBtdXRhY2nDs24gZ29iZXJuYWRhIHF1ZSBleGlnZSBhdXRvcmlkYWQgc29icmUgZWwgSEVBRCBjYW7Ds25pY28gZGViZSByZWZyZXNjYXIgc3UgQXV0aG9yaXR5IE1lc2gvYW50aS1yZXdvcmsgZ2F0ZSBzaSBlc2UgSEVBRCBjYW1iacOzIGFudGVzIGRlIGxhIG11dGFjacOzbiwgaW5jbHVzbyBjdWFuZG8gZWwgZHJpZnQgc2VhIGFqZW5vIHkgc2VndXJvLgo3LiBEaXN0aW5ndWlyIHNpZW1wcmUgdHJlcyBjb25jZXB0b3M6IGBQUk9EVUNUX1RBUkdFVGAgPSBxdcOpIGNvbW1pdCBzZSBjZXJ0aWZpY2E7IGBFVklERU5DRV9CQVNFYCA9IGNvbnRyYSBxdcOpIGJhc2Ugc2UgbWlkZSBlbCBjYXJyaWVyOyBgQ0FOT05JQ0FMX0hFQURgID0gSEVBRCBhY3R1YWwgcXVlIGF1dG9yaXphIHVuYSBudWV2YSBtdXRhY2nDs24gZ29iZXJuYWRhLgoKKipFamVtcGxvIGNvbmZpcm1hZG86KiogZWwgYXZhbmNlIGRlIGBtYWluYCBwb3IgUFIgIzM4NiB0b2PDsyDDum5pY2FtZW50ZSBDaGFuZ2UgQXNzdXJhbmNlIENsb3VkIENlbnRlciB5IG5vIHNvbGFww7MgVGFibGV0IFN5bmMsIEZhY3RvcnkgTGVkZ2VyIG5pIGVzdGUgbWFudWFsLiBTZSBjbGFzaWZpY8OzIGNvbW8gZHJpZnQgcGFyYWxlbG8gc2VndXJvLiBBdW4gYXPDrSBzZSByZWZyZXNjw7MgZWwgQXV0aG9yaXR5IE1lc2ggcG9ycXVlIGxhIHBvc3RlcmlvciBtdXRhY2nDs24gZGVsIExlZGdlciByZXF1ZXLDrWEgSEVBRCBjYW7Ds25pY28gZXhhY3RvLiAgCioqUm9sbGJhY2sgcHJvYmFkbzoqKiBOL0E7IGxvcyBjYXJyaWVycyBzdGFsZSBzZSBjZXJyYXJvbiBzaW4gbWVyZ2UuICAKKipFdmlkZW5jaWE6KiogVGFibGV0IFN5bmMgV0FWRTIgcHJvZHVjdCBQUiAjMzc3OyBydW50aW1lIHJ1biBgMzI4NjY3OTMyNzNgOyBjbG9zdXJlIEF1dGhvcml0eSBydW4gYDMyODY4MjMwNTY4YDsgZGlzcG9zYWJsZSBwcmVmbGlnaHQgUFJzICMzODcvIzM4OC4gIAoqKlJlZ2xhIGNvcnRhOioqICoqcGFyYWxlbGlzbW8gc2UgZGVjaWRlIHBvciBvdmVybGFwIHJlYWwgeSBhdXRvcmlkYWQsIG5vIHBvciBtaWVkbyBhIHF1ZSBgbWFpbmAgdGVuZ2EgY29tbWl0cyBudWV2b3MuKioK"
-          p.write_text(text.rstrip()+base64.b64decode(b64).decode("utf-8")+"\n",encoding="utf-8")
+          entry=base64.b64decode(b64).decode("utf-8")
+          entry="\n".join(line.rstrip() for line in entry.splitlines()).strip()
+          p.write_text(text.rstrip()+"\n\n"+entry+"\n",encoding="utf-8")
           PY
           test "$(git diff --name-only | wc -l)" -eq 1
           test "$(git diff --name-only)" = 'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
@@ -113,10 +62,10 @@ jobs:
           test "$(git diff --name-only "$AUTHORIZED_MAIN"..HEAD | wc -l)" -eq 1
           git push origin "HEAD:refs/heads/$DOC_BRANCH"
 
-      - name: Final authorized branch gate
+      - name: Final branch gate
         shell: bash
         run: |
           set -euo pipefail
           test -n "$(git ls-remote --heads origin "refs/heads/$GOV_BRANCH")"
           test -n "$(git ls-remote --heads origin "refs/heads/$DOC_BRANCH")"
-          printf '%s\n' 'PASS_TABLET_SYNC_WAVE2_AUTHORIZED_BRANCHES_CREATED'
+          printf '%s\n' 'PASS_PRISMA_PARALLEL_WORK_RULE_BRANCH_CREATED'
