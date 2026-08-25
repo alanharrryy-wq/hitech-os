@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { PrismaTabletShellUnified, TabletShellStatusPill } from "@components/tablet-shell/prisma-tablet-shell";
 import { requestJson } from "@/lib/pos/cart-state";
-import type { PendingSendStatus, SyncPanelResponse } from "@/lib/pending-offline-sync/sync-panel-contract";
+import type { PendingSendStatus, SyncPanelResponse, SyncRetryPreparationResult } from "@/lib/pending-offline-sync/sync-panel-contract";
 import { filterSyncItems } from "@/lib/pending-offline-sync/sync-panel-view-model";
 import { CatalogPullPanel } from "./catalog-pull-panel";
 import { PRISMA_ORIGINAL_CUSTOMER } from "../../../../../shared/customer/prisma-original-customer";
@@ -127,7 +127,27 @@ function dispatchMessage(result: DispatchResult | null) {
   return `Resultado de envío: ${result.reason}.`;
 }
 
+function retryPreparationMessage(result: SyncRetryPreparationResult | null) {
+  if (!result) return "";
+  if (result.requested !== null) return `Reintento: ${result.updated}/${result.requested} preparadas · ${result.skipped ?? 0} omitidas.`;
+  return `Reintento: ${result.updated} operación(es) preparadas.`;
+}
+
+function compactOperationalValue(value: string | null | undefined) {
+  const text = (value ?? "").trim();
+  if (!text) return "";
+  return text.length > 28 ? `${text.slice(0, 12)}…${text.slice(-8)}` : text;
+}
+
+function operationTime(value: string | null | undefined) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("es-MX", { dateStyle: "short", timeStyle: "short" }).format(date);
+}
+
 function emptyQueueMessage(filter: FilterMode, confirmed: boolean) {
+
   if (!confirmed) return "Estado de cola sin confirmar. Actualiza el panel para revisar los movimientos reales.";
   if (filter === "all" || filter === "needs_attention" || filter === "pending") return "No hay pendientes para enviar.";
   return "No hay elementos en este filtro.";
@@ -193,6 +213,7 @@ export function SyncWorkspace() {
   const [error, setError] = useState<string | null>(null);
   const [panelUnverified, setPanelUnverified] = useState(true);
   const [dispatchResult, setDispatchResult] = useState<DispatchResult | null>(null);
+  const [retryResult, setRetryResult] = useState<SyncRetryPreparationResult | null>(null);
   const [license, setLicense] = useState<LicenseStatusResponse["data"] | null>(null);
   const [pcHealth, setPcHealth] = useState<TabletPcHealth | null>(null);
   const busy = actionMode !== null;
@@ -218,6 +239,7 @@ export function SyncWorkspace() {
   }
 
   async function load() {
+    setRetryResult(null);
     setActionMode("refreshing");
     setError(null);
     try {
@@ -230,6 +252,7 @@ export function SyncWorkspace() {
   }
 
   async function dispatchNow(force = false) {
+    setRetryResult(null);
     setActionMode("sending");
     setError(null);
     try {
@@ -253,7 +276,7 @@ export function SyncWorkspace() {
     setActionMode("retrying");
     setError(null);
     try {
-      await requestJson<{ updated: number; message: string }>("/api/pos/sync/retry", {
+      const prepared = await requestJson<SyncRetryPreparationResult>("/api/pos/sync/retry", {
         method: "POST",
         body: JSON.stringify({
           businessId: DEFAULT_SYNC_BUSINESS_ID,
@@ -261,6 +284,7 @@ export function SyncWorkspace() {
           includePending: false
         })
       });
+      setRetryResult(prepared.data);
       const result = await plainJson<DispatchResult>("/api/pos/sync/dispatch", {
         method: "POST",
         body: JSON.stringify({ force: true, reconcileSent: true, source: "sync-panel-retry" })
@@ -321,7 +345,7 @@ export function SyncWorkspace() {
       ? "Preparando reintento..."
       : actionMode === "refreshing" || actionMode === "loading"
         ? "Actualizando estado..."
-        : dispatchMessage(dispatchResult);
+        : retryResult ? `${retryPreparationMessage(retryResult)} ${dispatchMessage(dispatchResult)}` : dispatchMessage(dispatchResult);
 
   return (
     <PrismaTabletShellUnified
@@ -356,7 +380,7 @@ export function SyncWorkspace() {
           </div>
         </section>
 
-        {busy || dispatchResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${busy ? "neutral" : noteTone}`]].join(" ")} role="status" aria-live="polite">{activeStatusMessage}</div> : null}
+        {busy || dispatchResult || retryResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${busy ? "neutral" : noteTone}`]].join(" ")} role="status" aria-live="polite">{activeStatusMessage}</div> : null}
         {error ? <div className={styles.alert} role="alert">{error}</div> : null}
 
         <section className={styles.kpis}>
@@ -419,6 +443,28 @@ export function SyncWorkspace() {
                     <span>{item.statusLabel}</span>
                     <h2>{item.title}</h2>
                     <p>{item.description}</p>
+                    <details>
+                      <summary>Detalles de operación</summary>
+                      <div className={styles.filterBar}>
+                        {item.provenance.source ? <span className={styles.metaPill}>Origen: {compactOperationalValue(item.provenance.source)}</span> : null}
+                        {item.provenance.storeId ? <span className={styles.metaPill}>Tienda: {compactOperationalValue(item.provenance.storeId)}</span> : null}
+                        {item.provenance.terminalId ? <span className={styles.metaPill}>Terminal: {compactOperationalValue(item.provenance.terminalId)}</span> : null}
+                        {item.provenance.deviceId ? <span className={styles.metaPill}>Dispositivo: {compactOperationalValue(item.provenance.deviceId)}</span> : null}
+                        {item.provenance.actorId ? <span className={styles.metaPill}>Operador: {compactOperationalValue(item.provenance.actorId)}</span> : null}
+                      </div>
+                      <p>
+                        {item.delivery.remoteLifecycleStatus
+                          ? `Estado PC: ${item.delivery.remoteLifecycleStatus}`
+                          : "Sin estado remoto persistido todavía."}
+                        {item.delivery.remoteLedgerId ? ` · Ledger: ${compactOperationalValue(item.delivery.remoteLedgerId)}` : ""}
+                      </p>
+                      {item.delivery.lastAttemptAt ? <p>Último intento: {operationTime(item.delivery.lastAttemptAt)}</p> : null}
+                      {item.delivery.ackedAt ? <p>Confirmado: {operationTime(item.delivery.ackedAt)}</p> : null}
+                      {item.delivery.conflictedAt ? <p>Conflicto detectado: {operationTime(item.delivery.conflictedAt)}</p> : null}
+                      {item.delivery.remoteConflictCode ? <p>Motivo de conflicto: {item.delivery.remoteConflictCode}</p> : null}
+                      {item.delivery.remoteRejectedReason ? <p>Último rechazo: {item.delivery.remoteRejectedReason}</p> : null}
+                      {item.resolutionOwner === "pc_backoffice" ? <p><strong>Revisión en PC / Backoffice.</strong> Tablet conserva la evidencia; no resuelve conflictos aquí.</p> : null}
+                    </details>
                   </div>
                   <aside>
                     <strong>{item.attempts}</strong>
