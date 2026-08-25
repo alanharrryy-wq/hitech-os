@@ -8,7 +8,7 @@ const shots = path.join(out, "screenshots");
 fs.mkdirSync(shots, { recursive: true });
 const NOW = "2026-08-25T14:20:00.000Z";
 let state = "clean";
-const runtimeErrors = [], consoleErrors = [], networkErrors = [], requests = [], manifest = [];
+const runtimeErrors = [], consoleErrors = [], networkErrors = [], expectedApiFailures = [], requests = [], manifest = [];
 
 function item(status) {
   const remote = ["sent","acked","conflict"].includes(status);
@@ -56,7 +56,8 @@ cdp.on("Log.entryAdded",p=>{
   const url=String(entry.url||"");
   const genericAccessory404=text==="Failed to load resource: the server responded with a status of 404 (Not Found)";
   const faviconAccessory=url.endsWith("/favicon.ico");
-  if(entry.level==="error"&&!text.includes("favicon")&&!faviconAccessory&&!(genericAccessory404&&!url)) consoleErrors.push(`log:${text}${url?` @ ${url}`:""}`);
+  const expectedUnconfirmed503=state==="unconfirmed" && url.startsWith(`${base}/api/pos/sync/panel`) && text.includes("503 (Service Unavailable)");
+  if(entry.level==="error"&&!text.includes("favicon")&&!faviconAccessory&&!expectedUnconfirmed503&&!(genericAccessory404&&!url)) consoleErrors.push(`log:${text}${url?` @ ${url}`:""}`);
 });
 cdp.on("Network.responseReceived",p=>{
   const response=p.response||{};
@@ -64,7 +65,9 @@ cdp.on("Network.responseReceived",p=>{
   const url=String(response.url||"");
   const type=String(p.type||"");
   if(statusCode<400) return;
-  if(url.startsWith(`${base}/api/`)) return;
+  const expectedUnconfirmed503=state==="unconfirmed" && statusCode===503 && url.startsWith(`${base}/api/pos/sync/panel`);
+  if(expectedUnconfirmed503){expectedApiFailures.push(`unconfirmed 503 ${url}`);return;}
+  if(url.startsWith(`${base}/api/`)){networkErrors.push(`${statusCode} API ${url}`);return;}
   if(type==="Image"||type==="Other"||url.endsWith("/favicon.ico")) return;
   networkErrors.push(`${statusCode} ${type||"Unknown"} ${url}`);
 });
@@ -84,7 +87,8 @@ async function evalv(expression){const r=await cdp.send("Runtime.evaluate",{expr
 async function text(){return String(await evalv("document.body ? document.body.innerText : ''")||"")}
 async function wait(expression,label,ms=25000){const start=Date.now();while(Date.now()-start<ms){if(await evalv(`Boolean(${expression})`))return;await new Promise(r=>setTimeout(r,180))}const t=(await text()).slice(0,3000);fs.writeFileSync(path.join(out,`timeout-${label.replaceAll(':','-')}.txt`),t);throw new Error(`WAIT_TIMEOUT:${label}`)}
 async function click(label){const ok=await evalv(`(()=>{const b=[...document.querySelectorAll('button')].find(x=>x.textContent.trim()===${JSON.stringify(label)});if(!b)return false;b.click();return true})()`);if(!ok)throw new Error(`BUTTON_NOT_FOUND:${label}`);await new Promise(r=>setTimeout(r,500))}
-async function openDetails(){await evalv("document.querySelectorAll('details').forEach(d=>d.open=true);true");await new Promise(r=>setTimeout(r,250))}
+async function openSummary(label){await evalv(`(()=>{const d=[...document.querySelectorAll('details')].find(x=>x.querySelector('summary')?.textContent.trim()===${JSON.stringify(label)});if(!d)return false;d.open=true;return true})()`);await new Promise(r=>setTimeout(r,250))}
+async function openOperationDetails(){await openSummary("Detalles de operación")}
 async function shot(name){const r=await cdp.send("Page.captureScreenshot",{format:"png",captureBeyondViewport:true,fromSurface:true});fs.writeFileSync(path.join(shots,name),Buffer.from(r.data,"base64"))}
 
 const cases=[
@@ -94,13 +98,43 @@ const cases=[
  ["sent","Enviados",["Estado PC: sent","Ledger: ledger-sent-01","Sin acción requerida"]],
  ["acked","Confirmados",["Estado PC: reconciled","Confirmado:","Sin acción requerida"]],
  ["conflict","Revisión",["Revisión en PC / Backoffice.","Motivo de conflicto: stale_sequence","Revisión requerida"]],
- ["pc-offline","Pendientes",["PC sin respuesta","Venta local disponible aunque PC no responda","Tienda: store-centro"]],
+ ["pc-offline","Pendientes",["PC sin respuesta","Guardado localmente para continuidad de operación.","Tienda: store-centro"]],
  ["license-deny",null,["Licencia detenida","Tablet pendiente","Pendientes al día"]],
  ["unconfirmed",null,["Cola sin confirmar","Estado de pendientes sin confirmar","—"]]
 ];
-for(const [s,filter,expects] of cases){state=s;const er=runtimeErrors.length,ce=consoleErrors.length,ne=networkErrors.length;await cdp.send("Page.navigate",{url:`${base}/sync?wave2Evidence=${encodeURIComponent(s)}&t=${Date.now()}`});await wait("document.readyState === 'complete' && document.body && document.body.innerText.includes('Continuidad operativa')",`${s}:ready`);await new Promise(r=>setTimeout(r,650));if(filter)await click(filter);await openDetails();const body=await text();for(const x of expects)if(!body.includes(x))throw new Error(`ASSERT_TEXT_MISSING:${s}:${x}`);if(s==="conflict"&&body.includes("Reintento disponible"))throw new Error("CONFLICT_ADVERTISED_RETRY");if(["sent","acked","conflict"].includes(s)&&body.includes(`evt-${s}-01`))throw new Error(`RAW_EVENT_ID_VISIBLE:${s}`);if(runtimeErrors.length!==er)throw new Error(`RUNTIME_EXCEPTION:${s}:${runtimeErrors.slice(er).join(" | ")}`);if(consoleErrors.length!==ce)throw new Error(`CONSOLE_ERROR:${s}:${consoleErrors.slice(ce).join(" | ")}`);if(networkErrors.length!==ne)throw new Error(`NETWORK_ERROR:${s}:${networkErrors.slice(ne).join(" | ")}`);const name=`${String(manifest.length+1).padStart(2,"0")}-${s}.png`;await shot(name);manifest.push({state:s,screenshot:name,assertions:expects});if(s==="failed"){await click("Reintentar fallidos");await wait("document.body && document.body.innerText.includes('Reintento: 1 operación(es) preparadas.')","failed:retry-result",15000);await openDetails();const t=await text();if(!t.includes("PC no disponible"))throw new Error("RETRY_PC_UNAVAILABLE_COPY_MISSING");const n=`${String(manifest.length+1).padStart(2,"0")}-failed-retry-result.png`;await shot(n);manifest.push({state:"failed-retry-result",screenshot:n,assertions:["Reintento: 1 operación(es) preparadas.","PC no disponible"]})}}
+for(const [s,filter,expects] of cases){
+  state=s;
+  const er=runtimeErrors.length,ce=consoleErrors.length,ne=networkErrors.length;
+  await cdp.send("Page.navigate",{url:`${base}/sync?wave2Evidence=${encodeURIComponent(s)}&t=${Date.now()}`});
+  await wait("document.readyState === 'complete' && document.body && document.body.innerText.includes('Continuidad operativa')",`${s}:ready`);
+  await new Promise(r=>setTimeout(r,650));
+  if(filter)await click(filter);
+  if(["pending","failed","sent","acked","conflict","pc-offline"].includes(s))await openOperationDetails();
+  if(s==="license-deny")await openSummary("Cuenta y equipos");
+  const body=await text();
+  for(const x of expects)if(!body.includes(x))throw new Error(`ASSERT_TEXT_MISSING:${s}:${x}`);
+  if(s==="conflict"&&body.includes("Reintento disponible"))throw new Error("CONFLICT_ADVERTISED_RETRY");
+  if(["sent","acked","conflict"].includes(s)&&body.includes(`evt-${s}-01`))throw new Error(`RAW_EVENT_ID_VISIBLE:${s}`);
+  if(runtimeErrors.length!==er)throw new Error(`RUNTIME_EXCEPTION:${s}:${runtimeErrors.slice(er).join(" | ")}`);
+  if(consoleErrors.length!==ce)throw new Error(`CONSOLE_ERROR:${s}:${consoleErrors.slice(ce).join(" | ")}`);
+  if(networkErrors.length!==ne)throw new Error(`NETWORK_ERROR:${s}:${networkErrors.slice(ne).join(" | ")}`);
+  const name=`${String(manifest.length+1).padStart(2,"0")}-${s}.png`;
+  await shot(name);
+  manifest.push({state:s,screenshot:name,assertions:expects});
+  if(s==="failed"){
+    await click("Reintentar fallidos");
+    await wait("document.body && document.body.innerText.includes('Reintento: 1 operación(es) preparadas.')","failed:retry-result",15000);
+    await openOperationDetails();
+    const t=await text();
+    if(!t.includes("PC no disponible"))throw new Error("RETRY_PC_UNAVAILABLE_COPY_MISSING");
+    const n=`${String(manifest.length+1).padStart(2,"0")}-failed-retry-result.png`;
+    await shot(n);
+    manifest.push({state:"failed-retry-result",screenshot:n,assertions:["Reintento: 1 operación(es) preparadas.","PC no disponible"]});
+  }
+}
+if(!expectedApiFailures.some(x=>x.startsWith("unconfirmed 503 ")))throw new Error("EXPECTED_UNCONFIRMED_503_NOT_OBSERVED");
 fs.writeFileSync(path.join(out,"screenshot-manifest.json"),JSON.stringify({targetSha:process.env.TARGET_SHA,viewport:"1365x900",screenshots:manifest},null,2)+"\n");
-fs.writeFileSync(path.join(out,"browser-runtime-errors.json"),JSON.stringify({runtimeErrors,consoleErrors,networkErrors},null,2)+"\n");
+fs.writeFileSync(path.join(out,"browser-runtime-errors.json"),JSON.stringify({runtimeErrors,consoleErrors,networkErrors,expectedApiFailures},null,2)+"\n");
 fs.writeFileSync(path.join(out,"browser-api-requests.log"),requests.join("\n")+"\n");
 if(runtimeErrors.length||consoleErrors.length||networkErrors.length)throw new Error(`BROWSER_ANOMALIES runtime=${runtimeErrors.length} console=${consoleErrors.length} network=${networkErrors.length}`);
 console.log(`PASS_TABLET_SYNC_WAVE2_BROWSER_SCREENSHOTS ${manifest.length}/${manifest.length}`);
