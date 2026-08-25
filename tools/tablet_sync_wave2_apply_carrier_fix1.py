@@ -16,6 +16,14 @@ def load_engine():
     return module
 
 
+def replace_exact(path: Path, old: str, new: str, label: str) -> None:
+    text = path.read_text(encoding="utf-8")
+    count = text.count(old)
+    if count != 1:
+        raise SystemExit(f"POST_PATCH_{label}_COUNT_{count}")
+    path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+
 def main() -> None:
     mod = load_engine()
     original = mod.replace_once
@@ -55,6 +63,22 @@ def main() -> None:
 
     mod.replace_once = flex
     mod.main()
+
+    contract_path = mod.ROOT / "src/lib/pending-offline-sync/sync-panel-contract.ts"
+    replace_exact(
+        contract_path,
+        'export type SyncRisk = "ok" | "warn" | "danger";',
+        'export type SyncRisk="ok"|"warn"|"danger";',
+        "SYNC_RISK_CANONICAL",
+    )
+
+    screen_path = mod.ROOT / "components/sync/pending-offline-sync-panel-screen.tsx"
+    replace_exact(
+        screen_path,
+        '{item.resolutionLabel ? <p><strong>{item.resolutionLabel}.</strong> Tablet conserva la evidencia; no resuelve conflictos aquí.</p> : null}',
+        '{item.resolutionOwner === "pc_backoffice" ? <p><strong>Revisión en PC / Backoffice.</strong> Tablet conserva la evidencia; no resuelve conflictos aquí.</p> : null}',
+        "CONFLICT_OWNER_VISIBLE",
+    )
 
 
 if __name__ == "__main__":
