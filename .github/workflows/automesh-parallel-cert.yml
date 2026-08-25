@@ -45,10 +45,14 @@ jobs:
           git checkout -B "$TARGET_BRANCH" "$PINNED_HEAD"
           test -z "$(git status --porcelain)"
           cp "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier.py" "$RUNNER_TEMP/wave2_engine.py"
-          python - <<'PY'
+          python - "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier_fix1.py" <<'PY'
+          import sys
           from pathlib import Path
-          p=Path("$RUNNER_TEMP/tablet_sync_wave2_apply_carrier_fix1.py")
-          text=p.read_text(encoding="utf-8").replace('ENGINE = Path(__file__).with_name("tablet_sync_wave2_apply_carrier.py")','ENGINE = Path(__file__).with_name("wave2_engine.py")')
+          p = Path(sys.argv[1])
+          text = p.read_text(encoding="utf-8").replace(
+              'ENGINE = Path(__file__).with_name("tablet_sync_wave2_apply_carrier.py")',
+              'ENGINE = Path(__file__).with_name("wave2_engine.py")',
+          )
           p.write_text(text, encoding="utf-8")
           PY
           python "$RUNNER_TEMP/tablet_sync_wave2_apply_carrier_fix1.py"
