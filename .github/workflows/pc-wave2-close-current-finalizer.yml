@@ -30,9 +30,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          branch_head="$(git rev-parse HEAD)"
           test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_MAIN"
           changed="$(git diff --name-only "$PINNED_MAIN"..HEAD)"
           test "$changed" = ".github/workflows/pc-wave2-close-current-finalizer.yml"
+          git checkout --detach "$PINNED_MAIN"
           cat > "$RUNNER_TEMP/gate.request.json" <<'JSON'
           {
             "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
@@ -66,6 +68,9 @@ jobs:
           assert d.get('errors')==[],d
           assert d.get('decisionDigest')=='1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d',d
           PY
+          git checkout "$GITHUB_HEAD_REF"
+          test "$(git rev-parse HEAD)" = "$branch_head"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_MAIN"
 
       - name: Promote demonstrated Wave 2 truth
         shell: bash
