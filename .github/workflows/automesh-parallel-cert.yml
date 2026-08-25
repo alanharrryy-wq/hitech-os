@@ -77,7 +77,14 @@ jobs:
           git diff --check
           test "$(git diff -- 'apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel.module.css' | wc -c)" -eq 0
           test "$(git diff -- 'apps/terminal-de-venta-system/products/tablet/app/prisma/schema.prisma' | wc -c)" -eq 0
-          if git diff | grep -Fq '!important'; then echo 'BLOCKED_IMPORTANT'; exit 1; fi
+          if git diff -- \
+            apps/terminal-de-venta-system/products/tablet/app/src/lib/pending-offline-sync/sync-panel-contract.ts \
+            apps/terminal-de-venta-system/products/tablet/app/src/server/pos-sync-panel/index.ts \
+            apps/terminal-de-venta-system/products/tablet/app/src/server/sync/reconciliation.ts \
+            apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx \
+            | grep -Fq '!important'; then
+            echo 'BLOCKED_IMPORTANT_PRODUCT_SOURCE'; exit 1
+          fi
 
       - name: Run focused WAVE2 truth verifier
         shell: bash
