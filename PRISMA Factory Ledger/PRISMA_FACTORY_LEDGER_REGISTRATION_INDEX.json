@@ -134,7 +134,47 @@
       "sourceEvidenceSha256": "B59AB032FB461C4B5D5897E64EE4CF51B4A492E5218DC14D45EB5E6B09E4B026",
       "doNotRebuild": true,
       "nextGate": "TABLET_SYNC_WAVE2_AUTHORITY_DISCOVERY_OR_READ_ONLY_RECERTIFICATION_NO_WAVE1_REBUILD"
+    },
+    "data.canonical_schema_reproducibility": {
+      "status": "DONE_LOCAL_VERIFIED",
+      "updatedAt": "2026-08-25T08:17:09-06:00",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "sourceEvidenceSha256": "9943DC813B1268A6C0DC70644B9052DBA3C52FCFAE8FA2E44C46F9CDF8BCF2BC",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen schema baseline in PC Wave 3; do not rebuild the Wave 2 migration repair. Only recertify read-only or repair future evidence-backed drift under fresh authority."
+    },
+    "pc.customers.crud_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-25T08:17:09-06:00",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "sourceEvidenceSha256": "9943DC813B1268A6C0DC70644B9052DBA3C52FCFAE8FA2E44C46F9CDF8BCF2BC",
+      "doNotRebuild": true,
+      "nextGate": "Reuse durable Customers CRUD as a frozen prerequisite in PC Wave 3. Do not rebuild it; repair only demonstrated future drift under fresh exact authority."
+    },
+    "pc.entitlement.surface_projection": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-25T08:17:09-06:00",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "sourceEvidenceSha256": "D39007E9CD5EE660C41E8FA0882996054500128F00AF36B1BBC3FB8181550AAD",
+      "doNotRebuild": true,
+      "nextGate": "Reuse the fail-closed PC entitlement projection in Wave 3. Do not rebuild License Governor or duplicate plan logic; future changes require fresh authority and evidence-backed drift."
+    },
+    "pc.customers.clientes_visual_usability": {
+      "status": "DONE_VISUAL_CERTIFIED",
+      "updatedAt": "2026-08-25T08:17:09-06:00",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "sourceEvidenceSha256": "9943DC813B1268A6C0DC70644B9052DBA3C52FCFAE8FA2E44C46F9CDF8BCF2BC",
+      "doNotRebuild": true,
+      "nextGate": "Keep /clientes Wave 2 layout frozen. Reuse it in Wave 3 without redesign; any future visual mutation requires a fresh task-exact Authority Mesh with Layer Map."
+    },
+    "pc.quality.customer_experience_wave2": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-25T08:17:09-06:00",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "sourceEvidenceSha256": "9943DC813B1268A6C0DC70644B9052DBA3C52FCFAE8FA2E44C46F9CDF8BCF2BC",
+      "doNotRebuild": true,
+      "nextGate": "PC_ENTERPRISE_MUTATIONS_WAVE3: certify catalog and supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke and Settings writes on isolated persistence under fresh exact authority. Wave 2 itself is closed and must not be rebuilt."
     }
   },
-  "updatedAt": "2026-08-24T21:33:00-06:00"
+  "updatedAt": "2026-08-25T08:17:09-06:00"
 }

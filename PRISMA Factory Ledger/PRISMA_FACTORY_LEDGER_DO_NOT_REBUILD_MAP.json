@@ -84,6 +84,36 @@
       "reason": "WAVE1 Operations Center merged in PR #322 and passed audited post-merge runtime recertification in PR #332 plus the canonical close MUTATION gate. Reuse existing sync/Outbox/dispatcher/licensing/API truth; WAVE1 is closed and must not be rebuilt.",
       "evidence": "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa / PR #332 artifact 9394817154 / WAVE1 close gate run 32757733642 artifact 9531515396",
       "updatedAt": "2026-08-24T21:33:00-06:00"
+    },
+    "data.canonical_schema_reproducibility": {
+      "value": true,
+      "reason": "PASS_PC_WAVE2_CANONICAL_SCHEMA_REPRODUCIBILITY",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "updatedAt": "2026-08-25T08:17:09-06:00"
+    },
+    "pc.customers.crud_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE2_CUSTOMERS_DURABLE_CRUD",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "updatedAt": "2026-08-25T08:17:09-06:00"
+    },
+    "pc.entitlement.surface_projection": {
+      "value": true,
+      "reason": "PASS_PC_WAVE2_ENTITLEMENT_SURFACE_PROJECTION",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "updatedAt": "2026-08-25T08:17:09-06:00"
+    },
+    "pc.customers.clientes_visual_usability": {
+      "value": true,
+      "reason": "PASS_PC_WAVE2_CLIENTES_VISUAL_USABILITY",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "updatedAt": "2026-08-25T08:17:09-06:00"
+    },
+    "pc.quality.customer_experience_wave2": {
+      "value": true,
+      "reason": "PASS_BOUNDED_PC_WAVE2_CERTIFICATION",
+      "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
+      "updatedAt": "2026-08-25T08:17:09-06:00"
     }
   },
   "verifyOrFix": {
@@ -108,5 +138,5 @@
       "updatedAt": "2026-08-18T20:46:00-06:00"
     }
   },
-  "updatedAt": "2026-08-24T21:33:00-06:00"
+  "updatedAt": "2026-08-25T08:17:09-06:00"
 }

@@ -783,35 +783,44 @@
         "governance",
         "quality"
       ],
-      "classification": "FIX",
-      "status": "VERIFY_REQUIRED",
-      "stateLabel": "BLOCKED_BY_CANONICAL_MIGRATION_HISTORY_DRIFT",
-      "doNotRebuild": false,
-      "nextGate": "Under a fresh exact-head MUTATION gate, repair only the ordered canonical SQLite migration history needed to reproduce the root canonical Prisma schema on a fresh isolated database; validate schema/table/index/FK equivalence, migration idempotence, rollback/backup, and affected PC customer CRUD. Do not mutate a live database or replace schema ownership.",
+      "classification": "DONE",
+      "status": "LOCAL_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE2_CANONICAL_SCHEMA_REPRODUCIBILITY",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen schema baseline in PC Wave 3; do not rebuild the Wave 2 migration repair. Only recertify read-only or repair future evidence-backed drift under fresh authority.",
       "evidence": [
         "Closed unmerged PR #313 repeatable runtime failure evidence: fresh migration chain reports success while Customers POST returns 500 / no durable customer ID",
         "apps/terminal-de-venta-system/docs/architecture/PRISMA_SCHEMA_OWNERSHIP.md",
         "apps/terminal-de-venta-system/prisma/schema.prisma on main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
         "apps/terminal-de-venta-system/prisma/migrations current ordered history on main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
-        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160"
+        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160",
+        "PR #325 merge 62c27a612b7647a72f673994846384dba510a193",
+        "PC Wave 2 final certification workflow run 32330104885",
+        "entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc",
+        "restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad",
+        "current-head close Authority run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
+        "current-head Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / anti-rework decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d",
+        "No PC Wave 2 product-file drift from merge 62c27a612b7647a72f673994846384dba510a193 through main@1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "PC_WAVE2_SCHEMA_PARITY.json passed on clean isolated SQLite: expected tables/columns/foreign keys/index guardrails/triggers matched and foreign-key violations were empty."
       ],
       "doesNotProve": [
         "That a production or historical customer database is safe to mutate",
         "That CustomerRepository source itself is defective after schema reproducibility is repaired",
         "That all future Prisma schema changes are covered",
-        "Hosted production readiness"
+        "Hosted production readiness",
+        "A live or historical customer database is safe to mutate",
+        "All future Prisma schema changes"
       ],
       "allowedActions": [
-        "fresh isolated database reproduction",
-        "migration-history repair under exact authority",
-        "schema equivalence and foreign-key validation",
-        "rollback and backup verification"
+        "read-only recertification against current authority",
+        "reuse this proven Wave 2 capability as a prerequisite",
+        "repair only demonstrated future drift under fresh exact-task Authority Mesh and anti-rework gate"
       ],
       "forbiddenActions": [
-        "db push as a substitute for migration history",
-        "mutate a live customer database during repair certification",
-        "make the PC build-local Prisma schema canonical",
-        "hide missing canonical tables with seed-time ad hoc table creation"
+        "rebuild this proven Wave 2 capability without evidence-backed drift",
+        "weaken proven fail-closed or persistence contracts",
+        "claim Wave 3 enterprise mutations from Wave 2 evidence",
+        "claim hosted production readiness from this closure"
       ]
     },
     {
@@ -824,33 +833,42 @@
         "governance",
         "quality"
       ],
-      "classification": "FIX",
-      "status": "VERIFY_REQUIRED",
-      "stateLabel": "FAIL_CUSTOMER_CREATE_FRESH_DB_REPRODUCIBLE",
-      "doNotRebuild": false,
-      "nextGate": "First consume the canonical schema reproducibility repair on a fresh isolated database, then rerun create/search/detail/update/read-after-write. Change Customer source only for a residual evidence-backed defect; preserve transactional AuditEvent semantics and customer-safe error boundaries.",
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE2_CUSTOMERS_DURABLE_CRUD",
+      "doNotRebuild": true,
+      "nextGate": "Reuse durable Customers CRUD as a frozen prerequisite in PC Wave 3. Do not rebuild it; repair only demonstrated future drift under fresh exact authority.",
       "evidence": [
         "Closed unmerged PR #313 repeated Customers runtime gate: POST /api/backoffice/customers => 500 and durable ID assertion failure on clean GitHub runners",
         "apps/terminal-de-venta-system/products/pc/app/src/server/repositories/customer.repository.ts on main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
-        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160"
+        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160",
+        "PR #325 merge 62c27a612b7647a72f673994846384dba510a193",
+        "PC Wave 2 final certification workflow run 32330104885",
+        "entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc",
+        "restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad",
+        "current-head close Authority run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
+        "current-head Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / anti-rework decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d",
+        "No PC Wave 2 product-file drift from merge 62c27a612b7647a72f673994846384dba510a193 through main@1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "Wave 2 businessMutationE2E proved customer create -> durable ID -> search -> detail/version -> update -> read-after-write -> persisted reread on isolated SQLite."
       ],
       "doesNotProve": [
         "That CustomerRepository needs a source change if migration repair removes the failure",
         "That all customer lifecycle operations are certified",
         "That fiscal, credit, merge, or production data flows are certified",
-        "Hosted production readiness"
+        "Hosted production readiness",
+        "Fiscal, credit, merge or production customer flows",
+        "All customer lifecycle operations beyond the bounded Wave 2 journey"
       ],
       "allowedActions": [
-        "fresh isolated Customers CRUD E2E",
-        "fix residual evidence-backed customer runtime defect",
-        "preserve audit and read-after-write contracts",
-        "customer-safe negative-path verification"
+        "read-only recertification against current authority",
+        "reuse this proven Wave 2 capability as a prerequisite",
+        "repair only demonstrated future drift under fresh exact-task Authority Mesh and anti-rework gate"
       ],
       "forbiddenActions": [
-        "disable or bypass AuditEvent to manufacture green",
-        "swallow durable-write failures",
-        "write customer test data to a live production database",
-        "claim full PC functional certification from Customers CRUD alone"
+        "rebuild this proven Wave 2 capability without evidence-backed drift",
+        "weaken proven fail-closed or persistence contracts",
+        "claim Wave 3 enterprise mutations from Wave 2 evidence",
+        "claim hosted production readiness from this closure"
       ]
     },
     {
@@ -863,15 +881,23 @@
         "governance",
         "quality"
       ],
-      "classification": "FIX",
-      "status": "VERIFY_REQUIRED",
-      "stateLabel": "BLOCKED_SHARED_DEPENDENCY_RESTRICTED_LICENSE_NAV_VISIBLE",
-      "doNotRebuild": false,
-      "nextGate": "Under fresh exact-head authority, add the smallest fail-closed PC surface/navigation projection that consumes existing canonical licensing truth. TABLET_SOLO must not present customer PC navigation while protected PC APIs remain denied. Reuse licensing.source_contract_alignment and do not rebuild plan/license authority or frozen Wave 1 navigation semantics.",
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE2_ENTITLEMENT_SURFACE_PROJECTION",
+      "doNotRebuild": true,
+      "nextGate": "Reuse the fail-closed PC entitlement projection in Wave 3. Do not rebuild License Governor or duplicate plan logic; future changes require fresh authority and evidence-backed drift.",
       "evidence": [
         "Closed unmerged PR #313 restricted-license evidence: Devices and Sync APIs deny with LICENSE_FEATURE_DENIED while AppShell still exposes PC navigation",
         "licensing.source_contract_alignment canonical Factory Ledger owner",
-        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160"
+        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160",
+        "PR #325 merge 62c27a612b7647a72f673994846384dba510a193",
+        "PC Wave 2 final certification workflow run 32330104885",
+        "entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc",
+        "restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad",
+        "current-head close Authority run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
+        "current-head Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / anti-rework decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d",
+        "No PC Wave 2 product-file drift from merge 62c27a612b7647a72f673994846384dba510a193 through main@1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "Restricted Wave 2 proved TABLET_SOLO hides PC navigation and protected Devices/Sync contracts deny LICENSE_FEATURE_DENIED; TABLET_PC_MANAGED permits the bounded PC contracts."
       ],
       "doesNotProve": [
         "A defect in canonical licensing contracts or plan catalog",
@@ -880,16 +906,15 @@
         "Hosted licensing production readiness"
       ],
       "allowedActions": [
-        "consume existing license entitlement truth",
-        "fail-closed PC customer navigation projection",
-        "negative restricted-license UI/API E2E",
-        "fix demonstrated projection drift"
+        "read-only recertification against current authority",
+        "reuse this proven Wave 2 capability as a prerequisite",
+        "repair only demonstrated future drift under fresh exact-task Authority Mesh and anti-rework gate"
       ],
       "forbiddenActions": [
-        "duplicate plan or entitlement logic in PC navigation",
-        "weaken API license denial",
-        "rebuild licensing.source_contract_alignment",
-        "re-expose internal or frozen Wave 1 routes"
+        "rebuild this proven Wave 2 capability without evidence-backed drift",
+        "weaken proven fail-closed or persistence contracts",
+        "claim Wave 3 enterprise mutations from Wave 2 evidence",
+        "claim hosted production readiness from this closure"
       ]
     },
     {
@@ -902,34 +927,42 @@
         "governance",
         "quality"
       ],
-      "classification": "FIX",
-      "status": "VERIFY_REQUIRED",
-      "stateLabel": "FAIL_CLIENTES_CARD_GRID_USABILITY_1440_1366",
-      "doNotRebuild": false,
-      "nextGate": "Under a fresh visual MUTATION gate with Layer Map, repair only the /clientes-owned layout/span behavior demonstrated broken at 1440x900 and 1366x768; preserve pc.visual.cloudglass, global dashboard-grid semantics, zero-important, minimum-container and frozen-navigation boundaries; recertify screenshots and readability.",
+      "classification": "DONE",
+      "status": "VISUAL_CERTIFIED",
+      "stateLabel": "PASS_PC_WAVE2_CLIENTES_VISUAL_USABILITY",
+      "doNotRebuild": true,
+      "nextGate": "Keep /clientes Wave 2 layout frozen. Reuse it in Wave 3 without redesign; any future visual mutation requires a fresh task-exact Authority Mesh with Layer Map.",
       "evidence": [
         "Closed unmerged PR #313 screenshots at 1440x900 and 1366x768 showing Encontrar cliente / Nuevo cliente collapsed to narrow grid columns",
         "Current main CustomerWorkspace/dashboard-grid source ownership reconnaissance",
         "pc.visual.cloudglass canonical Factory Ledger owner",
-        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160"
+        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160",
+        "PR #325 merge 62c27a612b7647a72f673994846384dba510a193",
+        "PC Wave 2 final certification workflow run 32330104885",
+        "entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc",
+        "restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad",
+        "current-head close Authority run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
+        "current-head Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / anti-rework decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d",
+        "No PC Wave 2 product-file drift from merge 62c27a612b7647a72f673994846384dba510a193 through main@1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "Wave 2 visual certification covered /clientes at 1440x900 and 1366x768 with corrected panel widths, no overflow and no !important."
       ],
       "doesNotProve": [
         "Visual certification of all PC routes",
         "Authorization to redesign the global PC Cloudglass system",
         "Authorization to change shared/generated CSS",
-        "Functional Customers CRUD correctness"
+        "Functional Customers CRUD correctness",
+        "Authorization to redesign global PC Cloudglass or shared/generated CSS"
       ],
       "allowedActions": [
-        "route-local visual source repair after fresh Layer Map",
-        "responsive screenshot certification",
-        "readability and minimum-width assertions",
-        "zero-important verification"
+        "read-only recertification against current authority",
+        "reuse this proven Wave 2 capability as a prerequisite",
+        "repair only demonstrated future drift under fresh exact-task Authority Mesh and anti-rework gate"
       ],
       "forbiddenActions": [
-        "global dashboard-grid rewrite to fix one route",
-        "add !important",
-        "increase nested container layers without optical necessity",
-        "rebuild pc.visual.cloudglass"
+        "rebuild this proven Wave 2 capability without evidence-backed drift",
+        "weaken proven fail-closed or persistence contracts",
+        "claim Wave 3 enterprise mutations from Wave 2 evidence",
+        "claim hosted production readiness from this closure"
       ]
     },
     {
@@ -941,33 +974,48 @@
         "quality",
         "governance"
       ],
-      "classification": "BUILD",
-      "status": "NOT_STARTED",
-      "stateLabel": "UNMERGED_PR313_HARNESS_NOT_PRESENT_ON_MAIN",
-      "doNotRebuild": false,
-      "nextGate": "Build a bounded certification harness on current main that reuses existing PC quality gates, separates presentation assertions from business mutation E2E, adds critical customer-facing journeys without inventing capabilities, and reports claim ceilings truthfully. PR #313 test source is reference evidence only because it closed unmerged.",
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_BOUNDED_PC_WAVE2_CERTIFICATION",
+      "doNotRebuild": true,
+      "nextGate": "PC_ENTERPRISE_MUTATIONS_WAVE3: certify catalog and supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke and Settings writes on isolated persistence under fresh exact authority. Wave 2 itself is closed and must not be rebuilt.",
       "evidence": [
         "Current main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa package.json has no verify:pc-customer-experience-wave2 script",
         "Closed unmerged PR #313 runtime verifier evidence and 332/334 result",
-        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160"
+        "PC Wave 2 capability-registration Authority Mesh run 32272089223 / artifact 9372592160",
+        "PR #325 merge 62c27a612b7647a72f673994846384dba510a193",
+        "PC Wave 2 final certification workflow run 32330104885",
+        "entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc",
+        "restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad",
+        "current-head close Authority run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
+        "current-head Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / anti-rework decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d",
+        "No PC Wave 2 product-file drift from merge 62c27a612b7647a72f673994846384dba510a193 through main@1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "Entitled result PASS_BOUNDED_WAVE2_CERTIFICATION: 300/300 assertions, 22 screenshots, 0 console errors and 0 page errors; restricted certification PASS; Wave 1 regression stayed green."
       ],
       "doesNotProve": [
         "That PR #313 verifier source is merged or authoritative",
         "That assertion count equals functional coverage",
         "That all PC business mutations can be safely automated",
-        "Production certification"
+        "Production certification",
+        "Catalog create/update/delete mutations",
+        "Supplier create/update/delete mutations",
+        "Stock adjustment mutation",
+        "Inventory count full lifecycle",
+        "Sync dispatch/replay mutation",
+        "Device claim/revoke mutation",
+        "Settings writes",
+        "Hosted production readiness or future behavior after source drift"
       ],
       "allowedActions": [
-        "reuse existing PC quality gates",
-        "build bounded Wave 2 verifier and explicit score families",
-        "add isolated non-destructive or rollback-safe business journeys",
-        "publish truthful claim ceilings and evidence"
+        "read-only recertification against current authority",
+        "reuse this proven Wave 2 capability as a prerequisite",
+        "repair only demonstrated future drift under fresh exact-task Authority Mesh and anti-rework gate"
       ],
       "forbiddenActions": [
-        "copy PR #313 wholesale without current-main reconciliation",
-        "count presentation checks as business functions",
-        "mutate live customer data for certification",
-        "duplicate existing quality owners unnecessarily"
+        "rebuild this proven Wave 2 capability without evidence-backed drift",
+        "weaken proven fail-closed or persistence contracts",
+        "claim Wave 3 enterprise mutations from Wave 2 evidence",
+        "claim hosted production readiness from this closure"
       ]
     },
     {
@@ -1068,5 +1116,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-08-20T05:54:43.861060Z"
+  "updatedAt": "2026-08-25T08:17:09-06:00"
 }

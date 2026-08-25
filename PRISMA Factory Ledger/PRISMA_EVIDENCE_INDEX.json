@@ -536,9 +536,50 @@
         "PR #332 run 32336243809 attempt 2 artifact 9394817154 sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026 verifier 44/44",
         "WAVE1 close gate run 32757733642 artifact 9531515396 sha256:b9af91b468e963593c44f27a207a7cbde252ac73148e18d14149e315dd9eaa4e decision f402aa5cc58e18e896067cfb281a7db5dada2a8d504593ae23607522cff38b68"
       ]
+    },
+    {
+      "artifact": "PC Wave 2 canonical closure — PR #325 / run 32330104885 / current close run 32858397075",
+      "type": "pc_customer_experience_wave2_canonical_closure",
+      "scope": [
+        "pc",
+        "customers",
+        "licensing",
+        "data",
+        "visual",
+        "governance",
+        "quality"
+      ],
+      "status": "PASS_RUNTIME_VERIFIED",
+      "proves": [
+        "PR #325 merged the bounded PC Wave 2 repair and its PC Wave 2 product files have no drift through main@1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "Canonical fresh SQLite migration parity passed for the repaired schema history",
+        "Customers durable create -> ID -> search -> detail/version -> update -> read-after-write -> persisted reread passed E2E",
+        "TABLET_PC_MANAGED permits the bounded PC surface while TABLET_SOLO fails closed and hides PC navigation; protected Devices/Sync restricted contracts return LICENSE_FEATURE_DENIED",
+        "/clientes visual usability passed at 1440x900 and 1366x768 without overflow or !important",
+        "/catalog no longer leaks ENOENT, runner paths or local technical details in the bounded customer-facing path",
+        "Final entitled certification passed 300/300 assertions with 22 screenshots, zero console errors and zero page errors; restricted certification and Wave 1 regression also passed",
+        "Fresh current-head Authority Mesh reached two lanes at 100% required authority with zero blockers and universal Factory Ledger MUTATION gate returned PASS_ANTI_REWORK_GATE with errors empty"
+      ],
+      "doesNotProve": [
+        "Catalog create/update/delete mutations",
+        "Supplier create/update/delete mutations",
+        "Stock adjustment mutation",
+        "Inventory count full lifecycle",
+        "Sync dispatch/replay mutation",
+        "Device claim/revoke mutation",
+        "Settings writes",
+        "Hosted production readiness or future behavior after source drift"
+      ],
+      "evidence": [
+        "PR #325 merge 62c27a612b7647a72f673994846384dba510a193",
+        "run 32330104885 entitled artifact 9392771819 sha256:9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc",
+        "run 32330104885 restricted artifact 9392756710 sha256:d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad",
+        "current-head close run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
+        "Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / composed da4e4ec2dda0f0fde10031a1ba5ebf3542c5193d0d0fd3da91f491ff32c8ae9c / decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d"
+      ]
     }
   ],
-  "updatedAt": "2026-08-19T03:53:42-06:00",
+  "updatedAt": "2026-08-25T08:17:09-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
