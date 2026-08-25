@@ -19,7 +19,7 @@ The vertical exists to expose customer-facing views for:
 - ROI
 - Entitlements
 
-The V1 surface is read-only and fail-closed. Repository and Analysis Run projection rows may appear only when bound to separately governed source evidence. Authority Pack and Evidence Report datasets remain `NOT_CONNECTED` until their real adapters are separately governed and implemented.
+The V1 surface is read-only and fail-closed. Repository, Analysis Run, Authority Pack and Evidence Report projection rows may appear only when bound to separately governed source evidence. Entitlements remain pending the separately governed shared-owner mapping.
 
 ## Fresh authority
 
@@ -92,7 +92,7 @@ The Cloud projection preserves that engine result verbatim. It does not translat
 | Change Intelligence web console | `NEW_OWNER` | Dedicated isolated document and projection modules. |
 | Change Intelligence browser authority gate | `NEW_OWNER` | Dedicated source + Chromium runtime verification and evidence artifact. |
 
-P1 and P2 are projection adapters only. They do not become new repository, analysis, authority, verification, licensing, billing or registration engines.
+P1, P2 and P3 are projection adapters only. They do not become new repository, analysis, Authority Pack generation, verification, evidence generation, licensing, billing or registration engines.
 
 ## Layer Map
 
@@ -143,6 +143,42 @@ Missing, stale, contradictory or tampered provenance is fail-closed. An Analysis
 
 P2 deliberately does not add a second runner, discovery engine, index, dashboard owner or mutation API. The existing Code Atlas neutral intelligence engine remains the source of the run evidence, and the existing Change Intelligence document renderer consumes the governed row.
 
+## Authority Pack + Evidence P3 projection contract
+
+P3 is a reference adapter over existing Code Atlas outputs. It does not add a second Authority Pack generator, verification engine, evidence bundle generator or mutation API.
+
+Fresh P3 authority and mutation authorization:
+
+- exact base: `main@0916227707aa65b673195d554297bf8f8565d356` / tree `ad0ff1770eadaee0e5ae717ba7c806da029f9287`
+- Authority Mesh run: `32878086011`
+- Authority Mesh artifact: `9574731927`
+- Authority Mesh artifact digest: `sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e`
+- Authority Mesh request digest: `9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74`
+- composed result: `PASS_COMPOSED_AUTHORITY_MESH`
+- lanes: `2/2 PASS`
+- required authority coverage: `100%`
+- blockers: `0`
+- exact mutation-gate run: `32878629219`
+- mutation-gate artifact: `9574892311`
+- mutation-gate artifact digest: `sha256:fde3bd4996cdf77e14637343975379a89ebb2de05d02711b9359d720bbdca4b7`
+
+Fresh immutable Code Atlas P3 evidence:
+
+- workflow run: `32878380486`
+- evidence artifact: `9574817118`
+- evidence artifact digest: `sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995`
+- Authority Pack ID: `cap.5bc981d182e326a6b684`
+- Authority Pack checksum: `sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b`
+- verification decision: `PASS`
+- verification report digest: `sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa`
+- portable evidence bundle manifest digest: `sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20`
+- `readOnly=true`
+- `referenceOnly=true`
+- `productionCertified=false`
+- `certifiable=false`
+
+The Cloud projection preserves `PASS` only as the bounded verification decision for that exact pack/snapshot. It does not prove authorization for the Cloud projection to mutate repository source, production readiness, hosted multi-tenant execution, enterprise IAM/security readiness, human usefulness or independent-agent verification. Missing, stale, contradictory or tampered pack/report provenance is fail-closed.
+
 ## Browser/runtime authority gate
 
 `.github/workflows/change-intelligence-cloud-authority.yml` is the permanent vertical gate.
@@ -184,6 +220,8 @@ This vertical must not claim:
 
 The P2 evidence also explicitly does not prove production readiness, hosted multi-tenant execution, enterprise IAM/security readiness, human usefulness, independent-agent verification, or authorization to mutate the repository.
 
+The P3 Authority Pack/Evidence references additionally remain `readOnly` and `referenceOnly`; their bounded `PASS` verification result is not mutation authority and is not a production, enterprise, usefulness or independent-agent claim.
+
 ## Runtime and mutation boundary
 
 The V1 vertical is read-only. It must not:
@@ -212,16 +250,16 @@ Commercial billing and fiscal owners remain outside this vertical.
 Bounded progress:
 
 1. read-only repository registry adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;
-2. real Code Atlas analysis-run projection: `IMPLEMENTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;
-3. Authority Pack and Evidence Report reference adapter: `NEXT`;
-4. Change Intelligence entitlement projection from the existing licensing owner: pending P3;
-5. customer-input ROI instrumentation: pending entitlement-boundary review;
+2. real Code Atlas analysis-run projection: `DONE / SOURCE_VERIFIED_READ_ONLY`;
+3. Authority Pack and Evidence Report reference adapter: `IMPLEMENTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;
+4. Change Assurance entitlement projection from the existing licensing owner: `NEXT`;
+5. customer-input ROI projection: pending entitlement-boundary review and real customer inputs;
 6. human usefulness evidence: external human required;
 7. independent-agent evidence: external independent evaluator required;
 8. separately governed hosted/enterprise productization: not claimed by this contract.
 
-P3 must reuse the existing Authority Pack and Evidence Report owners and project references only. It must not reconstruct prepare/verify/reporting logic in Cloud Center.
+P3 reuses the existing Authority Pack and Evidence Report owners and projects references only. It does not reconstruct prepare/verify/reporting logic in Cloud Center. The next internal gate is the shared-owner entitlement mapping; licensing mutation semantics remain outside this vertical.
 
 ## Governance closure
 
-Factory Ledger and Evidence Index are not modified by this P2 implementation branch. P2 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow.
+Factory Ledger and Evidence Index are not modified by this P3 implementation branch. P3 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow.

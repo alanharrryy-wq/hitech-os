@@ -29,6 +29,29 @@ ANALYSIS_RUN_REQUEST_DIGEST = "08e828680e7a1afdb26d37cf44e23f2a9fd718249c7011095
 ANALYSIS_RUN_SNAPSHOT_DIGEST = "7a2893d86119ad6d49bc7bb3bdff08689a6abcbb2c77343399a9cc671bc08913"
 ANALYSIS_RUN_ENGINE_STATUS = "PASS_UNIVERSAL_INTELLIGENCE_SOURCE_READY"
 
+AUTHORITY_EVIDENCE_CONNECTED_STATUS = "SOURCE_VERIFIED_READ_ONLY"
+AUTHORITY_EVIDENCE_PROFILE = "ca-cloud-authority-evidence-p3-v4"
+AUTHORITY_EVIDENCE_HEAD = "0916227707aa65b673195d554297bf8f8565d356"
+AUTHORITY_EVIDENCE_TREE = "ad0ff1770eadaee0e5ae717ba7c806da029f9287"
+AUTHORITY_EVIDENCE_REPOSITORY_IDENTITY = "repo:7a9a5f159e04eb0c42438ec4a49112c7eafe9340ab2cbd377e68b0a0bbf4f722"
+AUTHORITY_EVIDENCE_AUTHORITY_RUN = 32878086011
+AUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT = 9574731927
+AUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT_DIGEST = "sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e"
+AUTHORITY_EVIDENCE_AUTHORITY_REQUEST_DIGEST = "9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74"
+AUTHORITY_EVIDENCE_GATE_RUN = 32878629219
+AUTHORITY_EVIDENCE_GATE_ARTIFACT = 9574892311
+AUTHORITY_EVIDENCE_GATE_ARTIFACT_DIGEST = "sha256:fde3bd4996cdf77e14637343975379a89ebb2de05d02711b9359d720bbdca4b7"
+AUTHORITY_EVIDENCE_RUN = 32878380486
+AUTHORITY_EVIDENCE_ARTIFACT = 9574817118
+AUTHORITY_EVIDENCE_ARTIFACT_DIGEST = "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995"
+AUTHORITY_PACK_ID = "cap.5bc981d182e326a6b684"
+AUTHORITY_PACK_CHECKSUM = "sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b"
+AUTHORITY_PACK_REQUEST_DIGEST = "15b6696219f49020620d2f94bdb8aecf9e7dbf5d5a9035cb44dc97ebba95873c"
+AUTHORITY_LOCK_DIGEST = "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+EVIDENCE_LOCK_DIGEST = "sha256:7c8470e667d6e89d8c7ebfb6922139a8d7b23c3788a800f70916f7c3c3f80981"
+VERIFICATION_REPORT_DIGEST = "sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa"
+EVIDENCE_BUNDLE_MANIFEST_DIGEST = "sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20"
+
 REL = {
     "main_html": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html"),
     "main_js": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"),
@@ -173,6 +196,7 @@ def main() -> int:
     mesh = generated_from.get("authorityMesh", {})
     repository_projection_authority = generated_from.get("repositoryProjectionAuthority", {})
     analysis_projection_authority = generated_from.get("analysisRunProjectionAuthority", {})
+    authority_evidence_projection_authority = generated_from.get("authorityEvidenceProjectionAuthority", {})
     maturity = cfg.get("maturity", {})
     safety = cfg.get("safety", {})
 
@@ -333,8 +357,110 @@ def main() -> int:
         projection_rule = str(analysis_runs.get("projectionRule", ""))
         check("analysis_projection_rule_immutable", "immutable" in projection_rule and "HEAD/tree" in projection_rule and "not promoted" in projection_rule, projection_rule)
 
-    for key in ("authorityPacks", "evidenceReferences"):
-        check(f"unbound_is_explicit:{key}", cp.get(key, {}).get("status") == "NOT_CONNECTED", str(cp.get(key, {}).get("status")))
+    p3_authority_exact = {
+        "authority_evidence_head": (authority_evidence_projection_authority.get("baseHead"), AUTHORITY_EVIDENCE_HEAD),
+        "authority_evidence_tree": (authority_evidence_projection_authority.get("baseTree"), AUTHORITY_EVIDENCE_TREE),
+        "authority_evidence_profile": (authority_evidence_projection_authority.get("profile"), AUTHORITY_EVIDENCE_PROFILE),
+        "authority_evidence_authority_run": (authority_evidence_projection_authority.get("authorityRunId"), AUTHORITY_EVIDENCE_AUTHORITY_RUN),
+        "authority_evidence_authority_artifact": (authority_evidence_projection_authority.get("authorityArtifactId"), AUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT),
+        "authority_evidence_authority_artifact_digest": (authority_evidence_projection_authority.get("authorityArtifactDigest"), AUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT_DIGEST),
+        "authority_evidence_authority_request_digest": (authority_evidence_projection_authority.get("authorityRequestDigest"), AUTHORITY_EVIDENCE_AUTHORITY_REQUEST_DIGEST),
+        "authority_evidence_authority_result": (authority_evidence_projection_authority.get("authorityResult"), "PASS_COMPOSED_AUTHORITY_MESH"),
+        "authority_evidence_lanes": (authority_evidence_projection_authority.get("laneCount"), 2),
+        "authority_evidence_coverage": (authority_evidence_projection_authority.get("requiredAuthorityCoverage"), "100%"),
+        "authority_evidence_blockers": (authority_evidence_projection_authority.get("blockers"), 0),
+        "authority_evidence_drift": (authority_evidence_projection_authority.get("repoDriftStable"), True),
+        "authority_evidence_gate_run": (authority_evidence_projection_authority.get("mutationGateRunId"), AUTHORITY_EVIDENCE_GATE_RUN),
+        "authority_evidence_gate_artifact": (authority_evidence_projection_authority.get("mutationGateArtifactId"), AUTHORITY_EVIDENCE_GATE_ARTIFACT),
+        "authority_evidence_gate_artifact_digest": (authority_evidence_projection_authority.get("mutationGateArtifactDigest"), AUTHORITY_EVIDENCE_GATE_ARTIFACT_DIGEST),
+        "authority_evidence_evidence_run": (authority_evidence_projection_authority.get("evidenceRunId"), AUTHORITY_EVIDENCE_RUN),
+        "authority_evidence_evidence_artifact": (authority_evidence_projection_authority.get("evidenceArtifactId"), AUTHORITY_EVIDENCE_ARTIFACT),
+        "authority_evidence_evidence_artifact_digest": (authority_evidence_projection_authority.get("evidenceArtifactDigest"), AUTHORITY_EVIDENCE_ARTIFACT_DIGEST),
+    }
+    for name, (actual, expected) in p3_authority_exact.items():
+        check(name, actual == expected, f"actual={actual} expected={expected}")
+
+    p3_boundaries = [
+        "authorization for the Cloud projection to mutate repository source",
+        "production readiness",
+        "hosted multi-tenant execution",
+        "enterprise IAM or security readiness",
+        "human usefulness",
+        "independent-agent verification",
+    ]
+
+    authority_packs = cp.get("authorityPacks", {})
+    check("authority_packs_state", authority_packs.get("status") == AUTHORITY_EVIDENCE_CONNECTED_STATUS, str(authority_packs.get("status")))
+    pack_rows = authority_packs.get("items")
+    check("authority_pack_rows_exactly_one", isinstance(pack_rows, list) and len(pack_rows) == 1, f"count={len(pack_rows) if isinstance(pack_rows, list) else 'invalid'}")
+    if isinstance(pack_rows, list) and len(pack_rows) == 1 and isinstance(pack_rows[0], dict):
+        row = pack_rows[0]
+        provenance = row.get("provenance") if isinstance(row.get("provenance"), dict) else {}
+        exact = {
+            "authority_pack_id": (row.get("Pack"), AUTHORITY_PACK_ID),
+            "authority_pack_repository": (row.get("Repository"), generated_from.get("repository")),
+            "authority_pack_reference_state": (row.get("ReferenceState"), "SOURCE_VERIFIED_REFERENCE"),
+            "authority_pack_schema": (row.get("packSchemaVersion"), "code_atlas_agent_authority_pack.v1"),
+            "authority_pack_checksum": (row.get("packChecksum"), AUTHORITY_PACK_CHECKSUM),
+            "authority_pack_preparation_decision": (row.get("preparationDecision"), "PASS"),
+            "authority_pack_head": (provenance.get("repoHead"), AUTHORITY_EVIDENCE_HEAD),
+            "authority_pack_tree": (provenance.get("repoTree"), AUTHORITY_EVIDENCE_TREE),
+            "authority_pack_repository_identity": (provenance.get("repositoryIdentity"), AUTHORITY_EVIDENCE_REPOSITORY_IDENTITY),
+            "authority_pack_request_digest": (provenance.get("requestDigest"), AUTHORITY_PACK_REQUEST_DIGEST),
+            "authority_pack_authority_lock": (provenance.get("authorityDigest"), AUTHORITY_LOCK_DIGEST),
+            "authority_pack_evidence_lock": (provenance.get("evidenceDigest"), EVIDENCE_LOCK_DIGEST),
+            "authority_pack_policy_lock": (provenance.get("policyDigest"), None),
+            "authority_pack_read_only": (row.get("readOnly"), True),
+            "authority_pack_reference_only": (row.get("referenceOnly"), True),
+            "authority_pack_not_production": (row.get("productionCertified"), False),
+            "authority_pack_not_certifiable": (row.get("certifiable"), False),
+        }
+        for name, (actual, expected) in exact.items():
+            check(name, actual == expected, f"actual={actual} expected={expected}")
+        pack_dnp = row.get("doesNotProve") if isinstance(row.get("doesNotProve"), list) else []
+        for boundary in p3_boundaries:
+            check(f"authority_pack_does_not_prove:{boundary}", boundary in pack_dnp, str(pack_dnp))
+        check("authority_pack_forbidden_fields_absent", not forbidden_repository_fields(row), str(forbidden_repository_fields(row)))
+    pack_rule = str(authority_packs.get("projectionRule", ""))
+    check("authority_pack_projection_rule_reference_only", "Reference only" in pack_rule and "neither generates" in pack_rule and "mutation authority" in pack_rule, pack_rule)
+
+    evidence_refs = cp.get("evidenceReferences", {})
+    check("evidence_refs_state", evidence_refs.get("status") == AUTHORITY_EVIDENCE_CONNECTED_STATUS, str(evidence_refs.get("status")))
+    evidence_rows = evidence_refs.get("items")
+    check("evidence_rows_exactly_one", isinstance(evidence_rows, list) and len(evidence_rows) == 1, f"count={len(evidence_rows) if isinstance(evidence_rows, list) else 'invalid'}")
+    if isinstance(evidence_rows, list) and len(evidence_rows) == 1 and isinstance(evidence_rows[0], dict):
+        row = evidence_rows[0]
+        provenance = row.get("provenance") if isinstance(row.get("provenance"), dict) else {}
+        exact = {
+            "evidence_repository": (row.get("Repository"), generated_from.get("repository")),
+            "evidence_reference_state": (row.get("ReferenceState"), "SOURCE_VERIFIED_REFERENCE"),
+            "evidence_verification_schema": (row.get("verificationSchemaVersion"), "code_atlas_change_verification.v1"),
+            "evidence_verification_decision": (row.get("verificationDecision"), "PASS"),
+            "evidence_report_digest": (row.get("verificationReportDigest"), VERIFICATION_REPORT_DIGEST),
+            "evidence_bundle_schema": (row.get("bundleSchemaVersion"), "code_atlas_portable_evidence_bundle.v1"),
+            "evidence_bundle_digest": (row.get("bundleManifestDigest"), EVIDENCE_BUNDLE_MANIFEST_DIGEST),
+            "evidence_pack_id": (row.get("packId"), AUTHORITY_PACK_ID),
+            "evidence_pack_checksum": (row.get("packChecksum"), AUTHORITY_PACK_CHECKSUM),
+            "evidence_head": (provenance.get("repoHead"), AUTHORITY_EVIDENCE_HEAD),
+            "evidence_tree": (provenance.get("repoTree"), AUTHORITY_EVIDENCE_TREE),
+            "evidence_repository_identity": (provenance.get("repositoryIdentity"), AUTHORITY_EVIDENCE_REPOSITORY_IDENTITY),
+            "evidence_request_digest": (provenance.get("requestDigest"), AUTHORITY_PACK_REQUEST_DIGEST),
+            "evidence_workflow_run": (provenance.get("workflowRunId"), AUTHORITY_EVIDENCE_RUN),
+            "evidence_artifact": (provenance.get("artifactId"), AUTHORITY_EVIDENCE_ARTIFACT),
+            "evidence_artifact_digest": (provenance.get("artifactDigest"), AUTHORITY_EVIDENCE_ARTIFACT_DIGEST),
+            "evidence_read_only": (row.get("readOnly"), True),
+            "evidence_reference_only": (row.get("referenceOnly"), True),
+            "evidence_not_production": (row.get("productionCertified"), False),
+            "evidence_not_certifiable": (row.get("certifiable"), False),
+        }
+        for name, (actual, expected) in exact.items():
+            check(name, actual == expected, f"actual={actual} expected={expected}")
+        evidence_dnp = row.get("doesNotProve") if isinstance(row.get("doesNotProve"), list) else []
+        for boundary in p3_boundaries:
+            check(f"evidence_does_not_prove:{boundary}", boundary in evidence_dnp, str(evidence_dnp))
+        check("evidence_forbidden_fields_absent", not forbidden_repository_fields(row), str(forbidden_repository_fields(row)))
+    evidence_rule = str(evidence_refs.get("projectionRule", ""))
+    check("evidence_projection_rule_bounded_pass", "PASS is preserved" in evidence_rule and "not promoted" in evidence_rule and "mutation authority" in evidence_rule, evidence_rule)
 
     links = re.findall(r'<a\b(?=[^>]*data-ci-entry=["\']v1["\'])(?=[^>]*href=["\']/internal/web/change_intelligence_center\.html["\'])[^>]*>', main_html, re.I)
     check("single_navigation_seam", len(links) == 1, f"found={len(links)}")
