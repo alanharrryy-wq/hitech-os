@@ -57,7 +57,8 @@ jobs:
             "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
             "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
             "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
-            "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+            "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+            "apps/terminal-de-venta-system/docs/sync/TABLET_TO_PC_SALES_SYNC_CURRENT_AUTHORITY.md"
           ]
           product = [
             "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
@@ -82,12 +83,12 @@ jobs:
                 "intent":"VERIFY",
                 "domain":"runtime",
                 "task":task_common + "Authorize repair so the carrier proves its own evidence-branch diff against exact merged Tablet product SHA 1a83d5decb4e946021b9acf95f1a49479d6abf19 instead of trusting GitHub's moving pull_request merge-ref. Preserve 55/55 source truth and fail closed on scope drift.",
-                "requiredAuthorities":base + product + [".github/workflows/tablet-sync-wave1-postmerge-evidence.yml"],
+                "requiredAuthorities":base + product,
                 "requiredDirectories":[
                   "PRISMA Factory Ledger",
+                  "apps/terminal-de-venta-system/docs/sync",
                   "apps/terminal-de-venta-system/products/tablet/app/src/server",
-                  "apps/terminal-de-venta-system/products/tablet/app/components/sync",
-                  ".github/workflows"
+                  "apps/terminal-de-venta-system/products/tablet/app/components/sync"
                 ],
                 "requiredCapabilities":["tablet.sync.runtime_truth"],
                 "minimumCoverage":100,
@@ -103,14 +104,13 @@ jobs:
                   "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
                   "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel.module.css",
                   "apps/terminal-de-venta-system/products/tablet/app/src/lib/pending-offline-sync/sync-panel-contract.ts",
-                  "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs",
-                  ".github/workflows/tablet-sync-wave1-postmerge-evidence.yml"
+                  "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs"
                 ],
                 "requiredDirectories":[
                   "PRISMA Factory Ledger",
+                  "apps/terminal-de-venta-system/docs/sync",
                   "apps/terminal-de-venta-system/products/tablet/app/components/sync",
-                  "apps/terminal-de-venta-system/products/tablet/app/tools",
-                  ".github/workflows"
+                  "apps/terminal-de-venta-system/products/tablet/app/tools"
                 ],
                 "requiredCapabilities":["tablet.sync.runtime_truth"],
                 "minimumCoverage":100,
