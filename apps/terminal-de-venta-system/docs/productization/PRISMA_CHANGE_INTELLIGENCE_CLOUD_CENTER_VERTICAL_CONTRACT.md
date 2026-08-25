@@ -19,11 +19,11 @@ The vertical exists to expose customer-facing views for:
 - ROI
 - Entitlements
 
-The V1 surface is read-only and fail-closed. Repository, run, Authority Pack and evidence datasets remain `NOT_CONNECTED` until real adapters are separately governed and implemented.
+The V1 surface is read-only and fail-closed. Repository and Analysis Run projection rows may appear only when bound to separately governed source evidence. Authority Pack and Evidence Report datasets remain `NOT_CONNECTED` until their real adapters are separately governed and implemented.
 
 ## Fresh authority
 
-Task-exact Authority Mesh:
+Initial task-exact Authority Mesh:
 
 - base: `main@d14effee1a1223cc772247ea9d7ec8547dc15c78`
 - run: `32156981312`
@@ -34,6 +34,49 @@ Task-exact Authority Mesh:
 - required authority coverage: `100%`
 - blockers: `0`
 - Layer Map: present
+
+Repository Registry adapter P1 authority:
+
+- base: `main@081e014ee143e05ce72b06b5e2f5e9c0e89e69da`
+- run: `32233951337`
+- artifact: `9358279345`
+- artifact digest: `sha256:5b06a7998076818e04c8268a7956c2d5cbdaf52e471c8cf18bb8f3c7097c8166`
+- profile: `ci-cloud-repository-registry-adapter-p1-v1`
+- composed result: `PASS_COMPOSED_AUTHORITY_MESH`
+- lanes: `2/2 PASS`
+- required authority coverage: `100%`
+- blockers: `0`
+
+Analysis Runs adapter P2 authority:
+
+- base: `main@28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab`
+- tree: `f02a5c495d982155d18febc0b81d8a11c0201144`
+- Authority Mesh run: `32865050216`
+- Authority Mesh artifact: `9569864211`
+- Authority Mesh artifact digest: `sha256:677d5e2d93d9a5b23c5cc683e9572645bdd2763f575752af2c628dcb1df9d4ed`
+- request digest: `bb146156461837525776f6f40e637a1215ba38581759da4ebb448aea97a08769`
+- profile: `ci-cloud-analysis-run-projection-p2-v2`
+- composed result: `PASS_COMPOSED_AUTHORITY_MESH`
+- lanes: `2/2 PASS`
+- required authority coverage: `100%`
+- blockers: `0`
+- read-only authority: `true`
+- production certified by this Mesh: `false`
+
+Fresh immutable Code Atlas P2 evidence:
+
+- workflow run: `32865503690`
+- evidence artifact: `9569959132`
+- evidence artifact digest: `sha256:cd8cd3b5f35a81e9608c0d8aae42fde76a9a822122d292a6a19c2a4973cf0868`
+- engine artifact SHA-256: `2630c723aaa6d2f692218cb30648020fd41a5eade35d10f4d49129d0c5304103`
+- engine result: `PASS_UNIVERSAL_INTELLIGENCE_SOURCE_READY`
+- engine request digest: `08e828680e7a1afdb26d37cf44e23f2a9fd718249c7011095644b9e9da9e0460`
+- snapshot digest: `7a2893d86119ad6d49bc7bb3bdff08689a6abcbb2c77343399a9cc671bc08913`
+- exact source HEAD/tree: `28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab` / `f02a5c495d982155d18febc0b81d8a11c0201144`
+- read-only: `true`
+- production certified: `false`
+
+The Cloud projection preserves that engine result verbatim. It does not translate the result into edit authority or production certification.
 
 ## Ownership and anti-rework matrix
 
@@ -48,6 +91,8 @@ Task-exact Authority Mesh:
 | Existing Cloud Center runtime and UI | `DO_NOT_TOUCH` | Only the single navigation seam is allowed in the existing surface. |
 | Change Intelligence web console | `NEW_OWNER` | Dedicated isolated document and projection modules. |
 | Change Intelligence browser authority gate | `NEW_OWNER` | Dedicated source + Chromium runtime verification and evidence artifact. |
+
+P1 and P2 are projection adapters only. They do not become new repository, analysis, authority, verification, licensing, billing or registration engines.
 
 ## Layer Map
 
@@ -75,6 +120,29 @@ Rules:
 - reduced motion support
 - reduced transparency support
 
+## Analysis Runs P2 projection contract
+
+A projected Analysis Run is admissible only when all of these facts are present and verifier-locked:
+
+1. repository identity;
+2. exact repository HEAD and tree;
+3. engine intent and domain;
+4. exact engine status without promotion or remapping;
+5. request digest;
+6. repository snapshot digest;
+7. immutable engine artifact digest;
+8. immutable workflow run/artifact reference and artifact digest;
+9. `readOnly=true`;
+10. `derivedIndexAuthoritative=false`;
+11. `semanticRetrievalIsProof=false`;
+12. `profileMayInventTruth=false`;
+13. `productionCertified=false`;
+14. explicit `doesNotProve` boundaries.
+
+Missing, stale, contradictory or tampered provenance is fail-closed. An Analysis Run reference cannot authorize repository mutation.
+
+P2 deliberately does not add a second runner, discovery engine, index, dashboard owner or mutation API. The existing Code Atlas neutral intelligence engine remains the source of the run evidence, and the existing Change Intelligence document renderer consumes the governed row.
+
 ## Browser/runtime authority gate
 
 `.github/workflows/change-intelligence-cloud-authority.yml` is the permanent vertical gate.
@@ -92,7 +160,7 @@ It must:
 9. fail on page errors, console errors or same-origin HTTP failures;
 10. upload runtime report, screenshots and HTTP log as evidence.
 
-A successful browser gate raises only this isolated surface to runtime-verified status. It does **not** make the Change Intelligence product production-certified or enterprise-certified.
+A successful browser gate raises only this isolated surface/projection to runtime-verified status. It does **not** make the Change Intelligence product production-certified or enterprise-certified.
 
 ## No-fake-green ceiling
 
@@ -113,6 +181,8 @@ This vertical must not claim:
 - production certification
 - measured human usefulness
 - successful independent-agent replication
+
+The P2 evidence also explicitly does not prove production readiness, hosted multi-tenant execution, enterprise IAM/security readiness, human usefulness, independent-agent verification, or authorization to mutate the repository.
 
 ## Runtime and mutation boundary
 
@@ -139,17 +209,19 @@ Commercial billing and fiscal owners remain outside this vertical.
 
 ## Next implementation gates
 
-After source and browser runtime are both green:
+Bounded progress:
 
-1. read-only repository registry adapter;
-2. real Code Atlas analysis-run projection;
-3. Authority Pack and Evidence Report reference adapter;
-4. Change Intelligence entitlement projection from the existing licensing owner;
-5. customer-input ROI instrumentation;
-6. human usefulness evidence;
-7. independent-agent evidence;
-8. separately governed hosted/enterprise productization.
+1. read-only repository registry adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;
+2. real Code Atlas analysis-run projection: `IMPLEMENTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;
+3. Authority Pack and Evidence Report reference adapter: `NEXT`;
+4. Change Intelligence entitlement projection from the existing licensing owner: pending P3;
+5. customer-input ROI instrumentation: pending entitlement-boundary review;
+6. human usefulness evidence: external human required;
+7. independent-agent evidence: external independent evaluator required;
+8. separately governed hosted/enterprise productization: not claimed by this contract.
+
+P3 must reuse the existing Authority Pack and Evidence Report owners and project references only. It must not reconstruct prepare/verify/reporting logic in Cloud Center.
 
 ## Governance closure
 
-Factory Ledger and Evidence Index are not modified by the initial implementation branch. Maturity registration belongs after source + runtime evidence is green and must preserve the evidence ceiling above.
+Factory Ledger and Evidence Index are not modified by this P2 implementation branch. P2 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow.
