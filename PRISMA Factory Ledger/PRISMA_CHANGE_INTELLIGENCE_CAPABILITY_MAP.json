@@ -792,22 +792,45 @@
       "id": "D",
       "stage": "RESOLVE",
       "title": "Better UNKNOWN",
-      "status": "PARTIAL",
+      "status": "DONE",
       "requiredForV1": true,
-      "claimBoundary": "Evidence-bounded; UNKNOWN/BLOCKED is valid and no stronger claim is permitted without proof.",
+      "claimBoundary": "LOCAL_VERIFIED bounded Better UNKNOWN only: canonical Change Studio and Verify outputs preserve UNKNOWN as fail-closed while attaching deterministic structured obligations with code, source, reason and actionable nextEvidence. Guidance is evidence-seeking metadata, not proof, and does not promote UNKNOWN to PASS. This does not prove arbitrary-repository completeness, complete semantics for every stack, production, enterprise, hosted, paid-pilot, legal/privacy/security, human usefulness or independent-agent verification.",
       "evidence": [
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/unknown_obligations.py",
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py",
+        "path:tools/code-atlas/src/code_atlas/change_intelligence/verification.py",
+        "path:tools/code-atlas/tests/test_operational_better_unknown.py",
+        "PR #361 / merge 2ee6c9053e3eea024cad4715e4ec3172f02de341",
+        "D fresh mutation authority run 32806300949 / artifact 9548279982 / sha256:c89168c27fd29661c1575e76481385c2972eefc1c7e9d264ce6925f29bbe92b0",
+        "Code Atlas Operational Hardening run 32806525566: 148/148 tests PASS on Ubuntu including five focused Better UNKNOWN tests; Windows/macOS lanes green; neutrality blockingCount=0",
+        "D promotion authority run 32806776961 / artifact 9548433806",
+        "D promotion artifact sha256:8bff0587feb192e7ba80eb5fca34c70df2c3a50c4e94f03fe6070794b1bdd840",
+        "D promotion composed Authority Mesh sha256:ade2822d6550c04d23476973b57fc6b3c5507240b1ad5d10224570aeb35b8ee0",
+        "D promotion request digest eac2dbbaa007c04b86d22f449637259b271acb557a799ada84f0da603ec88655",
+        "Factory gate decision e5aaa9ceb0adc8a9ac096fb9e6c19f61068be814e66d198784f49fa34b49333b",
+        "Change Assurance gate PASS_CHANGE_ASSURANCE_CAPABILITY_GATE for ci.change.prepare, ci.change.verify and ci.change.evidence_qa"
       ],
       "tests": [
-        "bounded positive evidence"
+        "test_change_model_unknown_conditions_are_actionable_and_stay_unknown",
+        "test_supported_change_model_has_no_unknown_obligations",
+        "test_verify_contradiction_exposes_next_evidence_without_promoting_unknown",
+        "test_pack_and_new_unknowns_remain_unknown_with_actionable_obligations",
+        "test_unknown_obligation_normalization_is_deterministic_and_deduplicated"
       ],
       "negativeTests": [
-        "missing/contradictory/unsupported evidence must not become green"
+        "contradictory evidence with actionable guidance remains decision=UNKNOWN",
+        "authority-pack and newly observed unknowns remain UNKNOWN even when nextEvidence is populated",
+        "unsupported primary target remains UNKNOWN until repository evidence supports it",
+        "SUPPORTED path without unknowns emits no synthetic unknown obligation",
+        "nextEvidence is never interpreted as proof and cannot promote UNKNOWN to PASS"
       ],
       "knownBlindSpots": [
-        "bounded evidence does not prove universal completeness"
+        "Actionable next-evidence guidance does not guarantee that the requested evidence exists or will resolve the unknown.",
+        "Bounded local tests do not prove perfect guidance quality for arbitrary repositories, languages or external systems.",
+        "This evidence does not measure human usefulness or independent-agent success.",
+        "This evidence does not prove production, enterprise IAM/security, hosted multi-tenant, legal/privacy or paid-pilot readiness."
       ],
-      "nextEvidence": "advance only through the next evidence gate recorded for this item",
+      "nextEvidence": "REUSE_DONE_BASELINE; recertify only if UNKNOWN decision precedence, obligation schema/codes, Change Studio unknown derivation, Verify unknown derivation or evidence-support semantics change. Do not rebuild Change Studio, Verify or Evidence Q&A.",
       "owner": "code_atlas.change_intelligence",
       "doNotRebuild": true
     },
@@ -1097,18 +1120,15 @@
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
   },
   "lastGovernanceMutation": {
-    "kind": "UNDERSTAND_C_EDGE_PROVENANCE_LOCAL_VERIFICATION_PROMOTION",
-    "sourceHead": "c32644cdc0691668b9a1a27251af10b03aecf167",
-    "technicalEvidenceRunId": 32406412712,
-    "technicalEvidenceArtifactId": 9420480680,
-    "technicalEvidenceArtifactSha256": "63aed1b79031a3f50354c862c2fcd5fcc74842fc28c8b5fc5e44b4d540d2fb12",
-    "technicalEvidenceComposedSha256": "82be3a4175333cdafb482d21d06941ee42ca25d0827d6b81fad64ccc1f32f6e1",
-    "authorityRunId": 32407301388,
-    "authorityArtifactId": 9420787014,
-    "authorityArtifactSha256": "202157e1649e2bfcdacb09bc34595d4852fd8fbdc7f8ceeba3d71c788fcfe623",
-    "composedAuthoritySha256": "9dc5ea2c0f06d57afe3eb65696ee0a1e78ea39838744868f701caa06c755f459",
-    "requestDigest": "d5f044f312c9a1a1f39a53797506634e62a07093d02db5c392fdd58ec7659e37",
-    "factoryGateDecisionDigest": "9e141e3fabe715b9c70c11a2e7bfa7f6d91695143a92ed3d625fb326487c5b94",
+    "kind": "RESOLVE_D_BETTER_UNKNOWN_LOCAL_VERIFICATION_PROMOTION",
+    "sourceHead": "2ee6c9053e3eea024cad4715e4ec3172f02de341",
+    "technicalEvidenceRunId": 32806525566,
+    "authorityRunId": 32806776961,
+    "authorityArtifactId": 9548433806,
+    "authorityArtifactSha256": "8bff0587feb192e7ba80eb5fca34c70df2c3a50c4e94f03fe6070794b1bdd840",
+    "composedAuthoritySha256": "ade2822d6550c04d23476973b57fc6b3c5507240b1ad5d10224570aeb35b8ee0",
+    "requestDigest": "eac2dbbaa007c04b86d22f449637259b271acb557a799ada84f0da603ec88655",
+    "factoryGateDecisionDigest": "e5aaa9ceb0adc8a9ac096fb9e6c19f61068be814e66d198784f49fa34b49333b",
     "status": "LOCAL_VERIFIED",
     "productionCertified": false
   }
