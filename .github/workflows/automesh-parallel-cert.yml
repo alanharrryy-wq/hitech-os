@@ -1,57 +1,174 @@
-name: AutoMesh Parallel Certification
+name: Tablet Sync WAVE2 Evidence Repair Authority
 
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: 28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+  tablet-sync-wave2-evidence-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
         with:
+          ref: 28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Verify immutable baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          test -z "$(git status --porcelain)"
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Build task-exact evidence-repair request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/wave2-evidence.request.json" <<'PY'
+          import json, sys
+          head = "28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab"
+          authorities = [
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+            "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+            "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
+            "apps/terminal-de-venta-system/products/tablet/app/src/lib/pending-offline-sync/sync-panel-contract.ts",
+            "apps/terminal-de-venta-system/products/tablet/app/src/server/pos-sync-panel/index.ts",
+            "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/reconciliation.ts",
+            "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs",
+            ".github/workflows/tablet-sync-wave1-postmerge-evidence.yml"
+          ]
+          task = (
+            "TABLET_SYNC_WAVE2 postmerge evidence repair and certification only. "
+            "The product advance is already merged and must not be rebuilt. "
+            "Authorize only an evidence-only repair on branch evidence/tablet-sync-wave2-postmerge so the runtime carrier compares its own head against the exact merged Tablet product SHA instead of GitHub's moving pull_request merge-ref. "
+            "Allowed future evidence-branch writes are exactly .github/workflows/tablet-sync-wave2-postmerge-evidence.yml and .github/evidence/tablet-sync-wave2-capture.mjs. "
+            "No Tablet product source, generated CSS/RIFAT, DB/schema/migration/Prisma generation, transport, PC/Mobile/Chart Lab/Shared UI, licensing, deploy, process or port mutation. "
+            "Certification must remain fail-closed, preserve 55/55 source truth, capture clean/pending/failed/retry/sent/acked/conflict/PC-offline/license-deny/unconfirmed screenshots, reject JS/React/console/server/non-accessory asset anomalies, and keep conflict review-only in Tablet with PC/Backoffice owner."
+          )
+          request = {
+            "schemaVersion":"v2",
+            "profile":"tablet-sync-wave2-evidence-repair-2508",
+            "expectedHead":head,
+            "tasks":[{
+              "id":"tablet-sync-wave2-postmerge-evidence-repair",
+              "surface":"tablet",
+              "intent":"VERIFY",
+              "domain":"runtime",
+              "task":task,
+              "requiredAuthorities":authorities,
+              "requiredDirectories":[
+                "PRISMA Factory Ledger",
+                "apps/terminal-de-venta-system/products/tablet/app/components/sync",
+                "apps/terminal-de-venta-system/products/tablet/app/src/server",
+                ".github/workflows"
+              ],
+              "requiredCapabilities":["tablet.sync.runtime_truth"],
+              "minimumCoverage":100,
+              "failOnMissingAuthority":True
+            }]
+          }
+          with open(sys.argv[1],"w",encoding="utf-8") as f:
+            json.dump(request,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run exact Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/w2e-pre"; par="$RUNNER_TEMP/w2e-par"; comp="$RUNNER_TEMP/w2e-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/wave2-evidence.request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54 --max-files 140 --max-mb 45
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/wave2-evidence.request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/w2e-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/w2e-compose.txt"
+          test -f "$RUNNER_TEMP/w2e-comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Run universal Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/w2e-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/w2e-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/w2e-comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/w2e-factory.request.json" <<'PY'
+          import hashlib, json, sys
+          report=json.load(open(sys.argv[1],encoding="utf-8")); pre=json.load(open(sys.argv[2],encoding="utf-8"))
+          coverage=min(float((lane.get("coverage") or {}).get("resolvedPercent",0)) for lane in pre["lanes"])
+          mesh={
+            "status":report["status"],
+            "repoHead":report["repoHead"],
+            "requiredAuthorityCoveragePct":coverage,
+            "blockers":len(pre.get("blockers") or []),
+            "requestDigest":report["requestDigest"],
+            "artifactDigest":hashlib.sha256(open(sys.argv[3],"rb").read()).hexdigest(),
+            "layerMapPresent":False
+          }
+          req={
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab",
+            "task":"Repair and rerun Tablet Sync WAVE2 postmerge evidence carrier only; no product rebuild or product mutation.",
+            "capabilities":[{"id":"tablet.sync.runtime_truth","requestedAction":"VERIFY"}],
+            "authorityMesh":mesh,
+            "visualMutation":False
+          }
+          with open(sys.argv[4],"w",encoding="utf-8") as f:
+            json.dump(req,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/w2e-factory.request.json" | tee "$RUNNER_TEMP/w2e-factory-gate.txt"
+          grep -Fq PASS_ANTI_REWORK_GATE "$RUNNER_TEMP/w2e-factory-gate.txt"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          test -z "$(git status --porcelain)"
+
+      - name: Package fresh authority evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/w2e-authority"
+          mkdir -p "$out"
+          cp "$RUNNER_TEMP/wave2-evidence.request.json" "$out/"
+          cp "$RUNNER_TEMP/w2e-factory.request.json" "$out/"
+          cp "$RUNNER_TEMP/w2e-factory-gate.txt" "$out/"
+          cp "$RUNNER_TEMP/w2e-compose.txt" "$out/"
+          cp "$RUNNER_TEMP/w2e-comp/prisma-automesh-composed-result.zip" "$out/"
+          printf '%s\n' 'PASS_TABLET_SYNC_WAVE2_EVIDENCE_REPAIR_AUTHORITY' > "$out/FINAL_RESULT.txt"
+
+      - name: Upload authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-sync-wave2-evidence-repair-authority
+          path: ${{ runner.temp }}/w2e-authority/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Final authority gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fxq PASS_TABLET_SYNC_WAVE2_EVIDENCE_REPAIR_AUTHORITY "$RUNNER_TEMP/w2e-authority/FINAL_RESULT.txt"
