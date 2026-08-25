@@ -1,0 +1,913 @@
+from __future__ import annotations
+
+from pathlib import Path
+from textwrap import dedent
+
+PINNED_HEAD = "ce1bda5d4e6765d9927f33c16f0a08472427e4ba"
+ROOT = Path("apps/terminal-de-venta-system/products/tablet/app")
+
+
+def clean(value: str) -> str:
+    return dedent(value).lstrip("\n")
+
+
+def replace_once(text: str, old: str, new: str, label: str) -> str:
+    count = text.count(old)
+    if count != 1:
+        raise SystemExit(f"PATCH_ANCHOR_{label}_COUNT_{count}")
+    return text.replace(old, new, 1)
+
+
+def main() -> None:
+    contract_path = ROOT / "src/lib/pending-offline-sync/sync-panel-contract.ts"
+    panel_path = ROOT / "src/server/pos-sync-panel/index.ts"
+    reconciliation_path = ROOT / "src/server/sync/reconciliation.ts"
+    screen_path = ROOT / "components/sync/pending-offline-sync-panel-screen.tsx"
+    verifier_path = ROOT / "tools/verify_tablet_sync_panel_truth_1808.mjs"
+
+    contract_path.write_text(clean(r'''
+        export type PendingSendStatus = "pending" | "failed" | "sent" | "acked" | "conflict";
+        export type SyncRisk = "ok" | "warn" | "danger";
+
+        export type SyncOperationProvenance = {
+          source: string | null;
+          businessId: string;
+          storeId: string | null;
+          terminalId: string | null;
+          deviceId: string | null;
+          actorId: string | null;
+          aggregateId: string;
+          originRecordId: string | null;
+          idempotencyKey: string | null;
+          correlationId: string | null;
+          traceId: string | null;
+        };
+
+        export type SyncDeliveryEvidence = {
+          sentAt: string | null;
+          syncedAt: string | null;
+          ackedAt: string | null;
+          failedAt: string | null;
+          conflictedAt: string | null;
+          lastAttemptAt: string | null;
+          nextRetryAt: string | null;
+          remoteEventId: string | null;
+          remoteLedgerId: string | null;
+          remoteLifecycleStatus: string | null;
+          remoteConflictCode: string | null;
+          remoteRejectedReason: string | null;
+        };
+
+        export type SyncPanelItem = {
+          id: string;
+          eventId: string;
+          title: string;
+          description: string;
+          status: PendingSendStatus;
+          statusLabel: string;
+          risk: SyncRisk;
+          attempts: number;
+          createdAt: string;
+          canRetry: boolean;
+          provenance: SyncOperationProvenance;
+          delivery: SyncDeliveryEvidence;
+          resolutionOwner: "pc_backoffice" | null;
+          resolutionLabel: string | null;
+        };
+
+        export type SyncPanelSummary = {
+          total: number;
+          pending: number;
+          failed: number;
+          sent: number;
+          acked: number;
+          conflict: number;
+          risk: SyncRisk;
+          headline: string;
+          operatorMessage: string;
+          offlineVisible: boolean;
+          lastCheckedAt: string;
+        };
+
+        export type SyncPanelResponse = {
+          summary: SyncPanelSummary;
+          items: SyncPanelItem[];
+          diagnostics: string[];
+        };
+
+        export type SyncRetryPreparationResult = {
+          scope: "selected" | "all_failed";
+          requested: number | null;
+          eligible: number;
+          updated: number;
+          skipped: number | null;
+          eligibleIds: string[];
+          skippedIds: string[];
+          message: string;
+        };
+
+        export const SAFE_SYNC_COPY = {
+          ready: "Todo enviado",
+          pending: "Hay información guardada localmente esperando envío.",
+          failed: "Hay eventos fallidos que necesitan reintento.",
+          conflict: "Hay información que requiere revisión antes de enviarse.",
+          offline: "Sin conexión visible. La Tablet sigue trabajando en local."
+        } as const;
+    '''), encoding="utf-8")
+
+    panel_path.write_text(clean(r'''
+        import { prisma } from "../prisma/client";
+        import { getTabletRuntimeMeta } from "../pos-runtime";
+        import { riskForStatus, statusLabel, summarizeSync, topicTitle } from "@/lib/pending-offline-sync/sync-panel-view-model";
+        import type { PendingSendStatus, SyncPanelItem, SyncRetryPreparationResult } from "@/lib/pending-offline-sync/sync-panel-contract";
+
+        type RawEvent = {
+          id: string;
+          businessId: string;
+          terminalId: string | null;
+          topic: string;
+          aggregateId: string;
+          idempotencyKey: string;
+          payloadJson: string;
+          source: string | null;
+          schemaVersion: string | null;
+          status: string;
+          attempts: number;
+          createdAt: Date;
+          sentAt: Date | null;
+          syncedAt: Date | null;
+          ackedAt: Date | null;
+          failedAt: Date | null;
+          conflictedAt: Date | null;
+          lastAttemptAt: Date | null;
+          nextRetryAt: Date | null;
+          remoteEventId: string | null;
+          remoteLedgerId: string | null;
+          remoteLifecycleStatus: string | null;
+          remoteConflictCode: string | null;
+          remoteRejectedReason: string | null;
+          lastError: string | null;
+        };
+
+        function isRecord(value: unknown): value is Record<string, unknown> {
+          return typeof value === "object" && value !== null && !Array.isArray(value);
+        }
+
+        function pickString(...values: unknown[]) {
+          for (const value of values) {
+            if (typeof value === "string" && value.trim()) return value.trim();
+          }
+          return "";
+        }
+
+        function payloadEnvelope(payloadJson: string) {
+          try {
+            const parsed = JSON.parse(payloadJson);
+            return isRecord(parsed) ? parsed : {};
+          } catch {
+            return {};
+          }
+        }
+
+        function nestedPayload(envelope: Record<string, unknown>) {
+          return isRecord(envelope.payload) ? envelope.payload : envelope;
+        }
+
+        function isoOrNull(value: Date | null | undefined) {
+          return value instanceof Date ? value.toISOString() : null;
+        }
+
+        function safeDescription(r: RawEvent) {
+          const status = r.status.toLowerCase();
+          const base = status === "conflict"
+            ? "Requiere revisión; no se reintenta automáticamente."
+            : r.lastError
+              ? "Necesita revisión antes de volver a enviar."
+              : "Guardado localmente para continuidad de operación.";
+          if (r.topic.includes("sale")) return `Venta registrada en la Tablet. ${base}`;
+          if (r.topic.includes("stock") || r.topic.includes("inventory")) return `Movimiento de inventario guardado. ${base}`;
+          if (r.topic.includes("shift")) return `Movimiento de turno guardado. ${base}`;
+          return `Evento operativo guardado. ${base}`;
+        }
+
+        function toItem(r: RawEvent): SyncPanelItem {
+          const status = r.status.toLowerCase() as PendingSendStatus;
+          const envelope = payloadEnvelope(r.payloadJson);
+          const payload = nestedPayload(envelope);
+          const eventId = pickString(envelope.eventId, r.id) || r.id;
+          const terminalId = pickString(envelope.terminalId, payload.terminalId, r.terminalId) || null;
+          const aggregateId = pickString(envelope.aggregateId, r.aggregateId, r.id) || r.id;
+          return {
+            id: r.id,
+            eventId,
+            title: topicTitle(r.topic),
+            description: safeDescription(r),
+            status,
+            statusLabel: statusLabel(status),
+            risk: riskForStatus(status, r.attempts),
+            attempts: r.attempts,
+            createdAt: r.createdAt.toISOString(),
+            canRetry: status === "pending" || status === "failed",
+            provenance: {
+              source: pickString(envelope.source, r.source) || null,
+              businessId: pickString(envelope.businessId, r.businessId) || r.businessId,
+              storeId: pickString(envelope.storeId, payload.storeId) || null,
+              terminalId,
+              deviceId: pickString(envelope.deviceId, payload.deviceId, terminalId) || null,
+              actorId: pickString(envelope.actorId, payload.actorId, payload.cashierId, payload.cashier) || null,
+              aggregateId,
+              originRecordId: pickString(
+                envelope.originRecordId,
+                payload.sourceRecordId,
+                payload.saleId,
+                payload.returnId,
+                payload.productId,
+                payload.cashSessionId,
+                aggregateId
+              ) || null,
+              idempotencyKey: pickString(envelope.idempotencyKey, r.idempotencyKey) || null,
+              correlationId: pickString(envelope.correlationId) || null,
+              traceId: pickString(envelope.traceId) || null
+            },
+            delivery: {
+              sentAt: isoOrNull(r.sentAt),
+              syncedAt: isoOrNull(r.syncedAt),
+              ackedAt: isoOrNull(r.ackedAt),
+              failedAt: isoOrNull(r.failedAt),
+              conflictedAt: isoOrNull(r.conflictedAt),
+              lastAttemptAt: isoOrNull(r.lastAttemptAt),
+              nextRetryAt: isoOrNull(r.nextRetryAt),
+              remoteEventId: r.remoteEventId,
+              remoteLedgerId: r.remoteLedgerId,
+              remoteLifecycleStatus: r.remoteLifecycleStatus,
+              remoteConflictCode: r.remoteConflictCode,
+              remoteRejectedReason: r.remoteRejectedReason
+            },
+            resolutionOwner: status === "conflict" ? "pc_backoffice" : null,
+            resolutionLabel: status === "conflict" ? "Revisión en PC / Backoffice" : null
+          };
+        }
+
+        export async function buildPendingOfflineSyncPanel(input: { businessId: string; limit: number; status?: string | null }) {
+          const where: any = { businessId: input.businessId };
+          if (input.status) where.status = { in: [input.status, input.status.toUpperCase(), input.status.toLowerCase()] };
+          const rows = await prisma.outboxEvent.findMany({ where, orderBy: { createdAt: "desc" }, take: input.limit });
+          const items = rows.map((r: any) => toItem(r));
+          const summary = summarizeSync(items);
+          const runtime = getTabletRuntimeMeta();
+          return {
+            summary,
+            items,
+            diagnostics: [
+              runtime.localSalesAllowed ? "Venta local disponible" : "Revisar venta local",
+              summary.offlineVisible ? "Hay trabajo local por enviar" : "No hay pendientes visibles",
+              `Última revisión ${new Date(summary.lastCheckedAt).toLocaleString("es-MX")}`
+            ]
+          };
+        }
+
+        export async function requestPendingRetry(input: { businessId: string; ids?: string[]; includeFailed?: boolean; includePending?: boolean }): Promise<SyncRetryPreparationResult> {
+          const states: string[] = [];
+          if (input.includeFailed !== false) states.push("failed", "FAILED");
+          if (input.includePending) states.push("pending", "PENDING");
+          const requestedIds = [...new Set((input.ids ?? []).filter((id): id is string => typeof id === "string" && Boolean(id.trim())).map((id) => id.trim()))];
+          const scope: SyncRetryPreparationResult["scope"] = requestedIds.length ? "selected" : "all_failed";
+
+          if (states.length === 0) {
+            return {
+              scope,
+              requested: requestedIds.length || null,
+              eligible: 0,
+              updated: 0,
+              skipped: requestedIds.length || null,
+              eligibleIds: [],
+              skippedIds: requestedIds,
+              message: "No había eventos listos para reintentar."
+            };
+          }
+
+          const where: any = { businessId: input.businessId, status: { in: states } };
+          let eligibleIds: string[] = [];
+          let skippedIds: string[] = [];
+          let eligible = 0;
+
+          if (requestedIds.length) {
+            const rows = await prisma.outboxEvent.findMany({
+              where: { businessId: input.businessId, id: { in: requestedIds } },
+              select: { id: true, status: true }
+            });
+            const allowed = new Set(states.map((state) => state.toLowerCase()));
+            eligibleIds = rows.filter((row) => allowed.has(String(row.status).toLowerCase())).map((row) => row.id);
+            const eligibleSet = new Set(eligibleIds);
+            skippedIds = requestedIds.filter((id) => !eligibleSet.has(id));
+            eligible = eligibleIds.length;
+            where.id = { in: eligibleIds };
+          } else {
+            eligible = await prisma.outboxEvent.count({ where });
+          }
+
+          if (eligible === 0) {
+            return {
+              scope,
+              requested: requestedIds.length || null,
+              eligible: 0,
+              updated: 0,
+              skipped: requestedIds.length ? skippedIds.length : null,
+              eligibleIds,
+              skippedIds,
+              message: requestedIds.length && skippedIds.length
+                ? `Ninguna de las ${requestedIds.length} operaciones seleccionadas puede reintentarse.`
+                : "No había eventos listos para reintentar."
+            };
+          }
+
+          const result = await prisma.outboxEvent.updateMany({
+            where,
+            data: {
+              status: "pending",
+              attempts: { increment: 1 },
+              nextRetryAt: null,
+              failedAt: null,
+              lastError: null,
+              remoteRejectedReason: null
+            }
+          });
+
+          const skipped = requestedIds.length ? skippedIds.length : null;
+          const detail = requestedIds.length
+            ? `Preparadas ${result.count} de ${requestedIds.length}; omitidas ${skipped ?? 0}.`
+            : `Preparadas ${result.count} operación(es) fallida(s).`;
+          return {
+            scope,
+            requested: requestedIds.length || null,
+            eligible,
+            updated: result.count,
+            skipped,
+            eligibleIds,
+            skippedIds,
+            message: result.count > 0
+              ? `${detail} Se enviarán cuando haya conexión.`
+              : "No había eventos listos para reintentar."
+          };
+        }
+    '''), encoding="utf-8")
+
+    reconciliation_path.write_text(clean(r'''
+        import { prisma } from "@/server/prisma/client";
+        import { DEFAULT_POS_API_BUSINESS_ID } from "@/server/pos-api/validators";
+        import { loadPrismaTabletPcOriginConfig, pcUrl, type PrismaTabletPcOriginConfig } from "@/server/sync/pc-origin";
+
+        type ReconcileStatus = "acked" | "conflict" | "failed" | "skipped";
+
+        export type TabletSentReconciliationInput = {
+          businessId?: string | null;
+          limit?: number | string | null;
+          source?: string | null;
+          config?: PrismaTabletPcOriginConfig;
+        };
+
+        export type TabletSentReconciliationResult = {
+          ok: boolean;
+          reason: string;
+          url: string | null;
+          checked: number;
+          sent: number;
+          counts: Record<ReconcileStatus, number>;
+          results: Array<{
+            id: string;
+            status: ReconcileStatus;
+            remoteStatus: string | null;
+            lifecycleStatus: string | null;
+            remoteEventId: string | null;
+            remoteLedgerId: string | null;
+            conflictCode: string | null;
+            rejectedReason: string | null;
+            reason: string;
+          }>;
+          errors: string[];
+        };
+
+        const DEFAULT_LIMIT = 80;
+        const DEFAULT_TIMEOUT_MS = 2500;
+
+        function asString(value: unknown) {
+          return typeof value === "string" && value.trim() ? value.trim() : "";
+        }
+
+        function asNumber(value: unknown, fallback: number) {
+          const parsed = Number(value);
+          if (!Number.isFinite(parsed)) return fallback;
+          return Math.max(1, Math.min(Math.trunc(parsed), 250));
+        }
+
+        function iso(value: unknown) {
+          if (value instanceof Date) return value.toISOString();
+          const text = asString(value);
+          if (!text) return new Date().toISOString();
+          const date = new Date(text);
+          return Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
+        }
+
+        function safeJsonParse(value: unknown) {
+          if (value && typeof value === "object") return value as Record<string, unknown>;
+          if (typeof value !== "string" || !value.trim()) return {};
+          try {
+            const parsed = JSON.parse(value);
+            return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed as Record<string, unknown> : {};
+          } catch {
+            return {};
+          }
+        }
+
+        function payloadFromRow(row: any) {
+          return safeJsonParse(row.payloadJson ?? row.payload ?? row.bodyJson ?? row.dataJson);
+        }
+
+        function envelopeFromRow(row: any) {
+          const parsed = payloadFromRow(row);
+          if (asString(parsed.eventId) && asString(parsed.topic) && parsed.payload && typeof parsed.payload === "object") {
+            return parsed;
+          }
+
+          const payload = parsed.payload && typeof parsed.payload === "object" ? parsed.payload as Record<string, unknown> : parsed;
+          const eventId = asString(row.id ?? parsed.eventId);
+          const topic = asString(row.topic ?? row.eventType ?? parsed.topic ?? parsed.eventType);
+          const businessId = asString(row.businessId ?? parsed.businessId) || DEFAULT_POS_API_BUSINESS_ID;
+          const terminalId = asString(row.terminalId ?? parsed.terminalId) || "tablet-terminal";
+          if (!eventId || !topic) return null;
+
+          return {
+            eventId,
+            eventType: asString(row.eventType ?? parsed.eventType) || topic,
+            topic,
+            idempotencyKey: asString(row.idempotencyKey ?? parsed.idempotencyKey) || eventId,
+            correlationId: asString(row.correlationId ?? parsed.correlationId) || null,
+            businessId,
+            terminalId,
+            actorId: asString(row.actorId ?? parsed.actorId) || "tablet-sync-reconciliation",
+            source: asString(row.source ?? parsed.source) || "tablet.pos.outbox",
+            occurredAt: iso(row.createdAt ?? row.occurredAt ?? parsed.occurredAt),
+            schemaVersion: asString(row.schemaVersion ?? parsed.schemaVersion) || "sync-event.v1",
+            payload
+          };
+        }
+
+        function extractRemoteResults(payload: any): any[] {
+          const data = payload?.data ?? payload;
+          if (Array.isArray(data?.results)) return data.results;
+          if (Array.isArray(data?.events)) return data.events;
+          if (Array.isArray(payload?.results)) return payload.results;
+          return [];
+        }
+
+        function remoteKey(result: any) {
+          return asString(result?.eventId ?? result?.remoteEventId ?? result?.id);
+        }
+
+        function diagnostics(result: any): string[] {
+          return Array.isArray(result?.diagnostics) ? result.diagnostics.map(asString).filter(Boolean) : [];
+        }
+
+        function diagnosticsContain(result: any, token: string) {
+          return diagnostics(result).some((item) => item.toUpperCase().includes(token));
+        }
+
+        function diagnosticValue(result: any, prefix: string) {
+          const hit = diagnostics(result).find((item) => item.startsWith(prefix));
+          return hit ? hit.slice(prefix.length).trim() : "";
+        }
+
+        function remoteLedgerId(result: any) {
+          return asString(result?.remoteLedgerId) || diagnosticValue(result, "REMOTE_LEDGER_ID:") || "";
+        }
+
+        function conflictCode(result: any) {
+          const conflicts = Array.isArray(result?.conflicts) ? result.conflicts : [];
+          return asString(result?.conflictCode ?? result?.rejectionCode ?? conflicts.find((item: any) => asString(item?.code))?.code);
+        }
+
+        function rejectedReason(result: any) {
+          const errors = Array.isArray(result?.errors) ? result.errors : [];
+          return asString(result?.rejectedReason ?? result?.rejectionCode ?? errors.find((item: unknown) => asString(item)));
+        }
+
+        function toJson(value: unknown) {
+          try {
+            return JSON.stringify(value ?? null).slice(0, 6000);
+          } catch {
+            return String(value ?? "").slice(0, 6000);
+          }
+        }
+
+        function classifyRemoteResult(result: any): { status: ReconcileStatus; reason: string } {
+          if (!result) return { status: "skipped", reason: "missing_remote_result" };
+          const remoteStatus = asString(result.status).toLowerCase();
+          const lifecycleStatus = asString(result.lifecycleStatus).toLowerCase();
+
+          if (
+            remoteStatus === "accepted" ||
+            remoteStatus === "duplicate" ||
+            lifecycleStatus === "accepted" ||
+            lifecycleStatus === "projected" ||
+            lifecycleStatus === "reconciled" ||
+            lifecycleStatus === "recognized_not_projected" ||
+            diagnosticsContain(result, "ALREADY_PROCESSED")
+          ) {
+            return { status: "acked", reason: remoteStatus === "duplicate" ? "pc_duplicate_means_idempotent_ack" : "pc_acceptance_confirmed" };
+          }
+
+          if (remoteStatus === "conflict" || lifecycleStatus === "conflict") return { status: "conflict", reason: "pc_conflict" };
+          if (remoteStatus === "rejected" || lifecycleStatus === "failed" || lifecycleStatus === "dead_letter") return { status: "failed", reason: "pc_rejected_or_dead_letter" };
+          return { status: "skipped", reason: "remote_status_not_actionable" };
+        }
+
+        async function updateLocalStatus(rowId: string, nextStatus: Exclude<ReconcileStatus, "skipped">, remote: any) {
+          const db = prisma as any;
+          const stamp = new Date();
+          const remoteStatus = asString(remote?.status) || null;
+          const lifecycleStatus = asString(remote?.lifecycleStatus) || remoteStatus;
+          const remoteEventId = asString(remote?.remoteEventId ?? remote?.eventId) || null;
+          const ledgerId = remoteLedgerId(remote) || null;
+          const issueCode = conflictCode(remote) || null;
+          const rejection = rejectedReason(remote) || null;
+          const diagnosticPayload = toJson(diagnostics(remote));
+          const data: Record<string, unknown> = {
+            status: nextStatus,
+            lastAttemptAt: stamp,
+            nextRetryAt: null,
+            remoteEventId,
+            remoteLedgerId: ledgerId,
+            remoteLifecycleStatus: lifecycleStatus,
+            remoteDiagnosticsJson: diagnosticPayload
+          };
+
+          if (nextStatus === "acked") {
+            Object.assign(data, {
+              syncedAt: stamp,
+              ackedAt: stamp,
+              failedAt: null,
+              conflictedAt: null,
+              remoteConflictCode: null,
+              remoteRejectedReason: null,
+              lastError: null
+            });
+          } else if (nextStatus === "conflict") {
+            Object.assign(data, {
+              conflictedAt: stamp,
+              failedAt: null,
+              remoteConflictCode: issueCode ?? "remote_conflict",
+              remoteRejectedReason: null,
+              lastError: issueCode ?? "Remote conflict"
+            });
+          } else {
+            Object.assign(data, {
+              failedAt: stamp,
+              remoteConflictCode: null,
+              remoteRejectedReason: rejection ?? issueCode ?? "pc_rejected_or_dead_letter",
+              lastError: rejection ?? issueCode ?? "PC rejected or dead-lettered the event"
+            });
+          }
+
+          try {
+            await db.outboxEvent.update({ where: { id: rowId }, data });
+          } catch {
+            await db.outboxEvent.update({
+              where: { id: rowId },
+              data: {
+                status: nextStatus,
+                lastError: nextStatus === "acked" ? null : toJson({
+                  source: "tablet.sent.reconciliation",
+                  remoteStatus,
+                  lifecycleStatus,
+                  remoteEventId,
+                  remoteLedgerId: ledgerId,
+                  conflictCode: issueCode,
+                  rejectedReason: rejection,
+                  diagnostics: diagnostics(remote)
+                })
+              }
+            });
+          }
+        }
+
+        export async function reconcileTabletSentOutboxWithPc(input: TabletSentReconciliationInput = {}): Promise<TabletSentReconciliationResult> {
+          const config = input.config ?? loadPrismaTabletPcOriginConfig();
+          const url = pcUrl(config, "/api/sync/ingest");
+          const counts: Record<ReconcileStatus, number> = { acked: 0, conflict: 0, failed: 0, skipped: 0 };
+          const errors: string[] = [];
+
+          if (!config.enabled) {
+            return { ok: false, reason: "pc_sync_disabled", url, checked: 0, sent: 0, counts, results: [], errors: ["PC sync disabled."] };
+          }
+          if (!url) {
+            return { ok: false, reason: "missing_pc_origin", url: null, checked: 0, sent: 0, counts, results: [], errors: ["Missing PC origin."] };
+          }
+
+          const db = prisma as any;
+          const businessId = asString(input.businessId) || DEFAULT_POS_API_BUSINESS_ID;
+          const limit = asNumber(input.limit, DEFAULT_LIMIT);
+          const rows = await db.outboxEvent.findMany({
+            where: { businessId, status: "sent" },
+            orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+            take: limit
+          }).catch((error: unknown) => {
+            throw new Error(error instanceof Error ? error.message : "No se pudo leer outbox local.");
+          });
+
+          const events = rows.map(envelopeFromRow).filter(Boolean);
+          if (!rows.length || !events.length) {
+            return { ok: true, reason: "empty", url, checked: rows.length, sent: events.length, counts, results: [], errors };
+          }
+
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), config.timeoutMs || DEFAULT_TIMEOUT_MS);
+          let payload: any = null;
+          let httpStatus = 0;
+
+          try {
+            const response = await fetch(url, {
+              method: "POST",
+              cache: "no-store",
+              signal: controller.signal,
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({
+                events,
+                source: input.source || "tablet.sent.reconciliation",
+                requestedBy: "tablet-sync-reconciliation"
+              })
+            });
+            httpStatus = response.status;
+            payload = await response.json().catch(() => null);
+          } catch (error) {
+            errors.push(error instanceof Error ? error.message : String(error));
+            return { ok: false, reason: "pc_unavailable", url, checked: rows.length, sent: events.length, counts, results: [], errors };
+          } finally {
+            clearTimeout(timeout);
+          }
+
+          const remoteResults = extractRemoteResults(payload);
+          if (!remoteResults.length) {
+            return {
+              ok: false,
+              reason: "invalid_pc_response",
+              url,
+              checked: rows.length,
+              sent: events.length,
+              counts,
+              results: [],
+              errors: [`PC response did not include per-event results. HTTP ${httpStatus}.`]
+            };
+          }
+
+          const byEventId = new Map<string, any>();
+          for (const result of remoteResults) {
+            const key = remoteKey(result);
+            if (key) byEventId.set(key, result);
+          }
+
+          const results: TabletSentReconciliationResult["results"] = [];
+          for (const row of rows) {
+            const remote = byEventId.get(asString(row.id));
+            const classified = classifyRemoteResult(remote);
+            counts[classified.status] += 1;
+            results.push({
+              id: asString(row.id),
+              status: classified.status,
+              remoteStatus: asString(remote?.status) || null,
+              lifecycleStatus: asString(remote?.lifecycleStatus) || null,
+              remoteEventId: asString(remote?.remoteEventId ?? remote?.eventId) || null,
+              remoteLedgerId: remoteLedgerId(remote) || null,
+              conflictCode: conflictCode(remote) || null,
+              rejectedReason: rejectedReason(remote) || null,
+              reason: classified.reason
+            });
+            if (classified.status !== "skipped") await updateLocalStatus(asString(row.id), classified.status, remote);
+          }
+
+          const ok = counts.acked > 0 || (httpStatus >= 200 && httpStatus < 300 && counts.failed === 0);
+          const reason = counts.conflict || counts.failed ? "partial" : counts.acked ? "reconciled" : "no_actionable_remote_results";
+          return { ok, reason, url, checked: rows.length, sent: events.length, counts, results, errors };
+        }
+    '''), encoding="utf-8")
+
+    screen = screen_path.read_text(encoding="utf-8")
+    screen = replace_once(
+        screen,
+        'import type { PendingSendStatus, SyncPanelResponse } from "@/lib/pending-offline-sync/sync-panel-contract";',
+        'import type { PendingSendStatus, SyncPanelResponse, SyncRetryPreparationResult } from "@/lib/pending-offline-sync/sync-panel-contract";',
+        "SCREEN_IMPORT",
+    )
+    screen = replace_once(
+        screen,
+        'function emptyQueueMessage(filter: FilterMode, confirmed: boolean) {',
+        clean(r'''
+            function retryPreparationMessage(result: SyncRetryPreparationResult | null) {
+              if (!result) return "";
+              if (result.requested !== null) return `Reintento: ${result.updated}/${result.requested} preparadas · ${result.skipped ?? 0} omitidas.`;
+              return `Reintento: ${result.updated} operación(es) preparadas.`;
+            }
+
+            function compactOperationalValue(value: string | null | undefined) {
+              const text = (value ?? "").trim();
+              if (!text) return "";
+              return text.length > 28 ? `${text.slice(0, 12)}…${text.slice(-8)}` : text;
+            }
+
+            function operationTime(value: string | null | undefined) {
+              if (!value) return "";
+              const date = new Date(value);
+              if (Number.isNaN(date.getTime())) return "";
+              return new Intl.DateTimeFormat("es-MX", { dateStyle: "short", timeStyle: "short" }).format(date);
+            }
+
+            function emptyQueueMessage(filter: FilterMode, confirmed: boolean) {
+        '''),
+        "SCREEN_HELPERS",
+    )
+    screen = replace_once(
+        screen,
+        '  const [dispatchResult, setDispatchResult] = useState<DispatchResult | null>(null);',
+        '  const [dispatchResult, setDispatchResult] = useState<DispatchResult | null>(null);\n  const [retryResult, setRetryResult] = useState<SyncRetryPreparationResult | null>(null);',
+        "SCREEN_RETRY_STATE",
+    )
+    screen = replace_once(
+        screen,
+        '  async function load() {\n    setActionMode("refreshing");',
+        '  async function load() {\n    setRetryResult(null);\n    setActionMode("refreshing");',
+        "SCREEN_LOAD_CLEAR",
+    )
+    screen = replace_once(
+        screen,
+        '  async function dispatchNow(force = false) {\n    setActionMode("sending");',
+        '  async function dispatchNow(force = false) {\n    setRetryResult(null);\n    setActionMode("sending");',
+        "SCREEN_DISPATCH_CLEAR",
+    )
+    screen = replace_once(
+        screen,
+        clean(r'''
+              await requestJson<{ updated: number; message: string }>("/api/pos/sync/retry", {
+                method: "POST",
+                body: JSON.stringify({
+                  businessId: DEFAULT_SYNC_BUSINESS_ID,
+                  includeFailed: true,
+                  includePending: false
+                })
+              });
+        ''').rstrip("\n"),
+        clean(r'''
+              const prepared = await requestJson<SyncRetryPreparationResult>("/api/pos/sync/retry", {
+                method: "POST",
+                body: JSON.stringify({
+                  businessId: DEFAULT_SYNC_BUSINESS_ID,
+                  includeFailed: true,
+                  includePending: false
+                })
+              });
+              setRetryResult(prepared.data);
+        ''').rstrip("\n"),
+        "SCREEN_RETRY_CAPTURE",
+    )
+    screen = replace_once(
+        screen,
+        '        : dispatchMessage(dispatchResult);',
+        '        : retryResult ? `${retryPreparationMessage(retryResult)} ${dispatchMessage(dispatchResult)}` : dispatchMessage(dispatchResult);',
+        "SCREEN_STATUS_MESSAGE",
+    )
+    screen = replace_once(
+        screen,
+        '{busy || dispatchResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${busy ? "neutral" : noteTone}`]].join(" ")} role="status" aria-live="polite">{activeStatusMessage}</div> : null}',
+        '{busy || dispatchResult || retryResult ? <div className={[styles.dispatchNote, styles[`dispatchNote_${busy ? "neutral" : noteTone}`]].join(" ")} role="status" aria-live="polite">{activeStatusMessage}</div> : null}',
+        "SCREEN_STATUS_VISIBILITY",
+    )
+    screen = replace_once(
+        screen,
+        clean(r'''
+                            <span>{item.statusLabel}</span>
+                            <h2>{item.title}</h2>
+                            <p>{item.description}</p>
+                          </div>
+        ''').rstrip("\n"),
+        clean(r'''
+                            <span>{item.statusLabel}</span>
+                            <h2>{item.title}</h2>
+                            <p>{item.description}</p>
+                            <details>
+                              <summary>Detalles de operación</summary>
+                              <div className={styles.filterBar}>
+                                {item.provenance.source ? <span className={styles.metaPill}>Origen: {compactOperationalValue(item.provenance.source)}</span> : null}
+                                {item.provenance.storeId ? <span className={styles.metaPill}>Tienda: {compactOperationalValue(item.provenance.storeId)}</span> : null}
+                                {item.provenance.terminalId ? <span className={styles.metaPill}>Terminal: {compactOperationalValue(item.provenance.terminalId)}</span> : null}
+                                {item.provenance.deviceId ? <span className={styles.metaPill}>Dispositivo: {compactOperationalValue(item.provenance.deviceId)}</span> : null}
+                                {item.provenance.actorId ? <span className={styles.metaPill}>Operador: {compactOperationalValue(item.provenance.actorId)}</span> : null}
+                              </div>
+                              <p>
+                                {item.delivery.remoteLifecycleStatus
+                                  ? `Estado PC: ${item.delivery.remoteLifecycleStatus}`
+                                  : "Sin estado remoto persistido todavía."}
+                                {item.delivery.remoteLedgerId ? ` · Ledger: ${compactOperationalValue(item.delivery.remoteLedgerId)}` : ""}
+                              </p>
+                              {item.delivery.lastAttemptAt ? <p>Último intento: {operationTime(item.delivery.lastAttemptAt)}</p> : null}
+                              {item.delivery.ackedAt ? <p>Confirmado: {operationTime(item.delivery.ackedAt)}</p> : null}
+                              {item.delivery.conflictedAt ? <p>Conflicto detectado: {operationTime(item.delivery.conflictedAt)}</p> : null}
+                              {item.delivery.remoteConflictCode ? <p>Motivo de conflicto: {item.delivery.remoteConflictCode}</p> : null}
+                              {item.delivery.remoteRejectedReason ? <p>Último rechazo: {item.delivery.remoteRejectedReason}</p> : null}
+                              {item.resolutionLabel ? <p><strong>{item.resolutionLabel}.</strong> Tablet conserva la evidencia; no resuelve conflictos aquí.</p> : null}
+                            </details>
+                          </div>
+        ''').rstrip("\n"),
+        "SCREEN_OPERATION_DETAILS",
+    )
+    screen_path.write_text(screen, encoding="utf-8")
+
+    verifier = verifier_path.read_text(encoding="utf-8")
+    verifier = replace_once(
+        verifier,
+        'const dispatcher = readApp("src/server/sync/dispatcher.ts");',
+        'const dispatcher = readApp("src/server/sync/dispatcher.ts");\nconst reconciliation = readApp("src/server/sync/reconciliation.ts");',
+        "VERIFIER_RECONCILIATION_SOURCE",
+    )
+    extra = clean(r'''
+        check(
+          "WAVE2 contract exposes per-operation provenance and persisted delivery evidence",
+          contract.includes("export type SyncOperationProvenance") &&
+            contract.includes("export type SyncDeliveryEvidence") &&
+            contract.includes('resolutionOwner: "pc_backoffice" | null') &&
+            contract.includes("remoteLifecycleStatus: string | null")
+        );
+        check(
+          "WAVE2 panel projects existing Outbox provenance without schema invention",
+          syncPanel.includes("terminalId: string | null") &&
+            syncPanel.includes("idempotencyKey: string") &&
+            syncPanel.includes("remoteLedgerId: string | null") &&
+            syncPanel.includes("storeId: pickString(envelope.storeId, payload.storeId)")
+        );
+        check(
+          "WAVE2 conflict owner is explicit PC backoffice and Tablet remains review-only",
+          syncPanel.includes('resolutionOwner: status === "conflict" ? "pc_backoffice" : null') &&
+            screen.includes("Revisión en PC / Backoffice") &&
+            screen.includes("Tablet conserva la evidencia; no resuelve conflictos aquí.") &&
+            !screen.includes("/api/backoffice/sync/conflicts/review")
+        );
+        check(
+          "WAVE2 selected retry reports eligible and skipped operations precisely",
+          contract.includes('scope: "selected" | "all_failed"') &&
+            syncPanel.includes("eligibleIds") &&
+            syncPanel.includes("skippedIds") &&
+            syncPanel.includes("requestedIds.filter") &&
+            syncPanel.includes("allowed.has(String(row.status).toLowerCase())")
+        );
+        check(
+          "WAVE2 retry result cannot promote nonretryable selected states",
+          syncPanel.includes('states.push("failed", "FAILED")') &&
+            syncPanel.includes('states.push("pending", "PENDING")') &&
+            !syncPanel.includes('states.push("sent", "SENT")') &&
+            !syncPanel.includes('states.push("acked", "ACKED")') &&
+            !syncPanel.includes('states.push("conflict", "CONFLICT")')
+        );
+        check(
+          "WAVE2 reconciliation persists ACK lifecycle evidence in existing Outbox columns",
+          reconciliation.includes('status: nextStatus') &&
+            reconciliation.includes("syncedAt: stamp") &&
+            reconciliation.includes("ackedAt: stamp") &&
+            reconciliation.includes("remoteLedgerId: ledgerId") &&
+            reconciliation.includes("remoteLifecycleStatus: lifecycleStatus")
+        );
+        check(
+          "WAVE2 reconciliation persists conflict evidence without automatic retry",
+          reconciliation.includes('nextStatus === "conflict"') &&
+            reconciliation.includes("conflictedAt: stamp") &&
+            reconciliation.includes('remoteConflictCode: issueCode ?? "remote_conflict"') &&
+            reconciliation.includes("nextRetryAt: null")
+        );
+        check(
+          "WAVE2 reconciliation exposes per-event remote evidence to its caller",
+          reconciliation.includes("remoteEventId: asString(remote?.remoteEventId ?? remote?.eventId) || null") &&
+            reconciliation.includes("remoteLedgerId: remoteLedgerId(remote) || null") &&
+            reconciliation.includes("conflictCode: conflictCode(remote) || null") &&
+            reconciliation.includes("rejectedReason: rejectedReason(remote) || null")
+        );
+        check(
+          "WAVE2 UI renders operation details from persisted projection",
+          screen.includes("Detalles de operación") &&
+            screen.includes("item.provenance.storeId") &&
+            screen.includes("item.delivery.remoteLifecycleStatus") &&
+            screen.includes("item.delivery.remoteLedgerId")
+        );
+        check(
+          "WAVE2 UI reports retry preparation separately from dispatch truth",
+          screen.includes("SyncRetryPreparationResult") &&
+            screen.includes("setRetryResult(prepared.data)") &&
+            screen.includes("retryPreparationMessage(retryResult)")
+        );
+    ''')
+    verifier = replace_once(
+        verifier,
+        'check("fix does not introduce !important", !route.includes("!important") && !screen.includes("!important") && !syncPanel.includes("!important"));\n\nconst failed = checks.filter((item) => !item.ok);',
+        'check("fix does not introduce !important", !route.includes("!important") && !screen.includes("!important") && !syncPanel.includes("!important"));\n\n' + extra + '\nconst failed = checks.filter((item) => !item.ok);',
+        "VERIFIER_WAVE2_CHECKS",
+    )
+    verifier_path.write_text(verifier, encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()
