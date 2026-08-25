@@ -686,9 +686,9 @@
       ],
       "classification": "DONE",
       "status": "RUNTIME_VERIFIED",
-      "stateLabel": "PASS_TABLET_SYNC_WAVE1_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
+      "stateLabel": "PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
       "doNotRebuild": true,
-      "nextGate": "WAVE2 authority/discovery or read-only recertification only after a fresh exact-task gate; WAVE1 and tablet.sync.runtime_truth remain DONE / RUNTIME_VERIFIED / doNotRebuild and must not be rebuilt.",
+      "nextGate": "Run final Tablet ScreensQA; then distribution/release readiness; then runtime data-custody/egress certification. WAVE2 itself is closed and must not be rebuilt.",
       "evidence": [
         "PR #298 Tablet: fail closed unverified sync panel state",
         "merge commit 7f5745b4ad65804cceca0b743c741d406adde22f",
@@ -699,7 +699,12 @@
         "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
         "PR #322 Tablet Sync Operations Center WAVE1 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa",
         "PR #332 post-merge runtime certification run 32336243809 attempt 2 artifact 9394817154 sha256:b59ab032fb461c4b5d5897e64ee4cf51b4a492e5218dc14d45eb5e6b09e4b026 verifier 44/44",
-        "WAVE1 canonical close gate run 32757733642 artifact 9531515396 sha256:b9af91b468e963593c44f27a207a7cbde252ac73148e18d14149e315dd9eaa4e decision f402aa5cc58e18e896067cfb281a7db5dada2a8d504593ae23607522cff38b68"
+        "WAVE1 canonical close gate run 32757733642 artifact 9531515396 sha256:b9af91b468e963593c44f27a207a7cbde252ac73148e18d14149e315dd9eaa4e decision f402aa5cc58e18e896067cfb281a7db5dada2a8d504593ae23607522cff38b68",
+        "WAVE2 product PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "WAVE2 post-merge runtime run 32866793273 artifact 9570464455 digest sha256:f06087c14951010bb782c6fed46d6620ec2a063cdbcec6b233a387e6f21b35e4",
+        "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs 55/55 PASS",
+        "WAVE2 isolated browser/runtime evidence 10/10 screenshots; runtime exceptions 0; console errors 0; unexpected network errors 0; intentional unconfirmed panel 503 only",
+        "WAVE2 canonical-close Authority run 32868230568 artifact 9571018119 digest sha256:9d35191c7c190d98e916e54668c99666dced6ff5913d36fe96d7d23ad6c60aec"
       ],
       "doesNotProve": [
         "DB-backed E2E of the repaired /api/pos/sync/panel route",
@@ -712,12 +717,20 @@
         "Real PC transport certification",
         "Conflict-resolution ownership or action",
         "Future runtime behavior after source drift",
-        "Runtime or visual certification of unrelated Tablet routes or other PRISMA surfaces"
+        "Runtime or visual certification of unrelated Tablet routes or other PRISMA surfaces",
+        "Real deployed PC transport end-to-end certification",
+        "Production database end-to-end certification",
+        "Distribution/release readiness",
+        "Runtime zero-custody or data-egress certification"
       ],
       "allowedActions": [
         "read-only recertification",
         "WAVE2 authority/discovery after a fresh exact-task gate",
-        "reference merged WAVE1 evidence"
+        "reference merged WAVE1 evidence",
+        "final Tablet ScreensQA",
+        "distribution/release readiness after final ScreensQA",
+        "runtime data-custody/egress certification after release readiness",
+        "read-only recertification after relevant drift"
       ],
       "forbiddenActions": [
         "rebuild sync, Outbox, dispatcher, licensing, or API truth from scratch",

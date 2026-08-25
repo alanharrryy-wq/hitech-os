@@ -81,9 +81,9 @@
     },
     "tablet.sync.runtime_truth": {
       "value": true,
-      "reason": "WAVE1 Operations Center merged in PR #322 and passed audited post-merge runtime recertification in PR #332 plus the canonical close MUTATION gate. Reuse existing sync/Outbox/dispatcher/licensing/API truth; WAVE1 is closed and must not be rebuilt.",
-      "evidence": "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa / PR #332 artifact 9394817154 / WAVE1 close gate run 32757733642 artifact 9531515396",
-      "updatedAt": "2026-08-24T21:33:00-06:00"
+      "reason": "Tablet Sync WAVE2 is merged and isolated post-merge runtime-certified. Reuse existing Outbox/projection/reconciliation/dispatcher/licensing truth; WAVE1 and WAVE2 are closed and must not be rebuilt.",
+      "evidence": "PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119 / PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
+      "updatedAt": "2026-08-25T10:05:09-06:00"
     },
     "data.canonical_schema_reproducibility": {
       "value": true,
@@ -138,5 +138,5 @@
       "updatedAt": "2026-08-18T20:46:00-06:00"
     }
   },
-  "updatedAt": "2026-08-25T08:17:09-06:00"
+  "updatedAt": "2026-08-25T10:05:09-06:00"
 }

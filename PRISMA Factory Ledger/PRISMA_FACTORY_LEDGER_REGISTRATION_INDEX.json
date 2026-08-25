@@ -129,11 +129,11 @@
     },
     "tablet.sync.runtime_truth": {
       "status": "DONE_RUNTIME_VERIFIED",
-      "updatedAt": "2026-08-24T21:33:00-06:00",
-      "evidence": "PR #322 merge 45762d1a6251195dae0e229dfe6fa1aed74645fa / PR #332 post-merge runtime artifact 9394817154 / WAVE1 close gate artifact 9531515396",
-      "sourceEvidenceSha256": "B59AB032FB461C4B5D5897E64EE4CF51B4A492E5218DC14D45EB5E6B09E4B026",
+      "updatedAt": "2026-08-25T10:05:09-06:00",
+      "evidence": "PR #377 merge 1a83d5decb4e946021b9acf95f1a49479d6abf19 / WAVE2 post-merge runtime run 32866793273 artifact 9570464455 / closure Authority run 32868230568 artifact 9571018119",
+      "sourceEvidenceSha256": "F06087C14951010BB782C6FED46D6620EC2A063CDBCEC6B233A387E6F21B35E4",
       "doNotRebuild": true,
-      "nextGate": "TABLET_SYNC_WAVE2_AUTHORITY_DISCOVERY_OR_READ_ONLY_RECERTIFICATION_NO_WAVE1_REBUILD"
+      "nextGate": "TABLET_FINAL_SCREENSQA_THEN_DISTRIBUTION_RELEASE_READINESS_THEN_RUNTIME_DATA_CUSTODY_EGRESS_CERTIFICATION"
     },
     "data.canonical_schema_reproducibility": {
       "status": "DONE_LOCAL_VERIFIED",
@@ -176,5 +176,5 @@
       "nextGate": "PC_ENTERPRISE_MUTATIONS_WAVE3: certify catalog and supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke and Settings writes on isolated persistence under fresh exact authority. Wave 2 itself is closed and must not be rebuilt."
     }
   },
-  "updatedAt": "2026-08-25T08:17:09-06:00"
+  "updatedAt": "2026-08-25T10:05:09-06:00"
 }

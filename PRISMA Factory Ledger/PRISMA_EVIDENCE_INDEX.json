@@ -577,6 +577,43 @@
         "current-head close run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
         "Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / composed da4e4ec2dda0f0fde10031a1ba5ebf3542c5193d0d0fd3da91f491ff32c8ae9c / decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d"
       ]
+    },
+    {
+      "artifact": "Tablet Sync WAVE2 postmerge runtime run 32866793273 / artifact 9570464455",
+      "type": "tablet_sync_wave2_postmerge_runtime_certification",
+      "scope": [
+        "tablet",
+        "sync",
+        "outbox",
+        "runtime",
+        "governance"
+      ],
+      "status": "PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN",
+      "proves": [
+        "Merged WAVE2 product source at 1a83d5decb4e946021b9acf95f1a49479d6abf19 passes the focused sync truth verifier 55/55",
+        "Isolated Next/Chrome runtime captured 10/10 required /sync states",
+        "Per-operation provenance and persisted ACK/conflict evidence are visible without schema invention",
+        "Selected retry result truth remains bounded to retryable operations and conflicts stay review-only",
+        "PC/Backoffice is the explicit conflict-resolution owner while Tablet remains local-first and review-only",
+        "Runtime exceptions, console errors and unexpected network errors are zero; the unconfirmed panel 503 is intentional and fails closed"
+      ],
+      "doesNotProve": [
+        "Hosted production deployment",
+        "Real deployed PC transport end-to-end certification",
+        "Production database end-to-end certification",
+        "Distribution/release readiness",
+        "Runtime zero-custody or data-egress certification",
+        "Runtime or visual certification of unrelated Tablet routes or other PRISMA surfaces",
+        "Future runtime behavior after source drift"
+      ],
+      "evidence": [
+        "PR #377",
+        "merge 1a83d5decb4e946021b9acf95f1a49479d6abf19",
+        "run 32866793273",
+        "artifact 9570464455",
+        "sha256:f06087c14951010bb782c6fed46d6620ec2a063cdbcec6b233a387e6f21b35e4",
+        "closure Authority run 32868230568 artifact 9571018119"
+      ]
     }
   ],
   "updatedAt": "2026-08-25T08:17:09-06:00",
