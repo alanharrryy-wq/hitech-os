@@ -1,20 +1,21 @@
 # PRISMA App Impact Matrix
 
-- Task: `FIX deuda residual Tablet 3120 posterior al PASS del ChunkLoadError. Corregir exclusivamente: (1) referencias mediaRef locales bajo /product-media/ que apuntan a archivos inexistentes, sin mutar DB ni sync y usando el packshot gobernado ya existente como fallback; (2) GET /api/pos/export/sales-today?format=csv reutilizando el read model canonico probado de sales-today; (3) migrar Tablet de middleware.ts a proxy.ts sin cambiar comportamiento; (4) actualizar solo los verifiers Tablet que resuelven esa convencion. Scope Tablet, Quality y Governance. Excluir PC, Mobile, Web, Chart Lab, Shared UI, Control Center, DB, schema, migraciones, datos, sync, Git y deploy. Runtime permitido unicamente Tablet 3120 despues de demostrar ownership. No ejecutar Prisma generate. Clasificacion Factory Ledger FIX.`
-- Status: `PASS`
-- Generated: `2026-07-26T01:50:04-06:00`
+Task: consolidate PRISMA Mobile product-interface specifications into one canon.
 
-| App / surface | Applies | Authority files found | Mutation allowed | Exclusion / notes |
-|---|---:|---:|---:|---|
-| tablet | yes | 33 | yes | Selected by task. |
-| pc | yes | 35 | yes | Selected by task. |
-| mobile | yes | 87 | yes | Selected by task. |
-| chart-lab | yes | 13 | yes | Selected by task. |
-| web | yes | 7 | yes | Selected by task. |
-| control-center | yes | 95 | yes | Selected by task. |
-| shared-ui | yes | 102 | yes | Selected by task. |
-| backgrounds | no | 0 | no | Not directly selected by task classifier; still can be promoted by shared/runtime impact. |
-| quality | yes | 231 | no | Selected by task. |
-| database-sync | yes | 49 | yes | Selected by task. |
-| productization | no | 0 | no | Not directly selected by task classifier; still can be promoted by shared/runtime impact. |
-| shared-kernel | no | 0 | no | Not directly selected by task classifier; still can be promoted by shared/runtime impact. |
+| Surface | Applies | Mutation allowed | Mutation type | Reason |
+| --- | --- | --- | --- | --- |
+| Mobile | yes | yes | documentation/specification only | User explicitly requested one aspirational Mobile interface canon and removal of competing specifications. |
+| Tablet | no | no | none | Tablet role is referenced only as a boundary. |
+| PC | no | no | none | PC role is referenced only as a boundary. |
+| Shared UI | no | no | none | No component or shared visual mutation. |
+| Shared Core | no | no | none | No business/runtime mutation. |
+| Chart Lab | no | no | none | No chart-lab mutation. |
+| Control Center | no | no | none | No control-center mutation. |
+| Database / Sync | no | no | none | No schema, DB, sync, outbox, ACK, checkpoint or conflict mutation. |
+| Licensing | no | no | none | No license behavior mutation. |
+| Quality | read-only authority | no | none | Contracts read for truthfulness/no-fake-green boundaries only. |
+| Governance | yes | yes | task-exact mesh/evidence only | Required by Factory Ledger and Authority Mesh rules. |
+
+## Protected roots
+
+No files under Mobile `app/`, `src/`, `public/`, `scripts/`, runtime infra, API routes, package scripts, verifier code, Tablet, PC, Shared UI, Shared Core, DB/schema/migrations, Chart Lab, or Control Center are authorized for product-code mutation by this task.

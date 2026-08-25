@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "prisma.factory-ledger.anti-rework-decision.v1",
+  "gateSchemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+  "result": "PASS_ANTI_REWORK_GATE",
+  "mode": "MUTATION",
+  "repoHead": "72637e9702ad0d9bbfa9dc523ef09a56c910ecd1",
+  "authoritySourceBlobShas": {
+    "ledger": "9b8b7fcb2d518d639d6ab52544d51fcfd2022bef",
+    "dnr": "7f0fd30c2f8b3c151a3709e17897634c108bdc67",
+    "registration": "f1b33ca095ed4342a53d5089e970ea0111811df7",
+    "evidence": "927af98f284a7f9bd25176ee69a6d19b0e3b5450"
+  },
+  "authorityDirty": [],
+  "task": "Consolidate PRISMA Mobile product/interface specifications into one aspirational canonical interface authority and remove redundant or superseded Mobile UI/UX/product-interface specification content. Preserve application source code, APIs, data contracts, runtime, sync, licensing behavior, verifiers, release evidence, Atlas implementation maps, engineering ownership maps, PWA/Play Store/Cloudflare technical documentation and salvage/history. Current runtime differences are implementation drift and do not redefine the product canon.",
+  "selected": [
+    {
+      "id": "mobile.secure_projection_gateway_phase1",
+      "requestedAction": "ADVANCE",
+      "classification": "VERIFY",
+      "status": "LOCAL_VERIFIED",
+      "doNotRebuild": false,
+      "stateLabel": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_LOCAL_VERIFIED",
+      "nextGate": "Runtime signed-session auth/context/license/device E2E and negative cross-context certification; do not enable mutations.",
+      "allowedActions": [
+        "runtime read-only auth E2E",
+        "negative tenant/business/branch/terminal tests",
+        "Customer Setup hosted session integration",
+        "Phase 1 read-model UI binding"
+      ],
+      "doesNotProve": [
+        "Hosted live session issuance",
+        "LAN or cloud reachability",
+        "Production device claim",
+        "Offline read or queued commands",
+        "Mobile mutations",
+        "Runtime zero-egress certification"
+      ]
+    }
+  ],
+  "errors": [],
+  "rules": {
+    "noRebuildDoneDoNotRebuild": true,
+    "noUnknownCapability": true,
+    "noContradictorySupplementalState": true,
+    "evidenceBound": true,
+    "noProseOverride": true,
+    "mutationRequiresFreshAuthorityMesh": true,
+    "visualMutationRequiresLayerMap": true
+  },
+  "authorityMesh": {
+    "status": "PASS_COMPOSED_AUTHORITY_MESH",
+    "repoHead": "72637e9702ad0d9bbfa9dc523ef09a56c910ecd1",
+    "requiredAuthorityCoveragePct": 100,
+    "blockers": 0,
+    "requestDigest": "da186efdb0b1599d5eeafb4a30cbf3d600abda511b61f05e7dd41366acae9fa6",
+    "artifactDigest": "bc4a7839d68bb5ebe77e9a7c805947017fe1fdc69f51c6dbc1b159468b20f0a9",
+    "layerMapPresent": true
+  },
+  "decisionDigest": "63c68c2eb1ebca8f3a346177f2f6f1f2db14b8920325f4d471159095dfb7cda9"
+}

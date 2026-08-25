@@ -1,80 +1,45 @@
 # PRISMA AUTHORITY MESH ENVELOPE
 
-Task: FIX deuda residual Tablet 3120 posterior al PASS del ChunkLoadError. Corregir exclusivamente: (1) referencias mediaRef locales bajo /product-media/ que apuntan a archivos inexistentes, sin mutar DB ni sync y usando el packshot gobernado ya existente como fallback; (2) GET /api/pos/export/sales-today?format=csv reutilizando el read model canonico probado de sales-today; (3) migrar Tablet de middleware.ts a proxy.ts sin cambiar comportamiento; (4) actualizar solo los verifiers Tablet que resuelven esa convencion. Scope Tablet, Quality y Governance. Excluir PC, Mobile, Web, Chart Lab, Shared UI, Control Center, DB, schema, migraciones, datos, sync, Git y deploy. Runtime permitido unicamente Tablet 3120 despues de demostrar ownership. No ejecutar Prisma generate. Clasificacion Factory Ledger FIX.
+Task: consolidate PRISMA Mobile product/interface specifications into one aspirational canonical interface authority and remove superseded/competing Mobile UI/UX/product-interface specification content only.
 
-Status: `PASS`
+Status: `PASS_COMPOSED_AUTHORITY_MESH`
 
-## Apps / surfaces detected
+## Surface
 
-- chart-lab
-- control-center
-- database-sync
-- mobile
-- pc
-- quality
-- shared-ui
-- tablet
-- web
+- Mobile product interface documentation
+- Governance evidence
 
-## Change types detected
+## Product authority
 
-- data_sync
-- ops_hot_injection
-- visual
+`products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md`
 
-## Mandatory readset lock
+The canon may differ from current Mobile source/runtime. Such differences are implementation drift and do not authorize source mutation in this task.
 
-Use `.governance/current/AUTHORITY_READSET.lock.json` as the authority readset for this task. Do not create patches without it.
+## Factory Ledger gate
 
-## Required gates
+- Capability: `mobile.secure_projection_gateway_phase1`
+- Classification: `VERIFY`
+- Requested action: `ADVANCE`
+- Mutation class: documentation/governance only
+- No Mobile mutation path is enabled.
 
-- real_db_destructive_tests_forbidden
-- schema_parity_required
-- sync_fixture_required
-- visual_manifest_required
-- visual_evidence_required
-- layer_budget_required
-- no_fake_green
-- authority_readset_lock_required
-- app_impact_matrix_required
-- contract_gate_matrix_required
-- rollback_required
-- diagnostic_zip_on_failure
-- no_fake_green
-- visual_capability_matrix_required
-- visual_stack_decision_required
-- app_visual_exploitation_matrix_required
-- visual_capability_rejection_reasons_required
-- visual_exploitation_contract_required
-- app_capability_requirements_required
-- screen_visual_stack_plan_required
-- premium_acceptance_bar_required
-- used_rejected_capability_matrix_required
-- layer_budget_decision_required
-- visual_evidence_or_pending_verification_required
+## Required boundaries
 
-## Forbidden default actions
+- Preserve Mobile application source and runtime.
+- Preserve APIs/data contracts/signed-session/security behavior.
+- Preserve sync/outbox/licensing/PWA behavior.
+- Preserve Tablet, PC, Shared UI, Shared Core, Chart Lab and Control Center.
+- Preserve Atlas implementation maps, engineering ownership maps, technical release evidence, QA fixtures, verifiers and salvage/history.
+- Do not edit verifier code.
+- Where an active verifier hard-codes an old specification path, retain only a non-authoritative compatibility pointer.
+- Record all deleted specification authority in the migration note.
 
-- kill dev processes
-- free occupied ports
-- start app/dev server
-- regenerate Prisma hot
-- delete files permanently
-- force push
-- global CSS blast without manifest
-- kill processes
-- free ports
-- start dev server
-- regenerate prisma hot
-- pc:typecheck hot
+## Canon hierarchy
 
-## Missing authority check
+`Inicio / Pulso -> Ventas -> Caja -> Inventario -> Mando -> Sistema`
 
-No missing authority patterns detected.
+Mando owns Command Center, Action Inbox, Daily Brief, Decision Ledger, Pulse Timeline, Health Radar and compact owner analytics. MultiSucursal is global context. Alerts feed Mando. Reports resolve into Daily Brief/contextual evidence. Sync, licensing, devices, setup, install and diagnostics belong to Sistema.
 
-## Required output evidence
+## Required evidence
 
-- Include `.governance/current` in result or diagnostic ZIP.
-- Do not claim PASS without contract/gate evidence.
-- For visual work, include visual evidence beyond functional smoke tests.
-- For hot work, do not kill processes or regenerate Prisma.
+Use the task-exact `.governance/current` readset, impact matrix, contract/gate matrix, risk review, layer map, anti-rework request/decision and authority report generated for repo HEAD `72637e9702ad0d9bbfa9dc523ef09a56c910ecd1`.

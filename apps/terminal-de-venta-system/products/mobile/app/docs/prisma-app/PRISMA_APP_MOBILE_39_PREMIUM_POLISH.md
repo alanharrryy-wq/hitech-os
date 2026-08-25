@@ -1,17 +1,21 @@
-# PRISMA_APP_MOBILE_39_PREMIUM_POLISH
+# PRISMA Mobile 39 legacy compatibility pointer
 
-Mobile supervisa. Tablet Solo vende sola.
+**Status:** `NON_AUTHORITATIVE_COMPATIBILITY_POINTER`
 
-Premium polish aplicado solo a Mobile como adder opcional.
+Canonical product-interface authority: `PRISMA_MOBILE_INTERFACE_CANON.md`.
 
-## Cambios esperados
+This file contains no independent UI/UX/product specification. It exists only because the current `verify:premium-polish-boundary` technical gate still reads this legacy path.
 
-- Hero premium de supervisión.
-- Rail note que separa vista Mobile de operación POS.
-- Copy PWA premium opcional.
-- Tokens CSS Mobile-local.
-- Verificador Mobile-local 39 sin copy prohibido literal.
+Compatibility markers retained for the existing technical verifier:
 
-## Prohibido
+- `MOBILE_PREMIUM_POLISH_PHASE_2`
+- `PRISMA_APP_MOBILE_39_PREMIUM_POLISH`
+- Mobile supervisa
+- Tablet Solo vende sola
+- Mobile no es requisito para vender
+- Mobile no bloquea POS
+- PC y Mobile son adders opcionales
+- Cloudflare y soporte remoto son opcionales
+- Internet no es requisito para venta base Tablet Solo
 
-No tocar Tablet, PC, Shared Core, root workspace, licensing, sync, tri-db, runtime compartido ni Cloudflare.
+These markers preserve verifier compatibility only. Product hierarchy, visual direction, navigation, and screen intent come exclusively from `PRISMA_MOBILE_INTERFACE_CANON.md`.
