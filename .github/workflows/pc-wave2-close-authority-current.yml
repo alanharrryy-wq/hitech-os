@@ -1,0 +1,129 @@
+name: PC Wave 2 Close Authority Current
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave2-close-authority-current.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: 1a83d5decb4e946021b9acf95f1a49479d6abf19
+
+jobs:
+  pc-wave2-close-current:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
+        with:
+          ref: 1a83d5decb4e946021b9acf95f1a49479d6abf19
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact head and Wave 2 product immutability
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          changed="$(git diff --name-only 62c27a612b7647a72f673994846384dba510a193..HEAD -- \
+            apps/terminal-de-venta-system/prisma/migrations/20260819000000_canonical_schema_reproducibility/migration.sql \
+            apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices/route.ts \
+            apps/terminal-de-venta-system/products/pc/app/app/layout.tsx \
+            apps/terminal-de-venta-system/products/pc/app/components/customers/customer-workspace.tsx \
+            apps/terminal-de-venta-system/products/pc/app/components/layout/app-shell.tsx \
+            apps/terminal-de-venta-system/products/pc/app/components/licensing/pc-license-surface-provider.tsx \
+            apps/terminal-de-venta-system/products/pc/app/src/server/services/product-media.service.ts \
+            apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/verify_pc_wave2_schema_parity.py \
+            apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_license.mjs \
+            apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_runtime.mjs)"
+          test -z "$changed"
+
+      - name: Build exact request
+        shell: bash
+        run: |
+          python - "$RUNNER_TEMP/request.json" <<'PY'
+          import json,sys
+          caps=["data.canonical_schema_reproducibility","pc.customers.crud_runtime","pc.entitlement.surface_projection","pc.customers.clientes_visual_usability","pc.quality.customer_experience_wave2"]
+          req={
+            "schemaVersion":"v2","profile":"pc-wave2-canonical-close-current-v1","expectedHead":"1a83d5decb4e946021b9acf95f1a49479d6abf19",
+            "tasks":[{
+              "id":"pc-wave2-current-close","surface":"pc","intent":"VERIFY","domain":"governance",
+              "task":"Fresh exact-head authority for governance-only canonical closure of already merged PC Wave 2. PR #325 merge 62c27a612b7647a72f673994846384dba510a193 and final run 32330104885 prove bounded Wave 2. Entitled artifact 9392771819 digest 9943dc813b1268a6c0dc70644b9052dba3c52fcfae8fa2e44c46f9cdf8bcf2bc passed 300/300, 22 screenshots, zero console/page errors. Restricted artifact 9392756710 digest d39007e9cd5ee660c41e8fa0882996054500128f00af36b1bbc3fb8181550aad passed. Preserve explicit ceiling: catalog CRUD, supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke and Settings writes remain Wave 3. No product/runtime/DB/Prisma/CSS/navigation/process/port/deploy mutation. Current main advanced only through bounded Tablet Sync WAVE2 PR #377 after prior closure authority, so re-prove exact current authority and no PC Wave 2 product drift.",
+              "requiredAuthorities":[
+                "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+                "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+                "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+                "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
+                "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+                "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+                "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+                "apps/terminal-de-venta-system/prisma/migrations/20260819000000_canonical_schema_reproducibility/migration.sql",
+                "apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py",
+                "apps/terminal-de-venta-system/products/pc/app/tools/verify_pc_wave2_schema_parity.py",
+                "apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_license.mjs",
+                "apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_customer_experience_wave2_runtime.mjs"
+              ],
+              "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/pc/app/tools","apps/terminal-de-venta-system/prisma/migrations"],
+              "requiredCapabilities":caps,"minimumCoverage":100,"failOnMissingAuthority":True
+            }]
+          }
+          json.dump(req,open(sys.argv[1],'w',encoding='utf-8'),ensure_ascii=False,indent=2); open(sys.argv[1],'a').write('\n')
+          PY
+
+      - name: Compose fresh Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/pre"; par="$RUNNER_TEMP/par"; comp="$RUNNER_TEMP/comp/payload"; mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 1 --workers 18 --shards 54 --max-files 160 --max-mb 50
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/compose.txt"
+
+      - name: Universal anti-rework mutation decision
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/factory.request.json" <<'PY'
+          import hashlib,json,sys
+          report=json.load(open(sys.argv[1])); pre=json.load(open(sys.argv[2])); coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in pre['lanes'])
+          mesh={"status":report['status'],"repoHead":report['repoHead'],"requiredAuthorityCoveragePct":coverage,"blockers":len(pre.get('blockers') or []),"requestDigest":report['requestDigest'],"artifactDigest":hashlib.sha256(open(sys.argv[3],'rb').read()).hexdigest(),"layerMapPresent":False}
+          req={"schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1","mode":"MUTATION","expectedHead":"1a83d5decb4e946021b9acf95f1a49479d6abf19","task":"Governance-only canonical closure of already certified PC Wave 2, preserving Wave 3 evidence ceiling and making proven Wave 2 do-not-rebuild.","capabilities":[{"id":x,"requestedAction":"ADVANCE"} for x in ["data.canonical_schema_reproducibility","pc.customers.crud_runtime","pc.entitlement.surface_projection","pc.customers.clientes_visual_usability","pc.quality.customer_experience_wave2"]],"authorityMesh":mesh,"visualMutation":False}
+          json.dump(req,open(sys.argv[4],'w'),indent=2); open(sys.argv[4],'a').write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/factory.request.json" | tee "$RUNNER_TEMP/gate.json"
+          python - "$RUNNER_TEMP/gate.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1])); assert d.get('result')=='PASS_ANTI_REWORK_GATE',d; assert d.get('errors')==[],d
+          PY
+          echo PASS_PC_WAVE2_CLOSE_AUTHORITY_CURRENT
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave2-close-authority-current
+          path: |
+            ${{ runner.temp }}/request.json
+            ${{ runner.temp }}/pre/PREFLIGHT_MANIFEST.json
+            ${{ runner.temp }}/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json
+            ${{ runner.temp }}/comp/payload/MANIFEST.json
+            ${{ runner.temp }}/comp/prisma-automesh-composed-result.zip
+            ${{ runner.temp }}/factory.request.json
+            ${{ runner.temp }}/gate.json
+            ${{ runner.temp }}/compose.txt
+          if-no-files-found: warn
+          retention-days: 14
