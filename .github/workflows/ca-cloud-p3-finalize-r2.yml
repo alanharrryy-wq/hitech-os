@@ -1,0 +1,231 @@
+name: CA Cloud P3 Reanchor Finalizer
+
+on:
+  push:
+    branches:
+      - feature/ca-cloud-p3-authority-evidence-r2-2508
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-24.04
+    env:
+      BASE_HEAD: 0916227707aa65b673195d554297bf8f8565d356
+    steps:
+      - name: Checkout P3 branch
+        uses: actions/checkout@v6
+        with:
+          ref: feature/ca-cloud-p3-authority-evidence-r2-2508
+          fetch-depth: 0
+
+      - name: Assert exact governed base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_HEAD"
+          git merge-base --is-ancestor "$BASE_HEAD" HEAD
+          test -z "$(git status --porcelain)"
+
+      - name: Apply exact P3 projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path.cwd()
+          cfg_path = root / "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json"
+          verifier_path = root / "apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py"
+          contract_path = root / "apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md"
+
+          head = "0916227707aa65b673195d554297bf8f8565d356"
+          tree = "ad0ff1770eadaee0e5ae717ba7c806da029f9287"
+          repo_identity = "repo:7a9a5f159e04eb0c42438ec4a49112c7eafe9340ab2cbd377e68b0a0bbf4f722"
+          pack_id = "cap.5bc981d182e326a6b684"
+          pack_checksum = "sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b"
+          pack_request = "15b6696219f49020620d2f94bdb8aecf9e7dbf5d5a9035cb44dc97ebba95873c"
+          authority_lock = "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+          evidence_lock = "sha256:7c8470e667d6e89d8c7ebfb6922139a8d7b23c3788a800f70916f7c3c3f80981"
+          report_digest = "sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa"
+          bundle_digest = "sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20"
+          boundaries = [
+              "authorization for the Cloud projection to mutate repository source",
+              "production readiness",
+              "hosted multi-tenant execution",
+              "enterprise IAM or security readiness",
+              "human usefulness",
+              "independent-agent verification",
+          ]
+
+          cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+          generated = cfg.setdefault("generatedFrom", {})
+          generated["authorityEvidenceProjectionAuthority"] = {
+              "baseHead": head,
+              "baseTree": tree,
+              "profile": "ca-cloud-authority-evidence-p3-v4",
+              "authorityRunId": 32878086011,
+              "authorityArtifactId": 9574731927,
+              "authorityArtifactDigest": "sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e",
+              "authorityRequestDigest": "9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74",
+              "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+              "laneCount": 2,
+              "requiredAuthorityCoverage": "100%",
+              "blockers": 0,
+              "repoDriftStable": True,
+              "mutationGateRunId": 32878629219,
+              "mutationGateArtifactId": 9574892311,
+              "mutationGateArtifactDigest": "sha256:fde3bd4996cdf77e14637343975379a89ebb2de05d02711b9359d720bbdca4b7",
+              "evidenceRunId": 32878380486,
+              "evidenceArtifactId": 9574817118,
+              "evidenceArtifactDigest": "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995",
+          }
+
+          cp = cfg.setdefault("controlPlane", {})
+          cp["authorityPacks"] = {
+              "status": "SOURCE_VERIFIED_READ_ONLY",
+              "items": [{
+                  "Pack": pack_id,
+                  "Repository": "prismahitech/hitech-os",
+                  "ReferenceState": "SOURCE_VERIFIED_REFERENCE",
+                  "packSchemaVersion": "code_atlas_agent_authority_pack.v1",
+                  "packChecksum": pack_checksum,
+                  "preparationDecision": "PASS",
+                  "provenance": {
+                      "repoHead": head,
+                      "repoTree": tree,
+                      "repositoryIdentity": repo_identity,
+                      "requestDigest": pack_request,
+                      "authorityDigest": authority_lock,
+                      "evidenceDigest": evidence_lock,
+                      "policyDigest": None,
+                  },
+                  "readOnly": True,
+                  "referenceOnly": True,
+                  "productionCertified": False,
+                  "certifiable": False,
+                  "doesNotProve": boundaries,
+              }],
+              "projectionRule": "Reference only canonical Code Atlas Authority Pack output bound to exact repository HEAD/tree, pack checksum, request digest and compatibility locks. Cloud Center neither generates the pack nor gains repository mutation authority from the reference.",
+              "nextGate": "Authority Pack and Evidence references are source-backed; next map Change Assurance entitlements onto the existing licensing owner without changing license mutation semantics.",
+          }
+          cp["evidenceReferences"] = {
+              "status": "SOURCE_VERIFIED_READ_ONLY",
+              "items": [{
+                  "Repository": "prismahitech/hitech-os",
+                  "ReferenceState": "SOURCE_VERIFIED_REFERENCE",
+                  "verificationSchemaVersion": "code_atlas_change_verification.v1",
+                  "verificationDecision": "PASS",
+                  "verificationReportDigest": report_digest,
+                  "bundleSchemaVersion": "code_atlas_portable_evidence_bundle.v1",
+                  "bundleManifestDigest": bundle_digest,
+                  "packId": pack_id,
+                  "packChecksum": pack_checksum,
+                  "provenance": {
+                      "repoHead": head,
+                      "repoTree": tree,
+                      "repositoryIdentity": repo_identity,
+                      "requestDigest": pack_request,
+                      "workflowRunId": 32878380486,
+                      "artifactId": 9574817118,
+                      "artifactDigest": "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995",
+                  },
+                  "readOnly": True,
+                  "referenceOnly": True,
+                  "productionCertified": False,
+                  "certifiable": False,
+                  "doesNotProve": boundaries,
+              }],
+              "projectionRule": "Reference only immutable Code Atlas verification and portable evidence bundle outputs. PASS is preserved as the bounded verification decision and is not promoted into production certification, human usefulness, independent verification or repository mutation authority.",
+              "nextGate": "Map Change Assurance entitlements onto the existing licensing owner; do not rebuild licensing or collections.",
+          }
+          if isinstance(cp.get("analysisRuns"), dict):
+              cp["analysisRuns"]["nextGate"] = "Authority Pack and Evidence references are now source-backed. Next map Change Assurance entitlements onto the existing licensing owner without changing licensing mutation semantics."
+          cfg_path.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          verifier = verifier_path.read_text(encoding="utf-8")
+          marker = 'ANALYSIS_RUN_ENGINE_STATUS = "PASS_UNIVERSAL_INTELLIGENCE_SOURCE_READY"\n'
+          addition = marker + '''\nAUTHORITY_EVIDENCE_CONNECTED_STATUS = "SOURCE_VERIFIED_READ_ONLY"\nAUTHORITY_EVIDENCE_PROFILE = "ca-cloud-authority-evidence-p3-v4"\nAUTHORITY_EVIDENCE_HEAD = "0916227707aa65b673195d554297bf8f8565d356"\nAUTHORITY_EVIDENCE_TREE = "ad0ff1770eadaee0e5ae717ba7c806da029f9287"\nAUTHORITY_EVIDENCE_REPOSITORY_IDENTITY = "repo:7a9a5f159e04eb0c42438ec4a49112c7eafe9340ab2cbd377e68b0a0bbf4f722"\nAUTHORITY_EVIDENCE_AUTHORITY_RUN = 32878086011\nAUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT = 9574731927\nAUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT_DIGEST = "sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e"\nAUTHORITY_EVIDENCE_AUTHORITY_REQUEST_DIGEST = "9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74"\nAUTHORITY_EVIDENCE_GATE_RUN = 32878629219\nAUTHORITY_EVIDENCE_GATE_ARTIFACT = 9574892311\nAUTHORITY_EVIDENCE_GATE_ARTIFACT_DIGEST = "sha256:fde3bd4996cdf77e14637343975379a89ebb2de05d02711b9359d720bbdca4b7"\nAUTHORITY_EVIDENCE_RUN = 32878380486\nAUTHORITY_EVIDENCE_ARTIFACT = 9574817118\nAUTHORITY_EVIDENCE_ARTIFACT_DIGEST = "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995"\nAUTHORITY_PACK_ID = "cap.5bc981d182e326a6b684"\nAUTHORITY_PACK_CHECKSUM = "sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b"\nAUTHORITY_PACK_REQUEST_DIGEST = "15b6696219f49020620d2f94bdb8aecf9e7dbf5d5a9035cb44dc97ebba95873c"\nAUTHORITY_LOCK_DIGEST = "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"\nEVIDENCE_LOCK_DIGEST = "sha256:7c8470e667d6e89d8c7ebfb6922139a8d7b23c3788a800f70916f7c3c3f80981"\nVERIFICATION_REPORT_DIGEST = "sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa"\nEVIDENCE_BUNDLE_MANIFEST_DIGEST = "sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20"\n'''
+          if marker not in verifier:
+              raise SystemExit("P3 verifier constant marker missing")
+          verifier = verifier.replace(marker, addition, 1)
+
+          old = '    analysis_projection_authority = generated_from.get("analysisRunProjectionAuthority", {})\n'
+          new = old + '    authority_evidence_projection_authority = generated_from.get("authorityEvidenceProjectionAuthority", {})\n'
+          if old not in verifier:
+              raise SystemExit("P3 verifier generatedFrom marker missing")
+          verifier = verifier.replace(old, new, 1)
+
+          old_loop = '''    for key in ("authorityPacks", "evidenceReferences"):\n        check(f"unbound_is_explicit:{key}", cp.get(key, {}).get("status") == "NOT_CONNECTED", str(cp.get(key, {}).get("status")))\n'''
+          p3_checks = '''    p3_authority_exact = {\n        "authority_evidence_head": (authority_evidence_projection_authority.get("baseHead"), AUTHORITY_EVIDENCE_HEAD),\n        "authority_evidence_tree": (authority_evidence_projection_authority.get("baseTree"), AUTHORITY_EVIDENCE_TREE),\n        "authority_evidence_profile": (authority_evidence_projection_authority.get("profile"), AUTHORITY_EVIDENCE_PROFILE),\n        "authority_evidence_authority_run": (authority_evidence_projection_authority.get("authorityRunId"), AUTHORITY_EVIDENCE_AUTHORITY_RUN),\n        "authority_evidence_authority_artifact": (authority_evidence_projection_authority.get("authorityArtifactId"), AUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT),\n        "authority_evidence_authority_artifact_digest": (authority_evidence_projection_authority.get("authorityArtifactDigest"), AUTHORITY_EVIDENCE_AUTHORITY_ARTIFACT_DIGEST),\n        "authority_evidence_authority_request_digest": (authority_evidence_projection_authority.get("authorityRequestDigest"), AUTHORITY_EVIDENCE_AUTHORITY_REQUEST_DIGEST),\n        "authority_evidence_authority_result": (authority_evidence_projection_authority.get("authorityResult"), "PASS_COMPOSED_AUTHORITY_MESH"),\n        "authority_evidence_lanes": (authority_evidence_projection_authority.get("laneCount"), 2),\n        "authority_evidence_coverage": (authority_evidence_projection_authority.get("requiredAuthorityCoverage"), "100%"),\n        "authority_evidence_blockers": (authority_evidence_projection_authority.get("blockers"), 0),\n        "authority_evidence_drift": (authority_evidence_projection_authority.get("repoDriftStable"), True),\n        "authority_evidence_gate_run": (authority_evidence_projection_authority.get("mutationGateRunId"), AUTHORITY_EVIDENCE_GATE_RUN),\n        "authority_evidence_gate_artifact": (authority_evidence_projection_authority.get("mutationGateArtifactId"), AUTHORITY_EVIDENCE_GATE_ARTIFACT),\n        "authority_evidence_gate_artifact_digest": (authority_evidence_projection_authority.get("mutationGateArtifactDigest"), AUTHORITY_EVIDENCE_GATE_ARTIFACT_DIGEST),\n        "authority_evidence_evidence_run": (authority_evidence_projection_authority.get("evidenceRunId"), AUTHORITY_EVIDENCE_RUN),\n        "authority_evidence_evidence_artifact": (authority_evidence_projection_authority.get("evidenceArtifactId"), AUTHORITY_EVIDENCE_ARTIFACT),\n        "authority_evidence_evidence_artifact_digest": (authority_evidence_projection_authority.get("evidenceArtifactDigest"), AUTHORITY_EVIDENCE_ARTIFACT_DIGEST),\n    }\n    for name, (actual, expected) in p3_authority_exact.items():\n        check(name, actual == expected, f"actual={actual} expected={expected}")\n\n    p3_boundaries = [\n        "authorization for the Cloud projection to mutate repository source",\n        "production readiness",\n        "hosted multi-tenant execution",\n        "enterprise IAM or security readiness",\n        "human usefulness",\n        "independent-agent verification",\n    ]\n\n    authority_packs = cp.get("authorityPacks", {})\n    check("authority_packs_state", authority_packs.get("status") == AUTHORITY_EVIDENCE_CONNECTED_STATUS, str(authority_packs.get("status")))\n    pack_rows = authority_packs.get("items")\n    check("authority_pack_rows_exactly_one", isinstance(pack_rows, list) and len(pack_rows) == 1, f"count={len(pack_rows) if isinstance(pack_rows, list) else 'invalid'}")\n    if isinstance(pack_rows, list) and len(pack_rows) == 1 and isinstance(pack_rows[0], dict):\n        row = pack_rows[0]\n        provenance = row.get("provenance") if isinstance(row.get("provenance"), dict) else {}\n        exact = {\n            "authority_pack_id": (row.get("Pack"), AUTHORITY_PACK_ID),\n            "authority_pack_repository": (row.get("Repository"), generated_from.get("repository")),\n            "authority_pack_reference_state": (row.get("ReferenceState"), "SOURCE_VERIFIED_REFERENCE"),\n            "authority_pack_schema": (row.get("packSchemaVersion"), "code_atlas_agent_authority_pack.v1"),\n            "authority_pack_checksum": (row.get("packChecksum"), AUTHORITY_PACK_CHECKSUM),\n            "authority_pack_preparation_decision": (row.get("preparationDecision"), "PASS"),\n            "authority_pack_head": (provenance.get("repoHead"), AUTHORITY_EVIDENCE_HEAD),\n            "authority_pack_tree": (provenance.get("repoTree"), AUTHORITY_EVIDENCE_TREE),\n            "authority_pack_repository_identity": (provenance.get("repositoryIdentity"), AUTHORITY_EVIDENCE_REPOSITORY_IDENTITY),\n            "authority_pack_request_digest": (provenance.get("requestDigest"), AUTHORITY_PACK_REQUEST_DIGEST),\n            "authority_pack_authority_lock": (provenance.get("authorityDigest"), AUTHORITY_LOCK_DIGEST),\n            "authority_pack_evidence_lock": (provenance.get("evidenceDigest"), EVIDENCE_LOCK_DIGEST),\n            "authority_pack_policy_lock": (provenance.get("policyDigest"), None),\n            "authority_pack_read_only": (row.get("readOnly"), True),\n            "authority_pack_reference_only": (row.get("referenceOnly"), True),\n            "authority_pack_not_production": (row.get("productionCertified"), False),\n            "authority_pack_not_certifiable": (row.get("certifiable"), False),\n        }\n        for name, (actual, expected) in exact.items():\n            check(name, actual == expected, f"actual={actual} expected={expected}")\n        pack_dnp = row.get("doesNotProve") if isinstance(row.get("doesNotProve"), list) else []\n        for boundary in p3_boundaries:\n            check(f"authority_pack_does_not_prove:{boundary}", boundary in pack_dnp, str(pack_dnp))\n        check("authority_pack_forbidden_fields_absent", not forbidden_repository_fields(row), str(forbidden_repository_fields(row)))\n    pack_rule = str(authority_packs.get("projectionRule", ""))\n    check("authority_pack_projection_rule_reference_only", "Reference only" in pack_rule and "neither generates" in pack_rule and "mutation authority" in pack_rule, pack_rule)\n\n    evidence_refs = cp.get("evidenceReferences", {})\n    check("evidence_refs_state", evidence_refs.get("status") == AUTHORITY_EVIDENCE_CONNECTED_STATUS, str(evidence_refs.get("status")))\n    evidence_rows = evidence_refs.get("items")\n    check("evidence_rows_exactly_one", isinstance(evidence_rows, list) and len(evidence_rows) == 1, f"count={len(evidence_rows) if isinstance(evidence_rows, list) else 'invalid'}")\n    if isinstance(evidence_rows, list) and len(evidence_rows) == 1 and isinstance(evidence_rows[0], dict):\n        row = evidence_rows[0]\n        provenance = row.get("provenance") if isinstance(row.get("provenance"), dict) else {}\n        exact = {\n            "evidence_repository": (row.get("Repository"), generated_from.get("repository")),\n            "evidence_reference_state": (row.get("ReferenceState"), "SOURCE_VERIFIED_REFERENCE"),\n            "evidence_verification_schema": (row.get("verificationSchemaVersion"), "code_atlas_change_verification.v1"),\n            "evidence_verification_decision": (row.get("verificationDecision"), "PASS"),\n            "evidence_report_digest": (row.get("verificationReportDigest"), VERIFICATION_REPORT_DIGEST),\n            "evidence_bundle_schema": (row.get("bundleSchemaVersion"), "code_atlas_portable_evidence_bundle.v1"),\n            "evidence_bundle_digest": (row.get("bundleManifestDigest"), EVIDENCE_BUNDLE_MANIFEST_DIGEST),\n            "evidence_pack_id": (row.get("packId"), AUTHORITY_PACK_ID),\n            "evidence_pack_checksum": (row.get("packChecksum"), AUTHORITY_PACK_CHECKSUM),\n            "evidence_head": (provenance.get("repoHead"), AUTHORITY_EVIDENCE_HEAD),\n            "evidence_tree": (provenance.get("repoTree"), AUTHORITY_EVIDENCE_TREE),\n            "evidence_repository_identity": (provenance.get("repositoryIdentity"), AUTHORITY_EVIDENCE_REPOSITORY_IDENTITY),\n            "evidence_request_digest": (provenance.get("requestDigest"), AUTHORITY_PACK_REQUEST_DIGEST),\n            "evidence_workflow_run": (provenance.get("workflowRunId"), AUTHORITY_EVIDENCE_RUN),\n            "evidence_artifact": (provenance.get("artifactId"), AUTHORITY_EVIDENCE_ARTIFACT),\n            "evidence_artifact_digest": (provenance.get("artifactDigest"), AUTHORITY_EVIDENCE_ARTIFACT_DIGEST),\n            "evidence_read_only": (row.get("readOnly"), True),\n            "evidence_reference_only": (row.get("referenceOnly"), True),\n            "evidence_not_production": (row.get("productionCertified"), False),\n            "evidence_not_certifiable": (row.get("certifiable"), False),\n        }\n        for name, (actual, expected) in exact.items():\n            check(name, actual == expected, f"actual={actual} expected={expected}")\n        evidence_dnp = row.get("doesNotProve") if isinstance(row.get("doesNotProve"), list) else []\n        for boundary in p3_boundaries:\n            check(f"evidence_does_not_prove:{boundary}", boundary in evidence_dnp, str(evidence_dnp))\n        check("evidence_forbidden_fields_absent", not forbidden_repository_fields(row), str(forbidden_repository_fields(row)))\n    evidence_rule = str(evidence_refs.get("projectionRule", ""))\n    check("evidence_projection_rule_bounded_pass", "PASS is preserved" in evidence_rule and "not promoted" in evidence_rule and "mutation authority" in evidence_rule, evidence_rule)\n'''
+          if old_loop not in verifier:
+              raise SystemExit("P3 verifier unbound loop marker missing")
+          verifier = verifier.replace(old_loop, p3_checks, 1)
+          verifier_path.write_text(verifier, encoding="utf-8")
+
+          contract = contract_path.read_text(encoding="utf-8")
+          old_intro = "The V1 surface is read-only and fail-closed. Repository and Analysis Run projection rows may appear only when bound to separately governed source evidence. Authority Pack and Evidence Report datasets remain `NOT_CONNECTED` until their real adapters are separately governed and implemented."
+          new_intro = "The V1 surface is read-only and fail-closed. Repository, Analysis Run, Authority Pack and Evidence Report projection rows may appear only when bound to separately governed source evidence. Entitlements remain pending the separately governed shared-owner mapping."
+          if old_intro not in contract: raise SystemExit("P3 contract intro marker missing")
+          contract = contract.replace(old_intro, new_intro, 1)
+
+          old_owner = "P1 and P2 are projection adapters only. They do not become new repository, analysis, authority, verification, licensing, billing or registration engines."
+          new_owner = "P1, P2 and P3 are projection adapters only. They do not become new repository, analysis, Authority Pack generation, verification, evidence generation, licensing, billing or registration engines."
+          if old_owner not in contract: raise SystemExit("P3 contract ownership marker missing")
+          contract = contract.replace(old_owner, new_owner, 1)
+
+          section_anchor = "## Browser/runtime authority gate\n"
+          p3_section = '''## Authority Pack + Evidence P3 projection contract\n\nP3 is a reference adapter over existing Code Atlas outputs. It does not add a second Authority Pack generator, verification engine, evidence bundle generator or mutation API.\n\nFresh P3 authority and mutation authorization:\n\n- exact base: `main@0916227707aa65b673195d554297bf8f8565d356` / tree `ad0ff1770eadaee0e5ae717ba7c806da029f9287`\n- Authority Mesh run: `32878086011`\n- Authority Mesh artifact: `9574731927`\n- Authority Mesh artifact digest: `sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e`\n- Authority Mesh request digest: `9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74`\n- composed result: `PASS_COMPOSED_AUTHORITY_MESH`\n- lanes: `2/2 PASS`\n- required authority coverage: `100%`\n- blockers: `0`\n- exact mutation-gate run: `32878629219`\n- mutation-gate artifact: `9574892311`\n- mutation-gate artifact digest: `sha256:fde3bd4996cdf77e14637343975379a89ebb2de05d02711b9359d720bbdca4b7`\n\nFresh immutable Code Atlas P3 evidence:\n\n- workflow run: `32878380486`\n- evidence artifact: `9574817118`\n- evidence artifact digest: `sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995`\n- Authority Pack ID: `cap.5bc981d182e326a6b684`\n- Authority Pack checksum: `sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b`\n- verification decision: `PASS`\n- verification report digest: `sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa`\n- portable evidence bundle manifest digest: `sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20`\n- `readOnly=true`\n- `referenceOnly=true`\n- `productionCertified=false`\n- `certifiable=false`\n\nThe Cloud projection preserves `PASS` only as the bounded verification decision for that exact pack/snapshot. It does not prove authorization for the Cloud projection to mutate repository source, production readiness, hosted multi-tenant execution, enterprise IAM/security readiness, human usefulness or independent-agent verification. Missing, stale, contradictory or tampered pack/report provenance is fail-closed.\n\n'''
+          if section_anchor not in contract: raise SystemExit("P3 contract browser section marker missing")
+          contract = contract.replace(section_anchor, p3_section + section_anchor, 1)
+
+          old_boundary = "The P2 evidence also explicitly does not prove production readiness, hosted multi-tenant execution, enterprise IAM/security readiness, human usefulness, independent-agent verification, or authorization to mutate the repository."
+          if old_boundary not in contract: raise SystemExit("P3 no-fake-green marker missing")
+          contract = contract.replace(old_boundary, old_boundary + "\n\nThe P3 Authority Pack/Evidence references additionally remain `readOnly` and `referenceOnly`; their bounded `PASS` verification result is not mutation authority and is not a production, enterprise, usefulness or independent-agent claim.", 1)
+
+          old_gates = '''1. read-only repository registry adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n2. real Code Atlas analysis-run projection: `IMPLEMENTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;\n3. Authority Pack and Evidence Report reference adapter: `NEXT`;\n4. Change Intelligence entitlement projection from the existing licensing owner: pending P3;\n5. customer-input ROI instrumentation: pending entitlement-boundary review;'''
+          new_gates = '''1. read-only repository registry adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n2. real Code Atlas analysis-run projection: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n3. Authority Pack and Evidence Report reference adapter: `IMPLEMENTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;\n4. Change Assurance entitlement projection from the existing licensing owner: `NEXT`;\n5. customer-input ROI projection: pending entitlement-boundary review and real customer inputs;'''
+          if old_gates not in contract: raise SystemExit("P3 next-gates marker missing")
+          contract = contract.replace(old_gates, new_gates, 1)
+
+          old_p3 = "P3 must reuse the existing Authority Pack and Evidence Report owners and project references only. It must not reconstruct prepare/verify/reporting logic in Cloud Center."
+          if old_p3 not in contract: raise SystemExit("P3 closure marker missing")
+          contract = contract.replace(old_p3, "P3 reuses the existing Authority Pack and Evidence Report owners and projects references only. It does not reconstruct prepare/verify/reporting logic in Cloud Center. The next internal gate is the shared-owner entitlement mapping; licensing mutation semantics remain outside this vertical.", 1)
+
+          old_close = "Factory Ledger and Evidence Index are not modified by this P2 implementation branch. P2 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow."
+          if old_close not in contract: raise SystemExit("P3 governance closure marker missing")
+          contract = contract.replace(old_close, "Factory Ledger and Evidence Index are not modified by this P3 implementation branch. P3 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow.", 1)
+          contract_path.write_text(contract, encoding="utf-8")
+          PY
+
+      - name: Remove one-shot workflow from final tree
+        shell: bash
+        run: git rm .github/workflows/ca-cloud-p3-finalize-r2.yml
+
+      - name: Assert exact scope and validate
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=$(printf '%s\n' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json' \
+            'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md' \
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py' | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          python -m py_compile apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
+          python -m json.tool 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json' >/dev/null
+          python apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
+
+      - name: Commit and push final P3 head
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit -m "feat(ca): project Authority Pack and Evidence references"
+          test "$(git diff --name-only "$BASE_HEAD"...HEAD | wc -l | tr -d ' ')" = "3"
+          git push origin HEAD:feature/ca-cloud-p3-authority-evidence-r2-2508
