@@ -55,7 +55,8 @@ cdp.on("Log.entryAdded",p=>{
   const text=String(entry.text||"");
   const url=String(entry.url||"");
   const genericAccessory404=text==="Failed to load resource: the server responded with a status of 404 (Not Found)";
-  if(entry.level==="error"&&!text.includes("favicon")&&!(genericAccessory404&&!url)) consoleErrors.push(`log:${text}${url?` @ ${url}`:""}`);
+  const faviconAccessory=url.endsWith("/favicon.ico");
+  if(entry.level==="error"&&!text.includes("favicon")&&!faviconAccessory&&!(genericAccessory404&&!url)) consoleErrors.push(`log:${text}${url?` @ ${url}`:""}`);
 });
 cdp.on("Network.responseReceived",p=>{
   const response=p.response||{};
