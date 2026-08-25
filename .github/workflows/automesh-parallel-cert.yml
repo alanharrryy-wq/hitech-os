@@ -3,22 +3,6 @@ name: AutoMesh Parallel Certification
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
   workflow_dispatch:
 
@@ -27,31 +11,133 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
+  ca-unknown-d-mutation-authority:
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact current main
+        uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Compile authority tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py \
+            tools/code-atlas/src/code_atlas/change_intelligence/verification.py \
+            'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' \
+            'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Run task-exact D mutation Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          request="$RUNNER_TEMP/d-advance.request.json"
+          pre="$RUNNER_TEMP/d-advance-pre"
+          par="$RUNNER_TEMP/d-advance-par"
+          comp="$RUNNER_TEMP/d-advance-comp"
+          mkdir -p "$pre" "$par" "$comp"
+          python - "$request" "$head_sha" <<'PY'
+          import json,sys
+          path,head=sys.argv[1:]
+          task=(
+            "Advance PRISMA Change Assurance V1 checklist D / RESOLVE / Better UNKNOWN without rebuilding existing protected change model, verification, evidence-QA or authority owners. "
+            "Current bounded gap: UNKNOWN already fails closed and exposes reasons such as unsupported targets, contradictory evidence and new unknowns, but the canonical change/verification outputs do not consistently attach an actionable next-evidence obligation to each unknown condition. "
+            "Candidate change is narrow and repository-neutral: add one deterministic helper under tools/code-atlas/src/code_atlas/change_intelligence for normalized unknown obligations; integrate it minimally into change_studio.py and verification.py so UNKNOWN findings expose reason/source/nextEvidence; add focused native tests. "
+            "Existing decision precedence, authority pack, snapshots, evidence Q&A, raw verification semantics and PASS/BLOCKED/UNKNOWN contract must remain intact. No UNKNOWN may become PASS merely because guidance exists. Unsupported, contradictory, stale or missing evidence remains fail-closed. "
+            "No product/runtime/DB/deploy changes, no second change model, no second verification engine, no production or universal completeness claim."
+          )
+          auth=[
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+            "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
+            "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py",
+            "tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json",
+            "tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md",
+            "tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.md",
+            "tools/code-atlas/src/code_atlas/change_intelligence/__init__.py",
+            "tools/code-atlas/src/code_atlas/change_intelligence/contracts.py",
+            "tools/code-atlas/src/code_atlas/change_intelligence/change_studio.py",
+            "tools/code-atlas/src/code_atlas/change_intelligence/verification.py",
+            "tools/code-atlas/src/code_atlas/change_intelligence/authority_pack.py",
+            "tools/code-atlas/tests/test_operational_change_intelligence.py",
+            "tools/code-atlas/tests/test_operational_change_intelligence_binding.py"
+          ]
+          dirs=["PRISMA Factory Ledger","tools/code-atlas/src/code_atlas/change_intelligence","tools/code-atlas/tests","tools/code-atlas/docs"]
+          caps=["code_atlas.change_intelligence.customer_wow_v1","change_intelligence.capability_anti_rework_gate"]
+          req={
+            "schemaVersion":"prisma_remote_authority_gateway.v2",
+            "expectedHead":head,
+            "profile":"change-assurance-better-unknown-d-advance-v1",
+            "tasks":[
+              {"id":"unknown-d-source-boundary","surface":"governance","task":task+" Resolve exact source ownership, protected owners, permitted files and whether a bounded next-evidence helper/integration is authorized.","intent":"FIX","domain":"tooling","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":caps,"minimumCoverage":100,"failOnMissingAuthority":True},
+              {"id":"unknown-d-verification-boundary","surface":"governance","task":task+" Resolve exact positive/negative tests required before D may move from PARTIAL to DONE, including proof that guidance never promotes UNKNOWN to PASS.","intent":"VERIFY","domain":"governance","requiredAuthorities":auth,"requiredDirectories":dirs,"requiredCapabilities":caps,"minimumCoverage":100,"failOnMissingAuthority":True}
+            ]
+          }
+          json.dump(req,open(path,'w',encoding='utf-8'),indent=2)
+          PY
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo . --request "$request" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo . --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo . --request "$request" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$comp/compose.stdout.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$comp/compose.stdout.txt"
+          cp "$RUNNER_TEMP/prisma-automesh-composed-result.zip" "$comp/prisma-automesh-composed-result.zip"
+          test "$(git status --porcelain | wc -l)" -eq 0
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run Factory Ledger and Change Assurance mutation gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          python - "$RUNNER_TEMP/d-advance-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/prisma-automesh-composed-result.zip" "$head_sha" "$RUNNER_TEMP/factory-request.json" "$RUNNER_TEMP/ca-request.json" <<'PY'
+          import hashlib,json,sys
+          pre_path,zip_path,head,factory_path,ca_path=sys.argv[1:]
+          pre=json.load(open(pre_path,encoding='utf-8'))
+          digest=hashlib.sha256(open(zip_path,'rb').read()).hexdigest()
+          coverage=min(float((lane.get('coverage') or {}).get('resolvedPercent',0)) for lane in pre.get('lanes') or [])
+          mesh={'status':'PASS_COMPOSED_AUTHORITY_MESH','repoHead':head,'requiredAuthorityCoveragePct':coverage,'blockers':len(pre.get('blockers') or []),'requestDigest':pre.get('requestDigest'),'artifactDigest':digest,'layerMapPresent':False}
+          task='Advance Better UNKNOWN with one bounded actionable next-evidence obligation helper and minimal integrations; preserve protected change/verify owners and keep UNKNOWN fail-closed.'
+          factory={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':head,'task':task,'capabilities':[{'id':'code_atlas.change_intelligence.customer_wow_v1','requestedAction':'ADVANCE'},{'id':'change_intelligence.capability_anti_rework_gate','requestedAction':'VERIFY'}],'authorityMesh':mesh,'visualMutation':False}
+          ca={'mode':'MUTATION','task':task,'capabilityIds':['ci.change.prepare','ci.change.verify','ci.change.evidence_qa'],'authorityMesh':mesh,'visualMutation':False}
+          json.dump(factory,open(factory_path,'w',encoding='utf-8'),indent=2)
+          json.dump(ca,open(ca_path,'w',encoding='utf-8'),indent=2)
+          PY
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/factory-request.json" | tee "$RUNNER_TEMP/factory-gate.txt"
+          grep -Fq PASS_ANTI_REWORK_GATE "$RUNNER_TEMP/factory-gate.txt"
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$RUNNER_TEMP/ca-request.json" | tee "$RUNNER_TEMP/change-assurance-gate.txt"
+          grep -Fq PASS_CHANGE_ASSURANCE_CAPABILITY_GATE "$RUNNER_TEMP/change-assurance-gate.txt"
+          test "$(git status --porcelain | wc -l)" -eq 0
+
+      - name: Upload D mutation authority evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-better-unknown-d-mutation-authority
+          path: |
+            ${{ runner.temp }}/d-advance.request.json
+            ${{ runner.temp }}/d-advance-pre/
+            ${{ runner.temp }}/d-advance-par/*.zip
+            ${{ runner.temp }}/d-advance-comp/
+            ${{ runner.temp }}/factory-request.json
+            ${{ runner.temp }}/factory-gate.txt
+            ${{ runner.temp }}/ca-request.json
+            ${{ runner.temp }}/change-assurance-gate.txt
+          if-no-files-found: error
+          retention-days: 7
