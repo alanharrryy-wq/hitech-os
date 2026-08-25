@@ -23,6 +23,23 @@
       "requiredAuthorityCoverage": "100%",
       "blockers": 0,
       "repoDriftStable": true
+    },
+    "analysisRunProjectionAuthority": {
+      "baseHead": "1a83d5decb4e946021b9acf95f1a49479d6abf19",
+      "profile": "ci-cloud-analysis-p2-v1",
+      "authorityRunId": 32857996548,
+      "authorityArtifactId": 9567071237,
+      "authorityArtifactDigest": "sha256:57ecf78ed943207dd9863656bdf0691973a9b6ab55dbe27b7337dde033f75f98",
+      "authorityRequestDigest": "2b7f419913ed27976aa58020fd2d0dabd4847f7aa24259a3eace3e5e1f4c1613",
+      "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true,
+      "evidenceRunId": 32858536493,
+      "evidenceArtifactId": 9567186079,
+      "evidenceArtifactDigest": "sha256:4696ca6b5d9bd9ee5672a0ce876607e5359d78a73d8142a7a64441c36eabc86c",
+      "engineArtifactSha256": "7dc6034b34638f3d3a699d52cf53c3357f0296f6d5630a156582548e2644e826"
     }
   },
   "product": {
@@ -185,12 +202,47 @@
       ],
       "projectionRule": "Only source-backed registrations with explicit authorization provenance may appear. Repository access is constrained to READ_ONLY even when the observed provider permission is broader.",
       "freshnessRule": "Authorization is a captured fact, not a perpetual permission claim. Re-check provider authority before private-repository execution or when evidence becomes stale.",
-      "nextGate": "Project real Code Atlas analysis-run manifests and statuses for source-backed registered repositories."
+      "nextGate": "Analysis Runs are source-backed. Next project Authority Pack and Evidence Report references without granting mutation authority."
     },
     "analysisRuns": {
-      "status": "NOT_CONNECTED",
-      "items": [],
-      "nextGate": "Project real engine run manifests and statuses; do not manufacture demo runs as production evidence."
+      "status": "SOURCE_VERIFIED_READ_ONLY",
+      "items": [
+        {
+          "Run": "code-atlas-discover-1a83d5de",
+          "Repository": "prismahitech/hitech-os",
+          "Intent": "DISCOVER",
+          "Status": "PASS_UNIVERSAL_INTELLIGENCE_SOURCE_READY",
+          "provenance": {
+            "repoHead": "1a83d5decb4e946021b9acf95f1a49479d6abf19",
+            "repoTree": "aef9288e64471d0f93b46bf1a83b1b3761a7ed87",
+            "profileId": "generic",
+            "domain": "runtime",
+            "requestDigest": "08e828680e7a1afdb26d37cf44e23f2a9fd718249c7011095644b9e9da9e0460",
+            "snapshotDigest": "c431cdbae2097a1b66b5ecece80c5851c757186babd3d7e749299c8252622a2a",
+            "engineArtifactSha256": "7dc6034b34638f3d3a699d52cf53c3357f0296f6d5630a156582548e2644e826"
+          },
+          "evidence": {
+            "workflowRunId": 32858536493,
+            "artifactId": 9567186079,
+            "artifactDigest": "sha256:4696ca6b5d9bd9ee5672a0ce876607e5359d78a73d8142a7a64441c36eabc86c"
+          },
+          "readOnly": true,
+          "derivedIndexAuthoritative": false,
+          "semanticRetrievalIsProof": false,
+          "profileMayInventTruth": false,
+          "productionCertified": false,
+          "doesNotProve": [
+            "production readiness",
+            "hosted multi-tenant execution",
+            "enterprise IAM or security readiness",
+            "human usefulness",
+            "independent-agent verification",
+            "authorization to mutate the repository"
+          ]
+        }
+      ],
+      "projectionRule": "Only immutable Code Atlas run evidence bound to repository HEAD/tree plus request, snapshot and artifact digests may be projected. Engine status is preserved verbatim and is not promoted by the Cloud surface.",
+      "nextGate": "Project Authority Pack and Evidence Report references from real bounded engine evidence."
     },
     "authorityPacks": {
       "status": "NOT_CONNECTED",
@@ -226,7 +278,10 @@
     "foundingGuardMonths": 3,
     "standardGuardTargetMonthlyMxn": 12500,
     "maturePilotTargetMxn": 35000,
-    "controlDesignPartnerMonthlyRangeMxn": [25000, 40000],
+    "controlDesignPartnerMonthlyRangeMxn": [
+      25000,
+      40000
+    ],
     "pricingEvidenceRule": "These values are commercial hypotheses or founding terms as documented. Do not present future targets as proven willingness-to-pay."
   },
   "safety": {
