@@ -1,0 +1,135 @@
+name: CA Cloud P3 Reanchor Mutation Gates
+
+on:
+  push:
+    branches:
+      - preflight/ca-cloud-p3-reanchor-2508
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_HEAD: 0916227707aa65b673195d554297bf8f8565d356
+    steps:
+      - name: Checkout exact governed main
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.SOURCE_HEAD }}
+          fetch-depth: 0
+
+      - name: Assert exact clean authority state
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_HEAD"
+          test -z "$(git status --porcelain)"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
+
+      - name: Record unrelated global ledger validation debt
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python 'PRISMA Factory Ledger/tools/verify_prisma_factory_ledger.py' > "$RUNNER_TEMP/global-ledger-baseline.txt" 2>&1
+          rc=$?
+          set -e
+          printf 'exitCode=%s\n' "$rc" >> "$RUNNER_TEMP/global-ledger-baseline.txt"
+          grep -q 'runtime.tablet.zero_idle_guard: invalid status LOCAL_SHADOW_VERIFIED' "$RUNNER_TEMP/global-ledger-baseline.txt"
+          grep -q 'visual.atlasfin.tablet_pos_cobrar: invalid status RUNTIME_VISUAL_CERTIFIED' "$RUNNER_TEMP/global-ledger-baseline.txt"
+          test "$rc" -ne 0
+
+      - name: Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/factory-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+            "mode": "MUTATION",
+            "expectedHead": "0916227707aa65b673195d554297bf8f8565d356",
+            "task": "Advance the existing Change Assurance Cloud Center with a reference-only Authority Pack and Evidence Report projection while reusing protected owners.",
+            "capabilities": [
+              {"id": "code_atlas.change_intelligence.customer_wow_v1", "requestedAction": "ADVANCE"},
+              {"id": "cloud_center.customer_registration_runtime", "requestedAction": "REUSE"},
+              {"id": "commercial.billing.collections", "requestedAction": "REUSE"}
+            ],
+            "visualMutation": false,
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "0916227707aa65b673195d554297bf8f8565d356",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74",
+              "artifactDigest": "sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/factory-request.json" | tee "$RUNNER_TEMP/factory-result.json"
+          grep -q 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/factory-result.json"
+
+      - name: Change Assurance capability mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ca-request.json" <<'JSON'
+          {
+            "mode": "MUTATION",
+            "capabilityIds": [
+              "ci.cloud.authority_evidence_projection",
+              "ci.change.authority_pack",
+              "ci.evidence.report_bundle"
+            ],
+            "task": "Advance the Cloud reference-only projection while reusing canonical Authority Pack and Evidence Report owners.",
+            "visualMutation": false,
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "0916227707aa65b673195d554297bf8f8565d356",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74",
+              "artifactDigest": "sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$RUNNER_TEMP/ca-request.json" | tee "$RUNNER_TEMP/ca-result.json"
+          grep -q 'PASS_CHANGE_ASSURANCE_CAPABILITY_GATE' "$RUNNER_TEMP/ca-result.json"
+
+      - name: Verify fresh P3 evidence identity constants
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/evidence-lock.json" <<'JSON'
+          {
+            "evidenceRunId": 32878380486,
+            "artifactId": 9574817118,
+            "artifactDigest": "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995",
+            "repoHead": "0916227707aa65b673195d554297bf8f8565d356",
+            "repoTree": "ad0ff1770eadaee0e5ae717ba7c806da029f9287",
+            "packId": "cap.5bc981d182e326a6b684",
+            "packChecksum": "sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b",
+            "verificationDecision": "PASS",
+            "verificationReportDigest": "sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa",
+            "bundleManifestDigest": "sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20",
+            "productionCertified": false,
+            "referenceOnly": true
+          }
+          JSON
+          python -m json.tool "$RUNNER_TEMP/evidence-lock.json" >/dev/null
+
+      - name: Upload gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-cloud-p3-reanchor-mutation-gates
+          path: |
+            ${{ runner.temp }}/factory-request.json
+            ${{ runner.temp }}/factory-result.json
+            ${{ runner.temp }}/ca-request.json
+            ${{ runner.temp }}/ca-result.json
+            ${{ runner.temp }}/global-ledger-baseline.txt
+            ${{ runner.temp }}/evidence-lock.json
+          if-no-files-found: error
+          retention-days: 14
