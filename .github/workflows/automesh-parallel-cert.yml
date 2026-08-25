@@ -50,50 +50,73 @@ jobs:
           python - "$RUNNER_TEMP/wave2-evidence.request.json" <<'PY'
           import json, sys
           head = "28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab"
-          authorities = [
+          base = [
             "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
             "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
             "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
             "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
             "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
             "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py",
-            "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+            "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+          ]
+          product = [
             "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
             "apps/terminal-de-venta-system/products/tablet/app/src/lib/pending-offline-sync/sync-panel-contract.ts",
             "apps/terminal-de-venta-system/products/tablet/app/src/server/pos-sync-panel/index.ts",
             "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/reconciliation.ts",
-            "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs",
-            ".github/workflows/tablet-sync-wave1-postmerge-evidence.yml"
+            "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs"
           ]
-          task = (
-            "TABLET_SYNC_WAVE2 postmerge evidence repair and certification only. "
-            "The product advance is already merged and must not be rebuilt. "
-            "Authorize only an evidence-only repair on branch evidence/tablet-sync-wave2-postmerge so the runtime carrier compares its own head against the exact merged Tablet product SHA instead of GitHub's moving pull_request merge-ref. "
+          task_common = (
+            "TABLET_SYNC_WAVE2 postmerge evidence repair and certification only. The product advance is already merged and must not be rebuilt. "
             "Allowed future evidence-branch writes are exactly .github/workflows/tablet-sync-wave2-postmerge-evidence.yml and .github/evidence/tablet-sync-wave2-capture.mjs. "
             "No Tablet product source, generated CSS/RIFAT, DB/schema/migration/Prisma generation, transport, PC/Mobile/Chart Lab/Shared UI, licensing, deploy, process or port mutation. "
-            "Certification must remain fail-closed, preserve 55/55 source truth, capture clean/pending/failed/retry/sent/acked/conflict/PC-offline/license-deny/unconfirmed screenshots, reject JS/React/console/server/non-accessory asset anomalies, and keep conflict review-only in Tablet with PC/Backoffice owner."
           )
           request = {
             "schemaVersion":"v2",
             "profile":"tablet-sync-wave2-evidence-repair-2508",
             "expectedHead":head,
-            "tasks":[{
-              "id":"tablet-sync-wave2-postmerge-evidence-repair",
-              "surface":"tablet",
-              "intent":"VERIFY",
-              "domain":"runtime",
-              "task":task,
-              "requiredAuthorities":authorities,
-              "requiredDirectories":[
-                "PRISMA Factory Ledger",
-                "apps/terminal-de-venta-system/products/tablet/app/components/sync",
-                "apps/terminal-de-venta-system/products/tablet/app/src/server",
-                ".github/workflows"
-              ],
-              "requiredCapabilities":["tablet.sync.runtime_truth"],
-              "minimumCoverage":100,
-              "failOnMissingAuthority":True
-            }]
+            "tasks":[
+              {
+                "id":"wave2-evidence-runtime-scope",
+                "surface":"tablet",
+                "intent":"VERIFY",
+                "domain":"runtime",
+                "task":task_common + "Authorize repair so the carrier proves its own evidence-branch diff against exact merged Tablet product SHA 1a83d5decb4e946021b9acf95f1a49479d6abf19 instead of trusting GitHub's moving pull_request merge-ref. Preserve 55/55 source truth and fail closed on scope drift.",
+                "requiredAuthorities":base + product + [".github/workflows/tablet-sync-wave1-postmerge-evidence.yml"],
+                "requiredDirectories":[
+                  "PRISMA Factory Ledger",
+                  "apps/terminal-de-venta-system/products/tablet/app/src/server",
+                  "apps/terminal-de-venta-system/products/tablet/app/components/sync",
+                  ".github/workflows"
+                ],
+                "requiredCapabilities":["tablet.sync.runtime_truth"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              },
+              {
+                "id":"wave2-evidence-browser-no-fake-green",
+                "surface":"tablet",
+                "intent":"VERIFY",
+                "domain":"visual",
+                "task":task_common + "Authorize browser evidence semantics only: capture clean, pending, failed, failed-retry-result, sent, acked, conflict, PC-offline, license-deny and unconfirmed states; reject JavaScript, React, console, server and non-accessory asset anomalies; allow only classified accessory-resource noise; keep conflict review-only in Tablet with PC/Backoffice owner and preserve local-first selling.",
+                "requiredAuthorities":base + [
+                  "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel-screen.tsx",
+                  "apps/terminal-de-venta-system/products/tablet/app/components/sync/pending-offline-sync-panel.module.css",
+                  "apps/terminal-de-venta-system/products/tablet/app/src/lib/pending-offline-sync/sync-panel-contract.ts",
+                  "apps/terminal-de-venta-system/products/tablet/app/tools/verify_tablet_sync_panel_truth_1808.mjs",
+                  ".github/workflows/tablet-sync-wave1-postmerge-evidence.yml"
+                ],
+                "requiredDirectories":[
+                  "PRISMA Factory Ledger",
+                  "apps/terminal-de-venta-system/products/tablet/app/components/sync",
+                  "apps/terminal-de-venta-system/products/tablet/app/tools",
+                  ".github/workflows"
+                ],
+                "requiredCapabilities":["tablet.sync.runtime_truth"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              }
+            ]
           }
           with open(sys.argv[1],"w",encoding="utf-8") as f:
             json.dump(request,f,ensure_ascii=False,indent=2); f.write("\n")
@@ -110,6 +133,8 @@ jobs:
           python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/wave2-evidence.request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/w2e-compose.txt"
           grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/w2e-compose.txt"
           test -f "$RUNNER_TEMP/w2e-comp/prisma-automesh-composed-result.zip"
+          grep -RIlE 'LAYER_MAP|Layer Map|layerMap' "$pre" "$par" "$RUNNER_TEMP/w2e-comp" > "$RUNNER_TEMP/w2e-layer-hits.txt"
+          test -s "$RUNNER_TEMP/w2e-layer-hits.txt"
           test -z "$(git status --porcelain)"
 
       - name: Run universal Factory Ledger mutation gate
@@ -127,7 +152,7 @@ jobs:
             "blockers":len(pre.get("blockers") or []),
             "requestDigest":report["requestDigest"],
             "artifactDigest":hashlib.sha256(open(sys.argv[3],"rb").read()).hexdigest(),
-            "layerMapPresent":False
+            "layerMapPresent":True
           }
           req={
             "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
@@ -156,6 +181,7 @@ jobs:
           cp "$RUNNER_TEMP/w2e-factory.request.json" "$out/"
           cp "$RUNNER_TEMP/w2e-factory-gate.txt" "$out/"
           cp "$RUNNER_TEMP/w2e-compose.txt" "$out/"
+          cp "$RUNNER_TEMP/w2e-layer-hits.txt" "$out/"
           cp "$RUNNER_TEMP/w2e-comp/prisma-automesh-composed-result.zip" "$out/"
           printf '%s\n' 'PASS_TABLET_SYNC_WAVE2_EVIDENCE_REPAIR_AUTHORITY' > "$out/FINAL_RESULT.txt"
 
