@@ -1,0 +1,155 @@
+name: CA Cloud P3 Immutable Evidence Reanchor
+
+on:
+  push:
+    branches:
+      - evidence/ca-cloud-p3-reanchor-2508
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+      PYTHONPATH: tools/code-atlas/src
+      SOURCE_HEAD: 0916227707aa65b673195d554297bf8f8565d356
+    steps:
+      - name: Checkout exact main evidence source
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.SOURCE_HEAD }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Generate canonical Authority Pack and verification report
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/ca-cloud-p3-evidence"
+          mkdir -p "$OUT"
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          from code_atlas.change_intelligence.bundle import build_portable_bundle_manifest
+          from code_atlas.change_intelligence.universal_binding import prepare_change, verify_prepared_change
+
+          root = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          out = Path(os.environ["RUNNER_TEMP"]) / "ca-cloud-p3-evidence"
+          source_head = os.environ["SOURCE_HEAD"]
+          head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+          tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=root, text=True).strip()
+          if head != source_head:
+              raise SystemExit(f"STALE_SOURCE_HEAD:{head}")
+          if subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip():
+              raise SystemExit("SOURCE_WORKTREE_NOT_CLEAN")
+
+          target = "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json"
+          prep = prepare_change(
+              root,
+              change_request="Reference-only PRISMA Change Assurance Cloud P3 projection of canonical Authority Pack and Evidence Report outputs; no repository mutation authority.",
+              target_paths=[target],
+              output_root=Path(os.environ["RUNNER_TEMP"]) / "p3-intelligence",
+              domain="runtime",
+              intent="BUILD",
+              workers=18,
+          )
+          pack = prep.get("authorityPack")
+          if prep.get("decision") != "PASS" or not isinstance(pack, dict):
+              raise SystemExit("P3_AUTHORITY_PACK_NOT_ISSUED:" + str(prep.get("decision")))
+          if prep.get("readOnly") is not True or prep.get("productionCertified") is not False:
+              raise SystemExit("P3_PREPARATION_BOUNDARY_INVALID")
+
+          report = verify_prepared_change(
+              prep,
+              root,
+              changed_paths=[],
+              produced_evidence=[],
+              output_root=Path(os.environ["RUNNER_TEMP"]) / "p3-verify-intelligence",
+              workers=18,
+          )
+          if report.get("decision") not in {"PASS", "BLOCKED", "UNKNOWN"}:
+              raise SystemExit("P3_VERIFICATION_DECISION_INVALID")
+          if report.get("productionCertified") is not False:
+              raise SystemExit("P3_VERIFICATION_BOUNDARY_INVALID")
+
+          def write(name, value):
+              p = out / name
+              p.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+              return p
+          pack_file = write("authority-pack.json", pack)
+          report_file = write("verification-report.json", report)
+
+          def desc(path, kind):
+              raw = path.read_bytes()
+              return {"name": path.name, "kind": kind, "digest": "sha256:" + hashlib.sha256(raw).hexdigest(), "size": len(raw)}
+
+          manifest = build_portable_bundle_manifest(
+              repository_snapshot=prep["repositorySnapshot"],
+              artifacts=[desc(pack_file, "authority-pack"), desc(report_file, "verification-report")],
+              purpose="PRISMA Change Assurance Cloud P3 immutable reference evidence",
+              pack_id=pack["packId"],
+              verification_report_digest=report["reportDigest"],
+          )
+          manifest_file = write("evidence-bundle-manifest.json", manifest)
+
+          projection = {
+              "schemaVersion": "prisma.change_assurance.cloud.p3.evidence.v1",
+              "repository": "prismahitech/hitech-os",
+              "repoHead": head,
+              "repoTree": tree,
+              "preparationDecision": prep["decision"],
+              "verificationDecision": report["decision"],
+              "packId": pack["packId"],
+              "packChecksum": pack["checksum"],
+              "packSchemaVersion": pack["schemaVersion"],
+              "requestDigest": pack["requestDigest"],
+              "repositoryIdentity": pack["repositoryIdentity"],
+              "commitIdentity": pack["commitIdentity"],
+              "treeIdentity": pack["treeIdentity"],
+              "compatibilityLocks": pack.get("compatibilityLocks", {}),
+              "verificationReportDigest": report["reportDigest"],
+              "bundleManifestDigest": manifest["manifestDigest"],
+              "bundleSchemaVersion": manifest["schemaVersion"],
+              "readOnly": True,
+              "referenceOnly": True,
+              "semanticRetrievalIsProof": False,
+              "impactRadiusIsAuthorization": False,
+              "certifiable": False,
+              "productionCertified": False,
+              "doesNotProve": [
+                  "authorization for the Cloud projection to mutate repository source",
+                  "production readiness",
+                  "hosted multi-tenant execution",
+                  "enterprise IAM or security readiness",
+                  "human usefulness",
+                  "independent-agent verification"
+              ]
+          }
+          projection_file = write("cloud-p3-projection-evidence.json", projection)
+
+          for p in (pack_file, report_file, manifest_file, projection_file):
+              print(f"{p.name} sha256={hashlib.sha256(p.read_bytes()).hexdigest()}")
+          print(json.dumps(projection, indent=2))
+
+          if subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip():
+              raise SystemExit("SOURCE_MUTATED_BY_EVIDENCE_RUN")
+          PY
+
+      - name: Upload immutable P3 evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-cloud-p3-authority-evidence-reanchor
+          path: ${{ runner.temp }}/ca-cloud-p3-evidence/**
+          if-no-files-found: error
+          retention-days: 14
