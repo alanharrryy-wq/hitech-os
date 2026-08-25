@@ -36,18 +36,25 @@ jobs:
 
       - name: Preserve evidence harness and pin exact product target
         shell: bash
+        env:
+          EVIDENCE_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
+          test -n "$EVIDENCE_HEAD"
+          git cat-file -e "$EVIDENCE_HEAD^{commit}"
           mkdir -p "$RUNNER_TEMP/wave2-harness"
-          cp .github/evidence/tablet-sync-wave2-capture.mjs "$RUNNER_TEMP/wave2-harness/capture.mjs"
-          python - <<'PY'
-          import subprocess
+          git show "$EVIDENCE_HEAD:.github/evidence/tablet-sync-wave2-capture.mjs" > "$RUNNER_TEMP/wave2-harness/capture.mjs"
+          python - "$TARGET_SHA" "$EVIDENCE_HEAD" <<'PY'
+          import subprocess, sys
+          target, evidence_head = sys.argv[1:3]
           allowed = {
             '.github/workflows/tablet-sync-wave2-postmerge-evidence.yml',
             '.github/evidence/tablet-sync-wave2-capture.mjs',
           }
-          target = '1a83d5decb4e946021b9acf95f1a49479d6abf19'
-          changed = set(subprocess.check_output(['git','diff','--name-only',target+'..HEAD'], text=True).splitlines())
+          merge_base = subprocess.check_output(['git','merge-base',target,evidence_head], text=True).strip()
+          if merge_base != target:
+              raise SystemExit(f'EVIDENCE_CARRIER_BASE_DRIFT:{merge_base}')
+          changed = set(subprocess.check_output(['git','diff','--name-only',target+'..'+evidence_head], text=True).splitlines())
           if changed != allowed:
               raise SystemExit(f'EVIDENCE_CARRIER_SCOPE_DRIFT:{sorted(changed)}')
           PY
@@ -56,7 +63,7 @@ jobs:
           test -z "$(git status --porcelain)"
           mkdir -p "$EVIDENCE_DIR"
           cat > "$EVIDENCE_DIR/scope.json" <<JSON
-          {"schemaVersion":"tablet.sync.wave2.postmerge.evidence.v1","targetSha":"$TARGET_SHA","productMutation":false,"dbMutation":false,"prismaGenerate":false,"runtime":"runner-local-isolated","browserFixtureTransport":"CDP Fetch interception","screenshotsRequired":true}
+          {"schemaVersion":"tablet.sync.wave2.postmerge.evidence.v1","targetSha":"$TARGET_SHA","evidenceCarrierHead":"$EVIDENCE_HEAD","authorityRun":32865768339,"authorityArtifact":9570064390,"authorityDigest":"sha256:88c0c0ab8274d4cf94b222dc98e650f20cf0ddafd916f8b73d2ecafdb1df2762","productMutation":false,"dbMutation":false,"prismaGenerate":false,"runtime":"runner-local-isolated","browserFixtureTransport":"CDP Fetch interception","screenshotsRequired":true}
           JSON
 
       - uses: pnpm/action-setup@v4
@@ -155,7 +162,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node -e 'const fs=require("fs"); const p=process.argv[1]; const x=JSON.parse(fs.readFileSync(p,"utf8")); if((x.runtimeErrors||[]).length || (x.consoleErrors||[]).length) process.exit(1)' "$EVIDENCE_DIR/browser-runtime-errors.json"
+          node -e 'const fs=require("fs"); const p=process.argv[1]; const x=JSON.parse(fs.readFileSync(p,"utf8")); if((x.runtimeErrors||[]).length || (x.consoleErrors||[]).length || (x.networkErrors||[]).length) process.exit(1)' "$EVIDENCE_DIR/browser-runtime-errors.json"
           if grep -E '(^|[^A-Za-z])(TypeError|ReferenceError|SyntaxError|Unhandled|Internal Server Error)([^A-Za-z]|$)|^[[:space:]]*⨯' "$EVIDENCE_DIR/server.log" > "$EVIDENCE_DIR/server-anomalies.log"; then
             cat "$EVIDENCE_DIR/server-anomalies.log"
             exit 1
