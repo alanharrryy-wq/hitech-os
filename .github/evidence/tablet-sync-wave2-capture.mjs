@@ -8,7 +8,7 @@ const shots = path.join(out, "screenshots");
 fs.mkdirSync(shots, { recursive: true });
 const NOW = "2026-08-25T14:20:00.000Z";
 let state = "clean";
-const runtimeErrors = [], consoleErrors = [], requests = [], manifest = [];
+const runtimeErrors = [], consoleErrors = [], networkErrors = [], requests = [], manifest = [];
 
 function item(status) {
   const remote = ["sent","acked","conflict"].includes(status);
@@ -50,7 +50,23 @@ await cdp.send("Emulation.setDeviceMetricsOverride",{width:1365,height:900,devic
 await cdp.send("Fetch.enable",{patterns:[{urlPattern:`${base}/api/*`,requestStage:"Request"}]});
 cdp.on("Runtime.exceptionThrown",p=>runtimeErrors.push(`exception:${p.exceptionDetails?.text||"unknown"}`));
 cdp.on("Runtime.consoleAPICalled",p=>{if(p.type==="error")consoleErrors.push((p.args||[]).map(x=>x.value??x.description??"").join(" ")||"console.error")});
-cdp.on("Log.entryAdded",p=>{if(p.entry?.level==="error"&&!String(p.entry?.text||"").includes("favicon"))consoleErrors.push(`log:${p.entry.text}`)});
+cdp.on("Log.entryAdded",p=>{
+  const entry=p.entry||{};
+  const text=String(entry.text||"");
+  const url=String(entry.url||"");
+  const genericAccessory404=text==="Failed to load resource: the server responded with a status of 404 (Not Found)";
+  if(entry.level==="error"&&!text.includes("favicon")&&!(genericAccessory404&&!url)) consoleErrors.push(`log:${text}${url?` @ ${url}`:""}`);
+});
+cdp.on("Network.responseReceived",p=>{
+  const response=p.response||{};
+  const statusCode=Number(response.status||0);
+  const url=String(response.url||"");
+  const type=String(p.type||"");
+  if(statusCode<400) return;
+  if(url.startsWith(`${base}/api/`)) return;
+  if(type==="Image"||type==="Other"||url.endsWith("/favicon.ico")) return;
+  networkErrors.push(`${statusCode} ${type||"Unknown"} ${url}`);
+});
 cdp.on("Fetch.requestPaused",async p=>{
   const u=new URL(p.request.url); requests.push(`${state} ${p.request.method} ${u.pathname}`); let code=200,payload;
   if(u.pathname==="/api/pos/sync/panel"){if(state==="unconfirmed"){code=503;payload={ok:false,error:"SYNC_PANEL_UNVERIFIED",message:"Estado de pendientes sin confirmar."}}else payload={ok:true,data:panel(state)}}
@@ -81,10 +97,10 @@ const cases=[
  ["license-deny",null,["Licencia detenida","Tablet pendiente","Pendientes al día"]],
  ["unconfirmed",null,["Cola sin confirmar","Estado de pendientes sin confirmar","—"]]
 ];
-for(const [s,filter,expects] of cases){state=s;const er=runtimeErrors.length,ce=consoleErrors.length;await cdp.send("Page.navigate",{url:`${base}/sync?wave2Evidence=${encodeURIComponent(s)}&t=${Date.now()}`});await wait("document.readyState === 'complete' && document.body && document.body.innerText.includes('Continuidad operativa')",`${s}:ready`);await new Promise(r=>setTimeout(r,650));if(filter)await click(filter);await openDetails();const body=await text();for(const x of expects)if(!body.includes(x))throw new Error(`ASSERT_TEXT_MISSING:${s}:${x}`);if(s==="conflict"&&body.includes("Reintento disponible"))throw new Error("CONFLICT_ADVERTISED_RETRY");if(["sent","acked","conflict"].includes(s)&&body.includes(`evt-${s}-01`))throw new Error(`RAW_EVENT_ID_VISIBLE:${s}`);if(runtimeErrors.length!==er)throw new Error(`RUNTIME_EXCEPTION:${s}:${runtimeErrors.slice(er).join(" | ")}`);if(consoleErrors.length!==ce)throw new Error(`CONSOLE_ERROR:${s}:${consoleErrors.slice(ce).join(" | ")}`);const name=`${String(manifest.length+1).padStart(2,"0")}-${s}.png`;await shot(name);manifest.push({state:s,screenshot:name,assertions:expects});if(s==="failed"){await click("Reintentar fallidos");await wait("document.body && document.body.innerText.includes('Reintento: 1 operación(es) preparadas.')","failed:retry-result",15000);await openDetails();const t=await text();if(!t.includes("PC no disponible"))throw new Error("RETRY_PC_UNAVAILABLE_COPY_MISSING");const n=`${String(manifest.length+1).padStart(2,"0")}-failed-retry-result.png`;await shot(n);manifest.push({state:"failed-retry-result",screenshot:n,assertions:["Reintento: 1 operación(es) preparadas.","PC no disponible"]})}}
+for(const [s,filter,expects] of cases){state=s;const er=runtimeErrors.length,ce=consoleErrors.length,ne=networkErrors.length;await cdp.send("Page.navigate",{url:`${base}/sync?wave2Evidence=${encodeURIComponent(s)}&t=${Date.now()}`});await wait("document.readyState === 'complete' && document.body && document.body.innerText.includes('Continuidad operativa')",`${s}:ready`);await new Promise(r=>setTimeout(r,650));if(filter)await click(filter);await openDetails();const body=await text();for(const x of expects)if(!body.includes(x))throw new Error(`ASSERT_TEXT_MISSING:${s}:${x}`);if(s==="conflict"&&body.includes("Reintento disponible"))throw new Error("CONFLICT_ADVERTISED_RETRY");if(["sent","acked","conflict"].includes(s)&&body.includes(`evt-${s}-01`))throw new Error(`RAW_EVENT_ID_VISIBLE:${s}`);if(runtimeErrors.length!==er)throw new Error(`RUNTIME_EXCEPTION:${s}:${runtimeErrors.slice(er).join(" | ")}`);if(consoleErrors.length!==ce)throw new Error(`CONSOLE_ERROR:${s}:${consoleErrors.slice(ce).join(" | ")}`);if(networkErrors.length!==ne)throw new Error(`NETWORK_ERROR:${s}:${networkErrors.slice(ne).join(" | ")}`);const name=`${String(manifest.length+1).padStart(2,"0")}-${s}.png`;await shot(name);manifest.push({state:s,screenshot:name,assertions:expects});if(s==="failed"){await click("Reintentar fallidos");await wait("document.body && document.body.innerText.includes('Reintento: 1 operación(es) preparadas.')","failed:retry-result",15000);await openDetails();const t=await text();if(!t.includes("PC no disponible"))throw new Error("RETRY_PC_UNAVAILABLE_COPY_MISSING");const n=`${String(manifest.length+1).padStart(2,"0")}-failed-retry-result.png`;await shot(n);manifest.push({state:"failed-retry-result",screenshot:n,assertions:["Reintento: 1 operación(es) preparadas.","PC no disponible"]})}}
 fs.writeFileSync(path.join(out,"screenshot-manifest.json"),JSON.stringify({targetSha:process.env.TARGET_SHA,viewport:"1365x900",screenshots:manifest},null,2)+"\n");
-fs.writeFileSync(path.join(out,"browser-runtime-errors.json"),JSON.stringify({runtimeErrors,consoleErrors},null,2)+"\n");
+fs.writeFileSync(path.join(out,"browser-runtime-errors.json"),JSON.stringify({runtimeErrors,consoleErrors,networkErrors},null,2)+"\n");
 fs.writeFileSync(path.join(out,"browser-api-requests.log"),requests.join("\n")+"\n");
-if(runtimeErrors.length||consoleErrors.length)throw new Error(`BROWSER_ANOMALIES runtime=${runtimeErrors.length} console=${consoleErrors.length}`);
+if(runtimeErrors.length||consoleErrors.length||networkErrors.length)throw new Error(`BROWSER_ANOMALIES runtime=${runtimeErrors.length} console=${consoleErrors.length} network=${networkErrors.length}`);
 console.log(`PASS_TABLET_SYNC_WAVE2_BROWSER_SCREENSHOTS ${manifest.length}/${manifest.length}`);
 cdp.ws.close();
