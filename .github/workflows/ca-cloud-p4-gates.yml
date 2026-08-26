@@ -1,0 +1,122 @@
+name: CA Cloud P4 Entitlement Mutation Gates
+
+on:
+  push:
+    branches:
+      - preflight/ca-cloud-p4-entitlements-2508
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_HEAD: 22c6fbc74774a1083721ccf225a537f87f38edc4
+    steps:
+      - name: Checkout exact governed main
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.SOURCE_HEAD }}
+          fetch-depth: 0
+
+      - name: Assert exact current main and authority state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$SOURCE_HEAD"
+          test "$(git rev-parse origin/main)" = "$SOURCE_HEAD"
+          test -z "$(git status --porcelain)"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
+
+      - name: Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/factory-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+            "mode": "MUTATION",
+            "expectedHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
+            "task": "Advance the existing Change Assurance Cloud Center entitlement adapter by projecting canonical licensing-owner facts read-only and fail-closed.",
+            "capabilities": [
+              {"id": "code_atlas.change_intelligence.customer_wow_v1", "requestedAction": "ADVANCE"},
+              {"id": "cloud_center.customer_registration_runtime", "requestedAction": "REUSE"},
+              {"id": "commercial.billing.collections", "requestedAction": "REUSE"},
+              {"id": "licensing.source_contract_alignment", "requestedAction": "REUSE"},
+              {"id": "licensing.customer_setup.plan_based_onboarding", "requestedAction": "REUSE"}
+            ],
+            "visualMutation": false,
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "9617a1941d0a9ae923ab3b848c2a92bb2f08efab72379b0e2c8952c56b68fea0",
+              "artifactDigest": "sha256:531f6ea13d79d6c2f5ac4bf9253899d3b50911ef750f50a887a3cf51b83eac0a"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/factory-request.json" | tee "$RUNNER_TEMP/factory-result.json"
+          grep -q 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/factory-result.json"
+
+      - name: Change Assurance capability mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ca-request.json" <<'JSON'
+          {
+            "mode": "MUTATION",
+            "capabilityIds": ["ci.cloud.entitlements_adapter"],
+            "task": "Advance the Cloud entitlement adapter using existing licensing-owner facts with explicit fail-closed absence semantics.",
+            "visualMutation": false,
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "9617a1941d0a9ae923ab3b848c2a92bb2f08efab72379b0e2c8952c56b68fea0",
+              "artifactDigest": "sha256:531f6ea13d79d6c2f5ac4bf9253899d3b50911ef750f50a887a3cf51b83eac0a"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$RUNNER_TEMP/ca-request.json" | tee "$RUNNER_TEMP/ca-result.json"
+          grep -q 'PASS_CHANGE_ASSURANCE_CAPABILITY_GATE' "$RUNNER_TEMP/ca-result.json"
+
+      - name: Lock P4 Authority Mesh evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/p4-authority.json" <<'JSON'
+          {
+            "runId": 32922678040,
+            "artifactId": 9590373311,
+            "artifactDigest": "sha256:531f6ea13d79d6c2f5ac4bf9253899d3b50911ef750f50a887a3cf51b83eac0a",
+            "composedArtifactSha256": "df595204e020ae9dc9fd8de8bbfdb92550fb3625bfbefcc5148beb17275a2aa6",
+            "requestDigest": "9617a1941d0a9ae923ab3b848c2a92bb2f08efab72379b0e2c8952c56b68fea0",
+            "repoHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
+            "repoTree": "266b9f768dda559a9a5c65727802782ae173b8e7",
+            "status": "PASS_COMPOSED_AUTHORITY_MESH",
+            "laneCount": 2,
+            "requiredAuthorityCoveragePct": 100,
+            "blockers": 0,
+            "readOnly": true,
+            "productionCertified": false
+          }
+          JSON
+          python -m json.tool "$RUNNER_TEMP/p4-authority.json" >/dev/null
+
+      - name: Upload gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-cloud-p4-entitlement-mutation-gates
+          path: |
+            ${{ runner.temp }}/factory-request.json
+            ${{ runner.temp }}/factory-result.json
+            ${{ runner.temp }}/ca-request.json
+            ${{ runner.temp }}/ca-result.json
+            ${{ runner.temp }}/p4-authority.json
+          if-no-files-found: error
+          retention-days: 14
