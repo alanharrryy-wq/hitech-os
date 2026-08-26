@@ -1123,39 +1123,47 @@
         "mobile",
         "governance"
       ],
-      "classification": "BUILD",
-      "status": "NOT_STARTED",
-      "stateLabel": "REGISTERED_CANON_BUILD_NOT_STARTED",
-      "doNotRebuild": false,
-      "nextGate": "Create the single aspirational PRISMA Mobile interface canon and retire only explicitly superseded competing interface/product specifications under a fresh task-exact Authority Mesh and MUTATION anti-rework gate. Preserve all Mobile product source, APIs, runtime, PWA behavior, data/security/sync/licensing contracts, verifiers, technical evidence and Atlas implementation maps.",
+      "classification": "DONE",
+      "status": "SOURCE_READY",
+      "stateLabel": "PASS_MOBILE_INTERFACE_CANON_SOURCE_READY",
+      "doNotRebuild": true,
+      "nextGate": "Reconcile legacy Mobile verifiers that still encode superseded mounting/version expectations under a fresh task-exact Authority Mesh and MUTATION anti-rework gate. Do not remount dormant historical interfaces to satisfy stale tests. Runtime/visual conformance certification is a separate later VERIFY gate and must not mutate Mobile product source unless evidence demonstrates a real defect.",
       "evidence": [
-        "Mobile interface consolidation audit Authority Mesh run 32869966974 artifact 9571804870 sha256:1f89a1391920e1aac8e7d701dc544c37238ddb52bc56a80ed8444d941cdc95a7",
-        "Mobile interface canon registration Authority Mesh run 32870972064 artifact 9572278651 sha256:b3f174fb173d710adf71edd25878998f46a287f211512f88c0604a9967b29e94",
-        "Registration Authority Mesh requestDigest 39a745a7f80fa6c865493d3aa40877654b4892aad4938dbc489690f2a6c19f80"
+        "PR #393 registration merge 0916227707aa65b673195d554297bf8f8565d356",
+        "PR #395 canonical Mobile interface specification merge 615d6732fd733696a60bb549bc88b23c0b573de4",
+        "apps/terminal-de-venta-system/products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md",
+        "apps/terminal-de-venta-system/products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json",
+        "PR #395 final checks 9/9 PASS including forgeos-quality-gate, guardrails and failure-injection lanes",
+        "Pre-merge Authority Mesh run 32877668997 artifact 9574572977 sha256:24e2cf613ae89b9880daafc33c79b128f36e791ea276190753f3b0e5a18512a9",
+        "Fresh post-merge/current-main Authority Mesh run 32922500990 artifact 9590323223 sha256:96b3440c6987cca0493d5b9a27e4c3447de12c2a9a738dbe1841436fc057f40f",
+        "Current-main Authority Mesh requestDigest 5b12cf847b1207c03fbf9b1b40cca348d2e509301ad1c6fe8ce1dcab10952006"
       ],
       "doesNotProve": [
-        "The canonical Mobile interface specification has been created",
-        "Current Mobile runtime or source conforms to the future canon",
-        "Any Mobile source, API, runtime, data, sync, licensing or verifier mutation is authorized",
-        "Visual or runtime certification",
-        "Tablet or PC changes"
+        "Current Mobile product source or runtime conforms to every requirement of the canon",
+        "Runtime or visual certification",
+        "Legacy Mobile verifier alignment",
+        "Hosted production readiness, PWA install/runtime correctness or offline operational-data capability",
+        "Runtime signed-session auth, customer setup, sync, licensing, data-custody or zero-egress certification",
+        "Dormant historical components should be remounted"
       ],
       "allowedActions": [
-        "verify the registration",
-        "advance to documentation-only canon consolidation under fresh exact-task authority",
-        "build only the bounded canonical interface specification and retirement migration"
+        "reuse PRISMA_MOBILE_INTERFACE_CANON.md and its contract as the sole normative Mobile interface specification",
+        "run read-only source/route conformance audits against the canon",
+        "reconcile stale Mobile verifier expectations in a separate bounded quality/tooling task under fresh authority",
+        "run separate runtime/visual certification without widening this source-ready claim"
       ],
       "forbiddenActions": [
-        "modify Mobile application source as part of registration",
-        "delete technical runtime, security, sync, licensing, release or verifier evidence",
-        "treat current Mobile runtime as product-interface authority",
-        "claim code conformance from documentation"
+        "rebuild or replace the canonical Mobile interface specification without evidence-backed authority drift",
+        "remount dormant historical interfaces only to satisfy stale verifier assertions",
+        "treat archived or tombstoned historical interface documents as current normative authority",
+        "modify Mobile product source, APIs, runtime, PWA, data, sync, security or licensing under this documentation closure"
       ],
       "forbiddenClaims": [
-        "Do not claim the PRISMA Mobile interface canon is DONE from registration alone.",
-        "Do not claim current Mobile implementation conforms to an aspirational canon that has not been created yet."
+        "Do not claim current Mobile runtime or visuals are certified from documentation-only canon evidence.",
+        "Do not claim legacy verifiers are aligned until the separate verifier-reconciliation gate passes.",
+        "Do not claim hosted production, offline operational data, auth/session, sync, licensing or zero-egress readiness from this canon closure."
       ]
     }
   ],
-  "updatedAt": "2026-08-25T10:26:24-06:00"
+  "updatedAt": "2026-08-25T20:25:40-06:00"
 }
