@@ -216,8 +216,7 @@ jobs:
               fh.write("\n")
           PY
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
-            --request "$factory_request" \
-            --out "$decision"
+            --request "$factory_request" | tee "$decision"
           python - "$decision" <<'PY'
           import json, sys
           data = json.load(open(sys.argv[1], encoding="utf-8"))
