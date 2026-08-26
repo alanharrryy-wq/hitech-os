@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/tablet-final-screensqa-evidence.yml'
       - '.github/evidence/tablet-final-screensqa-capture.mjs'
+      - '.github/evidence/tablet-final-screensqa-pilot.mjs'
 
 permissions:
   contents: read
@@ -27,7 +28,7 @@ jobs:
   tablet-final-screensqa-runtime:
     if: github.head_ref == 'evidence/tablet-final-screensqa-2608'
     runs-on: ubuntu-24.04
-    timeout-minutes: 50
+    timeout-minutes: 35
     steps:
       - name: Checkout evidence carrier
         uses: actions/checkout@v6
@@ -35,7 +36,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Preserve harness and pin certified Tablet product target
+      - name: Preserve pilot harness and pin certified Tablet product target
         shell: bash
         env:
           EVIDENCE_HEAD: ${{ github.event.pull_request.head.sha }}
@@ -46,18 +47,23 @@ jobs:
           python - "$EVIDENCE_BASE" "$EVIDENCE_HEAD" <<'PY'
           import subprocess, sys
           base, head = sys.argv[1:3]
-          allowed={'.github/workflows/tablet-final-screensqa-evidence.yml','.github/evidence/tablet-final-screensqa-capture.mjs'}
-          changed=set(subprocess.check_output(['git','diff','--name-only',base+'..'+head],text=True).splitlines())
-          if changed != allowed: raise SystemExit(f'EVIDENCE_CARRIER_SCOPE_DRIFT:{sorted(changed)}')
+          allowed = {
+              '.github/workflows/tablet-final-screensqa-evidence.yml',
+              '.github/evidence/tablet-final-screensqa-capture.mjs',
+              '.github/evidence/tablet-final-screensqa-pilot.mjs',
+          }
+          changed = set(subprocess.check_output(['git','diff','--name-only',base+'..'+head], text=True).splitlines())
+          if changed != allowed:
+              raise SystemExit(f'EVIDENCE_CARRIER_SCOPE_DRIFT:{sorted(changed)}')
           PY
           mkdir -p "$RUNNER_TEMP/screensqa-harness"
-          git show "$EVIDENCE_HEAD:.github/evidence/tablet-final-screensqa-capture.mjs" > "$RUNNER_TEMP/screensqa-harness/capture.mjs"
+          git show "$EVIDENCE_HEAD:.github/evidence/tablet-final-screensqa-pilot.mjs" > "$RUNNER_TEMP/screensqa-harness/pilot.mjs"
           git checkout --detach "$PRODUCT_TARGET"
           test "$(git rev-parse HEAD)" = "$PRODUCT_TARGET"
           test -z "$(git status --porcelain)"
           mkdir -p "$EVIDENCE_DIR"
           cat > "$EVIDENCE_DIR/scope.json" <<JSON
-          {"schemaVersion":"tablet.final.screensqa.scope.v1","productTarget":"$PRODUCT_TARGET","evidenceBase":"$EVIDENCE_BASE","evidenceCarrierHead":"$EVIDENCE_HEAD","authorityRun":32963408883,"authorityArtifact":9604786000,"authorityDigest":"sha256:f2f95c2c9d4d71325c00087f7b8b98b9dd7c35f09252ab6ac2146c1d636b0011","customerContractRoutes":22,"directStatic":17,"aliases":2,"dynamicFixtures":3,"canonicalTabletLayers":948,"productMutation":false,"dbMutation":false,"prismaGenerate":false,"runtime":"runner-local-isolated","browserFixtureTransport":"CDP Fetch interception","screenshotsRequired":22}
+          {"schemaVersion":"tablet.final.screensqa.pilot.scope.v1","productTarget":"$PRODUCT_TARGET","evidenceBase":"$EVIDENCE_BASE","evidenceCarrierHead":"$EVIDENCE_HEAD","authorityRun":32963408883,"authorityArtifact":9604786000,"authorityDigest":"sha256:f2f95c2c9d4d71325c00087f7b8b98b9dd7c35f09252ab6ac2146c1d636b0011","customerContractRoutes":22,"canonicalTabletLayers":948,"pilotRoute":"/","productMutation":false,"productionDbMutation":false,"dbPush":false,"migration":false,"seed":false,"prismaGenerate":"runner-ephemeral-generate-only","runtime":"runner-local-isolated","screenshotsRequired":1}
           JSON
 
       - uses: pnpm/action-setup@v4
@@ -74,6 +80,7 @@ jobs:
           set -euo pipefail
           pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
           test -x "$APP_ROOT/node_modules/.bin/next"
+          test -x "$APP_ROOT/node_modules/.bin/prisma"
           test ! -e "$APP_ROOT/.generated/prisma-client"
 
       - name: Run protected source gates
@@ -83,12 +90,29 @@ jobs:
           pnpm -C "$APP_ROOT" run verify:zero-important 2>&1 | tee "$EVIDENCE_DIR/verify-zero-important.log"
           pnpm -C "$APP_ROOT" run verify:tablet-license-missing-fallback 2>&1 | tee "$EVIDENCE_DIR/verify-license.log"
           node - <<'NODE' | tee "$EVIDENCE_DIR/route-contract.log"
-          const fs=require('fs'); const p=process.env.APP_ROOT+'/src/navigation/tablet-page-contracts.ts'; const s=fs.readFileSync(p,'utf8');
+          const fs=require('fs');
+          const p=process.env.APP_ROOT+'/src/navigation/tablet-page-contracts.ts';
+          const s=fs.readFileSync(p,'utf8');
           const rows=[...s.matchAll(/\{ route: '[^']+', label: '[^']+', module: '[^']+', roles: \[[^\]]*\], visibility: '[^']+', canonicalRoute: '[^']+', finalMenu: (?:true|false), order: \d+, rationale: '[^']*' \}/g)];
           if(rows.length!==22) throw new Error('TABLET_CUSTOMER_ROUTE_CONTRACT_DRIFT:'+rows.length);
           if(!s.includes("{ route: '/tablet-lab', replacement: null")) throw new Error('TABLET_LAB_RETIREMENT_MISSING');
           console.log('PASS_TABLET_SCREENSQA_ROUTE_CONTRACT 22/22; tablet-lab retired');
           NODE
+
+      - name: Generate Prisma client only in isolated runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DATABASE_URL='file:/dev/null'
+          pnpm -C "$APP_ROOT" run prisma:generate 2>&1 | tee "$EVIDENCE_DIR/prisma-generate.log"
+          test -f "$APP_ROOT/.generated/prisma-client/index.js"
+          test -f "$APP_ROOT/.generated/prisma-client/package.json"
+          find "$APP_ROOT/.generated/prisma-client" -maxdepth 1 -type f -printf '%f\n' | sort > "$EVIDENCE_DIR/prisma-generated-files.txt"
+          if grep -Eiq '(migrate|db push|seed)' "$EVIDENCE_DIR/prisma-generate.log"; then
+            echo 'BLOCKED unexpected database lifecycle operation in generate-only log'
+            exit 1
+          fi
+          printf 'PASS_PRISMA_GENERATE_ONLY_RUNNER_EPHEMERAL\n' | tee "$EVIDENCE_DIR/prisma-generate-result.txt"
 
       - name: Resolve preinstalled Chrome
         id: chrome
@@ -96,7 +120,9 @@ jobs:
         run: |
           set -euo pipefail
           chrome=''
-          for c in google-chrome google-chrome-stable chromium chromium-browser; do command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break; done
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do
+            command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break
+          done
           test -n "$chrome"
           "$chrome" --version | tee "$EVIDENCE_DIR/chrome-version.log"
           echo "bin=$chrome" >> "$GITHUB_OUTPUT"
@@ -105,10 +131,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/" >/dev/null 2>&1; then echo "BLOCKED occupied runner port $RUNTIME_PORT; refusing cleanup" | tee "$EVIDENCE_DIR/runtime-start.log"; exit 1; fi
-          setsid bash -lc "cd '$APP_ROOT' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/" >/dev/null 2>&1; then
+            echo "BLOCKED occupied runner port $RUNTIME_PORT; refusing cleanup" | tee "$EVIDENCE_DIR/runtime-start.log"
+            exit 1
+          fi
+          setsid bash -lc "cd '$APP_ROOT' && export TABLET_DATABASE_URL='file:/dev/null' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
           echo $! > "$EVIDENCE_DIR/server.pid"
-          for _ in $(seq 1 120); do curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/" >/dev/null 2>&1 && exit 0; kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break; sleep 1; done
+          for _ in $(seq 1 120); do
+            curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/" >/dev/null 2>&1 && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break
+            sleep 1
+          done
           tail -n 240 "$EVIDENCE_DIR/server.log" || true
           exit 1
 
@@ -118,38 +151,76 @@ jobs:
           CHROME_BIN: ${{ steps.chrome.outputs.bin }}
         run: |
           set -euo pipefail
-          "$CHROME_BIN" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-address=127.0.0.1 --remote-debugging-port="$CHROME_DEBUG_PORT" --user-data-dir="$RUNNER_TEMP/screensqa-chrome-profile" about:blank > "$EVIDENCE_DIR/chrome-runtime.log" 2>&1 &
+          "$CHROME_BIN" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --remote-debugging-address=127.0.0.1 \
+            --remote-debugging-port="$CHROME_DEBUG_PORT" \
+            --user-data-dir="$RUNNER_TEMP/screensqa-pilot-chrome" \
+            about:blank > "$EVIDENCE_DIR/chrome-runtime.log" 2>&1 &
           echo $! > "$EVIDENCE_DIR/chrome.pid"
-          for _ in $(seq 1 80); do curl -sf --max-time 1 "http://127.0.0.1:$CHROME_DEBUG_PORT/json/version" > "$EVIDENCE_DIR/chrome-debug.json" 2>/dev/null && exit 0; kill -0 "$(cat "$EVIDENCE_DIR/chrome.pid")" >/dev/null 2>&1 || break; sleep 0.25; done
+          for _ in $(seq 1 80); do
+            curl -sf --max-time 1 "http://127.0.0.1:$CHROME_DEBUG_PORT/json/version" > "$EVIDENCE_DIR/chrome-debug.json" 2>/dev/null && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/chrome.pid")" >/dev/null 2>&1 || break
+            sleep 0.25
+          done
           cat "$EVIDENCE_DIR/chrome-runtime.log" || true
           exit 1
 
-      - name: Capture governed Tablet customer screens
+      - name: Capture Tablet ScreensQA home pilot
         shell: bash
         env:
           RUNTIME_URL: http://127.0.0.1:3120
         run: |
           set -euo pipefail
-          node "$RUNNER_TEMP/screensqa-harness/capture.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
-          grep -Fq 'PASS_TABLET_FINAL_SCREENSQA_BROWSER_22_22' "$EVIDENCE_DIR/browser-capture.log"
-          test "$(find "$EVIDENCE_DIR/screenshots" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 22
+          node "$RUNNER_TEMP/screensqa-harness/pilot.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+          grep -Fxq 'PASS_TABLET_FINAL_SCREENSQA_PILOT_HOME_1_1' "$EVIDENCE_DIR/browser-capture.log"
+          test "$(find "$EVIDENCE_DIR/screenshots" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 1
 
-      - name: Build runtime evidence summary
+      - name: Fail closed on server anomalies
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -E '(^|[^A-Za-z])(TypeError|ReferenceError|SyntaxError|Unhandled Runtime Error|Internal Server Error)([^A-Za-z]|$)|^[[:space:]]*⨯' "$EVIDENCE_DIR/server.log" > "$EVIDENCE_DIR/server-anomalies.log"; then
+            cat "$EVIDENCE_DIR/server-anomalies.log"
+            exit 1
+          fi
+          printf 'PASS_TABLET_FINAL_SCREENSQA_PILOT_NO_FAKE_GREEN\n' | tee "$EVIDENCE_DIR/FINAL_RESULT.txt"
+
+      - name: Build pilot evidence summary
         if: always()
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          import hashlib,json
+          import hashlib, json
           from pathlib import Path
-          root=Path('evidence/tablet-final-screensqa'); shots=sorted((root/'screenshots').glob('*.png')) if (root/'screenshots').exists() else []
+          root=Path('evidence/tablet-final-screensqa')
+          shots=sorted((root/'screenshots').glob('*.png')) if (root/'screenshots').exists() else []
           manifest=[{'name':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in shots]
-          results={}
-          if (root/'screensqa-results.json').exists(): results=json.loads((root/'screensqa-results.json').read_text(encoding='utf-8'))
-          report={'schemaVersion':'tablet.final.screensqa.evidence.report.v1','productTarget':'01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb','evidenceBase':'630f025e3b41ac932a10ffab2f5992817c3037e5','authorityRun':32963408883,'authorityArtifact':9604786000,'authorityDigest':'sha256:f2f95c2c9d4d71325c00087f7b8b98b9dd7c35f09252ab6ac2146c1d636b0011','screenshotCount':len(manifest),'screenshots':manifest,'capturedCount':results.get('capturedCount',0),'failedCount':results.get('failedCount',22),'claimCeiling':['runner-local isolated visual/runtime evidence only','does not prove distributable package','does not prove hosted production','does not mutate or certify production DB','does not authorize visual source changes']}
-          root.mkdir(parents=True,exist_ok=True); (root/'RUNTIME_EVIDENCE.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          marker='PASS_TABLET_FINAL_SCREENSQA_RUNTIME_NO_FAKE_GREEN' if report['screenshotCount']==22 and report['failedCount']==0 else 'BLOCKED_TABLET_FINAL_SCREENSQA_RUNTIME'
-          (root/'FINAL_RESULT.txt').write_text(marker+'\n',encoding='utf-8')
+          pilot={}
+          if (root/'pilot-results.json').exists():
+              pilot=json.loads((root/'pilot-results.json').read_text(encoding='utf-8'))
+          marker=(root/'FINAL_RESULT.txt').read_text(encoding='utf-8').strip() if (root/'FINAL_RESULT.txt').exists() else 'NOT_REACHED'
+          report={
+              'schemaVersion':'tablet.final.screensqa.pilot.evidence.v1',
+              'productTarget':'01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb',
+              'authorityRun':32963408883,
+              'screenshotCount':len(manifest),
+              'screenshots':manifest,
+              'pilot':pilot,
+              'finalMarker':marker,
+              'prismaGenerate':'runner-ephemeral-generate-only',
+              'productionDbMutation':False,
+              'dbPush':False,
+              'migration':False,
+              'seed':False,
+              'claimCeiling':['single governed home-route pilot only','does not certify remaining 21 customer routes','does not prove distributable package','does not mutate product source or production DB']
+          }
+          root.mkdir(parents=True,exist_ok=True)
+          (root/'PILOT_EVIDENCE.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           PY
 
       - name: Stop only runner-owned processes
@@ -157,23 +228,25 @@ jobs:
         shell: bash
         run: |
           set +e
-          for pidfile in "$EVIDENCE_DIR/chrome.pid" "$EVIDENCE_DIR/server.pid"; do [ ! -f "$pidfile" ] || kill "$(cat "$pidfile")" >/dev/null 2>&1 || true; done
+          for pidfile in "$EVIDENCE_DIR/chrome.pid" "$EVIDENCE_DIR/server.pid"; do
+            [ ! -f "$pidfile" ] || kill "$(cat "$pidfile")" >/dev/null 2>&1 || true
+          done
 
-      - name: Upload Tablet Final ScreensQA evidence
+      - name: Upload Tablet ScreensQA pilot evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: tablet-final-screensqa-runtime
+          name: tablet-final-screensqa-pilot
           path: ${{ env.EVIDENCE_DIR }}/**
           if-no-files-found: error
           retention-days: 14
 
-      - name: Final runtime gate
+      - name: Final pilot gate
         if: always()
         shell: bash
         run: |
           set -euo pipefail
           test -f "$EVIDENCE_DIR/FINAL_RESULT.txt"
-          grep -Fxq 'PASS_TABLET_FINAL_SCREENSQA_RUNTIME_NO_FAKE_GREEN' "$EVIDENCE_DIR/FINAL_RESULT.txt"
-          test "$(find "$EVIDENCE_DIR/screenshots" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 22
-          node -e 'const fs=require("fs");const x=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));if(x.failedCount!==0||x.capturedCount!==22)process.exit(1)' "$EVIDENCE_DIR/screensqa-results.json"
+          grep -Fxq 'PASS_TABLET_FINAL_SCREENSQA_PILOT_NO_FAKE_GREEN' "$EVIDENCE_DIR/FINAL_RESULT.txt"
+          test "$(find "$EVIDENCE_DIR/screenshots" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 1
+          node -e 'const fs=require("fs");const x=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));if(x.route!=="/"||x.runtimeErrors.length||x.consoleErrors.length||x.networkErrors.length)process.exit(1)' "$EVIDENCE_DIR/pilot-results.json"
