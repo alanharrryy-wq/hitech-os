@@ -12,7 +12,7 @@ jobs:
   gates:
     runs-on: ubuntu-24.04
     env:
-      SOURCE_HEAD: 22c6fbc74774a1083721ccf225a537f87f38edc4
+      SOURCE_HEAD: c388cffd0c926295619d71a583876e5b66f37ceb
     steps:
       - name: Checkout exact governed main
         uses: actions/checkout@v6
@@ -39,7 +39,7 @@ jobs:
           {
             "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
             "mode": "MUTATION",
-            "expectedHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
+            "expectedHead": "c388cffd0c926295619d71a583876e5b66f37ceb",
             "task": "Advance the existing Change Assurance Cloud Center entitlement adapter by projecting canonical licensing-owner facts read-only and fail-closed.",
             "capabilities": [
               {"id": "code_atlas.change_intelligence.customer_wow_v1", "requestedAction": "ADVANCE"},
@@ -51,11 +51,11 @@ jobs:
             "visualMutation": false,
             "authorityMesh": {
               "status": "PASS_COMPOSED_AUTHORITY_MESH",
-              "repoHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
+              "repoHead": "c388cffd0c926295619d71a583876e5b66f37ceb",
               "requiredAuthorityCoveragePct": 100,
               "blockers": 0,
-              "requestDigest": "9617a1941d0a9ae923ab3b848c2a92bb2f08efab72379b0e2c8952c56b68fea0",
-              "artifactDigest": "sha256:531f6ea13d79d6c2f5ac4bf9253899d3b50911ef750f50a887a3cf51b83eac0a"
+              "requestDigest": "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14",
+              "artifactDigest": "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c"
             }
           }
           JSON
@@ -74,11 +74,11 @@ jobs:
             "visualMutation": false,
             "authorityMesh": {
               "status": "PASS_COMPOSED_AUTHORITY_MESH",
-              "repoHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
+              "repoHead": "c388cffd0c926295619d71a583876e5b66f37ceb",
               "requiredAuthorityCoveragePct": 100,
               "blockers": 0,
-              "requestDigest": "9617a1941d0a9ae923ab3b848c2a92bb2f08efab72379b0e2c8952c56b68fea0",
-              "artifactDigest": "sha256:531f6ea13d79d6c2f5ac4bf9253899d3b50911ef750f50a887a3cf51b83eac0a"
+              "requestDigest": "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14",
+              "artifactDigest": "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c"
             }
           }
           JSON
@@ -91,13 +91,13 @@ jobs:
           set -euo pipefail
           cat > "$RUNNER_TEMP/p4-authority.json" <<'JSON'
           {
-            "runId": 32922678040,
-            "artifactId": 9590373311,
-            "artifactDigest": "sha256:531f6ea13d79d6c2f5ac4bf9253899d3b50911ef750f50a887a3cf51b83eac0a",
-            "composedArtifactSha256": "df595204e020ae9dc9fd8de8bbfdb92550fb3625bfbefcc5148beb17275a2aa6",
-            "requestDigest": "9617a1941d0a9ae923ab3b848c2a92bb2f08efab72379b0e2c8952c56b68fea0",
-            "repoHead": "22c6fbc74774a1083721ccf225a537f87f38edc4",
-            "repoTree": "266b9f768dda559a9a5c65727802782ae173b8e7",
+            "runId": 32923210520,
+            "artifactId": 9590560387,
+            "artifactDigest": "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c",
+            "composedArtifactSha256": "e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957",
+            "requestDigest": "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14",
+            "repoHead": "c388cffd0c926295619d71a583876e5b66f37ceb",
+            "repoTree": "b68b47e1056a527bfa0097ab010c6a4184464703",
             "status": "PASS_COMPOSED_AUTHORITY_MESH",
             "laneCount": 2,
             "requiredAuthorityCoveragePct": 100,
@@ -111,7 +111,7 @@ jobs:
       - name: Upload gate evidence
         uses: actions/upload-artifact@v7
         with:
-          name: ca-cloud-p4-entitlement-mutation-gates
+          name: ca-cloud-p4-entitlement-mutation-gates-r2
           path: |
             ${{ runner.temp }}/factory-request.json
             ${{ runner.temp }}/factory-result.json
