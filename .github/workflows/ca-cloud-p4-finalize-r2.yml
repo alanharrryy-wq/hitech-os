@@ -1,0 +1,215 @@
+name: CA Cloud P4 Entitlement Finalizer R2
+
+on:
+  push:
+    branches:
+      - feature/ca-cloud-p4-entitlements-r2-2508
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-24.04
+    env:
+      BASE_HEAD: c388cffd0c926295619d71a583876e5b66f37ceb
+    steps:
+      - name: Checkout P4 branch
+        uses: actions/checkout@v6
+        with:
+          ref: feature/ca-cloud-p4-entitlements-r2-2508
+          fetch-depth: 0
+
+      - name: Assert exact governed base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_HEAD"
+          git merge-base --is-ancestor "$BASE_HEAD" HEAD
+          test -z "$(git status --porcelain)"
+
+      - name: Apply exact P4 entitlement projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path.cwd()
+          cfg_path = root / "apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json"
+          verifier_path = root / "apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py"
+          contract_path = root / "apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md"
+
+          head = "c388cffd0c926295619d71a583876e5b66f37ceb"
+          tree = "b68b47e1056a527bfa0097ab010c6a4184464703"
+          profile = "ca-cloud-entitlements-p4-v2"
+          authority_run = 32923210520
+          authority_artifact = 9590560387
+          authority_artifact_digest = "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c"
+          composed_sha = "e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957"
+          request_digest = "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14"
+          gate_run = 32923389474
+          gate_artifact = 9590600727
+          gate_artifact_digest = "sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4"
+          source_path = "apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts"
+          source_blob = "7bac39a02a7ffaed20f5a725a1c216da07087adf"
+          plans = {
+              "TABLET_SOLO": ["pos.local_sale", "catalog.local", "cash.local"],
+              "TABLET_PRO": ["pos.local_sale", "returns", "outbox.visible", "mobile.supervision"],
+              "TABLET_PC_MANAGED": ["pos.local_sale", "pc.backoffice", "sync.audit", "mobile.supervision"],
+              "TABLET_PC_MOBILE_MANAGED": ["pos.local_sale", "pc.backoffice", "mobile.companion", "customer.setup"],
+          }
+
+          cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+          generated = cfg.setdefault("generatedFrom", {})
+          generated["entitlementProjectionAuthority"] = {
+              "baseHead": head,
+              "baseTree": tree,
+              "profile": profile,
+              "authorityRunId": authority_run,
+              "authorityArtifactId": authority_artifact,
+              "authorityArtifactDigest": authority_artifact_digest,
+              "composedArtifactSha256": composed_sha,
+              "authorityRequestDigest": request_digest,
+              "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+              "laneCount": 2,
+              "requiredAuthorityCoverage": "100%",
+              "blockers": 0,
+              "repoDriftStable": True,
+              "mutationGateRunId": gate_run,
+              "mutationGateArtifactId": gate_artifact,
+              "mutationGateArtifactDigest": gate_artifact_digest,
+          }
+          cp = cfg.setdefault("controlPlane", {})
+          cp["usageEntitlements"] = {
+              "status": "SOURCE_MAPPED_NOT_GRANTED",
+              "requestedProduct": "PRISMA Change Assurance",
+              "sourceOwner": {
+                  "path": source_path,
+                  "sourceBlobSha": source_blob,
+                  "catalog": "PLAN_BASED_PROVISIONING_CATALOG",
+                  "capabilityIds": [
+                      "licensing.source_contract_alignment",
+                      "licensing.customer_setup.plan_based_onboarding",
+                  ],
+                  "reuseMode": "REFERENCE_ONLY",
+                  "doNotRebuild": True,
+              },
+              "planFeaturesAtCapture": plans,
+              "catalogMatches": [],
+              "grantStatus": "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES",
+              "liveEnforcementObserved": False,
+              "licenseMutationPerformed": False,
+              "readOnly": True,
+              "productionCertified": False,
+              "certifiable": False,
+              "doesNotProve": [
+                  "entitlement grant",
+                  "live license enforcement",
+                  "billing authorization",
+                  "production readiness",
+              ],
+              "projectionRule": "Reference-only snapshot of the canonical licensing plan/feature catalog. Absence of a Change Assurance feature is fail-closed as NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES; this projection does not create or grant an entitlement.",
+              "nextGate": "A separately governed licensing and commercial decision must explicitly add a Change Assurance feature before any live grant or enforcement can be claimed. Until then remain NOT_GRANTED.",
+          }
+          cfg_path.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          verifier = verifier_path.read_text(encoding="utf-8")
+          constant_marker = 'EVIDENCE_BUNDLE_MANIFEST_DIGEST = "sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20"\n'
+          constants = constant_marker + '''\nENTITLEMENT_CONNECTED_STATUS = "SOURCE_MAPPED_NOT_GRANTED"\nENTITLEMENT_PROFILE = "ca-cloud-entitlements-p4-v2"\nENTITLEMENT_HEAD = "c388cffd0c926295619d71a583876e5b66f37ceb"\nENTITLEMENT_TREE = "b68b47e1056a527bfa0097ab010c6a4184464703"\nENTITLEMENT_AUTHORITY_RUN = 32923210520\nENTITLEMENT_AUTHORITY_ARTIFACT = 9590560387\nENTITLEMENT_AUTHORITY_ARTIFACT_DIGEST = "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c"\nENTITLEMENT_COMPOSED_SHA256 = "e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957"\nENTITLEMENT_AUTHORITY_REQUEST_DIGEST = "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14"\nENTITLEMENT_GATE_RUN = 32923389474\nENTITLEMENT_GATE_ARTIFACT = 9590600727\nENTITLEMENT_GATE_ARTIFACT_DIGEST = "sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4"\nENTITLEMENT_SOURCE_PATH = "apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts"\nENTITLEMENT_SOURCE_BLOB = "7bac39a02a7ffaed20f5a725a1c216da07087adf"\nENTITLEMENT_PLAN_FEATURES = {\n    "TABLET_SOLO": ["pos.local_sale", "catalog.local", "cash.local"],\n    "TABLET_PRO": ["pos.local_sale", "returns", "outbox.visible", "mobile.supervision"],\n    "TABLET_PC_MANAGED": ["pos.local_sale", "pc.backoffice", "sync.audit", "mobile.supervision"],\n    "TABLET_PC_MOBILE_MANAGED": ["pos.local_sale", "pc.backoffice", "mobile.companion", "customer.setup"],\n}\n'''
+          if constant_marker not in verifier:
+              raise SystemExit("P4 verifier constant marker missing")
+          verifier = verifier.replace(constant_marker, constants, 1)
+
+          old = '    authority_evidence_projection_authority = generated_from.get("authorityEvidenceProjectionAuthority", {})\n'
+          new = old + '    entitlement_projection_authority = generated_from.get("entitlementProjectionAuthority", {})\n'
+          if old not in verifier:
+              raise SystemExit("P4 generatedFrom marker missing")
+          verifier = verifier.replace(old, new, 1)
+
+          check_marker = '    check("evidence_projection_rule_bounded_pass", "PASS is preserved" in evidence_rule and "not promoted" in evidence_rule and "mutation authority" in evidence_rule, evidence_rule)\n'
+          p4_checks = check_marker + '''\n\n    p4_authority_exact = {\n        "entitlement_authority_head": (entitlement_projection_authority.get("baseHead"), ENTITLEMENT_HEAD),\n        "entitlement_authority_tree": (entitlement_projection_authority.get("baseTree"), ENTITLEMENT_TREE),\n        "entitlement_authority_profile": (entitlement_projection_authority.get("profile"), ENTITLEMENT_PROFILE),\n        "entitlement_authority_run": (entitlement_projection_authority.get("authorityRunId"), ENTITLEMENT_AUTHORITY_RUN),\n        "entitlement_authority_artifact": (entitlement_projection_authority.get("authorityArtifactId"), ENTITLEMENT_AUTHORITY_ARTIFACT),\n        "entitlement_authority_artifact_digest": (entitlement_projection_authority.get("authorityArtifactDigest"), ENTITLEMENT_AUTHORITY_ARTIFACT_DIGEST),\n        "entitlement_composed_sha256": (entitlement_projection_authority.get("composedArtifactSha256"), ENTITLEMENT_COMPOSED_SHA256),\n        "entitlement_authority_request_digest": (entitlement_projection_authority.get("authorityRequestDigest"), ENTITLEMENT_AUTHORITY_REQUEST_DIGEST),\n        "entitlement_authority_result": (entitlement_projection_authority.get("authorityResult"), "PASS_COMPOSED_AUTHORITY_MESH"),\n        "entitlement_authority_lanes": (entitlement_projection_authority.get("laneCount"), 2),\n        "entitlement_authority_coverage": (entitlement_projection_authority.get("requiredAuthorityCoverage"), "100%"),\n        "entitlement_authority_blockers": (entitlement_projection_authority.get("blockers"), 0),\n        "entitlement_authority_drift": (entitlement_projection_authority.get("repoDriftStable"), True),\n        "entitlement_gate_run": (entitlement_projection_authority.get("mutationGateRunId"), ENTITLEMENT_GATE_RUN),\n        "entitlement_gate_artifact": (entitlement_projection_authority.get("mutationGateArtifactId"), ENTITLEMENT_GATE_ARTIFACT),\n        "entitlement_gate_artifact_digest": (entitlement_projection_authority.get("mutationGateArtifactDigest"), ENTITLEMENT_GATE_ARTIFACT_DIGEST),\n    }\n    for name, (actual, expected) in p4_authority_exact.items():\n        check(name, actual == expected, f"actual={actual} expected={expected}")\n\n    entitlements = cp.get("usageEntitlements", {})\n    source_owner = entitlements.get("sourceOwner") if isinstance(entitlements.get("sourceOwner"), dict) else {}\n    entitlement_exact = {\n        "entitlement_state": (entitlements.get("status"), ENTITLEMENT_CONNECTED_STATUS),\n        "entitlement_product": (entitlements.get("requestedProduct"), "PRISMA Change Assurance"),\n        "entitlement_source_path": (source_owner.get("path"), ENTITLEMENT_SOURCE_PATH),\n        "entitlement_source_blob": (source_owner.get("sourceBlobSha"), ENTITLEMENT_SOURCE_BLOB),\n        "entitlement_source_catalog": (source_owner.get("catalog"), "PLAN_BASED_PROVISIONING_CATALOG"),\n        "entitlement_reuse_mode": (source_owner.get("reuseMode"), "REFERENCE_ONLY"),\n        "entitlement_source_dnr": (source_owner.get("doNotRebuild"), True),\n        "entitlement_plan_features": (entitlements.get("planFeaturesAtCapture"), ENTITLEMENT_PLAN_FEATURES),\n        "entitlement_catalog_matches": (entitlements.get("catalogMatches"), []),\n        "entitlement_grant_status": (entitlements.get("grantStatus"), "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES"),\n        "entitlement_live_enforcement_absent": (entitlements.get("liveEnforcementObserved"), False),\n        "entitlement_no_license_mutation": (entitlements.get("licenseMutationPerformed"), False),\n        "entitlement_read_only": (entitlements.get("readOnly"), True),\n        "entitlement_not_production": (entitlements.get("productionCertified"), False),\n        "entitlement_not_certifiable": (entitlements.get("certifiable"), False),\n    }\n    for name, (actual, expected) in entitlement_exact.items():\n        check(name, actual == expected, f"actual={actual} expected={expected}")\n    source_capabilities = source_owner.get("capabilityIds") if isinstance(source_owner.get("capabilityIds"), list) else []\n    check("entitlement_source_capabilities", source_capabilities == ["licensing.source_contract_alignment", "licensing.customer_setup.plan_based_onboarding"], str(source_capabilities))\n    entitlement_dnp = entitlements.get("doesNotProve") if isinstance(entitlements.get("doesNotProve"), list) else []\n    for boundary in ("entitlement grant", "live license enforcement", "billing authorization", "production readiness"):\n        check(f"entitlement_does_not_prove:{boundary}", boundary in entitlement_dnp, str(entitlement_dnp))\n    entitlement_rule = str(entitlements.get("projectionRule", ""))\n    entitlement_next = str(entitlements.get("nextGate", ""))\n    check("entitlement_projection_fail_closed", "fail-closed" in entitlement_rule and "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES" in entitlement_rule and "does not create or grant" in entitlement_rule, entitlement_rule)\n    check("entitlement_next_gate_separate_decision", "separately governed" in entitlement_next and "Change Assurance feature" in entitlement_next and "NOT_GRANTED" in entitlement_next, entitlement_next)\n'''
+          if check_marker not in verifier:
+              raise SystemExit("P4 verifier insertion marker missing")
+          verifier = verifier.replace(check_marker, p4_checks, 1)
+          verifier_path.write_text(verifier, encoding="utf-8")
+
+          contract = contract_path.read_text(encoding="utf-8")
+          old_intro = "The V1 surface is read-only and fail-closed. Repository, Analysis Run, Authority Pack and Evidence Report projection rows may appear only when bound to separately governed source evidence. Entitlements remain pending the separately governed shared-owner mapping."
+          new_intro = "The V1 surface is read-only and fail-closed. Repository, Analysis Run, Authority Pack and Evidence Report projection rows may appear only when bound to separately governed source evidence. Entitlements are source-mapped from the canonical licensing owner, but the current plan catalog contains no Change Assurance feature, so the projection remains explicitly not granted."
+          if old_intro not in contract: raise SystemExit("P4 contract intro marker missing")
+          contract = contract.replace(old_intro, new_intro, 1)
+
+          old_owner = "P1, P2 and P3 are projection adapters only. They do not become new repository, analysis, Authority Pack generation, verification, evidence generation, licensing, billing or registration engines."
+          new_owner = "P1, P2, P3 and P4 are projection adapters only. They do not become new repository, analysis, Authority Pack generation, verification, evidence generation, licensing, billing or registration engines."
+          if old_owner not in contract: raise SystemExit("P4 ownership marker missing")
+          contract = contract.replace(old_owner, new_owner, 1)
+
+          section_anchor = "## Browser/runtime authority gate\n"
+          p4_section = '''## Entitlements P4 projection contract\n\nP4 is a read-only reference adapter over the existing licensing shared owner. It does not add a second licensing engine, alter license mutation semantics, change billing, touch Worker/D1 or create a product entitlement by inference.\n\nFresh P4 authority and mutation authorization:\n\n- exact base: `main@c388cffd0c926295619d71a583876e5b66f37ceb` / tree `b68b47e1056a527bfa0097ab010c6a4184464703`\n- Authority Mesh run: `32923210520`\n- Authority Mesh artifact: `9590560387`\n- Authority Mesh artifact digest: `sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c`\n- composed artifact SHA-256: `e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957`\n- request digest: `d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14`\n- composed result: `PASS_COMPOSED_AUTHORITY_MESH`\n- lanes: `2/2 PASS`\n- required authority coverage: `100%`\n- blockers: `0`\n- mutation-gate run: `32923389474`\n- mutation-gate artifact: `9590600727`\n- mutation-gate artifact digest: `sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4`\n\nCanonical source owner at capture:\n\n- path: `apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts`\n- Git blob: `7bac39a02a7ffaed20f5a725a1c216da07087adf`\n- catalog: `PLAN_BASED_PROVISIONING_CATALOG`\n- protected capabilities: `licensing.source_contract_alignment`, `licensing.customer_setup.plan_based_onboarding`\n- both owners remain reuse-only / do-not-rebuild for this adapter.\n\nThe captured catalog has four plans: `TABLET_SOLO`, `TABLET_PRO`, `TABLET_PC_MANAGED` and `TABLET_PC_MOBILE_MANAGED`. None contains a Change Assurance/Change Intelligence/Code Atlas entitlement feature. Therefore the only evidence-supported P4 state is `SOURCE_MAPPED_NOT_GRANTED` with `grantStatus=NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES`.\n\nThis is deliberate fail-closed behavior. It does not prove or create an entitlement grant, live license enforcement, billing authorization or production readiness. A separately governed licensing and commercial decision must explicitly add the product feature before any live grant/enforcement claim is allowed.\n\n'''
+          if section_anchor not in contract: raise SystemExit("P4 browser marker missing")
+          contract = contract.replace(section_anchor, p4_section + section_anchor, 1)
+
+          old_p3_boundary = "The P3 Authority Pack/Evidence references additionally remain `readOnly` and `referenceOnly`; their bounded `PASS` verification result is not mutation authority and is not a production, enterprise, usefulness or independent-agent claim."
+          if old_p3_boundary not in contract: raise SystemExit("P4 boundary marker missing")
+          contract = contract.replace(old_p3_boundary, old_p3_boundary + "\n\nThe P4 entitlement projection is source-mapped but not granted. Catalog absence is not interpreted as permission, and the Cloud surface cannot create licensing truth.", 1)
+
+          old_gates = '''1. read-only repository registry adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n2. real Code Atlas analysis-run projection: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n3. Authority Pack and Evidence Report reference adapter: `IMPLEMENTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;\n4. Change Assurance entitlement projection from the existing licensing owner: `NEXT`;\n5. customer-input ROI projection: pending entitlement-boundary review and real customer inputs;'''
+          new_gates = '''1. read-only repository registry adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n2. real Code Atlas analysis-run projection: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n3. Authority Pack and Evidence Report reference adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;\n4. Change Assurance entitlement projection from the existing licensing owner: `IMPLEMENTED / SOURCE_MAPPED_NOT_GRANTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;\n5. customer-input ROI projection: `NEXT`, using existing raw ROI instrumentation and explicit real customer inputs only;'''
+          if old_gates not in contract: raise SystemExit("P4 next-gates marker missing")
+          contract = contract.replace(old_gates, new_gates, 1)
+
+          old_close = "P3 reuses the existing Authority Pack and Evidence Report owners and projects references only. It does not reconstruct prepare/verify/reporting logic in Cloud Center. The next internal gate is the shared-owner entitlement mapping; licensing mutation semantics remain outside this vertical."
+          new_close = "P4 reuses the existing licensing owners and projects their current catalog truth only. No Change Assurance feature exists in that catalog at this capture, so no entitlement is granted. The next internal gate is customer-input ROI projection; licensing mutation semantics remain outside this vertical."
+          if old_close not in contract: raise SystemExit("P4 closure marker missing")
+          contract = contract.replace(old_close, new_close, 1)
+
+          old_gov = "Factory Ledger and Evidence Index are not modified by this P3 implementation branch. P3 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow."
+          new_gov = "Factory Ledger and Evidence Index are not modified by this P4 implementation branch. P4 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. The entitlement remains not granted until a separately governed licensing/commercial feature decision exists. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow."
+          if old_gov not in contract: raise SystemExit("P4 governance marker missing")
+          contract = contract.replace(old_gov, new_gov, 1)
+          contract_path.write_text(contract, encoding="utf-8")
+          PY
+
+      - name: Remove one-shot workflow
+        shell: bash
+        run: git rm .github/workflows/ca-cloud-p4-finalize-r2.yml
+
+      - name: Assert exact uncommitted P4 scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=$(printf '%s\n' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json' \
+            'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md' \
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py' | sort)
+          actual=$(git diff --name-only | sort)
+          test "$actual" = "$expected"
+          python -m py_compile apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
+          python -m json.tool 'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json' >/dev/null
+
+      - name: Commit locally before diff-aware verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add --all
+          git commit -m 'feat(ca): project fail-closed licensing entitlements'
+
+      - name: Run final P4 source verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          python apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
+          test -z "$(git status --porcelain)"
+          test "$(git diff --name-only origin/main...HEAD | sort)" = "$(printf '%s\n' \
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json' \
+            'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md' \
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py' | sort)"
+
+      - name: Push validated P4 head
+        shell: bash
+        run: git push origin HEAD:feature/ca-cloud-p4-entitlements-r2-2508
