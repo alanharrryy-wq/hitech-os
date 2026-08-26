@@ -1,57 +1,325 @@
-name: AutoMesh Parallel Certification
+name: Tablet Final ScreensQA Authority Discovery
 
 on:
   pull_request:
     paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
       - '.github/workflows/automesh-parallel-cert.yml'
-  push:
-    branches: ['main']
-    paths:
-      - 'tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py'
-      - 'tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py'
-      - 'tools/code-atlas/scripts/RUN_SMART_ALLMESH_PARALLEL.ps1'
-      - 'tools/code-atlas/tests/test_smart_allmesh_parallel.py'
-      - '.github/workflows/automesh-parallel-cert.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: 01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb
 
 jobs:
-  automesh-parallel-cert:
-    name: ${{ matrix.os }} / py${{ matrix.python-version }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ['3.11']
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+  tablet-final-screensqa-authority-discovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
         with:
+          ref: 01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
-      - name: Compile AutoMesh tooling
-        run: python -m py_compile tools/code-atlas/src/code_atlas/motors/prisma_automesh_runtime.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_controller.py tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Verify immutable baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            "tools/Plawright Mamastrophic/core/surf8_discovery.py"
+          test -f 'apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json'
+          test -f 'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json'
+          test -z "$(git status --porcelain)"
 
-      - name: Run legacy AutoMesh self-test
-        run: python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+      - name: Build task-exact Authority request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/screensqa.request.json" <<'PY'
+          import json, sys
+          head = "01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb"
+          ledger = [
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json",
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py"
+          ]
+          manual = "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+          contract = "apps/terminal-de-venta-system/products/tablet/app/src/navigation/tablet-page-contracts.ts"
+          mam = [
+            "tools/Plawright Mamastrophic/core/surf8_discovery.py",
+            "tools/Plawright Mamastrophic/core/run-surf8-capture.ps1"
+          ]
+          visual = [
+            "apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json",
+            "apps/terminal-de-venta-system/.prisma-ui/visual-control/owners.json",
+            "apps/terminal-de-venta-system/.prisma-ui/visual-control/routes.json",
+            "apps/terminal-de-venta-system/.prisma-ui/visual-control/registry.json",
+            "apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json",
+            "apps/terminal-de-venta-system/docs/quality/VISUAL_RETIRED_LAYERS_MANIFEST.md",
+            "apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs"
+          ]
+          request = {
+            "schemaVersion":"v2",
+            "profile":"tablet-final-screensqa-2608",
+            "expectedHead":head,
+            "tasks":[
+              {
+                "id":"tablet-final-screensqa-customer-route-authority",
+                "surface":"tablet",
+                "intent":"VERIFY",
+                "domain":"visual",
+                "task":"Prepare the final Tablet ScreensQA as a read-only evidence gate after tablet.sync.runtime_truth WAVE2 closure. Reuse tablet.customer_surface_reduction; do not rebuild it. Resolve the exact customer route contract, distinguish final/submenu/step/alias/dynamic routes from retired internal/lab routes, and establish what runtime screenshots are required before any VISUAL_CERTIFIED or distribution-readiness claim. No product/runtime/CSS/DB/Prisma/generated visual runtime/RIFAT mutation. PC, Mobile, Chart Lab, Shared UI and Control Center are excluded except as authority references where necessary. Functional PASS alone is not visual PASS.",
+                "requiredAuthorities":ledger + [manual, contract] + mam + visual,
+                "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/tablet/app","apps/terminal-de-venta-system/.prisma-ui/visual-control","tools/Plawright Mamastrophic","apps/terminal-de-venta-system/docs/ops"],
+                "requiredCapabilities":["tablet.customer_surface_reduction"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              },
+              {
+                "id":"tablet-final-screensqa-layer-map-authority",
+                "surface":"tablet",
+                "intent":"VERIFY",
+                "domain":"visual",
+                "task":"Read-only certify the Tablet ScreensQA layer map and visual ownership authorities. The canonical layer map is apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json and must be present. Cross-check owners/routes/registry and generated Tablet visual runtime manifest. Detect drift or retired-layer contamination but do not mutate visual source, generated runtime, RIFAT, CSS, components or other surfaces. This lane exists so no visual diagnostic proceeds without an explicit layer map.",
+                "requiredAuthorities":ledger + [manual, contract] + visual,
+                "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/.prisma-ui/visual-control","apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime","apps/terminal-de-venta-system/docs/quality"],
+                "requiredCapabilities":["tablet.customer_surface_reduction"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              }
+            ]
+          }
+          with open(sys.argv[1],"w",encoding="utf-8") as f:
+            json.dump(request,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
 
-      - name: Run elastic, fail-fast, provenance and real AutoMesh certification tests
-        run: python -m unittest -v tools/code-atlas/tests/test_smart_allmesh_parallel.py
+      - name: Run fresh exact Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/sqa-pre"; par="$RUNNER_TEMP/sqa-par"; comp="$RUNNER_TEMP/sqa-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/screensqa.request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54 --max-files 180 --max-mb 55
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/screensqa.request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/sqa-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/sqa-compose.txt"
+          test -f "$RUNNER_TEMP/sqa-comp/prisma-automesh-composed-result.zip"
+          test -f 'apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json'
+          test -z "$(git status --porcelain)"
+
+      - name: Run universal Factory Ledger proposal gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/sqa-proposal.request.json" <<'PY'
+          import json, sys
+          req={
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"PROPOSAL",
+            "expectedHead":"01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb",
+            "task":"Run final Tablet ScreensQA read-only against the canonical customer surface contract and canonical visual layer map after WAVE2. Do not rebuild tablet.customer_surface_reduction; advance only through runtime visual evidence.",
+            "capabilities":[{"id":"tablet.customer_surface_reduction","requestedAction":"ADVANCE"}],
+            "visualMutation":False
+          }
+          with open(sys.argv[1],"w",encoding="utf-8") as f:
+            json.dump(req,f,ensure_ascii=False,indent=2); f.write("\n")
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/sqa-proposal.request.json" | tee "$RUNNER_TEMP/sqa-proposal-gate.txt"
+          grep -Fq PASS_ANTI_REWORK_GATE "$RUNNER_TEMP/sqa-proposal-gate.txt"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
+          test -z "$(git status --porcelain)"
+
+      - name: Discover Tablet visual QA targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python "tools/Plawright Mamastrophic/core/surf8_discovery.py" \
+            --repo-root "$GITHUB_WORKSPACE/apps/terminal-de-venta-system" \
+            --out "$RUNNER_TEMP/tablet-surf8-plan.json" \
+            --mode visualqa \
+            --surface tablet \
+            --workers 18
+          test -s "$RUNNER_TEMP/tablet-surf8-plan.json"
+
+      - name: Build customer ScreensQA matrix and explicit layer map
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/tablet-surf8-plan.json" "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.json" "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_LAYER_MAP.json" "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.md" <<'PY'
+          import json, re, sys
+          from pathlib import Path
+
+          plan=json.load(open(sys.argv[1],encoding='utf-8'))
+          contract_path=Path('apps/terminal-de-venta-system/products/tablet/app/src/navigation/tablet-page-contracts.ts')
+          text=contract_path.read_text(encoding='utf-8')
+          row_re=re.compile(r"\{ route: '([^']+)', label: '([^']+)', module: '([^']+)', roles: \[([^\]]*)\], visibility: '([^']+)', canonicalRoute: '([^']+)', finalMenu: (true|false), order: (\d+), rationale: '([^']*)' \}")
+          contracts=[]
+          for m in row_re.finditer(text):
+              roles=re.findall(r"'([^']+)'",m.group(4))
+              contracts.append({
+                'route':m.group(1),'label':m.group(2),'module':m.group(3),'roles':roles,
+                'visibility':m.group(5),'canonicalRoute':m.group(6),'finalMenu':m.group(7)=='true',
+                'order':int(m.group(8)),'rationale':m.group(9)
+              })
+          retired_re=re.compile(r"\{ route: '([^']+)', replacement: (null|'[^']+'), rationale: '([^']*)' \}")
+          retired=[]
+          for m in retired_re.finditer(text):
+              replacement=None if m.group(2)=='null' else m.group(2).strip("'")
+              retired.append({'route':m.group(1),'replacement':replacement,'rationale':m.group(3)})
+
+          targets=[t.get('route') for t in plan.get('targets',[]) if t.get('macro')=='tablet' and t.get('route')]
+          target_set=set(targets)
+          contract_set={c['route'] for c in contracts}
+          retired_set={r['route'] for r in retired}
+          static=[c for c in contracts if c['visibility'] not in {'dynamic'}]
+          dynamic=[c for c in contracts if c['visibility']=='dynamic']
+          aliases=[c for c in contracts if c['visibility']=='alias']
+          direct_customer=[c for c in static if c['visibility']!='alias']
+
+          rows=[]
+          for c in contracts:
+              if c['visibility']=='dynamic':
+                  capture='FIXTURE_REQUIRED'
+              elif c['visibility']=='alias':
+                  capture='COMPATIBILITY_ROUTE'
+              else:
+                  capture='DIRECT_CUSTOMER_SCREEN'
+              rows.append({**c,'screensqaClass':capture,'surf8TargetPresent':c['route'] in target_set})
+
+          non_contract=sorted(target_set-contract_set)
+          retired_targets=sorted(target_set & retired_set)
+          unknown_non_contract=sorted((target_set-contract_set)-retired_set)
+          missing_direct=sorted({c['route'] for c in direct_customer}-target_set)
+          missing_alias=sorted({c['route'] for c in aliases}-target_set)
+
+          layer_path=Path('apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json')
+          layers=json.loads(layer_path.read_text(encoding='utf-8'))
+          layer_count=len(layers) if isinstance(layers,list) else len(layers.get('layers',[])) if isinstance(layers,dict) else 0
+          runtime_manifest=json.loads(Path('apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json').read_text(encoding='utf-8'))
+          tablet_visual_files=[x for x in runtime_manifest.get('files',[]) if '/tablet/' in x.get('path','') or 'tablet.' in x.get('path','')]
+
+          status='READY_FOR_RUNTIME_SCREENSQA'
+          blockers=[]
+          if missing_direct:
+              blockers.append({'code':'DIRECT_CUSTOMER_ROUTE_MISSING_FROM_SURF8','routes':missing_direct})
+          if layer_count<=0:
+              blockers.append({'code':'CANONICAL_LAYER_MAP_EMPTY'})
+          if blockers:
+              status='BLOCKED_DISCOVERY'
+
+          out={
+            'schema':'prisma.tablet.final-screensqa.discovery.v1',
+            'repoHead':'01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb',
+            'status':status,
+            'capability':'tablet.customer_surface_reduction',
+            'customerContractCount':len(contracts),
+            'directCustomerStaticCount':len(direct_customer),
+            'aliasCount':len(aliases),
+            'dynamicFixtureCount':len(dynamic),
+            'surf8TabletTargetCount':len(targets),
+            'rows':rows,
+            'missingDirectCustomerTargets':missing_direct,
+            'missingAliasTargets':missing_alias,
+            'surf8NonContractTargets':non_contract,
+            'surf8RetiredInternalTargets':retired_targets,
+            'surf8UnknownNonContractTargets':unknown_non_contract,
+            'retiredRoutes':retired,
+            'blockers':blockers,
+            'runtimeGateRules':[
+              'Retired/internal/lab routes never count as customer ScreensQA PASS.',
+              'Dynamic routes require deterministic fixture evidence; absence from direct route capture is not a green claim.',
+              'Aliases are compatibility checks and do not substitute for canonical customer route captures.',
+              'Functional smoke PASS does not imply visual PASS.',
+              'No visual source mutation is authorized by this discovery.'
+            ]
+          }
+          json.dump(out,open(sys.argv[2],'w',encoding='utf-8'),ensure_ascii=False,indent=2); open(sys.argv[2],'a',encoding='utf-8').write('\n')
+
+          layer_out={
+            'schema':'prisma.tablet.final-screensqa.layer-map.v1',
+            'repoHead':'01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb',
+            'canonicalLayerMap':'apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json',
+            'canonicalLayerCount':layer_count,
+            'owners':'apps/terminal-de-venta-system/.prisma-ui/visual-control/owners.json',
+            'routes':'apps/terminal-de-venta-system/.prisma-ui/visual-control/routes.json',
+            'registry':'apps/terminal-de-venta-system/.prisma-ui/visual-control/registry.json',
+            'runtimeManifest':'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json',
+            'runtimeAuthorityCommit':runtime_manifest.get('authority_commit'),
+            'runtimeAuthorityRepo':runtime_manifest.get('authority_repo'),
+            'runtimeCustomerVisibleRouteCount':runtime_manifest.get('customer_visible_route_count'),
+            'tabletVisualAuthorityFiles':tablet_visual_files,
+            'layerMapPresent':layer_path.is_file() and layer_count>0
+          }
+          json.dump(layer_out,open(sys.argv[3],'w',encoding='utf-8'),ensure_ascii=False,indent=2); open(sys.argv[3],'a',encoding='utf-8').write('\n')
+          if not layer_out['layerMapPresent']:
+              raise SystemExit('LAYER_MAP_REQUIRED_BUT_MISSING')
+
+          md=[]
+          md += ['# Tablet Final ScreensQA Discovery','',f"- status: `{status}`",f"- repoHead: `01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb`",f"- customer contract routes: **{len(contracts)}**",f"- direct static customer screens: **{len(direct_customer)}**",f"- aliases: **{len(aliases)}**",f"- dynamic fixture routes: **{len(dynamic)}**",f"- Surf8 Tablet targets: **{len(targets)}**",f"- canonical visual layers: **{layer_count}**",'']
+          md += ['## Direct customer capture gaps',''] + ([f"- `{x}`" for x in missing_direct] if missing_direct else ['- none']) + ['']
+          md += ['## Surf8 retired/internal targets excluded from customer PASS',''] + ([f"- `{x}`" for x in retired_targets] if retired_targets else ['- none']) + ['']
+          md += ['## Dynamic routes requiring fixtures',''] + ([f"- `{x['route']}`" for x in dynamic] if dynamic else ['- none']) + ['']
+          md += ['## Decision','', 'Runtime ScreensQA may proceed only for the governed customer matrix. Retired/internal/lab routes are evidence references only and cannot count toward customer visual certification.']
+          Path(sys.argv[4]).write_text('\n'.join(md)+'\n',encoding='utf-8')
+          print(status)
+          print('customerContractCount=',len(contracts))
+          print('directCustomerStaticCount=',len(direct_customer))
+          print('surf8TabletTargetCount=',len(targets))
+          print('retiredTargets=',retired_targets)
+          print('layerCount=',layer_count)
+          PY
+          test -s "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.json"
+          test -s "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_LAYER_MAP.json"
+          test -s "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.md"
+          grep -Fq '"layerMapPresent": true' "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_LAYER_MAP.json"
+          test -z "$(git status --porcelain)"
+
+      - name: Package discovery evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/tablet-final-screensqa-authority-discovery"
+          mkdir -p "$out"
+          cp "$RUNNER_TEMP/screensqa.request.json" "$out/"
+          cp "$RUNNER_TEMP/sqa-proposal.request.json" "$out/"
+          cp "$RUNNER_TEMP/sqa-proposal-gate.txt" "$out/"
+          cp "$RUNNER_TEMP/sqa-compose.txt" "$out/"
+          cp "$RUNNER_TEMP/sqa-comp/prisma-automesh-composed-result.zip" "$out/"
+          cp "$RUNNER_TEMP/tablet-surf8-plan.json" "$out/"
+          cp "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.json" "$out/"
+          cp "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_LAYER_MAP.json" "$out/"
+          cp "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.md" "$out/"
+          printf '%s\n' 'PASS_TABLET_FINAL_SCREENSQA_AUTHORITY_DISCOVERY' > "$out/FINAL_RESULT.txt"
+
+      - name: Upload discovery evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-final-screensqa-authority-discovery
+          path: ${{ runner.temp }}/tablet-final-screensqa-authority-discovery/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Final discovery gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fxq PASS_TABLET_FINAL_SCREENSQA_AUTHORITY_DISCOVERY "$RUNNER_TEMP/tablet-final-screensqa-authority-discovery/FINAL_RESULT.txt"
+          test "$(git ls-remote origin refs/heads/main | awk '{print $1}')" = "$PINNED_HEAD"
