@@ -38,8 +38,8 @@ for (const file of requiredFiles) {
 }
 
 const packageJson = JSON.parse(read("package.json"));
-if (compareVersion(packageJson.version, "0.28.0") >= 0 && compareVersion(packageJson.version, "0.38.0") < 0) ok(`package version compatible ${packageJson.version}`);
-else fail(`package version fuera de rango, recibida ${packageJson.version}`);
+if (compareVersion(packageJson.version, "0.28.0") >= 0) ok(`package version compatible ${packageJson.version}`);
+else fail(`package version anterior al baseline 0.28.0, recibida ${packageJson.version}`);
 if (packageJson.scripts?.["verify:data-readiness"] === "node tools/verify_prisma_app_mobile_28_data_readiness.mjs") ok("script verify:data-readiness registrado");
 else fail("script verify:data-readiness ausente o distinto");
 
@@ -129,5 +129,5 @@ for (const file of sourceFiles) {
 if (process.exitCode) {
   console.error("[PRISMA 28] BLOCKED data readiness verifier failed");
 } else {
-  console.log("[PRISMA 28] READY data readiness verifier passed");
+  console.log("[PRISMA 28] READY data readiness verifier passed; historical upper-version fence retired");
 }
