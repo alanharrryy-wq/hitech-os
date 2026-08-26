@@ -2,6 +2,9 @@ name: repo-analyzer-self-test
 
 on:
   pull_request:
+    paths:
+      - "tools/graphviz/repo_analizer/**"
+      - ".github/workflows/repo-analyzer-self-test.yml"
   workflow_dispatch:
 
 permissions:
@@ -123,5 +126,3 @@ jobs:
             --query plugin \
             --timeout-seconds 120 \
             --failure-mode "${{ matrix.mode }}"
-
-

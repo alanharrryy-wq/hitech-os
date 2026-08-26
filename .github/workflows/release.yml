@@ -16,37 +16,6 @@ on:
         required: false
         default: false
         type: boolean
-  pull_request:
-    paths:
-      - "packages/contracts/**"
-      - "services/core-api/src/contracts/**"
-      - "services/core-api/src/routes/**"
-      - "apps/keystone/app/api/**"
-      - "docs/releases/**"
-      - "CHANGELOG.md"
-      - "release-please-config.json"
-      - ".releaserc.json"
-      - "policies/release.json"
-      - "policies/dependencies.json"
-      - "pnpm-workspace.yaml"
-      - "tools/scripts/check_release_discipline.mjs"
-      - ".github/workflows/release.yml"
-  push:
-    branches: ["main"]
-    paths:
-      - "packages/contracts/**"
-      - "services/core-api/src/contracts/**"
-      - "services/core-api/src/routes/**"
-      - "apps/keystone/app/api/**"
-      - "docs/releases/**"
-      - "CHANGELOG.md"
-      - "release-please-config.json"
-      - ".releaserc.json"
-      - "policies/release.json"
-      - "policies/dependencies.json"
-      - "pnpm-workspace.yaml"
-      - "tools/scripts/check_release_discipline.mjs"
-      - ".github/workflows/release.yml"
 
 permissions:
   contents: read
@@ -81,12 +50,6 @@ jobs:
           fi
 
           if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ]; then
-            base_sha="${{ github.event.pull_request.base.sha }}"
-          fi
-          if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ]; then
-            base_sha="${{ github.event.before }}"
-          fi
-          if [ -z "${base_sha}" ] || [ "${base_sha}" = "null" ] || [ "${base_sha}" = "0000000000000000000000000000000000000000" ]; then
             base_sha="HEAD~1"
           fi
 
@@ -115,5 +78,3 @@ jobs:
           name: release-governance-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: tools/_local/reports/ci/release_discipline.release_workflow.json
-
-

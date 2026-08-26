@@ -120,6 +120,15 @@ jobs:
           install_end="$(date +%s)"
           echo "CI_METRIC_INSTALL_SECONDS=$((install_end-install_start))" >> "$GITHUB_ENV"
 
+      - name: Enforce zero priority overrides
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check tools/quality/verify-zero-important.mjs
+          find tools/quality/zero-important -name '*.mjs' -print0 | xargs -0 -I{} node --check {}
+          node tools/quality/verify-zero-important.mjs --self-test
+          PRISMA_OUT_ROOT="${REPORT_DIR}" node tools/quality/verify-zero-important.mjs --mode repo-tree --format text
+
       - name: Guardrail checks (deterministic + report-mode)
         shell: bash
         run: |
@@ -232,5 +241,3 @@ jobs:
           name: ci-observability-health-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: warn
           path: tools/_local/reports/ci/engineering_health.json
-
-
