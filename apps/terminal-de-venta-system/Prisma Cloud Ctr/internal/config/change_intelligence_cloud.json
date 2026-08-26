@@ -60,6 +60,24 @@
       "evidenceRunId": 32878380486,
       "evidenceArtifactId": 9574817118,
       "evidenceArtifactDigest": "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995"
+    },
+    "entitlementProjectionAuthority": {
+      "baseHead": "c388cffd0c926295619d71a583876e5b66f37ceb",
+      "baseTree": "b68b47e1056a527bfa0097ab010c6a4184464703",
+      "profile": "ca-cloud-entitlements-p4-v2",
+      "authorityRunId": 32923210520,
+      "authorityArtifactId": 9590560387,
+      "authorityArtifactDigest": "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c",
+      "composedArtifactSha256": "e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957",
+      "authorityRequestDigest": "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14",
+      "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true,
+      "mutationGateRunId": 32923389474,
+      "mutationGateArtifactId": 9590600727,
+      "mutationGateArtifactDigest": "sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4"
     }
   },
   "product": {
@@ -340,9 +358,59 @@
       "nextGate": "Map Change Assurance entitlements onto the existing licensing owner; do not rebuild licensing or collections."
     },
     "usageEntitlements": {
-      "status": "SHARED_OWNER_CONTRACT_PENDING",
-      "items": [],
-      "nextGate": "Map Change Intelligence product entitlements onto the existing licensing owner without changing license mutation semantics."
+      "status": "SOURCE_MAPPED_NOT_GRANTED",
+      "requestedProduct": "PRISMA Change Assurance",
+      "sourceOwner": {
+        "path": "apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts",
+        "sourceBlobSha": "7bac39a02a7ffaed20f5a725a1c216da07087adf",
+        "catalog": "PLAN_BASED_PROVISIONING_CATALOG",
+        "capabilityIds": [
+          "licensing.source_contract_alignment",
+          "licensing.customer_setup.plan_based_onboarding"
+        ],
+        "reuseMode": "REFERENCE_ONLY",
+        "doNotRebuild": true
+      },
+      "planFeaturesAtCapture": {
+        "TABLET_SOLO": [
+          "pos.local_sale",
+          "catalog.local",
+          "cash.local"
+        ],
+        "TABLET_PRO": [
+          "pos.local_sale",
+          "returns",
+          "outbox.visible",
+          "mobile.supervision"
+        ],
+        "TABLET_PC_MANAGED": [
+          "pos.local_sale",
+          "pc.backoffice",
+          "sync.audit",
+          "mobile.supervision"
+        ],
+        "TABLET_PC_MOBILE_MANAGED": [
+          "pos.local_sale",
+          "pc.backoffice",
+          "mobile.companion",
+          "customer.setup"
+        ]
+      },
+      "catalogMatches": [],
+      "grantStatus": "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES",
+      "liveEnforcementObserved": false,
+      "licenseMutationPerformed": false,
+      "readOnly": true,
+      "productionCertified": false,
+      "certifiable": false,
+      "doesNotProve": [
+        "entitlement grant",
+        "live license enforcement",
+        "billing authorization",
+        "production readiness"
+      ],
+      "projectionRule": "Reference-only snapshot of the canonical licensing plan/feature catalog. Absence of a Change Assurance feature is fail-closed as NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES; this projection does not create or grant an entitlement.",
+      "nextGate": "A separately governed licensing and commercial decision must explicitly add a Change Assurance feature before any live grant or enforcement can be claimed. Until then remain NOT_GRANTED."
     },
     "roi": {
       "status": "INPUT_DRIVEN_NO_ESTIMATE",

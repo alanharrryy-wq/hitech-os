@@ -19,7 +19,7 @@ The vertical exists to expose customer-facing views for:
 - ROI
 - Entitlements
 
-The V1 surface is read-only and fail-closed. Repository, Analysis Run, Authority Pack and Evidence Report projection rows may appear only when bound to separately governed source evidence. Entitlements remain pending the separately governed shared-owner mapping.
+The V1 surface is read-only and fail-closed. Repository, Analysis Run, Authority Pack and Evidence Report projection rows may appear only when bound to separately governed source evidence. Entitlements are source-mapped from the canonical licensing owner, but the current plan catalog contains no Change Assurance feature, so the projection remains explicitly not granted.
 
 ## Fresh authority
 
@@ -92,7 +92,7 @@ The Cloud projection preserves that engine result verbatim. It does not translat
 | Change Intelligence web console | `NEW_OWNER` | Dedicated isolated document and projection modules. |
 | Change Intelligence browser authority gate | `NEW_OWNER` | Dedicated source + Chromium runtime verification and evidence artifact. |
 
-P1, P2 and P3 are projection adapters only. They do not become new repository, analysis, Authority Pack generation, verification, evidence generation, licensing, billing or registration engines.
+P1, P2, P3 and P4 are projection adapters only. They do not become new repository, analysis, Authority Pack generation, verification, evidence generation, licensing, billing or registration engines.
 
 ## Layer Map
 
@@ -179,6 +179,38 @@ Fresh immutable Code Atlas P3 evidence:
 
 The Cloud projection preserves `PASS` only as the bounded verification decision for that exact pack/snapshot. It does not prove authorization for the Cloud projection to mutate repository source, production readiness, hosted multi-tenant execution, enterprise IAM/security readiness, human usefulness or independent-agent verification. Missing, stale, contradictory or tampered pack/report provenance is fail-closed.
 
+## Entitlements P4 projection contract
+
+P4 is a read-only reference adapter over the existing licensing shared owner. It does not add a second licensing engine, alter license mutation semantics, change billing, touch Worker/D1 or create a product entitlement by inference.
+
+Fresh P4 authority and mutation authorization:
+
+- exact base: `main@c388cffd0c926295619d71a583876e5b66f37ceb` / tree `b68b47e1056a527bfa0097ab010c6a4184464703`
+- Authority Mesh run: `32923210520`
+- Authority Mesh artifact: `9590560387`
+- Authority Mesh artifact digest: `sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c`
+- composed artifact SHA-256: `e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957`
+- request digest: `d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14`
+- composed result: `PASS_COMPOSED_AUTHORITY_MESH`
+- lanes: `2/2 PASS`
+- required authority coverage: `100%`
+- blockers: `0`
+- mutation-gate run: `32923389474`
+- mutation-gate artifact: `9590600727`
+- mutation-gate artifact digest: `sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4`
+
+Canonical source owner at capture:
+
+- path: `apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts`
+- Git blob: `7bac39a02a7ffaed20f5a725a1c216da07087adf`
+- catalog: `PLAN_BASED_PROVISIONING_CATALOG`
+- protected capabilities: `licensing.source_contract_alignment`, `licensing.customer_setup.plan_based_onboarding`
+- both owners remain reuse-only / do-not-rebuild for this adapter.
+
+The captured catalog has four plans: `TABLET_SOLO`, `TABLET_PRO`, `TABLET_PC_MANAGED` and `TABLET_PC_MOBILE_MANAGED`. None contains a Change Assurance/Change Intelligence/Code Atlas entitlement feature. Therefore the only evidence-supported P4 state is `SOURCE_MAPPED_NOT_GRANTED` with `grantStatus=NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES`.
+
+This is deliberate fail-closed behavior. It does not prove or create an entitlement grant, live license enforcement, billing authorization or production readiness. A separately governed licensing and commercial decision must explicitly add the product feature before any live grant/enforcement claim is allowed.
+
 ## Browser/runtime authority gate
 
 `.github/workflows/change-intelligence-cloud-authority.yml` is the permanent vertical gate.
@@ -222,6 +254,8 @@ The P2 evidence also explicitly does not prove production readiness, hosted mult
 
 The P3 Authority Pack/Evidence references additionally remain `readOnly` and `referenceOnly`; their bounded `PASS` verification result is not mutation authority and is not a production, enterprise, usefulness or independent-agent claim.
 
+The P4 entitlement projection is source-mapped but not granted. Catalog absence is not interpreted as permission, and the Cloud surface cannot create licensing truth.
+
 ## Runtime and mutation boundary
 
 The V1 vertical is read-only. It must not:
@@ -251,15 +285,15 @@ Bounded progress:
 
 1. read-only repository registry adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;
 2. real Code Atlas analysis-run projection: `DONE / SOURCE_VERIFIED_READ_ONLY`;
-3. Authority Pack and Evidence Report reference adapter: `IMPLEMENTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;
-4. Change Assurance entitlement projection from the existing licensing owner: `NEXT`;
-5. customer-input ROI projection: pending entitlement-boundary review and real customer inputs;
+3. Authority Pack and Evidence Report reference adapter: `DONE / SOURCE_VERIFIED_READ_ONLY`;
+4. Change Assurance entitlement projection from the existing licensing owner: `IMPLEMENTED / SOURCE_MAPPED_NOT_GRANTED / SOURCE_AND_BROWSER_GATE_REQUIRED_ON_PR`;
+5. customer-input ROI projection: `NEXT`, using existing raw ROI instrumentation and explicit real customer inputs only;
 6. human usefulness evidence: external human required;
 7. independent-agent evidence: external independent evaluator required;
 8. separately governed hosted/enterprise productization: not claimed by this contract.
 
-P3 reuses the existing Authority Pack and Evidence Report owners and projects references only. It does not reconstruct prepare/verify/reporting logic in Cloud Center. The next internal gate is the shared-owner entitlement mapping; licensing mutation semantics remain outside this vertical.
+P4 reuses the existing licensing owners and projects their current catalog truth only. No Change Assurance feature exists in that catalog at this capture, so no entitlement is granted. The next internal gate is customer-input ROI projection; licensing mutation semantics remain outside this vertical.
 
 ## Governance closure
 
-Factory Ledger and Evidence Index are not modified by this P3 implementation branch. P3 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow.
+Factory Ledger and Evidence Index are not modified by this P4 implementation branch. P4 may be described as source/runtime verified only after the permanent source + Chromium workflow is green against the exact implementation head. The entitlement remains not granted until a separately governed licensing/commercial feature decision exists. Product maturity remains bounded by the no-fake-green ceiling above regardless of a green projection workflow.
