@@ -1,0 +1,10 @@
+name: PC Wave 3 Trigger Ping
+on:
+  push:
+    branches:
+      - 'verify/pc-wave3-exact-target-2608'
+jobs:
+  ping:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo PASS_PC_WAVE3_TRIGGER_PING
