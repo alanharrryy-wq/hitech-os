@@ -263,10 +263,6 @@ tools/orchestrator_factory/ops/projects/**/project_manifest.json
 tools/_local/inbox/
 tools/_local/inbox/**
 
-
-# large run artifacts
-apps/fa-ma/runs/**/inventory.json
-
 # large run artifacts
 apps/fa-ma/runs/**/inventory.json
 
@@ -297,7 +293,6 @@ apps/terminal-de-venta-system/products/pc/app/.generated/
 !/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/light/README.md
 !/apps/terminal-de-venta-system/products/tablet/app/public/products/packshots/dark/README.md
 
-
 # PRISMA AutoGit generated local artifacts
 tools/graphviz/repo_analizer/live-scene-composer/chat.json
 tools/graphviz/repo_analizer/live-scene-composer/_local/
@@ -308,3 +303,12 @@ tools/graphviz/repo_analizer/live-scene-composer/_local/
 # Local Codex launcher context (machine-specific, never commit)
 /.codex_context/
 /OPEN_THIS_FIRST.md
+
+# Repo hygiene: generated/transient evidence must not become source
+/.repo_map/
+/_reports/
+/.playwright-cli/
+/output/
+/docs/knowledge/codex_chats/export_*/
+/tools/repo_template/reports/
+/tools/_local/reports/

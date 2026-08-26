@@ -1,1 +1,0 @@
-"""Repo Analyzer Qt package."""
