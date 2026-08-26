@@ -1,11 +1,7 @@
-name: PC Surface Truth Wave 1 Visual Gate
+name: PC Completed-Wave Regression (Manual)
 
 'on':
-  pull_request:
-    paths:
-      - "apps/terminal-de-venta-system/products/pc/app/**"
-      - "apps/terminal-de-venta-system/prisma/**"
-      - ".github/workflows/pc-surface-truth-wave1-visual.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
