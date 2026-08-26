@@ -78,7 +78,7 @@ jobs:
           ]
           request = {
             "schemaVersion":"v2",
-            "profile":"tablet-final-screensqa-2608",
+            "profile":"tablet-final-screensqa-2608-r2",
             "expectedHead":head,
             "tasks":[
               {
@@ -86,7 +86,7 @@ jobs:
                 "surface":"tablet",
                 "intent":"VERIFY",
                 "domain":"visual",
-                "task":"Prepare the final Tablet ScreensQA as a read-only evidence gate after tablet.sync.runtime_truth WAVE2 closure. Reuse tablet.customer_surface_reduction; do not rebuild it. Resolve the exact customer route contract, distinguish final/submenu/step/alias/dynamic routes from retired internal/lab routes, and establish what runtime screenshots are required before any VISUAL_CERTIFIED or distribution-readiness claim. No product/runtime/CSS/DB/Prisma/generated visual runtime/RIFAT mutation. PC, Mobile, Chart Lab, Shared UI and Control Center are excluded except as authority references where necessary. Functional PASS alone is not visual PASS.",
+                "task":"Prepare final Tablet ScreensQA as a read-only evidence gate after WAVE2. Reuse tablet.customer_surface_reduction and do not rebuild it. Resolve the exact customer route contract, distinguish final/submenu/step/alias/dynamic routes from retired internal/lab routes, and establish required runtime screenshots. No product/runtime/CSS/DB/Prisma/generated visual runtime/RIFAT mutation. PC, Mobile, Chart Lab, Shared UI and Control Center are excluded. Functional PASS alone is not visual PASS.",
                 "requiredAuthorities":ledger + [manual, contract] + mam + visual,
                 "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/tablet/app","apps/terminal-de-venta-system/.prisma-ui/visual-control","tools/Plawright Mamastrophic","apps/terminal-de-venta-system/docs/ops"],
                 "requiredCapabilities":["tablet.customer_surface_reduction"],
@@ -98,7 +98,7 @@ jobs:
                 "surface":"tablet",
                 "intent":"VERIFY",
                 "domain":"visual",
-                "task":"Read-only certify the Tablet ScreensQA layer map and visual ownership authorities. The canonical layer map is apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json and must be present. Cross-check owners/routes/registry and generated Tablet visual runtime manifest. Detect drift or retired-layer contamination but do not mutate visual source, generated runtime, RIFAT, CSS, components or other surfaces. This lane exists so no visual diagnostic proceeds without an explicit layer map.",
+                "task":"Read-only certify the Tablet ScreensQA layer map and visual ownership authorities. Canonical map is apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json. Cross-check owners/routes/registry and generated Tablet visual runtime manifest. Detect drift or retired-layer contamination without mutating visual source, generated runtime, RIFAT, CSS, components or other surfaces.",
                 "requiredAuthorities":ledger + [manual, contract] + visual,
                 "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/.prisma-ui/visual-control","apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime","apps/terminal-de-venta-system/docs/quality"],
                 "requiredCapabilities":["tablet.customer_surface_reduction"],
@@ -173,36 +173,28 @@ jobs:
           row_re=re.compile(r"\{ route: '([^']+)', label: '([^']+)', module: '([^']+)', roles: \[([^\]]*)\], visibility: '([^']+)', canonicalRoute: '([^']+)', finalMenu: (true|false), order: (\d+), rationale: '([^']*)' \}")
           contracts=[]
           for m in row_re.finditer(text):
-              roles=re.findall(r"'([^']+)'",m.group(4))
               contracts.append({
-                'route':m.group(1),'label':m.group(2),'module':m.group(3),'roles':roles,
-                'visibility':m.group(5),'canonicalRoute':m.group(6),'finalMenu':m.group(7)=='true',
-                'order':int(m.group(8)),'rationale':m.group(9)
+                'route':m.group(1),'label':m.group(2),'module':m.group(3),
+                'roles':re.findall(r"'([^']+)'",m.group(4)),
+                'visibility':m.group(5),'canonicalRoute':m.group(6),
+                'finalMenu':m.group(7)=='true','order':int(m.group(8)),'rationale':m.group(9)
               })
           retired_re=re.compile(r"\{ route: '([^']+)', replacement: (null|'[^']+'), rationale: '([^']*)' \}")
           retired=[]
           for m in retired_re.finditer(text):
-              replacement=None if m.group(2)=='null' else m.group(2).strip("'")
-              retired.append({'route':m.group(1),'replacement':replacement,'rationale':m.group(3)})
+              retired.append({'route':m.group(1),'replacement':None if m.group(2)=='null' else m.group(2).strip("'"),'rationale':m.group(3)})
 
           targets=[t.get('route') for t in plan.get('targets',[]) if t.get('macro')=='tablet' and t.get('route')]
           target_set=set(targets)
           contract_set={c['route'] for c in contracts}
           retired_set={r['route'] for r in retired}
-          static=[c for c in contracts if c['visibility'] not in {'dynamic'}]
           dynamic=[c for c in contracts if c['visibility']=='dynamic']
           aliases=[c for c in contracts if c['visibility']=='alias']
-          direct_customer=[c for c in static if c['visibility']!='alias']
-
+          direct_customer=[c for c in contracts if c['visibility'] not in {'dynamic','alias'}]
           rows=[]
           for c in contracts:
-              if c['visibility']=='dynamic':
-                  capture='FIXTURE_REQUIRED'
-              elif c['visibility']=='alias':
-                  capture='COMPATIBILITY_ROUTE'
-              else:
-                  capture='DIRECT_CUSTOMER_SCREEN'
-              rows.append({**c,'screensqaClass':capture,'surf8TargetPresent':c['route'] in target_set})
+              cls='FIXTURE_REQUIRED' if c['visibility']=='dynamic' else 'COMPATIBILITY_ROUTE' if c['visibility']=='alias' else 'DIRECT_CUSTOMER_SCREEN'
+              rows.append({**c,'screensqaClass':cls,'surf8TargetPresent':c['route'] in target_set})
 
           non_contract=sorted(target_set-contract_set)
           retired_targets=sorted(target_set & retired_set)
@@ -212,18 +204,26 @@ jobs:
 
           layer_path=Path('apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json')
           layers=json.loads(layer_path.read_text(encoding='utf-8'))
-          layer_count=len(layers) if isinstance(layers,list) else len(layers.get('layers',[])) if isinstance(layers,dict) else 0
+          if isinstance(layers,list):
+              layer_count=len(layers)
+          elif isinstance(layers,dict):
+              layer_count=int(layers.get('layerCount') or (layers.get('compactIndex') or {}).get('expandedCount') or len(layers.get('layerSamples') or []))
+          else:
+              layer_count=0
           runtime_manifest=json.loads(Path('apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json').read_text(encoding='utf-8'))
           tablet_visual_files=[x for x in runtime_manifest.get('files',[]) if '/tablet/' in x.get('path','') or 'tablet.' in x.get('path','')]
 
-          status='READY_FOR_RUNTIME_SCREENSQA'
           blockers=[]
+          if len(contracts)!=22:
+              blockers.append({'code':'CUSTOMER_CONTRACT_COUNT_DRIFT','expected':22,'actual':len(contracts)})
+          manifest_count=runtime_manifest.get('customer_visible_route_count')
+          if manifest_count is not None and int(manifest_count)!=len(contracts):
+              blockers.append({'code':'RUNTIME_MANIFEST_ROUTE_COUNT_DRIFT','manifest':manifest_count,'contract':len(contracts)})
           if missing_direct:
               blockers.append({'code':'DIRECT_CUSTOMER_ROUTE_MISSING_FROM_SURF8','routes':missing_direct})
           if layer_count<=0:
               blockers.append({'code':'CANONICAL_LAYER_MAP_EMPTY'})
-          if blockers:
-              status='BLOCKED_DISCOVERY'
+          status='BLOCKED_DISCOVERY' if blockers else 'READY_FOR_RUNTIME_SCREENSQA'
 
           out={
             'schema':'prisma.tablet.final-screensqa.discovery.v1',
@@ -251,13 +251,16 @@ jobs:
               'No visual source mutation is authorized by this discovery.'
             ]
           }
-          json.dump(out,open(sys.argv[2],'w',encoding='utf-8'),ensure_ascii=False,indent=2); open(sys.argv[2],'a',encoding='utf-8').write('\n')
+          Path(sys.argv[2]).write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
           layer_out={
             'schema':'prisma.tablet.final-screensqa.layer-map.v1',
             'repoHead':'01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb',
             'canonicalLayerMap':'apps/terminal-de-venta-system/.prisma-ui/visual-control/layers.json',
+            'canonicalLayerSchema':layers.get('schema') if isinstance(layers,dict) else None,
+            'canonicalLayerStatus':layers.get('status') if isinstance(layers,dict) else None,
             'canonicalLayerCount':layer_count,
+            'canonicalTabletLayerCount':(layers.get('countsBySurface') or {}).get('tablet') if isinstance(layers,dict) else None,
             'owners':'apps/terminal-de-venta-system/.prisma-ui/visual-control/owners.json',
             'routes':'apps/terminal-de-venta-system/.prisma-ui/visual-control/routes.json',
             'registry':'apps/terminal-de-venta-system/.prisma-ui/visual-control/registry.json',
@@ -268,28 +271,31 @@ jobs:
             'tabletVisualAuthorityFiles':tablet_visual_files,
             'layerMapPresent':layer_path.is_file() and layer_count>0
           }
-          json.dump(layer_out,open(sys.argv[3],'w',encoding='utf-8'),ensure_ascii=False,indent=2); open(sys.argv[3],'a',encoding='utf-8').write('\n')
+          Path(sys.argv[3]).write_text(json.dumps(layer_out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           if not layer_out['layerMapPresent']:
               raise SystemExit('LAYER_MAP_REQUIRED_BUT_MISSING')
 
-          md=[]
-          md += ['# Tablet Final ScreensQA Discovery','',f"- status: `{status}`",f"- repoHead: `01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb`",f"- customer contract routes: **{len(contracts)}**",f"- direct static customer screens: **{len(direct_customer)}**",f"- aliases: **{len(aliases)}**",f"- dynamic fixture routes: **{len(dynamic)}**",f"- Surf8 Tablet targets: **{len(targets)}**",f"- canonical visual layers: **{layer_count}**",'']
-          md += ['## Direct customer capture gaps',''] + ([f"- `{x}`" for x in missing_direct] if missing_direct else ['- none']) + ['']
-          md += ['## Surf8 retired/internal targets excluded from customer PASS',''] + ([f"- `{x}`" for x in retired_targets] if retired_targets else ['- none']) + ['']
+          md=['# Tablet Final ScreensQA Discovery','',f'- status: `{status}`',f'- repoHead: `01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb`',f'- customer contract routes: **{len(contracts)}**',f'- direct static customer screens: **{len(direct_customer)}**',f'- aliases: **{len(aliases)}**',f'- dynamic fixture routes: **{len(dynamic)}**',f'- Surf8 Tablet targets: **{len(targets)}**',f'- canonical visual layers: **{layer_count}**','']
+          md += ['## Direct customer capture gaps',''] + ([f'- `{x}`' for x in missing_direct] if missing_direct else ['- none']) + ['']
+          md += ['## Surf8 retired/internal targets excluded from customer PASS',''] + ([f'- `{x}`' for x in retired_targets] if retired_targets else ['- none']) + ['']
           md += ['## Dynamic routes requiring fixtures',''] + ([f"- `{x['route']}`" for x in dynamic] if dynamic else ['- none']) + ['']
           md += ['## Decision','', 'Runtime ScreensQA may proceed only for the governed customer matrix. Retired/internal/lab routes are evidence references only and cannot count toward customer visual certification.']
           Path(sys.argv[4]).write_text('\n'.join(md)+'\n',encoding='utf-8')
           print(status)
           print('customerContractCount=',len(contracts))
           print('directCustomerStaticCount=',len(direct_customer))
+          print('aliasCount=',len(aliases))
+          print('dynamicFixtureCount=',len(dynamic))
           print('surf8TabletTargetCount=',len(targets))
           print('retiredTargets=',retired_targets)
           print('layerCount=',layer_count)
+          print('blockers=',blockers)
           PY
           test -s "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.json"
           test -s "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_LAYER_MAP.json"
           test -s "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.md"
           grep -Fq '"layerMapPresent": true' "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_LAYER_MAP.json"
+          grep -Fq '"status": "READY_FOR_RUNTIME_SCREENSQA"' "$RUNNER_TEMP/TABLET_FINAL_SCREENSQA_DISCOVERY.json"
           test -z "$(git status --porcelain)"
 
       - name: Package discovery evidence
