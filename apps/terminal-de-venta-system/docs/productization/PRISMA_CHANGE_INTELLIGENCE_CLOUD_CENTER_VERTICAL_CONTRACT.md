@@ -211,6 +211,25 @@ The captured catalog has four plans: `TABLET_SOLO`, `TABLET_PRO`, `TABLET_PC_MAN
 
 This is deliberate fail-closed behavior. It does not prove or create an entitlement grant, live license enforcement, billing authorization or production readiness. A separately governed licensing and commercial decision must explicitly add the product feature before any live grant/enforcement claim is allowed.
 
+## ROI P5 projection contract
+
+P5 hardens the existing Cloud ROI placeholder into a read-only projection adapter over the canonical Code Atlas ROI owner. It does not add a second ROI engine, estimator, billing owner, pricing engine or customer-measurement store.
+
+Fresh P5 authority and mutation authorization:
+
+- exact base: `main@487459ab8901748673b86eaf3ad3a79322c7f266` / tree `4d1013c985cafe3e215237181d03797ee29deab3`
+- Authority Mesh run/artifact: `32940529028` / `9596382236`
+- Authority Mesh artifact digest: `sha256:849d76288db5034124c89f5e88d5b132cb8728cc36fa6b4574fdb333910af31c`
+- composed artifact SHA-256: `b2e83b257537ab86437255a3b12743602361b2b17aa08d6c5ba4964e5648931d`
+- request digest: `8f07a8f8302b604620f42f038bdc528c5cd3da59b746b148cb4c245d93bf1a21`
+- result: `PASS_COMPOSED_AUTHORITY_MESH`, `2/2` lanes, `100%` required authority coverage, `0` blockers
+- mutation-gate run/artifact: `32940817782` / `9596447828`
+- mutation-gate artifact digest: `sha256:452c11f1015e7412b8077914c82a6f88f95881eaecae990bb2c56341de418303`
+
+Canonical raw ROI instrumentation remains owned by `tools/code-atlas/src/code_atlas/change_intelligence/roi.py` and is reused as-is. No real customer baseline values or observed customer ROI events are present in this source projection. The safe state is therefore `INPUT_REQUIRED_NO_ESTIMATE` with `customerInputsPresent=false`, `estimateAllowed=false`, `observedEventsProjected=[]` and `financialEstimate=null`. Commercial price references are hypotheses or terms, never measured customer benefit.
+
+P5 does not prove realized cash savings, profit, willingness to pay, human usefulness, production readiness, hosted multi-tenant readiness or enterprise readiness. Real customer baselines and observed events are the next ROI evidence gate. Independent-agent and human-usefulness gates remain separate.
+
 ## Browser/runtime authority gate
 
 `.github/workflows/change-intelligence-cloud-authority.yml` is the permanent vertical gate.

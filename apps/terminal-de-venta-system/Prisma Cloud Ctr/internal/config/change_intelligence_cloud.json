@@ -78,6 +78,24 @@
       "mutationGateRunId": 32923389474,
       "mutationGateArtifactId": 9590600727,
       "mutationGateArtifactDigest": "sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4"
+    },
+    "roiProjectionAuthority": {
+      "baseHead": "487459ab8901748673b86eaf3ad3a79322c7f266",
+      "baseTree": "4d1013c985cafe3e215237181d03797ee29deab3",
+      "profile": "ca-cloud-roi-p5-current-v2",
+      "authorityRunId": 32940529028,
+      "authorityArtifactId": 9596382236,
+      "authorityArtifactDigest": "sha256:849d76288db5034124c89f5e88d5b132cb8728cc36fa6b4574fdb333910af31c",
+      "composedArtifactSha256": "b2e83b257537ab86437255a3b12743602361b2b17aa08d6c5ba4964e5648931d",
+      "authorityRequestDigest": "8f07a8f8302b604620f42f038bdc528c5cd3da59b746b148cb4c245d93bf1a21",
+      "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true,
+      "mutationGateRunId": 32940817782,
+      "mutationGateArtifactId": 9596447828,
+      "mutationGateArtifactDigest": "sha256:452c11f1015e7412b8077914c82a6f88f95881eaecae990bb2c56341de418303"
     }
   },
   "product": {
@@ -413,7 +431,28 @@
       "nextGate": "A separately governed licensing and commercial decision must explicitly add a Change Assurance feature before any live grant or enforcement can be claimed. Until then remain NOT_GRANTED."
     },
     "roi": {
-      "status": "INPUT_DRIVEN_NO_ESTIMATE",
+      "status": "INPUT_REQUIRED_NO_ESTIMATE",
+      "sourceOwner": {
+        "path": "tools/code-atlas/src/code_atlas/change_intelligence/roi.py",
+        "capabilityId": "ci.roi.raw_instrumentation",
+        "reuseMode": "REFERENCE_ONLY",
+        "doNotRebuild": true
+      },
+      "rawMetricsSupported": [
+        "contextDiscoveryTime",
+        "changeScopeIdentificationTime",
+        "humanSupervisionTime",
+        "outOfScopeChangeRate",
+        "reopenedWorkRate",
+        "evidenceAssemblyTime",
+        "changeReadinessThroughput",
+        "blockedBeforeChangeCount",
+        "evidenceCompletenessRate"
+      ],
+      "customerInputsPresent": false,
+      "observedEventsProjected": [],
+      "estimateAllowed": false,
+      "financialEstimate": null,
       "currency": "MXN",
       "monthlyBenefitFormula": "Discovery + Rework + Agent Supervision + Release/Evidence",
       "netMonthlyValueFormula": "Measured Monthly Benefit - Price",
@@ -424,7 +463,20 @@
         "avoided rework events and hours",
         "agent review minutes saved",
         "release or evidence hours saved"
-      ]
+      ],
+      "derivationRule": "A financial estimate may be derived only from canonical observed time events measured in hours plus an explicit non-negative loaded hourly cost and an explicit assumption label.",
+      "commercialHypothesesAreMeasurements": false,
+      "certifiable": false,
+      "productionCertified": false,
+      "doesNotProve": [
+        "realized cash savings",
+        "profit",
+        "customer willingness to pay",
+        "human usefulness",
+        "production readiness"
+      ],
+      "projectionRule": "Reference-only projection of canonical Code Atlas ROI instrumentation. Without real customer baseline inputs and observed events, the state remains INPUT_REQUIRED_NO_ESTIMATE and financialEstimate remains null. Commercial pricing hypotheses are not customer measurements.",
+      "nextGate": "Collect real customer baseline inputs and observed raw ROI events. Only then derive an explicitly labeled estimate under the canonical ROI owner; external human usefulness remains a separate evidence gate."
     }
   },
   "commercialReference": {
