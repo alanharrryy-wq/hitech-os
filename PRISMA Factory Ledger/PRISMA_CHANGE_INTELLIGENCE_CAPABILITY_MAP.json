@@ -517,20 +517,24 @@
       "cloud",
       "Prisma Cloud Ctr / adapter",
       "cloud_center",
-      "BUILD",
-      "NOT_CONNECTED",
-      false,
+      "DONE",
+      "RUNTIME_VERIFIED_SLICE",
+      true,
       [
         "pr:303",
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json",
+        "pr:417",
+        "merge:01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py",
+        "authorityMesh:run:32941908100",
+        "authorityArtifact:9596838433",
+        "governanceGates:run:32963041762",
+        "governanceGatesArtifact:9604613061"
       ],
-      "VERIFY_MEASURED_ROI_PROJECTION_WITH_CUSTOMER_INPUT_SEPARATION",
-      "Project existing ROI instrumentation and explicit customer inputs; do not invent savings.",
-      [
-        "code_atlas.change_intelligence.customer_wow_v1",
-        "cloud_center.customer_registration_runtime",
-        "commercial.billing.collections"
-      ]
+      "CUSTOMER_BASELINE_INPUT_AND_MEASURED_PROJECTION",
+      "Reuse the canonical Code Atlas ROI owner and the merged fail-closed Cloud projection. Do not build a second ROI, billing, pricing, or customer-measurement owner. A financial estimate requires real customer baseline inputs plus observed canonical ROI events; this capability does not prove realized savings, profit, willingness to pay, human usefulness, production readiness, hosted multi-tenant readiness, or enterprise readiness.",
+      []
     ],
     [
       "ci.human.study_kit",
