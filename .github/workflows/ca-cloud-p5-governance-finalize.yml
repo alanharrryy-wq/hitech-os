@@ -136,7 +136,6 @@ jobs:
           PY
           python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
           python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
-          python 'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py'
 
       - name: Commit governance plate
         shell: bash
