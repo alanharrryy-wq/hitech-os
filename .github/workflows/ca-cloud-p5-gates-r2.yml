@@ -1,0 +1,100 @@
+name: CA Cloud P5 ROI Mutation Gates R2
+
+on:
+  push:
+    branches:
+      - preflight/ca-cloud-p5-roi-r2-2508
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_HEAD: 8d4a1508e8309299f7cd4a89f599b7b82e01f587
+    steps:
+      - name: Checkout exact governed main
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.SOURCE_HEAD }}
+          fetch-depth: 0
+      - name: Assert exact current main and authority state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$SOURCE_HEAD"
+          test "$(git rev-parse origin/main)" = "$SOURCE_HEAD"
+          test -z "$(git status --porcelain)"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
+      - name: Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/factory-request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"8d4a1508e8309299f7cd4a89f599b7b82e01f587",
+            "task":"Advance the existing Change Assurance Cloud Center ROI adapter by projecting canonical Code Atlas raw ROI instrumentation and explicit customer baseline requirements read-only and fail-closed, without rebuilding ROI or billing.",
+            "capabilities":[
+              {"id":"code_atlas.change_intelligence.customer_wow_v1","requestedAction":"ADVANCE"},
+              {"id":"cloud_center.customer_registration_runtime","requestedAction":"REUSE"},
+              {"id":"commercial.billing.collections","requestedAction":"REUSE"}
+            ],
+            "visualMutation":false,
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"8d4a1508e8309299f7cd4a89f599b7b82e01f587",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"e44b2230f30e142f2016aef1df3fde277c5f96e957b45f1c537062064633358b",
+              "artifactDigest":"sha256:a320d6334f2c6b9f4183affb13e1fc2001485932a3c24d65b1a28d8a0b5c5d09"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/factory-request.json" | tee "$RUNNER_TEMP/factory-result.json"
+          grep -q 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/factory-result.json"
+      - name: Change Assurance capability mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ca-request.json" <<'JSON'
+          {
+            "mode":"MUTATION",
+            "capabilityIds":["ci.roi.raw_instrumentation","ci.cloud.roi_projection"],
+            "task":"Reuse canonical raw ROI instrumentation and advance only the Cloud ROI/customer-input projection. Missing real customer baselines remain INPUT_REQUIRED_NO_ESTIMATE with no financial estimate.",
+            "visualMutation":false,
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"8d4a1508e8309299f7cd4a89f599b7b82e01f587",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"e44b2230f30e142f2016aef1df3fde277c5f96e957b45f1c537062064633358b",
+              "artifactDigest":"sha256:a320d6334f2c6b9f4183affb13e1fc2001485932a3c24d65b1a28d8a0b5c5d09"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$RUNNER_TEMP/ca-request.json" | tee "$RUNNER_TEMP/ca-result.json"
+          grep -q 'PASS_CHANGE_ASSURANCE_CAPABILITY_GATE' "$RUNNER_TEMP/ca-result.json"
+      - name: Lock P5 authority
+        shell: bash
+        run: |
+          cat > "$RUNNER_TEMP/p5-authority.json" <<'JSON'
+          {"runId":32936642799,"artifactId":9595069454,"artifactDigest":"sha256:a320d6334f2c6b9f4183affb13e1fc2001485932a3c24d65b1a28d8a0b5c5d09","composedArtifactSha256":"4abe021930f0c5733cc39dbad0ca1b0d0c7e9ef6a706bde330bd3c1fdfa0311f","requestDigest":"e44b2230f30e142f2016aef1df3fde277c5f96e957b45f1c537062064633358b","repoHead":"8d4a1508e8309299f7cd4a89f599b7b82e01f587","repoTree":"48705ddfe4c234b0bb8f5f2edae80a6c40a2f021","status":"PASS_COMPOSED_AUTHORITY_MESH","laneCount":2,"requiredAuthorityCoveragePct":100,"blockers":0,"readOnly":true,"productionCertified":false}
+          JSON
+          python -m json.tool "$RUNNER_TEMP/p5-authority.json" >/dev/null
+      - name: Upload gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-cloud-p5-roi-mutation-gates-r2
+          path: |
+            ${{ runner.temp }}/factory-request.json
+            ${{ runner.temp }}/factory-result.json
+            ${{ runner.temp }}/ca-request.json
+            ${{ runner.temp }}/ca-result.json
+            ${{ runner.temp }}/p5-authority.json
+          if-no-files-found: error
+          retention-days: 14
