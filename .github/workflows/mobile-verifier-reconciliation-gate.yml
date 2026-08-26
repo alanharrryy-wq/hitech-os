@@ -1,0 +1,147 @@
+name: Mobile Verifier Reconciliation Mutation Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mobile-verifier-reconciliation-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  mobile-verifier-mutation-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
+        with:
+          ref: a0b8eae999534e142b1c8543ecc736b337bc2781
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact clean authority baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "a0b8eae999534e142b1c8543ecc736b337bc2781"
+          python -m py_compile "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py"
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build exact Mobile verifier mutation request
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/mobile-verifier-mutation.request.json"
+          python - "$request" <<'PY'
+          import json, sys
+          request = {
+              "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+              "mode": "MUTATION",
+              "expectedHead": "a0b8eae999534e142b1c8543ecc736b337bc2781",
+              "task": (
+                  "Advance the recorded nextGate for mobile.interface_specification_canon by reconciling only stale Mobile "
+                  "quality/tooling verifier assertions and associated package-script references that still encode superseded "
+                  "mounting, navigation, version, component-presence, or historical interface expectations. Preserve the "
+                  "canonical seven-section /prisma-app navigation, auxiliary setup/install/offline routes, separate "
+                  "/prisma-command specialist semantics, security/auth/sync/licensing/data/PWA/release/runtime evidence tests, "
+                  "and all Mobile product source/runtime/API behavior. Explicitly do not remount dormant Command Center, "
+                  "Action Inbox, Daily Brief, Decision Ledger, Pulse Timeline, Health Radar, or MultiContextSwitcher merely "
+                  "to satisfy stale tests. Intended mutation scope is verifier/tooling and package script metadata only."
+              ),
+              "capabilities": [
+                  {"id": "mobile.interface_specification_canon", "requestedAction": "ADVANCE"}
+              ],
+              "authorityMesh": {
+                  "status": "PASS_COMPOSED_AUTHORITY_MESH",
+                  "repoHead": "a0b8eae999534e142b1c8543ecc736b337bc2781",
+                  "requiredAuthorityCoveragePct": 100.0,
+                  "blockers": 0,
+                  "requestDigest": "b5428e523bd9f9f654a3ed222b5fe3ee72e2ef7e10d616df96a6b035cc6364ef",
+                  "artifactDigest": "35427db21ce7d154d73bcdc184b3e57fc232d922cdad537afe6889660f228435",
+                  "layerMapPresent": False
+              },
+              "visualMutation": False
+          }
+          with open(sys.argv[1], "w", encoding="utf-8") as fh:
+              json.dump(request, fh, ensure_ascii=False, indent=2)
+              fh.write("\n")
+          PY
+
+      - name: Run universal Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            --request "$RUNNER_TEMP/mobile-verifier-mutation.request.json" \
+            --out "$RUNNER_TEMP/mobile-verifier-mutation.decision.json"
+          python - "$RUNNER_TEMP/mobile-verifier-mutation.decision.json" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          if data.get("result") != "PASS_ANTI_REWORK_GATE":
+              raise SystemExit("FACTORY_GATE_RESULT_NOT_PASS")
+          if data.get("errors") != []:
+              raise SystemExit("FACTORY_GATE_ERRORS_NOT_EMPTY")
+          print("PASS_ANTI_REWORK_GATE")
+          PY
+          test -z "$(git status --porcelain)"
+
+      - name: Stage immutable gate evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/mobile-verifier-gate-evidence"
+          mkdir -p "$out"
+          for path in \
+            "$RUNNER_TEMP/mobile-verifier-mutation.request.json" \
+            "$RUNNER_TEMP/mobile-verifier-mutation.decision.json"; do
+            if [ -f "$path" ]; then
+              cp "$path" "$out/$(basename "$path")"
+            fi
+          done
+          cat > "$out/AUTHORITY_MESH_POINTER.txt" <<'EOF'
+          run=32937333544
+          artifact=9595315797
+          github_artifact_sha256=26bd92c1dbdb13ebf171c9dcd0cdb7b4747f6c58705d19d4d4c20a53035ae01e
+          composed_zip_sha256=35427db21ce7d154d73bcdc184b3e57fc232d922cdad537afe6889660f228435
+          requestDigest=b5428e523bd9f9f654a3ed222b5fe3ee72e2ef7e10d616df96a6b035cc6364ef
+          repoHead=a0b8eae999534e142b1c8543ecc736b337bc2781
+          status=PASS_COMPOSED_AUTHORITY_MESH
+          coverage=100
+          blockers=0
+          EOF
+          find "$out" -maxdepth 1 -type f -print
+
+      - name: Upload Mobile verifier gate evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-verifier-reconciliation-mutation-gate
+          path: ${{ runner.temp }}/mobile-verifier-gate-evidence/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed unless machine gate passed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$RUNNER_TEMP/mobile-verifier-mutation.decision.json"
+          python - "$RUNNER_TEMP/mobile-verifier-mutation.decision.json" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          if data.get("result") != "PASS_ANTI_REWORK_GATE" or data.get("errors") != []:
+              raise SystemExit("FACTORY_GATE_NOT_CLEAN_PASS")
+          PY
