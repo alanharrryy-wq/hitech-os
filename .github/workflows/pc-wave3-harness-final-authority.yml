@@ -1,0 +1,148 @@
+name: PC Wave 3 Harness Final Authority
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave3-harness-final-authority.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  PINNED_HEAD: 6de6e6f9d515e9234b8ab98b00e6133107a4c02a
+
+jobs:
+  authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact Wave 3 certification head
+        uses: actions/checkout@v6
+        with:
+          ref: 6de6e6f9d515e9234b8ab98b00e6133107a4c02a
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact head and governance owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PINNED_HEAD"
+          test -f "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+          test -f "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build task exact authority request
+        shell: bash
+        run: |
+          python - "$RUNNER_TEMP/request.json" <<'PY'
+          import json,sys
+          head='6de6e6f9d515e9234b8ab98b00e6133107a4c02a'
+          core=[
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
+            'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py',
+            'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+            'apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py',
+            'apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave3_ci.py',
+            '.github/workflows/pc-wave3-certification.yml',
+            'apps/terminal-de-venta-system/pnpm-lock.yaml'
+          ]
+          caps=['pc.quality.customer_experience_wave2','data.canonical_schema_reproducibility','pc.entitlement.surface_projection']
+          task=(
+            'Finalize only the PC Wave 3 certification harness after run 32936969037 proved Wave 3 PASS, Wave 2 entitled PASS, and Wave 2 restricted PASS. '
+            'The sole remaining defect is tracked-source drift from pnpm adding one deprecated metadata line to apps/terminal-de-venta-system/pnpm-lock.yaml during runner Prisma commands. '
+            'Authorize only moving the existing strict lock metadata validation and restoration to after all runners and immediately before tracked-source drift classification. '
+            'The workflow must accept and restore only added deprecated metadata lines and must fail on any other tracked diff. Do not change product source, Wave 2 or Wave 3 runners, licensing, schema, visual UI, live/customer data, deploys, or excluded surfaces.'
+          )
+          lanes=[
+            {'id':'late-lock-metadata-normalization','surface':'pc','intent':'FIX','domain':'tooling','task':task,'requiredAuthorities':core,'requiredDirectories':['.github/workflows','apps/terminal-de-venta-system/products/pc/app/tools'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},
+            {'id':'final-regression-boundary','surface':'pc','intent':'AUDIT','domain':'runtime','task':task+' Preserve the already passing Wave 3 and frozen Wave 2 behavior and rerun the complete certification after the harness-only adjustment.','requiredAuthorities':core,'requiredDirectories':['apps/terminal-de-venta-system/products/pc/app/app','apps/terminal-de-venta-system/products/pc/app/src/server','apps/terminal-de-venta-system/products/pc/app/tools'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True}
+          ]
+          with open(sys.argv[1],'w',encoding='utf-8') as f:
+            json.dump({'schemaVersion':'v2','profile':'pc-wave3-harness-final-v1','expectedHead':head,'tasks':lanes},f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+
+      - name: Compose fresh Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/pre"; par="$RUNNER_TEMP/par"; comp="$RUNNER_TEMP/comp/payload"; mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54 --max-files 180 --max-mb 55
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/compose.txt"
+          test -f "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Generate task exact Layer Map
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/PC_WAVE3_HARNESS_FINAL_LAYER_MAP.json" <<'PY'
+          import json,subprocess,sys
+          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          groups={
+            'certification_workflow':[p for p in files if p=='.github/workflows/pc-wave3-certification.yml'],
+            'lockfile':[p for p in files if p=='apps/terminal-de-venta-system/pnpm-lock.yaml'],
+            'wave2_runner':[p for p in files if p.endswith('/tools/run_pc_wave2_ci.py')],
+            'wave3_runner':[p for p in files if p.endswith('/tools/run_pc_wave3_ci.py')],
+            'product_api':[p for p in files if '/products/pc/app/app/api/' in p],
+            'product_services':[p for p in files if '/products/pc/app/src/server/services/' in p]
+          }
+          unresolved=[k for k in ('certification_workflow','lockfile','wave2_runner','wave3_runner') if not groups[k]]
+          out={'schemaVersion':'prisma.pc-wave3.harness-final.layer-map.v1','repoHead':'6de6e6f9d515e9234b8ab98b00e6133107a4c02a','surface':'pc','visualMutationAuthorized':False,'allowedMutationLayers':['certification_workflow'],'readOnlyReferenceLayers':['lockfile','wave2_runner','wave3_runner','product_api','product_services'],'excludedSurfaces':['tablet','mobile','chart_lab','shared_ui','control_center'],'groups':{k:{'count':len(v),'sample':v[:80]} for k,v in groups.items()},'unresolved':unresolved,'rules':['only pc-wave3-certification.yml may be changed','lockfile may only be restored in runner after exact metadata-only validation, never committed','Wave 2 and Wave 3 runners remain frozen','product source remains unchanged','no live/customer DB mutation','no visual mutation']}
+          with open(sys.argv[1],'w',encoding='utf-8') as f: json.dump(out,f,ensure_ascii=False,indent=2); f.write('\n')
+          if unresolved: raise SystemExit('LAYER_MAP_UNRESOLVED:'+','.join(unresolved))
+          print(json.dumps({'unresolved':unresolved,'counts':{k:len(v) for k,v in groups.items()}},indent=2))
+          PY
+
+      - name: Universal Factory Ledger mutation authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/factory.request.json" <<'PY'
+          import hashlib,json,sys
+          report=json.load(open(sys.argv[1],encoding='utf-8')); pre=json.load(open(sys.argv[2],encoding='utf-8'))
+          coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in pre['lanes'])
+          mesh={'status':report['status'],'repoHead':report['repoHead'],'requiredAuthorityCoveragePct':coverage,'blockers':len(pre.get('blockers') or []),'requestDigest':report['requestDigest'],'artifactDigest':hashlib.sha256(open(sys.argv[3],'rb').read()).hexdigest(),'layerMapPresent':True}
+          req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':'6de6e6f9d515e9234b8ab98b00e6133107a4c02a','task':'Finalize only PC Wave 3 certification workflow by validating and restoring the proven pnpm deprecated lock metadata after all runners and before tracked-source drift classification.','capabilities':[{'id':'pc.quality.customer_experience_wave2','requestedAction':'ADVANCE'},{'id':'data.canonical_schema_reproducibility','requestedAction':'ADVANCE'},{'id':'pc.entitlement.surface_projection','requestedAction':'ADVANCE'}],'authorityMesh':mesh,'visualMutation':False}
+          with open(sys.argv[4],'w',encoding='utf-8') as f: json.dump(req,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/factory.request.json" | tee "$RUNNER_TEMP/gate.json"
+          python - "$RUNNER_TEMP/gate.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert d.get('repoHead')=='6de6e6f9d515e9234b8ab98b00e6133107a4c02a',d
+          PY
+          echo PASS_PC_WAVE3_HARNESS_FINAL_AUTHORITY
+
+      - name: Stage evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/pc-wave3-harness-final-authority"; mkdir -p "$out"
+          for p in "$RUNNER_TEMP/request.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/comp/payload/MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/PC_WAVE3_HARNESS_FINAL_LAYER_MAP.json" "$RUNNER_TEMP/factory.request.json" "$RUNNER_TEMP/gate.json" "$RUNNER_TEMP/compose.txt"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+
+      - name: Upload final harness authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave3-harness-final-authority
+          path: ${{ runner.temp }}/pc-wave3-harness-final-authority/**
+          if-no-files-found: error
+          retention-days: 14
