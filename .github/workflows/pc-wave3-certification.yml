@@ -46,14 +46,87 @@ jobs:
       - name: Install repository dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Normalize pnpm transient lock metadata only
+        shell: bash
+        run: |
+          set -euo pipefail
+          lock='apps/terminal-de-venta-system/pnpm-lock.yaml'
+          mkdir -p artifacts/pc-wave3-final/governance
+          if git diff --quiet -- "$lock"; then
+            printf '{"lockMetadataNormalized":false,"reason":"no_diff","pass":true}\n' > artifacts/pc-wave3-final/governance/LOCK_METADATA_NORMALIZATION.json
+            exit 0
+          fi
+          git diff --unified=0 -- "$lock" > "$RUNNER_TEMP/pnpm-lock-transient.patch"
+          python - "$RUNNER_TEMP/pnpm-lock-transient.patch" <<'PY'
+          import json,re,sys
+          from pathlib import Path
+
+          patch=Path(sys.argv[1]).read_text(encoding='utf-8')
+          ignored_prefixes=('diff --git ','index ','--- ','+++ ','@@')
+          material=[]
+          accepted=[]
+          for line in patch.splitlines():
+              if not line or line.startswith(ignored_prefixes):
+                  continue
+              if line.startswith('+') and re.match(r'^\+\s+deprecated:\s+.+$', line):
+                  accepted.append(line[1:].strip())
+                  continue
+              material.append(line)
+          if material or not accepted:
+              print(json.dumps({'pass':False,'materialUnexpectedLines':material,'acceptedDeprecatedLines':accepted},indent=2))
+              raise SystemExit('UNEXPECTED_PNPM_LOCKFILE_MUTATION')
+          print(json.dumps({'pass':True,'acceptedDeprecatedLines':accepted},indent=2))
+          PY
+          cp "$RUNNER_TEMP/pnpm-lock-transient.patch" artifacts/pc-wave3-final/governance/PNPM_TRANSIENT_LOCK_METADATA.patch
+          git checkout -- "$lock"
+          test -z "$(git diff --name-only -- "$lock")"
+          printf '{"lockMetadataNormalized":true,"reason":"pnpm_deprecated_metadata_only","pass":true}\n' > artifacts/pc-wave3-final/governance/LOCK_METADATA_NORMALIZATION.json
+
       - name: Run isolated PC Wave 3 certification
         id: wave3
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p artifacts/pc-wave3-final/wave3
-          python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave3_ci.py \
-            --out artifacts/pc-wave3-final/wave3
+          python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          if rc == 0: raise SystemExit('PORT_3130_NOT_FREE_BEFORE_WAVE3')
+          PY
+          set +e
+          setsid python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave3_ci.py \
+            --out artifacts/pc-wave3-final/wave3 &
+          owner_pid=$!
+          wait "$owner_pid"
+          rc=$?
+          set -e
+          kill -TERM -- "-$owner_pid" 2>/dev/null || true
+          for _ in $(seq 1 20); do
+            if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.2)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(1 if rc == 0 else 0)
+          PY
+            then break; fi
+            sleep 0.5
+          done
+          if ! python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(0 if rc == 0 else 1)
+          PY
+          then :; else
+            kill -KILL -- "-$owner_pid" 2>/dev/null || true
+            echo 'Wave 3 owned runtime remained on port 3130 after cleanup.'
+            exit 98
+          fi
+          exit "$rc"
 
       - name: Install Playwright Chromium for frozen Wave 2 regression
         if: success()
@@ -67,9 +140,46 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p artifacts/pc-wave3-final/wave2-entitled
-          python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+          python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          if rc == 0: raise SystemExit('PORT_3130_NOT_FREE_BEFORE_WAVE2_ENTITLED')
+          PY
+          set +e
+          setsid python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
             --mode entitled \
-            --out artifacts/pc-wave3-final/wave2-entitled
+            --out artifacts/pc-wave3-final/wave2-entitled &
+          owner_pid=$!
+          wait "$owner_pid"
+          rc=$?
+          set -e
+          kill -TERM -- "-$owner_pid" 2>/dev/null || true
+          for _ in $(seq 1 20); do
+            if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.2)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(1 if rc == 0 else 0)
+          PY
+            then break; fi
+            sleep 0.5
+          done
+          if ! python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(0 if rc == 0 else 1)
+          PY
+          then :; else
+            kill -KILL -- "-$owner_pid" 2>/dev/null || true
+            echo 'Wave 2 entitled owned runtime remained on port 3130 after cleanup.'
+            exit 98
+          fi
+          exit "$rc"
 
       - name: Run frozen Wave 2 restricted regression
         if: success()
@@ -78,9 +188,46 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p artifacts/pc-wave3-final/wave2-restricted
-          python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
+          python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          if rc == 0: raise SystemExit('PORT_3130_NOT_FREE_BEFORE_WAVE2_RESTRICTED')
+          PY
+          set +e
+          setsid python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py \
             --mode restricted \
-            --out artifacts/pc-wave3-final/wave2-restricted
+            --out artifacts/pc-wave3-final/wave2-restricted &
+          owner_pid=$!
+          wait "$owner_pid"
+          rc=$?
+          set -e
+          kill -TERM -- "-$owner_pid" 2>/dev/null || true
+          for _ in $(seq 1 20); do
+            if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.2)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(1 if rc == 0 else 0)
+          PY
+            then break; fi
+            sleep 0.5
+          done
+          if ! python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(0 if rc == 0 else 1)
+          PY
+          then :; else
+            kill -KILL -- "-$owner_pid" 2>/dev/null || true
+            echo 'Wave 2 restricted owned runtime remained on port 3130 after cleanup.'
+            exit 98
+          fi
+          exit "$rc"
 
       - name: Verify certification created no tracked source drift
         if: always()
