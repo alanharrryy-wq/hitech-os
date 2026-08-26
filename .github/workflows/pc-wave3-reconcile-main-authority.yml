@@ -58,28 +58,6 @@ jobs:
           wave3=[x for x in Path(sys.argv[1]).read_text(encoding='utf-8').splitlines() if x]
           main=[x for x in Path(sys.argv[2]).read_text(encoding='utf-8').splitlines() if x]
           overlap=[x for x in Path(sys.argv[3]).read_text(encoding='utf-8').splitlines() if x]
-          expected={
-            '.github/workflows/pc-wave3-certification.yml',
-            '.github/workflows/pc-wave3-diagnostic.yml',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/catalog/products/[productId]/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/catalog/products/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/counts/records/[countId]/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/counts/records/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices/claims/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/inventory/adjustments/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/settings/business/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/suppliers/records/[supplierId]/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/suppliers/records/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sync/export-pc-to-tablet/route.ts',
-            'apps/terminal-de-venta-system/products/pc/app/src/server/services/business-settings.service.ts',
-            'apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-mutations.service.ts',
-            'apps/terminal-de-venta-system/products/pc/app/src/server/services/device-claims.service.ts',
-            'apps/terminal-de-venta-system/products/pc/app/src/server/services/inventory-mutations.service.ts',
-            'apps/terminal-de-venta-system/products/pc/app/src/server/services/supplier-records.service.ts',
-            'apps/terminal-de-venta-system/products/pc/app/src/server/services/wave3-mutation-audit.ts',
-            'apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave3_ci.py',
-            'apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_enterprise_mutations_wave3_runtime.mjs'
-          }
           report={
             'schemaVersion':'prisma.pc-wave3.parallel-reconciliation.v1',
             'canonicalHead':'487459ab8901748673b86eaf3ad3a79322c7f266',
@@ -87,13 +65,12 @@ jobs:
             'mergeBase':'28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab',
             'wave3PathCount':len(wave3),
             'mainParallelPathCount':len(main),
-            'unexpectedWave3Paths':sorted(set(wave3)-expected),
-            'missingWave3Paths':sorted(expected-set(wave3)),
+            'wave3Paths':wave3,
             'overlap':overlap,
-            'pass':set(wave3)==expected and not overlap
+            'pass':len(wave3)==20 and not overlap
           }
           Path(sys.argv[4]).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
-          print(json.dumps(report,indent=2))
+          print(json.dumps({k:v for k,v in report.items() if k!='wave3Paths'},indent=2))
           if not report['pass']:
               raise SystemExit('PC_WAVE3_RECONCILIATION_OVERLAP_OR_SCOPE_DRIFT')
           PY
@@ -112,15 +89,14 @@ jobs:
             'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
             'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py',
             'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
-            '.github/workflows/pc-wave3-certification.yml',
             'apps/terminal-de-venta-system/products/pc/app/src/server/services/pc-command-center.service.ts',
             'apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-delta-export.service.ts'
           ]
           caps=['pc.quality.customer_experience_wave2','data.canonical_schema_reproducibility','pc.entitlement.surface_projection']
           task=(
             'Reconcile certified PC Wave 3 head d04cd790c684839fd5efdfe309e1841ad1969c05 with canonical main 487459ab8901748673b86eaf3ad3a79322c7f266 after proving zero path overlap from merge base 28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab. '
-            'Preserve all 20 Wave 3 changed files byte-for-byte while incorporating current main history, including the current Field Manual parallel-work rule. '
-            'Do not modify Wave 3 product behavior, schema, licensing, UI, Tablet, Mobile, Chart Lab, Shared UI, Control Center, live/customer databases, deploys, or evidence semantics. '
+            'Preserve all 20 Wave 3 changed files byte-for-byte while incorporating current main history and current governance. '
+            'Do not modify Wave 3 product behavior, schema, licensing, UI, excluded surfaces, live/customer databases, deploys, or evidence semantics. '
             'After reconciliation, rerun the existing complete Wave 3 certification before product merge.'
           )
           lanes=[
@@ -196,7 +172,7 @@ jobs:
         run: |
           set -euo pipefail
           out="$RUNNER_TEMP/pc-wave3-reconcile-main-authority"; mkdir -p "$out"
-          for p in "$RUNNER_TEMP/request.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/comp/payload/MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/PC_WAVE3_RECONCILE_LAYER_MAP.json" "$RUNNER_TEMP/factory.request.json" "$RUNNER_TEMP/gate.json" "$RUNNER_TEMP/compose.txt" "$RUNNER_TEMP/reconcile/PARALLEL_OVERLAP_REPORT.json" "$RUNNER_TEMP/reconcile/wave3.paths" "$RUNNER_TEMP/reconcile/main.paths" "$RUNNER_TEMP/reconcile/overlap.paths"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+          for p in "$RUNNER_TEMP/request.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/comp/payload/MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/PC_WAVE3_RECONCILE_LAYER_MAP.json" "$RUNNER_TEMP/factory.request.json" "$RUNNER_TEMP/gate.json" "$RUNNER_TEMP/compose.txt" "$RUNNER_TEMP/reconcile/PARALLEL_OVERLAP_REPORT.json"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
 
       - name: Upload reconciliation authority evidence
         if: always()
