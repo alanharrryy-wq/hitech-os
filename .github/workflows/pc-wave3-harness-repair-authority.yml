@@ -66,7 +66,7 @@ jobs:
           )
           lanes=[
             {'id':'harness-process-ownership','surface':'pc','intent':'FIX','domain':'tooling','task':task,'requiredAuthorities':core,'requiredDirectories':['.github/workflows','apps/terminal-de-venta-system/products/pc/app/tools'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},
-            {'id':'harness-source-drift-classification','surface':'pc','intent':'FIX','domain':'quality','task':task,'requiredAuthorities':core+['package.json','apps/terminal-de-venta-system/pnpm-lock.yaml'],'requiredDirectories':['.github/workflows','apps/terminal-de-venta-system/products/pc/app/tools'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},
+            {'id':'harness-source-drift-classification','surface':'pc','intent':'FIX','domain':'tooling','task':task,'requiredAuthorities':core+['package.json','apps/terminal-de-venta-system/pnpm-lock.yaml'],'requiredDirectories':['.github/workflows','apps/terminal-de-venta-system/products/pc/app/tools'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},
             {'id':'wave3-regression-boundary','surface':'pc','intent':'AUDIT','domain':'runtime','task':task+' Preserve all product source and re-run isolated Wave 3 plus frozen Wave 2 entitled/restricted after harness correction.','requiredAuthorities':core,'requiredDirectories':['apps/terminal-de-venta-system/products/pc/app/app','apps/terminal-de-venta-system/products/pc/app/src/server','apps/terminal-de-venta-system/products/pc/app/tools'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True}
           ]
           with open(sys.argv[1],'w',encoding='utf-8') as f:
