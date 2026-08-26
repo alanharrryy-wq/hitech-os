@@ -13,7 +13,7 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
   PYTHONPATH: tools/code-atlas/src
-  TARGET_HEAD: 5e9f26f5b0914ce5b0ff36571855f1723df92a3f
+  TARGET_HEAD: a4fd91c25784f9473b479658a0b22e1848cdd1b0
   TARGET_BASE: 630f025e3b41ac932a10ffab2f5992817c3037e5
   MOBILE_ROOT: apps/terminal-de-venta-system/products/mobile/app
 
@@ -53,7 +53,7 @@ jobs:
           python - <<'PY'
           import subprocess
           base = "630f025e3b41ac932a10ffab2f5992817c3037e5"
-          head = "5e9f26f5b0914ce5b0ff36571855f1723df92a3f"
+          head = "a4fd91c25784f9473b479658a0b22e1848cdd1b0"
           prefix = "apps/terminal-de-venta-system/products/mobile/app/"
           allowed = prefix + "package.json"
           changed = subprocess.check_output(["git", "diff", "--name-only", base, head], text=True).splitlines()
@@ -87,7 +87,7 @@ jobs:
           request="$RUNNER_TEMP/mobile-verifier-postfix.request.json"
           python - "$request" <<'PY'
           import json, sys
-          head = "5e9f26f5b0914ce5b0ff36571855f1723df92a3f"
+          head = "a4fd91c25784f9473b479658a0b22e1848cdd1b0"
           app = "apps/terminal-de-venta-system/"
           mobile = app + "products/mobile/app/"
           ledger = "PRISMA Factory Ledger/"
@@ -198,7 +198,7 @@ jobs:
           request = {
               "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
               "mode": "MUTATION",
-              "expectedHead": "5e9f26f5b0914ce5b0ff36571855f1723df92a3f",
+              "expectedHead": "a4fd91c25784f9473b479658a0b22e1848cdd1b0",
               "task": "Advance mobile.interface_specification_canon by validating and merging the bounded verifier/tooling reconciliation only. No Mobile product source/runtime/API/PWA/data/sync/security/licensing/CSS/visual mutation.",
               "capabilities": [{"id": "mobile.interface_specification_canon", "requestedAction": "ADVANCE"}],
               "authorityMesh": {
