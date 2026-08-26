@@ -46,42 +46,6 @@ jobs:
       - name: Install repository dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Normalize pnpm transient lock metadata only
-        shell: bash
-        run: |
-          set -euo pipefail
-          lock='apps/terminal-de-venta-system/pnpm-lock.yaml'
-          mkdir -p artifacts/pc-wave3-final/governance
-          if git diff --quiet -- "$lock"; then
-            printf '{"lockMetadataNormalized":false,"reason":"no_diff","pass":true}\n' > artifacts/pc-wave3-final/governance/LOCK_METADATA_NORMALIZATION.json
-            exit 0
-          fi
-          git diff --unified=0 -- "$lock" > "$RUNNER_TEMP/pnpm-lock-transient.patch"
-          python - "$RUNNER_TEMP/pnpm-lock-transient.patch" <<'PY'
-          import json,re,sys
-          from pathlib import Path
-
-          patch=Path(sys.argv[1]).read_text(encoding='utf-8')
-          ignored_prefixes=('diff --git ','index ','--- ','+++ ','@@')
-          material=[]
-          accepted=[]
-          for line in patch.splitlines():
-              if not line or line.startswith(ignored_prefixes):
-                  continue
-              if line.startswith('+') and re.match(r'^\+\s+deprecated:\s+.+$', line):
-                  accepted.append(line[1:].strip())
-                  continue
-              material.append(line)
-          if material or not accepted:
-              print(json.dumps({'pass':False,'materialUnexpectedLines':material,'acceptedDeprecatedLines':accepted},indent=2))
-              raise SystemExit('UNEXPECTED_PNPM_LOCKFILE_MUTATION')
-          print(json.dumps({'pass':True,'acceptedDeprecatedLines':accepted},indent=2))
-          PY
-          cp "$RUNNER_TEMP/pnpm-lock-transient.patch" artifacts/pc-wave3-final/governance/PNPM_TRANSIENT_LOCK_METADATA.patch
-          git checkout -- "$lock"
-          test -z "$(git diff --name-only -- "$lock")"
-          printf '{"lockMetadataNormalized":true,"reason":"pnpm_deprecated_metadata_only","pass":true}\n' > artifacts/pc-wave3-final/governance/LOCK_METADATA_NORMALIZATION.json
-
       - name: Run isolated PC Wave 3 certification
         id: wave3
         shell: bash
@@ -228,6 +192,43 @@ jobs:
             exit 98
           fi
           exit "$rc"
+
+      - name: Normalize proven pnpm transient lock metadata after runners
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          lock='apps/terminal-de-venta-system/pnpm-lock.yaml'
+          mkdir -p artifacts/pc-wave3-final/governance
+          if git diff --quiet -- "$lock"; then
+            printf '{"lockMetadataNormalized":false,"reason":"no_diff","pass":true}\n' > artifacts/pc-wave3-final/governance/LOCK_METADATA_NORMALIZATION.json
+            exit 0
+          fi
+          git diff --unified=0 -- "$lock" > "$RUNNER_TEMP/pnpm-lock-transient.patch"
+          python - "$RUNNER_TEMP/pnpm-lock-transient.patch" <<'PY'
+          import json,re,sys
+          from pathlib import Path
+
+          patch=Path(sys.argv[1]).read_text(encoding='utf-8')
+          ignored_prefixes=('diff --git ','index ','--- ','+++ ','@@')
+          material=[]
+          accepted=[]
+          for line in patch.splitlines():
+              if not line or line.startswith(ignored_prefixes):
+                  continue
+              if line.startswith('+') and re.match(r'^\+\s+deprecated:\s+.+$', line):
+                  accepted.append(line[1:].strip())
+                  continue
+              material.append(line)
+          if material or not accepted:
+              print(json.dumps({'pass':False,'materialUnexpectedLines':material,'acceptedDeprecatedLines':accepted},indent=2))
+              raise SystemExit('UNEXPECTED_PNPM_LOCKFILE_MUTATION')
+          print(json.dumps({'pass':True,'acceptedDeprecatedLines':accepted},indent=2))
+          PY
+          cp "$RUNNER_TEMP/pnpm-lock-transient.patch" artifacts/pc-wave3-final/governance/PNPM_TRANSIENT_LOCK_METADATA.patch
+          git checkout -- "$lock"
+          test -z "$(git diff --name-only -- "$lock")"
+          printf '{"lockMetadataNormalized":true,"reason":"pnpm_deprecated_metadata_only_after_runners","pass":true}\n' > artifacts/pc-wave3-final/governance/LOCK_METADATA_NORMALIZATION.json
 
       - name: Verify certification created no tracked source drift
         if: always()
