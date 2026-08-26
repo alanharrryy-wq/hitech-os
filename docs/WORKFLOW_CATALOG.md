@@ -56,7 +56,6 @@ Examples include:
 - `change-intelligence-cloud-authority.yml`
 - `license-pricing-canon.yml`
 - `commercial-billing-authority.yml`
-- `pc-surface-truth-wave1-visual.yml`
 
 These remain because they guard active code/governance boundaries and are not global placeholders.
 
@@ -67,6 +66,9 @@ The Repo Analyzer Qt/failure-injection suite is expensive, so it now runs automa
 
 ### `release.yml`
 Release Governance remains available through `workflow_dispatch`, including explicit base/head SHA and strict mode. Automatic PR/push execution was removed because `ci.yml` already runs release-discipline reporting.
+
+### `pc-surface-truth-wave1-visual.yml`
+The completed PC Wave 1 / Wave 2 certification harness is preserved as a manual regression lane through `workflow_dispatch`. Its Wave 1 visual/runtime assertions and both Wave 2 certification modes remain intact, but routine PC source changes no longer wake this three-job suite automatically. The Factory Ledger already records the bounded Wave 2 capabilities as completed with `doNotRebuild=true`; this workflow exists for intentional historical regression/evidence replay, not recurring ceremony.
 
 Historical Code Atlas external-replay/usefulness/rental workflows may remain manual or narrowly self-scoped because they preserve reproducible evidence and do not consume routine PR minutes.
 
@@ -89,6 +91,6 @@ Historical Code Atlas external-replay/usefulness/rental workflows may remain man
 
 ## Cost-control expectation
 
-A normal unrelated PR should no longer wake placeholder jobs or the four-job Repo Analyzer Qt suite. Routine hosted CI should be dominated by the consolidated `CI` job plus the branch-protection-required ForgeOS compatibility job, with specialist workflows activating only for their owned paths.
+A normal unrelated PR should no longer wake placeholder jobs, the four-job Repo Analyzer Qt suite, or the completed PC Wave 1 / Wave 2 three-job certification suite. Routine hosted CI should be dominated by the consolidated `CI` job plus the branch-protection-required ForgeOS compatibility job, with specialist workflows activating only for their owned paths.
 
 This catalog describes workflow intent. The YAML files remain the executable source of truth.
