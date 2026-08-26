@@ -1,0 +1,315 @@
+name: Mobile Verifier Reconciliation Final Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mobile-verifier-reconciliation-final-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  TARGET_HEAD: a4fd91c25784f9473b479658a0b22e1848cdd1b0
+  TARGET_BASE: 630f025e3b41ac932a10ffab2f5992817c3037e5
+  MOBILE_ROOT: apps/terminal-de-venta-system/products/mobile/app
+
+jobs:
+  final-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout exact Mobile reconciliation head
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_HEAD }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Verify exact head and bounded mutation scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_HEAD"
+          python - <<'PY'
+          import os, subprocess
+          base = os.environ['TARGET_BASE']
+          head = os.environ['TARGET_HEAD']
+          prefix = 'apps/terminal-de-venta-system/products/mobile/app/'
+          allowed_package = prefix + 'package.json'
+          changed = subprocess.check_output(['git','diff','--name-only',base,head], text=True).splitlines()
+          if not changed:
+              raise SystemExit('NO_CHANGED_FILES')
+          bad = [p for p in changed if not (p == allowed_package or (p.startswith(prefix + 'tools/verify') and p.endswith('.mjs')))]
+          if bad:
+              raise SystemExit('OUT_OF_SCOPE_CHANGED_FILES: ' + ', '.join(bad))
+          print('CHANGE_BOUNDARY_PASS')
+          print('\n'.join(changed))
+          PY
+          test -z "$(git status --porcelain)"
+
+      - name: Governance self-tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build exact-task Authority request
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/mobile-verifier-final.request.json"
+          python - "$request" <<'PY'
+          import json, os, sys
+          head = os.environ['TARGET_HEAD']
+          app = 'apps/terminal-de-venta-system/'
+          mobile = app + 'products/mobile/app/'
+          ledger = 'PRISMA Factory Ledger/'
+          common = [
+              ledger + 'PRISMA_FACTORY_LEDGER.json',
+              ledger + 'PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
+              ledger + 'tools/verify_prisma_anti_rework_gate.py',
+              app + 'docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+              app + 'quality/contracts/no-fake-green.contract.json',
+              mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md',
+              mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json',
+              mobile + 'package.json',
+              mobile + 'tools/verify_prisma_mobile_interface_canon.mjs',
+          ]
+          tasks = [
+              {
+                  'id': 'mobile-verifier-final-conformance',
+                  'surface': 'mobile',
+                  'intent': 'VERIFY',
+                  'domain': 'testing',
+                  'task': 'Verify the final bounded Mobile verifier reconciliation against the single seven-section Mobile interface canon. Historical entrypoints are compatibility aliases only. Dormant capability existence must not imply mounting. Health Radar and Data Readiness must retain current technical regression coverage without retired QA corpus dependencies or obsolete upper-version fences. No Mobile product source mutation.',
+                  'requiredAuthorities': common,
+                  'requiredDirectories': [mobile + 'tools', mobile + 'docs/prisma-app'],
+                  'requiredCapabilities': ['mobile.interface_specification_canon'],
+                  'minimumCoverage': 100,
+                  'failOnMissingAuthority': True,
+              },
+              {
+                  'id': 'mobile-verifier-final-closure',
+                  'surface': 'governance',
+                  'intent': 'VERIFY',
+                  'domain': 'governance',
+                  'task': 'Require no-fake-green closure for exact reconciled head. Scope must remain package.json plus Mobile verify*.mjs only. Canonical verifier, compatibility wrappers, focused Mobile technical gates, typecheck and production build must pass before merge.',
+                  'requiredAuthorities': common + [ledger + 'PRISMA_EVIDENCE_INDEX.json'],
+                  'requiredDirectories': [mobile + 'tools', app + 'quality/contracts'],
+                  'requiredCapabilities': ['mobile.interface_specification_canon'],
+                  'minimumCoverage': 100,
+                  'failOnMissingAuthority': True,
+              },
+          ]
+          payload = {'schemaVersion':'v2','profile':'mobile-verifier-reconciliation-final-v1','expectedHead':head,'tasks':tasks}
+          with open(sys.argv[1], 'w', encoding='utf-8') as fh:
+              json.dump(payload, fh, ensure_ascii=False, indent=2)
+              fh.write('\n')
+          PY
+
+      - name: Run fresh exact-head Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/mobile-verifier-final.request.json"
+          pre="$RUNNER_TEMP/mobile-verifier-final-pre"
+          par="$RUNNER_TEMP/mobile-verifier-final-par"
+          comp="$RUNNER_TEMP/mobile-verifier-final-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --out-root "$par" \
+            --task-spec "$pre/legacy_tasks.json" \
+            --parallel 2 \
+            --workers 18 \
+            --shards 54 \
+            --max-files 160 \
+            --max-mb 48
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --preflight "$pre" \
+            --mesh-result "$par" \
+            --out "$comp" | tee "$RUNNER_TEMP/mobile-verifier-final-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/mobile-verifier-final-compose.txt"
+          test -f "$RUNNER_TEMP/mobile-verifier-final-comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Run Factory Ledger MUTATION gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          factory_request="$RUNNER_TEMP/mobile-verifier-final-mutation.request.json"
+          decision="$RUNNER_TEMP/mobile-verifier-final-mutation.decision.json"
+          python - \
+            "$RUNNER_TEMP/mobile-verifier-final-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/mobile-verifier-final-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-verifier-final-comp/prisma-automesh-composed-result.zip" \
+            "$factory_request" <<'PY'
+          import hashlib, json, os, sys
+          report_path, preflight_path, artifact_path, out_path = sys.argv[1:]
+          report = json.load(open(report_path, encoding='utf-8'))
+          pre = json.load(open(preflight_path, encoding='utf-8'))
+          coverage = min(float((lane.get('coverage') or {}).get('resolvedPercent', 0)) for lane in pre['lanes'])
+          artifact_digest = hashlib.sha256(open(artifact_path, 'rb').read()).hexdigest()
+          request = {
+              'schemaVersion': 'prisma.factory-ledger.anti-rework-gate.v1',
+              'mode': 'MUTATION',
+              'expectedHead': os.environ['TARGET_HEAD'],
+              'task': 'Advance mobile.interface_specification_canon only by validating and merging the bounded verifier/tooling reconciliation. No Mobile product source/runtime/API/PWA/data/sync/security/licensing/CSS/visual mutation.',
+              'capabilities': [{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],
+              'authorityMesh': {
+                  'status': report['status'],
+                  'repoHead': report['repoHead'],
+                  'requiredAuthorityCoveragePct': coverage,
+                  'blockers': len(pre.get('blockers') or []),
+                  'requestDigest': report['requestDigest'],
+                  'artifactDigest': artifact_digest,
+                  'layerMapPresent': False,
+              },
+              'visualMutation': False,
+          }
+          with open(out_path, 'w', encoding='utf-8') as fh:
+              json.dump(request, fh, ensure_ascii=False, indent=2)
+              fh.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$factory_request" | tee "$decision"
+          python - "$decision" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding='utf-8'))
+          if data.get('result') != 'PASS_ANTI_REWORK_GATE' or data.get('errors') != []:
+              raise SystemExit('FACTORY_GATE_NOT_CLEAN_PASS')
+          print('PASS_ANTI_REWORK_GATE')
+          PY
+          test -z "$(git status --porcelain)"
+
+      - name: Install workspace dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Syntax-check changed Mobile verifiers
+        working-directory: ${{ env.MOBILE_ROOT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            tools/verify_prisma_mobile_interface_canon.mjs \
+            tools/verify_prisma_app_mobile_20_command_center.mjs \
+            tools/verify_prisma_app_mobile_21_owner_action_inbox.mjs \
+            tools/verify_prisma_app_mobile_22_daily_brief.mjs \
+            tools/verify_prisma_app_mobile_23_decision_ledger.mjs \
+            tools/verify_prisma_app_mobile_24_pulse_timeline.mjs \
+            tools/verify_prisma_app_mobile_25_health_radar.mjs \
+            tools/verify_prisma_app_mobile_25f_health_radar_verifier_compat.mjs \
+            tools/verify_prisma_app_mobile_28_data_readiness.mjs \
+            tools/verify_prisma_app_mobile_33_mando_contracts.mjs \
+            tools/verify_prisma_app_mobile_37_release_hardening.mjs \
+            tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs; do
+              node --check "$file"
+          done
+
+      - name: Run canonical verifier and compatibility entrypoints
+        working-directory: ${{ env.MOBILE_ROOT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/verify_prisma_mobile_interface_canon.mjs
+          node tools/verify_prisma_app_mobile_20_command_center.mjs
+          node tools/verify_prisma_app_mobile_21_owner_action_inbox.mjs
+          node tools/verify_prisma_app_mobile_22_daily_brief.mjs
+          node tools/verify_prisma_app_mobile_23_decision_ledger.mjs
+          node tools/verify_prisma_app_mobile_24_pulse_timeline.mjs
+          node tools/verify_prisma_app_mobile_33_mando_contracts.mjs
+          node tools/verify_prisma_app_mobile_37_release_hardening.mjs
+          node tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs
+
+      - name: Run focused current Mobile technical gates
+        working-directory: ${{ env.MOBILE_ROOT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm run verify:health-radar
+          pnpm run verify:health-radar-compat
+          pnpm run verify:data-readiness
+          pnpm run verify:premium-navigation
+          pnpm run verify:crystal-intelligence
+          pnpm run verify:secure-projection-gateway
+          pnpm run verify:source-states
+          pnpm run verify:runtime-error-guard
+
+      - name: Typecheck Mobile
+        working-directory: ${{ env.MOBILE_ROOT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm run typecheck
+
+      - name: Build Mobile
+        working-directory: ${{ env.MOBILE_ROOT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm run build
+
+      - name: Stage immutable evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/mobile-verifier-final-evidence"
+          mkdir -p "$out"
+          git diff --name-status "$TARGET_BASE" "$TARGET_HEAD" > "$out/changed-files.txt"
+          git log -1 --format='%H%n%T%n%s' "$TARGET_HEAD" > "$out/target-head.txt"
+          for path in \
+            "$RUNNER_TEMP/mobile-verifier-final.request.json" \
+            "$RUNNER_TEMP/mobile-verifier-final-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-verifier-final-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/mobile-verifier-final-comp/payload/MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-verifier-final-comp/prisma-automesh-composed-result.zip" \
+            "$RUNNER_TEMP/mobile-verifier-final-mutation.request.json" \
+            "$RUNNER_TEMP/mobile-verifier-final-mutation.decision.json"; do
+            if [ -f "$path" ]; then cp "$path" "$out/$(basename "$path")"; fi
+          done
+          find "$out" -maxdepth 1 -type f -print
+
+      - name: Upload final evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-verifier-reconciliation-final-evidence
+          path: ${{ runner.temp }}/mobile-verifier-final-evidence/**
+          if-no-files-found: error
+          retention-days: 14
