@@ -23,6 +23,79 @@
       "requiredAuthorityCoverage": "100%",
       "blockers": 0,
       "repoDriftStable": true
+    },
+    "analysisRunProjectionAuthority": {
+      "baseHead": "28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab",
+      "profile": "ci-cloud-analysis-run-projection-p2-v2",
+      "authorityRunId": 32865050216,
+      "authorityArtifactId": 9569864211,
+      "authorityArtifactDigest": "sha256:677d5e2d93d9a5b23c5cc683e9572645bdd2763f575752af2c628dcb1df9d4ed",
+      "authorityRequestDigest": "bb146156461837525776f6f40e637a1215ba38581759da4ebb448aea97a08769",
+      "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true,
+      "evidenceRunId": 32865503690,
+      "evidenceArtifactId": 9569959132,
+      "evidenceArtifactDigest": "sha256:cd8cd3b5f35a81e9608c0d8aae42fde76a9a822122d292a6a19c2a4973cf0868",
+      "engineArtifactSha256": "2630c723aaa6d2f692218cb30648020fd41a5eade35d10f4d49129d0c5304103"
+    },
+    "authorityEvidenceProjectionAuthority": {
+      "baseHead": "0916227707aa65b673195d554297bf8f8565d356",
+      "baseTree": "ad0ff1770eadaee0e5ae717ba7c806da029f9287",
+      "profile": "ca-cloud-authority-evidence-p3-v4",
+      "authorityRunId": 32878086011,
+      "authorityArtifactId": 9574731927,
+      "authorityArtifactDigest": "sha256:001102f110e7075607c80fe5ab5b1343d88ee356e85fb08a88c32708d0118e9e",
+      "authorityRequestDigest": "9113cb140ae64b2cc3e524908d365b8d7ed9144168a860e6909faca0558cdd74",
+      "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true,
+      "mutationGateRunId": 32878629219,
+      "mutationGateArtifactId": 9574892311,
+      "mutationGateArtifactDigest": "sha256:fde3bd4996cdf77e14637343975379a89ebb2de05d02711b9359d720bbdca4b7",
+      "evidenceRunId": 32878380486,
+      "evidenceArtifactId": 9574817118,
+      "evidenceArtifactDigest": "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995"
+    },
+    "entitlementProjectionAuthority": {
+      "baseHead": "c388cffd0c926295619d71a583876e5b66f37ceb",
+      "baseTree": "b68b47e1056a527bfa0097ab010c6a4184464703",
+      "profile": "ca-cloud-entitlements-p4-v2",
+      "authorityRunId": 32923210520,
+      "authorityArtifactId": 9590560387,
+      "authorityArtifactDigest": "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c",
+      "composedArtifactSha256": "e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957",
+      "authorityRequestDigest": "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14",
+      "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true,
+      "mutationGateRunId": 32923389474,
+      "mutationGateArtifactId": 9590600727,
+      "mutationGateArtifactDigest": "sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4"
+    },
+    "roiProjectionAuthority": {
+      "baseHead": "487459ab8901748673b86eaf3ad3a79322c7f266",
+      "baseTree": "4d1013c985cafe3e215237181d03797ee29deab3",
+      "profile": "ca-cloud-roi-p5-current-v2",
+      "authorityRunId": 32940529028,
+      "authorityArtifactId": 9596382236,
+      "authorityArtifactDigest": "sha256:849d76288db5034124c89f5e88d5b132cb8728cc36fa6b4574fdb333910af31c",
+      "composedArtifactSha256": "b2e83b257537ab86437255a3b12743602361b2b17aa08d6c5ba4964e5648931d",
+      "authorityRequestDigest": "8f07a8f8302b604620f42f038bdc528c5cd3da59b746b148cb4c245d93bf1a21",
+      "authorityResult": "PASS_COMPOSED_AUTHORITY_MESH",
+      "laneCount": 2,
+      "requiredAuthorityCoverage": "100%",
+      "blockers": 0,
+      "repoDriftStable": true,
+      "mutationGateRunId": 32940817782,
+      "mutationGateArtifactId": 9596447828,
+      "mutationGateArtifactDigest": "sha256:452c11f1015e7412b8077914c82a6f88f95881eaecae990bb2c56341de418303"
     }
   },
   "product": {
@@ -185,28 +258,201 @@
       ],
       "projectionRule": "Only source-backed registrations with explicit authorization provenance may appear. Repository access is constrained to READ_ONLY even when the observed provider permission is broader.",
       "freshnessRule": "Authorization is a captured fact, not a perpetual permission claim. Re-check provider authority before private-repository execution or when evidence becomes stale.",
-      "nextGate": "Project real Code Atlas analysis-run manifests and statuses for source-backed registered repositories."
+      "nextGate": "Analysis Runs are source-backed. Next project Authority Pack and Evidence Report references without granting mutation authority."
     },
     "analysisRuns": {
-      "status": "NOT_CONNECTED",
-      "items": [],
-      "nextGate": "Project real engine run manifests and statuses; do not manufacture demo runs as production evidence."
+      "status": "SOURCE_VERIFIED_READ_ONLY",
+      "items": [
+        {
+          "Run": "code-atlas-discover-28b0821d",
+          "Repository": "prismahitech/hitech-os",
+          "Intent": "DISCOVER",
+          "Status": "PASS_UNIVERSAL_INTELLIGENCE_SOURCE_READY",
+          "provenance": {
+            "repoHead": "28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab",
+            "repoTree": "f02a5c495d982155d18febc0b81d8a11c0201144",
+            "profileId": "generic",
+            "domain": "runtime",
+            "requestDigest": "08e828680e7a1afdb26d37cf44e23f2a9fd718249c7011095644b9e9da9e0460",
+            "snapshotDigest": "7a2893d86119ad6d49bc7bb3bdff08689a6abcbb2c77343399a9cc671bc08913",
+            "engineArtifactSha256": "2630c723aaa6d2f692218cb30648020fd41a5eade35d10f4d49129d0c5304103"
+          },
+          "evidence": {
+            "workflowRunId": 32865503690,
+            "artifactId": 9569959132,
+            "artifactDigest": "sha256:cd8cd3b5f35a81e9608c0d8aae42fde76a9a822122d292a6a19c2a4973cf0868"
+          },
+          "readOnly": true,
+          "derivedIndexAuthoritative": false,
+          "semanticRetrievalIsProof": false,
+          "profileMayInventTruth": false,
+          "productionCertified": false,
+          "doesNotProve": [
+            "production readiness",
+            "hosted multi-tenant execution",
+            "enterprise IAM or security readiness",
+            "human usefulness",
+            "independent-agent verification",
+            "authorization to mutate the repository"
+          ]
+        }
+      ],
+      "projectionRule": "Only immutable Code Atlas run evidence bound to repository HEAD/tree plus request, snapshot and artifact digests may be projected. Engine status is preserved verbatim and is not promoted by the Cloud surface.",
+      "nextGate": "Authority Pack and Evidence references are now source-backed. Next map Change Assurance entitlements onto the existing licensing owner without changing licensing mutation semantics."
     },
     "authorityPacks": {
-      "status": "NOT_CONNECTED",
-      "items": []
+      "status": "SOURCE_VERIFIED_READ_ONLY",
+      "items": [
+        {
+          "Pack": "cap.5bc981d182e326a6b684",
+          "Repository": "prismahitech/hitech-os",
+          "ReferenceState": "SOURCE_VERIFIED_REFERENCE",
+          "packSchemaVersion": "code_atlas_agent_authority_pack.v1",
+          "packChecksum": "sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b",
+          "preparationDecision": "PASS",
+          "provenance": {
+            "repoHead": "0916227707aa65b673195d554297bf8f8565d356",
+            "repoTree": "ad0ff1770eadaee0e5ae717ba7c806da029f9287",
+            "repositoryIdentity": "repo:7a9a5f159e04eb0c42438ec4a49112c7eafe9340ab2cbd377e68b0a0bbf4f722",
+            "requestDigest": "15b6696219f49020620d2f94bdb8aecf9e7dbf5d5a9035cb44dc97ebba95873c",
+            "authorityDigest": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "evidenceDigest": "sha256:7c8470e667d6e89d8c7ebfb6922139a8d7b23c3788a800f70916f7c3c3f80981",
+            "policyDigest": null
+          },
+          "readOnly": true,
+          "referenceOnly": true,
+          "productionCertified": false,
+          "certifiable": false,
+          "doesNotProve": [
+            "authorization for the Cloud projection to mutate repository source",
+            "production readiness",
+            "hosted multi-tenant execution",
+            "enterprise IAM or security readiness",
+            "human usefulness",
+            "independent-agent verification"
+          ]
+        }
+      ],
+      "projectionRule": "Reference only canonical Code Atlas Authority Pack output bound to exact repository HEAD/tree, pack checksum, request digest and compatibility locks. Cloud Center neither generates the pack nor gains repository mutation authority from the reference.",
+      "nextGate": "Authority Pack and Evidence references are source-backed; next map Change Assurance entitlements onto the existing licensing owner without changing license mutation semantics."
     },
     "evidenceReferences": {
-      "status": "NOT_CONNECTED",
-      "items": []
+      "status": "SOURCE_VERIFIED_READ_ONLY",
+      "items": [
+        {
+          "Repository": "prismahitech/hitech-os",
+          "ReferenceState": "SOURCE_VERIFIED_REFERENCE",
+          "verificationSchemaVersion": "code_atlas_change_verification.v1",
+          "verificationDecision": "PASS",
+          "verificationReportDigest": "sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa",
+          "bundleSchemaVersion": "code_atlas_portable_evidence_bundle.v1",
+          "bundleManifestDigest": "sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20",
+          "packId": "cap.5bc981d182e326a6b684",
+          "packChecksum": "sha256:9d225fc13e27a44dd33224112d8c7b7101e3c3ace529a970cdde42fae6874d3b",
+          "provenance": {
+            "repoHead": "0916227707aa65b673195d554297bf8f8565d356",
+            "repoTree": "ad0ff1770eadaee0e5ae717ba7c806da029f9287",
+            "repositoryIdentity": "repo:7a9a5f159e04eb0c42438ec4a49112c7eafe9340ab2cbd377e68b0a0bbf4f722",
+            "requestDigest": "15b6696219f49020620d2f94bdb8aecf9e7dbf5d5a9035cb44dc97ebba95873c",
+            "workflowRunId": 32878380486,
+            "artifactId": 9574817118,
+            "artifactDigest": "sha256:bf000fac916bc40034d2531a894ee855047c74cf5fb8db1dfe8f3770b73e8995"
+          },
+          "readOnly": true,
+          "referenceOnly": true,
+          "productionCertified": false,
+          "certifiable": false,
+          "doesNotProve": [
+            "authorization for the Cloud projection to mutate repository source",
+            "production readiness",
+            "hosted multi-tenant execution",
+            "enterprise IAM or security readiness",
+            "human usefulness",
+            "independent-agent verification"
+          ]
+        }
+      ],
+      "projectionRule": "Reference only immutable Code Atlas verification and portable evidence bundle outputs. PASS is preserved as the bounded verification decision and is not promoted into production certification, human usefulness, independent verification or repository mutation authority.",
+      "nextGate": "Map Change Assurance entitlements onto the existing licensing owner; do not rebuild licensing or collections."
     },
     "usageEntitlements": {
-      "status": "SHARED_OWNER_CONTRACT_PENDING",
-      "items": [],
-      "nextGate": "Map Change Intelligence product entitlements onto the existing licensing owner without changing license mutation semantics."
+      "status": "SOURCE_MAPPED_NOT_GRANTED",
+      "requestedProduct": "PRISMA Change Assurance",
+      "sourceOwner": {
+        "path": "apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts",
+        "sourceBlobSha": "7bac39a02a7ffaed20f5a725a1c216da07087adf",
+        "catalog": "PLAN_BASED_PROVISIONING_CATALOG",
+        "capabilityIds": [
+          "licensing.source_contract_alignment",
+          "licensing.customer_setup.plan_based_onboarding"
+        ],
+        "reuseMode": "REFERENCE_ONLY",
+        "doNotRebuild": true
+      },
+      "planFeaturesAtCapture": {
+        "TABLET_SOLO": [
+          "pos.local_sale",
+          "catalog.local",
+          "cash.local"
+        ],
+        "TABLET_PRO": [
+          "pos.local_sale",
+          "returns",
+          "outbox.visible",
+          "mobile.supervision"
+        ],
+        "TABLET_PC_MANAGED": [
+          "pos.local_sale",
+          "pc.backoffice",
+          "sync.audit",
+          "mobile.supervision"
+        ],
+        "TABLET_PC_MOBILE_MANAGED": [
+          "pos.local_sale",
+          "pc.backoffice",
+          "mobile.companion",
+          "customer.setup"
+        ]
+      },
+      "catalogMatches": [],
+      "grantStatus": "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES",
+      "liveEnforcementObserved": false,
+      "licenseMutationPerformed": false,
+      "readOnly": true,
+      "productionCertified": false,
+      "certifiable": false,
+      "doesNotProve": [
+        "entitlement grant",
+        "live license enforcement",
+        "billing authorization",
+        "production readiness"
+      ],
+      "projectionRule": "Reference-only snapshot of the canonical licensing plan/feature catalog. Absence of a Change Assurance feature is fail-closed as NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES; this projection does not create or grant an entitlement.",
+      "nextGate": "A separately governed licensing and commercial decision must explicitly add a Change Assurance feature before any live grant or enforcement can be claimed. Until then remain NOT_GRANTED."
     },
     "roi": {
-      "status": "INPUT_DRIVEN_NO_ESTIMATE",
+      "status": "INPUT_REQUIRED_NO_ESTIMATE",
+      "sourceOwner": {
+        "path": "tools/code-atlas/src/code_atlas/change_intelligence/roi.py",
+        "capabilityId": "ci.roi.raw_instrumentation",
+        "reuseMode": "REFERENCE_ONLY",
+        "doNotRebuild": true
+      },
+      "rawMetricsSupported": [
+        "contextDiscoveryTime",
+        "changeScopeIdentificationTime",
+        "humanSupervisionTime",
+        "outOfScopeChangeRate",
+        "reopenedWorkRate",
+        "evidenceAssemblyTime",
+        "changeReadinessThroughput",
+        "blockedBeforeChangeCount",
+        "evidenceCompletenessRate"
+      ],
+      "customerInputsPresent": false,
+      "observedEventsProjected": [],
+      "estimateAllowed": false,
+      "financialEstimate": null,
       "currency": "MXN",
       "monthlyBenefitFormula": "Discovery + Rework + Agent Supervision + Release/Evidence",
       "netMonthlyValueFormula": "Measured Monthly Benefit - Price",
@@ -217,7 +463,20 @@
         "avoided rework events and hours",
         "agent review minutes saved",
         "release or evidence hours saved"
-      ]
+      ],
+      "derivationRule": "A financial estimate may be derived only from canonical observed time events measured in hours plus an explicit non-negative loaded hourly cost and an explicit assumption label.",
+      "commercialHypothesesAreMeasurements": false,
+      "certifiable": false,
+      "productionCertified": false,
+      "doesNotProve": [
+        "realized cash savings",
+        "profit",
+        "customer willingness to pay",
+        "human usefulness",
+        "production readiness"
+      ],
+      "projectionRule": "Reference-only projection of canonical Code Atlas ROI instrumentation. Without real customer baseline inputs and observed events, the state remains INPUT_REQUIRED_NO_ESTIMATE and financialEstimate remains null. Commercial pricing hypotheses are not customer measurements.",
+      "nextGate": "Collect real customer baseline inputs and observed raw ROI events. Only then derive an explicitly labeled estimate under the canonical ROI owner; external human usefulness remains a separate evidence gate."
     }
   },
   "commercialReference": {
@@ -226,7 +485,10 @@
     "foundingGuardMonths": 3,
     "standardGuardTargetMonthlyMxn": 12500,
     "maturePilotTargetMxn": 35000,
-    "controlDesignPartnerMonthlyRangeMxn": [25000, 40000],
+    "controlDesignPartnerMonthlyRangeMxn": [
+      25000,
+      40000
+    ],
     "pricingEvidenceRule": "These values are commercial hypotheses or founding terms as documented. Do not present future targets as proven willingness-to-pay."
   },
   "safety": {

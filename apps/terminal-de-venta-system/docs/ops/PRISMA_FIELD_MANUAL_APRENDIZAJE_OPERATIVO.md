@@ -888,3 +888,27 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
 - Closure Authority Mesh: run `31916191500`, artifact `9254953865`, `sha256:bb15de6aa6394d61ea22eabe8f2e3a11ddb178429b6430a11a800566fb0184bb`.
 - Preserve `LOCAL_VERIFIED`, `VERIFY`, `doNotRebuild=true`, `certifiable=false`, `productionCertified=false`, `humanUsefulness=NOT_MEASURED`; do not advance agent-usefulness maturity.
 - Next allowed gate: prove an actually available independent external evaluator and rerun the paired protocol, or conduct the bounded human usefulness study as a separate gate. Do not rebuild core to work around external Copilot policy.
+
+---
+
+### 2026-08-25 - Paralelismo seguro entre agentes, carriers y `main`
+
+**Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / GOTCHA
+**Superficie:** Governance / Tooling / Todas las superficies
+**Contexto:** Durante el cierre de Tablet Sync WAVE2, un evidence carrier comparó un `PRODUCT_TARGET` fijo contra el `HEAD` completo del carrier. `main` había avanzado con cambios ajenos al scope de Tablet Sync y el guard confundió avance paralelo legítimo con contaminación.
+**Resultado observado:** PARTIAL -> PASS después de separar la base del producto de la base del carrier.
+**Causa real:** La concurrencia se estaba evaluando por existencia de commits nuevos, no por ownership de archivos, solapamiento semántico y base correcta de comparación.
+**Regla nueva (`PARALLEL_WORK_RULE_20260825`):**
+
+1. Cambios en archivos distintos y scopes semánticos no solapados **pueden avanzar en paralelo aunque `main` cambie**. No bloquear por el simple hecho de que existan commits nuevos.
+2. Un evidence carrier debe comparar **su propio delta contra su `EVIDENCE_BASE` correcto**. No debe usar `PRODUCT_TARGET..HEAD` como detector universal de contaminación cuando `PRODUCT_TARGET` es sólo el commit que se está certificando.
+3. Un `PRODUCT_TARGET` fijo puede seguir siendo el objeto exacto de certificación aunque `main` avance independientemente, siempre que el harness esté aislado y la evidencia declare ese SHA.
+4. Si dos agentes tocan el **mismo archivo**, el segundo debe releer el blob/SHA actual, comparar el cambio fresco y reconciliar el solapamiento semántico. Nunca sobrescribir silenciosamente trabajo ajeno.
+5. Si el mismo archivo cambió pero las regiones/owners son independientes, se permite reconciliación explícita. Si el solapamiento no puede resolverse con certeza, **fail closed** y obtener evidencia fresca.
+6. El paralelismo seguro **no elimina** la regla de Authority Mesh exacto: una mutación gobernada que exige autoridad sobre el HEAD canónico debe refrescar su Authority Mesh/anti-rework gate si ese HEAD cambió antes de la mutación, incluso cuando el drift sea ajeno y seguro.
+7. Distinguir siempre tres conceptos: `PRODUCT_TARGET` = qué commit se certifica; `EVIDENCE_BASE` = contra qué base se mide el carrier; `CANONICAL_HEAD` = HEAD actual que autoriza una nueva mutación gobernada.
+
+**Ejemplo confirmado:** el avance de `main` por PR #386 tocó únicamente Change Assurance Cloud Center y no solapó Tablet Sync, Factory Ledger ni este manual. Se clasificó como drift paralelo seguro. Aun así se refrescó el Authority Mesh porque la posterior mutación del Ledger requería HEAD canónico exacto.
+**Rollback probado:** N/A; los carriers stale se cerraron sin merge.
+**Evidencia:** Tablet Sync WAVE2 product PR #377; runtime run `32866793273`; closure Authority run `32868230568`; disposable preflight PRs #387/#388.
+**Regla corta:** **paralelismo se decide por overlap real y autoridad, no por miedo a que `main` tenga commits nuevos.**

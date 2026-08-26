@@ -1,20 +1,29 @@
 # .github/workflows
 
-This directory contains repository automation workflows.
+This directory contains the repository automation that is still active and justified.
 
-## Purpose
+## CI policy
 
-Workflows here are the executable automation layer for CI, docs governance, quality gates, release flows, security scans, and maintenance jobs.
+GitHub-hosted runners are a scarce resource. A workflow must either protect an active product/governance boundary, run only when its owned paths change, or be explicitly operator-triggered. Placeholder and duplicate workflows are not kept alive merely for historical continuity.
 
-## How to navigate
+`ci.yml` is the consolidated broad guardrail lane. It owns dependency-policy, workspace-boundary, dependency-hygiene, cycle, release-discipline, sensitive-path, CODEOWNERS/repository-hygiene reporting, scope-index generation, and the live-runtime zero-priority (`!important`) gate.
 
-1. Start with `docs/WORKFLOW_CATALOG.md` for a filename-to-intent overview.
-2. Open the workflow YAML that matches the concern you care about.
-3. Trace any called scripts back into `tools/`, `packages/`, `services/`, or `docs/`.
+Heavy specialist workflows must be path-scoped. Historical/replay workflows may remain manual when they preserve reproducible evidence without consuming routine pull-request minutes.
 
-## New narrow workflows added by this remediation
+## Branch-protection exception
 
-- `contract-python-parity.yml`
-- `repo-navigation-guard.yml`
+`forgeos-quality-gate.yml` intentionally remains global because `main` currently requires the `forgeos-quality-gate` status context. The workflow performs a cheap scope check and skips ForgeOS execution for unrelated changes. Do not path-scope or remove it until branch protection is changed first.
 
-These are intentionally focused and should be read as additive guardrails, not as replacements for the broader existing workflows already present in the repo.
+## Retired automation
+
+The following workflows were removed because they were placeholders or duplicated checks already executed by `ci.yml`:
+
+- `cla-check.yml`
+- `ci-local.yml`
+- `dependency-check.yml`
+- `security-scan.yml`
+- `labels.yml`
+- `stale.yml`
+- `zero-important.yml` (logic consolidated into `ci.yml`)
+
+See `docs/WORKFLOW_CATALOG.md` for the current operating model.

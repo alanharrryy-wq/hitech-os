@@ -1,90 +1,96 @@
 # Workflow Catalog
 
-This document gives a practical index of workflow intent for `.github/workflows`.
+This document describes the current GitHub Actions operating model for `hitech-os`.
 
-## Why this file exists
+## Operating rule
 
-The repository already contains many workflow files. A list of filenames is not enough when someone needs to understand why a workflow exists and where to start reading.
+CI must buy evidence, not burn runner minutes for ceremony. Broad checks are consolidated, specialist checks are path-scoped, and expensive historical/replay tooling is manual unless an active source boundary actually changes.
 
-This catalog is intentionally descriptive rather than normative. The workflow YAML files remain the executable source of truth.
+## Core CI
 
-## Current workflow directory
+### `ci.yml`
+Runs on normal pull requests and pushes to `main`, excluding generated/local/report-only paths. This is the consolidated repository guardrail lane and covers:
 
-The bundle used for this remediation includes these workflow files:
+- dependency policy validation
+- workspace boundaries
+- dependency hygiene
+- affected-project computation
+- CODEOWNERS coverage
+- dependency-cycle protection
+- release-discipline reporting
+- sensitive-path reporting
+- repository hygiene
+- Graphviz scope index
+- engineering-health reports
+- live-runtime zero-priority / no-`!important` enforcement
 
-- `ci-local.yml`
-- `ci.yml`
-- `cla-check.yml`
-- `dependency-check.yml`
-- `dev-console-architecture-guard.yml`
+The former `dependency-check.yml`, `security-scan.yml`, and `zero-important.yml` lanes were retired because their useful checks are now covered here without extra hosted runners.
+
+## Required compatibility check
+
+### `forgeos-quality-gate.yml`
+Remains global because `main` branch protection currently requires status context `forgeos-quality-gate`. For non-ForgeOS changes it performs only checkout + scope detection and reports PASS without running the heavy ForgeOS gate.
+
+Do not path-scope or remove this workflow before changing branch protection, otherwise unrelated PRs can become permanently blocked waiting for a required status that never starts.
+
+### Other ForgeOS workflows
+- `forgeos-root-authority.yml` is already ForgeOS-path scoped.
+- `forgeos-release-candidate.yml` is ForgeOS-path scoped plus manual dispatch.
+
+ForgeOS itself is not globally retired: live code still consumes parts of `forgeos/shared`, so subsystem deletion requires a separate consumer migration.
+
+## Specialist path-scoped checks
+
+Examples include:
+
 - `docs-governor.yml`
-- `factory.yml`
-- `forgeos-quality-gate.yml`
-- `forgeos-release-candidate.yml`
-- `forgeos-root-authority.yml`
-- `labels.yml`
-- `orchestrator-factory.yml`
-- `promotion.yml`
-- `release.yml`
-- `repo-analyzer-self-test.yml`
-- `security-scan.yml`
-- `stale.yml`
-
-Additional workflow files added by this remediation:
+- `dev-console-architecture-guard.yml`
 - `contract-python-parity.yml`
 - `repo-navigation-guard.yml`
-
-## Workflow families
-
-### Core CI
-- `ci.yml`
-- `ci-local.yml`
-
-These are the first places to inspect for broad validation behavior.
-
-### Docs / governance
-- `docs-governor.yml`
-- `dev-console-architecture-guard.yml`
-- `forgeos-root-authority.yml`
-
-These are likely tied to governance and documentation enforcement.
-
-### Release / promotion
-- `release.yml`
-- `promotion.yml`
-- `forgeos-release-candidate.yml`
-
-These are the likely release path entry points.
-
-### Security / compliance / hygiene
-- `security-scan.yml`
-- `dependency-check.yml`
-- `cla-check.yml`
-
-### Factory / orchestrator / self-tests
 - `factory.yml`
 - `orchestrator-factory.yml`
-- `repo-analyzer-self-test.yml`
-- `forgeos-quality-gate.yml`
+- `prisma-factory-anti-rework-gate.yml`
+- `code-atlas-operational-hardening.yml`
+- `automesh-parallel-cert.yml`
+- `change-intelligence-capability-gate.yml`
+- `change-intelligence-cloud-authority.yml`
+- `license-pricing-canon.yml`
+- `commercial-billing-authority.yml`
 
-### Repo maintenance
-- `labels.yml`
-- `stale.yml`
+These remain because they guard active code/governance boundaries and are not global placeholders.
 
-## How to read workflows efficiently
+### `repo-analyzer-self-test.yml`
+The Repo Analyzer Qt/failure-injection suite is expensive, so it now runs automatically only when `tools/graphviz/repo_analizer/**` or its own workflow changes. Manual dispatch remains available.
 
-1. Start with the filename and top-level `name`.
-2. Identify the trigger (`on:`).
-3. Identify the main jobs.
-4. Identify the decisive steps that fail or gate the run.
-5. Cross-reference any local scripts they call back into `tools/`, `packages/`, `services/`, or `docs/`.
+## Manual / evidence workflows
 
-## New workflow checks added here
+### `release.yml`
+Release Governance remains available through `workflow_dispatch`, including explicit base/head SHA and strict mode. Automatic PR/push execution was removed because `ci.yml` already runs release-discipline reporting.
 
-### `contract-python-parity.yml`
-Runs a narrow verification that the contract-side generated sync map and the Python service model layer remain aligned enough to catch obvious drift.
+### `pc-surface-truth-wave1-visual.yml`
+The completed PC Wave 1 / Wave 2 certification harness is preserved as a manual regression lane through `workflow_dispatch`. Its Wave 1 visual/runtime assertions and both Wave 2 certification modes remain intact, but routine PC source changes no longer wake this three-job suite automatically. The Factory Ledger already records the bounded Wave 2 capabilities as completed with `doNotRebuild=true`; this workflow exists for intentional historical regression/evidence replay, not recurring ceremony.
 
-### `repo-navigation-guard.yml`
-Checks for the presence of critical navigation files and local README coverage in high-value repo areas.
+Historical Code Atlas external-replay/usefulness/rental workflows may remain manual or narrowly self-scoped because they preserve reproducible evidence and do not consume routine PR minutes.
 
-These checks are additive and intentionally focused. They do not replace the broader CI flows already present in the repository.
+## Documentation / promotion
+
+- `docs-governor.yml` validates documentation changes.
+- `promotion.yml` validates generated-doc promotion manifests in its narrow scope.
+
+## Retired in CI Diet 2026-08-25
+
+| Workflow | Reason |
+| --- | --- |
+| `cla-check.yml` | Placeholder only; every run printed `TODO: CLA assistant`. |
+| `stale.yml` | Weekly placeholder that only printed `TODO`. |
+| `labels.yml` | Issue-open placeholder that only printed `TODO`. |
+| `ci-local.yml` | Push job only printed Node/npm versions; no validation. |
+| `dependency-check.yml` | Duplicated dependency/workspace/cycle/repo-hygiene checks already in `ci.yml`. |
+| `security-scan.yml` | Duplicated sensitive-path and CODEOWNERS reports already in `ci.yml`; it was not a vulnerability/secret scanner. |
+| `zero-important.yml` | Separate global runner removed; the same live-runtime gate is enforced inside `ci.yml`. |
+
+## Cost-control expectation
+
+A normal unrelated PR should no longer wake placeholder jobs, the four-job Repo Analyzer Qt suite, or the completed PC Wave 1 / Wave 2 three-job certification suite. Routine hosted CI should be dominated by the consolidated `CI` job plus the branch-protection-required ForgeOS compatibility job, with specialist workflows activating only for their owned paths.
+
+This catalog describes workflow intent. The YAML files remain the executable source of truth.

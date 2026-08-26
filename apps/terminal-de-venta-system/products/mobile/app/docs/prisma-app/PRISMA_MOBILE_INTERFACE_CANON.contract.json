@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "prisma.mobile.interface-canon.v1",
+  "authorityId": "mobile.interface_specification_canon",
+  "authorityState": "SOURCE_READY_CANDIDATE",
+  "normativeDocument": "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md",
+  "baseline": {
+    "repoHead": "0916227707aa65b673195d554297bf8f8565d356",
+    "authorityMesh": {
+      "status": "PASS_COMPOSED_AUTHORITY_MESH",
+      "runId": "32877668997",
+      "artifactId": "9574572977",
+      "artifactSha256": "24e2cf613ae89b9880daafc33c79b128f36e791ea276190753f3b0e5a18512a9",
+      "requestDigest": "3718395826e74e834ebde7e53874c673d1850ab724e953ef99b1343e4490a9c7",
+      "laneCount": 4,
+      "repoStable": true,
+      "readOnly": true
+    }
+  },
+  "productRole": {
+    "mobile": "supervision_and_decision",
+    "tablet": "independent_pos_sales",
+    "pc": "optional_backoffice_governance_when_present",
+    "mobileMutationsAuthorizedByThisCanon": false
+  },
+  "primarySurface": {
+    "route": "/prisma-app",
+    "shellOwner": "src/components/prisma-app/PrismaMobileDashboard.tsx",
+    "navigationOwner": "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+    "orderedNavigation": [
+      {"id": "inicio", "label": "Inicio"},
+      {"id": "ventas", "label": "Ventas"},
+      {"id": "operacion", "label": "Operación"},
+      {"id": "licencias", "label": "Licencias"},
+      {"id": "alertas", "label": "Alertas"},
+      {"id": "stock", "label": "Stock"},
+      {"id": "sistema", "label": "Sistema"}
+    ]
+  },
+  "auxiliaryRoutes": [
+    {"route": "/prisma-app/setup", "role": "customer_setup_device_claim", "primaryNav": false},
+    {"route": "/prisma-app/install", "role": "pwa_install", "primaryNav": false},
+    {"route": "/prisma-app/offline", "role": "pwa_offline_shell", "primaryNav": false}
+  ],
+  "separateRoutes": [
+    {"route": "/prisma-command", "role": "owner_chart_preview", "primaryNav": false}
+  ],
+  "secondaryOrDormantCapabilities": [
+    {"id": "command-center", "component": "PrismaMobileCommandCenter", "mountRequiredByCanon": false},
+    {"id": "action-inbox", "component": "PrismaMobileActionInbox", "mountRequiredByCanon": false},
+    {"id": "daily-brief", "component": "PrismaMobileDailyBrief", "mountRequiredByCanon": false},
+    {"id": "decision-ledger", "component": "PrismaMobileDecisionLedger", "mountRequiredByCanon": false},
+    {"id": "pulse-timeline", "component": "PrismaMobilePulseTimeline", "mountRequiredByCanon": false},
+    {"id": "health-radar", "component": "PrismaMobileHealthRadar", "mountRequiredByCanon": false},
+    {"id": "multi-context-switcher", "component": "PrismaMobileMultiContextSwitcher", "mountRequiredByCanon": false}
+  ],
+  "retiredPrimaryNavigationConcepts": ["Hoy", "Caja", "Inventario", "Reportes", "MultiSucursal", "Resumen", "Sync", "Mando"],
+  "authorityPrecedence": [
+    "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+    "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md",
+    "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json",
+    "current verified Mobile source for conformance evidence",
+    "docs/atlas/ATLAS_MOBILE.md as implementation map",
+    "historical PRISMA_APP_MOBILE_* evidence"
+  ],
+  "noFakeGreen": {
+    "staleOrPartialIsHealthy": false,
+    "componentExistsMeansMounted": false,
+    "historicalVerifierMeansCurrentAuthority": false,
+    "offlineRouteMeansOfflineDataCertified": false
+  },
+  "claims": {
+    "runtimeCertified": false,
+    "visualCertified": false,
+    "hostedProductionCertified": false,
+    "offlineOperationalDataCertified": false,
+    "verifiersAligned": false
+  }
+}
