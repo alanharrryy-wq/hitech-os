@@ -1,0 +1,320 @@
+name: PC Wave 3 Exact Target Certification
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave3-exact-target-certification.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PRODUCT_TARGET: e2b5e6317c08ef430f9e02a9396e017b8944dad4
+  EXPECTED_TREE: bf339ae4c19150548c2a265532233acfd0533693
+  EVIDENCE_BASE: 630f025e3b41ac932a10ffab2f5992817c3037e5
+
+jobs:
+  certify-exact-target:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact reconciled Wave 3 target
+        uses: actions/checkout@v6
+        with:
+          ref: e2b5e6317c08ef430f9e02a9396e017b8944dad4
+          fetch-depth: 0
+
+      - name: Prove exact product target and bounded 20-file scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$PRODUCT_TARGET"
+          test "$(git rev-parse HEAD^{tree})" = "$EXPECTED_TREE"
+          git diff --name-only "$EVIDENCE_BASE..$PRODUCT_TARGET" | sort -u > "$RUNNER_TEMP/wave3.paths"
+          python - "$RUNNER_TEMP/wave3.paths" <<'PY'
+          import sys
+          from pathlib import Path
+          expected={
+            '.github/workflows/pc-wave3-certification.yml',
+            '.github/workflows/pc-wave3-diagnostic.yml',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/catalog/products/[productId]/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/catalog/products/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/counts/records/[countId]/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/counts/records/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices/claims/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/inventory/adjustments/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/settings/business/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/suppliers/records/[supplierId]/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/suppliers/records/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sync/export-pc-to-tablet/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/business-settings.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-mutations.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/device-claims.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/inventory-mutations.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/supplier-records.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/wave3-mutation-audit.ts',
+            'apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave3_ci.py',
+            'apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_enterprise_mutations_wave3_runtime.mjs'
+          }
+          actual={x for x in Path(sys.argv[1]).read_text(encoding='utf-8').splitlines() if x}
+          if actual != expected:
+              raise SystemExit(f'WAVE3_SCOPE_DRIFT missing={sorted(expected-actual)} extra={sorted(actual-expected)}')
+          print('PASS_EXACT_20_FILE_WAVE3_SCOPE')
+          PY
+          test -z "$(git status --porcelain)"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install repository dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run isolated PC Wave 3 certification
+        id: wave3
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pc-wave3-exact/wave3
+          python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          if rc == 0: raise SystemExit('PORT_3130_NOT_FREE_BEFORE_WAVE3')
+          PY
+          set +e
+          setsid python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave3_ci.py --out artifacts/pc-wave3-exact/wave3 &
+          owner_pid=$!
+          wait "$owner_pid"
+          rc=$?
+          set -e
+          kill -TERM -- "-$owner_pid" 2>/dev/null || true
+          for _ in $(seq 1 20); do
+            if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.2)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(1 if rc == 0 else 0)
+          PY
+            then break; fi
+            sleep 0.5
+          done
+          if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(0 if rc == 0 else 1)
+          PY
+          then
+            kill -KILL -- "-$owner_pid" 2>/dev/null || true
+            echo 'Wave 3 owned runtime remained on port 3130 after cleanup.'
+            exit 98
+          fi
+          exit "$rc"
+
+      - name: Install Playwright Chromium for frozen Wave 2 regression
+        if: success()
+        shell: bash
+        run: python apps/terminal-de-venta-system/products/pc/app/tools/setup_pc_playwright_ci.py
+
+      - name: Run frozen Wave 2 entitled regression
+        if: success()
+        id: wave2_entitled
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pc-wave3-exact/wave2-entitled
+          python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          if rc == 0: raise SystemExit('PORT_3130_NOT_FREE_BEFORE_WAVE2_ENTITLED')
+          PY
+          set +e
+          setsid python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py --mode entitled --out artifacts/pc-wave3-exact/wave2-entitled &
+          owner_pid=$!
+          wait "$owner_pid"
+          rc=$?
+          set -e
+          kill -TERM -- "-$owner_pid" 2>/dev/null || true
+          for _ in $(seq 1 20); do
+            if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.2)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(1 if rc == 0 else 0)
+          PY
+            then break; fi
+            sleep 0.5
+          done
+          if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(0 if rc == 0 else 1)
+          PY
+          then
+            kill -KILL -- "-$owner_pid" 2>/dev/null || true
+            echo 'Wave 2 entitled owned runtime remained on port 3130 after cleanup.'
+            exit 98
+          fi
+          exit "$rc"
+
+      - name: Run frozen Wave 2 restricted regression
+        if: success()
+        id: wave2_restricted
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pc-wave3-exact/wave2-restricted
+          python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          if rc == 0: raise SystemExit('PORT_3130_NOT_FREE_BEFORE_WAVE2_RESTRICTED')
+          PY
+          set +e
+          setsid python apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave2_ci.py --mode restricted --out artifacts/pc-wave3-exact/wave2-restricted &
+          owner_pid=$!
+          wait "$owner_pid"
+          rc=$?
+          set -e
+          kill -TERM -- "-$owner_pid" 2>/dev/null || true
+          for _ in $(seq 1 20); do
+            if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.2)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(1 if rc == 0 else 0)
+          PY
+            then break; fi
+            sleep 0.5
+          done
+          if python - <<'PY'
+          import socket
+          s=socket.socket(); s.settimeout(.25)
+          try: rc=s.connect_ex(('127.0.0.1',3130))
+          finally: s.close()
+          raise SystemExit(0 if rc == 0 else 1)
+          PY
+          then
+            kill -KILL -- "-$owner_pid" 2>/dev/null || true
+            echo 'Wave 2 restricted owned runtime remained on port 3130 after cleanup.'
+            exit 98
+          fi
+          exit "$rc"
+
+      - name: Normalize proven pnpm transient lock metadata after runners
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          lock='apps/terminal-de-venta-system/pnpm-lock.yaml'
+          mkdir -p artifacts/pc-wave3-exact/governance
+          if git diff --quiet -- "$lock"; then
+            printf '{"lockMetadataNormalized":false,"reason":"no_diff","pass":true}\n' > artifacts/pc-wave3-exact/governance/LOCK_METADATA_NORMALIZATION.json
+            exit 0
+          fi
+          git diff --unified=0 -- "$lock" > "$RUNNER_TEMP/pnpm-lock-transient.patch"
+          python - "$RUNNER_TEMP/pnpm-lock-transient.patch" <<'PY'
+          import json,re,sys
+          from pathlib import Path
+          patch=Path(sys.argv[1]).read_text(encoding='utf-8')
+          ignored_prefixes=('diff --git ','index ','--- ','+++ ','@@')
+          material=[]; accepted=[]
+          for line in patch.splitlines():
+              if not line or line.startswith(ignored_prefixes): continue
+              if line.startswith('+') and re.match(r'^\+\s+deprecated:\s+.+$', line):
+                  accepted.append(line[1:].strip()); continue
+              material.append(line)
+          if material or not accepted:
+              print(json.dumps({'pass':False,'materialUnexpectedLines':material,'acceptedDeprecatedLines':accepted},indent=2))
+              raise SystemExit('UNEXPECTED_PNPM_LOCKFILE_MUTATION')
+          print(json.dumps({'pass':True,'acceptedDeprecatedLines':accepted},indent=2))
+          PY
+          cp "$RUNNER_TEMP/pnpm-lock-transient.patch" artifacts/pc-wave3-exact/governance/PNPM_TRANSIENT_LOCK_METADATA.patch
+          git checkout -- "$lock"
+          test -z "$(git diff --name-only -- "$lock")"
+          printf '{"lockMetadataNormalized":true,"reason":"pnpm_deprecated_metadata_only_after_runners","pass":true}\n' > artifacts/pc-wave3-exact/governance/LOCK_METADATA_NORMALIZATION.json
+
+      - name: Verify certification created no tracked source drift
+        if: always()
+        id: source_drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/pc-wave3-exact/governance
+          git status --short --branch | tee artifacts/pc-wave3-exact/governance/GIT_STATUS.txt
+          git diff --binary > artifacts/pc-wave3-exact/governance/GIT_DIFF.patch
+          if [[ -s artifacts/pc-wave3-exact/governance/GIT_DIFF.patch ]]; then
+            echo 'Certification mutated tracked source files.' | tee artifacts/pc-wave3-exact/governance/TRACKED_SOURCE_DRIFT.txt
+            exit 1
+          fi
+          printf '{"trackedSourceDrift":false,"pass":true}\n' > artifacts/pc-wave3-exact/governance/SOURCE_DRIFT_RESULT.json
+
+      - name: Build exact-target certification manifest
+        if: always()
+        shell: bash
+        env:
+          WAVE3_OUTCOME: ${{ steps.wave3.outcome }}
+          WAVE2_ENTITLED_OUTCOME: ${{ steps.wave2_entitled.outcome }}
+          WAVE2_RESTRICTED_OUTCOME: ${{ steps.wave2_restricted.outcome }}
+          SOURCE_DRIFT_OUTCOME: ${{ steps.source_drift.outcome }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          root=Path('artifacts/pc-wave3-exact')
+          def load(path):
+              p=root/path
+              if not p.is_file(): return None
+              try: return json.loads(p.read_text(encoding='utf-8'))
+              except Exception: return None
+          wave3=load(Path('wave3/PC_WAVE3_CI_RUNNER_RESULT.json'))
+          entitled=load(Path('wave2-entitled/PC_WAVE2_CI_RUNNER_RESULT.json'))
+          restricted=load(Path('wave2-restricted/PC_WAVE2_CI_RUNNER_RESULT.json'))
+          drift=load(Path('governance/SOURCE_DRIFT_RESULT.json'))
+          outcomes={'wave3':os.environ.get('WAVE3_OUTCOME'),'wave2Entitled':os.environ.get('WAVE2_ENTITLED_OUTCOME'),'wave2Restricted':os.environ.get('WAVE2_RESTRICTED_OUTCOME'),'sourceDrift':os.environ.get('SOURCE_DRIFT_OUTCOME')}
+          passed=(outcomes['wave3']=='success' and wave3 and wave3.get('pass') is True and outcomes['wave2Entitled']=='success' and entitled and entitled.get('pass') is True and outcomes['wave2Restricted']=='success' and restricted and restricted.get('pass') is True and outcomes['sourceDrift']=='success' and drift and drift.get('pass') is True)
+          files=[]
+          for p in sorted(root.rglob('*')):
+              if p.is_file() and p.name != 'PC_WAVE3_EXACT_TARGET_MANIFEST.json':
+                  files.append({'path':p.relative_to(root).as_posix(),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          manifest={'schemaVersion':'prisma.pc-wave3.exact-target-certification.v1','result':'PASS_PC_ENTERPRISE_MUTATIONS_WAVE3_EXACT_RECONCILED_TARGET' if passed else 'FAIL_PC_ENTERPRISE_MUTATIONS_WAVE3_EXACT_RECONCILED_TARGET','productTarget':os.environ['PRODUCT_TARGET'],'expectedTree':os.environ['EXPECTED_TREE'],'evidenceBase':os.environ['EVIDENCE_BASE'],'triggerCommit':os.environ.get('GITHUB_SHA'),'runId':os.environ.get('GITHUB_RUN_ID'),'runAttempt':os.environ.get('GITHUB_RUN_ATTEMPT'),'outcomes':outcomes,'wave3Result':wave3.get('result') if wave3 else None,'wave2EntitledPass':entitled.get('pass') if entitled else None,'wave2RestrictedPass':restricted.get('pass') if restricted else None,'trackedSourceDrift':False if drift and drift.get('pass') else None,'databaseIsolation':'runner_temp_only','liveDatabaseMutated':False,'productionCertified':False,'files':files,'pass':bool(passed)}
+          (root/'PC_WAVE3_EXACT_TARGET_MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({k:v for k,v in manifest.items() if k!='files'},indent=2))
+          if not passed: raise SystemExit('EXACT_TARGET_CERTIFICATION_FAILED')
+          PY
+
+      - name: Upload exact-target Wave 3 evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave3-exact-target-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/pc-wave3-exact/**
+          if-no-files-found: error
+          retention-days: 21
