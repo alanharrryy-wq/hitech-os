@@ -537,6 +537,60 @@ def main() -> int:
     check("entitlement_projection_fail_closed", "fail-closed" in entitlement_rule and "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES" in entitlement_rule and "does not create or grant" in entitlement_rule, entitlement_rule)
     check("entitlement_next_gate_separate_decision", "separately governed" in entitlement_next and "Change Assurance feature" in entitlement_next and "NOT_GRANTED" in entitlement_next, entitlement_next)
 
+    # P5_ROI_PROJECTION_GOVERNED_CHECKS
+    roi_projection_authority = generated_from.get("roiProjectionAuthority", {})
+    p5_authority_exact = {
+        "roi_authority_head": (roi_projection_authority.get("baseHead"), "487459ab8901748673b86eaf3ad3a79322c7f266"),
+        "roi_authority_tree": (roi_projection_authority.get("baseTree"), "4d1013c985cafe3e215237181d03797ee29deab3"),
+        "roi_authority_profile": (roi_projection_authority.get("profile"), "ca-cloud-roi-p5-current-v2"),
+        "roi_authority_run": (roi_projection_authority.get("authorityRunId"), 32940529028),
+        "roi_authority_artifact": (roi_projection_authority.get("authorityArtifactId"), 9596382236),
+        "roi_authority_artifact_digest": (roi_projection_authority.get("authorityArtifactDigest"), "sha256:849d76288db5034124c89f5e88d5b132cb8728cc36fa6b4574fdb333910af31c"),
+        "roi_authority_composed_digest": (roi_projection_authority.get("composedArtifactSha256"), "b2e83b257537ab86437255a3b12743602361b2b17aa08d6c5ba4964e5648931d"),
+        "roi_authority_request_digest": (roi_projection_authority.get("authorityRequestDigest"), "8f07a8f8302b604620f42f038bdc528c5cd3da59b746b148cb4c245d93bf1a21"),
+        "roi_authority_result": (roi_projection_authority.get("authorityResult"), "PASS_COMPOSED_AUTHORITY_MESH"),
+        "roi_authority_lanes": (roi_projection_authority.get("laneCount"), 2),
+        "roi_authority_coverage": (roi_projection_authority.get("requiredAuthorityCoverage"), "100%"),
+        "roi_authority_blockers": (roi_projection_authority.get("blockers"), 0),
+        "roi_authority_drift": (roi_projection_authority.get("repoDriftStable"), True),
+        "roi_gate_run": (roi_projection_authority.get("mutationGateRunId"), 32940817782),
+        "roi_gate_artifact": (roi_projection_authority.get("mutationGateArtifactId"), 9596447828),
+        "roi_gate_artifact_digest": (roi_projection_authority.get("mutationGateArtifactDigest"), "sha256:452c11f1015e7412b8077914c82a6f88f95881eaecae990bb2c56341de418303"),
+    }
+    for name, (actual, expected) in p5_authority_exact.items():
+        check(name, actual == expected, f"actual={actual} expected={expected}")
+
+    roi = cp.get("roi", {})
+    check("roi_status_input_required", roi.get("status") == "INPUT_REQUIRED_NO_ESTIMATE", str(roi.get("status")))
+    roi_owner = roi.get("sourceOwner") if isinstance(roi.get("sourceOwner"), dict) else {}
+    check("roi_owner_path", roi_owner.get("path") == "tools/code-atlas/src/code_atlas/change_intelligence/roi.py", str(roi_owner.get("path")))
+    check("roi_owner_capability", roi_owner.get("capabilityId") == "ci.roi.raw_instrumentation", str(roi_owner.get("capabilityId")))
+    check("roi_owner_reference_only", roi_owner.get("reuseMode") == "REFERENCE_ONLY", str(roi_owner.get("reuseMode")))
+    check("roi_owner_do_not_rebuild", roi_owner.get("doNotRebuild") is True, str(roi_owner.get("doNotRebuild")))
+    expected_roi_metrics = [
+        "contextDiscoveryTime", "changeScopeIdentificationTime", "humanSupervisionTime",
+        "outOfScopeChangeRate", "reopenedWorkRate", "evidenceAssemblyTime",
+        "changeReadinessThroughput", "blockedBeforeChangeCount", "evidenceCompletenessRate",
+    ]
+    check("roi_raw_metrics_exact", roi.get("rawMetricsSupported") == expected_roi_metrics, str(roi.get("rawMetricsSupported")))
+    check("roi_customer_inputs_absent", roi.get("customerInputsPresent") is False, str(roi.get("customerInputsPresent")))
+    check("roi_observed_events_empty", roi.get("observedEventsProjected") == [], str(roi.get("observedEventsProjected")))
+    check("roi_estimate_forbidden_without_inputs", roi.get("estimateAllowed") is False, str(roi.get("estimateAllowed")))
+    check("roi_financial_estimate_null", roi.get("financialEstimate") is None, str(roi.get("financialEstimate")))
+    check("roi_commercial_hypotheses_not_measurement", roi.get("commercialHypothesesAreMeasurements") is False, str(roi.get("commercialHypothesesAreMeasurements")))
+    check("roi_not_certifiable", roi.get("certifiable") is False, str(roi.get("certifiable")))
+    check("roi_not_production", roi.get("productionCertified") is False, str(roi.get("productionCertified")))
+    required_roi_inputs = [
+        "loaded engineering cost", "discovery hours saved", "avoided rework events and hours",
+        "agent review minutes saved", "release or evidence hours saved",
+    ]
+    check("roi_required_inputs_exact", roi.get("requiredCustomerInputs") == required_roi_inputs, str(roi.get("requiredCustomerInputs")))
+    roi_dnp = roi.get("doesNotProve") if isinstance(roi.get("doesNotProve"), list) else []
+    for boundary in ("realized cash savings", "profit", "customer willingness to pay", "human usefulness", "production readiness"):
+        check(f"roi_does_not_prove:{boundary}", boundary in roi_dnp, str(roi_dnp))
+    check("roi_projection_rule_fail_closed", "INPUT_REQUIRED_NO_ESTIMATE" in str(roi.get("projectionRule")) and "financialEstimate remains null" in str(roi.get("projectionRule")), str(roi.get("projectionRule")))
+    check("roi_derivation_rule_bounded", "observed time events" in str(roi.get("derivationRule")) and "loaded hourly cost" in str(roi.get("derivationRule")), str(roi.get("derivationRule")))
+
     links = re.findall(r'<a\b(?=[^>]*data-ci-entry=["\']v1["\'])(?=[^>]*href=["\']/internal/web/change_intelligence_center\.html["\'])[^>]*>', main_html, re.I)
     check("single_navigation_seam", len(links) == 1, f"found={len(links)}")
     check("main_js_uncoupled", "change_intelligence_center" not in main_js and "pci-" not in main_js)
