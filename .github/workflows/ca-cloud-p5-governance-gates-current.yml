@@ -67,8 +67,8 @@ jobs:
           cat > "$RUNNER_TEMP/ca-request.json" <<'JSON'
           {
             "mode":"MUTATION",
-            "capabilityIds":["ci.roi.raw_instrumentation","ci.cloud.roi_projection"],
-            "task":"Promote only ci.cloud.roi_projection from BUILD to the exact evidence-supported completed local/source/runtime state after merged PR #417. Set doNotRebuild=true, preserve CUSTOMER_BASELINE_INPUT_AND_MEASURED_PROJECTION as next gate, keep G/J external blockers and v1Complete=false.",
+            "capabilityIds":["ci.cloud.roi_projection"],
+            "task":"Promote only ci.cloud.roi_projection from BUILD to the exact evidence-supported completed local/source/runtime state after merged PR #417. Reuse ci.roi.raw_instrumentation without mutating it. Set doNotRebuild=true, preserve CUSTOMER_BASELINE_INPUT_AND_MEASURED_PROJECTION as next gate, keep G/J external blockers and v1Complete=false.",
             "visualMutation":false,
             "authorityMesh":{
               "status":"PASS_COMPOSED_AUTHORITY_MESH",
