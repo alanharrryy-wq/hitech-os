@@ -52,6 +52,27 @@ EVIDENCE_LOCK_DIGEST = "sha256:7c8470e667d6e89d8c7ebfb6922139a8d7b23c3788a800f70
 VERIFICATION_REPORT_DIGEST = "sha256:31b36c5d7c19e790d625d104d5de0230339659d71b92e303ef50e35560ee8efa"
 EVIDENCE_BUNDLE_MANIFEST_DIGEST = "sha256:06167e8f02653ad82f0c410d39a5a5455be2bb201c305e7860bb404df07d4a20"
 
+ENTITLEMENT_CONNECTED_STATUS = "SOURCE_MAPPED_NOT_GRANTED"
+ENTITLEMENT_PROFILE = "ca-cloud-entitlements-p4-v2"
+ENTITLEMENT_HEAD = "c388cffd0c926295619d71a583876e5b66f37ceb"
+ENTITLEMENT_TREE = "b68b47e1056a527bfa0097ab010c6a4184464703"
+ENTITLEMENT_AUTHORITY_RUN = 32923210520
+ENTITLEMENT_AUTHORITY_ARTIFACT = 9590560387
+ENTITLEMENT_AUTHORITY_ARTIFACT_DIGEST = "sha256:ecced7dc954259787e5198002297e8c4fffd050f133f6646fff38c9fc4c6f88c"
+ENTITLEMENT_COMPOSED_SHA256 = "e737962f1aa137c7d7ceb3294fbc19eda7238412c39dcd2a11bf9b17fe20c957"
+ENTITLEMENT_AUTHORITY_REQUEST_DIGEST = "d9af6c2505490a0dfb9581bf6e426c5a921887f32ce056f68e259f01ee4ebc14"
+ENTITLEMENT_GATE_RUN = 32923389474
+ENTITLEMENT_GATE_ARTIFACT = 9590600727
+ENTITLEMENT_GATE_ARTIFACT_DIGEST = "sha256:9af868f16239fa98864d4441b6eaafd7731c185e5768db2ab0de8d4a3bf324e4"
+ENTITLEMENT_SOURCE_PATH = "apps/terminal-de-venta-system/shared/licensing/customer-setup-contract.ts"
+ENTITLEMENT_SOURCE_BLOB = "7bac39a02a7ffaed20f5a725a1c216da07087adf"
+ENTITLEMENT_PLAN_FEATURES = {
+    "TABLET_SOLO": ["pos.local_sale", "catalog.local", "cash.local"],
+    "TABLET_PRO": ["pos.local_sale", "returns", "outbox.visible", "mobile.supervision"],
+    "TABLET_PC_MANAGED": ["pos.local_sale", "pc.backoffice", "sync.audit", "mobile.supervision"],
+    "TABLET_PC_MOBILE_MANAGED": ["pos.local_sale", "pc.backoffice", "mobile.companion", "customer.setup"],
+}
+
 REL = {
     "main_html": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.html"),
     "main_js": Path("apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/web/cloud_command_center.js"),
@@ -197,6 +218,7 @@ def main() -> int:
     repository_projection_authority = generated_from.get("repositoryProjectionAuthority", {})
     analysis_projection_authority = generated_from.get("analysisRunProjectionAuthority", {})
     authority_evidence_projection_authority = generated_from.get("authorityEvidenceProjectionAuthority", {})
+    entitlement_projection_authority = generated_from.get("entitlementProjectionAuthority", {})
     maturity = cfg.get("maturity", {})
     safety = cfg.get("safety", {})
 
@@ -461,6 +483,59 @@ def main() -> int:
         check("evidence_forbidden_fields_absent", not forbidden_repository_fields(row), str(forbidden_repository_fields(row)))
     evidence_rule = str(evidence_refs.get("projectionRule", ""))
     check("evidence_projection_rule_bounded_pass", "PASS is preserved" in evidence_rule and "not promoted" in evidence_rule and "mutation authority" in evidence_rule, evidence_rule)
+
+
+    p4_authority_exact = {
+        "entitlement_authority_head": (entitlement_projection_authority.get("baseHead"), ENTITLEMENT_HEAD),
+        "entitlement_authority_tree": (entitlement_projection_authority.get("baseTree"), ENTITLEMENT_TREE),
+        "entitlement_authority_profile": (entitlement_projection_authority.get("profile"), ENTITLEMENT_PROFILE),
+        "entitlement_authority_run": (entitlement_projection_authority.get("authorityRunId"), ENTITLEMENT_AUTHORITY_RUN),
+        "entitlement_authority_artifact": (entitlement_projection_authority.get("authorityArtifactId"), ENTITLEMENT_AUTHORITY_ARTIFACT),
+        "entitlement_authority_artifact_digest": (entitlement_projection_authority.get("authorityArtifactDigest"), ENTITLEMENT_AUTHORITY_ARTIFACT_DIGEST),
+        "entitlement_composed_sha256": (entitlement_projection_authority.get("composedArtifactSha256"), ENTITLEMENT_COMPOSED_SHA256),
+        "entitlement_authority_request_digest": (entitlement_projection_authority.get("authorityRequestDigest"), ENTITLEMENT_AUTHORITY_REQUEST_DIGEST),
+        "entitlement_authority_result": (entitlement_projection_authority.get("authorityResult"), "PASS_COMPOSED_AUTHORITY_MESH"),
+        "entitlement_authority_lanes": (entitlement_projection_authority.get("laneCount"), 2),
+        "entitlement_authority_coverage": (entitlement_projection_authority.get("requiredAuthorityCoverage"), "100%"),
+        "entitlement_authority_blockers": (entitlement_projection_authority.get("blockers"), 0),
+        "entitlement_authority_drift": (entitlement_projection_authority.get("repoDriftStable"), True),
+        "entitlement_gate_run": (entitlement_projection_authority.get("mutationGateRunId"), ENTITLEMENT_GATE_RUN),
+        "entitlement_gate_artifact": (entitlement_projection_authority.get("mutationGateArtifactId"), ENTITLEMENT_GATE_ARTIFACT),
+        "entitlement_gate_artifact_digest": (entitlement_projection_authority.get("mutationGateArtifactDigest"), ENTITLEMENT_GATE_ARTIFACT_DIGEST),
+    }
+    for name, (actual, expected) in p4_authority_exact.items():
+        check(name, actual == expected, f"actual={actual} expected={expected}")
+
+    entitlements = cp.get("usageEntitlements", {})
+    source_owner = entitlements.get("sourceOwner") if isinstance(entitlements.get("sourceOwner"), dict) else {}
+    entitlement_exact = {
+        "entitlement_state": (entitlements.get("status"), ENTITLEMENT_CONNECTED_STATUS),
+        "entitlement_product": (entitlements.get("requestedProduct"), "PRISMA Change Assurance"),
+        "entitlement_source_path": (source_owner.get("path"), ENTITLEMENT_SOURCE_PATH),
+        "entitlement_source_blob": (source_owner.get("sourceBlobSha"), ENTITLEMENT_SOURCE_BLOB),
+        "entitlement_source_catalog": (source_owner.get("catalog"), "PLAN_BASED_PROVISIONING_CATALOG"),
+        "entitlement_reuse_mode": (source_owner.get("reuseMode"), "REFERENCE_ONLY"),
+        "entitlement_source_dnr": (source_owner.get("doNotRebuild"), True),
+        "entitlement_plan_features": (entitlements.get("planFeaturesAtCapture"), ENTITLEMENT_PLAN_FEATURES),
+        "entitlement_catalog_matches": (entitlements.get("catalogMatches"), []),
+        "entitlement_grant_status": (entitlements.get("grantStatus"), "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES"),
+        "entitlement_live_enforcement_absent": (entitlements.get("liveEnforcementObserved"), False),
+        "entitlement_no_license_mutation": (entitlements.get("licenseMutationPerformed"), False),
+        "entitlement_read_only": (entitlements.get("readOnly"), True),
+        "entitlement_not_production": (entitlements.get("productionCertified"), False),
+        "entitlement_not_certifiable": (entitlements.get("certifiable"), False),
+    }
+    for name, (actual, expected) in entitlement_exact.items():
+        check(name, actual == expected, f"actual={actual} expected={expected}")
+    source_capabilities = source_owner.get("capabilityIds") if isinstance(source_owner.get("capabilityIds"), list) else []
+    check("entitlement_source_capabilities", source_capabilities == ["licensing.source_contract_alignment", "licensing.customer_setup.plan_based_onboarding"], str(source_capabilities))
+    entitlement_dnp = entitlements.get("doesNotProve") if isinstance(entitlements.get("doesNotProve"), list) else []
+    for boundary in ("entitlement grant", "live license enforcement", "billing authorization", "production readiness"):
+        check(f"entitlement_does_not_prove:{boundary}", boundary in entitlement_dnp, str(entitlement_dnp))
+    entitlement_rule = str(entitlements.get("projectionRule", ""))
+    entitlement_next = str(entitlements.get("nextGate", ""))
+    check("entitlement_projection_fail_closed", "fail-closed" in entitlement_rule and "NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES" in entitlement_rule and "does not create or grant" in entitlement_rule, entitlement_rule)
+    check("entitlement_next_gate_separate_decision", "separately governed" in entitlement_next and "Change Assurance feature" in entitlement_next and "NOT_GRANTED" in entitlement_next, entitlement_next)
 
     links = re.findall(r'<a\b(?=[^>]*data-ci-entry=["\']v1["\'])(?=[^>]*href=["\']/internal/web/change_intelligence_center\.html["\'])[^>]*>', main_html, re.I)
     check("single_navigation_seam", len(links) == 1, f"found={len(links)}")
