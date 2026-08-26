@@ -415,7 +415,7 @@
       "proves": [
         "Six blind historical tasks were scored after evaluator responses were persisted before ground truth was viewed",
         "ASSISTED 3-task descriptive result: 0% authorization widening, 100% target editable inclusion, 100% mean changed-test recall, 88.89% mean companion-inspection recall, 100% valid evidence references, zero fake-green and zero unknown omission",
-        "BASELINE 3 different-task descriptive result: 0% authorization widening, 33.33% target editable inclusion, 0% mean changed-test recall, 0% mean companion-inspection recall, 100% valid evidence references",
+        "BASELINE 3 different-task descriptive result: 0% authorization widening, 33.33% target editable inclusion, 0% mean changed-test recall, 0% companion-inspection recall, 100% valid evidence references",
         "Observed raw ROI events were limited to outOfScopeChangeRate=0.0 ratio and evidenceCompletenessRate=1.0 ratio with no financial estimate",
         "Two harness-only failures were repaired fail-closed before a valid score; neither was classified as a product-core defect"
       ],
@@ -577,9 +577,44 @@
         "current-head close run 32858397075 artifact 9567155916 sha256:1f0b4456e60d19e9968599657ed38379f3f7ddc141c2f83dcc32159c286371a5",
         "Authority request 7d2e4fd4fc189b59c66226d526fdb964c25c87970b4ec7ea4b2dbcf3881eb596 / composed da4e4ec2dda0f0fde10031a1ba5ebf3542c5193d0d0fd3da91f491ff32c8ae9c / decision 1f3aa9babcc4bb45b0e996d1f32fe78c7c4e1643b9e1d9f8988be7932b73959d"
       ]
+    },
+    {
+      "artifact": "PR #395 Mobile interface canon + current-main post-merge Authority Mesh",
+      "type": "mobile_interface_specification_canon",
+      "scope": [
+        "mobile",
+        "governance",
+        "interface_specification",
+        "documentation"
+      ],
+      "status": "PASS_SOURCE_READY",
+      "proves": [
+        "A single normative PRISMA Mobile interface canon and machine-readable contract are merged on main",
+        "The canonical primary /prisma-app navigation is Inicio, Ventas, Operación, Licencias, Alertas, Stock, Sistema",
+        "Setup, install and offline remain auxiliary lifecycle routes while /prisma-command remains a separate specialist/preview route",
+        "Competing historical interface specifications were retired by compatibility tombstone with originals preserved under archive/interface-history",
+        "PR #395 was documentation/specification-only and did not mutate Mobile product source, APIs, runtime, PWA behavior, data, sync, security, licensing or verifier code",
+        "PR #395 checks passed and fresh Authority Mesh run 32922500990 passed on current main 22c6fbc74774a1083721ccf225a537f87f38edc4 with three lanes, 100% required-authority coverage and zero blockers"
+      ],
+      "doesNotProve": [
+        "Current Mobile runtime or source fully conforms to the canon",
+        "Runtime or visual certification",
+        "Legacy verifier alignment",
+        "Hosted production readiness",
+        "Offline operational-data capability",
+        "Signed-session auth, sync, licensing, data-custody or zero-egress certification",
+        "Dormant historical components should be remounted"
+      ],
+      "evidence": [
+        "PR #395 merge 615d6732fd733696a60bb549bc88b23c0b573de4",
+        "apps/terminal-de-venta-system/products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md",
+        "apps/terminal-de-venta-system/products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json",
+        "Authority Mesh run 32922500990 / artifact 9590323223 / sha256:96b3440c6987cca0493d5b9a27e4c3447de12c2a9a738dbe1841436fc057f40f",
+        "Authority Mesh requestDigest 5b12cf847b1207c03fbf9b1b40cca348d2e509301ad1c6fe8ce1dcab10952006"
+      ]
     }
   ],
-  "updatedAt": "2026-08-25T08:17:09-06:00",
+  "updatedAt": "2026-08-25T20:25:40-06:00",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -697,6 +732,16 @@
         "run 31916081998 / artifact 9254928517",
         "closure Authority Mesh 31916191500 / artifact 9254953865",
         "BLOCKED_BY_MISSING_INDEPENDENT_EVALUATOR"
+      ]
+    },
+    {
+      "capabilityId": "mobile.interface_specification_canon",
+      "status": "SOURCE_READY",
+      "runId": "PR395_MOBILE_INTERFACE_CANON_SOURCE_READY",
+      "evidence": [
+        "PR #395 merge 615d6732fd733696a60bb549bc88b23c0b573de4",
+        "current-main Authority Mesh run 32922500990 artifact 9590323223",
+        "requestDigest 5b12cf847b1207c03fbf9b1b40cca348d2e509301ad1c6fe8ce1dcab10952006"
       ]
     }
   ]
