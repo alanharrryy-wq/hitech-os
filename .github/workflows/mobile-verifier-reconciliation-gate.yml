@@ -1,0 +1,273 @@
+name: Mobile Verifier Reconciliation Canonical Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mobile-verifier-reconciliation-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+jobs:
+  canonical-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
+        with:
+          ref: 487459ab8901748673b86eaf3ad3a79322c7f266
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact baseline and governance tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "487459ab8901748673b86eaf3ad3a79322c7f266"
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build exact Mobile verifier reconciliation Authority request
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/mobile-verifier.request.json"
+          python - "$request" <<'PY'
+          import json, sys
+          head = "487459ab8901748673b86eaf3ad3a79322c7f266"
+          app = "apps/terminal-de-venta-system/"
+          mobile = app + "products/mobile/app/"
+          ledger = "PRISMA Factory Ledger/"
+          common = [
+              ledger + "PRISMA_FACTORY_LEDGER.json",
+              ledger + "PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+              ledger + "tools/verify_prisma_anti_rework_gate.py",
+              app + "docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+              mobile + "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md",
+              mobile + "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json",
+          ]
+          request = {
+              "schemaVersion": "v2",
+              "profile": "mobile-verifier-reconciliation-v1-canonical-gate",
+              "expectedHead": head,
+              "tasks": [
+                  {
+                      "id": "mobile-verifier-census",
+                      "surface": "mobile",
+                      "intent": "AUDIT",
+                      "domain": "testing",
+                      "task": (
+                          "PRISMA Mobile verifier reconciliation V1 census. Identify every current Mobile verifier, test, "
+                          "package script, fixture, workflow assertion, or quality contract that still encodes superseded "
+                          "mounting, navigation, version, component-presence, Mando, MultiContextSwitcher, Command Center, "
+                          "Action Inbox, Daily Brief, Decision Ledger, Pulse Timeline, or Health Radar expectations that "
+                          "conflict with the canonical PRISMA Mobile interface specification. Classify each as stale, current "
+                          "canon check, implementation-conformance check, technical evidence keep, or out of scope. Read-only."
+                      ),
+                      "requiredAuthorities": common,
+                      "requiredDirectories": [mobile + "tools", mobile],
+                      "requiredCapabilities": ["mobile.interface_specification_canon"],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True,
+                  },
+                  {
+                      "id": "mobile-verifier-fix-boundary",
+                      "surface": "mobile",
+                      "intent": "FIX",
+                      "domain": "tooling",
+                      "task": (
+                          "Define the minimum exact quality/tooling-only mutation boundary to reconcile stale Mobile "
+                          "verifiers with the canonical seven-section /prisma-app navigation. Preserve auxiliary "
+                          "setup/install/offline routes, separate /prisma-command specialist semantics, security/auth/sync/"
+                          "licensing/data/PWA/release/runtime evidence checks and technical regression value. Explicitly do "
+                          "not authorize Mobile product source, API, runtime, CSS, visual, data, sync, security, licensing, "
+                          "Tablet, PC, Prisma/DB, process, port or deploy mutation. Do not remount dormant historical UI merely "
+                          "to satisfy stale assertions. Read-only planning only."
+                      ),
+                      "requiredAuthorities": common + [ledger + "PRISMA_EVIDENCE_INDEX.json"],
+                      "requiredDirectories": [mobile + "tools", mobile],
+                      "requiredCapabilities": ["mobile.interface_specification_canon"],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True,
+                  },
+                  {
+                      "id": "mobile-verifier-closure-contract",
+                      "surface": "governance",
+                      "intent": "VERIFY",
+                      "domain": "governance",
+                      "task": (
+                          "Define no-fake-green closure criteria for Mobile verifier reconciliation V1. Require canonical "
+                          "seven-section navigation assertions, negative assertions that dormant historical interfaces are "
+                          "not required or remounted, preservation of auxiliary routes and separate /prisma-command semantics, "
+                          "focused verifier execution, package-script coherence, CI evidence, exact changed-file boundary, and "
+                          "truthful Factory Ledger/Evidence Index closure only if maturity or next-gate truth changes. No "
+                          "Mobile product source/runtime mutation. Read-only."
+                      ),
+                      "requiredAuthorities": common + [
+                          app + "quality/contracts/no-fake-green.contract.json",
+                          ledger + "PRISMA_EVIDENCE_INDEX.json",
+                      ],
+                      "requiredDirectories": [mobile + "tools", app + "quality/contracts"],
+                      "requiredCapabilities": ["mobile.interface_specification_canon"],
+                      "minimumCoverage": 100,
+                      "failOnMissingAuthority": True,
+                  },
+              ],
+          }
+          with open(sys.argv[1], "w", encoding="utf-8") as fh:
+              json.dump(request, fh, ensure_ascii=False, indent=2)
+              fh.write("\n")
+          PY
+
+      - name: Run fresh exact-task Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/mobile-verifier.request.json"
+          pre="$RUNNER_TEMP/mobile-verifier-pre"
+          par="$RUNNER_TEMP/mobile-verifier-par"
+          comp="$RUNNER_TEMP/mobile-verifier-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --out-root "$par" \
+            --task-spec "$pre/legacy_tasks.json" \
+            --parallel 3 \
+            --workers 18 \
+            --shards 54 \
+            --max-files 160 \
+            --max-mb 48
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --preflight "$pre" \
+            --mesh-result "$par" \
+            --out "$comp" | tee "$RUNNER_TEMP/mobile-verifier-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/mobile-verifier-compose.txt"
+          test -f "$RUNNER_TEMP/mobile-verifier-comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Run universal Factory Ledger MUTATION gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          factory_request="$RUNNER_TEMP/mobile-verifier-mutation.request.json"
+          decision="$RUNNER_TEMP/mobile-verifier-mutation.decision.json"
+          python - \
+            "$RUNNER_TEMP/mobile-verifier-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/mobile-verifier-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-verifier-comp/prisma-automesh-composed-result.zip" \
+            "$factory_request" <<'PY'
+          import hashlib, json, sys
+          report_path, preflight_path, artifact_path, out_path = sys.argv[1:]
+          report = json.load(open(report_path, encoding="utf-8"))
+          pre = json.load(open(preflight_path, encoding="utf-8"))
+          artifact_digest = hashlib.sha256(open(artifact_path, "rb").read()).hexdigest()
+          coverage = min(float((lane.get("coverage") or {}).get("resolvedPercent", 0)) for lane in pre["lanes"])
+          mesh = {
+              "status": report["status"],
+              "repoHead": report["repoHead"],
+              "requiredAuthorityCoveragePct": coverage,
+              "blockers": len(pre.get("blockers") or []),
+              "requestDigest": report["requestDigest"],
+              "artifactDigest": artifact_digest,
+              "layerMapPresent": False,
+          }
+          request = {
+              "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+              "mode": "MUTATION",
+              "expectedHead": "487459ab8901748673b86eaf3ad3a79322c7f266",
+              "task": (
+                  "Execute the recorded nextGate for mobile.interface_specification_canon by reconciling only stale Mobile "
+                  "quality/tooling verifier assertions and package-script references against the canonical interface contract. "
+                  "Preserve all Mobile product source/runtime/API/PWA/data/sync/security/licensing behavior and do not remount "
+                  "dormant historical UI merely to satisfy stale tests."
+              ),
+              "capabilities": [
+                  {"id": "mobile.interface_specification_canon", "requestedAction": "ADVANCE"}
+              ],
+              "authorityMesh": mesh,
+              "visualMutation": False,
+          }
+          with open(out_path, "w", encoding="utf-8") as fh:
+              json.dump(request, fh, ensure_ascii=False, indent=2)
+              fh.write("\n")
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            --request "$factory_request" \
+            --out "$decision"
+          python - "$decision" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          if data.get("result") != "PASS_ANTI_REWORK_GATE":
+              raise SystemExit("FACTORY_GATE_RESULT_NOT_PASS")
+          if data.get("errors") != []:
+              raise SystemExit("FACTORY_GATE_ERRORS_NOT_EMPTY")
+          print("PASS_ANTI_REWORK_GATE")
+          PY
+          test -z "$(git status --porcelain)"
+
+      - name: Stage immutable gate evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/mobile-verifier-gate-evidence"
+          mkdir -p "$out"
+          for path in \
+            "$RUNNER_TEMP/mobile-verifier.request.json" \
+            "$RUNNER_TEMP/mobile-verifier-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-verifier-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/mobile-verifier-comp/payload/MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-verifier-comp/prisma-automesh-composed-result.zip" \
+            "$RUNNER_TEMP/mobile-verifier-mutation.request.json" \
+            "$RUNNER_TEMP/mobile-verifier-mutation.decision.json"; do
+            if [ -f "$path" ]; then
+              cp "$path" "$out/$(basename "$path")"
+            fi
+          done
+          find "$out" -maxdepth 1 -type f -print
+
+      - name: Upload Mobile verifier reconciliation gate evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-verifier-reconciliation-canonical-gate
+          path: ${{ runner.temp }}/mobile-verifier-gate-evidence/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed unless machine gate passed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "$RUNNER_TEMP/mobile-verifier-mutation.decision.json"
+          python - "$RUNNER_TEMP/mobile-verifier-mutation.decision.json" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding="utf-8"))
+          if data.get("result") != "PASS_ANTI_REWORK_GATE" or data.get("errors") != []:
+              raise SystemExit("FACTORY_GATE_NOT_CLEAN_PASS")
+          PY
