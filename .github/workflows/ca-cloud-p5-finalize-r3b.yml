@@ -1,0 +1,141 @@
+name: CA Cloud P5 ROI Finalizer R3B
+
+on:
+  push:
+    branches:
+      - feature/ca-cloud-p5-roi-r3-2508
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_HEAD: a0b8eae999534e142b1c8543ecc736b337bc2781
+    steps:
+      - name: Checkout P5 branch
+        uses: actions/checkout@v6
+        with:
+          ref: feature/ca-cloud-p5-roi-r3-2508
+          fetch-depth: 0
+
+      - name: Assert canonical head and carrier delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          echo "PRODUCT_TARGET=$SOURCE_HEAD"
+          echo "CANONICAL_HEAD=$(git rev-parse origin/main)"
+          echo "EVIDENCE_BASE=$(git merge-base HEAD origin/main)"
+          test "$(git rev-parse origin/main)" = "$SOURCE_HEAD"
+          test "$(git merge-base HEAD origin/main)" = "$SOURCE_HEAD"
+          python - <<'PY'
+          import subprocess
+          expected={'.github/workflows/ca-cloud-p5-finalize-r3.yml','.github/workflows/ca-cloud-p5-finalize-r3b.yml'}
+          raw=subprocess.check_output(['git','diff','--name-only','-z',f'{"a0b8eae999534e142b1c8543ecc736b337bc2781"}...HEAD'])
+          actual={x.decode() for x in raw.split(b'\0') if x}
+          print('carrierDelta=',sorted(actual))
+          if actual != expected: raise SystemExit(f'CARRIER_DELTA_MISMATCH:{sorted(actual)}')
+          PY
+
+      - name: Apply exact P5 ROI projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          config_path=Path('apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json')
+          verifier_path=Path('apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py')
+          contract_path=Path('apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md')
+          cfg=json.loads(config_path.read_text(encoding='utf-8'))
+          cfg.setdefault('generatedFrom',{})['roiProjectionAuthority']={
+            'baseHead':'a0b8eae999534e142b1c8543ecc736b337bc2781','baseTree':'5a7d1ea5e855fa9c4daeda0bb6969a48ec33e9c0','profile':'ca-cloud-roi-p5-v3',
+            'authorityRunId':32937035273,'authorityArtifactId':9595200361,'authorityArtifactDigest':'sha256:ff012780b7a2c918fb6c0394be59ab6487386c7f019f71f6557f492ba47bdd00',
+            'composedArtifactSha256':'5fda334ae7090e2e317b0825df35a8dd1bc7fa508e3148816b3f93e2f7abcd7d','authorityRequestDigest':'d2a53aefc7070818aa11fc6558f96c804dd2724a78070712bde3f91eef1f5f2d',
+            'authorityResult':'PASS_COMPOSED_AUTHORITY_MESH','laneCount':2,'requiredAuthorityCoverage':'100%','blockers':0,'repoDriftStable':True,
+            'mutationGateRunId':32937269829,'mutationGateArtifactId':9595257808,'mutationGateArtifactDigest':'sha256:bd678978ff8b62f4fa6fb744f5bd60ae7aa0f17c6b9a033b2e3ecfd4b5aa6c4b'}
+          cfg.setdefault('controlPlane',{})['roi']={
+            'status':'INPUT_REQUIRED_NO_ESTIMATE',
+            'sourceOwner':{'path':'tools/code-atlas/src/code_atlas/change_intelligence/roi.py','capabilityId':'ci.roi.raw_instrumentation','reuseMode':'REFERENCE_ONLY','doNotRebuild':True},
+            'rawMetricsSupported':['contextDiscoveryTime','changeScopeIdentificationTime','humanSupervisionTime','outOfScopeChangeRate','reopenedWorkRate','evidenceAssemblyTime','changeReadinessThroughput','blockedBeforeChangeCount','evidenceCompletenessRate'],
+            'customerInputsPresent':False,'observedEventsProjected':[],'estimateAllowed':False,'financialEstimate':None,'currency':'MXN',
+            'monthlyBenefitFormula':'Discovery + Rework + Agent Supervision + Release/Evidence','netMonthlyValueFormula':'Measured Monthly Benefit - Price','roiPercentFormula':'(Measured Monthly Benefit - Price) / Price * 100',
+            'requiredCustomerInputs':['loaded engineering cost','discovery hours saved','avoided rework events and hours','agent review minutes saved','release or evidence hours saved'],
+            'derivationRule':'A financial estimate may be derived only from canonical observed time events measured in hours plus an explicit non-negative loaded hourly cost and an explicit assumption label.',
+            'commercialHypothesesAreMeasurements':False,'certifiable':False,'productionCertified':False,
+            'doesNotProve':['realized cash savings','profit','customer willingness to pay','human usefulness','production readiness'],
+            'projectionRule':'Reference-only projection of canonical Code Atlas ROI instrumentation. Without real customer baseline inputs and observed events, the state remains INPUT_REQUIRED_NO_ESTIMATE and financialEstimate remains null. Commercial pricing hypotheses are not customer measurements.',
+            'nextGate':'Collect real customer baseline inputs and observed raw ROI events. Only then derive an explicitly labeled estimate under the canonical ROI owner; external human usefulness remains a separate evidence gate.'}
+          config_path.write_text(json.dumps(cfg,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          verifier=verifier_path.read_text(encoding='utf-8')
+          marker='    # P5_ROI_PROJECTION_GOVERNED_CHECKS\n'
+          if marker in verifier: raise SystemExit('P5_VERIFIER_BLOCK_ALREADY_PRESENT')
+          anchor='    links = re.findall('
+          if anchor not in verifier: raise SystemExit('P5_VERIFIER_ANCHOR_MISSING')
+          block='''    # P5_ROI_PROJECTION_GOVERNED_CHECKS\n    roi_projection_authority = generated_from.get("roiProjectionAuthority", {})\n    p5_authority_exact = {\n        "roi_authority_head": (roi_projection_authority.get("baseHead"), "a0b8eae999534e142b1c8543ecc736b337bc2781"),\n        "roi_authority_tree": (roi_projection_authority.get("baseTree"), "5a7d1ea5e855fa9c4daeda0bb6969a48ec33e9c0"),\n        "roi_authority_profile": (roi_projection_authority.get("profile"), "ca-cloud-roi-p5-v3"),\n        "roi_authority_run": (roi_projection_authority.get("authorityRunId"), 32937035273),\n        "roi_authority_artifact": (roi_projection_authority.get("authorityArtifactId"), 9595200361),\n        "roi_authority_artifact_digest": (roi_projection_authority.get("authorityArtifactDigest"), "sha256:ff012780b7a2c918fb6c0394be59ab6487386c7f019f71f6557f492ba47bdd00"),\n        "roi_authority_composed_digest": (roi_projection_authority.get("composedArtifactSha256"), "5fda334ae7090e2e317b0825df35a8dd1bc7fa508e3148816b3f93e2f7abcd7d"),\n        "roi_authority_request_digest": (roi_projection_authority.get("authorityRequestDigest"), "d2a53aefc7070818aa11fc6558f96c804dd2724a78070712bde3f91eef1f5f2d"),\n        "roi_authority_result": (roi_projection_authority.get("authorityResult"), "PASS_COMPOSED_AUTHORITY_MESH"),\n        "roi_authority_lanes": (roi_projection_authority.get("laneCount"), 2),\n        "roi_authority_coverage": (roi_projection_authority.get("requiredAuthorityCoverage"), "100%"),\n        "roi_authority_blockers": (roi_projection_authority.get("blockers"), 0),\n        "roi_authority_drift": (roi_projection_authority.get("repoDriftStable"), True),\n        "roi_gate_run": (roi_projection_authority.get("mutationGateRunId"), 32937269829),\n        "roi_gate_artifact": (roi_projection_authority.get("mutationGateArtifactId"), 9595257808),\n        "roi_gate_artifact_digest": (roi_projection_authority.get("mutationGateArtifactDigest"), "sha256:bd678978ff8b62f4fa6fb744f5bd60ae7aa0f17c6b9a033b2e3ecfd4b5aa6c4b"),\n    }\n    for name, (actual, expected) in p5_authority_exact.items():\n        check(name, actual == expected, f"actual={actual} expected={expected}")\n    roi = cp.get("roi", {})\n    check("roi_status_input_required", roi.get("status") == "INPUT_REQUIRED_NO_ESTIMATE", str(roi.get("status")))\n    roi_owner = roi.get("sourceOwner") if isinstance(roi.get("sourceOwner"), dict) else {}\n    check("roi_owner_path", roi_owner.get("path") == "tools/code-atlas/src/code_atlas/change_intelligence/roi.py", str(roi_owner.get("path")))\n    check("roi_owner_capability", roi_owner.get("capabilityId") == "ci.roi.raw_instrumentation", str(roi_owner.get("capabilityId")))\n    check("roi_owner_reference_only", roi_owner.get("reuseMode") == "REFERENCE_ONLY", str(roi_owner.get("reuseMode")))\n    check("roi_owner_do_not_rebuild", roi_owner.get("doNotRebuild") is True, str(roi_owner.get("doNotRebuild")))\n    expected_roi_metrics = ["contextDiscoveryTime","changeScopeIdentificationTime","humanSupervisionTime","outOfScopeChangeRate","reopenedWorkRate","evidenceAssemblyTime","changeReadinessThroughput","blockedBeforeChangeCount","evidenceCompletenessRate"]\n    check("roi_raw_metrics_exact", roi.get("rawMetricsSupported") == expected_roi_metrics, str(roi.get("rawMetricsSupported")))\n    check("roi_customer_inputs_absent", roi.get("customerInputsPresent") is False, str(roi.get("customerInputsPresent")))\n    check("roi_observed_events_empty", roi.get("observedEventsProjected") == [], str(roi.get("observedEventsProjected")))\n    check("roi_estimate_forbidden_without_inputs", roi.get("estimateAllowed") is False, str(roi.get("estimateAllowed")))\n    check("roi_financial_estimate_null", roi.get("financialEstimate") is None, str(roi.get("financialEstimate")))\n    check("roi_commercial_hypotheses_not_measurement", roi.get("commercialHypothesesAreMeasurements") is False, str(roi.get("commercialHypothesesAreMeasurements")))\n    check("roi_not_certifiable", roi.get("certifiable") is False, str(roi.get("certifiable")))\n    check("roi_not_production", roi.get("productionCertified") is False, str(roi.get("productionCertified")))\n    required_roi_inputs = ["loaded engineering cost","discovery hours saved","avoided rework events and hours","agent review minutes saved","release or evidence hours saved"]\n    check("roi_required_inputs_exact", roi.get("requiredCustomerInputs") == required_roi_inputs, str(roi.get("requiredCustomerInputs")))\n    roi_dnp = roi.get("doesNotProve") if isinstance(roi.get("doesNotProve"), list) else []\n    for boundary in ("realized cash savings","profit","customer willingness to pay","human usefulness","production readiness"):\n        check(f"roi_does_not_prove:{boundary}", boundary in roi_dnp, str(roi_dnp))\n    check("roi_projection_rule_fail_closed", "INPUT_REQUIRED_NO_ESTIMATE" in str(roi.get("projectionRule")) and "financialEstimate remains null" in str(roi.get("projectionRule")), str(roi.get("projectionRule")))\n    check("roi_derivation_rule_bounded", "observed time events" in str(roi.get("derivationRule")) and "loaded hourly cost" in str(roi.get("derivationRule")), str(roi.get("derivationRule")))\n\n'''
+          verifier_path.write_text(verifier.replace(anchor,block+anchor,1),encoding='utf-8')
+
+          contract=contract_path.read_text(encoding='utf-8')
+          if '## ROI P5 projection contract\n' in contract: raise SystemExit('P5_CONTRACT_BLOCK_ALREADY_PRESENT')
+          anchor2='## Browser/runtime authority gate\n'
+          if anchor2 not in contract: raise SystemExit('P5_CONTRACT_ANCHOR_MISSING')
+          section='''## ROI P5 projection contract\n\nP5 is a read-only projection adapter over the existing Code Atlas ROI owner. It does not add a second ROI engine, estimator, billing owner, pricing engine or customer-measurement store.\n\nFresh P5 authority and mutation authorization:\n\n- exact base: `main@a0b8eae999534e142b1c8543ecc736b337bc2781` / tree `5a7d1ea5e855fa9c4daeda0bb6969a48ec33e9c0`\n- Authority Mesh run: `32937035273`\n- Authority Mesh artifact: `9595200361`\n- Authority Mesh artifact digest: `sha256:ff012780b7a2c918fb6c0394be59ab6487386c7f019f71f6557f492ba47bdd00`\n- composed artifact SHA-256: `5fda334ae7090e2e317b0825df35a8dd1bc7fa508e3148816b3f93e2f7abcd7d`\n- request digest: `d2a53aefc7070818aa11fc6558f96c804dd2724a78070712bde3f91eef1f5f2d`\n- result: `PASS_COMPOSED_AUTHORITY_MESH`, `2/2` lanes, `100%` required authority coverage, `0` blockers\n- mutation-gate run: `32937269829`\n- mutation-gate artifact: `9595257808`\n- mutation-gate artifact digest: `sha256:bd678978ff8b62f4fa6fb744f5bd60ae7aa0f17c6b9a033b2e3ecfd4b5aa6c4b`\n\nCanonical raw ROI instrumentation remains owned by `tools/code-atlas/src/code_atlas/change_intelligence/roi.py` and is reused as-is. The owner supports raw observed metrics and allows a derived financial estimate only when compatible observed time events, an explicit non-negative loaded hourly cost and an explicit assumption label are supplied. The derived estimate explicitly does not prove realized cash savings, profit or customer willingness to pay.\n\nNo real customer baseline values or observed customer ROI events are present in this P5 source projection. Therefore the only admissible state is `INPUT_REQUIRED_NO_ESTIMATE` with `customerInputsPresent=false`, `estimateAllowed=false`, `observedEventsProjected=[]` and `financialEstimate=null`. Existing commercial price references remain commercial hypotheses or terms and are never treated as measured customer benefit.\n\nP5 does not prove realized savings, profit, willingness to pay, human usefulness, production readiness, hosted multi-tenant readiness or enterprise readiness. Real customer baselines and observed events are the next ROI evidence gate. The external human-usefulness and independent-agent gates remain separate and cannot be substituted by this projection.\n\n'''
+          contract_path.write_text(contract.replace(anchor2,section+anchor2,1),encoding='utf-8')
+          PY
+
+      - name: Remove temporary finalizers
+        shell: bash
+        run: rm .github/workflows/ca-cloud-p5-finalize-r3.yml .github/workflows/ca-cloud-p5-finalize-r3b.yml
+
+      - name: Assert exact uncommitted P5 scope NUL-safe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+          expected={
+            '.github/workflows/ca-cloud-p5-finalize-r3.yml',
+            '.github/workflows/ca-cloud-p5-finalize-r3b.yml',
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json',
+            'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md',
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py'}
+          raw=subprocess.check_output(['git','status','--porcelain=v1','-z'])
+          chunks=[x for x in raw.split(b'\0') if x]
+          actual={x[3:].decode() for x in chunks}
+          print('workingDelta=',sorted(actual))
+          if actual != expected: raise SystemExit(f'WORKING_DELTA_MISMATCH:{sorted(actual)}')
+          PY
+
+      - name: Commit P5 before diff-aware verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat(ca): project fail-closed customer-input ROI'
+
+      - name: Run final P5 source verifier and exact final diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
+          python apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py
+          python - <<'PY'
+          import subprocess
+          expected={
+            'apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json',
+            'apps/terminal-de-venta-system/docs/productization/PRISMA_CHANGE_INTELLIGENCE_CLOUD_CENTER_VERTICAL_CONTRACT.md',
+            'apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py'}
+          raw=subprocess.check_output(['git','diff','--name-only','-z','a0b8eae999534e142b1c8543ecc736b337bc2781...HEAD'])
+          actual={x.decode() for x in raw.split(b'\0') if x}
+          print('finalDelta=',sorted(actual))
+          if actual != expected: raise SystemExit(f'FINAL_DELTA_MISMATCH:{sorted(actual)}')
+          PY
+
+      - name: Push validated P5 head
+        shell: bash
+        run: git push origin HEAD:feature/ca-cloud-p5-roi-r3-2508
