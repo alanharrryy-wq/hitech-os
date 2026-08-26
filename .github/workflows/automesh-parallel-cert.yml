@@ -70,18 +70,32 @@ jobs:
             "schemaVersion":"v2",
             "profile":"tablet-sync-wave2-final-close-2508-r4",
             "expectedHead":head,
-            "tasks":[{
-              "id":"tablet-sync-wave2-canonical-close",
-              "surface":"tablet",
-              "intent":"CERTIFY",
-              "domain":"governance",
-              "task":"Canonically close Tablet Sync WAVE2 after merged product PR #377 and successful isolated postmerge runtime evidence. Current main already contains the canonical PARALLEL_WORK_RULE_20260825 plus unrelated Mobile/Change Assurance governance records in Factory Ledger files. Re-read the fresh JSONs and preserve every unrelated parallel record. Reconcile only capability tablet.sync.runtime_truth and its corresponding do-not-rebuild, registration and evidence records. Update exactly four canonical Factory Ledger JSONs. Preserve DONE / RUNTIME_VERIFIED / doNotRebuild=true and PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN. Next gate is final Tablet ScreensQA, then distribution/release readiness, then runtime data-custody/egress certification. No product/runtime/DB/Prisma/generated CSS/RIFAT/transport mutation and no hosted-production claim.",
-              "requiredAuthorities":ledger + tablet + [manual],
-              "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/tablet/app/components/sync","apps/terminal-de-venta-system/products/tablet/app/src/server","apps/terminal-de-venta-system/docs/ops"],
-              "requiredCapabilities":["tablet.sync.runtime_truth"],
-              "minimumCoverage":100,
-              "failOnMissingAuthority":True
-            }]
+            "tasks":[
+              {
+                "id":"tablet-sync-wave2-canonical-close",
+                "surface":"tablet",
+                "intent":"CERTIFY",
+                "domain":"governance",
+                "task":"Canonically close Tablet Sync WAVE2 after merged product PR #377 and successful isolated postmerge runtime evidence. Current main already contains the canonical PARALLEL_WORK_RULE_20260825 plus unrelated Mobile and Change Assurance governance records in Factory Ledger files. Re-read the fresh JSONs and preserve every unrelated parallel record. Reconcile only capability tablet.sync.runtime_truth and its corresponding do-not-rebuild, registration and evidence records. Update exactly four canonical Factory Ledger JSONs. Preserve DONE / RUNTIME_VERIFIED / doNotRebuild=true and PASS_TABLET_SYNC_WAVE2_POSTMERGE_RUNTIME_NO_FAKE_GREEN. Next gate is final Tablet ScreensQA, then distribution/release readiness, then runtime data-custody/egress certification. No product/runtime/DB/Prisma/generated CSS/RIFAT/transport mutation and no hosted-production claim.",
+                "requiredAuthorities":ledger + tablet + [manual],
+                "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/products/tablet/app/components/sync","apps/terminal-de-venta-system/products/tablet/app/src/server","apps/terminal-de-venta-system/docs/ops"],
+                "requiredCapabilities":["tablet.sync.runtime_truth"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              },
+              {
+                "id":"prisma-parallel-work-rule-readonly-cert",
+                "surface":"governance",
+                "intent":"CERTIFY",
+                "domain":"tooling",
+                "task":"Read-only certify that PARALLEL_WORK_RULE_20260825 is canonical in the PRISMA Field Manual and governs this closure: distinguish PRODUCT_TARGET, EVIDENCE_BASE and CANONICAL_HEAD; allow unrelated parallel work; require fresh blob/SHA reread and semantic reconciliation for same-file overlap; preserve unrelated records; fail closed on unresolved overlap. No documentation, product, runtime or Factory Ledger mutation in this lane.",
+                "requiredAuthorities":ledger + [manual],
+                "requiredDirectories":["PRISMA Factory Ledger","apps/terminal-de-venta-system/docs/ops"],
+                "requiredCapabilities":["tablet.sync.runtime_truth"],
+                "minimumCoverage":100,
+                "failOnMissingAuthority":True
+              }
+            ]
           }
           with open(sys.argv[1],"w",encoding="utf-8") as f:
             json.dump(request,f,ensure_ascii=False,indent=2); f.write("\n")
@@ -94,7 +108,7 @@ jobs:
           pre="$RUNNER_TEMP/w2c-pre"; par="$RUNNER_TEMP/w2c-par"; comp="$RUNNER_TEMP/w2c-comp/payload"
           mkdir -p "$pre" "$par" "$comp"
           python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/wave2-close.request.json" --out "$pre"
-          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 1 --workers 18 --shards 54 --max-files 140 --max-mb 45
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54 --max-files 140 --max-mb 45
           python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/wave2-close.request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/w2c-compose.txt"
           grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/w2c-compose.txt"
           test -f "$RUNNER_TEMP/w2c-comp/prisma-automesh-composed-result.zip"
