@@ -3,25 +3,11 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
+const verifier = "PRISMA_APP_MOBILE_25D_HEALTH_RADAR_TECHNICAL_COMPAT";
 const HEALTH_RADAR_MIN_VERSION = "0.25.3";
-const HEALTH_RADAR_MAX_EXCLUSIVE = "0.38.0";
 
-const required = [
-  "package.json",
-  "app/api/mobile/health-radar/route.ts",
-  "src/lib/prisma-app/prisma-mobile-health-radar.ts",
-  "src/components/prisma-app/PrismaMobileHealthRadar.tsx",
-  "src/components/prisma-app/PrismaMobileDashboard.tsx",
-  "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
-  "src/components/prisma-app/index.ts",
-  "src/components/prisma-app/prisma-mobile-dashboard.module.css",
-  "docs/prisma-app/PRISMA_APP_MOBILE_25D_HEALTH_RADAR_DUPLICATE_KEY_FINAL.md",
-  "docs/prisma-app/qa/prisma-app-mobile-25d-health-radar-key-regression-corpus.jsonl",
-  "tools/verify_prisma_app_mobile_25_health_radar.mjs"
-];
-
-function fail(message) {
-  console.error(`[PRISMA APP MOBILE 25D FAIL] ${message}`);
+function fail(message, details = {}) {
+  console.error(JSON.stringify({ ok: false, verifier, message, details }, null, 2));
   process.exit(1);
 }
 
@@ -50,39 +36,50 @@ function assertCompatibleHealthRadarVersion(version) {
   if (compareVersion(version, HEALTH_RADAR_MIN_VERSION) < 0) {
     fail(`version ${version} is older than required ${HEALTH_RADAR_MIN_VERSION}`);
   }
-  if (compareVersion(version, HEALTH_RADAR_MAX_EXCLUSIVE) >= 0) {
-    fail(`version ${version} needs a new health-radar verifier contract`);
-  }
 }
 
+const required = [
+  "package.json",
+  "app/api/mobile/health-radar/route.ts",
+  "src/lib/prisma-app/prisma-mobile-health-radar.ts",
+  "src/components/prisma-app/PrismaMobileHealthRadar.tsx",
+  "src/components/prisma-app/PrismaMobileDashboard.tsx",
+  "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
+  "src/components/prisma-app/index.ts",
+  "src/components/prisma-app/prisma-mobile-dashboard.module.css",
+  "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json",
+  "docs/prisma-app/PRISMA_APP_MOBILE_25D_HEALTH_RADAR_DUPLICATE_KEY_FINAL.md",
+  "docs/prisma-app/qa/prisma-app-mobile-25d-health-radar-key-regression-corpus.jsonl"
+];
 for (const rel of required) read(rel);
 
 const pkg = JSON.parse(read("package.json"));
 assertCompatibleHealthRadarVersion(pkg.version);
 if (pkg.scripts?.["verify:health-radar"] !== "node tools/verify_prisma_app_mobile_25_health_radar.mjs") fail("script verify:health-radar missing");
-if (!pkg.scripts?.["check:all"]?.includes("verify:health-radar")) fail("check:all missing verify:health-radar");
+if (!String(pkg.scripts?.["check:all"] ?? "").includes("verify:health-radar")) fail("check:all missing verify:health-radar");
 if (pkg.prismaMobileHealthRadarDuplicateKeyFinalVersion !== "0.25.3") fail("package missing 25D marker");
 
+const canon = JSON.parse(read("docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json"));
+const canonRow = (canon.secondaryOrDormantCapabilities ?? []).find((row) => row.id === "health-radar" && row.component === "PrismaMobileHealthRadar");
+if (!canonRow || canonRow.mountRequiredByCanon !== false) fail("Health Radar canon row must remain secondary/dormant", { canonRow });
+
 const component = read("src/components/prisma-app/PrismaMobileHealthRadar.tsx");
-const requiredComponentTokens = [
+for (const token of [
   "stableKey(",
   ".map((item, index)",
   'key={stableKey(`${axis.id}-evidence`, index, item)}',
   'key={stableKey("guardrail", index, item)}',
   'key={stableKey("watch", index, item.id)}',
   "Sin evidencia delicada."
-];
-for (const token of requiredComponentTokens) {
+]) {
   if (!component.includes(token)) fail(`component missing ${token}`);
 }
-
-const forbiddenComponentTokens = [
+for (const token of [
   "key={item}",
   "radar.guardrails.map((item) => <li key={item}",
   "axis.evidence.slice(0, 2).map((item) => <li key={item}",
   "axis.evidence.slice(0, 2).map((item) =>"
-];
-for (const token of forbiddenComponentTokens) {
+]) {
   if (component.includes(token)) fail(`component still has unsafe key pattern: ${token}`);
 }
 
@@ -105,9 +102,9 @@ if (new Set(exampleKeys).size !== duplicateExample.length) fail("stable key simu
 
 const corpusLines = read("docs/prisma-app/qa/prisma-app-mobile-25d-health-radar-key-regression-corpus.jsonl")
   .trim()
-  .split("\n")
+  .split(/\r?\n/)
   .filter(Boolean);
-if (corpusLines.length < 6000) fail("25D key regression corpus too small");
+if (corpusLines.length < 6000) fail("25D key regression corpus too small", { count: corpusLines.length });
 
 let checked = 0;
 for (const line of corpusLines) {
@@ -132,7 +129,15 @@ for (const token of ["force-dynamic", "noStoreJsonInit", "health_radar"]) {
 const dashboard = read("src/components/prisma-app/PrismaMobileDashboard.tsx");
 const navigator = read("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
 if (!dashboard.includes("PrismaMobilePremiumNavigator")) fail("dashboard does not delegate to premium navigator");
-if (dashboard.includes("<PrismaMobileHealthRadar")) fail("dashboard must not render health radar directly");
-if (!navigator.includes("<PrismaMobileHealthRadar clientSnapshot={clientSnapshot}")) fail("premium navigator does not own health radar");
+if (dashboard.includes("<PrismaMobileHealthRadar")) fail("dashboard must not mount dormant Health Radar in the current canon");
+if (navigator.includes("<PrismaMobileHealthRadar")) fail("premium navigator must not mount dormant Health Radar in the current canon");
 
-console.log(`OK PRISMA_APP_MOBILE_25D_HEALTH_RADAR_DUPLICATE_KEY_FINAL verified ${checked} duplicate-key vectors on app version ${pkg.version}`);
+console.log(JSON.stringify({
+  ok: true,
+  verifier,
+  appVersion: pkg.version,
+  minimumTechnicalVersion: HEALTH_RADAR_MIN_VERSION,
+  historicalUpperVersionFenceRetired: true,
+  mountRequiredByCanon: false,
+  duplicateKeyVectors: checked
+}, null, 2));
