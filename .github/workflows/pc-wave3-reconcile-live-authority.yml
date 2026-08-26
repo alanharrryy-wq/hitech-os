@@ -1,0 +1,170 @@
+name: PC Wave 3 Live Head Reconciliation Authority
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave3-reconcile-live-authority.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  WAVE3_HEAD: d04cd790c684839fd5efdfe309e1841ad1969c05
+  MERGE_BASE: 28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab
+
+jobs:
+  authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout carrier with full history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Capture exact canonical main and current governance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          canonical="$(git rev-parse origin/main)"
+          echo "CANONICAL_HEAD=$canonical" >> "$GITHUB_ENV"
+          git checkout --detach "$canonical"
+          test "$(git rev-parse HEAD)" = "$canonical"
+          git cat-file -e "$WAVE3_HEAD^{commit}"
+          git cat-file -e "$MERGE_BASE^{commit}"
+          test -f "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+          grep -Fq 'PARALLEL_WORK_RULE_20260825' "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md"
+          test -f "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py --self-test
+          test -z "$(git status --porcelain)"
+          echo "Captured canonical main: $canonical"
+
+      - name: Prove exact Wave 3 scope and zero parallel overlap
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/reconcile"
+          git diff --name-only "$MERGE_BASE..$WAVE3_HEAD" | sort -u > "$RUNNER_TEMP/reconcile/wave3.paths"
+          git diff --name-only "$MERGE_BASE..$CANONICAL_HEAD" | sort -u > "$RUNNER_TEMP/reconcile/main.paths"
+          comm -12 "$RUNNER_TEMP/reconcile/wave3.paths" "$RUNNER_TEMP/reconcile/main.paths" > "$RUNNER_TEMP/reconcile/overlap.paths"
+          python - "$RUNNER_TEMP/reconcile/wave3.paths" "$RUNNER_TEMP/reconcile/main.paths" "$RUNNER_TEMP/reconcile/overlap.paths" "$RUNNER_TEMP/reconcile/PARALLEL_OVERLAP_REPORT.json" <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          wave3=[x for x in Path(sys.argv[1]).read_text(encoding='utf-8').splitlines() if x]
+          main=[x for x in Path(sys.argv[2]).read_text(encoding='utf-8').splitlines() if x]
+          overlap=[x for x in Path(sys.argv[3]).read_text(encoding='utf-8').splitlines() if x]
+          expected={
+            '.github/workflows/pc-wave3-certification.yml', '.github/workflows/pc-wave3-diagnostic.yml',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/catalog/products/[productId]/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/catalog/products/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/counts/records/[countId]/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/counts/records/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/devices/claims/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/inventory/adjustments/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/settings/business/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/suppliers/records/[supplierId]/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/suppliers/records/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sync/export-pc-to-tablet/route.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/business-settings.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-mutations.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/device-claims.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/inventory-mutations.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/supplier-records.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/wave3-mutation-audit.ts',
+            'apps/terminal-de-venta-system/products/pc/app/tools/run_pc_wave3_ci.py',
+            'apps/terminal-de-venta-system/products/pc/app/tools/visual/verify_pc_enterprise_mutations_wave3_runtime.mjs'
+          }
+          report={'schemaVersion':'prisma.pc-wave3.live-reconciliation.v1','canonicalHead':os.environ['CANONICAL_HEAD'],'wave3Head':os.environ['WAVE3_HEAD'],'mergeBase':os.environ['MERGE_BASE'],'wave3PathCount':len(wave3),'mainParallelPathCount':len(main),'unexpectedWave3Paths':sorted(set(wave3)-expected),'missingWave3Paths':sorted(expected-set(wave3)),'overlap':overlap,'pass':set(wave3)==expected and not overlap}
+          Path(sys.argv[4]).write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(report,indent=2))
+          if not report['pass']: raise SystemExit('PC_WAVE3_LIVE_RECONCILIATION_SCOPE_OR_OVERLAP_FAIL')
+          PY
+
+      - name: Build task exact authority request
+        shell: bash
+        run: |
+          python - "$RUNNER_TEMP/request.json" <<'PY'
+          import json,os,sys
+          head=os.environ['CANONICAL_HEAD']
+          core=['PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json','PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json','PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json','PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json','PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md','PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py','apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md','apps/terminal-de-venta-system/products/pc/app/src/server/services/pc-command-center.service.ts','apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-delta-export.service.ts']
+          caps=['pc.quality.customer_experience_wave2','data.canonical_schema_reproducibility','pc.entitlement.surface_projection']
+          task=f'Reconcile certified PC Wave 3 head {os.environ["WAVE3_HEAD"]} with exact canonical main {head} after proving zero path overlap. Preserve all 20 Wave 3 files byte-for-byte. No product behavior/schema/licensing/UI/live DB/deploy mutation. Rerun full Wave 3 certification after reconciliation.'
+          lanes=[{'id':'parallel-history-reconciliation','surface':'pc','intent':'FIX','domain':'tooling','task':task,'requiredAuthorities':core,'requiredDirectories':['apps/terminal-de-venta-system/products/pc/app'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True},{'id':'wave3-runtime-preservation','surface':'pc','intent':'AUDIT','domain':'runtime','task':task,'requiredAuthorities':core,'requiredDirectories':['apps/terminal-de-venta-system/products/pc/app/app','apps/terminal-de-venta-system/products/pc/app/src/server','apps/terminal-de-venta-system/products/pc/app/tools'],'requiredCapabilities':caps,'minimumCoverage':100,'failOnMissingAuthority':True}]
+          with open(sys.argv[1],'w',encoding='utf-8') as f: json.dump({'schemaVersion':'v2','profile':'pc-wave3-live-reconcile-v1','expectedHead':head,'tasks':lanes},f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+
+      - name: Compose fresh Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          pre="$RUNNER_TEMP/pre"; par="$RUNNER_TEMP/par"; comp="$RUNNER_TEMP/comp/payload"; mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 2 --workers 18 --shards 54 --max-files 180 --max-mb 55
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/compose.txt"
+          test -f "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip"
+          test -z "$(git status --porcelain)"
+
+      - name: Generate task exact Layer Map
+        shell: bash
+        run: |
+          python - "$RUNNER_TEMP/reconcile/PARALLEL_OVERLAP_REPORT.json" "$RUNNER_TEMP/PC_WAVE3_LIVE_RECONCILE_LAYER_MAP.json" <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          overlap=json.load(open(sys.argv[1],encoding='utf-8'))
+          out={'schemaVersion':'prisma.pc-wave3.live-reconcile.layer-map.v1','canonicalHead':os.environ['CANONICAL_HEAD'],'wave3Head':os.environ['WAVE3_HEAD'],'surface':'pc','visualMutationAuthorized':False,'allowedMutationLayers':['git_history_reconciliation_only'],'preservedProductPathCount':overlap['wave3PathCount'],'pathOverlap':overlap['overlap'],'excludedSurfaces':['tablet','mobile','chart_lab','shared_ui','control_center'],'unresolved':[],'rules':['preserve all 20 Wave 3 blobs byte-for-byte','incorporate canonical main history only','rerun full certification','no product source mutation during reconciliation','no live/customer DB mutation','no visual mutation']}
+          Path(sys.argv[2]).write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8'); print(json.dumps(out,indent=2))
+          PY
+
+      - name: Universal Factory Ledger mutation authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/factory.request.json" <<'PY'
+          import hashlib,json,os,sys
+          report=json.load(open(sys.argv[1],encoding='utf-8')); pre=json.load(open(sys.argv[2],encoding='utf-8')); coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in pre['lanes'])
+          mesh={'status':report['status'],'repoHead':report['repoHead'],'requiredAuthorityCoveragePct':coverage,'blockers':len(pre.get('blockers') or []),'requestDigest':report['requestDigest'],'artifactDigest':hashlib.sha256(open(sys.argv[3],'rb').read()).hexdigest(),'layerMapPresent':True}
+          req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':os.environ['CANONICAL_HEAD'],'task':'Reconcile certified PC Wave 3 branch history with exact current canonical main after verified zero path overlap, preserving all 20 Wave 3 blobs byte-for-byte and rerunning certification before merge.','capabilities':[{'id':'pc.quality.customer_experience_wave2','requestedAction':'ADVANCE'},{'id':'data.canonical_schema_reproducibility','requestedAction':'ADVANCE'},{'id':'pc.entitlement.surface_projection','requestedAction':'ADVANCE'}],'authorityMesh':mesh,'visualMutation':False}
+          with open(sys.argv[4],'w',encoding='utf-8') as f: json.dump(req,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/factory.request.json" | tee "$RUNNER_TEMP/gate.json"
+          python - "$RUNNER_TEMP/gate.json" <<'PY'
+          import json,os,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8')); assert d.get('result')=='PASS_ANTI_REWORK_GATE',d; assert d.get('errors')==[],d; assert d.get('repoHead')==os.environ['CANONICAL_HEAD'],d
+          PY
+
+      - name: Recheck canonical main did not move
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          current="$(git rev-parse origin/main)"
+          test "$current" = "$CANONICAL_HEAD"
+          echo "PASS_PC_WAVE3_LIVE_RECONCILIATION_AUTHORITY head=$CANONICAL_HEAD"
+
+      - name: Stage evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/pc-wave3-live-reconcile-authority"; mkdir -p "$out"
+          printf '%s\n' "${CANONICAL_HEAD:-UNSET}" > "$out/CANONICAL_HEAD.txt"
+          for p in "$RUNNER_TEMP/request.json" "$RUNNER_TEMP/pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/comp/payload/MANIFEST.json" "$RUNNER_TEMP/comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/PC_WAVE3_LIVE_RECONCILE_LAYER_MAP.json" "$RUNNER_TEMP/factory.request.json" "$RUNNER_TEMP/gate.json" "$RUNNER_TEMP/compose.txt" "$RUNNER_TEMP/reconcile/PARALLEL_OVERLAP_REPORT.json"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+
+      - name: Upload authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave3-live-reconcile-authority
+          path: ${{ runner.temp }}/pc-wave3-live-reconcile-authority/**
+          if-no-files-found: error
+          retention-days: 14
