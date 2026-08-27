@@ -74,3 +74,9 @@ pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:dev
 Open `http://localhost:3000`.
 
 Cloudflare is not configured for Chart Lab yet. Treat it as a local workshop unless a separate public-safe preview route is explicitly added.
+
+## Source code license
+
+Current HITECH-authored PRISMA / HITECH OS source is governed by the proprietary root [`LICENSE`](./LICENSE), subject to the historical Apache 2.0 boundary and third-party license exceptions documented in [`PRISMA_SOURCE_CODE_LICENSING_POLICY.md`](./apps/terminal-de-venta-system/docs/productization/PRISMA_SOURCE_CODE_LICENSING_POLICY.md).
+
+The historical public baseline through commit `615d6732fd733696a60bb549bc88b23c0b573de4` was previously made available under Apache License 2.0. The proprietary cutover does not revoke rights validly granted for those historical versions. Third-party components remain governed by their respective licenses and notices.
