@@ -142,6 +142,25 @@ async function evalv(expression) {
   return result.result?.value;
 }
 
+async function diagnostic(label) {
+  const state = await evalv(`(() => ({
+    label:${JSON.stringify('runtime')},
+    url:location.href,
+    readyState:document.readyState,
+    title:document.title,
+    body:(document.body?.innerText||'').slice(0,5000),
+    inputs:[...document.querySelectorAll('input')].map(x=>({type:x.type,placeholder:x.placeholder,value:x.value,disabled:x.disabled})),
+    productCards:document.querySelectorAll('[data-prisma-component="ProductCard"]').length,
+    ticketRows:document.querySelectorAll('[data-prisma-component="CartItemRow"]').length,
+    checkout:Boolean(document.querySelector('[data-prisma-component="CheckoutButton"]')),
+    searchBar:Boolean(document.querySelector('[data-prisma-component="SearchBar"]'))
+  }))()`);
+  fs.writeFileSync(path.join(out, `diagnostic-${label}.json`), JSON.stringify(state, null, 2) + '\n');
+  const screenshot = await cdp.send('Page.captureScreenshot', { format:'png', fromSurface:true, captureBeyondViewport:false });
+  fs.writeFileSync(path.join(shots, `00-diagnostic-${label}.png`), Buffer.from(screenshot.data, 'base64'));
+  return state;
+}
+
 async function waitFor(predicate, label, timeout = 45000) {
   const started = Date.now();
   while (Date.now() - started < timeout) {
@@ -149,7 +168,8 @@ async function waitFor(predicate, label, timeout = 45000) {
     if (value) return value;
     await sleep(250);
   }
-  throw new Error(`PREVIEW_WAIT_TIMEOUT:${label}`);
+  const state = await diagnostic(label);
+  throw new Error(`PREVIEW_WAIT_TIMEOUT:${label}:${JSON.stringify(state)}`);
 }
 
 async function capture(name) {
@@ -177,8 +197,12 @@ async function capture(name) {
 
 await cdp.send('Page.navigate', { url: `${base}/pos?atlasfinPreview=${Date.now()}` });
 await waitFor(`(() => {
-  const t=document.body?.innerText||'';
-  return document.readyState==='complete' && t.includes('Buscar producto o escanear código') && t.includes('Ticket') && t.includes('Coca-Cola Original 600 ml') && t.includes('Cobrar');
+  const input=[...document.querySelectorAll('input')].find(x => (x.placeholder||'').toLowerCase().includes('buscar producto'));
+  return document.readyState==='complete'
+    && Boolean(document.querySelector('[data-prisma-component="SearchBar"]'))
+    && Boolean(document.querySelector('[data-prisma-component="CheckoutButton"]'))
+    && document.querySelectorAll('[data-prisma-component="ProductCard"]').length >= 1
+    && Boolean(input);
 })()`, 'initial-pos');
 await sleep(900);
 
@@ -191,14 +215,15 @@ const searchApplied = await evalv(`(() => {
   const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value')?.set;
   if(!setter) return false;
   setter.call(input,'coca');
-  input.dispatchEvent(new Event('input',{bubbles:true}));
+  input.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText',data:'coca'}));
   input.dispatchEvent(new Event('change',{bubbles:true}));
   return true;
 })()`);
 if (!searchApplied) throw new Error('PREVIEW_SEARCH_INPUT_NOT_FOUND');
 await waitFor(`(() => {
   const t=document.body?.innerText||'';
-  return t.includes('Coca-Cola Original 600 ml') && document.querySelectorAll('[data-prisma-component="ProductCard"]').length===1;
+  const input=[...document.querySelectorAll('input')].find(x => (x.placeholder||'').includes('Buscar producto'));
+  return input?.value==='coca' && t.includes('Coca-Cola Original 600 ml') && document.querySelectorAll('[data-prisma-component="ProductCard"]').length===1;
 })()`, 'search-coca');
 await sleep(650);
 states.push(await capture('02-pos-search-coca.png'));
@@ -206,7 +231,7 @@ states.push(await capture('02-pos-search-coca.png'));
 const categoryReady = await evalv(`(() => {
   const input=[...document.querySelectorAll('input')].find(x => (x.placeholder||'').includes('Buscar producto'));
   const setter=input && Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value')?.set;
-  if(input && setter){ setter.call(input,''); input.dispatchEvent(new Event('input',{bubbles:true})); input.dispatchEvent(new Event('change',{bubbles:true})); }
+  if(input && setter){ setter.call(input,''); input.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'deleteContentBackward',data:null})); input.dispatchEvent(new Event('change',{bubbles:true})); }
   return true;
 })()`);
 if (!categoryReady) throw new Error('PREVIEW_CLEAR_SEARCH_FAILED');
@@ -235,7 +260,7 @@ if (runtimeErrors.length || consoleErrors.length || networkErrors.length) {
 }
 
 const report = {
-  schemaVersion:'tablet.pos.atlasfin.preview.3states.v1',
+  schemaVersion:'tablet.pos.atlasfin.preview.3states.v2',
   route:'/pos',
   viewport:{ width:1365, height:900 },
   productionData:false,
