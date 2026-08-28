@@ -1,0 +1,200 @@
+name: Mobile Remove MultiContext Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mobile-remove-multicontext-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  TARGET_HEAD: 630f025e3b41ac932a10ffab2f5992817c3037e5
+
+jobs:
+  mutation-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact main authority head
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_HEAD }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify exact head and governance tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_HEAD"
+          python -m py_compile \
+            "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py \
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+          test -z "$(git status --porcelain)"
+
+      - name: Build exact removal Authority request
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/mobile-remove-multicontext.request.json" <<'PY'
+          import json, os, sys
+          head = os.environ['TARGET_HEAD']
+          app = 'apps/terminal-de-venta-system/'
+          mobile = app + 'products/mobile/app/'
+          ledger = 'PRISMA Factory Ledger/'
+          common = [
+              ledger + 'PRISMA_FACTORY_LEDGER.json',
+              ledger + 'PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
+              ledger + 'tools/verify_prisma_anti_rework_gate.py',
+              app + 'docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+              app + 'quality/contracts/no-fake-green.contract.json',
+              mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md',
+              mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json',
+              mobile + 'docs/prisma-app/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md',
+              mobile + 'tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs',
+          ]
+          tasks = [
+              {
+                  'id': 'mobile-canon-remove-multicontext',
+                  'surface': 'mobile',
+                  'intent': 'AUDIT',
+                  'domain': 'governance',
+                  'task': 'Authorize removal of MultiContextSwitcher completely from the normative PRISMA Mobile product concept. Canon and contract must no longer define, preserve, suggest, require, or replace any global context switcher, branch selector, source selector, readiness selector, Todas las sucursales option, or automatic equivalent. Preserve historical evidence only as historical and non-authoritative. Do not modify Mobile product source/runtime/API/PWA/data/sync/security/licensing/CSS/visual behavior.',
+                  'requiredAuthorities': common,
+                  'requiredCapabilities': ['mobile.interface_specification_canon'],
+                  'minimumCoverage': 100,
+                  'failOnMissingAuthority': True,
+              },
+              {
+                  'id': 'mobile-verifier-retire-multicontext',
+                  'surface': 'governance',
+                  'intent': 'AUDIT',
+                  'domain': 'governance',
+                  'task': 'Authorize bounded docs/tooling reconciliation so verifier and compatibility paths stop treating MultiContextSwitcher as a current or preserved Mobile product capability. Historical archive may remain immutable evidence. Do not require component existence or mounting and do not touch Mobile source/runtime.',
+                  'requiredAuthorities': common,
+                  'requiredCapabilities': ['mobile.interface_specification_canon'],
+                  'minimumCoverage': 100,
+                  'failOnMissingAuthority': True,
+              },
+          ]
+          payload = {'schemaVersion':'v2','profile':'mobile-remove-multicontext-2708-v1','expectedHead':head,'tasks':tasks}
+          with open(sys.argv[1], 'w', encoding='utf-8') as fh:
+              json.dump(payload, fh, ensure_ascii=False, indent=2)
+              fh.write('\n')
+          PY
+
+      - name: Run exact-task Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/mobile-remove-multicontext.request.json"
+          pre="$RUNNER_TEMP/mobile-remove-multicontext-pre"
+          par="$RUNNER_TEMP/mobile-remove-multicontext-par"
+          comp="$RUNNER_TEMP/mobile-remove-multicontext-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --out-root "$par" \
+            --task-spec "$pre/legacy_tasks.json" \
+            --parallel 2 \
+            --workers 18 \
+            --shards 54 \
+            --max-files 160 \
+            --max-mb 48
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$request" \
+            --preflight "$pre" \
+            --mesh-result "$par" \
+            --out "$comp" | tee "$RUNNER_TEMP/mobile-remove-multicontext-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/mobile-remove-multicontext-compose.txt"
+          test -f "$RUNNER_TEMP/mobile-remove-multicontext-comp/prisma-automesh-composed-result.zip"
+
+      - name: Run Factory Ledger MUTATION gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          factory_request="$RUNNER_TEMP/mobile-remove-multicontext-mutation.request.json"
+          decision="$RUNNER_TEMP/mobile-remove-multicontext-mutation.decision.json"
+          python - \
+            "$RUNNER_TEMP/mobile-remove-multicontext-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/mobile-remove-multicontext-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-remove-multicontext-comp/prisma-automesh-composed-result.zip" \
+            "$factory_request" <<'PY'
+          import hashlib, json, os, sys
+          report_path, preflight_path, artifact_path, out_path = sys.argv[1:]
+          report = json.load(open(report_path, encoding='utf-8'))
+          pre = json.load(open(preflight_path, encoding='utf-8'))
+          coverage = min(float((lane.get('coverage') or {}).get('resolvedPercent', 0)) for lane in pre['lanes'])
+          artifact_digest = hashlib.sha256(open(artifact_path, 'rb').read()).hexdigest()
+          request = {
+              'schemaVersion': 'prisma.factory-ledger.anti-rework-gate.v1',
+              'mode': 'MUTATION',
+              'expectedHead': os.environ['TARGET_HEAD'],
+              'task': 'Advance mobile.interface_specification_canon by removing MultiContextSwitcher completely from normative Mobile product intent and reconciling only bounded docs/tooling references. No Mobile product source/runtime/API/PWA/data/sync/security/licensing/CSS/visual mutation.',
+              'capabilities': [{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],
+              'authorityMesh': {
+                  'status': report['status'],
+                  'repoHead': report['repoHead'],
+                  'requiredAuthorityCoveragePct': coverage,
+                  'blockers': len(pre.get('blockers') or []),
+                  'requestDigest': report['requestDigest'],
+                  'artifactDigest': artifact_digest,
+                  'layerMapPresent': False,
+              },
+              'visualMutation': False,
+          }
+          with open(out_path, 'w', encoding='utf-8') as fh:
+              json.dump(request, fh, ensure_ascii=False, indent=2)
+              fh.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$factory_request" | tee "$decision"
+          python - "$decision" <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1], encoding='utf-8'))
+          if data.get('result') != 'PASS_ANTI_REWORK_GATE' or data.get('errors') != []:
+              raise SystemExit('FACTORY_GATE_NOT_CLEAN_PASS')
+          print('PASS_ANTI_REWORK_GATE')
+          PY
+
+      - name: Stage gate evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/mobile-remove-multicontext-evidence"
+          mkdir -p "$out"
+          for path in \
+            "$RUNNER_TEMP/mobile-remove-multicontext.request.json" \
+            "$RUNNER_TEMP/mobile-remove-multicontext-pre/PREFLIGHT_MANIFEST.json" \
+            "$RUNNER_TEMP/mobile-remove-multicontext-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" \
+            "$RUNNER_TEMP/mobile-remove-multicontext-comp/prisma-automesh-composed-result.zip" \
+            "$RUNNER_TEMP/mobile-remove-multicontext-mutation.request.json" \
+            "$RUNNER_TEMP/mobile-remove-multicontext-mutation.decision.json"; do
+            if [ -f "$path" ]; then cp "$path" "$out/$(basename "$path")"; fi
+          done
+
+      - name: Upload gate evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-remove-multicontext-gate-evidence
+          path: ${{ runner.temp }}/mobile-remove-multicontext-evidence/**
+          if-no-files-found: error
+          retention-days: 14
