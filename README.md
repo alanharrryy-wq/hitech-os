@@ -1,76 +1,235 @@
-# HITECH OS 12 — Tables as Law (JSON Canon)
+<p align="center">
+  <img src="docs/brand/github/hero.svg" alt="HITECH builds PRISMA" width="100%" />
+</p>
 
-**Generated:** 2026-03-01T12:00:00 (America/Mexico_City)
+<p align="center">
+  <strong>Operational software for real businesses, governed like infrastructure.</strong><br/>
+  Commerce · Operations · Intelligence · Change Assurance
+</p>
 
-This bundle turns constitution tables into **versioned, validated, machine-executable JSON contracts**.
+<p align="center">
+  <a href="#prisma-at-a-glance">PRISMA</a> ·
+  <a href="#architecture">Architecture</a> ·
+  <a href="#change-assurance">Change Assurance</a> ·
+  <a href="#engineering-doctrine">Engineering Doctrine</a> ·
+  <a href="#quick-start">Quick Start</a>
+</p>
 
-## What's inside
-- `docs/constitution/tables/*.json` — canonical tables (source of truth)
-- `docs/constitution/tables/_schema/table_spec.schema.json` — JSON Schema that validates all tables
-- `tools/hos/constitution/validate_tables.py` — validator CLI (schema + invariants)
-- `scripts/constitution_check.ps1` — Windows wrapper (PowerShell) to run the validator
+---
 
-## Quick run
-### Python
+# HITECH OS
+
+**HITECH OS** is the engineering platform where **HITECH** builds **PRISMA**, a governed multi-surface operational system for point of sale, backoffice control, inventory, purchasing, analytics, licensing, visual governance, evidence, and software change assurance.
+
+PRISMA does not treat a screen as the source of truth. A screen is the final projection of a deeper operational model:
+
+```text
+TENANT → BUSINESS → STORE / SITE → DEVICE / SURFACE → EVENT + PROVENANCE
+       → CANONICAL PROJECTION → SURFACE PROJECTION → UI COMPONENT
+```
+
+> **No evidence. No green.**
+
+## PRISMA at a glance
+
+| System | What it does |
+|---|---|
+| **PRISMA Tablet Core** | Point of sale, catalog, checkout, stock, shifts, returns, sales and sync |
+| **PRISMA PC Backoffice** | Inventory, purchasing, receiving, sales control, audit, devices, licensing and executive operations |
+| **PRISMA Mobile** | Bounded mobile companion workflows and operational projections |
+| **PRISMA Web / Edit** | Governed web-facing and editing experiences |
+| **PRISMA Chart Lab** | Operational analytics, chart experimentation and recipe-driven visualization |
+| **PRISMA Control Center** | Local operations, diagnostics, evidence and governance workflows |
+| **Shared UI / Quality Tooling** | Cross-surface contracts, visual certainty, quality gates and governed infrastructure |
+
+Canonical route, port, owner, panel and allowed-scope truth lives in [`apps/terminal-de-venta-system/.prisma-ui/surfaces.json`](apps/terminal-de-venta-system/.prisma-ui/surfaces.json). This README intentionally avoids duplicating fast-changing runtime registries.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    TEN[Tenant] --> BIZ[Business]
+    BIZ --> STO[Store / Site]
+    STO --> DEV[Device / Surface]
+    DEV --> EVT[Event + Provenance]
+    EVT --> CAN[Canonical Projection]
+    CAN --> SURF[Surface Projection]
+    SURF --> UI[UI Component]
+
+    CAN --> TAB[Tablet]
+    CAN --> PC[PC]
+    CAN --> MOB[Mobile]
+    CAN --> WEB[Web]
+    CAN --> CHART[Chart Lab]
+    CAN --> CC[Control Center]
+
+    EVD[Authority + Evidence] --> EVT
+    EVD --> CAN
+    EVD --> SURF
+    EVD --> UI
+```
+
+This is the foundation of the **Neutral Data Center / NDC Matrix Substrate**. Neutral meaning comes first. Surface-specific representation comes later.
+
+Read the canon: [`apps/terminal-de-venta-system/docs/ndc/00_NDC_README.md`](apps/terminal-de-venta-system/docs/ndc/00_NDC_README.md)
+
+## Three pillars
+
+### 01 · Operations
+
+PRISMA connects real business workflows across multiple surfaces without collapsing their ownership boundaries. Tablet, PC, Mobile, Web, Chart Lab and Control Center may project the same canonical truth, but they remain distinct governed surfaces.
+
+### 02 · Intelligence
+
+NDC gives tenants, businesses, stores, devices, users, licenses, events, actions, evidence and canonical projections neutral identity and provenance. The objective is not “more dashboards.” It is explainable operational truth.
+
+### 03 · Change Assurance
+
+PRISMA treats software change itself as a governed operational process. Before a change is called done, the system should know the target, authority, protected boundaries, potential impact and evidence required to prove the result.
+
+## Change Assurance
+
+**PRISMA Change Assurance** is the governed change-control product built on the **Code Atlas** engine.
+
+> **Know what can change. Control what does. Prove the result.**
+
+Its six governed stages are:
+
+```text
+UNDERSTAND → RESOLVE → AUTHORIZE → OBSERVE → VERIFY → PROVE
+```
+
+It is designed to answer questions coding agents alone cannot safely answer by confidence or retrieval:
+
+- What actually exists?
+- What is the exact target?
+- What may change?
+- What must remain untouched?
+- What could be affected?
+- Which evidence is required?
+- Can this result legitimately be called complete?
+
+Canonical product contract: [`tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md`](tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md)
+
+## Factory Ledger
+
+Repository prose is not maturity truth.
+
+Capability state, evidence, next gates and do-not-rebuild rules are governed by the [`PRISMA Factory Ledger`](PRISMA%20Factory%20Ledger/PRISMA_FACTORY_LEDGER.json).
+
+If this README and the Factory Ledger disagree, **the Factory Ledger wins**.
+
+That distinction is deliberate. Source code existence does not automatically prove runtime behavior, production readiness, hosted readiness, commercial readiness or universal stack coverage.
+
+## Engineering doctrine
+
+HITECH OS favors explicit authority over optimistic inference.
+
+1. **No evidence. No green.** Missing proof stays missing.
+2. **Candidate != Authority.** Discovery does not grant permission.
+3. **Impact Radius != Authorization.** Knowing what may break does not authorize touching it.
+4. **Retrieval != Proof.** Finding a file or fact is not proof of a claim.
+5. **UNKNOWN is valid.** Unsupported certainty is worse than an explicit unknown.
+6. **Neutral scope before screen truth.** Tenant, business, store, device, event and provenance come before UI.
+7. **Surface boundaries matter.** A feature on one surface does not grant mutation authority over another.
+8. **Rollback and evidence belong with the change.** Recovery and proof are part of completion.
+9. **Secrets and customer data require explicit boundaries.** Diagnostic convenience never outranks custody.
+10. **Do not rebuild proven capability.** Anti-rework is a first-class engineering constraint.
+
+## Repository map
+
+```text
+hitech-os/
+├─ apps/
+│  ├─ terminal-de-venta-system/   # PRISMA operational product ecosystem
+│  └─ keystone/                   # visual / scene / proof tooling
+├─ packages/                      # shared packages and contracts
+├─ services/                      # service layer
+├─ tools/
+│  ├─ code-atlas/                 # PRISMA Change Assurance engine
+│  └─ ...                         # health, governance and repository tooling
+├─ prisma-html/                   # governed visual authority / UI assets
+├─ PRISMA Factory Ledger/         # capability truth, evidence and anti-rework
+├─ docs/                          # repository-level documentation
+└─ README.md
+```
+
+The repository is intentionally evidence-heavy. Contracts, validators, manifests, evidence indexes and verification tooling are part of the architecture, not paperwork added after the fact.
+
+## Quick start
+
+### Requirements
+
+```text
+Node.js  >= 20 and < 26
+pnpm     >= 9 and < 10
+```
+
+### Install
+
 ```bash
-python tools/hos/constitution/validate_tables.py --root .
+pnpm install --frozen-lockfile
 ```
 
-### PowerShell
-```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/constitution_check.ps1 -RepoRoot "F:\repos\hitech-os"
+### Core repository health
+
+```bash
+pnpm run health
+pnpm run workspace:validate
+pnpm run deps:check
 ```
 
-## Design rules (hard)
-- Every table must have: `table_id`, `version`, `status`, `authority_level`, `scope`, `columns`, `rows`, `change_policy`
-- `table_id` must start with `TBL_`
-- `version` must be semver `X.Y.Z`
-- Columns must have unique names
-- Enum columns must declare `enum_values`
-- Rows must contain only declared columns (no extras)
-- Required columns must exist in every row (unless `row_defaults` provides them)
+### Full quality gate
 
-## Tables included
-- `TBL_TOKENS_TAXONOMY`
-- `TBL_GOVERNANCE_SCALE`
-- `TBL_DASHBOARD_STRUCTURE`
-- `TBL_VRT_POLICY`
+```bash
+pnpm run quality
+```
 
-## Multi-app local run (Keystone + Operator + Forms)
+### CI-equivalent orchestration
 
-Ports:
-- Keystone: `http://127.0.0.1:3100`
-- Operator UI (`external_interaction_template`): `http://127.0.0.1:3110`
-- Public Forms (`external_interaction_forms`): `http://127.0.0.1:3200`
+```bash
+pnpm run ci
+```
 
-Commands:
-```powershell
+A passing aggregate command does **not** automatically prove every visual, runtime, deployment or commercial claim. PRISMA gates are claim-specific by design.
+
+## Selected developer entrypoints
+
+```bash
 pnpm run dev:keystone
 pnpm run dev:operator
 pnpm run dev:forms
-pnpm run dev:multi-app
+pnpm run dev:chart-lab
+
+pnpm run hos:doctor
+pnpm run hos:visual
+pnpm run hos:simulate
+pnpm run hos:hygiene
+
+pnpm run guardrails:all
+pnpm run golden:validate
 ```
 
-Production URL targets:
-- Keystone: `https://engine.hitechrts.com`
-- Forms: `https://forms.hitechrts.com`
-- Operator UI: keep private/non-public unless explicitly protected
+Product-specific verification lives under `apps/terminal-de-venta-system` and includes focused gates for Tablet, PC, Mobile, Chart Lab, licensing, sync, provenance, customer safety and operational evidence.
 
-Cloudflare multi-host setup command:
-```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File tools/infra/cloudflare/setup_tunnel_forever.ps1
-```
+## Start here
 
-## PRISMA Chart Lab
+If you are new to the repository:
 
-The dedicated PRISMA Chart Lab runs locally on port `3000` as a visual workshop for ECharts-based operational charts.
+1. Read the [`PRISMA Factory Ledger Agent Gate`](PRISMA%20Factory%20Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md) before technical change work.
+2. Read the [`Factory Ledger`](PRISMA%20Factory%20Ledger/PRISMA_FACTORY_LEDGER.json) for current capability truth.
+3. Read the [`PRISMA Field Manual`](apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md) before operational repository work.
+4. Use the [`surface registry`](apps/terminal-de-venta-system/.prisma-ui/surfaces.json) before touching UI.
+5. Use the [`NDC canon`](apps/terminal-de-venta-system/docs/ndc/00_NDC_README.md) before inventing app-specific data meaning.
+6. Use Change Assurance / Code Atlas when the question is not merely “where is the code?” but “what may change, what is protected, and what must be proven?”
 
-```powershell
-pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" install
-pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:verify
-pnpm -C "F:\repos\hitech-os\apps\terminal-de-venta-system" chart-lab:dev
-```
+## About HITECH
 
-Open `http://localhost:3000`.
+**HITECH RECTIFIERS, S.A. de C.V.** is a Mexican industrial technology company whose registered scope includes industrial maintenance, electrical and electronic systems, industrial equipment and parts, automation, industrial process support, and instrumentation and control.
 
-Cloudflare is not configured for Chart Lab yet. Treat it as a local workshop unless a separate public-safe preview route is explicitly added.
+HITECH OS brings that industrial mindset into software: systems should be operable, traceable, repairable, governable and able to prove what happened.
+
+<p align="center">
+  <strong>Built in Mexico. 🇲🇽</strong><br/>
+  <sub>Operational systems · Governed change · Evidence before confidence</sub>
+</p>
