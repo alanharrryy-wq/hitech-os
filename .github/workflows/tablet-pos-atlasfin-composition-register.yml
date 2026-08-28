@@ -1,0 +1,143 @@
+name: Register Tablet POS Atlasfin Composition Capability
+
+on:
+  push:
+    branches:
+      - governance/tablet-pos-atlasfin-composition-register-2808
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact registration branch
+        uses: actions/checkout@v6
+        with:
+          ref: governance/tablet-pos-atlasfin-composition-register-2808
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Lock registration authority and concurrent main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          expected_main='e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1'
+          actual_main="$(git rev-parse origin/main)"
+          echo "EXPECTED_MAIN=$expected_main"
+          echo "ACTUAL_MAIN=$actual_main"
+          test "$actual_main" = "$expected_main" || { echo "REGISTRATION_STALE_MAIN:$actual_main:$expected_main"; exit 41; }
+          test "$(git rev-parse HEAD^)" = "$expected_main" || { echo "REGISTRATION_CARRIER_PARENT_DRIFT"; exit 42; }
+          printf '%s\n' \
+            'AUTOMESH_RUN=33145960678' \
+            'AUTOMESH_ARTIFACT=9675778727' \
+            'AUTOMESH_ARTIFACT_DIGEST=sha256:d2fa61f23078ffbc3c224b05420d666197ae444711ea8530284f13091fa2be2a' \
+            'AUTOMESH_REQUEST_DIGEST=b2b8a8cbf6383e6a17ecd19216c3eb8da917ab826ea6ef81fac314c53dbf187a' \
+            'AUTOMESH_STATUS=PASS_COMPOSED_AUTHORITY_MESH' \
+            'AUTOMESH_HEAD=e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1' \
+            'AUTOMESH_LAYER_MAP=present'
+
+      - name: Register only the missing canonical capability
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          capability_id = 'visual.atlasfin.tablet_pos_composition'
+          ids = [row.get('id') for row in data.get('capabilities', [])]
+          if capability_id in ids:
+              raise SystemExit('CAPABILITY_ALREADY_REGISTERED_RECONCILE_INSTEAD')
+
+          capability = {
+              'id': capability_id,
+              'displayName': 'Atlasfin governed Tablet POS composition refinement outside frozen Cobrar target',
+              'domain': 'visual',
+              'surfaces': ['atlasfin', 'rifat', 'tablet'],
+              'classification': 'FIX',
+              'status': 'VERIFY_REQUIRED',
+              'stateLabel': 'TABLET_POS_ATLASFIN_COMPOSITION_REFINEMENT_REGISTERED',
+              'doNotRebuild': False,
+              'nextGate': 'After this registration is merged, use the exact current main to run a fresh task-exact Authority Mesh with Layer Map and the universal anti-rework MUTATION gate. Then apply only the bounded RIFAT Tablet /pos composition fix, regenerate governed Tablet visual runtime, preserve the certified Cobrar region byte-exact, and require BEFORE/AFTER runtime visual evidence before VISUAL_CERTIFIED.',
+              'evidence': [
+                  'PR #435 draft source context',
+                  'PRISMA Remote AutoMesh run 33145960678 artifact 9675778727 sha256:d2fa61f23078ffbc3c224b05420d666197ae444711ea8530284f13091fa2be2a',
+                  'Authority Mesh requestDigest b2b8a8cbf6383e6a17ecd19216c3eb8da917ab826ea6ef81fac314c53dbf187a at main e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1'
+              ],
+              'doesNotProve': [
+                  'Tablet /pos runtime visual improvement',
+                  'Any completed sale, payment, database or sync mutation',
+                  'Hosted production deployment',
+                  'Any change to the already certified visual.atlasfin.tablet_pos_cobrar target',
+                  'Any PC, Mobile, Chart Lab or Shared UI visual certification'
+              ],
+              'allowedActions': [
+                  'fresh task-exact visual Authority Mesh and Layer Map',
+                  'bounded RIFAT Tablet /pos composition repair outside frozen Cobrar',
+                  'deterministic Tablet visual runtime regeneration',
+                  'before/after Chromium visual evidence and focused verifiers',
+                  'rollback or byte-exact restoration if evidence regresses'
+              ],
+              'forbiddenActions': [
+                  'modify the certified Cobrar recipe or target without its own drift-triggered recertification',
+                  'modify PC, Mobile, Chart Lab or Shared UI as part of this capability',
+                  'modify database, Prisma schema, sync, licensing or operational business logic',
+                  'use !important or manual edits in generated runtime projections',
+                  'claim VISUAL_CERTIFIED without BEFORE/AFTER runtime evidence'
+              ]
+          }
+          data['capabilities'].append(capability)
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('PASS_CAPABILITY_REGISTERED:' + capability_id)
+          PY
+
+      - name: Validate canonical Factory Ledger and permanent negative gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m json.tool 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' >/dev/null
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test
+          git diff --check
+
+      - name: Enforce governance-only registration scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only HEAD^ --)
+          printf 'CHANGED_BEFORE_RETIRE\n%s\n' "${changed[*]}"
+          for file in "${changed[@]}"; do
+            case "$file" in
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'|'.github/workflows/tablet-pos-atlasfin-composition-register.yml') ;;
+              *) echo "REGISTRATION_SCOPE_VIOLATION:$file"; exit 51 ;;
+            esac
+          done
+          test -z "$(git diff --name-only HEAD^ -- 'apps/terminal-de-venta-system/products' 'prisma-html/authority/rifat/tablet/runtime-sources')" || { echo 'PRODUCT_OR_VISUAL_SOURCE_TOUCHED'; exit 52; }
+
+      - name: Commit canonical registration and retire carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm '.github/workflows/tablet-pos-atlasfin-composition-register.yml'
+          git add 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' '.github/workflows/tablet-pos-atlasfin-composition-register.yml'
+          test "$(git diff --cached --name-only | wc -l)" -eq 2
+          git diff --cached --check
+          git config user.name 'PRISMA Governance Carrier'
+          git config user.email 'governance@local.invalid'
+          git commit -m 'governance(tablet): register Atlasfin POS composition capability'
+          git push origin HEAD:governance/tablet-pos-atlasfin-composition-register-2808
