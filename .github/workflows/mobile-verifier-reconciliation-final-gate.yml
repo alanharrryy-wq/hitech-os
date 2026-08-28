@@ -13,7 +13,7 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
   PYTHONPATH: tools/code-atlas/src
-  TARGET_HEAD: a4fd91c25784f9473b479658a0b22e1848cdd1b0
+  TARGET_HEAD: d22261bdd50546cb0d25a41a267492734e4e7b1b
   TARGET_BASE: 630f025e3b41ac932a10ffab2f5992817c3037e5
   MOBILE_ROOT: apps/terminal-de-venta-system/products/mobile/app
 
@@ -54,14 +54,22 @@ jobs:
           import os, subprocess
           base = os.environ['TARGET_BASE']
           head = os.environ['TARGET_HEAD']
-          prefix = 'apps/terminal-de-venta-system/products/mobile/app/'
-          allowed_package = prefix + 'package.json'
+          mobile = 'apps/terminal-de-venta-system/products/mobile/app/'
+          allowed_docs = {
+              mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md',
+              mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json',
+              mobile + 'docs/prisma-app/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md',
+          }
+          allowed_package = mobile + 'package.json'
           changed = subprocess.check_output(['git','diff','--name-only',base,head], text=True).splitlines()
           if not changed:
               raise SystemExit('NO_CHANGED_FILES')
-          bad = [p for p in changed if not (p == allowed_package or (p.startswith(prefix + 'tools/verify') and p.endswith('.mjs')))]
+          bad = [p for p in changed if not (p in allowed_docs or p == allowed_package or (p.startswith(mobile + 'tools/verify') and p.endswith('.mjs')))]
           if bad:
               raise SystemExit('OUT_OF_SCOPE_CHANGED_FILES: ' + ', '.join(bad))
+          for p in changed:
+              if p.endswith('.tsx') or p.endswith('.css'):
+                  raise SystemExit('PRODUCT_SOURCE_OR_CSS_MUTATION_FORBIDDEN: ' + p)
           print('CHANGE_BOUNDARY_PASS')
           print('\n'.join(changed))
           PY
@@ -99,6 +107,7 @@ jobs:
               app + 'quality/contracts/no-fake-green.contract.json',
               mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md',
               mobile + 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json',
+              mobile + 'docs/prisma-app/archive/interface-history/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md',
               mobile + 'package.json',
               mobile + 'tools/verify_prisma_mobile_interface_canon.mjs',
           ]
@@ -108,7 +117,7 @@ jobs:
                   'surface': 'mobile',
                   'intent': 'VERIFY',
                   'domain': 'testing',
-                  'task': 'Verify the final bounded Mobile verifier reconciliation against the single seven-section Mobile interface canon. Historical entrypoints are compatibility aliases only. Dormant capability existence must not imply mounting. Health Radar and Data Readiness must retain current technical regression coverage without retired QA corpus dependencies or obsolete upper-version fences. No Mobile product source mutation.',
+                  'task': 'Verify the final bounded Mobile verifier reconciliation against the single seven-section Mobile interface canon after complete normative retirement of MultiContextSwitcher. No global context switcher or automatic replacement is current Mobile product authority. Historical iteration-41 evidence is archive-only. Historical entrypoints 20-24, 33 and 37 are compatibility aliases only. Health Radar and Data Readiness retain technical regression coverage without retired QA corpus dependencies or obsolete upper-version fences. No Mobile product source mutation.',
                   'requiredAuthorities': common,
                   'requiredDirectories': [mobile + 'tools', mobile + 'docs/prisma-app'],
                   'requiredCapabilities': ['mobile.interface_specification_canon'],
@@ -120,7 +129,7 @@ jobs:
                   'surface': 'governance',
                   'intent': 'VERIFY',
                   'domain': 'governance',
-                  'task': 'Require no-fake-green closure for exact reconciled head. Scope must remain package.json plus Mobile verify*.mjs only. Canonical verifier, compatibility wrappers, focused Mobile technical gates, typecheck and production build must pass before merge.',
+                  'task': 'Require no-fake-green closure for exact reconciled head. Scope must remain Mobile docs, package.json and verify*.mjs only. Active iteration-41 spec/verifier alias and package metadata must be absent; archive stays historical. Canonical verifier, focused Mobile technical gates, typecheck and production build must pass before merge.',
                   'requiredAuthorities': common + [ledger + 'PRISMA_EVIDENCE_INDEX.json'],
                   'requiredDirectories': [mobile + 'tools', app + 'quality/contracts'],
                   'requiredCapabilities': ['mobile.interface_specification_canon'],
@@ -128,7 +137,7 @@ jobs:
                   'failOnMissingAuthority': True,
               },
           ]
-          payload = {'schemaVersion':'v2','profile':'mobile-verifier-reconciliation-final-v1','expectedHead':head,'tasks':tasks}
+          payload = {'schemaVersion':'v2','profile':'mobile-verifier-reconciliation-final-no-multicontext-v1','expectedHead':head,'tasks':tasks}
           with open(sys.argv[1], 'w', encoding='utf-8') as fh:
               json.dump(payload, fh, ensure_ascii=False, indent=2)
               fh.write('\n')
@@ -187,7 +196,7 @@ jobs:
               'schemaVersion': 'prisma.factory-ledger.anti-rework-gate.v1',
               'mode': 'MUTATION',
               'expectedHead': os.environ['TARGET_HEAD'],
-              'task': 'Advance mobile.interface_specification_canon only by validating and merging the bounded verifier/tooling reconciliation. No Mobile product source/runtime/API/PWA/data/sync/security/licensing/CSS/visual mutation.',
+              'task': 'Advance mobile.interface_specification_canon only by validating and merging the bounded verifier/specification reconciliation that removes MultiContextSwitcher from normative Mobile product intent. No Mobile product source/runtime/API/PWA/data/sync/security/licensing/CSS/visual mutation.',
               'capabilities': [{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],
               'authorityMesh': {
                   'status': report['status'],
@@ -236,10 +245,12 @@ jobs:
             tools/verify_prisma_app_mobile_25f_health_radar_verifier_compat.mjs \
             tools/verify_prisma_app_mobile_28_data_readiness.mjs \
             tools/verify_prisma_app_mobile_33_mando_contracts.mjs \
-            tools/verify_prisma_app_mobile_37_release_hardening.mjs \
-            tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs; do
+            tools/verify_prisma_app_mobile_37_release_hardening.mjs; do
               node --check "$file"
           done
+          test ! -e tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs
+          test ! -e docs/prisma-app/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md
+          test -e docs/prisma-app/archive/interface-history/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md
 
       - name: Run canonical verifier and compatibility entrypoints
         working-directory: ${{ env.MOBILE_ROOT }}
@@ -254,7 +265,6 @@ jobs:
           node tools/verify_prisma_app_mobile_24_pulse_timeline.mjs
           node tools/verify_prisma_app_mobile_33_mando_contracts.mjs
           node tools/verify_prisma_app_mobile_37_release_hardening.mjs
-          node tools/verify_prisma_app_mobile_41_multi_context_switcher.mjs
 
       - name: Run focused current Mobile technical gates
         working-directory: ${{ env.MOBILE_ROOT }}
