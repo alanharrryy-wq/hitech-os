@@ -692,6 +692,35 @@
         "Wave 3 certification artifact digest sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b",
         "Canonical close authority artifact digest sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce"
       ]
+    },
+    {
+      "artifact": "PR #424 Mobile verifier reconciliation + V4 + post-merge governance close",
+      "type": "mobile_interface_verifier_reconciliation",
+      "scope": [
+        "mobile",
+        "governance",
+        "quality",
+        "verifiers"
+      ],
+      "status": "PASS_SOURCE_READY_VERIFIERS_RECONCILED",
+      "proves": [
+        "Legacy Mobile verifier expectations that conflicted with the canonical seven-section interface were reconciled without remounting dormant historical UI",
+        "The active iteration-41 MultiContext specification and verifier entrypoints are absent while historical archive evidence remains preserved",
+        "The canonical Mobile interface verifier and current focused Mobile technical gates passed",
+        "Mobile typecheck and production build passed after installing dependencies from the correct terminal workspace",
+        "Fresh post-merge Authority Mesh and Factory Ledger MUTATION gate passed against main@28b7d782906003e2ac399ae89d81e824d3268d53"
+      ],
+      "doesNotProve": [
+        "Runtime or visual conformance certification",
+        "Hosted production readiness, PWA runtime or offline operational-data capability",
+        "Signed-session auth, customer setup, sync, licensing, data-custody or zero-egress certification",
+        "Dormant historical interfaces should be remounted"
+      ],
+      "evidence": [
+        "PR #424 merge 28b7d782906003e2ac399ae89d81e824d3268d53",
+        "V4 run 33148746934 artifact 9676872731 sha256:afb6f28c01a7991f862fbfe87aff509b5e8a84d5d5e72327f420f1bfe2f88a48",
+        "post-merge run 33149246082 artifact 9677044001 sha256:f1381c6779c55e758db0da1ad8b0db4b82466c24c029d59f9762d9fbc01f7c01"
+      ]
     }
   ],
   "updatedAt": "2026-08-27T22:08:29-06:00",
@@ -817,11 +846,14 @@
     {
       "capabilityId": "mobile.interface_specification_canon",
       "status": "SOURCE_READY",
-      "runId": "PR395_MOBILE_INTERFACE_CANON_SOURCE_READY",
+      "runId": "PR424_MOBILE_VERIFIER_RECONCILIATION_SOURCE_READY",
       "evidence": [
         "PR #395 merge 615d6732fd733696a60bb549bc88b23c0b573de4",
         "current-main Authority Mesh run 32922500990 artifact 9590323223",
-        "requestDigest 5b12cf847b1207c03fbf9b1b40cca348d2e509301ad1c6fe8ce1dcab10952006"
+        "requestDigest 5b12cf847b1207c03fbf9b1b40cca348d2e509301ad1c6fe8ce1dcab10952006",
+        "PR #424 merge 28b7d782906003e2ac399ae89d81e824d3268d53",
+        "V4 run 33148746934 artifact 9676872731",
+        "post-merge close run 33149246082 artifact 9677044001"
       ]
     }
   ]
