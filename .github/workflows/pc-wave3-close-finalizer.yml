@@ -1,0 +1,406 @@
+name: PC Wave 3 Canonical Closure Finalizer
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave3-close-finalizer.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PINNED_MAIN: d55e421d8379ce53279a1c60ebca679602fd904d
+  CERTIFIED_TREE: bf339ae4c19150548c2a265532233acfd0533693
+  CERT_RUN: '32988854842'
+  CERT_ARTIFACT: '9613949893'
+  CERT_ARTIFACT_DIGEST: 'sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b'
+  CLOSE_AUTH_RUN: '33140887752'
+  CLOSE_AUTH_ARTIFACT: '9673897898'
+  CLOSE_AUTH_ARTIFACT_DIGEST: 'sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce'
+  AUTH_REQUEST_DIGEST: 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2
+  AUTH_COMPOSED_DIGEST: f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f
+  AUTH_DECISION_DIGEST: ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894
+  CLOSE_TS: '2026-08-27T22:08:29-06:00'
+
+jobs:
+  finalize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout governance carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Revalidate exact authorized canonical base
+        shell: bash
+        run: |
+          set -euo pipefail
+          carrier_head="$(git rev-parse HEAD)"
+          git fetch origin main
+          current_main="$(git rev-parse origin/main)"
+          test "$current_main" = "$PINNED_MAIN"
+          test "$(git rev-parse "$PINNED_MAIN^{tree}")" = "$CERTIFIED_TREE"
+          git diff --name-only "$PINNED_MAIN..$carrier_head" | sort > "$RUNNER_TEMP/carrier.paths"
+          printf '%s\n' '.github/workflows/pc-wave3-close-finalizer.yml' > "$RUNNER_TEMP/expected-carrier.paths"
+          diff -u "$RUNNER_TEMP/expected-carrier.paths" "$RUNNER_TEMP/carrier.paths"
+
+          git checkout --detach "$PINNED_MAIN"
+          test "$(git rev-parse HEAD)" = "$PINNED_MAIN"
+          test "$(git rev-parse HEAD^{tree})" = "$CERTIFIED_TREE"
+
+          python - "$RUNNER_TEMP/factory.request.json" <<'PY'
+          import json, os, sys
+          req={
+            'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1',
+            'mode':'MUTATION',
+            'expectedHead':os.environ['PINNED_MAIN'],
+            'task':'Register and canonically close certified PC Enterprise Mutations Wave 3 in the four Factory Ledger JSON projections only, preserving the exact evidence ceiling and preventing rebuild of already runtime-verified mutation contracts.',
+            'capabilities':[
+              {'id':'pc.quality.customer_experience_wave2','requestedAction':'ADVANCE'},
+              {'id':'data.canonical_schema_reproducibility','requestedAction':'ADVANCE'},
+              {'id':'pc.entitlement.surface_projection','requestedAction':'ADVANCE'},
+            ],
+            'authorityMesh':{
+              'status':'PASS_COMPOSED_AUTHORITY_MESH',
+              'repoHead':os.environ['PINNED_MAIN'],
+              'requiredAuthorityCoveragePct':100.0,
+              'blockers':0,
+              'requestDigest':os.environ['AUTH_REQUEST_DIGEST'],
+              'artifactDigest':os.environ['AUTH_COMPOSED_DIGEST'],
+              'layerMapPresent':False,
+            },
+            'visualMutation':False,
+          }
+          with open(sys.argv[1],'w',encoding='utf-8') as f:
+            json.dump(req,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            --request "$RUNNER_TEMP/factory.request.json" > "$RUNNER_TEMP/gate.json"
+          python - "$RUNNER_TEMP/gate.json" <<'PY'
+          import json,os,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert d.get('repoHead')==os.environ['PINNED_MAIN'],d
+          assert d.get('decisionDigest')==os.environ['AUTH_DECISION_DIGEST'],(d.get('decisionDigest'),os.environ['AUTH_DECISION_DIGEST'])
+          print('PASS_REVALIDATED_PC_WAVE3_CLOSE_AUTHORITY')
+          PY
+
+          git checkout "$GITHUB_HEAD_REF"
+          test "$(git rev-parse HEAD)" = "$carrier_head"
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$PINNED_MAIN"
+
+      - name: Register canonical Wave 3 capabilities and evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          ts=os.environ['CLOSE_TS']
+          main=os.environ['PINNED_MAIN']
+          tree=os.environ['CERTIFIED_TREE']
+          cert_run=os.environ['CERT_RUN']
+          cert_art=os.environ['CERT_ARTIFACT']
+          cert_digest=os.environ['CERT_ARTIFACT_DIGEST']
+          auth_run=os.environ['CLOSE_AUTH_RUN']
+          auth_art=os.environ['CLOSE_AUTH_ARTIFACT']
+          auth_art_digest=os.environ['CLOSE_AUTH_ARTIFACT_DIGEST']
+          req_digest=os.environ['AUTH_REQUEST_DIGEST']
+          composed_digest=os.environ['AUTH_COMPOSED_DIGEST']
+          decision_digest=os.environ['AUTH_DECISION_DIGEST']
+          merge_test='a49185b7815dc48e81e0f98a72a19e1983b3e4dc'
+
+          root=Path('PRISMA Factory Ledger')
+          ledger_path=root/'PRISMA_FACTORY_LEDGER.json'
+          dnr_path=root/'PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json'
+          reg_path=root/'PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
+          evidence_path=root/'PRISMA_EVIDENCE_INDEX.json'
+
+          def load(p):
+            return json.loads(p.read_text(encoding='utf-8'))
+          def write(p,data):
+            p.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          ledger=load(ledger_path)
+          dnr=load(dnr_path)
+          reg=load(reg_path)
+          evid=load(evidence_path)
+
+          evidence_summary=(
+            f'PR #385 merge {main} / certification run {cert_run} artifact {cert_art} {cert_digest} / '
+            f'post-merge canonical-close Authority run {auth_run} artifact {auth_art} {auth_art_digest}'
+          )
+          exact_tree=(
+            f'GitHub PR merge-test commit {merge_test} tree {tree} equals canonical main merge {main} tree {tree}; '
+            'the certified runtime tree and merged product tree are byte-identical.'
+          )
+          governance=(
+            f'Authority request {req_digest} / composed artifact {composed_digest} / anti-rework decision {decision_digest}'
+          )
+          shared_evidence=[evidence_summary,exact_tree,governance]
+          general_limits=[
+            'Hosted production or customer deployment readiness',
+            'Future behavior after source or dependency drift',
+            'Any mutation of a live/customer database; certification used runner-temp isolated persistence only',
+            'Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center',
+            'productionCertified=true; the certified manifest explicitly keeps productionCertified=false',
+          ]
+          common_allowed=[
+            'reuse as frozen runtime-verified prerequisite',
+            'read-only recertification under fresh exact authority',
+            'evidence-backed drift repair under fresh exact authority with isolated regression evidence',
+          ]
+          common_forbidden=[
+            'rebuild the certified mutation contract without evidence of drift or defect',
+            'weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture',
+            'claim hosted production readiness from this isolated certification',
+          ]
+          next_gate=(
+            'Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; '
+            'hosted production, distribution and future-drift certification are separate gates.'
+          )
+
+          specs=[
+            ('pc.catalog.mutations_runtime','PRISMA PC Catalog durable mutations runtime','runtime',['pc','data'],'PASS_PC_WAVE3_CATALOG_MUTATIONS_RUNTIME',
+             ['Catalog product create, update and delete persisted through the bounded PC backoffice contract']),
+            ('pc.suppliers.mutations_runtime','PRISMA PC Supplier durable mutations runtime','runtime',['pc','data'],'PASS_PC_WAVE3_SUPPLIER_MUTATIONS_RUNTIME',
+             ['Supplier record create, update and delete persisted through the bounded PC backoffice contract']),
+            ('pc.inventory.stock_adjustment_runtime','PRISMA PC Stock adjustment durable runtime','runtime',['pc','data'],'PASS_PC_WAVE3_STOCK_ADJUSTMENT_RUNTIME',
+             ['Stock adjustment persisted stockOnHand/available state and an adjust_up stock movement with the certified quantity']),
+            ('pc.inventory.count_lifecycle_runtime','PRISMA PC Inventory count lifecycle runtime','runtime',['pc','data'],'PASS_PC_WAVE3_INVENTORY_COUNT_LIFECYCLE_RUNTIME',
+             ['Inventory count open, review and close lifecycle persisted with counted quantity, variance and operator evidence']),
+            ('pc.sync.dispatch_replay_runtime','PRISMA PC Sync dispatch and replay runtime','runtime',['pc','sync','data'],'PASS_PC_WAVE3_SYNC_DISPATCH_REPLAY_RUNTIME',
+             ['PC-to-Tablet catalog delta dispatch persisted audit provenance and replay persisted a second attempt with no last error']),
+            ('pc.devices.claim_revoke_runtime','PRISMA PC Device claim and revoke runtime','runtime',['pc','devices','data'],'PASS_PC_WAVE3_DEVICE_CLAIM_REVOKE_RUNTIME',
+             ['Device claim and revoke persisted the revoked status, health and sync state through the bounded device contract']),
+            ('pc.settings.business_write_runtime','PRISMA PC Business settings durable write runtime','runtime',['pc','settings','data'],'PASS_PC_WAVE3_BUSINESS_SETTINGS_WRITE_RUNTIME',
+             ['Business Settings write persisted the certified name, taxId and currency values']),
+            ('pc.quality.enterprise_mutations_wave3','PRISMA PC Enterprise Mutations Wave 3 quality closure','quality',['pc','data','quality'],'PASS_PC_ENTERPRISE_MUTATIONS_WAVE3_WITH_WAVE2_REGRESSION',
+             ['Catalog CRUD, supplier CRUD, stock adjustment, inventory count lifecycle, sync dispatch/replay, device claim/revoke and business Settings writes passed isolated durable runtime certification',
+              'Frozen Wave 2 entitled regression passed',
+              'Frozen Wave 2 restricted regression passed',
+              'Certification created zero tracked source drift and left the owned runtime/port clean']),
+          ]
+
+          records={row.get('id'):row for row in ledger.get('capabilities',[]) if isinstance(row,dict)}
+          for cid,display,domain,surfaces,label,proves in specs:
+            row={
+              'id':cid,
+              'displayName':display,
+              'domain':domain,
+              'surfaces':surfaces,
+              'classification':'DONE',
+              'status':'RUNTIME_VERIFIED',
+              'stateLabel':label,
+              'doNotRebuild':True,
+              'nextGate':next_gate,
+              'evidence':shared_evidence + proves,
+              'doesNotProve':general_limits,
+              'allowedActions':common_allowed,
+              'forbiddenActions':common_forbidden,
+            }
+            if cid in records:
+              idx=ledger['capabilities'].index(records[cid])
+              ledger['capabilities'][idx]=row
+            else:
+              ledger.setdefault('capabilities',[]).append(row)
+            records[cid]=row
+
+          wave2=records.get('pc.quality.customer_experience_wave2')
+          assert wave2, 'WAVE2_AGGREGATE_MISSING'
+          wave2['nextGate']=(
+            'PC Enterprise Mutations Wave 3 is closed. Reuse the frozen Wave 2 customer, entitlement and schema baseline as prerequisite evidence; '
+            'do not rebuild Wave 2. Any future drift repair requires fresh exact authority and evidence.'
+          )
+          ledger['updatedAt']=ts
+
+          dnr.setdefault('doNotRebuild',{})
+          for cid,display,domain,surfaces,label,proves in specs:
+            dnr['doNotRebuild'][cid]={
+              'value':True,
+              'reason':label,
+              'evidence':evidence_summary,
+              'updatedAt':ts,
+            }
+          dnr['updatedAt']=ts
+
+          regs=reg.setdefault('registrations',{})
+          cert_hash=cert_digest.split(':',1)[-1].upper()
+          for cid,display,domain,surfaces,label,proves in specs:
+            regs[cid]={
+              'status':'DONE_RUNTIME_VERIFIED',
+              'updatedAt':ts,
+              'evidence':evidence_summary,
+              'sourceEvidenceSha256':cert_hash,
+              'doNotRebuild':True,
+              'nextGate':next_gate,
+            }
+          if 'pc.quality.customer_experience_wave2' in regs:
+            regs['pc.quality.customer_experience_wave2']['nextGate']=wave2['nextGate']
+          reg['updatedAt']=ts
+
+          closure={
+            'artifact':f'PC Wave 3 enterprise mutation canonical closure — PR #385 / run {cert_run} / close run {auth_run}',
+            'type':'pc_enterprise_mutations_wave3_canonical_closure',
+            'scope':['pc','catalog_mutations','supplier_mutations','inventory_mutations','sync','devices','settings','quality','governance'],
+            'status':'PASS_RUNTIME_VERIFIED',
+            'proves':[
+              f'Certified PR merge-test commit {merge_test} and canonical main merge {main} share exact tree {tree}',
+              'Catalog create/update/delete durable persistence on isolated runner-temp SQLite',
+              'Supplier create/update/delete durable persistence on isolated runner-temp SQLite',
+              'Stock adjustment durable position/snapshot/movement persistence',
+              'Inventory count open/review/close durable lifecycle persistence',
+              'Sync dispatch provenance and replay persistence',
+              'Device claim/revoke durable persistence',
+              'Business Settings durable write persistence',
+              'Wave 2 entitled and restricted regressions both passed on the certified integration tree',
+              'Certification produced zero tracked source drift and did not mutate a live/customer database',
+              'Fresh exact-head two-lane post-merge Authority Mesh reached 100% coverage with zero blockers and the universal anti-rework gate passed',
+            ],
+            'doesNotProve':general_limits,
+            'evidence':[
+              evidence_summary,
+              exact_tree,
+              governance,
+              f'Wave 3 certification artifact digest {cert_digest}',
+              f'Canonical close authority artifact digest {auth_art_digest}',
+            ],
+          }
+          artifacts=evid.setdefault('artifacts',[])
+          replaced=False
+          for i,row in enumerate(artifacts):
+            if isinstance(row,dict) and row.get('type')==closure['type']:
+              artifacts[i]=closure; replaced=True; break
+          if not replaced:
+            artifacts.append(closure)
+          evid['updatedAt']=ts
+
+          write(ledger_path,ledger)
+          write(dnr_path,dnr)
+          write(reg_path,reg)
+          write(evidence_path,evid)
+          print('PASS_WAVE3_GOVERNANCE_JSON_MUTATION')
+          PY
+
+      - name: Validate exact four-file canonical closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('PRISMA Factory Ledger')
+          paths={
+            'ledger':root/'PRISMA_FACTORY_LEDGER.json',
+            'dnr':root/'PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+            'reg':root/'PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+            'evidence':root/'PRISMA_EVIDENCE_INDEX.json',
+          }
+          data={k:json.loads(p.read_text(encoding='utf-8')) for k,p in paths.items()}
+          ids=[
+            'pc.catalog.mutations_runtime','pc.suppliers.mutations_runtime','pc.inventory.stock_adjustment_runtime',
+            'pc.inventory.count_lifecycle_runtime','pc.sync.dispatch_replay_runtime','pc.devices.claim_revoke_runtime',
+            'pc.settings.business_write_runtime','pc.quality.enterprise_mutations_wave3'
+          ]
+          caps={x['id']:x for x in data['ledger']['capabilities'] if isinstance(x,dict) and x.get('id')}
+          for cid in ids:
+            c=caps[cid]
+            assert c['classification']=='DONE',c
+            assert c['status']=='RUNTIME_VERIFIED',c
+            assert c['doNotRebuild'] is True,c
+            assert c['evidence'],c
+            assert c['doesNotProve'],c
+            d=data['dnr']['doNotRebuild'][cid]
+            assert d['value'] is True,d
+            r=data['reg']['registrations'][cid]
+            assert r['status']=='DONE_RUNTIME_VERIFIED',r
+            assert r['doNotRebuild'] is True,r
+          w2=caps['pc.quality.customer_experience_wave2']
+          assert 'Wave 3 is closed' in w2['nextGate'],w2['nextGate']
+          ev=[x for x in data['evidence']['artifacts'] if isinstance(x,dict) and x.get('type')=='pc_enterprise_mutations_wave3_canonical_closure']
+          assert len(ev)==1,ev
+          assert ev[0]['status']=='PASS_RUNTIME_VERIFIED',ev[0]
+          assert any('productionCertified=false' in x for x in ev[0]['doesNotProve']),ev[0]
+          print('PASS_WAVE3_CANONICAL_RECORD_RECONCILIATION')
+          PY
+
+          git diff --name-only | sort > "$RUNNER_TEMP/actual.paths"
+          cat > "$RUNNER_TEMP/expected.paths" <<'EOF'
+          PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json
+          PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json
+          PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json
+          PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json
+          EOF
+          sed -i 's/^          //' "$RUNNER_TEMP/expected.paths"
+          sort -o "$RUNNER_TEMP/expected.paths" "$RUNNER_TEMP/expected.paths"
+          diff -u "$RUNNER_TEMP/expected.paths" "$RUNNER_TEMP/actual.paths"
+
+      - name: Commit governance-only closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'prisma-governance-bot'
+          git config user.email 'prisma-governance-bot@users.noreply.github.com'
+          git add \
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' \
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' \
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' \
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
+          git commit -m 'governance(pc): register enterprise mutations Wave 3 closure'
+          test -z "$(git status --porcelain)"
+
+      - name: Reconcile new canonical records with universal anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          head="$(git rev-parse HEAD)"
+          python - "$RUNNER_TEMP/proposal.request.json" "$head" <<'PY'
+          import json,sys
+          head=sys.argv[2]
+          ids=[
+            'pc.catalog.mutations_runtime','pc.suppliers.mutations_runtime','pc.inventory.stock_adjustment_runtime',
+            'pc.inventory.count_lifecycle_runtime','pc.sync.dispatch_replay_runtime','pc.devices.claim_revoke_runtime',
+            'pc.settings.business_write_runtime','pc.quality.enterprise_mutations_wave3'
+          ]
+          req={
+            'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1',
+            'mode':'PROPOSAL',
+            'expectedHead':head,
+            'task':'Verify that the newly registered PC Enterprise Mutations Wave 3 canonical capabilities reconcile with the supplemental do-not-rebuild and registration projections before publishing the governance-only closure.',
+            'capabilities':[{'id':cid,'requestedAction':'REUSE'} for cid in ids],
+            'visualMutation':False,
+          }
+          with open(sys.argv[1],'w',encoding='utf-8') as f:
+            json.dump(req,f,ensure_ascii=False,indent=2); f.write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" \
+            --request "$RUNNER_TEMP/proposal.request.json" > "$RUNNER_TEMP/proposal.decision.json"
+          python - "$RUNNER_TEMP/proposal.decision.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert len(d.get('selectedCapabilities') or [])==8,d
+          print('PASS_WAVE3_REGISTERED_CAPABILITIES_ANTI_REWORK_RECONCILIATION')
+          PY
+
+      - name: Publish governance commit only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$PINNED_MAIN"
+          git push origin "HEAD:$GITHUB_HEAD_REF"
+          echo 'PASS_PC_WAVE3_CANONICAL_CLOSURE_PUBLISHED'
