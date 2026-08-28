@@ -213,7 +213,7 @@ jobs:
           d=json.load(open(sys.argv[1],encoding='utf-8'))
           assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
           assert d.get('errors')==[],d
-          assert len(d.get('selectedCapabilities') or [])==8,d
+          assert len(d.get('selected') or [])==8,d
           print('PASS_WAVE3_REGISTERED_CAPABILITIES_ANTI_REWORK_RECONCILIATION')
           PY
 
