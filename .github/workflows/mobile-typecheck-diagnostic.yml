@@ -1,0 +1,46 @@
+name: Mobile Typecheck Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mobile-typecheck-diagnostic.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  TARGET_HEAD: 468da2fdacf938456dc4f2c0119e4a3ac44d0318
+  MOBILE_ROOT: apps/terminal-de-venta-system/products/mobile/app
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_HEAD }}
+          fetch-depth: 1
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Capture canonical Mobile typecheck failure
+        working-directory: ${{ env.MOBILE_ROOT }}
+        shell: bash
+        run: |
+          set +e
+          pnpm run typecheck > "$RUNNER_TEMP/typecheck.log" 2>&1
+          code=$?
+          echo "TYPECHECK_EXIT=$code"
+          echo "--- diagnostic error lines ---"
+          grep -E -i 'error TS|zero-important|FAIL|ELIFECYCLE|Command failed|not found|cannot find|type .* is not assignable|property .* does not exist' "$RUNNER_TEMP/typecheck.log" | tail -n 160 || true
+          echo "--- diagnostic tail ---"
+          tail -n 80 "$RUNNER_TEMP/typecheck.log"
+          exit 0
