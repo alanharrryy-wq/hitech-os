@@ -1,0 +1,76 @@
+name: PRISMA Sync Sentinel Final Mutation Gate Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  anti-rework-gate:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'gate/prisma-sync-sentinel-final-2808'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact carrier
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Fail closed on canonical drift or unexpected diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
+          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/sync-sentinel-final-gate-carrier.yml"
+
+      - name: Validate and run universal anti-rework mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach 71387e06aab700c14745a4e42d799ecd82d61b5d
+          test "$(git rev-parse HEAD)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+          cat > "$RUNNER_TEMP/sync-sentinel-final-gate-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-request.v1",
+            "mode": "MUTATION",
+            "expectedHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+            "task": "Build the bounded PRISMA Sync Sentinel source under tools/prisma-sentinels/sync-sentinel only. Reuse frozen Tablet and PC synchronization capabilities read-only, exercise real sync business services only with Sentinel-owned temporary SQLite databases and loopback test processes, and do not mutate product UI/runtime source or live/customer data.",
+            "capabilities": [
+              {"id": "tooling.sync_sentinel", "requestedAction": "BUILD"},
+              {"id": "tablet.sync.runtime_truth", "requestedAction": "VERIFY"},
+              {"id": "pc.sync.dispatch_replay_runtime", "requestedAction": "VERIFY"},
+              {"id": "data.canonical_schema_reproducibility", "requestedAction": "VERIFY"}
+            ],
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "8f33038551483d70989bbbe4b46d2b6faffc389f9c79a1049244df8742c0e694",
+              "artifactDigest": "9ba1cb8e724df588db0b5c875033f0589721c836c9dc169e6d98ba939ff9f755",
+              "layerMapPresent": false
+            },
+            "visualMutation": false
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/sync-sentinel-final-gate-request.json" | tee "$RUNNER_TEMP/SYNC_SENTINEL_FINAL_ANTI_REWORK_GATE.json"
+          grep -F '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/SYNC_SENTINEL_FINAL_ANTI_REWORK_GATE.json"
+
+      - name: Upload gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: sync-sentinel-final-mutation-gate-${{ github.run_id }}
+          path: ${{ runner.temp }}/SYNC_SENTINEL_FINAL_ANTI_REWORK_GATE.json
+          if-no-files-found: error
+          retention-days: 14
