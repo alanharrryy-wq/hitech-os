@@ -69,17 +69,17 @@
     min-height: 0;
     overflow-y: auto;
     padding: clamp(16px, 1.6vw, 22px);
-    border: 1px solid rgba(235, 244, 255, 0.20);
+    border: 1px solid rgba(235, 244, 255, 0.17);
     border-radius: 28px;
     background:
-      radial-gradient(circle at 88% 4%, rgba(255, 198, 120, 0.09), transparent 28%),
-      linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012) 44%),
-      rgba(9, 12, 17, 0.54);
+      radial-gradient(circle at 88% 4%, rgba(255, 198, 120, 0.07), transparent 28%),
+      linear-gradient(155deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.009) 44%),
+      rgba(7, 11, 16, 0.36);
     box-shadow:
-      0 28px 74px rgba(0, 0, 0, 0.34),
-      inset 0 1px 0 rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(26px) saturate(1.08);
-    -webkit-backdrop-filter: blur(26px) saturate(1.08);
+      0 20px 54px rgba(0, 0, 0, 0.27),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(1.06);
+    -webkit-backdrop-filter: blur(20px) saturate(1.06);
   }
 
   .ticketRail::before {
