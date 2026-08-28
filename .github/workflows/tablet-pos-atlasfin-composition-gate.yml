@@ -1,0 +1,101 @@
+name: Tablet POS Atlasfin Composition Mutation Gate
+
+on:
+  push:
+    branches:
+      - gate/tablet-pos-atlasfin-composition-2808
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  anti-rework-mutation-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact authorized main state
+        uses: actions/checkout@v6
+        with:
+          ref: bef71b7d092ef43580498988b09c1d56fd0ff474
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Fail closed if main moved
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected='bef71b7d092ef43580498988b09c1d56fd0ff474'
+          git fetch origin main
+          actual="$(git rev-parse origin/main)"
+          echo "EXPECTED_MAIN=$expected"
+          echo "ACTUAL_MAIN=$actual"
+          test "$actual" = "$expected" || { echo "STALE_AUTHORITY_MAIN_MOVED:$actual:$expected"; exit 41; }
+          test "$(git rev-parse HEAD)" = "$expected"
+          test -z "$(git status --porcelain)"
+
+      - name: Execute universal Factory Ledger MUTATION gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/tablet-pos-mutation-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+            "mode": "MUTATION",
+            "expectedHead": "bef71b7d092ef43580498988b09c1d56fd0ff474",
+            "task": "Apply the bounded governed Atlasfin composition refinement to Tablet /pos outside the frozen certified Cobrar target, regenerate deterministic RIFAT Tablet visual runtime, contain unrelated validator debt, and require BEFORE/AFTER Chromium evidence before visual certification.",
+            "capabilities": [
+              {
+                "id": "visual.atlasfin.tablet_pos_composition",
+                "requestedAction": "FIX"
+              }
+            ],
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "bef71b7d092ef43580498988b09c1d56fd0ff474",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "dc02c93371f12077dbd95acf823af6e9bdc685a71a1ac2e1f0e8700bff04d3cb",
+              "artifactDigest": "sha256:613a14bbcc0c1f83d1cf0eb3ed5bec36aa6883a3656c88bf79f1c9f24825575d",
+              "layerMapPresent": true
+            },
+            "visualMutation": true
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' \
+            --request "$RUNNER_TEMP/tablet-pos-mutation-request.json" \
+            | tee "$RUNNER_TEMP/tablet-pos-mutation-gate.json"
+          grep -q '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/tablet-pos-mutation-gate.json"
+          cp "$RUNNER_TEMP/tablet-pos-mutation-request.json" ./tablet-pos-mutation-request.evidence.json
+          cp "$RUNNER_TEMP/tablet-pos-mutation-gate.json" ./tablet-pos-mutation-gate.evidence.json
+
+      - name: Confirm carrier did not mutate repository authority or product source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 'bef71b7d092ef43580498988b09c1d56fd0ff474'
+          mapfile -t changed < <(git status --porcelain | sed -E 's/^...//')
+          for file in "${changed[@]}"; do
+            case "$file" in
+              tablet-pos-mutation-request.evidence.json|tablet-pos-mutation-gate.evidence.json) ;;
+              *) echo "UNEXPECTED_GATE_MUTATION:$file"; exit 51 ;;
+            esac
+          done
+
+      - name: Upload fail-closed mutation decision
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-pos-atlasfin-composition-mutation-gate-${{ github.run_id }}
+          path: |
+            tablet-pos-mutation-request.evidence.json
+            tablet-pos-mutation-gate.evidence.json
+          if-no-files-found: error
+          retention-days: 14
