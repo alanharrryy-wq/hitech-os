@@ -1,0 +1,328 @@
+name: Tablet POS Atlasfin Apply
+
+on:
+  push:
+    branches:
+      - feat/tablet-pos-atlasfin-vender-v1
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+concurrency:
+  group: tablet-pos-atlasfin-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v6
+        with:
+          ref: feat/tablet-pos-atlasfin-vender-v1
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Verify owner SHA and apply Atlasfin POS composition patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          POS='prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css'
+          expected_blob='baa2c6f613abf01a90646a6a14a67dc6215bab3b'
+          actual_blob="$(git hash-object "$POS")"
+          echo "POS_OWNER_BLOB=$actual_blob"
+          test "$actual_blob" = "$expected_blob" || { echo "POS_OWNER_CONCURRENT_DRIFT:$actual_blob:$expected_blob"; exit 41; }
+
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          path = Path('prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css')
+          text = path.read_text(encoding='utf-8')
+          cobrar_start = text.index('  .cobrarReferenceButton {')
+          cobrar_end = text.index('  .posPremiumTicketOptions,', cobrar_start)
+          cobrar_before = hashlib.sha256(text[cobrar_start:cobrar_end].encode()).hexdigest()
+          expected_cobrar = '4efc69648237f0e066ab4728abf2914bf854b7c7d0f6852b90772c236fa8bfac'
+          if cobrar_before != expected_cobrar:
+              raise SystemExit(f'COBRAR_BASELINE_DRIFT:{cobrar_before}:{expected_cobrar}')
+
+          def replace_once(old: str, new: str, label: str) -> None:
+              global text
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'PATCH_ANCHOR_{label}_COUNT:{count}')
+              text = text.replace(old, new, 1)
+
+          replace_once(
+          '''  .posPremiumTicketLine {
+            display: grid;
+            grid-template-columns: 48px minmax(0, 1fr) auto;
+            gap: 9px 10px;
+            padding: 10px;
+            border: 1px solid rgba(235, 244, 255, 0.14);
+            border-radius: 16px;
+            background:
+              linear-gradient(155deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.010)),
+              rgba(255, 255, 255, 0.018);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          }'''.replace('          ', ''),
+          '''  .posPremiumTicketLine {
+            display: grid;
+            grid-template-columns: 48px minmax(0, 1fr) auto;
+            gap: 9px 10px;
+            padding: 10px 2px 11px;
+            border: 0;
+            border-bottom: 1px solid rgba(235, 244, 255, 0.10);
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+          }'''.replace('          ', ''),
+          'TICKET_LINE')
+
+          replace_once(
+          '''  .posPremiumCategoryButton,
+          .posPremiumCategoryButtonActive {
+            min-height: 46px;
+            border-color: rgba(225, 241, 255, 0.16);
+            background: rgba(4, 9, 15, 0.66);
+            color: rgba(240, 248, 255, 0.94);
+            font-size: 0.91rem;
+            font-weight: 820;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.92);
+          }
+
+          .posPremiumCategoryButtonActive {
+            border-color: rgba(112, 224, 255, 0.58);
+            background:
+              linear-gradient(180deg, rgba(112, 224, 255, 0.22), rgba(112, 224, 255, 0.075)),
+              rgba(5, 15, 22, 0.88);
+            color: #ffffff;
+          }'''.replace('          ', ''),
+          '''  .posPremiumCategoryButton,
+          .posPremiumCategoryButtonActive {
+            min-height: var(--prisma-touch-target);
+            border-color: rgba(225, 241, 255, 0.14);
+            background: rgba(4, 9, 15, 0.38);
+            color: rgba(240, 248, 255, 0.94);
+            font-size: 0.91rem;
+            font-weight: 820;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.88);
+          }
+
+          .posPremiumCategoryButtonActive {
+            border-color: rgba(112, 224, 255, 0.52);
+            background:
+              linear-gradient(180deg, rgba(112, 224, 255, 0.17), rgba(112, 224, 255, 0.055)),
+              rgba(5, 15, 22, 0.52);
+            color: #ffffff;
+          }'''.replace('          ', ''),
+          'CATEGORY_READABILITY')
+
+          replace_once(
+          '''    backdrop-filter: blur(18px) saturate(1.08);
+            -webkit-backdrop-filter: blur(18px) saturate(1.08);
+          }
+
+          .posPremiumCatalogHeader,
+          .posPremiumCatalogToolbar,
+          .posPremiumCatalogChrome {
+            background:
+              linear-gradient(180deg, rgba(4, 8, 13, 0.24), rgba(4, 8, 13, 0.08)),
+              rgba(5, 10, 16, 0.22);
+          }
+
+          .posPremiumSearchShell,
+          .posPremiumSearchBar,
+          .posPremiumSearchSurface,
+          .posPremiumSearchContainer,
+          .posPremiumSearchCard {
+            border-color: rgba(209, 233, 247, 0.13);
+            background:
+              linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
+              rgba(4, 10, 16, 0.30);
+            box-shadow:
+              0 10px 30px rgba(0, 0, 0, 0.18),
+              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+          }'''.replace('          ', ''),
+          '''    backdrop-filter: blur(14px) saturate(1.06);
+            -webkit-backdrop-filter: blur(14px) saturate(1.06);
+          }
+
+          .posPremiumCatalogHeader,
+          .posPremiumCatalogToolbar,
+          .posPremiumCatalogChrome {
+            background:
+              linear-gradient(180deg, rgba(4, 8, 13, 0.16), rgba(4, 8, 13, 0.045)),
+              rgba(5, 10, 16, 0.14);
+          }
+
+          .posPremiumSearchShell,
+          .posPremiumSearchBar,
+          .posPremiumSearchSurface,
+          .posPremiumSearchContainer,
+          .posPremiumSearchCard {
+            border-color: rgba(209, 233, 247, 0.12);
+            background:
+              linear-gradient(180deg, rgba(255, 255, 255, 0.032), rgba(255, 255, 255, 0.008)),
+              rgba(4, 10, 16, 0.18);
+            box-shadow:
+              0 9px 24px rgba(0, 0, 0, 0.14),
+              inset 0 1px 0 rgba(255, 255, 255, 0.06);
+          }'''.replace('          ', ''),
+          'CATALOG_SEARCH_GLASS')
+
+          replace_once(
+          '''  .posPremiumProductCard {
+            border-color: rgba(231, 242, 251, 0.22);
+            background:
+              linear-gradient(154deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018) 54%),
+              rgba(4, 9, 14, 0.68);
+            box-shadow:
+              0 16px 40px rgba(0, 0, 0, 0.24),
+              inset 0 1px 0 rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(16px) saturate(1.06);
+            -webkit-backdrop-filter: blur(16px) saturate(1.06);
+          }
+
+          .posPremiumProductCard:hover {
+            border-color: rgba(136, 228, 255, 0.42);
+            background:
+              linear-gradient(154deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.026) 54%),
+              rgba(6, 12, 18, 0.72);
+            box-shadow:
+              0 18px 42px rgba(0, 0, 0, 0.26),
+              0 0 22px rgba(123, 225, 255, 0.12),
+              0 0 44px rgba(123, 225, 255, 0.08),
+              inset 0 1px 0 rgba(255, 255, 255, 0.11);
+          }
+
+          .posPremiumProductText {
+            background: linear-gradient(180deg, rgba(4, 8, 13, 0.10), rgba(4, 8, 13, 0.58));
+          }'''.replace('          ', ''),
+          '''  .posPremiumProductCard {
+            border-color: rgba(231, 242, 251, 0.18);
+            background:
+              linear-gradient(154deg, rgba(255, 255, 255, 0.048), rgba(255, 255, 255, 0.012) 54%),
+              rgba(4, 9, 14, 0.38);
+            box-shadow:
+              0 14px 34px rgba(0, 0, 0, 0.20),
+              inset 0 1px 0 rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(14px) saturate(1.05);
+            -webkit-backdrop-filter: blur(14px) saturate(1.05);
+          }
+
+          .posPremiumProductCard:hover {
+            border-color: rgba(136, 228, 255, 0.36);
+            background:
+              linear-gradient(154deg, rgba(255, 255, 255, 0.060), rgba(255, 255, 255, 0.018) 54%),
+              rgba(6, 12, 18, 0.46);
+            box-shadow:
+              0 17px 38px rgba(0, 0, 0, 0.22),
+              0 0 22px rgba(123, 225, 255, 0.10),
+              inset 0 1px 0 rgba(255, 255, 255, 0.09);
+          }
+
+          .posPremiumProductText {
+            background: linear-gradient(180deg, rgba(4, 8, 13, 0.06), rgba(4, 8, 13, 0.38));
+          }'''.replace('          ', ''),
+          'PRODUCT_GLASS')
+
+          replace_once(
+          '''  .posPremiumCategoryButton,
+          .posPremiumCategoryButtonActive {
+            background: rgba(4, 9, 15, 0.46);
+          }'''.replace('          ', ''),
+          '''  .posPremiumCategoryButton,
+          .posPremiumCategoryButtonActive {
+            background: rgba(4, 9, 15, 0.28);
+          }'''.replace('          ', ''),
+          'CATEGORY_FINAL')
+
+          cobrar_start = text.index('  .cobrarReferenceButton {')
+          cobrar_end = text.index('  .posPremiumTicketOptions,', cobrar_start)
+          cobrar_after = hashlib.sha256(text[cobrar_start:cobrar_end].encode()).hexdigest()
+          if cobrar_after != expected_cobrar:
+              raise SystemExit(f'COBRAR_CHANGED:{cobrar_after}:{expected_cobrar}')
+
+          if '!important' in text:
+              raise SystemExit('POS_OWNER_IMPORTANT_FORBIDDEN')
+          path.write_text(text, encoding='utf-8', newline='\n')
+          print('PASS_POS_ATLASFIN_PATCH')
+          print('COBRAR_REGION_SHA256=' + cobrar_after)
+          print('POS_SOURCE_SHA256=' + hashlib.sha256(text.encode()).hexdigest())
+          PY
+
+      - name: Regenerate governed Tablet visual runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit 09637233dfd2de00db3276fca1fb90beae82aa59
+          python prisma-html/tools/generate_tablet_visual_runtime.py --check
+          python prisma-html/tools/validate_rifat_authority.py
+          node apps/terminal-de-venta-system/products/tablet/app/tools/verify_rifat_tablet_visual_runtime.mjs
+          node tools/quality/verify-zero-important.mjs --mode repo-tree --format text
+          git diff --check
+
+      - name: Enforce Tablet-only generated scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short
+          python - <<'PY'
+          import subprocess
+          allowed = {
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css',
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json',
+              'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/authority-lock.json',
+              'apps/terminal-de-venta-system/.prisma-ui/AUTHORITY_LOCK.json',
+              '.github/workflows/tablet-pos-atlasfin-apply.yml',
+          }
+          changed = set(subprocess.check_output(['git','status','--porcelain'], text=True).splitlines())
+          paths = {line[3:] for line in changed if len(line) > 3}
+          extra = sorted(paths - allowed)
+          if extra:
+              raise SystemExit('UNEXPECTED_SCOPE:' + ','.join(extra))
+          print('PASS_TABLET_ONLY_SCOPE')
+          PY
+
+      - name: Commit governed result and retire transient runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -f .github/workflows/tablet-pos-atlasfin-apply.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css \
+            prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css \
+            apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css \
+            apps/terminal-de-venta-system/products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css \
+            apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json \
+            apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/authority-lock.json \
+            apps/terminal-de-venta-system/.prisma-ui/AUTHORITY_LOCK.json \
+            .github/workflows/tablet-pos-atlasfin-apply.yml
+          if git diff --cached --quiet; then
+            echo 'NO_CHANGES_TO_COMMIT'
+            exit 0
+          fi
+          git diff --cached --check
+          git commit -m 'style(tablet): apply Atlasfin POS composition through RIFAT'
+          git push origin HEAD:feat/tablet-pos-atlasfin-vender-v1
