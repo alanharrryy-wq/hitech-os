@@ -36,6 +36,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # The gate must evaluate the canonical product HEAD, not this disposable carrier commit.
+          git checkout --detach e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1
+          test "$(git rev-parse HEAD)" = "e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1"
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
           cat > "$RUNNER_TEMP/sync-sentinel-gate-request.json" <<'JSON'
