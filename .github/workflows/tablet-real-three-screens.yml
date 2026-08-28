@@ -1,0 +1,243 @@
+name: Tablet Real Three Screen PNG Evidence
+
+on:
+  push:
+    branches:
+      - evidence/tablet-real-three-screens-2808
+    paths:
+      - '.github/workflows/tablet-real-three-screens.yml'
+      - '.github/evidence/tablet-real-three-screens.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tablet-real-three-screens-2808
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  AUTHORIZED_MAIN: 28b7d782906003e2ac399ae89d81e824d3268d53
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-real-three-screens
+  RUNTIME_PORT: '3120'
+  CHROME_DEBUG_PORT: '9224'
+
+jobs:
+  capture-real-tablet-screens:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout disposable evidence carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Pin exact main and isolate capture harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          echo "AUTHORIZED_MAIN=$AUTHORIZED_MAIN"
+          echo "CURRENT_ORIGIN_MAIN=$(git rev-parse origin/main)"
+          changed="$(git diff --name-only "$AUTHORIZED_MAIN"..HEAD | sort)"
+          expected="$(printf '%s\n' '.github/evidence/tablet-real-three-screens.mjs' '.github/workflows/tablet-real-three-screens.yml' | sort)"
+          test "$changed" = "$expected" || { echo 'EVIDENCE_CARRIER_SCOPE_DRIFT'; printf '%s\n' "$changed"; exit 41; }
+          cp .github/evidence/tablet-real-three-screens.mjs "$RUNNER_TEMP/tablet-real-three-screens.mjs"
+          git checkout --detach "$AUTHORIZED_MAIN"
+          test "$(git rev-parse HEAD)" = "$AUTHORIZED_MAIN"
+          test -z "$(git status --porcelain)"
+          mkdir -p "$EVIDENCE_DIR"
+          cat > "$EVIDENCE_DIR/scope.json" <<JSON
+          {"schemaVersion":"tablet.real.three.screens.v1","productTarget":"$AUTHORIZED_MAIN","routes":["/stock","/sales/today","/shift"],"viewport":{"width":1365,"height":900},"productMutation":false,"productionDbMutation":false,"runnerEphemeralFixtureDb":true,"runnerEphemeralLicense":true,"imageGeneration":false}
+          JSON
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install Tablet without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
+          test -x "$APP_ROOT/node_modules/.bin/next"
+          test -x "$APP_ROOT/node_modules/.bin/prisma"
+
+      - name: Generate Prisma client runner-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DATABASE_URL='file:/dev/null'
+          pnpm -C "$APP_ROOT" run prisma:generate 2>&1 | tee "$EVIDENCE_DIR/prisma-generate.log"
+          test -f "$APP_ROOT/.generated/prisma-client/index.js"
+          if grep -Eiq '(migrate|db push|seed)' "$EVIDENCE_DIR/prisma-generate.log"; then
+            echo 'BLOCKED unexpected database lifecycle operation'
+            exit 1
+          fi
+          printf 'PASS_RUNNER_EPHEMERAL_PRISMA_GENERATE_ONLY\n' > "$EVIDENCE_DIR/prisma-generate-result.txt"
+
+      - name: Prepare runner-local runtime fixture
+        shell: bash
+        env:
+          PILOT_DB: ${{ runner.temp }}/tablet-three-screens.db
+          PILOT_LICENSE: ${{ runner.temp }}/tablet-three-screens-license.json
+        run: |
+          set -euo pipefail
+          rm -f "$PILOT_DB" "$PILOT_LICENSE"
+          python - <<'PY'
+          import os, sqlite3, json
+          db=os.environ['PILOT_DB']; c=sqlite3.connect(db)
+          c.executescript('''
+          CREATE TABLE "Business" ("id" TEXT PRIMARY KEY, "name" TEXT NOT NULL, "taxId" TEXT, "currency" TEXT NOT NULL DEFAULT 'MXN', "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Store" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "code" TEXT NOT NULL, "name" TEXT NOT NULL, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Terminal" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "storeId" TEXT NOT NULL, "code" TEXT NOT NULL, "name" TEXT NOT NULL, "isActive" INTEGER NOT NULL DEFAULT 1, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "CashSession" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "storeId" TEXT NOT NULL, "terminalId" TEXT NOT NULL, "cashierId" TEXT NOT NULL, "cashier" TEXT NOT NULL, "status" TEXT NOT NULL, "openedAt" DATETIME NOT NULL, "openingFloatCents" INTEGER NOT NULL DEFAULT 0, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Product" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "isActive" INTEGER NOT NULL DEFAULT 1, "stockOnHand" INTEGER NOT NULL DEFAULT 0);
+          CREATE TABLE "StockMovement" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "createdAt" DATETIME NOT NULL);
+          CREATE TABLE "OutboxEvent" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL);
+          CREATE TABLE "Sale" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL, "createdAt" DATETIME NOT NULL, "terminalId" TEXT);
+          CREATE TABLE "SaleReturn" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL, "createdAt" DATETIME NOT NULL);
+          ''')
+          now='2026-08-28T06:00:00.000Z'; business='biz_78b3c840796a4a4dad'; store='store_00728649f3804a9e82'; terminal='term_49103c7382d84663a3'
+          c.execute('INSERT INTO Business VALUES(?,?,?,?,?,?)',(business,'Prisma Original Customer',None,'MXN',now,now))
+          c.execute('INSERT INTO Store VALUES(?,?,?,?,?,?)',(store,business,'CENTRO','Sucursal principal',now,now))
+          c.execute('INSERT INTO Terminal VALUES(?,?,?,?,?,?,?,?)',(terminal,business,store,'TB-01','Tablet Caja 1',1,now,now))
+          c.execute('INSERT INTO CashSession VALUES(?,?,?,?,?,?,?,?,?,?,?)',('shift-real-shot',business,store,terminal,'cashier-ana','Ana Caja','OPEN',now,500000,now,now))
+          for i,stock in enumerate((24,3,13,0,32,7,40),1): c.execute('INSERT INTO Product VALUES(?,?,1,?)',(f'prod-{i}',business,stock))
+          c.commit(); c.close()
+          license_doc={
+            'schemaVersion':'1.0.0','licenseId':'lic_tablet_three_screens','customerId':'cust_prisma_original_customer','businessId':business,
+            'storeId':store,'terminalId':terminal,'plan':'DEVELOPMENT','state':'development','assignmentState':'assigned',
+            'validFrom':'2026-01-01T00:00:00.000Z','validUntil':'2027-12-31T23:59:59.000Z','offlineGraceDays':30,
+            'notes':['Runner-local screenshot fixture only.']
+          }
+          with open(os.environ['PILOT_LICENSE'],'w',encoding='utf-8') as f: json.dump(license_doc,f,ensure_ascii=False,indent=2)
+          PY
+          test -s "$PILOT_DB"
+          test -s "$PILOT_LICENSE"
+          printf 'PASS_RUNNER_LOCAL_FIXTURE_ONLY\n' > "$EVIDENCE_DIR/fixture-result.txt"
+
+      - name: Resolve Chrome
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=''
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do
+            command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break
+          done
+          test -n "$chrome"
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome-version.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start exact-main Tablet runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          db="$RUNNER_TEMP/tablet-three-screens.db"
+          license="$RUNNER_TEMP/tablet-three-screens-license.json"
+          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/stock" >/dev/null 2>&1; then
+            echo "BLOCKED occupied runner port $RUNTIME_PORT"
+            exit 1
+          fi
+          setsid bash -lc "cd '$APP_ROOT' && export TABLET_DATABASE_URL='file:$db' TABLET_OPERATOR_NAME='Ana Caja' PRISMA_LICENSE_FILE='$license' PRISMA_LICENSE_ALLOW_UNSIGNED='1' PRISMA_RUNTIME_MODE='dev' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/server.pid"
+          for _ in $(seq 1 120); do
+            curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/stock" >/dev/null 2>&1 && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break
+            sleep 1
+          done
+          tail -n 240 "$EVIDENCE_DIR/server.log" || true
+          exit 1
+
+      - name: Start isolated headless Chrome
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: |
+          set -euo pipefail
+          "$CHROME_BIN" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-address=127.0.0.1 --remote-debugging-port="$CHROME_DEBUG_PORT" --user-data-dir="$RUNNER_TEMP/tablet-real-three-chrome" about:blank > "$EVIDENCE_DIR/chrome-runtime.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/chrome.pid"
+          for _ in $(seq 1 80); do
+            curl -sf --max-time 1 "http://127.0.0.1:$CHROME_DEBUG_PORT/json/version" > "$EVIDENCE_DIR/chrome-debug.json" 2>/dev/null && exit 0
+            sleep 0.25
+          done
+          exit 1
+
+      - name: Capture real Inventory Sales Shift PNGs
+        shell: bash
+        env:
+          RUNTIME_URL: http://127.0.0.1:3120
+        run: |
+          set -euo pipefail
+          node "$RUNNER_TEMP/tablet-real-three-screens.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+          grep -Fxq 'PASS_TABLET_REAL_THREE_SCREENS' "$EVIDENCE_DIR/browser-capture.log"
+          test -s "$EVIDENCE_DIR/screenshots/01-inventario-real.png"
+          test -s "$EVIDENCE_DIR/screenshots/02-ventas-de-hoy-real.png"
+          test -s "$EVIDENCE_DIR/screenshots/03-turno-caja-real.png"
+
+      - name: Validate runtime did not fake green
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require('fs');
+          const x=JSON.parse(fs.readFileSync('evidence/tablet-real-three-screens/browser-results.json','utf8'));
+          if(!Array.isArray(x.captures)||x.captures.length!==3) process.exit(1);
+          if(x.unexpected.runtimeErrors.length||x.unexpected.consoleErrors.length||x.unexpected.networkErrors.length) process.exit(2);
+          const expected=['/stock','/sales/today','/shift'];
+          if(JSON.stringify(x.captures.map(c=>c.state.route))!==JSON.stringify(expected)) process.exit(3);
+          NODE
+          if grep -E '(^|[^A-Za-z])(TypeError|ReferenceError|SyntaxError|Unhandled Runtime Error|Internal Server Error)([^A-Za-z]|$)|^[[:space:]]*⨯' "$EVIDENCE_DIR/server.log" > "$EVIDENCE_DIR/server-anomalies.log"; then
+            cat "$EVIDENCE_DIR/server-anomalies.log"
+            exit 1
+          fi
+          printf 'PASS_REAL_THREE_SCREEN_RUNTIME_NO_FAKE_GREEN\n' > "$EVIDENCE_DIR/FINAL_RESULT.txt"
+
+      - name: Build evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('evidence/tablet-real-three-screens')
+          shots=sorted((root/'screenshots').glob('*.png')) if (root/'screenshots').exists() else []
+          rows=[{'name':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in shots]
+          marker=(root/'FINAL_RESULT.txt').read_text().strip() if (root/'FINAL_RESULT.txt').exists() else 'NOT_REACHED'
+          (root/'EVIDENCE_MANIFEST.json').write_text(json.dumps({'productTarget':'28b7d782906003e2ac399ae89d81e824d3268d53','routes':['/stock','/sales/today','/shift'],'viewport':'1365x900','screenshots':rows,'finalMarker':marker,'imageGeneration':False,'productMutation':False,'productionDbMutation':False,'fixtureData':'runner-local'},indent=2)+'\n')
+          PY
+
+      - name: Stop runner-owned processes
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          for pidfile in "$EVIDENCE_DIR/chrome.pid" "$EVIDENCE_DIR/server.pid"; do
+            [ ! -f "$pidfile" ] || kill "$(cat "$pidfile")" >/dev/null 2>&1 || true
+          done
+
+      - name: Upload real three-screen PNG evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-real-three-screens-png
+          path: ${{ env.EVIDENCE_DIR }}/**
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Final evidence gate
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fxq 'PASS_REAL_THREE_SCREEN_RUNTIME_NO_FAKE_GREEN' "$EVIDENCE_DIR/FINAL_RESULT.txt"
+          test -s "$EVIDENCE_DIR/screenshots/01-inventario-real.png"
+          test -s "$EVIDENCE_DIR/screenshots/02-ventas-de-hoy-real.png"
+          test -s "$EVIDENCE_DIR/screenshots/03-turno-caja-real.png"
