@@ -51,31 +51,35 @@ jobs:
           from pathlib import Path
 
           path = Path('.github/workflows/tablet-pos-atlasfin-composition-apply.yml')
-          text = path.read_text(encoding='utf-8')
+          lines = path.read_text(encoding='utf-8').splitlines()
 
-          old_parent = '''          test "$(git rev-parse HEAD^)" = "$expected_main" || { echo "CARRIER_PARENT_NOT_AUTHORIZED_MAIN"; exit 42; }'''
-          new_parent = '''          mapfile -t carrier_diff < <(git diff --name-only "$expected_main"..HEAD)
-          printf 'CARRIER_DIFF=%s\\n' "${carrier_diff[*]}"
-          for file in "${carrier_diff[@]}"; do
-            case "$file" in
-              '.github/workflows/tablet-pos-atlasfin-composition-apply.yml'|'.github/workflows/tablet-pos-atlasfin-composition-repair.yml') ;;
-              *) echo "CARRIER_HISTORY_CONTAMINATION:$file"; exit 42 ;;
-            esac
-          done'''
-          if text.count(old_parent) != 1:
-              raise SystemExit('CARRIER_PARENT_GUARD_PREIMAGE_DRIFT')
-          text = text.replace(old_parent, new_parent, 1)
+          parent_hits = [i for i, line in enumerate(lines) if 'CARRIER_PARENT_NOT_AUTHORIZED_MAIN' in line]
+          if len(parent_hits) != 1:
+              raise SystemExit(f'CARRIER_PARENT_GUARD_HITS:{parent_hits}')
+          i = parent_hits[0]
+          indent = lines[i][:len(lines[i]) - len(lines[i].lstrip())]
+          replacement = [
+              indent + 'mapfile -t carrier_diff < <(git diff --name-only "$expected_main"..HEAD)',
+              indent + 'printf \'CARRIER_DIFF=%s\\n\' "${carrier_diff[*]}"',
+              indent + 'for file in "${carrier_diff[@]}"; do',
+              indent + '  case "$file" in',
+              indent + "    '.github/workflows/tablet-pos-atlasfin-composition-apply.yml'|'.github/workflows/tablet-pos-atlasfin-composition-repair.yml') ;;",
+              indent + '    *) echo "CARRIER_HISTORY_CONTAMINATION:$file"; exit 42 ;;',
+              indent + '  esac',
+              indent + 'done',
+          ]
+          lines[i:i+1] = replacement
 
-          old_gate = '''          node tools/quality/verify-zero-important.mjs --mode repo-tree --format text
-          git diff --check'''
-          new_gate = '''          node tools/quality/verify-zero-important.mjs --mode repo-tree --format text
-          find . -maxdepth 1 -type d -name 'zero-important-gate *' -print -exec rm -rf -- {} +
-          git diff --check'''
-          if text.count(old_gate) != 1:
-              raise SystemExit('ZERO_IMPORTANT_GATE_ANCHOR_DRIFT')
-          text = text.replace(old_gate, new_gate, 1)
+          gate_hits = [i for i, line in enumerate(lines) if line.strip() == 'node tools/quality/verify-zero-important.mjs --mode repo-tree --format text']
+          if len(gate_hits) != 1:
+              raise SystemExit(f'ZERO_IMPORTANT_GATE_HITS:{gate_hits}')
+          j = gate_hits[0]
+          gate_indent = lines[j][:len(lines[j]) - len(lines[j].lstrip())]
+          cleanup = gate_indent + "find . -maxdepth 1 -type d -name 'zero-important-gate *' -print -exec rm -rf -- {} +"
+          if cleanup not in lines:
+              lines.insert(j + 1, cleanup)
 
-          path.write_text(text, encoding='utf-8', newline='\n')
+          path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
           print('PASS_CARRIER_REPAIR')
           PY
           git diff --check
