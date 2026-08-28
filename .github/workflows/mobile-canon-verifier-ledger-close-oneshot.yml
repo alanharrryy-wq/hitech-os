@@ -1,0 +1,159 @@
+name: Mobile Canon Verifier Ledger Close One-shot
+
+on:
+  push:
+    branches:
+      - governance/mobile-canon-verifier-close-2808
+
+permissions:
+  contents: write
+
+jobs:
+  close-ledger:
+    if: github.event.head_commit.message != 'governance(mobile): record verifier reconciliation closure'
+    runs-on: ubuntu-24.04
+    env:
+      EXPECTED_BASE: 28b7d782906003e2ac399ae89d81e824d3268d53
+      BRANCH: governance/mobile-canon-verifier-close-2808
+    steps:
+      - name: Checkout closure branch
+        uses: actions/checkout@v6
+        with:
+          ref: governance/mobile-canon-verifier-close-2808
+          fetch-depth: 0
+
+      - name: Fail closed on main drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$EXPECTED_BASE"
+          test "$(git merge-base HEAD origin/main)" = "$EXPECTED_BASE"
+
+      - name: Update only canonical Ledger and Evidence Index
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          ledger_path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
+          evidence_path = Path('PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json')
+          cap_id = 'mobile.interface_specification_canon'
+
+          ledger = json.loads(ledger_path.read_text(encoding='utf-8'))
+          caps = [c for c in ledger.get('capabilities', []) if c.get('id') == cap_id]
+          if len(caps) != 1:
+              raise SystemExit(f'expected exactly one {cap_id} capability, got {len(caps)}')
+          cap = caps[0]
+          if cap.get('classification') != 'DONE' or cap.get('status') != 'SOURCE_READY' or cap.get('doNotRebuild') is not True:
+              raise SystemExit('canonical Mobile capability is not in expected DONE/SOURCE_READY/doNotRebuild state')
+          if 'Reconcile legacy Mobile verifiers' not in str(cap.get('nextGate', '')):
+              raise SystemExit('stale verifier nextGate was not present; refusing blind rewrite')
+
+          cap['stateLabel'] = 'PASS_MOBILE_INTERFACE_CANON_VERIFIERS_RECONCILED_SOURCE_READY'
+          cap['nextGate'] = (
+              'Run a separate runtime/visual conformance VERIFY against the canonical seven-section /prisma-app interface under '
+              'fresh task-exact authority. Do not mutate Mobile product source unless runtime/visual evidence demonstrates a real defect. '
+              'Hosted production, PWA/offline operational data, signed-session auth, customer setup, sync, licensing, data-custody and '
+              'zero-egress certification remain separate gates.'
+          )
+          additions = [
+              'PR #424 Mobile verifier reconciliation merge 28b7d782906003e2ac399ae89d81e824d3268d53',
+              'Final V4 certification run 33148746934 artifact 9676872731 sha256:afb6f28c01a7991f862fbfe87aff509b5e8a84d5d5e72327f420f1bfe2f88a48',
+              'Post-merge governance close run 33149246082 artifact 9677044001 sha256:f1381c6779c55e758db0da1ad8b0db4b82466c24c029d59f9762d9fbc01f7c01',
+              'PR #424 V4 PASS: fresh Authority Mesh, Factory Ledger MUTATION gate, canonical/current Mobile technical gates, Mobile typecheck and production build'
+          ]
+          ev = cap.setdefault('evidence', [])
+          for item in additions:
+              if item not in ev:
+                  ev.append(item)
+          dnp = cap.setdefault('doesNotProve', [])
+          if 'Legacy Mobile verifier alignment' in dnp:
+              dnp.remove('Legacy Mobile verifier alignment')
+          allowed = cap.setdefault('allowedActions', [])
+          stale = 'reconcile stale Mobile verifier expectations in a separate bounded quality/tooling task under fresh authority'
+          if stale in allowed:
+              allowed[allowed.index(stale)] = 're-run verifier reconciliation only after evidence-backed canon/verifier drift under fresh authority'
+
+          index = json.loads(evidence_path.read_text(encoding='utf-8'))
+          artifacts = index.get('artifacts')
+          if not isinstance(artifacts, list):
+              raise SystemExit('Evidence Index artifacts list missing')
+          new_artifact = {
+              'artifact': 'PR #424 Mobile verifier reconciliation + V4 + post-merge governance close',
+              'type': 'mobile_interface_verifier_reconciliation',
+              'scope': ['mobile', 'governance', 'quality', 'verifiers'],
+              'status': 'PASS_SOURCE_READY_VERIFIERS_RECONCILED',
+              'proves': [
+                  'Legacy Mobile verifier expectations that conflicted with the canonical seven-section interface were reconciled without remounting dormant historical UI',
+                  'The active iteration-41 MultiContext specification and verifier entrypoints are absent while historical archive evidence remains preserved',
+                  'The canonical Mobile interface verifier and current focused Mobile technical gates passed',
+                  'Mobile typecheck and production build passed after installing dependencies from the correct terminal workspace',
+                  'Fresh post-merge Authority Mesh and Factory Ledger MUTATION gate passed against main@28b7d782906003e2ac399ae89d81e824d3268d53'
+              ],
+              'doesNotProve': [
+                  'Runtime or visual conformance certification',
+                  'Hosted production readiness, PWA runtime or offline operational-data capability',
+                  'Signed-session auth, customer setup, sync, licensing, data-custody or zero-egress certification',
+                  'Dormant historical interfaces should be remounted'
+              ],
+              'evidence': [
+                  'PR #424 merge 28b7d782906003e2ac399ae89d81e824d3268d53',
+                  'V4 run 33148746934 artifact 9676872731 sha256:afb6f28c01a7991f862fbfe87aff509b5e8a84d5d5e72327f420f1bfe2f88a48',
+                  'post-merge run 33149246082 artifact 9677044001 sha256:f1381c6779c55e758db0da1ad8b0db4b82466c24c029d59f9762d9fbc01f7c01'
+              ]
+          }
+          if not any(a.get('artifact') == new_artifact['artifact'] for a in artifacts if isinstance(a, dict)):
+              artifacts.append(new_artifact)
+
+          entries = index.get('entries')
+          if not isinstance(entries, list):
+              raise SystemExit('Evidence Index entries list missing')
+          matches = [e for e in entries if isinstance(e, dict) and e.get('capabilityId') == cap_id]
+          if len(matches) != 1:
+              raise SystemExit(f'expected exactly one Evidence Index entry for {cap_id}, got {len(matches)}')
+          entry = matches[0]
+          entry['status'] = 'SOURCE_READY'
+          entry['runId'] = 'PR424_MOBILE_VERIFIER_RECONCILIATION_SOURCE_READY'
+          entry_ev = entry.setdefault('evidence', [])
+          for item in [
+              'PR #424 merge 28b7d782906003e2ac399ae89d81e824d3268d53',
+              'V4 run 33148746934 artifact 9676872731',
+              'post-merge close run 33149246082 artifact 9677044001'
+          ]:
+              if item not in entry_ev:
+                  entry_ev.append(item)
+
+          ledger_path.write_text(json.dumps(ledger, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          evidence_path.write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          PY
+          python -m json.tool 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' >/dev/null
+          python -m json.tool 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json' >/dev/null
+
+      - name: Self-delete carrier and commit exact two-file final diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm '.github/workflows/mobile-canon-verifier-ledger-close-oneshot.yml'
+          git add 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+          mapfile -t staged < <(git diff --cached --name-only | sort)
+          expected=(
+            '.github/workflows/mobile-canon-verifier-ledger-close-oneshot.yml'
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
+          )
+          mapfile -t wanted < <(printf '%s\n' "${expected[@]}" | sort)
+          test "$(printf '%s\n' "${staged[@]}")" = "$(printf '%s\n' "${wanted[@]}")"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'governance(mobile): record verifier reconciliation closure'
+          mapfile -t final_diff < <(git diff --name-only "$EXPECTED_BASE"..HEAD | sort)
+          expected_final=(
+            'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+            'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
+          )
+          mapfile -t wanted_final < <(printf '%s\n' "${expected_final[@]}" | sort)
+          test "$(printf '%s\n' "${final_diff[@]}")" = "$(printf '%s\n' "${wanted_final[@]}")"
+          git push origin "HEAD:$BRANCH"
