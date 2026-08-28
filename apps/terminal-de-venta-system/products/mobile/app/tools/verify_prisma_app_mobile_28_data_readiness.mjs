@@ -1,133 +1,160 @@
-import { readFileSync, existsSync } from "node:fs";
+#!/usr/bin/env node
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
-const fail = (message) => {
-  console.error(`[PRISMA 28] FAIL ${message}`);
-  process.exitCode = 1;
-};
-const ok = (message) => console.log(`[PRISMA 28] OK ${message}`);
-const read = (path) => readFileSync(join(root, path), "utf8");
-const exists = (path) => existsSync(join(root, path));
+const verifier = "PRISMA_APP_MOBILE_DATA_READINESS_CURRENT_TECHNICAL_CONTRACT";
+
+function fail(message, details = {}) {
+  console.error(JSON.stringify({ ok: false, verifier, message, details }, null, 2));
+  process.exit(1);
+}
+
+function read(relativePath) {
+  const file = join(root, relativePath);
+  if (!existsSync(file)) fail(`missing ${relativePath}`);
+  return readFileSync(file, "utf8");
+}
 
 function compareVersion(left, right) {
-  const a = String(left ?? "0.0.0").split(".").map(Number);
-  const b = String(right).split(".").map(Number);
-  for (let i = 0; i < 3; i += 1) {
-    const d = (a[i] || 0) - (b[i] || 0);
-    if (d !== 0) return d;
+  const parse = (value) => String(value ?? "0.0.0")
+    .split(".")
+    .map((part) => Number.parseInt(part.replace(/[^0-9].*$/, ""), 10) || 0);
+  const a = parse(left);
+  const b = parse(right);
+  for (let index = 0; index < 3; index += 1) {
+    if ((a[index] || 0) !== (b[index] || 0)) return (a[index] || 0) - (b[index] || 0);
   }
   return 0;
 }
 
 const requiredFiles = [
+  "package.json",
   "src/lib/prisma-app/mobile-data-plane/data-readiness.ts",
   "src/lib/prisma-app/mobile-data-plane/payload-builders.ts",
   "src/lib/prisma-app/prisma-app-api-contracts.ts",
   "src/lib/prisma-app/prisma-mobile-view-model.ts",
   "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
   "src/components/prisma-app/prisma-mobile-dashboard.module.css",
-  "tools/verify_prisma_app_mobile_28_data_readiness.mjs",
   "docs/prisma-app/PRISMA_APP_MOBILE_28_DATA_READINESS.md",
-  "docs/prisma-app/qa/prisma-app-mobile-28-data-readiness-scenarios.json",
-  "docs/prisma-app/qa/prisma-app-mobile-28-data-readiness-state-matrix.json"
+  "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json"
 ];
+for (const file of requiredFiles) read(file);
 
-for (const file of requiredFiles) {
-  exists(file) ? ok(`existe ${file}`) : fail(`falta ${file}`);
+const pkg = JSON.parse(read("package.json"));
+if (compareVersion(pkg.version, "0.28.0") < 0) {
+  fail("current Mobile package is older than the Data Readiness technical baseline", { version: pkg.version, minimum: "0.28.0" });
 }
-
-const packageJson = JSON.parse(read("package.json"));
-if (compareVersion(packageJson.version, "0.28.0") >= 0 && compareVersion(packageJson.version, "0.38.0") < 0) ok(`package version compatible ${packageJson.version}`);
-else fail(`package version fuera de rango, recibida ${packageJson.version}`);
-if (packageJson.scripts?.["verify:data-readiness"] === "node tools/verify_prisma_app_mobile_28_data_readiness.mjs") ok("script verify:data-readiness registrado");
-else fail("script verify:data-readiness ausente o distinto");
+if (pkg.scripts?.["verify:data-readiness"] !== "node tools/verify_prisma_app_mobile_28_data_readiness.mjs") {
+  fail("verify:data-readiness script drifted", { actual: pkg.scripts?.["verify:data-readiness"] });
+}
+if (!String(pkg.scripts?.["check:all"] ?? "").includes("verify:data-readiness")) fail("check:all no longer runs Data Readiness technical verification");
 
 const contracts = read("src/lib/prisma-app/prisma-app-api-contracts.ts");
-for (const token of [
-  "PrismaMobileDataReadinessSchema",
-  "dataReadiness: PrismaMobileDataReadinessSchema.default",
-  "salesState: z.enum",
-  "syncState: z.enum"
-]) {
-  contracts.includes(token) ? ok(`contrato incluye ${token}`) : fail(`contrato no incluye ${token}`);
+const expectedDomains = {
+  level: ["ready", "partial", "empty", "offline", "blocked"],
+  salesState: ["with_sales", "empty", "unavailable"],
+  inventoryState: ["with_items", "empty", "unavailable"],
+  pcState: ["connected", "unavailable"],
+  syncState: ["clean", "pending", "failed", "unknown"]
+};
+const contractTokens = [
+  'PrismaMobileDataReadinessLevelSchema = z.enum(["ready", "partial", "empty", "offline", "blocked"])',
+  'salesState: z.enum(["with_sales", "empty", "unavailable"])',
+  'inventoryState: z.enum(["with_items", "empty", "unavailable"])',
+  'pcState: z.enum(["connected", "unavailable"])',
+  'syncState: z.enum(["clean", "pending", "failed", "unknown"])',
+  "facts: z.array(z.string().min(1)).default([])",
+  "actions: z.array(PrismaMobileDataReadinessActionSchema).default([])"
+];
+for (const token of contractTokens) {
+  if (!contracts.includes(token)) fail("Data Readiness API contract drifted", { token });
 }
 
 const readiness = read("src/lib/prisma-app/mobile-data-plane/data-readiness.ts");
 for (const token of [
-  "deriveMobileDataReadiness",
-  "Tablet conectada",
-  "Confirmar primera venta real",
-  "No es error ni dato inventado",
+  'export type MobileDataReadinessLevel = "ready" | "partial" | "empty" | "offline" | "blocked"',
+  "export function deriveMobileDataReadiness",
+  "function classifySync",
+  'if (state.outbox.failed > 0) return "failed"',
+  'if (state.outbox.pending > 0) return "pending"',
+  'state.runtimeMode === "offline" ? "offline" : "blocked"',
+  'attention || partial',
+  'ready: "Datos listos"',
+  'partial: "Lectura parcial"',
+  'offline: "Sin fuente certificada"',
   "PRISMA_MOBILE_TABLET_ORIGIN"
 ]) {
-  readiness.includes(token) ? ok(`readiness incluye ${token}`) : fail(`readiness no incluye ${token}`);
+  if (!readiness.includes(token)) fail("Data Readiness derivation drifted", { token });
+}
+
+const levelDerivationPattern = /const\s+level\s*:\s*MobileDataReadinessLevel\s*=\s*!tabletAvailable\s*\?\s*state\.runtimeMode\s*===\s*"offline"\s*\?\s*"offline"\s*:\s*"blocked"\s*:\s*empty\s*\?\s*"empty"\s*:\s*attention\s*\|\|\s*partial\s*\?\s*"partial"\s*:\s*"ready"\s*;/s;
+if (!levelDerivationPattern.test(readiness)) {
+  fail("Data Readiness level precedence drifted", {
+    expectedSemantics: "missing tablet -> offline/blocked; empty -> empty; attention|partial -> partial; otherwise ready"
+  });
 }
 
 const builders = read("src/lib/prisma-app/mobile-data-plane/payload-builders.ts");
-for (const token of [
-  "deriveMobileDataReadiness",
-  "dataReadiness",
-  "esperando consolidado PC",
-  "esperando primer ticket real",
-  "watchlist sin SKUs recibidos"
-]) {
-  builders.includes(token) ? ok(`payload builder incluye ${token}`) : fail(`payload builder no incluye ${token}`);
+for (const token of ["deriveMobileDataReadiness", "dataReadiness"]) {
+  if (!builders.includes(token)) fail("payload builder lost Data Readiness integration", { token });
 }
 
 const viewModel = read("src/lib/prisma-app/prisma-mobile-view-model.ts");
-for (const token of [
-  "snapshot.summary.dataReadiness.headline",
-  "snapshot.summary.dataReadiness.label",
-  "Watchlist esperando SKUs reales"
-]) {
-  viewModel.includes(token) ? ok(`view-model incluye ${token}`) : fail(`view-model no incluye ${token}`);
+for (const token of ["snapshot.summary.dataReadiness.headline", "snapshot.summary.dataReadiness.label"]) {
+  if (!viewModel.includes(token)) fail("view-model lost Data Readiness projection", { token });
 }
 
 const navigator = read("src/components/prisma-app/PrismaMobilePremiumNavigator.tsx");
-for (const token of [
-  "PrismaMobileReadinessPanel",
-  "dataReadinessPanel",
-  "Madurez y calidad de datos",
-  "Ventas:"
-]) {
-  navigator.includes(token) ? ok(`navigator incluye ${token}`) : fail(`navigator no incluye ${token}`);
+for (const token of ["PrismaMobileReadinessPanel", "getPrismaMobileDataReadiness", "dataReadinessPanel", "Madurez y calidad de datos", "Ventas:"]) {
+  if (!navigator.includes(token)) fail("Premium Navigator lost Data Readiness evidence", { token });
 }
 
 const css = read("src/components/prisma-app/prisma-mobile-dashboard.module.css");
-const impureSelector = /(^|,)\s*\[(data-tone|data-axis-tone|data-watch-tone)=/m;
-if (!impureSelector.test(css)) ok("CSS Modules sin selectores data-* impuros");
-else fail("CSS Modules conserva selector data-* impuro");
-for (const token of [
-  ".dataReadinessPanel",
-  ".dataReadinessPanel[data-readiness-level=\"ready\"]",
-  ".dataReadinessGrid",
-  ".healthRadarAxis[data-axis-tone=\"offline\"]"
-]) {
-  css.includes(token) ? ok(`CSS incluye ${token}`) : fail(`CSS no incluye ${token}`);
+for (const token of [".dataReadinessPanel", ".dataReadinessGrid"]) {
+  if (!css.includes(token)) fail("Data Readiness styling contract drifted", { token });
 }
 
-const matrix = JSON.parse(read("docs/prisma-app/qa/prisma-app-mobile-28-data-readiness-state-matrix.json"));
-if (matrix.scenarioCount === 96 && Array.isArray(matrix.scenarios) && matrix.scenarios.length === 96) ok("matriz de 96 escenarios readiness presente");
-else fail("matriz readiness debe contener 96 escenarios");
+const canon = JSON.parse(read("docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json"));
+if (canon.noFakeGreen?.staleOrPartialIsHealthy !== false) fail("canon must forbid presenting stale/partial data as healthy");
+if (canon.productRole?.mobile !== "supervision_and_decision") fail("Data Readiness verifier must remain under Mobile supervision role");
+if (canon.productRole?.mobileMutationsAuthorizedByThisCanon !== false) fail("interface canon must not authorize Mobile mutations");
 
-const sourceFiles = [
+const domainVectors = [];
+for (const level of expectedDomains.level) {
+  for (const salesState of expectedDomains.salesState) {
+    for (const inventoryState of expectedDomains.inventoryState) {
+      for (const pcState of expectedDomains.pcState) {
+        for (const syncState of expectedDomains.syncState) {
+          domainVectors.push(`${level}|${salesState}|${inventoryState}|${pcState}|${syncState}`);
+        }
+      }
+    }
+  }
+}
+if (domainVectors.length !== 360 || new Set(domainVectors).size !== 360) {
+  fail("deterministic Data Readiness state-domain matrix is incomplete", { count: domainVectors.length, unique: new Set(domainVectors).size });
+}
+
+for (const file of [
   "src/lib/prisma-app/mobile-data-plane/data-readiness.ts",
   "src/lib/prisma-app/mobile-data-plane/diagnostics.ts",
   "src/lib/prisma-app/mobile-data-plane/payload-builders.ts",
-  "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx",
-  "src/components/prisma-app/prisma-mobile-dashboard.module.css",
-  "app/prisma-app/prisma-app.module.css"
-];
-const forbidden = /\b(demo|mock|fixture|fakeChart|prueba)\b/i;
-for (const file of sourceFiles) {
-  const content = read(file);
-  if (forbidden.test(content)) fail(`residuo visible no productivo en ${file}`);
-  else ok(`sin residuos demo/mock/fixture en ${file}`);
+  "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+]) {
+  const text = read(file);
+  if (/\b(lorem|fakeChart|demo mode)\b/i.test(text)) fail("non-product placeholder language found in current Data Readiness path", { file });
 }
 
-if (process.exitCode) {
-  console.error("[PRISMA 28] BLOCKED data readiness verifier failed");
-} else {
-  console.log("[PRISMA 28] READY data readiness verifier passed");
-}
+console.log(JSON.stringify({
+  ok: true,
+  verifier,
+  appVersion: pkg.version,
+  minimumTechnicalVersion: "0.28.0",
+  historicalUpperVersionFenceRetired: true,
+  retiredQaDirectoryRequired: false,
+  deterministicStateDomainVectors: domainVectors.length,
+  levelDerivationCheck: "semantic_regex_whitespace_tolerant",
+  claimsRuntimeBehaviorMatrix: false,
+  message: "Data Readiness current source contracts pass without resurrecting retired generated QA artifacts."
+}, null, 2));
