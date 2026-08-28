@@ -79,7 +79,6 @@ for (const token of [
   'if (state.outbox.failed > 0) return "failed"',
   'if (state.outbox.pending > 0) return "pending"',
   'state.runtimeMode === "offline" ? "offline" : "blocked"',
-  'empty ? "empty"',
   'attention || partial',
   'ready: "Datos listos"',
   'partial: "Lectura parcial"',
@@ -87,6 +86,13 @@ for (const token of [
   "PRISMA_MOBILE_TABLET_ORIGIN"
 ]) {
   if (!readiness.includes(token)) fail("Data Readiness derivation drifted", { token });
+}
+
+const levelDerivationPattern = /const\s+level\s*:\s*MobileDataReadinessLevel\s*=\s*!tabletAvailable\s*\?\s*state\.runtimeMode\s*===\s*"offline"\s*\?\s*"offline"\s*:\s*"blocked"\s*:\s*empty\s*\?\s*"empty"\s*:\s*attention\s*\|\|\s*partial\s*\?\s*"partial"\s*:\s*"ready"\s*;/s;
+if (!levelDerivationPattern.test(readiness)) {
+  fail("Data Readiness level precedence drifted", {
+    expectedSemantics: "missing tablet -> offline/blocked; empty -> empty; attention|partial -> partial; otherwise ready"
+  });
 }
 
 const builders = read("src/lib/prisma-app/mobile-data-plane/payload-builders.ts");
@@ -148,6 +154,7 @@ console.log(JSON.stringify({
   historicalUpperVersionFenceRetired: true,
   retiredQaDirectoryRequired: false,
   deterministicStateDomainVectors: domainVectors.length,
+  levelDerivationCheck: "semantic_regex_whitespace_tolerant",
   claimsRuntimeBehaviorMatrix: false,
   message: "Data Readiness current source contracts pass without resurrecting retired generated QA artifacts."
 }, null, 2));
