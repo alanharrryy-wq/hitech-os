@@ -1,0 +1,101 @@
+name: Repair Tablet POS Atlasfin Composition Carrier
+
+on:
+  push:
+    branches:
+      - feat/tablet-pos-atlasfin-composition-governed
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  repair-and-retire:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact governed branch
+        uses: actions/checkout@v6
+        with:
+          ref: feat/tablet-pos-atlasfin-composition-governed
+          fetch-depth: 0
+
+      - name: Lock authorized main and carrier-only history
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_main='bef71b7d092ef43580498988b09c1d56fd0ff474'
+          git fetch origin main
+          actual_main="$(git rev-parse origin/main)"
+          echo "EXPECTED_MAIN=$expected_main"
+          echo "ACTUAL_MAIN=$actual_main"
+          test "$actual_main" = "$expected_main" || { echo "STALE_AUTHORITY_MAIN_MOVED:$actual_main:$expected_main"; exit 41; }
+          mapfile -t changed < <(git diff --name-only "$expected_main"..HEAD)
+          printf 'CARRIER_DIFF=%s\n' "${changed[*]}"
+          for file in "${changed[@]}"; do
+            case "$file" in
+              '.github/workflows/tablet-pos-atlasfin-composition-apply.yml'|'.github/workflows/tablet-pos-atlasfin-composition-repair.yml') ;;
+              *) echo "CARRIER_HISTORY_CONTAMINATION:$file"; exit 42 ;;
+            esac
+          done
+
+      - name: Harden retry semantics and clean verifier report debris
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('.github/workflows/tablet-pos-atlasfin-composition-apply.yml')
+          text = path.read_text(encoding='utf-8')
+
+          old_parent = '''          test "$(git rev-parse HEAD^)" = "$expected_main" || { echo "CARRIER_PARENT_NOT_AUTHORIZED_MAIN"; exit 42; }'''
+          new_parent = '''          mapfile -t carrier_diff < <(git diff --name-only "$expected_main"..HEAD)
+          printf 'CARRIER_DIFF=%s\\n' "${carrier_diff[*]}"
+          for file in "${carrier_diff[@]}"; do
+            case "$file" in
+              '.github/workflows/tablet-pos-atlasfin-composition-apply.yml'|'.github/workflows/tablet-pos-atlasfin-composition-repair.yml') ;;
+              *) echo "CARRIER_HISTORY_CONTAMINATION:$file"; exit 42 ;;
+            esac
+          done'''
+          if text.count(old_parent) != 1:
+              raise SystemExit('CARRIER_PARENT_GUARD_PREIMAGE_DRIFT')
+          text = text.replace(old_parent, new_parent, 1)
+
+          old_gate = '''          node tools/quality/verify-zero-important.mjs --mode repo-tree --format text
+          git diff --check'''
+          new_gate = '''          node tools/quality/verify-zero-important.mjs --mode repo-tree --format text
+          find . -maxdepth 1 -type d -name 'zero-important-gate *' -print -exec rm -rf -- {} +
+          git diff --check'''
+          if text.count(old_gate) != 1:
+              raise SystemExit('ZERO_IMPORTANT_GATE_ANCHOR_DRIFT')
+          text = text.replace(old_gate, new_gate, 1)
+
+          path.write_text(text, encoding='utf-8', newline='\n')
+          print('PASS_CARRIER_REPAIR')
+          PY
+          git diff --check
+
+      - name: Retire repair carrier and push hardened one-shot runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -f .github/workflows/tablet-pos-atlasfin-composition-repair.yml
+          git add .github/workflows/tablet-pos-atlasfin-composition-apply.yml .github/workflows/tablet-pos-atlasfin-composition-repair.yml
+          mapfile -t staged < <(git diff --cached --name-only)
+          printf 'STAGED=%s\n' "${staged[*]}"
+          for file in "${staged[@]}"; do
+            case "$file" in
+              '.github/workflows/tablet-pos-atlasfin-composition-apply.yml'|'.github/workflows/tablet-pos-atlasfin-composition-repair.yml') ;;
+              *) echo "REPAIR_SCOPE_VIOLATION:$file"; exit 51 ;;
+            esac
+          done
+          git diff --cached --check
+          git config user.name 'PRISMA Governed Carrier'
+          git config user.email 'governance@local.invalid'
+          git commit -m 'ci(tablet): harden governed POS composition carrier retry'
+          git push origin HEAD:feat/tablet-pos-atlasfin-composition-governed
