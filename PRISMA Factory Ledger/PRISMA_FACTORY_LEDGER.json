@@ -1138,9 +1138,9 @@
       ],
       "classification": "DONE",
       "status": "SOURCE_READY",
-      "stateLabel": "PASS_MOBILE_INTERFACE_CANON_SOURCE_READY",
+      "stateLabel": "PASS_MOBILE_INTERFACE_CANON_VERIFIERS_RECONCILED_SOURCE_READY",
       "doNotRebuild": true,
-      "nextGate": "Reconcile legacy Mobile verifiers that still encode superseded mounting/version expectations under a fresh task-exact Authority Mesh and MUTATION anti-rework gate. Do not remount dormant historical interfaces to satisfy stale tests. Runtime/visual conformance certification is a separate later VERIFY gate and must not mutate Mobile product source unless evidence demonstrates a real defect.",
+      "nextGate": "Run a separate runtime/visual conformance VERIFY against the canonical seven-section /prisma-app interface under fresh task-exact authority. Do not mutate Mobile product source unless runtime/visual evidence demonstrates a real defect. Hosted production, PWA/offline operational data, signed-session auth, customer setup, sync, licensing, data-custody and zero-egress certification remain separate gates.",
       "evidence": [
         "PR #393 registration merge 0916227707aa65b673195d554297bf8f8565d356",
         "PR #395 canonical Mobile interface specification merge 615d6732fd733696a60bb549bc88b23c0b573de4",
@@ -1149,12 +1149,15 @@
         "PR #395 final checks 9/9 PASS including forgeos-quality-gate, guardrails and failure-injection lanes",
         "Pre-merge Authority Mesh run 32877668997 artifact 9574572977 sha256:24e2cf613ae89b9880daafc33c79b128f36e791ea276190753f3b0e5a18512a9",
         "Fresh post-merge/current-main Authority Mesh run 32922500990 artifact 9590323223 sha256:96b3440c6987cca0493d5b9a27e4c3447de12c2a9a738dbe1841436fc057f40f",
-        "Current-main Authority Mesh requestDigest 5b12cf847b1207c03fbf9b1b40cca348d2e509301ad1c6fe8ce1dcab10952006"
+        "Current-main Authority Mesh requestDigest 5b12cf847b1207c03fbf9b1b40cca348d2e509301ad1c6fe8ce1dcab10952006",
+        "PR #424 Mobile verifier reconciliation merge 28b7d782906003e2ac399ae89d81e824d3268d53",
+        "Final V4 certification run 33148746934 artifact 9676872731 sha256:afb6f28c01a7991f862fbfe87aff509b5e8a84d5d5e72327f420f1bfe2f88a48",
+        "Post-merge governance close run 33149246082 artifact 9677044001 sha256:f1381c6779c55e758db0da1ad8b0db4b82466c24c029d59f9762d9fbc01f7c01",
+        "PR #424 V4 PASS: fresh Authority Mesh, Factory Ledger MUTATION gate, canonical/current Mobile technical gates, Mobile typecheck and production build"
       ],
       "doesNotProve": [
         "Current Mobile product source or runtime conforms to every requirement of the canon",
         "Runtime or visual certification",
-        "Legacy Mobile verifier alignment",
         "Hosted production readiness, PWA install/runtime correctness or offline operational-data capability",
         "Runtime signed-session auth, customer setup, sync, licensing, data-custody or zero-egress certification",
         "Dormant historical components should be remounted"
@@ -1162,7 +1165,7 @@
       "allowedActions": [
         "reuse PRISMA_MOBILE_INTERFACE_CANON.md and its contract as the sole normative Mobile interface specification",
         "run read-only source/route conformance audits against the canon",
-        "reconcile stale Mobile verifier expectations in a separate bounded quality/tooling task under fresh authority",
+        "re-run verifier reconciliation only after evidence-backed canon/verifier drift under fresh authority",
         "run separate runtime/visual certification without widening this source-ready claim"
       ],
       "forbiddenActions": [
