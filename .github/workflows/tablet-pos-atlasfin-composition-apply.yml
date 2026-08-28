@@ -1,0 +1,418 @@
+name: Tablet POS Atlasfin Composition Governed Apply
+
+on:
+  push:
+    branches:
+      - feat/tablet-pos-atlasfin-composition-governed
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+concurrency:
+  group: tablet-pos-atlasfin-composition-governed
+  cancel-in-progress: false
+
+jobs:
+  apply-verify-and-retire:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout clean governed branch
+        uses: actions/checkout@v6
+        with:
+          ref: feat/tablet-pos-atlasfin-composition-governed
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Lock exact authorized main and source preimages
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_main='bef71b7d092ef43580498988b09c1d56fd0ff474'
+          git fetch origin main
+          actual_main="$(git rev-parse origin/main)"
+          echo "EXPECTED_MAIN=$expected_main"
+          echo "ACTUAL_MAIN=$actual_main"
+          test "$actual_main" = "$expected_main" || { echo "STALE_AUTHORITY_MAIN_MOVED:$actual_main:$expected_main"; exit 41; }
+          test "$(git rev-parse HEAD^)" = "$expected_main" || { echo "CARRIER_PARENT_NOT_AUTHORIZED_MAIN"; exit 42; }
+
+          pos='prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css'
+          terminal='prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css'
+          test "$(git hash-object "$pos")" = 'baa2c6f613abf01a90646a6a14a67dc6215bab3b' || { echo 'POS_PREIMAGE_DRIFT'; exit 43; }
+          test "$(git hash-object "$terminal")" = 'd41007935e758016fac9fae782f94a1109a1e8b8' || { echo 'POS_TERMINAL_PREIMAGE_DRIFT'; exit 44; }
+
+          atlas='prisma-html/extras/atlasfin/assets/css/atlas.css'
+          actual_atlas="$(sha256sum "$atlas" | awk '{print $1}')"
+          echo "ATLAS_CSS_SHA256=$actual_atlas"
+          test "$actual_atlas" = 'aacf34eb423844fb0dc0fe242160992ae01353d40d17ba3588a04542bf691f0d' || { echo 'ATLAS_AUTHORITY_DRIFT'; exit 45; }
+
+      - name: Re-prove universal anti-rework MUTATION decision on exact main
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/tablet-pos-mutation-request.json"
+          cat > "$request" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+            "mode": "MUTATION",
+            "expectedHead": "bef71b7d092ef43580498988b09c1d56fd0ff474",
+            "task": "Apply the bounded governed Atlasfin composition refinement to Tablet /pos outside the frozen certified Cobrar target, regenerate deterministic RIFAT Tablet visual runtime, contain unrelated validator debt, and require BEFORE/AFTER Chromium evidence before visual certification.",
+            "capabilities": [
+              {
+                "id": "visual.atlasfin.tablet_pos_composition",
+                "requestedAction": "FIX"
+              }
+            ],
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "bef71b7d092ef43580498988b09c1d56fd0ff474",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "dc02c93371f12077dbd95acf823af6e9bdc685a71a1ac2e1f0e8700bff04d3cb",
+              "artifactDigest": "sha256:613a14bbcc0c1f83d1cf0eb3ed5bec36aa6883a3656c88bf79f1c9f24825575d",
+              "layerMapPresent": true
+            },
+            "visualMutation": true
+          }
+          JSON
+          worktree="$RUNNER_TEMP/authorized-main"
+          git worktree add --detach "$worktree" bef71b7d092ef43580498988b09c1d56fd0ff474
+          (
+            cd "$worktree"
+            python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$request" \
+              | tee "$RUNNER_TEMP/tablet-pos-mutation-gate-reproof.json"
+          )
+          git worktree remove "$worktree" --force
+          grep -q '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/tablet-pos-mutation-gate-reproof.json"
+
+      - name: Capture exact pre-mutation global RIFAT validator debt
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python prisma-html/tools/validate_rifat_authority.py > "$RUNNER_TEMP/rifat-before.json" 2>&1
+          code=$?
+          set -e
+          echo "RIFAT_BEFORE_EXIT=$code"
+          cat "$RUNNER_TEMP/rifat-before.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ['RUNNER_TEMP']) / 'rifat-before.json'
+          data = json.loads(p.read_text(encoding='utf-8'))
+          print('RIFAT_BEFORE_STATUS=' + str(data.get('status')))
+          print('RIFAT_BEFORE_PROBLEM_COUNT=' + str(len(data.get('problems', []))))
+          PY
+
+      - name: Apply bounded Atlasfin composition to canonical RIFAT owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          POS = Path('prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css')
+          TERMINAL = Path('prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css')
+          CONTRACT = Path('prisma-html/authority/rifat/tablet/runtime.contract.json')
+          expected_cobrar = '4efc69648237f0e066ab4728abf2914bf854b7c7d0f6852b90772c236fa8bfac'
+
+          def replace_once(value, old, new, label):
+              count = value.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}_COUNT:{count}:{old}')
+              return value.replace(old, new, 1)
+
+          def replace_exact(value, old, new, expected, label):
+              count = value.count(old)
+              if count != expected:
+                  raise SystemExit(f'{label}_COUNT:{count}:{expected}:{old}')
+              return value.replace(old, new)
+
+          def mutate_block(value, selector, replacements, start_at=0):
+              start = value.index(selector, start_at)
+              end = value.index('\n  }', start) + len('\n  }')
+              block = value[start:end]
+              for old, new, label in replacements:
+                  block = replace_once(block, old, new, label)
+              return value[:start] + block + value[end:]
+
+          def cobrar_hash(value):
+              start = value.index('  .cobrarReferenceButton {')
+              end = value.index('  .posPremiumTicketOptions,', start)
+              return hashlib.sha256(value[start:end].encode()).hexdigest()
+
+          # Fix the stale Atlasfin CSS authority pointer proven by the canonical generator.
+          contract = CONTRACT.read_text(encoding='utf-8')
+          contract = replace_once(
+              contract,
+              '"cssSha256": "a32e727112c8c2f62170b8e33f34c140330f6a30d826d18e7324f593b3a5841e"',
+              '"cssSha256": "aacf34eb423844fb0dc0fe242160992ae01353d40d17ba3588a04542bf691f0d"',
+              'ATLAS_CONTRACT_HASH',
+          )
+          CONTRACT.write_text(contract, encoding='utf-8', newline='\n')
+
+          # Thin the terminal ticket glass, preserving geometry and component ownership.
+          terminal = TERMINAL.read_text(encoding='utf-8')
+          for old, new, label in [
+              ('border: 1px solid rgba(235, 244, 255, 0.20);', 'border: 1px solid rgba(235, 244, 255, 0.17);', 'TERMINAL_BORDER'),
+              ('rgba(255, 198, 120, 0.09)', 'rgba(255, 198, 120, 0.07)', 'TERMINAL_WARM'),
+              ('rgba(255, 255, 255, 0.055)', 'rgba(255, 255, 255, 0.042)', 'TERMINAL_GLASS_1'),
+              ('rgba(255, 255, 255, 0.012)', 'rgba(255, 255, 255, 0.009)', 'TERMINAL_GLASS_2'),
+              ('rgba(9, 12, 17, 0.54)', 'rgba(7, 11, 16, 0.36)', 'TERMINAL_BASE'),
+              ('0 28px 74px rgba(0, 0, 0, 0.34)', '0 20px 54px rgba(0, 0, 0, 0.27)', 'TERMINAL_SHADOW'),
+              ('inset 0 1px 0 rgba(255, 255, 255, 0.10)', 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', 'TERMINAL_INSET'),
+          ]:
+              terminal = replace_once(terminal, old, new, label)
+          terminal = replace_exact(terminal, 'blur(26px) saturate(1.08)', 'blur(20px) saturate(1.06)', 2, 'TERMINAL_BLUR')
+          if '!important' in terminal:
+              raise SystemExit('POS_TERMINAL_IMPORTANT_FORBIDDEN')
+          TERMINAL.write_text(terminal, encoding='utf-8', newline='\n')
+
+          # Refine ticket rows, category/search chrome and product-card glass outside Cobrar.
+          text = POS.read_text(encoding='utf-8')
+          if cobrar_hash(text) != expected_cobrar:
+              raise SystemExit('COBRAR_BASELINE_DRIFT')
+
+          text = mutate_block(text, '  .posPremiumTicketLine {', [
+              ('    padding: 10px;', '    padding: 10px 2px 11px;', 'TICKET_PADDING'),
+              ('    border: 1px solid rgba(235, 244, 255, 0.14);', '    border: 0;\n    border-bottom: 1px solid rgba(235, 244, 255, 0.10);', 'TICKET_BORDER'),
+              ('    border-radius: 16px;', '    border-radius: 0;', 'TICKET_RADIUS'),
+              ('    background:\n      linear-gradient(155deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.010)),\n      rgba(255, 255, 255, 0.018);', '    background: transparent;', 'TICKET_BG'),
+              ('    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);', '    box-shadow: none;', 'TICKET_SHADOW'),
+          ])
+
+          readability_start = text.index('  /* PRISMA_POS_READABILITY_CONTRACT_2507')
+          glass_start = text.index('  /* PRISMA_POS_GLASS_REBALANCE_2507')
+          prefix = text[:readability_start]
+          readability = text[readability_start:glass_start]
+          glass = text[glass_start:]
+
+          for old, new, label in [
+              ('    min-height: 46px;', '    min-height: var(--prisma-touch-target);', 'READ_TOUCH'),
+              ('rgba(225, 241, 255, 0.16)', 'rgba(225, 241, 255, 0.14)', 'READ_BORDER'),
+              ('rgba(4, 9, 15, 0.66)', 'rgba(4, 9, 15, 0.38)', 'READ_BG'),
+              ('text-shadow: 0 2px 10px rgba(0, 0, 0, 0.92);', 'text-shadow: 0 2px 10px rgba(0, 0, 0, 0.88);', 'READ_SHADOW'),
+              ('rgba(112, 224, 255, 0.58)', 'rgba(112, 224, 255, 0.52)', 'READ_ACTIVE_BORDER'),
+              ('rgba(112, 224, 255, 0.22)', 'rgba(112, 224, 255, 0.17)', 'READ_ACTIVE_G1'),
+              ('rgba(112, 224, 255, 0.075)', 'rgba(112, 224, 255, 0.055)', 'READ_ACTIVE_G2'),
+              ('rgba(5, 15, 22, 0.88)', 'rgba(5, 15, 22, 0.52)', 'READ_ACTIVE_BG'),
+          ]:
+              readability = replace_once(readability, old, new, label)
+
+          glass = replace_exact(glass, 'blur(18px) saturate(1.08)', 'blur(14px) saturate(1.06)', 2, 'GLASS_STICKY_BLUR')
+          for old, new, label in [
+              ('rgba(4, 8, 13, 0.24)', 'rgba(4, 8, 13, 0.16)', 'GLASS_CHROME_G1'),
+              ('rgba(4, 8, 13, 0.08)', 'rgba(4, 8, 13, 0.045)', 'GLASS_CHROME_G2'),
+              ('rgba(5, 10, 16, 0.22)', 'rgba(5, 10, 16, 0.14)', 'GLASS_CHROME_BG'),
+              ('rgba(209, 233, 247, 0.13)', 'rgba(209, 233, 247, 0.12)', 'GLASS_SEARCH_BORDER'),
+              ('rgba(255, 255, 255, 0.045)', 'rgba(255, 255, 255, 0.032)', 'GLASS_SEARCH_G1'),
+              ('rgba(255, 255, 255, 0.012)', 'rgba(255, 255, 255, 0.008)', 'GLASS_SEARCH_G2'),
+              ('rgba(4, 10, 16, 0.30)', 'rgba(4, 10, 16, 0.18)', 'GLASS_SEARCH_BG'),
+              ('0 10px 30px rgba(0, 0, 0, 0.18)', '0 9px 24px rgba(0, 0, 0, 0.14)', 'GLASS_SEARCH_SHADOW'),
+              ('inset 0 1px 0 rgba(255, 255, 255, 0.08)', 'inset 0 1px 0 rgba(255, 255, 255, 0.06)', 'GLASS_SEARCH_INSET'),
+              ('rgba(231, 242, 251, 0.22)', 'rgba(231, 242, 251, 0.18)', 'GLASS_CARD_BORDER'),
+              ('rgba(255, 255, 255, 0.065)', 'rgba(255, 255, 255, 0.048)', 'GLASS_CARD_G1'),
+              ('rgba(255, 255, 255, 0.018)', 'rgba(255, 255, 255, 0.012)', 'GLASS_CARD_G2'),
+              ('rgba(4, 9, 14, 0.68)', 'rgba(4, 9, 14, 0.38)', 'GLASS_CARD_BG'),
+              ('0 16px 40px rgba(0, 0, 0, 0.24)', '0 14px 34px rgba(0, 0, 0, 0.20)', 'GLASS_CARD_SHADOW'),
+              ('inset 0 1px 0 rgba(255, 255, 255, 0.09)', 'inset 0 1px 0 rgba(255, 255, 255, 0.07)', 'GLASS_CARD_INSET'),
+              ('rgba(136, 228, 255, 0.42)', 'rgba(136, 228, 255, 0.36)', 'GLASS_HOVER_BORDER'),
+              ('rgba(255, 255, 255, 0.078)', 'rgba(255, 255, 255, 0.060)', 'GLASS_HOVER_G1'),
+              ('rgba(255, 255, 255, 0.026)', 'rgba(255, 255, 255, 0.018)', 'GLASS_HOVER_G2'),
+              ('rgba(6, 12, 18, 0.72)', 'rgba(6, 12, 18, 0.46)', 'GLASS_HOVER_BG'),
+              ('0 18px 42px rgba(0, 0, 0, 0.26)', '0 17px 38px rgba(0, 0, 0, 0.22)', 'GLASS_HOVER_SHADOW'),
+              ('0 0 22px rgba(123, 225, 255, 0.12),\n      0 0 44px rgba(123, 225, 255, 0.08),', '0 0 22px rgba(123, 225, 255, 0.10),', 'GLASS_HOVER_GLOW'),
+              ('inset 0 1px 0 rgba(255, 255, 255, 0.11)', 'inset 0 1px 0 rgba(255, 255, 255, 0.09)', 'GLASS_HOVER_INSET'),
+              ('background: linear-gradient(180deg, rgba(4, 8, 13, 0.10), rgba(4, 8, 13, 0.58));', 'background: linear-gradient(180deg, rgba(4, 8, 13, 0.06), rgba(4, 8, 13, 0.38));', 'GLASS_PRODUCT_TEXT'),
+              ('background: rgba(4, 9, 15, 0.46);', 'background: rgba(4, 9, 15, 0.28);', 'GLASS_CATEGORY_BG'),
+          ]:
+              glass = replace_once(glass, old, new, label)
+          glass = replace_exact(glass, 'blur(16px) saturate(1.06)', 'blur(14px) saturate(1.05)', 2, 'GLASS_CARD_BLUR')
+
+          text = prefix + readability + glass
+          if cobrar_hash(text) != expected_cobrar:
+              raise SystemExit('COBRAR_CHANGED')
+          if '!important' in text:
+              raise SystemExit('POS_OWNER_IMPORTANT_FORBIDDEN')
+          POS.write_text(text, encoding='utf-8', newline='\n')
+
+          if hashlib.sha256(text.encode()).hexdigest() != '11a7a24230a8133023ac9a58a8493d6d20a01b8005b06174c53e265c5167a86e':
+              raise SystemExit('POS_POSTIMAGE_UNEXPECTED')
+          print('PASS_POS_ATLASFIN_COMPOSITION_PATCH')
+          print('COBRAR_REGION_SHA256=' + cobrar_hash(text))
+          print('POS_SOURCE_SHA256=' + hashlib.sha256(text.encode()).hexdigest())
+          PY
+          test "$(git hash-object prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css)" = 'a9086c7581fe5777494441217c578063e74297c6' || { echo 'POS_TERMINAL_POSTIMAGE_UNEXPECTED'; exit 46; }
+
+      - name: Regenerate deterministic Tablet visual runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/generate_tablet_visual_runtime.py \
+            --authority-commit 09637233dfd2de00db3276fca1fb90beae82aa59
+          python prisma-html/tools/generate_tablet_visual_runtime.py --check
+
+      - name: Refresh only changed RIFAT visual-source hash rows
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          manifest_path = Path('prisma-html/authority/rifat/visual-source-manifest.json')
+          data = json.loads(manifest_path.read_text(encoding='utf-8'))
+          targets = {
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css':
+                  'apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css',
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css':
+                  'apps/terminal-de-venta-system/products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css',
+          }
+          updated = []
+          def sha(path):
+              return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+          for entry in data.get('entries', []):
+              source = entry.get('source')
+              if source not in targets:
+                  continue
+              output = targets[source]
+              if entry.get('output') != output:
+                  raise SystemExit(f'VISUAL_MANIFEST_OUTPUT_DRIFT:{source}:{entry.get("output")}:{output}')
+              entry['sourceSha256'] = sha(source)
+              entry['outputSha256'] = sha(output)
+              updated.append(source)
+          if sorted(updated) != sorted(targets):
+              raise SystemExit('VISUAL_MANIFEST_TARGET_COUNT_OR_PATH_DRIFT:' + repr(updated))
+          manifest_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('PASS_VISUAL_SOURCE_MANIFEST_TARGET_REFRESH')
+          for source in sorted(updated):
+              print(source + '=' + sha(source))
+          PY
+
+      - name: Verify target closure and preserve unrelated validator debt exactly
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/generate_tablet_visual_runtime.py --check
+          set +e
+          python prisma-html/tools/validate_rifat_authority.py > "$RUNNER_TEMP/rifat-after.json" 2>&1
+          after_code=$?
+          set -e
+          echo "RIFAT_AFTER_EXIT=$after_code"
+          cat "$RUNNER_TEMP/rifat-after.json"
+
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          before = json.loads((root / 'rifat-before.json').read_text(encoding='utf-8'))
+          after = json.loads((root / 'rifat-after.json').read_text(encoding='utf-8'))
+          target_markers = (
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css',
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css',
+              'extras/atlasfin/assets/css/atlas.css',
+          )
+          bp = before.get('problems', [])
+          ap = after.get('problems', [])
+          before_other = [p for p in bp if not any(m in p for m in target_markers)]
+          after_other = [p for p in ap if not any(m in p for m in target_markers)]
+          after_target = [p for p in ap if any(m in p for m in target_markers)]
+          print('RIFAT_BEFORE_OTHER=' + json.dumps(before_other, ensure_ascii=False))
+          print('RIFAT_AFTER_OTHER=' + json.dumps(after_other, ensure_ascii=False))
+          print('RIFAT_AFTER_TARGET=' + json.dumps(after_target, ensure_ascii=False))
+          if after_target:
+              raise SystemExit('TARGET_RIFAT_VALIDATOR_DEBT_REMAINS:' + json.dumps(after_target))
+          if before_other != after_other:
+              raise SystemExit('UNRELATED_RIFAT_VALIDATOR_DEBT_CHANGED')
+          print('PASS_RIFAT_TARGET_CLOSURE_WITH_BASELINE_DEBT_CONTAINMENT')
+          PY
+
+          node apps/terminal-de-venta-system/products/tablet/app/tools/verify_rifat_tablet_visual_runtime.mjs
+          node tools/quality/verify-zero-important.mjs --mode repo-tree --format text
+          git diff --check
+
+      - name: Enforce exact Tablet visual scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+          allowed = {
+              '.github/workflows/tablet-pos-atlasfin-composition-apply.yml',
+              'prisma-html/authority/rifat/tablet/runtime.contract.json',
+              'prisma-html/authority/rifat/visual-source-manifest.json',
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css',
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json',
+              'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/authority-lock.json',
+              'apps/terminal-de-venta-system/.prisma-ui/AUTHORITY_LOCK.json',
+          }
+          rows = subprocess.check_output(['git', 'status', '--porcelain'], text=True).splitlines()
+          paths = {row[3:] for row in rows if len(row) > 3}
+          extra = sorted(paths - allowed)
+          missing_sources = sorted({
+              'prisma-html/authority/rifat/tablet/runtime.contract.json',
+              'prisma-html/authority/rifat/visual-source-manifest.json',
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css',
+              'prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css',
+              'apps/terminal-de-venta-system/products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css',
+          } - paths)
+          print('CHANGED_PATHS=' + repr(sorted(paths)))
+          if extra:
+              raise SystemExit('UNEXPECTED_SCOPE:' + ','.join(extra))
+          if missing_sources:
+              raise SystemExit('EXPECTED_TARGET_NOT_CHANGED:' + ','.join(missing_sources))
+          forbidden_prefixes = (
+              'apps/terminal-de-venta-system/products/pc/',
+              'apps/terminal-de-venta-system/products/mobile/',
+              'apps/terminal-de-venta-system/products/chart',
+              'apps/terminal-de-venta-system/packages/shared',
+              'apps/terminal-de-venta-system/prisma/',
+          )
+          if any(path.startswith(forbidden_prefixes) for path in paths):
+              raise SystemExit('FORBIDDEN_SURFACE_TOUCHED')
+          print('PASS_EXACT_TABLET_VISUAL_SCOPE')
+          PY
+
+      - name: Commit governed result and retire transient carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -f .github/workflows/tablet-pos-atlasfin-composition-apply.yml
+          git add \
+            prisma-html/authority/rifat/tablet/runtime.contract.json \
+            prisma-html/authority/rifat/visual-source-manifest.json \
+            prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css \
+            prisma-html/authority/rifat/tablet/runtime-sources/modules/pos-terminal/pos-terminal-surface.module.css \
+            apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css \
+            apps/terminal-de-venta-system/products/tablet/app/components/pos/terminal-v2/pos-terminal-surface.module.css \
+            apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json \
+            apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/authority-lock.json \
+            apps/terminal-de-venta-system/.prisma-ui/AUTHORITY_LOCK.json \
+            .github/workflows/tablet-pos-atlasfin-composition-apply.yml
+          git diff --cached --check
+          test -z "$(git diff --cached --name-only -- 'apps/terminal-de-venta-system/products/pc' 'apps/terminal-de-venta-system/products/mobile')"
+          git config user.name 'PRISMA Governed Carrier'
+          git config user.email 'governance@local.invalid'
+          git commit -m 'style(tablet): govern Atlasfin POS composition'
+          git push origin HEAD:feat/tablet-pos-atlasfin-composition-governed
