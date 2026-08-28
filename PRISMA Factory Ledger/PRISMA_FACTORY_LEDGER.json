@@ -1479,7 +1479,61 @@
         "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
         "claim hosted production readiness from this isolated certification"
       ]
+    },
+    {
+      "id": "tooling.sync_sentinel",
+      "displayName": "PRISMA Sync Sentinel Tablet ↔ PC verification and diagnostics tooling",
+      "domain": "tooling",
+      "surfaces": [
+        "tooling",
+        "tablet",
+        "pc",
+        "governance"
+      ],
+      "classification": "BUILD",
+      "status": "NOT_STARTED",
+      "stateLabel": "SYNC_SENTINEL_CANONICAL_REGISTERED_NOT_STARTED",
+      "doNotRebuild": false,
+      "nextGate": "Build the bounded reusable Sync Sentinel under tools/prisma-sentinels using a fresh exact-current-main Authority Mesh and universal anti-rework MUTATION gate. Reuse tablet.sync.runtime_truth and pc.sync.dispatch_replay_runtime; do not modify Tablet/PC product sync owners or any visual/product UI surface unless separate evidence proves a real defect and fresh FIX authority is obtained.",
+      "evidence": [
+        "PRISMA Sync Sentinel registration preflight Remote AutoMesh run 33144935939",
+        "Remote AutoMesh artifact 9675400060 sha256:2ed8a6b369d31e3ea84d884fb993c0a1e4ba18057f50d9090f2099db178939ef",
+        "Composed Authority Mesh sha256:7c76f59b808c7a1bc3811a5c61304b2f2f6bdd24099441d06f35dac00fffd184",
+        "Authority requestDigest 0400e28ec99b7392ee63a070d6c4308e683f91a0b7d510941c6ec6a41b8208b9",
+        "main@214a83b5c13f104d1e86b1dd4e7096e63308dc74",
+        "apps/terminal-de-venta-system/docs/sync/PC_TABLET_SYNC_CURRENT_AUTHORITY.md",
+        "tools/prisma-sentinels/README_TABLET_SENTINEL.md"
+      ],
+      "doesNotProve": [
+        "Sync Sentinel source exists or is merged",
+        "SCAN, DIAGNOSE, E2E or CERTIFY behavior",
+        "DB-backed Tablet ↔ PC end-to-end synchronization",
+        "PC → Tablet catalog-delta end-to-end synchronization",
+        "Negative-test coverage or fail-closed behavior",
+        "Live/customer database safety until the Sentinel safety guard is implemented and verified",
+        "Hosted production readiness or production certification",
+        "Future correctness after source drift"
+      ],
+      "allowedActions": [
+        "build the bounded reusable Sync Sentinel tooling under fresh exact authority",
+        "reuse existing Tablet and PC sync owners, contracts and verifiers read-only",
+        "run isolated temporary-DB verification without mutating customer/live databases",
+        "advance evidence only after fail-closed tests and real end-to-end proof"
+      ],
+      "forbiddenActions": [
+        "reimplement Tablet or PC sync business logic in Python",
+        "modify Tablet or PC product sync source merely to facilitate Sentinel tests",
+        "modify CSS, visual components, layouts, pages, visual tokens, Shared UI, Chart Lab, Mobile or visual recipes under this capability",
+        "touch customer/live databases or global user processes during isolated E2E",
+        "claim PASS when any mandatory assertion is UNKNOWN or BLOCKED",
+        "claim productionCertified from local or isolated evidence"
+      ],
+      "forbiddenClaims": [
+        "Do not claim Sync Sentinel is implemented from this registration.",
+        "Do not claim Tablet ↔ PC E2E is certified until the full real-code isolated journeys and mandatory negative tests pass.",
+        "Do not claim hosted production or customer-live certification from local isolated evidence."
+      ]
     }
   ],
-  "updatedAt": "2026-08-27T22:08:29-06:00"
+  "updatedAt": "2026-08-27T23:37:10-06:00"
 }
