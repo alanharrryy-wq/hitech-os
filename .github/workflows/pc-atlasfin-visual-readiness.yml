@@ -1,0 +1,390 @@
+name: PC Atlasfin Visual Readiness Audit
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  pc-visual-readiness:
+    name: pc-visual-readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Prepare evidence root
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pc-visual-readiness"
+          mkdir -p "$OUT/uimap"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          git rev-parse HEAD > "$OUT/HEAD.txt"
+          git status --short --branch > "$OUT/GIT_STATUS_BEFORE.txt"
+
+      - name: Run fresh Code Atlas UIMAP against current source
+        id: uimap
+        shell: bash
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/tools/code-atlas/src"
+          python -m code_atlas.app_map.uimap.cli \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-dir "$OUT/uimap" \
+            --zip-path "$OUT/UIMAP_CURRENT_SOURCE.zip" \
+            --workers 18 \
+            --run-timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            > "$OUT/UIMAP_STDOUT.log" 2> "$OUT/UIMAP_STDERR.log"
+          rc=$?
+          echo "$rc" > "$OUT/UIMAP_RETURN_CODE.txt"
+          exit "$rc"
+
+      - name: Run PC UI Certainty source gate
+        id: uicert
+        shell: bash
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          cd "$GITHUB_WORKSPACE/apps/terminal-de-venta-system"
+          node tools/quality/ui-certainty.mjs certify --surface pc --strict \
+            > "$OUT/UI_CERT_PC_STDOUT.log" 2> "$OUT/UI_CERT_PC_STDERR.log"
+          rc=$?
+          echo "$rc" > "$OUT/UI_CERT_PC_RETURN_CODE.txt"
+          exit "$rc"
+
+      - name: Build PC readiness report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import csv, hashlib, json, os, re, subprocess
+
+          root = Path(os.environ['GITHUB_WORKSPACE'])
+          out = Path(os.environ['OUT'])
+          app = root / 'apps/terminal-de-venta-system'
+          pc = app / 'products/pc/app'
+          atlas = root / 'prisma-html/extras/atlasfin'
+
+          def read_json(path, default=None):
+              try:
+                  return json.loads(path.read_text(encoding='utf-8'))
+              except Exception:
+                  return default
+
+          def sha256(path):
+              h = hashlib.sha256()
+              with path.open('rb') as f:
+                  for chunk in iter(lambda: f.read(1024*1024), b''):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          def objs(v):
+              if isinstance(v, dict):
+                  yield v
+                  for x in v.values():
+                      yield from objs(x)
+              elif isinstance(v, list):
+                  for x in v:
+                      yield from objs(x)
+
+          head = subprocess.check_output(['git','rev-parse','HEAD'], cwd=root, text=True).strip()
+          base_sha = os.environ.get('GITHUB_BASE_REF') or 'main'
+
+          ledger = read_json(root / 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json', {}) or {}
+          pc_ledger = None
+          for cap in ledger.get('capabilities', []):
+              if isinstance(cap, dict) and cap.get('id') == 'pc.visual.cloudglass':
+                  pc_ledger = cap
+                  break
+
+          surfaces = read_json(app / '.prisma-ui/surfaces.json', {}) or {}
+          pc_surface = None
+          for row in surfaces.get('surfaces', []):
+              if isinstance(row, dict) and row.get('surface') == 'pc':
+                  pc_surface = row
+                  break
+
+          visual_surfaces = read_json(app / '.prisma-ui/visual-control/surfaces.json', {}) or {}
+          current_visual_surface_ids = [x.get('surface') for x in visual_surfaces.get('surfaces', []) if isinstance(x, dict)]
+          visual_report = read_json(app / '.prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json', {}) or {}
+          all_cert = read_json(app / '.prisma-ui/current/UI_ALL_SURFACES_CERT_REPORT.json', {}) or {}
+
+          source_exts = {'.tsx','.ts','.jsx','.js','.mjs','.cjs','.css','.scss'}
+          files = []
+          pages = []
+          css_files = []
+          css_modules = []
+          important = []
+          data_prisma_count = 0
+          component_ids, panel_ids, surface_ids, pc_tokens = set(), set(), set(), set()
+          for p in pc.rglob('*'):
+              if not p.is_file() or p.suffix.lower() not in source_exts:
+                  continue
+              if any(part in {'.next','node_modules','dist','build','coverage'} for part in p.relative_to(pc).parts):
+                  continue
+              rel = p.relative_to(pc).as_posix()
+              files.append(rel)
+              if rel.startswith('app/') and rel.endswith('/page.tsx') and not rel.startswith('app/api/'):
+                  pages.append(rel)
+              if p.suffix.lower() in {'.css','.scss'}:
+                  css_files.append(rel)
+                  if '.module.' in p.name:
+                      css_modules.append(rel)
+              text = p.read_text(encoding='utf-8', errors='replace')
+              data_prisma_count += len(re.findall(r'data-prisma-', text))
+              for m in re.finditer(r'data-prisma-component\s*=\s*["\']([^"\']+)["\']', text):
+                  component_ids.add(m.group(1))
+              for m in re.finditer(r'data-prisma-panel\s*=\s*["\']([^"\']+)["\']', text):
+                  panel_ids.add(m.group(1))
+              for m in re.finditer(r'data-prisma-surface\s*=\s*["\']([^"\']+)["\']', text):
+                  surface_ids.add(m.group(1))
+              if p.suffix.lower() in {'.css','.scss'}:
+                  for i, line in enumerate(text.splitlines(), 1):
+                      if '!important' in line:
+                          important.append({'file': rel, 'line': i, 'text': line.strip()[:240]})
+                  pc_tokens.update(re.findall(r'--pc-atlas-[A-Za-z0-9_-]+', text))
+
+          shell_path = pc / 'components/layout/app-shell.tsx'
+          shell_text = shell_path.read_text(encoding='utf-8', errors='replace') if shell_path.exists() else ''
+          anchor_checks = {
+              'pc.workspace': 'data-prisma-panel="pc.workspace"' in shell_text,
+              'surface.pc': 'data-prisma-surface="pc"' in shell_text,
+              'route.currentPath': 'data-prisma-route={currentPath}' in shell_text,
+              'component.AppShell': 'data-prisma-component="AppShell"' in shell_text,
+              'component.Sidebar': 'data-prisma-component="Sidebar"' in shell_text,
+              'component.TopBar': 'data-prisma-component="TopBar"' in shell_text,
+          }
+
+          recipe = read_json(atlas / 'assets/data/visual.recipe.registry.json', {}) or {}
+          adapters = read_json(atlas / 'assets/data/surface-adapter.registry.json', {}) or {}
+          pc_adapter = next((o for o in objs(adapters) if o.get('id') == 'ADP.PC.ADMIN.V2'), None)
+          families = []
+          for el in recipe.get('elements', []):
+              if not isinstance(el, dict) or el.get('key') not in {'smoke','chrome','content','accent'}:
+                  continue
+              pc_bind = next((b for b in el.get('target_bindings', []) if isinstance(b, dict) and b.get('surface_id') == 'SURF.PC.ADMIN'), None)
+              families.append({
+                  'key': el.get('key'),
+                  'semantic_id': el.get('semantic_id'),
+                  'recipe_id': el.get('recipe_id'),
+                  'preset_id': el.get('preset_id'),
+                  'material_id': el.get('material_id'),
+                  'pc_status': (pc_bind or {}).get('status'),
+                  'pc_adapter_in_recipe': (pc_bind or {}).get('adapter_id'),
+              })
+
+          uimap_rc_path = out / 'UIMAP_RETURN_CODE.txt'
+          uimap_rc = int(uimap_rc_path.read_text().strip()) if uimap_rc_path.exists() and uimap_rc_path.read_text().strip().isdigit() else None
+          uicert_rc_path = out / 'UI_CERT_PC_RETURN_CODE.txt'
+          uicert_rc = int(uicert_rc_path.read_text().strip()) if uicert_rc_path.exists() and uicert_rc_path.read_text().strip().isdigit() else None
+
+          uimap_files = {}
+          pc_records = 0
+          sample_records = []
+          seen = set()
+          for p in sorted((out / 'uimap').glob('*')):
+              if not p.is_file():
+                  continue
+              uimap_files[p.name] = {'bytes': p.stat().st_size, 'sha256': sha256(p)}
+              if p.suffix != '.json':
+                  continue
+              payload = read_json(p, None)
+              if payload is None:
+                  continue
+              for o in objs(payload):
+                  text = json.dumps(o, ensure_ascii=False).lower()
+                  is_pc = ('"surface": "pc"' in text or '"runtimealias": "pc"' in text or 'surf.pc' in text or 'products/pc/' in text or '3130 pc admin' in text)
+                  if not is_pc:
+                      continue
+                  key = json.dumps({k:o.get(k) for k in ('componentUiId','componentId','routePath','ownerId','selector','sourceFile') if k in o}, ensure_ascii=False, sort_keys=True)
+                  if key in seen:
+                      continue
+                  seen.add(key)
+                  pc_records += 1
+                  if len(sample_records) < 100:
+                      sample_records.append({k:o.get(k) for k in ('surfaceId','surface','runtimeAlias','routeId','routePath','regionId','slotId','componentId','componentUiId','ownerId','bindingId','layerId','implementationLayerId','selector','status','sourceFile') if k in o})
+
+          map_drift = []
+          if pc_surface and 'pc' not in current_visual_surface_ids:
+              map_drift.append('PC_PRESENT_IN_SURFACE_REGISTRY_BUT_MISSING_FROM_CURRENT_VISUAL_CONTROL_SURFACES_INDEX')
+          if visual_report.get('repoHead') and visual_report.get('repoHead') != head:
+              map_drift.append('UI_VISUAL_CONTROL_REPORT_HEAD_IS_STALE')
+          if visual_report.get('surfaceCount', 0) > len(current_visual_surface_ids):
+              map_drift.append('AGGREGATE_VISUAL_REPORT_SCOPE_EXCEEDS_CURRENT_VISUAL_CONTROL_INDEX')
+
+          source_clean = len(important) == 0 and all(anchor_checks.values()) and len(pc_tokens) > 0
+          fresh_map = (uimap_rc == 0 and pc_records > 0)
+          atlas_blocked = any(x.get('pc_status') == 'BLOCKED_BY_MISSING_ELEMENT_BINDING' for x in families)
+
+          if not source_clean:
+              decision = 'SOURCE_VISUAL_FOUNDATION_NEEDS_CLEANUP'
+          elif not fresh_map:
+              decision = 'SOURCE_FOUNDATION_CLEAN_FRESH_UIMAP_NOT_PROVEN'
+          elif map_drift:
+              decision = 'READY_FOR_ATLASFIN_BINDING_PREP_CANONICAL_INDEX_REFRESH_REQUIRED'
+          else:
+              decision = 'READY_FOR_ATLASFIN_BINDING_PREP'
+
+          result = {
+              'schema': 'prisma.pc.atlasfin.visual-readiness.v1',
+              'auditStatus': 'AUDIT_COMPLETED',
+              'decision': decision,
+              'head': head,
+              'baseRef': base_sha,
+              'classification': 'VERIFY',
+              'productMutation': False,
+              'runtimeVisualCertification': False,
+              'runtimeReason': 'GitHub runner source audit only; no PC dev server was started.',
+              'factoryLedger': pc_ledger,
+              'pcSurfaceRegistry': pc_surface,
+              'pcSource': {
+                  'filesScanned': len(files),
+                  'routePages': len(pages),
+                  'cssFiles': len(css_files),
+                  'cssModules': len(css_modules),
+                  'importantCount': len(important),
+                  'importantHits': important[:200],
+                  'dataPrismaCount': data_prisma_count,
+                  'componentIdCount': len(component_ids),
+                  'panelIdCount': len(panel_ids),
+                  'surfaceIds': sorted(surface_ids),
+                  'pcAtlasTokenCount': len(pc_tokens),
+                  'anchorChecks': anchor_checks,
+                  'sourceCleanEnoughForBindingPrep': source_clean,
+              },
+              'mapFreshness': {
+                  'currentVisualControlSurfaceIds': current_visual_surface_ids,
+                  'aggregateReportRepoHead': visual_report.get('repoHead'),
+                  'aggregateReportStatus': visual_report.get('status'),
+                  'allSurfacesCertStatus': all_cert.get('status'),
+                  'issues': map_drift,
+              },
+              'uimap': {
+                  'returnCode': uimap_rc,
+                  'pcRecordCountApprox': pc_records,
+                  'files': uimap_files,
+                  'sampleRecords': sample_records,
+                  'freshMapProven': fresh_map,
+              },
+              'uiCertaintyPc': {'returnCode': uicert_rc},
+              'atlasfin': {
+                  'adapterFound': pc_adapter is not None,
+                  'adapter': pc_adapter,
+                  'families': families,
+                  'exactElementBindingStillRequired': atlas_blocked,
+              },
+              'nextGate': 'Refresh/reconcile canonical PC visual-control indexes from current-source mapping, then author Atlasfin→PC exact bindings and only afterward request task-exact Authority Mesh for a bounded pilot. Runtime screenshots remain mandatory before VISUAL_CERTIFIED.',
+          }
+          (out / 'RESULT.json').write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          md = []
+          md.append('# PC Visual Readiness Gate · Atlasfin')
+          md.append('')
+          md.append(f"- Audit: `AUDIT_COMPLETED`")
+          md.append(f"- Decision: `{decision}`")
+          md.append(f"- HEAD: `{head}`")
+          md.append('- Classification: `VERIFY`')
+          md.append('- Product mutation: `false`')
+          md.append('- Runtime visual certification: `false`')
+          md.append('')
+          md.append('## Qué quedó probado')
+          md.append('')
+          md.append(f"- PC source files scanned: `{len(files)}`")
+          md.append(f"- Route pages found: `{len(pages)}`")
+          md.append(f"- CSS files / modules: `{len(css_files)}` / `{len(css_modules)}`")
+          md.append(f"- Active `!important`: `{len(important)}`")
+          md.append(f"- `data-prisma-*` occurrences: `{data_prisma_count}`")
+          md.append(f"- `--pc-atlas-*` tokens: `{len(pc_tokens)}`")
+          md.append(f"- Fresh UIMAP return code: `{uimap_rc}`")
+          md.append(f"- Approx PC records in fresh UIMAP: `{pc_records}`")
+          md.append(f"- UI Certainty PC return code: `{uicert_rc}`")
+          md.append('')
+          md.append('## Drift cartográfico')
+          md.append('')
+          if map_drift:
+              md.extend([f'- `{x}`' for x in map_drift])
+          else:
+              md.append('- none')
+          md.append('')
+          md.append('## Atlasfin → PC')
+          md.append('')
+          md.append(f"- `ADP.PC.ADMIN.V2` found: `{'YES' if pc_adapter else 'NO'}`")
+          for x in families:
+              md.append(f"- `{x['key']}` `{x['semantic_id']}` → `{x['pc_status']}`")
+          md.append('')
+          md.append('## Interpretación')
+          md.append('')
+          md.append('PC puede avanzar a preparación de bindings si el source está limpio y UIMAP produjo registros PC actuales. El mapa canónico histórico no se toma como verdad si su HEAD o su scope difieren del source actual.')
+          md.append('')
+          md.append('No se aplicó Atlasfin, no se cambió producto y no se levantó un runtime. Esto es una radiografía source-level, no una certificación visual por screenshots.')
+          md.append('')
+          md.append('## Siguiente gate permitido')
+          md.append('')
+          md.append(result['nextGate'])
+          (out / 'PC_VISUAL_READINESS_REPORT.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
+
+          with (out / 'PC_ATLASFIN_BINDING_MATRIX.csv').open('w', encoding='utf-8', newline='') as f:
+              w = csv.DictWriter(f, fieldnames=['key','semantic_id','recipe_id','preset_id','material_id','pc_status','pc_adapter_in_recipe'])
+              w.writeheader(); w.writerows(families)
+          PY
+
+      - name: Prove PC product source was not mutated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short --branch > "$OUT/GIT_STATUS_AFTER.txt"
+          git diff -- apps/terminal-de-venta-system/products/pc > "$OUT/PC_PRODUCT_DIFF_AFTER_AUDIT.patch"
+          if test -s "$OUT/PC_PRODUCT_DIFF_AFTER_AUDIT.patch"; then
+            echo 'PC_PRODUCT_MUTATION_DETECTED' > "$OUT/PC_PRODUCT_MUTATION_STATUS.txt"
+            exit 1
+          fi
+          echo 'NO_PC_PRODUCT_MUTATION' > "$OUT/PC_PRODUCT_MUTATION_STATUS.txt"
+
+      - name: Build manifest and evidence ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, zipfile
+          out = Path(os.environ['OUT'])
+          rows = []
+          for p in sorted(out.rglob('*')):
+              if p.is_file() and p.name not in {'MANIFEST.json','pc-visual-readiness-evidence.zip'}:
+                  h = hashlib.sha256(p.read_bytes()).hexdigest()
+                  rows.append({'path': p.relative_to(out).as_posix(), 'bytes': p.stat().st_size, 'sha256': h})
+          (out / 'MANIFEST.json').write_text(json.dumps({'files': rows}, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          zpath = out / 'pc-visual-readiness-evidence.zip'
+          with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED) as z:
+              for p in sorted(out.rglob('*')):
+                  if p.is_file() and p != zpath:
+                      z.write(p, p.relative_to(out).as_posix())
+          PY
+
+      - name: Upload readiness evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-atlasfin-visual-readiness-${{ github.run_id }}
+          path: |
+            ${{ env.OUT }}/pc-visual-readiness-evidence.zip
+            ${{ env.OUT }}/RESULT.json
+            ${{ env.OUT }}/PC_VISUAL_READINESS_REPORT.md
+            ${{ env.OUT }}/PC_ATLASFIN_BINDING_MATRIX.csv
+          if-no-files-found: error
+          retention-days: 14
