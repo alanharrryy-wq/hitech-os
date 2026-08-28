@@ -1533,6 +1533,47 @@
         "Do not claim Tablet ↔ PC E2E is certified until the full real-code isolated journeys and mandatory negative tests pass.",
         "Do not claim hosted production or customer-live certification from local isolated evidence."
       ]
+    },
+    {
+      "id": "visual.atlasfin.tablet_pos_composition",
+      "displayName": "Atlasfin governed Tablet POS composition refinement outside frozen Cobrar target",
+      "domain": "visual",
+      "surfaces": [
+        "atlasfin",
+        "rifat",
+        "tablet"
+      ],
+      "classification": "FIX",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "TABLET_POS_ATLASFIN_COMPOSITION_REFINEMENT_REGISTERED",
+      "doNotRebuild": false,
+      "nextGate": "After this registration is merged, use the exact current main to run a fresh task-exact Authority Mesh with Layer Map and the universal anti-rework MUTATION gate. Then apply only the bounded RIFAT Tablet /pos composition fix, regenerate governed Tablet visual runtime, preserve the certified Cobrar region byte-exact, and require BEFORE/AFTER runtime visual evidence before VISUAL_CERTIFIED.",
+      "evidence": [
+        "PR #435 draft source context",
+        "PRISMA Remote AutoMesh run 33145960678 artifact 9675778727 sha256:d2fa61f23078ffbc3c224b05420d666197ae444711ea8530284f13091fa2be2a",
+        "Authority Mesh requestDigest b2b8a8cbf6383e6a17ecd19216c3eb8da917ab826ea6ef81fac314c53dbf187a at main e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1"
+      ],
+      "doesNotProve": [
+        "Tablet /pos runtime visual improvement",
+        "Any completed sale, payment, database or sync mutation",
+        "Hosted production deployment",
+        "Any change to the already certified visual.atlasfin.tablet_pos_cobrar target",
+        "Any PC, Mobile, Chart Lab or Shared UI visual certification"
+      ],
+      "allowedActions": [
+        "fresh task-exact visual Authority Mesh and Layer Map",
+        "bounded RIFAT Tablet /pos composition repair outside frozen Cobrar",
+        "deterministic Tablet visual runtime regeneration",
+        "before/after Chromium visual evidence and focused verifiers",
+        "rollback or byte-exact restoration if evidence regresses"
+      ],
+      "forbiddenActions": [
+        "modify the certified Cobrar recipe or target without its own drift-triggered recertification",
+        "modify PC, Mobile, Chart Lab or Shared UI as part of this capability",
+        "modify database, Prisma schema, sync, licensing or operational business logic",
+        "use !important or manual edits in generated runtime projections",
+        "claim VISUAL_CERTIFIED without BEFORE/AFTER runtime evidence"
+      ]
     }
   ],
   "updatedAt": "2026-08-27T23:37:10-06:00"
