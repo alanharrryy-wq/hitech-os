@@ -1,0 +1,244 @@
+name: Tablet POS Atlasfin Preview 3 States
+
+on:
+  push:
+    branches:
+      - evidence/tablet-pos-atlasfin-preview-2808
+    paths:
+      - '.github/workflows/tablet-pos-atlasfin-preview-3states.yml'
+      - '.github/evidence/tablet-pos-atlasfin-preview-3states.mjs'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  AUTHORIZED_MAIN: bef71b7d092ef43580498988b09c1d56fd0ff474
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-pos-atlasfin-preview
+  RUNTIME_PORT: '3120'
+  CHROME_DEBUG_PORT: '9224'
+
+jobs:
+  preview-three-states:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout disposable preview carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Pin authorized main and extract governed patch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          actual_main="$(git rev-parse origin/main)"
+          echo "AUTHORIZED_MAIN=$AUTHORIZED_MAIN"
+          echo "ACTUAL_MAIN=$actual_main"
+          test "$actual_main" = "$AUTHORIZED_MAIN" || { echo "PREVIEW_STALE_MAIN_MOVED:$actual_main:$AUTHORIZED_MAIN"; exit 41; }
+          cp .github/workflows/tablet-pos-atlasfin-composition-apply.yml "$RUNNER_TEMP/governed-apply.yml"
+          cp .github/evidence/tablet-pos-atlasfin-preview-3states.mjs "$RUNNER_TEMP/preview.mjs"
+          git checkout --detach "$AUTHORIZED_MAIN"
+          test "$(git rev-parse HEAD)" = "$AUTHORIZED_MAIN"
+          test -z "$(git status --porcelain)"
+
+          python - <<'PY'
+          from pathlib import Path
+          src = Path('/home/runner/work/_temp/governed-apply.yml')
+          if not src.exists():
+              import os
+              src = Path(os.environ['RUNNER_TEMP']) / 'governed-apply.yml'
+          lines = src.read_text(encoding='utf-8').splitlines()
+          marker = next(i for i,l in enumerate(lines) if 'Apply bounded Atlasfin composition to canonical RIFAT owners' in l)
+          start = next(i for i in range(marker, len(lines)) if "python - <<'PY'" in lines[i])
+          end = next(i for i in range(start + 1, len(lines)) if lines[i].strip() == 'PY')
+          indent = len(lines[start]) - len(lines[start].lstrip())
+          body = []
+          for line in lines[start + 1:end]:
+              body.append(line[indent:] if len(line) >= indent else '')
+          out = Path('/home/runner/work/_temp/apply-atlasfin-preview.py')
+          import os
+          out = Path(os.environ['RUNNER_TEMP']) / 'apply-atlasfin-preview.py'
+          out.write_text('\n'.join(body) + '\n', encoding='utf-8')
+          print('PATCH_LINES', len(body))
+          PY
+          python "$RUNNER_TEMP/apply-atlasfin-preview.py"
+          grep -q 'aacf34eb423844fb0dc0fe242160992ae01353d40d17ba3588a04542bf691f0d' prisma-html/authority/rifat/tablet/runtime.contract.json
+          git diff --check
+
+      - name: Regenerate deterministic Tablet visual runtime in runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit 09637233dfd2de00db3276fca1fb90beae82aa59
+          python prisma-html/tools/generate_tablet_visual_runtime.py --check
+          node "$APP_ROOT/tools/verify_rifat_tablet_visual_runtime.mjs"
+          git diff --check
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install Tablet without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
+          test -x "$APP_ROOT/node_modules/.bin/next"
+          test -x "$APP_ROOT/node_modules/.bin/prisma"
+
+      - name: Generate Prisma client runner-only
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DATABASE_URL='file:/dev/null'
+          pnpm -C "$APP_ROOT" run prisma:generate 2>&1 | tee "$EVIDENCE_DIR/prisma-generate.log"
+          test -f "$APP_ROOT/.generated/prisma-client/index.js"
+          if grep -Eiq '(migrate|db push|seed)' "$EVIDENCE_DIR/prisma-generate.log"; then
+            echo 'BLOCKED unexpected database lifecycle operation'
+            exit 1
+          fi
+
+      - name: Prepare runner-local POS fixtures
+        shell: bash
+        env:
+          PILOT_DB: ${{ runner.temp }}/tablet-pos-preview.db
+          PILOT_LICENSE: ${{ runner.temp }}/tablet-pos-preview-license.json
+        run: |
+          set -euo pipefail
+          rm -f "$PILOT_DB" "$PILOT_LICENSE"
+          python - <<'PY'
+          import os, sqlite3, json
+          db=os.environ['PILOT_DB']; c=sqlite3.connect(db)
+          c.executescript('''
+          CREATE TABLE "Business" ("id" TEXT PRIMARY KEY, "name" TEXT NOT NULL, "taxId" TEXT, "currency" TEXT NOT NULL DEFAULT 'MXN', "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Store" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "code" TEXT NOT NULL, "name" TEXT NOT NULL, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Terminal" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "storeId" TEXT NOT NULL, "code" TEXT NOT NULL, "name" TEXT NOT NULL, "isActive" INTEGER NOT NULL DEFAULT 1, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "CashSession" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "storeId" TEXT NOT NULL, "terminalId" TEXT NOT NULL, "cashierId" TEXT NOT NULL, "cashier" TEXT NOT NULL, "status" TEXT NOT NULL, "openedAt" DATETIME NOT NULL, "openingFloatCents" INTEGER NOT NULL DEFAULT 0, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Product" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "isActive" INTEGER NOT NULL DEFAULT 1, "stockOnHand" INTEGER NOT NULL DEFAULT 0);
+          CREATE TABLE "StockMovement" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "createdAt" DATETIME NOT NULL);
+          CREATE TABLE "OutboxEvent" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL);
+          CREATE TABLE "Sale" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL, "createdAt" DATETIME NOT NULL, "terminalId" TEXT);
+          CREATE TABLE "SaleReturn" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL, "createdAt" DATETIME NOT NULL);
+          ''')
+          now='2026-08-26T10:00:00.000Z'; business='biz_78b3c840796a4a4dad'; store='store_00728649f3804a9e82'; terminal='term_49103c7382d84663a3'
+          c.execute('INSERT INTO Business VALUES(?,?,?,?,?,?)',(business,'Prisma Preview Customer',None,'MXN',now,now))
+          c.execute('INSERT INTO Store VALUES(?,?,?,?,?,?)',(store,business,'CENTRO','Sucursal principal',now,now))
+          c.execute('INSERT INTO Terminal VALUES(?,?,?,?,?,?,?,?)',(terminal,business,store,'TB-01','Tablet Caja 1',1,now,now))
+          c.execute('INSERT INTO CashSession VALUES(?,?,?,?,?,?,?,?,?,?,?)',('shift-pos-preview',business,store,terminal,'tablet-cashier','Ana Caja','OPEN',now,150000,now,now))
+          for i,stock in enumerate((24,18,13,9,32,7),1): c.execute('INSERT INTO Product VALUES(?,?,1,?)',(f'prod-{i}',business,stock))
+          c.commit(); c.close()
+          license_doc={'schemaVersion':'1.0.0','licenseId':'lic_tablet_pos_preview','customerId':'cust_preview','businessId':business,'storeId':store,'terminalId':terminal,'plan':'DEVELOPMENT','state':'development','assignmentState':'assigned','validFrom':'2026-01-01T00:00:00.000Z','validUntil':'2027-12-31T23:59:59.000Z','offlineGraceDays':30,'notes':['Runner-local visual preview only.']}
+          with open(os.environ['PILOT_LICENSE'],'w',encoding='utf-8') as f: json.dump(license_doc,f,ensure_ascii=False,indent=2)
+          PY
+          test -s "$PILOT_DB"
+          test -s "$PILOT_LICENSE"
+
+      - name: Resolve Chrome
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=''
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do
+            command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break
+          done
+          test -n "$chrome"
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome-version.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start isolated Tablet POS runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          db="$RUNNER_TEMP/tablet-pos-preview.db"
+          license="$RUNNER_TEMP/tablet-pos-preview-license.json"
+          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/pos" >/dev/null 2>&1; then
+            echo "BLOCKED occupied runner port $RUNTIME_PORT"
+            exit 1
+          fi
+          setsid bash -lc "cd '$APP_ROOT' && export TABLET_DATABASE_URL='file:$db' TABLET_OPERATOR_NAME='Ana Caja' PRISMA_LICENSE_FILE='$license' PRISMA_LICENSE_ALLOW_UNSIGNED='1' PRISMA_RUNTIME_MODE='dev' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/server.pid"
+          for _ in $(seq 1 120); do
+            curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/pos" >/dev/null 2>&1 && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break
+            sleep 1
+          done
+          tail -n 200 "$EVIDENCE_DIR/server.log" || true
+          exit 1
+
+      - name: Start isolated headless Chrome
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: |
+          set -euo pipefail
+          "$CHROME_BIN" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-address=127.0.0.1 --remote-debugging-port="$CHROME_DEBUG_PORT" --user-data-dir="$RUNNER_TEMP/atlasfin-preview-chrome" about:blank > "$EVIDENCE_DIR/chrome-runtime.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/chrome.pid"
+          for _ in $(seq 1 80); do
+            curl -sf --max-time 1 "http://127.0.0.1:$CHROME_DEBUG_PORT/json/version" > "$EVIDENCE_DIR/chrome-debug.json" 2>/dev/null && exit 0
+            sleep 0.25
+          done
+          exit 1
+
+      - name: Capture three preview states
+        shell: bash
+        env:
+          RUNTIME_URL: http://127.0.0.1:3120
+        run: |
+          set -euo pipefail
+          node "$RUNNER_TEMP/preview.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+          grep -Fxq 'PASS_TABLET_POS_ATLASFIN_PREVIEW_3_STATES' "$EVIDENCE_DIR/browser-capture.log"
+          test -s "$EVIDENCE_DIR/screenshots/01-pos-overview.png"
+          test -s "$EVIDENCE_DIR/screenshots/02-pos-search-coca.png"
+          test -s "$EVIDENCE_DIR/screenshots/03-pos-bebidas-ticket-options.png"
+
+      - name: Build preview manifest
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('evidence/tablet-pos-atlasfin-preview')
+          shots=sorted((root/'screenshots').glob('*.png')) if (root/'screenshots').exists() else []
+          rows=[{'name':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in shots]
+          marker='PASS' if len(rows)==3 else 'INCOMPLETE'
+          (root/'PREVIEW_MANIFEST.json').write_text(json.dumps({'authorizedMain':'bef71b7d092ef43580498988b09c1d56fd0ff474','route':'/pos','screenshots':rows,'visualCertification':False,'productionDbMutation':False,'result':marker},indent=2)+'\n')
+          PY
+
+      - name: Stop runner-owned processes
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          for pidfile in "$EVIDENCE_DIR/chrome.pid" "$EVIDENCE_DIR/server.pid"; do [ ! -f "$pidfile" ] || kill "$(cat "$pidfile")" >/dev/null 2>&1 || true; done
+
+      - name: Upload three-state preview
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-pos-atlasfin-preview-3states
+          path: ${{ env.EVIDENCE_DIR }}/**
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Final preview gate
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$EVIDENCE_DIR/screenshots/01-pos-overview.png"
+          test -s "$EVIDENCE_DIR/screenshots/02-pos-search-coca.png"
+          test -s "$EVIDENCE_DIR/screenshots/03-pos-bebidas-ticket-options.png"
+          grep -Fxq 'PASS_TABLET_POS_ATLASFIN_PREVIEW_3_STATES' "$EVIDENCE_DIR/browser-capture.log"
