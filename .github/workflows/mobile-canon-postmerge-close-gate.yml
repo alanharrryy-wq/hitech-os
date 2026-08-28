@@ -1,0 +1,101 @@
+name: Mobile Canon Postmerge Close Gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mobile-canon-postmerge-close-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+  TARGET_HEAD: 28b7d782906003e2ac399ae89d81e824d3268d53
+
+jobs:
+  close-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_HEAD }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Exact head and governance self-test
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_HEAD"
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+      - name: Fresh postmerge Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/mobile-close.request.json" <<'PY'
+          import json, os, sys
+          a='apps/terminal-de-venta-system/'
+          m=a+'products/mobile/app/'
+          l='PRISMA Factory Ledger/'
+          auth=[
+            l+'PRISMA_FACTORY_LEDGER.json',
+            l+'PRISMA_EVIDENCE_INDEX.json',
+            l+'PRISMA_FACTORY_LEDGER_AGENT_GATE.md',
+            l+'PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+            l+'PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+            l+'tools/verify_prisma_anti_rework_gate.py',
+            a+'docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md',
+            a+'quality/contracts/no-fake-green.contract.json',
+            m+'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md',
+            m+'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json',
+            m+'package.json',
+            m+'tools/verify_prisma_mobile_interface_canon.mjs'
+          ]
+          tasks=[
+            {'id':'mobile-canon-postmerge-ledger','surface':'governance','intent':'VERIFY','domain':'governance','task':'Verify current canonical Ledger authority before recording PR #424 Mobile verifier reconciliation evidence and advancing the nextGate. No Mobile product mutation.','requiredAuthorities':auth,'requiredDirectories':[l],'requiredCapabilities':['mobile.interface_specification_canon'],'minimumCoverage':100,'failOnMissingAuthority':True},
+            {'id':'mobile-canon-postmerge-evidence','surface':'governance','intent':'VERIFY','domain':'evidence','task':'Verify current Evidence Index and merged Mobile canon state before recording PR #424 and V4 evidence. MultiContextSwitcher remains retired from normative product intent.','requiredAuthorities':auth,'requiredDirectories':[m+'docs/prisma-app',m+'tools'],'requiredCapabilities':['mobile.interface_specification_canon'],'minimumCoverage':100,'failOnMissingAuthority':True},
+            {'id':'mobile-canon-postmerge-next-gate','surface':'mobile','intent':'VERIFY','domain':'testing','task':'Verify that verifier reconciliation is complete enough to advance the canonical nextGate to a separate runtime and visual conformance VERIFY without claiming hosted, offline, auth, sync, licensing, data-custody or zero-egress certification.','requiredAuthorities':auth,'requiredDirectories':[a+'quality/contracts'],'requiredCapabilities':['mobile.interface_specification_canon'],'minimumCoverage':100,'failOnMissingAuthority':True}
+          ]
+          json.dump({'schemaVersion':'v2','profile':'mobile-canon-postmerge-close-v1','expectedHead':os.environ['TARGET_HEAD'],'tasks':tasks},open(sys.argv[1],'w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          PY
+          pre="$RUNNER_TEMP/mobile-close-pre"; par="$RUNNER_TEMP/mobile-close-par"; comp="$RUNNER_TEMP/mobile-close-comp/payload"
+          mkdir -p "$pre" "$par" "$comp"
+          python -m code_atlas.motors.prisma_mesh_gateway preflight --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/mobile-close.request.json" --out "$pre"
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py --repo "$GITHUB_WORKSPACE" --out-root "$par" --task-spec "$pre/legacy_tasks.json" --parallel 3 --workers 18 --shards 54 --max-files 160 --max-mb 48
+          python -m code_atlas.motors.prisma_mesh_gateway compose --repo "$GITHUB_WORKSPACE" --request "$RUNNER_TEMP/mobile-close.request.json" --preflight "$pre" --mesh-result "$par" --out "$comp" | tee "$RUNNER_TEMP/mobile-close-compose.txt"
+          grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/mobile-close-compose.txt"
+      - name: Factory Ledger MUTATION gate for governance close
+        shell: bash
+        run: |
+          set -euo pipefail
+          request="$RUNNER_TEMP/mobile-close-mutation.request.json"; decision="$RUNNER_TEMP/mobile-close-mutation.decision.json"
+          python - "$RUNNER_TEMP/mobile-close-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/mobile-close-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/mobile-close-comp/prisma-automesh-composed-result.zip" "$request" <<'PY'
+          import hashlib,json,os,sys
+          report=json.load(open(sys.argv[1],encoding='utf-8')); pre=json.load(open(sys.argv[2],encoding='utf-8'))
+          digest=hashlib.sha256(open(sys.argv[3],'rb').read()).hexdigest(); coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in pre['lanes'])
+          payload={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':os.environ['TARGET_HEAD'],'task':'Record post-merge evidence for PR #424 Mobile interface verifier reconciliation and advance only the canonical Ledger/Evidence nextGate. No product source mutation.','capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],'authorityMesh':{'status':report['status'],'repoHead':report['repoHead'],'requiredAuthorityCoveragePct':coverage,'blockers':len(pre.get('blockers') or []),'requestDigest':report['requestDigest'],'artifactDigest':digest,'layerMapPresent':False},'visualMutation':False}
+          json.dump(payload,open(sys.argv[4],'w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$request" | tee "$decision"
+          python - "$decision" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8')); assert d.get('result')=='PASS_ANTI_REWORK_GATE' and d.get('errors')==[], d; print('PASS_ANTI_REWORK_GATE')
+          PY
+      - name: Stage evidence
+        if: always()
+        shell: bash
+        run: |
+          out="$RUNNER_TEMP/mobile-close-evidence"; mkdir -p "$out"
+          for p in "$RUNNER_TEMP/mobile-close.request.json" "$RUNNER_TEMP/mobile-close-pre/PREFLIGHT_MANIFEST.json" "$RUNNER_TEMP/mobile-close-comp/payload/PRISMA_MESH_GATEWAY_REPORT.json" "$RUNNER_TEMP/mobile-close-comp/prisma-automesh-composed-result.zip" "$RUNNER_TEMP/mobile-close-mutation.request.json" "$RUNNER_TEMP/mobile-close-mutation.decision.json"; do [ ! -f "$p" ] || cp "$p" "$out/$(basename "$p")"; done
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: mobile-canon-postmerge-close-evidence
+          path: ${{ runner.temp }}/mobile-close-evidence/**
+          if-no-files-found: error
+          retention-days: 14
