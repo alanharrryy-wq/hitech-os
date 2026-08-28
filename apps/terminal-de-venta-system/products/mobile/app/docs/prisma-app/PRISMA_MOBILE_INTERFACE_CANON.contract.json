@@ -1,7 +1,7 @@
 {
   "schemaVersion": "prisma.mobile.interface-canon.v1",
   "authorityId": "mobile.interface_specification_canon",
-  "authorityState": "SOURCE_READY_CANDIDATE",
+  "authorityState": "SOURCE_READY",
   "normativeDocument": "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md",
   "baseline": {
     "repoHead": "0916227707aa65b673195d554297bf8f8565d356",
@@ -15,6 +15,17 @@
       "repoStable": true,
       "readOnly": true
     }
+  },
+  "latestGovernedChange": {
+    "kind": "PRODUCT_SIMPLIFICATION",
+    "repoHead": "630f025e3b41ac932a10ffab2f5992817c3037e5",
+    "carrierRunId": "33140440823",
+    "artifactId": "9673745625",
+    "artifactSha256": "ca5b5c1a59571aa67e862b08808edef21eef2b445f32ec6270511e4b92e6d8c6",
+    "authorityMeshRequestDigest": "21c0be583da58d25a72cd12b3d7f0f3a24881ff6bb3d4d3fbf85d68528036039",
+    "antiReworkDecisionDigest": "6b13121952919d881902061c8830a89ee161bd94712f0c2f770362ffc5022221",
+    "antiReworkResult": "PASS_ANTI_REWORK_GATE",
+    "visualMutation": false
   },
   "productRole": {
     "mobile": "supervision_and_decision",
@@ -50,9 +61,17 @@
     {"id": "daily-brief", "component": "PrismaMobileDailyBrief", "mountRequiredByCanon": false},
     {"id": "decision-ledger", "component": "PrismaMobileDecisionLedger", "mountRequiredByCanon": false},
     {"id": "pulse-timeline", "component": "PrismaMobilePulseTimeline", "mountRequiredByCanon": false},
-    {"id": "health-radar", "component": "PrismaMobileHealthRadar", "mountRequiredByCanon": false},
-    {"id": "multi-context-switcher", "component": "PrismaMobileMultiContextSwitcher", "mountRequiredByCanon": false}
+    {"id": "health-radar", "component": "PrismaMobileHealthRadar", "mountRequiredByCanon": false}
   ],
+  "productSimplification": {
+    "globalContextSwitcherDefinedByCanon": false,
+    "branchSelectorDefinedByCanon": false,
+    "sourceSelectorDefinedByCanon": false,
+    "readinessSelectorDefinedByCanon": false,
+    "allBranchesOptionDefinedByCanon": false,
+    "automaticReplacementDefinedByCanon": false,
+    "futureMultiBranchUxRequiresSeparateGovernedDecision": true
+  },
   "retiredPrimaryNavigationConcepts": ["Hoy", "Caja", "Inventario", "Reportes", "MultiSucursal", "Resumen", "Sync", "Mando"],
   "authorityPrecedence": [
     "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",

@@ -31,6 +31,8 @@ const canonPath = "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.md";
 const contractPath = "docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json";
 const dashboardPath = "src/components/prisma-app/PrismaMobileDashboard.tsx";
 const navigatorPath = "src/components/prisma-app/PrismaMobilePremiumNavigator.tsx";
+const retiredMultiContextSpec = "docs/prisma-app/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md";
+const historicalMultiContextArchive = "docs/prisma-app/archive/interface-history/PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE.md";
 
 const canon = read(canonPath);
 const contract = JSON.parse(read(contractPath));
@@ -38,8 +40,13 @@ const dashboard = read(dashboardPath);
 const navigator = read(navigatorPath);
 const pkg = JSON.parse(read("package.json"));
 
+if (compatibilityAlias === "multi-context-switcher") {
+  fail("The MultiContextSwitcher compatibility alias is retired and must not be used as current Mobile product authority");
+}
+
 if (contract.schemaVersion !== "prisma.mobile.interface-canon.v1") fail("Unexpected canon contract schemaVersion", { schemaVersion: contract.schemaVersion });
 if (contract.authorityId !== "mobile.interface_specification_canon") fail("Unexpected canon authorityId", { authorityId: contract.authorityId });
+if (contract.authorityState !== "SOURCE_READY") fail("Canon authorityState must reflect the Factory Ledger SOURCE_READY state", { authorityState: contract.authorityState });
 if (contract.normativeDocument !== canonPath) fail("Contract normativeDocument drifted", { normativeDocument: contract.normativeDocument });
 if (contract.primarySurface?.route !== "/prisma-app") fail("Primary Mobile route must stay /prisma-app");
 if (contract.primarySurface?.shellOwner !== dashboardPath) fail("Dashboard owner drifted");
@@ -61,6 +68,8 @@ if (!same(contract.primarySurface?.orderedNavigation, expectedNavigation)) {
 
 if (!canon.includes("The top-level Mobile navigation is exactly seven sections")) fail("Normative canon no longer declares the seven-section primary IA");
 if (!canon.includes("No component is to be re-mounted solely to satisfy an obsolete iteration document.")) fail("Normative no-remount boundary is missing");
+if (!canon.includes("PRISMA Mobile defines **no global context switcher**")) fail("Normative product-simplification boundary is missing");
+if (!canon.includes("separate governed product decision from zero")) fail("Future multisucursal must remain a separate product decision");
 
 if (!dashboard.includes("PrismaMobilePremiumNavigator")) fail("Dashboard must delegate primary IA to PrismaMobilePremiumNavigator");
 if (!dashboard.includes("<PrismaMobilePremiumNavigator")) fail("Dashboard must mount PrismaMobilePremiumNavigator");
@@ -82,8 +91,7 @@ const expectedDormant = [
   ["daily-brief", "PrismaMobileDailyBrief"],
   ["decision-ledger", "PrismaMobileDecisionLedger"],
   ["pulse-timeline", "PrismaMobilePulseTimeline"],
-  ["health-radar", "PrismaMobileHealthRadar"],
-  ["multi-context-switcher", "PrismaMobileMultiContextSwitcher"]
+  ["health-radar", "PrismaMobileHealthRadar"]
 ];
 
 const dormantRows = contract.secondaryOrDormantCapabilities ?? [];
@@ -95,6 +103,28 @@ for (const [id, component] of expectedDormant) {
   if (dashboard.includes(`<${component}`)) fail("Historical capability was re-mounted in Dashboard", { id, component });
   if (navigator.includes(`<${component}`)) fail("Historical capability was re-mounted in Premium Navigator", { id, component });
 }
+
+if (dormantRows.some((row) => row.id === "multi-context-switcher" || row.component === "PrismaMobileMultiContextSwitcher")) {
+  fail("Retired MultiContextSwitcher leaked back into the normative dormant-capability contract");
+}
+
+const simplification = contract.productSimplification ?? {};
+for (const key of [
+  "globalContextSwitcherDefinedByCanon",
+  "branchSelectorDefinedByCanon",
+  "sourceSelectorDefinedByCanon",
+  "readinessSelectorDefinedByCanon",
+  "allBranchesOptionDefinedByCanon",
+  "automaticReplacementDefinedByCanon"
+]) {
+  if (simplification[key] !== false) fail("Product simplification guard must remain false", { key, value: simplification[key] });
+}
+if (simplification.futureMultiBranchUxRequiresSeparateGovernedDecision !== true) {
+  fail("Future multi-branch UX must require a separate governed product decision");
+}
+
+if (existsSync(join(root, retiredMultiContextSpec))) fail("Retired active iteration-41 MultiContext spec must not exist");
+requireFile(historicalMultiContextArchive);
 
 const capabilityEvidence = [
   ["command-center", "src/lib/prisma-app/prisma-mobile-command-center.ts", "app/api/mobile/command-center/route.ts"],
@@ -145,12 +175,16 @@ const compatibilityScripts = {
   "verify:decision-ledger": "decision-ledger",
   "verify:pulse-timeline": "pulse-timeline",
   "verify:mando": "mando",
-  "verify:release-hardening": "release-hardening",
-  "verify:multi-context-switcher": "multi-context-switcher"
+  "verify:release-hardening": "release-hardening"
 };
 for (const [script, alias] of Object.entries(compatibilityScripts)) {
   const expected = `${canonicalCommand} --compat=${alias}`;
   if (pkg.scripts?.[script] !== expected) fail("Historical verifier script must delegate to the canon", { script, expected, actual: pkg.scripts?.[script] });
+}
+
+if (pkg.scripts?.["verify:multi-context-switcher"] !== undefined) fail("Retired MultiContext verifier alias must not exist in package.json");
+for (const key of ["prismaMobileMultiContextSwitcherVersion", "prismaMobileMultiContextSwitcherPackage"]) {
+  if (Object.prototype.hasOwnProperty.call(pkg, key)) fail("Retired MultiContext package metadata must not exist", { key });
 }
 
 const checkAll = String(pkg.scripts?.["check:all"] ?? "");
@@ -158,6 +192,7 @@ if (!checkAll.includes("verify:interface-canon")) fail("check:all must execute v
 for (const script of Object.keys(compatibilityScripts)) {
   if (checkAll.includes(script)) fail("check:all must not repeatedly execute historical compatibility aliases", { script });
 }
+if (checkAll.includes("multi-context")) fail("check:all must not retain retired MultiContext terminology");
 
 for (const technicalScript of [
   "verify:secure-projection-gateway",
@@ -183,6 +218,7 @@ console.log(JSON.stringify({
   primaryRoute: contract.primarySurface.route,
   navigation: expectedNavigation,
   dormantCapabilities: expectedDormant.map(([id]) => id),
+  productSimplification: simplification,
   auxiliaryRoutes: expectedAuxiliaryRoutes.map(([route]) => route),
   separateRoutes: ["/prisma-command"],
   claimVerifiersAlignedInCanon: contract.claims?.verifiersAligned ?? null,

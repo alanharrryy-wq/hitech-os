@@ -53,7 +53,6 @@
     "verify:crystal-intelligence": "node tools/verify_prisma_app_mobile_40_crystal_intelligence.mjs",
     "verify:mobile-snapshot-quality": "node tools/verify_mobile_snapshot_quality.mjs",
     "verify:mobile-sync-visibility": "node tools/verify_mobile_sync_visibility_01.mjs",
-    "verify:multi-context-switcher": "node tools/verify_prisma_mobile_interface_canon.mjs --compat=multi-context-switcher",
     "verify:zero-important": "node ../../../../../tools/quality/verify-zero-important.mjs",
     "prebuild": "pnpm run verify:zero-important",
     "pretypecheck": "pnpm run verify:zero-important",
@@ -123,8 +122,6 @@
   "prismaMobileReleasePwaTwaHardeningFinalVersion": "0.36.0",
   "prismaMobileI04ReleaseHardeningVersion": "0.37.0",
   "prismaMobileI04ReleaseHardeningPackage": "PRISMA_APP_MOBILE_I04_RELEASE_HARDENING_20260506_v01",
-  "prismaMobileMultiContextSwitcherVersion": "0.41.1",
-  "prismaMobileMultiContextSwitcherPackage": "PRISMA_APP_MOVIL_ITER_41_MULTI_CONTEXT_SWITCHER_RENDER_V3_1_FIX",
   "prismaMobileSecureProjectionGatewayVersion": "0.42.0",
   "prismaMobileSecureProjectionGatewayPackage": "MOBPROJ1_SECURE_PROJECTION_GATEWAY_PHASE1"
 }
