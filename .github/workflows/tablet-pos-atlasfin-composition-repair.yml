@@ -89,7 +89,7 @@ jobs:
         run: |
           set -euo pipefail
           git rm -f .github/workflows/tablet-pos-atlasfin-composition-repair.yml
-          git add .github/workflows/tablet-pos-atlasfin-composition-apply.yml .github/workflows/tablet-pos-atlasfin-composition-repair.yml
+          git add -A -- .github/workflows
           mapfile -t staged < <(git diff --cached --name-only)
           printf 'STAGED=%s\n' "${staged[*]}"
           for file in "${staged[@]}"; do
