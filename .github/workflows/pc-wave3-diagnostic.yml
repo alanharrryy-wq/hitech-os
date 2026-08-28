@@ -1,0 +1,149 @@
+name: PC Wave 3 Mutation Contract Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pc-wave3-diagnostic.yml'
+      - 'apps/terminal-de-venta-system/products/pc/app/**'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PINNED_BASE: 28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Wave 3 branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify authority baseline still canonical
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$current" = "$PINNED_BASE"
+          git worktree add --detach "$RUNNER_TEMP/base" "$PINNED_BASE"
+          cd "$RUNNER_TEMP/base"
+          cat > "$RUNNER_TEMP/gate.request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab",
+            "task":"PC Enterprise Mutations Wave 3 diagnostic and bounded certification harness. Reuse frozen Wave 2, discover exact mutation contracts, and mutate no live/customer database.",
+            "capabilities":[
+              {"id":"pc.quality.customer_experience_wave2","requestedAction":"ADVANCE"},
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"ADVANCE"},
+              {"id":"pc.entitlement.surface_projection","requestedAction":"ADVANCE"}
+            ],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"fe79a48076f169a2a7eeba221e5a847e3c98c1d9bc4bd761a1028f1e4ee496bc",
+              "artifactDigest":"d282f56605ad2fc001dfe30a73ea31d3122b4b31e5e9197613466ba51e10aad6",
+              "layerMapPresent":true
+            },
+            "visualMutation":true
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/gate.request.json" > "$RUNNER_TEMP/gate.result.json"
+          python - "$RUNNER_TEMP/gate.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert d.get('repoHead')=='28b0821d4a3c2b07041a0c4dfe18004f4f7d52ab',d
+          PY
+
+      - name: Build mutation contract reconnaissance
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/wave3-discovery"; mkdir -p "$out/current_files"
+          python - "$GITHUB_WORKSPACE" "$out" <<'PY'
+          import json,re,shutil,sys
+          from pathlib import Path
+          repo=Path(sys.argv[1]); out=Path(sys.argv[2])
+          root=repo/'apps/terminal-de-venta-system/products/pc/app'
+          route_re=re.compile(r'export\s+async\s+function\s+(GET|POST|PUT|PATCH|DELETE)\s*\(',re.I)
+          fetch_re=re.compile(r'fetch\(\s*[`\"\']([^`\"\']+)[`\"\']',re.I)
+          method_re=re.compile(r'method\s*:\s*[\"\'](GET|POST|PUT|PATCH|DELETE)[\"\']',re.I)
+          routes=[]; fetches=[]
+          for p in sorted(root.rglob('*')):
+            if not p.is_file() or p.suffix.lower() not in {'.ts','.tsx','.js','.mjs'}: continue
+            text=p.read_text(encoding='utf-8',errors='replace')
+            rel=p.relative_to(repo).as_posix()
+            methods=sorted(set(m.upper() for m in route_re.findall(text)))
+            if p.name=='route.ts' and '/app/api/' in '/'+rel:
+              routes.append({'path':rel,'methods':methods,'size':p.stat().st_size})
+            if 'fetch(' in text:
+              for match in fetch_re.finditer(text):
+                url=match.group(1)
+                if '/api/' not in url: continue
+                tail=text[match.start():match.start()+800]
+                mm=method_re.search(tail)
+                fetches.append({'source':rel,'url':url,'method':mm.group(1).upper() if mm else 'GET_OR_DYNAMIC'})
+          journey_terms={
+            'catalog':['catalog','product','products'],
+            'suppliers':['supplier','suppliers','proveedor','proveedores'],
+            'stock_adjustment':['stock','inventory','inventario','movement','movimiento','adjust','ajuste'],
+            'count_lifecycle':['count','counts','audit-count','conteo','auditoria-inventario'],
+            'sync_dispatch_replay':['sync','outbox','replay','retry','dispatch'],
+            'device_claim_revoke':['device','devices','claim','revoke'],
+            'settings_writes':['settings','configuracion','configuration','preference']
+          }
+          journeys={}
+          for name,terms in journey_terms.items():
+            rr=[r for r in routes if any(t in r['path'].lower() for t in terms)]
+            ff=[f for f in fetches if any(t in (f['source']+' '+f['url']).lower() for t in terms)]
+            journeys[name]={'routes':rr,'fetches':ff,'mutationRoutes':[r for r in rr if any(m in r['methods'] for m in ('POST','PUT','PATCH','DELETE'))]}
+          report={'schemaVersion':'pc.wave3.mutation-contract-discovery.v1','repoHead':__import__('subprocess').check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip(),'routes':routes,'fetches':fetches,'journeys':journeys}
+          (out/'PC_WAVE3_MUTATION_CONTRACT_DISCOVERY.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          copied=[]
+          for name,j in journeys.items():
+            candidates={x['path'] for x in j['routes']} | {x['source'] for x in j['fetches']}
+            for rel in sorted(candidates):
+              src=repo/rel
+              if not src.is_file(): continue
+              dst=out/'current_files'/rel
+              dst.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(src,dst); copied.append(rel)
+          for rel in [
+            'apps/terminal-de-venta-system/prisma/schema.prisma',
+            'apps/terminal-de-venta-system/products/pc/app/src/lib/suppliers/server.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/repositories/inventory.repository.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/repositories/stock-repository.prisma.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/services/inventory-ledger.service.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/server/repositories/outbox-repository.prisma.ts',
+            'apps/terminal-de-venta-system/products/pc/app/src/uiux/settings-screen-contract.ts'
+          ]:
+            src=repo/rel
+            if src.is_file() and rel not in copied:
+              dst=out/'current_files'/rel; dst.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(src,dst); copied.append(rel)
+          (out/'COPIED_FILES.json').write_text(json.dumps(sorted(set(copied)),indent=2)+'\n')
+          summary={name:{'routes':len(v['routes']),'mutationRoutes':len(v['mutationRoutes']),'fetches':len(v['fetches'])} for name,v in journeys.items()}
+          (out/'SUMMARY.json').write_text(json.dumps(summary,indent=2)+'\n')
+          print(json.dumps(summary,indent=2))
+          PY
+          cp "$RUNNER_TEMP/gate.result.json" "$out/ANTI_REWORK_GATE.json"
+          cp "$RUNNER_TEMP/gate.request.json" "$out/ANTI_REWORK_REQUEST.json"
+
+      - name: Upload Wave 3 diagnostic evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-wave3-mutation-contract-discovery
+          path: ${{ runner.temp }}/wave3-discovery/**
+          if-no-files-found: error
+          retention-days: 14

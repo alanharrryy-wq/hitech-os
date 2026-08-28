@@ -114,6 +114,54 @@
       "reason": "PASS_BOUNDED_PC_WAVE2_CERTIFICATION",
       "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
       "updatedAt": "2026-08-25T08:17:09-06:00"
+    },
+    "pc.catalog.mutations_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE3_CATALOG_MUTATIONS_RUNTIME",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
+    },
+    "pc.suppliers.mutations_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE3_SUPPLIER_MUTATIONS_RUNTIME",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
+    },
+    "pc.inventory.stock_adjustment_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE3_STOCK_ADJUSTMENT_RUNTIME",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
+    },
+    "pc.inventory.count_lifecycle_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE3_INVENTORY_COUNT_LIFECYCLE_RUNTIME",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
+    },
+    "pc.sync.dispatch_replay_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE3_SYNC_DISPATCH_REPLAY_RUNTIME",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
+    },
+    "pc.devices.claim_revoke_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE3_DEVICE_CLAIM_REVOKE_RUNTIME",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
+    },
+    "pc.settings.business_write_runtime": {
+      "value": true,
+      "reason": "PASS_PC_WAVE3_BUSINESS_SETTINGS_WRITE_RUNTIME",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
+    },
+    "pc.quality.enterprise_mutations_wave3": {
+      "value": true,
+      "reason": "PASS_PC_ENTERPRISE_MUTATIONS_WAVE3_WITH_WAVE2_REGRESSION",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "updatedAt": "2026-08-27T22:08:29-06:00"
     }
   },
   "verifyOrFix": {
@@ -138,5 +186,5 @@
       "updatedAt": "2026-08-18T20:46:00-06:00"
     }
   },
-  "updatedAt": "2026-08-26T00:14:42-06:00"
+  "updatedAt": "2026-08-27T22:08:29-06:00"
 }

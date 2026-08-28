@@ -991,7 +991,7 @@
       "status": "RUNTIME_VERIFIED",
       "stateLabel": "PASS_BOUNDED_PC_WAVE2_CERTIFICATION",
       "doNotRebuild": true,
-      "nextGate": "PC_ENTERPRISE_MUTATIONS_WAVE3: certify catalog and supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke and Settings writes on isolated persistence under fresh exact authority. Wave 2 itself is closed and must not be rebuilt.",
+      "nextGate": "PC Enterprise Mutations Wave 3 is closed. Reuse the frozen Wave 2 customer, entitlement and schema baseline as prerequisite evidence; do not rebuild Wave 2. Any future drift repair requires fresh exact authority and evidence.",
       "evidence": [
         "Current main@17e03873b23e205315d92b1d3f2f66c8f98cbeaa package.json has no verify:pc-customer-experience-wave2 script",
         "Closed unmerged PR #313 runtime verifier evidence and 332/334 result",
@@ -1176,7 +1176,405 @@
         "Do not claim legacy verifiers are aligned until the separate verifier-reconciliation gate passes.",
         "Do not claim hosted production, offline operational data, auth/session, sync, licensing or zero-egress readiness from this canon closure."
       ]
+    },
+    {
+      "id": "pc.catalog.mutations_runtime",
+      "displayName": "PRISMA PC Catalog durable mutations runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "data"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE3_CATALOG_MUTATIONS_RUNTIME",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "Catalog product create, update and delete persisted through the bounded PC backoffice contract"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "pc.suppliers.mutations_runtime",
+      "displayName": "PRISMA PC Supplier durable mutations runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "data"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE3_SUPPLIER_MUTATIONS_RUNTIME",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "Supplier record create, update and delete persisted through the bounded PC backoffice contract"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "pc.inventory.stock_adjustment_runtime",
+      "displayName": "PRISMA PC Stock adjustment durable runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "data"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE3_STOCK_ADJUSTMENT_RUNTIME",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "Stock adjustment persisted stockOnHand/available state and an adjust_up stock movement with the certified quantity"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "pc.inventory.count_lifecycle_runtime",
+      "displayName": "PRISMA PC Inventory count lifecycle runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "data"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE3_INVENTORY_COUNT_LIFECYCLE_RUNTIME",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "Inventory count open, review and close lifecycle persisted with counted quantity, variance and operator evidence"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "pc.sync.dispatch_replay_runtime",
+      "displayName": "PRISMA PC Sync dispatch and replay runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "sync",
+        "data"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE3_SYNC_DISPATCH_REPLAY_RUNTIME",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "PC-to-Tablet catalog delta dispatch persisted audit provenance and replay persisted a second attempt with no last error"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "pc.devices.claim_revoke_runtime",
+      "displayName": "PRISMA PC Device claim and revoke runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "devices",
+        "data"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE3_DEVICE_CLAIM_REVOKE_RUNTIME",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "Device claim and revoke persisted revoked status, health and sync state through the bounded device contract"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "pc.settings.business_write_runtime",
+      "displayName": "PRISMA PC Business settings durable write runtime",
+      "domain": "runtime",
+      "surfaces": [
+        "pc",
+        "settings",
+        "data"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_WAVE3_BUSINESS_SETTINGS_WRITE_RUNTIME",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "Business Settings write persisted the certified name, taxId and currency values"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "pc.quality.enterprise_mutations_wave3",
+      "displayName": "PRISMA PC Enterprise Mutations Wave 3 quality closure",
+      "domain": "quality",
+      "surfaces": [
+        "pc",
+        "data",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_PC_ENTERPRISE_MUTATIONS_WAVE3_WITH_WAVE2_REGRESSION",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates.",
+      "evidence": [
+        "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+        "GitHub PR merge-test commit a49185b7815dc48e81e0f98a72a19e1983b3e4dc tree bf339ae4c19150548c2a265532233acfd0533693 equals canonical main merge d55e421d8379ce53279a1c60ebca679602fd904d tree bf339ae4c19150548c2a265532233acfd0533693; certified runtime tree and merged product tree are byte-identical.",
+        "Authority request 7a1ec22d629ace7e78577c72575332a59dda0ddf191331b93587b8c1018fe9a2 / composed artifact f52442f7eaecaf0dfe6372fffc5ce5d367545e0c323131a746e8efd12b749d6f / anti-rework decision ca58022583ffaad700e87320473500a24a2bbc1665240a2d4845a2f4267fb894",
+        "Catalog CRUD, supplier CRUD, stock adjustment, inventory count lifecycle, sync dispatch/replay, device claim/revoke and business Settings writes passed isolated durable runtime certification",
+        "Frozen Wave 2 entitled regression passed",
+        "Frozen Wave 2 restricted regression passed",
+        "Certification created zero tracked source drift and left the owned runtime/port clean"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Future behavior after source or dependency drift",
+        "Any mutation of a live/customer database; certification used runner-temp isolated persistence only",
+        "Runtime, visual or mutation certification of Tablet, Mobile, Chart Lab, Shared UI or Control Center",
+        "productionCertified=true; the certified manifest explicitly keeps productionCertified=false"
+      ],
+      "allowedActions": [
+        "reuse as frozen runtime-verified prerequisite",
+        "read-only recertification under fresh exact authority",
+        "evidence-backed drift repair under fresh exact authority with isolated regression evidence"
+      ],
+      "forbiddenActions": [
+        "rebuild the certified mutation contract without evidence of drift or defect",
+        "weaken entitlement, persistence, audit or isolation contracts to satisfy a fixture",
+        "claim hosted production readiness from this isolated certification"
+      ]
+    },
+    {
+      "id": "tooling.sync_sentinel",
+      "displayName": "PRISMA Sync Sentinel Tablet ↔ PC verification and diagnostics tooling",
+      "domain": "tooling",
+      "surfaces": [
+        "tooling",
+        "tablet",
+        "pc",
+        "governance"
+      ],
+      "classification": "BUILD",
+      "status": "NOT_STARTED",
+      "stateLabel": "SYNC_SENTINEL_CANONICAL_REGISTERED_NOT_STARTED",
+      "doNotRebuild": false,
+      "nextGate": "Build the bounded reusable Sync Sentinel under tools/prisma-sentinels using a fresh exact-current-main Authority Mesh and universal anti-rework MUTATION gate. Reuse tablet.sync.runtime_truth and pc.sync.dispatch_replay_runtime; do not modify Tablet/PC product sync owners or any visual/product UI surface unless separate evidence proves a real defect and fresh FIX authority is obtained.",
+      "evidence": [
+        "PRISMA Sync Sentinel registration preflight Remote AutoMesh run 33144935939",
+        "Remote AutoMesh artifact 9675400060 sha256:2ed8a6b369d31e3ea84d884fb993c0a1e4ba18057f50d9090f2099db178939ef",
+        "Composed Authority Mesh sha256:7c76f59b808c7a1bc3811a5c61304b2f2f6bdd24099441d06f35dac00fffd184",
+        "Authority requestDigest 0400e28ec99b7392ee63a070d6c4308e683f91a0b7d510941c6ec6a41b8208b9",
+        "main@214a83b5c13f104d1e86b1dd4e7096e63308dc74",
+        "apps/terminal-de-venta-system/docs/sync/PC_TABLET_SYNC_CURRENT_AUTHORITY.md",
+        "tools/prisma-sentinels/README_TABLET_SENTINEL.md"
+      ],
+      "doesNotProve": [
+        "Sync Sentinel source exists or is merged",
+        "SCAN, DIAGNOSE, E2E or CERTIFY behavior",
+        "DB-backed Tablet ↔ PC end-to-end synchronization",
+        "PC → Tablet catalog-delta end-to-end synchronization",
+        "Negative-test coverage or fail-closed behavior",
+        "Live/customer database safety until the Sentinel safety guard is implemented and verified",
+        "Hosted production readiness or production certification",
+        "Future correctness after source drift"
+      ],
+      "allowedActions": [
+        "build the bounded reusable Sync Sentinel tooling under fresh exact authority",
+        "reuse existing Tablet and PC sync owners, contracts and verifiers read-only",
+        "run isolated temporary-DB verification without mutating customer/live databases",
+        "advance evidence only after fail-closed tests and real end-to-end proof"
+      ],
+      "forbiddenActions": [
+        "reimplement Tablet or PC sync business logic in Python",
+        "modify Tablet or PC product sync source merely to facilitate Sentinel tests",
+        "modify CSS, visual components, layouts, pages, visual tokens, Shared UI, Chart Lab, Mobile or visual recipes under this capability",
+        "touch customer/live databases or global user processes during isolated E2E",
+        "claim PASS when any mandatory assertion is UNKNOWN or BLOCKED",
+        "claim productionCertified from local or isolated evidence"
+      ],
+      "forbiddenClaims": [
+        "Do not claim Sync Sentinel is implemented from this registration.",
+        "Do not claim Tablet ↔ PC E2E is certified until the full real-code isolated journeys and mandatory negative tests pass.",
+        "Do not claim hosted production or customer-live certification from local isolated evidence."
+      ]
+    },
+    {
+      "id": "visual.atlasfin.tablet_pos_composition",
+      "displayName": "Atlasfin governed Tablet POS composition refinement outside frozen Cobrar target",
+      "domain": "visual",
+      "surfaces": [
+        "atlasfin",
+        "rifat",
+        "tablet"
+      ],
+      "classification": "FIX",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "TABLET_POS_ATLASFIN_COMPOSITION_REFINEMENT_REGISTERED",
+      "doNotRebuild": false,
+      "nextGate": "After this registration is merged, use the exact current main to run a fresh task-exact Authority Mesh with Layer Map and the universal anti-rework MUTATION gate. Then apply only the bounded RIFAT Tablet /pos composition fix, regenerate governed Tablet visual runtime, preserve the certified Cobrar region byte-exact, and require BEFORE/AFTER runtime visual evidence before VISUAL_CERTIFIED.",
+      "evidence": [
+        "PR #435 draft source context",
+        "PRISMA Remote AutoMesh run 33145960678 artifact 9675778727 sha256:d2fa61f23078ffbc3c224b05420d666197ae444711ea8530284f13091fa2be2a",
+        "Authority Mesh requestDigest b2b8a8cbf6383e6a17ecd19216c3eb8da917ab826ea6ef81fac314c53dbf187a at main e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1"
+      ],
+      "doesNotProve": [
+        "Tablet /pos runtime visual improvement",
+        "Any completed sale, payment, database or sync mutation",
+        "Hosted production deployment",
+        "Any change to the already certified visual.atlasfin.tablet_pos_cobrar target",
+        "Any PC, Mobile, Chart Lab or Shared UI visual certification"
+      ],
+      "allowedActions": [
+        "fresh task-exact visual Authority Mesh and Layer Map",
+        "bounded RIFAT Tablet /pos composition repair outside frozen Cobrar",
+        "deterministic Tablet visual runtime regeneration",
+        "before/after Chromium visual evidence and focused verifiers",
+        "rollback or byte-exact restoration if evidence regresses"
+      ],
+      "forbiddenActions": [
+        "modify the certified Cobrar recipe or target without its own drift-triggered recertification",
+        "modify PC, Mobile, Chart Lab or Shared UI as part of this capability",
+        "modify database, Prisma schema, sync, licensing or operational business logic",
+        "use !important or manual edits in generated runtime projections",
+        "claim VISUAL_CERTIFIED without BEFORE/AFTER runtime evidence"
+      ]
     }
   ],
-  "updatedAt": "2026-08-25T20:25:40-06:00"
+  "updatedAt": "2026-08-27T23:37:10-06:00"
 }

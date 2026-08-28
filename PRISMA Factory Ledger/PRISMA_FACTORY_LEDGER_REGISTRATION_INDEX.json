@@ -173,8 +173,72 @@
       "evidence": "PR #325 merge 62c27a612 / run 32330104885 / current close Authority run 32858397075 artifact 9567155916",
       "sourceEvidenceSha256": "9943DC813B1268A6C0DC70644B9052DBA3C52FCFAE8FA2E44C46F9CDF8BCF2BC",
       "doNotRebuild": true,
-      "nextGate": "PC_ENTERPRISE_MUTATIONS_WAVE3: certify catalog and supplier CRUD, stock adjustment, count lifecycle, sync dispatch/replay, device claim/revoke and Settings writes on isolated persistence under fresh exact authority. Wave 2 itself is closed and must not be rebuilt."
+      "nextGate": "PC Enterprise Mutations Wave 3 is closed. Reuse the frozen Wave 2 customer, entitlement and schema baseline as prerequisite evidence; do not rebuild Wave 2. Any future drift repair requires fresh exact authority and evidence."
+    },
+    "pc.catalog.mutations_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "pc.suppliers.mutations_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "pc.inventory.stock_adjustment_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "pc.inventory.count_lifecycle_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "pc.sync.dispatch_replay_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "pc.devices.claim_revoke_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "pc.settings.business_write_runtime": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "pc.quality.enterprise_mutations_wave3": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-27T22:08:29-06:00",
+      "evidence": "PR #385 merge d55e421d8379ce53279a1c60ebca679602fd904d / certification run 32988854842 artifact 9613949893 sha256:97821a53de7941b160ec330ba7e9659474525f302de5f402823482fba599599b / post-merge canonical-close Authority run 33140887752 artifact 9673897898 sha256:de1d51a3fd4eee0ac17ef6b31905d2387daaddc43c43832b94e5fd12560d2bce",
+      "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
+      "doNotRebuild": true,
+      "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
     }
   },
-  "updatedAt": "2026-08-26T00:14:42-06:00"
+  "updatedAt": "2026-08-27T22:08:29-06:00"
 }
