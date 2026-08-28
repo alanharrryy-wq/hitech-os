@@ -27,7 +27,7 @@ jobs:
         run: |
           set -euo pipefail
           git fetch origin main
-          test "$(git rev-parse origin/main)" = "e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1"
+          test "$(git rev-parse origin/main)" = "bef71b7d092ef43580498988b09c1d56fd0ff474"
           mapfile -t files < <(git diff --name-only origin/main...HEAD)
           test "${#files[@]}" = "1"
           test "${files[0]}" = ".github/workflows/sync-sentinel-build-gate-carrier.yml"
@@ -36,16 +36,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # The gate must evaluate the canonical product HEAD, not this disposable carrier commit.
-          git checkout --detach e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1
-          test "$(git rev-parse HEAD)" = "e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1"
+          git checkout --detach bef71b7d092ef43580498988b09c1d56fd0ff474
+          test "$(git rev-parse HEAD)" = "bef71b7d092ef43580498988b09c1d56fd0ff474"
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
           cat > "$RUNNER_TEMP/sync-sentinel-gate-request.json" <<'JSON'
           {
             "schemaVersion": "prisma.factory-ledger.anti-rework-request.v1",
             "mode": "MUTATION",
-            "expectedHead": "e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1",
+            "expectedHead": "bef71b7d092ef43580498988b09c1d56fd0ff474",
             "task": "Build the bounded PRISMA Sync Sentinel reusable tooling under tools/prisma-sentinels only. Reuse frozen Tablet and PC synchronization capabilities read-only, use isolated temporary databases and Sentinel-owned processes for E2E, and do not mutate visual/product UI or live/customer data.",
             "capabilities": [
               {"id": "tooling.sync_sentinel", "requestedAction": "BUILD"},
@@ -55,11 +54,11 @@ jobs:
             ],
             "authorityMesh": {
               "status": "PASS_COMPOSED_AUTHORITY_MESH",
-              "repoHead": "e9ee00f8e8bb3b78c54b54755e5800c4c1bfc0d1",
+              "repoHead": "bef71b7d092ef43580498988b09c1d56fd0ff474",
               "requiredAuthorityCoveragePct": 100,
               "blockers": 0,
-              "requestDigest": "bc9e28bc40a7a186563649749515ee262ef045cedb04a046e8ee4782a9fd324d",
-              "artifactDigest": "8fb62d3222959194a13674a14259d33a9fc07470837a75e8ea3239f695d8ed60",
+              "requestDigest": "5307681fb5d27b3835746167a3e30da3df17438cf091566b069750da42d122f3",
+              "artifactDigest": "31916152f9cc5130c62e27f5d590241bd1f4fe5c78a0da88362e2789da665a22",
               "layerMapPresent": false
             },
             "visualMutation": false
