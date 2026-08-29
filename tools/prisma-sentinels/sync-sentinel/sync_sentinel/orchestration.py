@@ -69,6 +69,7 @@ def _prepare_temp_databases(repo: Path, temp_root: Path, pc_db: Path, tablet_db:
     app = repo / APP_REL
     env_pc = dict(os.environ)
     env_pc["DATABASE_URL"] = "file:" + pc_db.as_posix()
+    env_pc["PRISMA_GENERATE_SKIP_AUTOINSTALL"] = "true"
     cp = run(["python", str(app / "tooling/scripts/migrate_prisma_canonical.py")], cwd=app, env=env_pc, timeout=240)
     checks.append(_result_from_process("pc_temp_db_migrations", cp, ['"pass": true']))
     if checks[-1].verdict != Verdict.PASS:
@@ -90,6 +91,7 @@ def _prepare_temp_databases(repo: Path, temp_root: Path, pc_db: Path, tablet_db:
     env_tab["TABLET_DATABASE_PATH"] = str(tablet_db)
     env_tab["TABLET_DATABASE_URL"] = "file:" + tablet_db.as_posix()
     env_tab["DATABASE_URL"] = "file:" + tablet_db.as_posix()
+    env_tab["PRISMA_GENERATE_SKIP_AUTOINSTALL"] = "true"
 
     cp = run(["pnpm", "exec", "prisma", "generate", "--schema", str(tablet_schema)], cwd=tablet_app, env=env_tab, timeout=300)
     checks.append(_result_from_process("tablet_temp_prisma_generate", cp))
