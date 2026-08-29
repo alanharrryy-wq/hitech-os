@@ -1,0 +1,76 @@
+name: PRISMA Mobile Runtime Visual Harness Mutation Gate Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  anti-rework-gate:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'gate/mobile-runtime-visual-harness-2908'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact carrier
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Fail closed on canonical drift or unexpected diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
+          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/mobile-runtime-visual-harness-gate-carrier.yml"
+
+      - name: Validate and run universal anti-rework mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach 71387e06aab700c14745a4e42d799ecd82d61b5d
+          test "$(git rev-parse HEAD)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+          cat > "$RUNNER_TEMP/mobile-runtime-visual-harness-gate-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-request.v1",
+            "mode": "MUTATION",
+            "expectedHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+            "task": "Create only a disposable GitHub Actions certification carrier for read-only PRISMA Mobile /prisma-app runtime and visual conformance verification. The carrier may install its own browser-test dependencies on the ephemeral runner, start only the checked-out Mobile app on the runner, capture screenshots plus console/page/API/network/accessibility evidence for the canonical seven tabs and reproducible states, and upload artifacts. It must not mutate Mobile product source, Tablet, PC, Shared UI, canonical databases, Prisma schema/migrations, licensing/security/sync contracts, hosted production, or main. The carrier must never merge and must fail closed rather than claim fake green.",
+            "capabilities": [
+              {"id": "mobile.interface_specification_canon", "requestedAction": "VERIFY"}
+            ],
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "88ba63f1b9b7f53303959fe5787d9797d80b9d040a9ec3dce9226e9ec858d366",
+              "artifactDigest": "17a6962fbb0effcdae367c6edd63e19f4f1443fe5bc87e5e593ac9647d506483",
+              "layerMapPresent": false
+            },
+            "visualMutation": false
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/mobile-runtime-visual-harness-gate-request.json" | tee "$RUNNER_TEMP/MOBILE_RUNTIME_VISUAL_HARNESS_ANTI_REWORK_GATE.json"
+          grep -F '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/MOBILE_RUNTIME_VISUAL_HARNESS_ANTI_REWORK_GATE.json"
+
+      - name: Upload gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-runtime-visual-harness-mutation-gate-${{ github.run_id }}
+          path: ${{ runner.temp }}/MOBILE_RUNTIME_VISUAL_HARNESS_ANTI_REWORK_GATE.json
+          if-no-files-found: error
+          retention-days: 14
