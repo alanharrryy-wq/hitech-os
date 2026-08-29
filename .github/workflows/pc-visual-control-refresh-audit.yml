@@ -25,10 +25,18 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install parser dependency only
-        working-directory: apps/terminal-de-venta-system
+      - name: Install parser dependency in isolated temp prefix
         shell: bash
-        run: npm install --no-save --package-lock=false --ignore-scripts postcss@8
+        run: |
+          set -euo pipefail
+          PARSER_ROOT="$RUNNER_TEMP/prisma-visual-parser"
+          mkdir -p "$PARSER_ROOT"
+          npm install --prefix "$PARSER_ROOT" --package-lock=false --ignore-scripts postcss@8
+          APP_ROOT="$GITHUB_WORKSPACE/apps/terminal-de-venta-system"
+          test ! -e "$APP_ROOT/node_modules"
+          ln -s "$PARSER_ROOT/node_modules" "$APP_ROOT/node_modules"
+          node -e "import('postcss').then(m => console.log('POSTCSS_OK=' + !!m.default))" \
+            --input-type=module
 
       - name: Regenerate source-only Visual Control indexes
         working-directory: apps/terminal-de-venta-system
@@ -83,6 +91,8 @@ jobs:
         working-directory: apps/terminal-de-venta-system
         shell: bash
         run: |
+          set -euo pipefail
+          rm -f node_modules
           git status --short
           git diff -- .prisma-ui/visual-control .prisma-ui/current || true
 
