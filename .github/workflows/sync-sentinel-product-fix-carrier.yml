@@ -1,0 +1,77 @@
+name: PRISMA Sync Sentinel Product Fix Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - tooling/prisma-sync-sentinel-v1-2808
+    paths:
+      - '.github/workflows/sync-sentinel-product-fix-carrier.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  apply-bounded-fix:
+    if: github.event.pull_request.head.ref == 'gate/sync-sentinel-product-fix-2908'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout carrier and validate exact scope
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Fail closed on source, main, authority, and carrier drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_SHA='0d6f4cf8f826828bf35e15b50a657c90aa11e885'
+          MAIN_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
+          git fetch origin main tooling/prisma-sync-sentinel-v1-2808
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git rev-parse origin/tooling/prisma-sync-sentinel-v1-2808)" = "$SOURCE_SHA"
+          MERGE_BASE="$(git merge-base origin/tooling/prisma-sync-sentinel-v1-2808 HEAD)"
+          mapfile -t files < <(git diff --name-only "$MERGE_BASE"...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/sync-sentinel-product-fix-carrier.yml"
+          echo 'Authority Mesh: PASS_COMPOSED_AUTHORITY_MESH run=33267317656 requestDigest=fa6bef888a5547604f3deb13370a6cee40b6ae0ca1b422cb6ea2a4d4ae9bea7a'
+          echo 'Mutation gate: PASS_ANTI_REWORK_GATE run=33267465289 decisionDigest=c4d404e12fab941b29d3fb85f70533fcf63572fbb111823c400b1b3a1807f090'
+
+      - name: Apply exactly one evidence-backed quote repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_BRANCH='tooling/prisma-sync-sentinel-v1-2808'
+          SOURCE_SHA='0d6f4cf8f826828bf35e15b50a657c90aa11e885'
+          TARGET='apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts'
+          git checkout -B "$SOURCE_BRANCH" "$SOURCE_SHA"
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts')
+          text = p.read_text(encoding='utf-8')
+          old = '"sourceOccurredAt"=excluded."sourceOccurredAt", "updatedAt"=excluded."updatedAt` ,'
+          new = '"sourceOccurredAt"=excluded."sourceOccurredAt", "updatedAt"=excluded."updatedAt"` ,'
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'EXPECTED_EXACTLY_ONE_TARGET_GOT_{count}')
+          updated = text.replace(old, new, 1)
+          if updated.count(new) != 1:
+              raise SystemExit('REPLACEMENT_POSTCONDITION_FAILED')
+          p.write_text(updated, encoding='utf-8')
+          PY
+          mapfile -t changed < <(git diff --name-only)
+          test "${#changed[@]}" = "1"
+          test "${changed[0]}" = "$TARGET"
+          git diff --check
+          git diff -- "$TARGET"
+          git config user.name 'PRISMA Sync Sentinel'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- "$TARGET"
+          git commit -m 'fix(tablet): close catalog pricing projection UPSERT quote'
+          test "$(git diff-tree --no-commit-id --name-only -r HEAD | wc -l | tr -d ' ')" = '1'
+          test "$(git diff-tree --no-commit-id --name-only -r HEAD)" = "$TARGET"
+          git push origin "HEAD:$SOURCE_BRANCH"
