@@ -1,0 +1,116 @@
+name: PRISMA Sync Sentinel Final Certification 2 Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - tooling/prisma-sync-sentinel-v1-2808
+    paths:
+      - '.github/workflows/sync-sentinel-final-cert2-carrier.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  certify-sync-sentinel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Validate current main, carrier scope, and detach exact source
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_SHA='d2fc2c3995edce0870602c7c44d09265449072de'
+          MAIN_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
+          git fetch origin main tooling/prisma-sync-sentinel-v1-2808
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git rev-parse origin/tooling/prisma-sync-sentinel-v1-2808)" = "$SOURCE_SHA"
+          mapfile -t changed < <(git diff --name-only "$SOURCE_SHA" HEAD)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = '.github/workflows/sync-sentinel-final-cert2-carrier.yml'
+          git checkout --detach "$SOURCE_SHA"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          echo "SOURCE_SHA=$SOURCE_SHA" >> "$GITHUB_ENV"
+          echo 'Authority Mesh PASS: run=33267317656 requestDigest=fa6bef888a5547604f3deb13370a6cee40b6ae0ca1b422cb6ea2a4d4ae9bea7a'
+          echo 'Mutation gate PASS: run=33267465289 decisionDigest=c4d404e12fab941b29d3fb85f70533fcf63572fbb111823c400b1b3a1807f090'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install workspace dependencies without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Compile and self-test Sync Sentinel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q tools/prisma-sentinels/sync-sentinel
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py self-test | tee /tmp/sync-sentinel-selftest.log
+          grep -Fq 'PASS_SYNC_SENTINEL_SELF_TEST' /tmp/sync-sentinel-selftest.log
+
+      - name: Run isolated real-code Tablet-PC certification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tools/_local/reports/sync-sentinel
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py certify \
+            --repo . \
+            --expected-head "$SOURCE_SHA" \
+            --evidence-dir tools/_local/reports/sync-sentinel \
+            --workers 3 | tee /tmp/sync-sentinel-cert.log
+          grep -Fq 'PASS_SYNC_CERTIFICATION' /tmp/sync-sentinel-cert.log
+
+      - name: Assert certification boundaries and safety evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('tools/_local/reports/sync-sentinel/SYNC_SENTINEL_REPORT.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          assert d['status'] == 'PASS_SYNC_CERTIFICATION', d
+          assert d['productionCertified'] is False, d
+          assert d['liveDbTouched'] is False, d
+          assert d['sourceDrift'] is False, d
+          assert d['cleanupPass'] is True, d
+          assert d['orphanProcesses'] is False, d
+          m = json.loads(Path('tools/_local/reports/sync-sentinel/SYNC_SENTINEL_MANIFEST.json').read_text(encoding='utf-8'))
+          assert m['remainingSecretFindings'] == 0, m
+          print('PASS_SYNC_SENTINEL_EVIDENCE_ASSERTIONS')
+          PY
+
+      - name: Upload certification evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sync-sentinel-final-certification2-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 14
+          path: tools/_local/reports/sync-sentinel/**
