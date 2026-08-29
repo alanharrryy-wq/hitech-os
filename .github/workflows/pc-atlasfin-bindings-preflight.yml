@@ -1,0 +1,59 @@
+name: PC Atlasfin Binding Authority Preflight
+
+on:
+  push:
+    branches:
+      - agent/pc-atlasfin-bindings-preflight-20260829
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  authority-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run exact PC Atlasfin Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pc-atlasfin-authority"
+          mkdir -p "$OUT"
+          TASK='Prepare a source-only governed Atlasfin-to-PC binding map for SURF.PC.ADMIN using current source and canonical governance. Resolve VIS.ATMOSPHERE.SCENE.PRIMARY, VIS.SURFACE.CHROME.GLOBAL, VIS.SURFACE.CONTENT.PRIMARY, and VIS.COLOR.ACCENT.SEMANTIC against exact PC route, region, slot, componentUiId, owner, selector, layerId, bindingId, adapter ADP.PC.ADMIN.V2, recipe and preset compatibility. Reconcile stale PC coverage in apps/terminal-de-venta-system/.prisma-ui/visual-control only if authority proves it is required. Affected scope: apps/terminal-de-venta-system/products/pc/**, apps/terminal-de-venta-system/.prisma-ui/**, prisma-html/extras/atlasfin/**, tools/code-atlas/**, and governance evidence only. Explicitly exclude Tablet, Mobile, Chart Lab, Web, SaaS Control Center, Cloud Command Center and Shared UI runtime source. Do not apply visual changes, do not mutate product CSS or TSX, do not start or stop processes, do not touch ports, do not run Prisma generate, do not mutate databases, and do not run browser automation.'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            --task "$TASK" \
+            --surface pc \
+            --repo "$GITHUB_WORKSPACE" \
+            --out "$OUT" \
+            --workers 18 \
+            --shards 54 \
+            --max-files 180 \
+            --max-mb 80
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+
+      - name: Show result
+        if: always()
+        shell: bash
+        run: |
+          find "$RUNNER_TEMP/pc-atlasfin-authority" -maxdepth 2 -type f -printf '%p\n' || true
+
+      - name: Upload Authority Mesh evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-atlasfin-authority-preflight
+          path: ${{ runner.temp }}/pc-atlasfin-authority/*.zip
+          if-no-files-found: error
+          retention-days: 7
