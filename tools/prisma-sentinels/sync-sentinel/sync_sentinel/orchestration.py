@@ -79,13 +79,25 @@ def _prepare_temp_databases(repo: Path, temp_root: Path, pc_db: Path, tablet_db:
     if checks[-1].verdict != Verdict.PASS:
         return checks
 
+    # Tablet owns a custom Prisma client output (prisma/.generated/prisma-client).
+    # Do not call scripts/tablet-db.mjs here: its operational init path imports the
+    # package-default @prisma/client after generation and may also seed demo data.
+    # Sentinel needs only the canonical Tablet schema on a disposable DB; the
+    # journey adapter seeds the minimum synthetic scope itself.
     tablet_app = app / "products/tablet/app"
+    tablet_schema = tablet_app / "prisma/schema.prisma"
     env_tab = dict(os.environ)
     env_tab["TABLET_DATABASE_PATH"] = str(tablet_db)
     env_tab["TABLET_DATABASE_URL"] = "file:" + tablet_db.as_posix()
     env_tab["DATABASE_URL"] = "file:" + tablet_db.as_posix()
-    cp = run(["pnpm", "run", "db:tablet:init"], cwd=tablet_app, env=env_tab, timeout=420)
-    checks.append(_result_from_process("tablet_temp_db_init", cp, ["Seed OK"] if cp.returncode == 0 else None))
+
+    cp = run(["pnpm", "exec", "prisma", "generate", "--schema", str(tablet_schema)], cwd=tablet_app, env=env_tab, timeout=300)
+    checks.append(_result_from_process("tablet_temp_prisma_generate", cp))
+    if checks[-1].verdict != Verdict.PASS:
+        return checks
+
+    cp = run(["pnpm", "exec", "prisma", "db", "push", "--schema", str(tablet_schema), "--skip-generate"], cwd=tablet_app, env=env_tab, timeout=300)
+    checks.append(_result_from_process("tablet_temp_db_push", cp))
     return checks
 
 
