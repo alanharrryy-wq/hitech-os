@@ -68,11 +68,11 @@ jobs:
           v1 = 'apps/terminal-de-venta-system/tools/verify_pc_to_tablet_catalog_delta_closure_01.mjs'
           replace_once(v1,
           '''  "Pedir delta",\n  "Bootstrap inicial",\n  "Resync controlado",''',
-          '''  'run("delta", false)',\n  'run("bootstrap", true)',\n  'run("resync", true)', ''',
+          '''  'run("delta", false)',\n  'run("bootstrap", true)',\n  'run("resync", true)',''',
           'tablet_verifier_action_semantics')
           replace_once(v1,
           '''  "Generar delta catalogo",\n  "Bootstrap catalogo",\n  "Resync catalogo",''',
-          '''  'body: { mode: "delta"',\n  'body: { mode: "bootstrap"',\n  'body: { mode: "resync"', ''',
+          '''  'body: { mode: "delta"',\n  'body: { mode: "bootstrap"',\n  'body: { mode: "resync"',''',
           'pc_verifier_action_semantics')
 
           v2 = 'apps/terminal-de-venta-system/products/pc/app/tools/verify_sync_ingest_persistence_01.mjs'
