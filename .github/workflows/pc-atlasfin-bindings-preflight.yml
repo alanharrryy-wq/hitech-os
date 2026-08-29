@@ -31,7 +31,7 @@ jobs:
           set -euo pipefail
           OUT="$RUNNER_TEMP/pc-atlasfin-authority"
           mkdir -p "$OUT"
-          TASK='Prepare a source-only governed Atlasfin-to-PC binding map for SURF.PC.ADMIN using current source and canonical governance. Resolve VIS.ATMOSPHERE.SCENE.PRIMARY, VIS.SURFACE.CHROME.GLOBAL, VIS.SURFACE.CONTENT.PRIMARY, and VIS.COLOR.ACCENT.SEMANTIC against exact PC route, region, slot, componentUiId, owner, selector, layerId, bindingId, adapter ADP.PC.ADMIN.V2, recipe and preset compatibility. Reconcile stale PC coverage in apps/terminal-de-venta-system/.prisma-ui/visual-control only if authority proves it is required. Affected scope: apps/terminal-de-venta-system/products/pc/**, apps/terminal-de-venta-system/.prisma-ui/**, prisma-html/extras/atlasfin/**, tools/code-atlas/**, and governance evidence only. Explicitly exclude Tablet, Mobile, Chart Lab, Web, SaaS Control Center, Cloud Command Center and Shared UI runtime source. Do not apply visual changes, do not mutate product CSS or TSX, do not start or stop processes, do not touch ports, do not run Prisma generate, do not mutate databases, and do not run browser automation.'
+          TASK='Prepare the first source-only governed Atlasfin-to-PC binding contract for the exact current-source target on PC /catalog. Pin route /catalog; componentUiId PC-HOME-FORM-COMPONENTS-CATALOG-PRODUCT-MEDIA-WORKSPACE-WORKSPACE-FRM-01; owner apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.tsx; CSS owner apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.module.css; selector .workspace; slot SLOT.pc.components_catalog_product_media_workspace.form.components_catalog_product_media_workspace.workspace; semantic VIS.SURFACE.CONTENT.PRIMARY; recipe RCP.ATLAS.CONTENT.GLASS.02; preset PRESET.ATLAS.CONTENT.GLASS.01; material MAT.ATLAS.GLASS.CONTENT.01; adapter ADP.PC.ADMIN.V2. Resolve and prove the structural visual-control layer identity and source provenance without inventing a certified identity-layer ID. Preserve the existing /stock governed pilot and all unrelated PC routes. Affected scope is only the exact component/CSS source as read-only authority, prisma-html/extras/atlasfin binding/recipe/adapter registries, apps/terminal-de-venta-system/.prisma-ui and governance evidence needed to prove the binding, and tools/code-atlas read-only evidence. Explicitly exclude Tablet, Mobile, Chart Lab, Web, SaaS Control Center, Cloud Command Center and Shared UI runtime source. Do not apply Atlasfin visual values yet, do not mutate product CSS or TSX, do not mutate runtime behavior, do not start or stop processes, do not touch ports, do not run Prisma generate, do not mutate databases, and do not run browser automation. The deliverable is authority for a bounded binding contract only, with blockers explicit and no fake green.'
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
             --task "$TASK" \
             --surface pc \
@@ -53,7 +53,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pc-atlasfin-authority-preflight
+          name: pc-atlasfin-authority-exact-target
           path: ${{ runner.temp }}/pc-atlasfin-authority/*.zip
           if-no-files-found: error
           retention-days: 7
