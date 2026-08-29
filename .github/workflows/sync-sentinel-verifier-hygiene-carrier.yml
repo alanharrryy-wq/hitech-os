@@ -103,7 +103,7 @@ jobs:
           diff -u /tmp/expected.txt /tmp/changed.txt
           git diff --check
           python -m py_compile "$ORCH"
-          node "$V1"
+          (cd apps/terminal-de-venta-system && node tools/verify_pc_to_tablet_catalog_delta_closure_01.mjs)
           (cd apps/terminal-de-venta-system/products/pc/app && node tools/verify_sync_ingest_persistence_01.mjs)
           git config user.name 'PRISMA Sync Sentinel'
           git config user.email 'actions@users.noreply.github.com'
