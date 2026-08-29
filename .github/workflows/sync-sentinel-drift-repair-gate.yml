@@ -30,9 +30,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          CANONICAL_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
           git fetch origin main
-          test "$(git rev-parse origin/main)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
-          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "$(git rev-parse origin/main)" = "$CANONICAL_SHA"
+          MERGE_BASE="$(git merge-base origin/main HEAD)"
+          mapfile -t files < <(git diff --name-only "$MERGE_BASE"...HEAD)
           test "${#files[@]}" = "1"
           test "${files[0]}" = ".github/workflows/sync-sentinel-drift-repair-gate.yml"
 
@@ -40,16 +42,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git checkout --detach 71387e06aab700c14745a4e42d799ecd82d61b5d
-          test "$(git rev-parse HEAD)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
+          CANONICAL_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
+          git checkout --detach "$CANONICAL_SHA"
+          test "$(git rev-parse HEAD)" = "$CANONICAL_SHA"
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
           cat > "$RUNNER_TEMP/sync-sentinel-drift-repair-request.json" <<'JSON'
           {
             "schemaVersion": "prisma.factory-ledger.anti-rework-request.v1",
             "mode": "MUTATION",
-            "expectedHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
-            "task": "Evidence-backed drift repair discovered by PRISMA Sync Sentinel isolated Journey B. Apply only the smallest correctness repair in apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts: close the missing double quote in the PricingProjectionRecord UPSERT identifier excluded.\"updatedAt\" so real PC-to-Tablet catalog delta application can execute. Preserve existing catalog-delta semantics, checkpoint/cursor behavior, local-first behavior, and the invariant that PC catalog updates do not overwrite Tablet local operational stock. Then rerun the existing Sync Sentinel source branch against isolated Sentinel-owned SQLite only. No UI, no schema/model/migration change, no sync redesign, no live/customer DB, no unrelated cleanup. Reconcile native verifiers only if fresh evidence proves their assertions stale, under verifier-only scope.",
+            "expectedHead": "a751520bbc559adbfced29abdd82ef0dfa6e0566",
+            "task": "Evidence-backed drift repair discovered by PRISMA Sync Sentinel isolated Journey B. Apply only the smallest correctness repair in apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts: close the missing double quote in the PricingProjectionRecord UPSERT identifier excluded.\"updatedAt\" so real PC-to-Tablet catalog delta application can execute. Preserve all existing catalog-delta semantics, checkpoint/cursor behavior, local-first behavior, and the invariant that PC catalog updates do not overwrite Tablet local operational stock. Then rerun the existing Sync Sentinel source branch against isolated Sentinel-owned SQLite only. No UI, no schema/model/migration change, no sync redesign, no live/customer DB, no unrelated cleanup. Reconcile native verifiers only if fresh evidence proves their assertions stale, under verifier-only scope.",
             "capabilities": [
               {"id": "tooling.sync_sentinel", "requestedAction": "BUILD"},
               {"id": "tablet.sync.runtime_truth", "requestedAction": "ADVANCE"},
@@ -58,11 +61,11 @@ jobs:
             ],
             "authorityMesh": {
               "status": "PASS_COMPOSED_AUTHORITY_MESH",
-              "repoHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+              "repoHead": "a751520bbc559adbfced29abdd82ef0dfa6e0566",
               "requiredAuthorityCoveragePct": 100,
               "blockers": 0,
-              "requestDigest": "3cbef4397dbf6be6ac330d0709a1d2aa58fbe6b747ec4e6cb36c1ce43ded3385",
-              "artifactDigest": "014a5c561bd3a6cea66723f372e201d0c0ad93e7978a4e5d043e3dd797982b41",
+              "requestDigest": "fa6bef888a5547604f3deb13370a6cee40b6ae0ca1b422cb6ea2a4d4ae9bea7a",
+              "artifactDigest": "fbb7b1b169afb180e3d9e06a599a245191ae963a848eaa0d63f162cf06af3639",
               "layerMapPresent": false
             },
             "visualMutation": false
