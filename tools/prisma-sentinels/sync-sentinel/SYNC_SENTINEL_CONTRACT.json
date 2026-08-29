@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "prisma.sync-sentinel.contract.v1",
+  "capabilityId": "tooling.sync_sentinel",
+  "modes": ["scan", "diagnose", "certify", "self-test"],
+  "businessLogicPolicy": "REUSE_CANONICAL_SYNC_SOURCE_DO_NOT_REIMPLEMENT_IN_PYTHON",
+  "journeys": {
+    "A": "Tablet real dispatcher -> Sentinel loopback test transport -> PC real ingest/projectors -> Tablet real ACK reconciliation",
+    "B": "PC real catalog exporter -> Tablet real pull/apply/checkpoint with local-stock preservation invariant"
+  },
+  "hardSafety": {
+    "temporaryDatabasesOnly": true,
+    "customerLiveDatabaseAllowed": false,
+    "globalProcessCleanupAllowed": false,
+    "productUiMutationAllowed": false,
+    "unknownMayPass": false,
+    "sourceDriftMayPass": false,
+    "evidenceSecretLeakMayPass": false
+  },
+  "evidence": {
+    "atomicZip": true,
+    "sanitized": true,
+    "headLocked": true,
+    "sourceDriftChecked": true,
+    "knownLiveDbNonTouchChecked": true,
+    "ownedProcessCleanupChecked": true
+  },
+  "productionCertified": false,
+  "doesNotProve": [
+    "hosted/customer production operation",
+    "future source/configuration drift",
+    "arbitrary external database paths not present in the repository"
+  ]
+}
