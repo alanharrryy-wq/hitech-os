@@ -1,0 +1,81 @@
+name: PRISMA Sync Sentinel Drift Repair Mutation Gate
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-sentinel-drift-repair-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  anti-rework-gate:
+    if: github.event.pull_request.head.ref == 'gate/sync-sentinel-drift-repair-2908'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Fail closed on canonical drift and carrier scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
+          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/sync-sentinel-drift-repair-gate.yml"
+
+      - name: Validate and run universal anti-rework mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach 71387e06aab700c14745a4e42d799ecd82d61b5d
+          test "$(git rev-parse HEAD)" = "71387e06aab700c14745a4e42d799ecd82d61b5d"
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+          cat > "$RUNNER_TEMP/sync-sentinel-drift-repair-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-request.v1",
+            "mode": "MUTATION",
+            "expectedHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+            "task": "Evidence-backed drift repair discovered by PRISMA Sync Sentinel isolated Journey B. Apply only the smallest correctness repair in apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts: close the missing double quote in the PricingProjectionRecord UPSERT identifier excluded.\"updatedAt\" so real PC-to-Tablet catalog delta application can execute. Preserve existing catalog-delta semantics, checkpoint/cursor behavior, local-first behavior, and the invariant that PC catalog updates do not overwrite Tablet local operational stock. Then rerun the existing Sync Sentinel source branch against isolated Sentinel-owned SQLite only. No UI, no schema/model/migration change, no sync redesign, no live/customer DB, no unrelated cleanup. Reconcile native verifiers only if fresh evidence proves their assertions stale, under verifier-only scope.",
+            "capabilities": [
+              {"id": "tooling.sync_sentinel", "requestedAction": "BUILD"},
+              {"id": "tablet.sync.runtime_truth", "requestedAction": "ADVANCE"},
+              {"id": "pc.sync.dispatch_replay_runtime", "requestedAction": "VERIFY"},
+              {"id": "data.canonical_schema_reproducibility", "requestedAction": "VERIFY"}
+            ],
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "3cbef4397dbf6be6ac330d0709a1d2aa58fbe6b747ec4e6cb36c1ce43ded3385",
+              "artifactDigest": "014a5c561bd3a6cea66723f372e201d0c0ad93e7978a4e5d043e3dd797982b41",
+              "layerMapPresent": false
+            },
+            "visualMutation": false
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/sync-sentinel-drift-repair-request.json" | tee "$RUNNER_TEMP/SYNC_SENTINEL_DRIFT_REPAIR_ANTI_REWORK_GATE.json"
+          grep -F '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/SYNC_SENTINEL_DRIFT_REPAIR_ANTI_REWORK_GATE.json"
+
+      - name: Upload mutation gate evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sync-sentinel-drift-repair-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/SYNC_SENTINEL_DRIFT_REPAIR_ANTI_REWORK_GATE.json
+          if-no-files-found: error
+          retention-days: 14
