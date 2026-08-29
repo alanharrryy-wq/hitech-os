@@ -1,0 +1,508 @@
+name: PRISMA Mobile Runtime Visual VERIFY Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  BASE_SHA: '71387e06aab700c14745a4e42d799ecd82d61b5d'
+  MOBILE_ROOT: 'apps/terminal-de-venta-system/products/mobile/app'
+  BASE_URL: 'http://127.0.0.1:3140'
+
+jobs:
+  mobile-runtime-visual-verify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'verify/mobile-runtime-visual-2908'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout disposable VERIFY carrier
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Fail closed on canonical drift and carrier scope
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/mobile-runtime-visual-verify-carrier.yml"
+
+      - name: Detach exact canonical source
+        id: detach
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach "$BASE_SHA"
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          test -z "$(git status --porcelain --untracked-files=no)"
+
+      - name: Initialize governed evidence boundary
+        id: evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          mkdir -p "$E/screenshots"
+          cat > "$E/AUTHORITY.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.mobile.runtime-visual-authority.v1",
+            "canonicalHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
+            "authorityMeshRun": 33245611088,
+            "authorityMeshResult": "PASS_COMPOSED_AUTHORITY_MESH",
+            "authorityMeshRequestDigest": "88ba63f1b9b7f53303959fe5787d9797d80b9d040a9ec3dce9226e9ec858d366",
+            "authorityMeshArtifact": 9712748475,
+            "authorityMeshArtifactDigest": "17a6962fbb0effcdae367c6edd63e19f4f1443fe5bc87e5e593ac9647d506483",
+            "mutationGateRun": 33245809384,
+            "mutationGateResult": "PASS_ANTI_REWORK_GATE",
+            "mutationGateDecisionDigest": "7b80ceb3d9ead090d8b6819e5ac077f5121e45a9fb892e086974a6075ac37b7b",
+            "productSourceMutation": false,
+            "productionCertified": false
+          }
+          JSON
+          cat > "$E/EVIDENCE_BOUNDARY.md" <<'EOF'
+          # PRISMA Mobile runtime/visual VERIFY evidence boundary
+
+          This disposable GitHub Actions carrier verifies exact canonical source `main@71387e06aab700c14745a4e42d799ecd82d61b5d` on an ephemeral loopback runner.
+
+          It may prove isolated runtime rendering, canonical seven-tab navigation, two phone viewport observations, loading/error/stale client behavior, deterministic contract-fixture rendering for ready/partial/empty readiness levels, keyboard/ARIA behavior, source invariants, and captured browser diagnostics.
+
+          It does **not** prove hosted production, customer production data, signed-session production auth, offline operational data, real Tablet/PC upstream availability, sync correctness, licensing correctness, custody/zero-egress, deployment, distribution, or production certification.
+
+          Readiness fixtures are marked `fixture=true`. They are derived from the runner's own contract-valid snapshot and exercise current UI rendering only. They do not certify upstream business semantics.
+          EOF
+
+      - name: Setup Node 24
+        id: node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install pnpm runner tool
+        id: pnpm
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global pnpm@9.15.0
+          node --version | tee "$RUNNER_TEMP/mobile-visual-evidence/node-version.txt"
+          pnpm --version | tee "$RUNNER_TEMP/mobile-visual-evidence/pnpm-version.txt"
+
+      - name: Install root workspace dependencies without lifecycle scripts
+        id: root_install
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Install nested Mobile dependencies in isolation
+        id: mobile_install
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$MOBILE_ROOT"
+          npm install --ignore-scripts --no-package-lock --legacy-peer-deps
+          test -x node_modules/.bin/tsc
+          test -x node_modules/.bin/next
+          test -d node_modules/@types/node
+          npm ls --depth=0 --json > "$RUNNER_TEMP/mobile-visual-evidence/mobile-dependencies.json" || true
+
+      - name: Run current Mobile source gates
+        id: static
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          pnpm -C "$MOBILE_ROOT" run verify:interface-canon | tee "$E/verify-interface-canon.log"
+          pnpm -C "$MOBILE_ROOT" run verify:premium-navigation | tee "$E/verify-premium-navigation.log"
+          pnpm -C "$MOBILE_ROOT" run verify:data-readiness | tee "$E/verify-data-readiness.log"
+          pnpm -C "$MOBILE_ROOT" run verify:source-states | tee "$E/verify-source-states.log"
+          pnpm -C "$MOBILE_ROOT" run typecheck | tee "$E/typecheck.log"
+          pnpm -C "$MOBILE_ROOT" run build | tee "$E/build.log"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} +
+          rm -rf "$MOBILE_ROOT/.next"
+
+      - name: Install isolated browser harness
+        id: browser_install
+        shell: bash
+        run: |
+          set -euo pipefail
+          PW="$RUNNER_TEMP/mobile-pw"
+          mkdir -p "$PW"
+          cd "$PW"
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.55.0 axe-core@4.10.3
+          npx playwright install --with-deps chromium
+
+      - name: Start only runner-owned Mobile runtime
+        id: server
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          (
+            cd "$MOBILE_ROOT"
+            nohup ./node_modules/.bin/next dev --webpack -H 127.0.0.1 -p 3140 >"$E/mobile-dev.log" 2>&1 &
+            echo $! > "$RUNNER_TEMP/mobile.pid"
+          )
+          for i in $(seq 1 90); do
+            if curl -fsS "$BASE_URL/prisma-app" >/dev/null 2>&1; then
+              echo "MOBILE_LOOPBACK_READY"
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$E/mobile-dev.log" || true
+          exit 1
+
+      - name: Materialize ephemeral runtime verifier
+        id: materialize
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/mobile-pw/verify.mjs" <<'JS'
+          import { chromium } from 'playwright';
+          import { createHash } from 'node:crypto';
+          import { createRequire } from 'node:module';
+          import fs from 'node:fs';
+          import path from 'node:path';
+
+          const require = createRequire(import.meta.url);
+          const axeSource = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
+          const BASE = process.env.BASE_URL;
+          const OUT = process.env.EVIDENCE_DIR;
+          const SHOTS = path.join(OUT, 'screenshots');
+          const EXPECTED = ['Inicio', 'Ventas', 'Operación', 'Licencias', 'Alertas', 'Stock', 'Sistema'];
+          const RETIRED = ['Hoy', 'Caja', 'Inventario', 'Reportes', 'MultiSucursal', 'Resumen', 'Sync', 'Mando', 'Command Center', 'Action Inbox', 'Daily Brief', 'Decision Ledger', 'Pulse Timeline', 'Health Radar'];
+          const VIEWPORTS = [
+            { name: 'phone390', width: 390, height: 844 },
+            { name: 'phone430', width: 430, height: 932 }
+          ];
+          const report = {
+            schemaVersion: 'prisma.mobile.runtime-visual-conformance.v1',
+            canonicalHead: process.env.BASE_SHA,
+            runner: 'github-actions-ubuntu-24.04',
+            productionCertified: false,
+            sourceMutation: false,
+            actualRuntimeApi: null,
+            scenarios: [],
+            diagnostics: { consoleErrors: [], pageErrors: [], requestFailures: [], httpFailures: [] },
+            accessibility: [],
+            hardFailures: [],
+            verdict: 'UNKNOWN'
+          };
+          const clean = (v) => String(v ?? '').replace(/\s+/g, ' ').trim();
+          const short = (v) => clean(v).slice(0, 900);
+          const fail = (code, detail = '') => report.hardFailures.push({ code, detail: short(detail) });
+          const safeUrl = (raw) => {
+            try {
+              const u = new URL(raw);
+              return u.origin === new URL(BASE).origin ? `${u.pathname}${u.search}` : `${u.origin}${u.pathname}`;
+            } catch { return short(raw); }
+          };
+
+          function wire(page, id) {
+            page.on('console', (m) => { if (m.type() === 'error') report.diagnostics.consoleErrors.push({ id, text: short(m.text()) }); });
+            page.on('pageerror', (e) => report.diagnostics.pageErrors.push({ id, text: short(e?.message || e) }));
+            page.on('requestfailed', (r) => report.diagnostics.requestFailures.push({ id, url: safeUrl(r.url()), error: short(r.failure()?.errorText) }));
+            page.on('response', (r) => { if (r.status() >= 400) report.diagnostics.httpFailures.push({ id, status: r.status(), url: safeUrl(r.url()) }); });
+          }
+
+          async function getEnvelope() {
+            const response = await fetch(`${BASE}/api/mobile/snapshot`, { headers: { Accept: 'application/json' } });
+            const text = await response.text();
+            let body = null;
+            try { body = JSON.parse(text); } catch {}
+            report.actualRuntimeApi = {
+              status: response.status,
+              ok: response.ok,
+              contentType: response.headers.get('content-type'),
+              bodySha256: createHash('sha256').update(text).digest('hex'),
+              contractOk: body?.ok === true,
+              source: body?.meta?.source ?? null,
+              runtimeMode: body?.meta?.runtimeMode ?? null,
+              readinessLevel: body?.data?.summary?.dataReadiness?.level ?? null,
+              rawPayloadPersisted: false
+            };
+            fs.writeFileSync(path.join(OUT, 'runtime-api-meta.json'), JSON.stringify(report.actualRuntimeApi, null, 2));
+            if (!response.ok || body?.ok !== true || !body?.data?.summary?.dataReadiness) {
+              fail('REAL_SNAPSHOT_CONTRACT_UNAVAILABLE', `HTTP ${response.status}`);
+              return null;
+            }
+            return body;
+          }
+
+          function fixture(base, level) {
+            const f = structuredClone(base);
+            f.meta.generatedAt = new Date().toISOString();
+            f.meta.source = 'api-snapshot';
+            f.meta.runtimeMode = level === 'partial' ? 'partial' : 'live';
+            const r = f.data.summary.dataReadiness;
+            const copy = {
+              ready: ['Datos listos', 'Lectura operativa disponible', 'Fixture contractual de render listo.'],
+              partial: ['Lectura parcial', 'Hay señales parciales', 'Fixture contractual de render parcial.'],
+              empty: ['Sin actividad disponible', 'No hay actividad en la lectura', 'Fixture contractual de render vacío.']
+            }[level];
+            r.level = level;
+            r.label = copy[0];
+            r.headline = copy[1];
+            r.detail = copy[2];
+            r.sourceSummary = `Fixture contractual ${level}; no certifica upstreams reales.`;
+            return f;
+          }
+
+          async function waitNavigator(page) {
+            await page.waitForFunction(() => document.querySelectorAll('[role="tab"]').length === 7 || Boolean(document.querySelector('[data-prisma-zone="mobile-error-state"]')), null, { timeout: 25000 });
+          }
+          async function tabLabels(page) { return (await page.locator('[role="tab"]').allTextContents()).map(clean); }
+          async function layout(page, id, viewport) {
+            const m = await page.evaluate(() => ({
+              innerWidth: window.innerWidth,
+              docWidth: document.documentElement.scrollWidth,
+              bodyWidth: document.body?.scrollWidth ?? 0,
+              readiness: document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-readiness') ?? null,
+              stale: document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-stale') ?? null
+            }));
+            if (m.docWidth > m.innerWidth + 1 || m.bodyWidth > m.innerWidth + 1) fail('HORIZONTAL_OVERFLOW', `${id}/${viewport}: ${JSON.stringify(m)}`);
+            return m;
+          }
+          async function runAxe(page, id, viewport) {
+            await page.addScriptTag({ content: axeSource });
+            const violations = await page.evaluate(async () => {
+              const x = await window.axe.run(document, { resultTypes: ['violations'] });
+              return x.violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodes: v.nodes.length, targets: v.nodes.slice(0, 5).map((n) => n.target) }));
+            });
+            report.accessibility.push({ id, viewport, violations });
+            for (const v of violations.filter((x) => x.impact === 'serious' || x.impact === 'critical')) fail('AXE_SERIOUS_OR_CRITICAL', `${id}/${viewport}: ${v.id} (${v.nodes})`);
+          }
+
+          async function realViewport(browser, vp) {
+            const id = `real-${vp.name}`;
+            const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, reducedMotion: 'reduce' });
+            const page = await context.newPage();
+            wire(page, id);
+            await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await waitNavigator(page);
+            const labels = await tabLabels(page);
+            if (JSON.stringify(labels) !== JSON.stringify(EXPECTED)) fail('CANONICAL_TAB_ORDER_MISMATCH', JSON.stringify(labels));
+            const retired = labels.filter((x) => RETIRED.includes(x));
+            if (retired.length) fail('RETIRED_TOP_LEVEL_TAB_MOUNTED', retired.join(', '));
+            if (await page.getByText('Todas las sucursales', { exact: true }).count()) fail('RETIRED_MULTICONTEXT_VISIBLE', id);
+
+            const first = page.getByRole('tab', { name: 'Inicio', exact: true });
+            await first.focus();
+            await page.keyboard.press('ArrowRight');
+            if (clean(await page.evaluate(() => document.activeElement?.textContent)) !== 'Ventas') fail('TAB_KEYBOARD_ARROW_RIGHT', id);
+            await page.keyboard.press('Home');
+            if (clean(await page.evaluate(() => document.activeElement?.textContent)) !== 'Inicio') fail('TAB_KEYBOARD_HOME', id);
+            await page.keyboard.press('End');
+            if (clean(await page.evaluate(() => document.activeElement?.textContent)) !== 'Sistema') fail('TAB_KEYBOARD_END', id);
+
+            const screenshots = [];
+            for (const label of EXPECTED) {
+              const tab = page.getByRole('tab', { name: label, exact: true });
+              await tab.click();
+              await page.waitForTimeout(120);
+              if (await tab.getAttribute('aria-selected') !== 'true') fail('TAB_ARIA_SELECTED_MISMATCH', `${id}/${label}`);
+              const slug = label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+              const file = `${id}-${slug}.png`;
+              await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
+              screenshots.push(file);
+            }
+            const metrics = await layout(page, id, vp.name);
+            await runAxe(page, id, vp.name);
+            report.scenarios.push({ id, fixture: false, kind: 'isolated-real-runtime', viewport: vp, tabs: labels, screenshots, metrics });
+            await context.close();
+          }
+
+          async function readinessFixture(browser, base, level) {
+            const id = `fixture-${level}`;
+            const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+            await context.route('**/api/mobile/snapshot', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture(base, level)) }));
+            const page = await context.newPage();
+            wire(page, id);
+            await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded' });
+            await waitNavigator(page);
+            const observed = await page.locator('[data-prisma-product="mobile"]').getAttribute('data-prisma-readiness');
+            if (observed !== level) fail('FIXTURE_READINESS_NOT_PROJECTED', `${level} -> ${observed}`);
+            const file = `${id}.png`;
+            await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
+            report.scenarios.push({ id, fixture: true, claim: 'render-only-contract-fixture', requested: level, observed, screenshot: file, metrics: await layout(page, id, 'phone390') });
+            await context.close();
+          }
+
+          async function loading(browser, base) {
+            const id = 'fixture-loading';
+            const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+            await context.route('**/api/mobile/snapshot', async (r) => {
+              await new Promise((resolve) => setTimeout(resolve, 2600));
+              await r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(base) });
+            });
+            const page = await context.newPage();
+            wire(page, id);
+            await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded' });
+            await page.waitForSelector('[data-prisma-state="loading"]', { timeout: 5000 });
+            const file = `${id}.png`;
+            await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
+            await page.waitForFunction(() => document.querySelectorAll('[role="tab"]').length === 7, null, { timeout: 10000 });
+            report.scenarios.push({ id, fixture: true, claim: 'loading-boundary-render', screenshot: file });
+            await context.close();
+          }
+
+          async function errorState(browser) {
+            const id = 'fixture-error-503';
+            const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+            await context.route('**/api/mobile/snapshot', (r) => r.fulfill({ status: 503, contentType: 'application/json', body: '{"ok":false,"error":{"code":"FIXTURE_503"}}' }));
+            const page = await context.newPage();
+            wire(page, id);
+            await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded' });
+            await page.waitForSelector('[data-prisma-state="error"]', { timeout: 15000 });
+            if (await page.getByRole('button', { name: 'Reintentar snapshot' }).count() !== 1) fail('ERROR_RETRY_MISSING', id);
+            if (await page.getByRole('button', { name: 'Limpiar cache y reintentar' }).count() !== 1) fail('ERROR_CLEAR_CACHE_MISSING', id);
+            const file = `${id}.png`;
+            await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
+            report.scenarios.push({ id, fixture: true, claim: 'error-boundary-render', expectedHttp503: true, screenshot: file });
+            await context.close();
+          }
+
+          async function staleState(browser) {
+            const id = 'fixture-stale-cache';
+            const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+            const page = await context.newPage();
+            wire(page, id);
+            await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded' });
+            await waitNavigator(page);
+            await page.route('**/api/mobile/snapshot', (r) => r.fulfill({ status: 503, contentType: 'application/json', body: '{"ok":false,"error":{"code":"FIXTURE_REFRESH_503"}}' }));
+            await page.getByRole('button', { name: 'Actualizar', exact: true }).first().click();
+            await page.waitForFunction(() => document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-stale') === 'true', null, { timeout: 12000 });
+            const stale = await page.locator('[data-prisma-product="mobile"]').getAttribute('data-prisma-stale');
+            if (stale !== 'true') fail('STALE_NOT_EXPOSED', id);
+            const file = `${id}.png`;
+            await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
+            report.scenarios.push({ id, fixture: true, claim: 'client-memory-cache-fallback-after-injected-refresh-failure', stale, screenshot: file });
+            await context.close();
+          }
+
+          let browser;
+          try {
+            const base = await getEnvelope();
+            if (!base) throw new Error('contract-valid real runner snapshot unavailable');
+            browser = await chromium.launch({ headless: true });
+            for (const vp of VIEWPORTS) await realViewport(browser, vp);
+            for (const level of ['ready', 'partial', 'empty']) await readinessFixture(browser, base, level);
+            await loading(browser, base);
+            await errorState(browser);
+            await staleState(browser);
+          } catch (e) {
+            fail('HARNESS_EXCEPTION', e?.stack || e?.message || e);
+          } finally {
+            if (browser) await browser.close();
+          }
+
+          const intentional = new Set(['fixture-error-503', 'fixture-stale-cache']);
+          const unexpected = (item) => !intentional.has(item.id) && item.id !== 'fixture-loading';
+          const badConsole = report.diagnostics.consoleErrors.filter(unexpected);
+          const badPage = report.diagnostics.pageErrors.filter(unexpected);
+          const badRequest = report.diagnostics.requestFailures.filter(unexpected);
+          const badHttp = report.diagnostics.httpFailures.filter(unexpected);
+          if (badConsole.length) fail('UNEXPECTED_CONSOLE_ERROR', JSON.stringify(badConsole));
+          if (badPage.length) fail('UNEXPECTED_PAGEERROR', JSON.stringify(badPage));
+          if (badRequest.length) fail('UNEXPECTED_REQUEST_FAILURE', JSON.stringify(badRequest));
+          if (badHttp.length) fail('UNEXPECTED_HTTP_FAILURE', JSON.stringify(badHttp));
+
+          report.verdict = report.hardFailures.length ? 'FAIL_MOBILE_RUNTIME_VISUAL_CONFORMANCE' : 'PASS_MOBILE_RUNTIME_VISUAL_CONFORMANCE_ISOLATED';
+          fs.writeFileSync(path.join(OUT, 'RESULT.json'), JSON.stringify(report, null, 2));
+          fs.writeFileSync(path.join(OUT, 'RESULT.md'), [
+            '# PRISMA Mobile runtime/visual conformance', '',
+            `**Verdict:** ${report.verdict}`,
+            `**Canonical head:** ${report.canonicalHead}`,
+            `**Actual isolated runtime mode:** ${report.actualRuntimeApi?.runtimeMode ?? 'unknown'}`,
+            `**Actual readiness:** ${report.actualRuntimeApi?.readinessLevel ?? 'unknown'}`,
+            `**Scenarios:** ${report.scenarios.length}`,
+            `**Hard failures:** ${report.hardFailures.length}`, '',
+            'This is isolated runtime/visual evidence only. It does not certify hosted production, auth, sync, licensing, custody, zero-egress, offline operational data, deployment or distribution.'
+          ].join('\n') + '\n');
+          console.log(JSON.stringify({ verdict: report.verdict, scenarios: report.scenarios.length, hardFailures: report.hardFailures }, null, 2));
+          if (report.hardFailures.length) process.exit(1);
+          JS
+
+      - name: Run isolated runtime and visual VERIFY
+        id: visual
+        continue-on-error: true
+        shell: bash
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/mobile-visual-evidence
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/mobile-pw"
+          node verify.mjs
+
+      - name: Prove tracked Mobile product source remained unchanged
+        id: source_guard
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          mkdir -p "$E"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} + 2>/dev/null || true
+          rm -rf "$MOBILE_ROOT/.next" 2>/dev/null || true
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          git diff --exit-code -- "$MOBILE_ROOT"
+          test -z "$(git status --porcelain --untracked-files=no -- "$MOBILE_ROOT")"
+          git status --short --branch > "$E/git-status.txt"
+          git diff --name-only > "$E/source-diff.txt"
+
+      - name: Stop only runner-owned Mobile process
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if [ -f "$RUNNER_TEMP/mobile.pid" ]; then
+            PID="$(cat "$RUNNER_TEMP/mobile.pid")"
+            if kill -0 "$PID" 2>/dev/null; then
+              kill "$PID"
+              for i in $(seq 1 10); do kill -0 "$PID" 2>/dev/null || break; sleep 1; done
+            fi
+          fi
+          exit 0
+
+      - name: Upload one evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-runtime-visual-verify-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-visual-evidence/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed unless the governed VERIFY passed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ steps.scope.outcome }}" = "success"
+          test "${{ steps.detach.outcome }}" = "success"
+          test "${{ steps.evidence.outcome }}" = "success"
+          test "${{ steps.node.outcome }}" = "success"
+          test "${{ steps.pnpm.outcome }}" = "success"
+          test "${{ steps.root_install.outcome }}" = "success"
+          test "${{ steps.mobile_install.outcome }}" = "success"
+          test "${{ steps.static.outcome }}" = "success"
+          test "${{ steps.browser_install.outcome }}" = "success"
+          test "${{ steps.server.outcome }}" = "success"
+          test "${{ steps.materialize.outcome }}" = "success"
+          test "${{ steps.visual.outcome }}" = "success"
+          test "${{ steps.source_guard.outcome }}" = "success"
+          grep -F '"verdict": "PASS_MOBILE_RUNTIME_VISUAL_CONFORMANCE_ISOLATED"' "$RUNNER_TEMP/mobile-visual-evidence/RESULT.json"
