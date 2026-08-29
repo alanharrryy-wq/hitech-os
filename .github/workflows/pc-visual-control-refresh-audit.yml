@@ -35,76 +35,77 @@ jobs:
           APP_ROOT="$GITHUB_WORKSPACE/apps/terminal-de-venta-system"
           test ! -e "$APP_ROOT/node_modules"
           ln -s "$PARSER_ROOT/node_modules" "$APP_ROOT/node_modules"
-          node -e "import('postcss').then(m => console.log('POSTCSS_OK=' + !!m.default))" \
-            --input-type=module
+          cd "$APP_ROOT"
+          node --input-type=module -e "import('postcss').then(m => console.log('POSTCSS_OK=' + !!m.default))"
 
-      - name: Regenerate source-only Visual Control indexes
+      - name: Build fresh PC-only Visual Control evidence
         working-directory: apps/terminal-de-venta-system
         shell: bash
         run: |
           set -euo pipefail
-          node tools/quality/ui-certainty.mjs visual-control:inventory --strict
-          node tools/quality/ui-certainty.mjs visual-control:owners --strict
-          node tools/quality/ui-certainty.mjs visual-control:slots --strict
-          node tools/quality/ui-certainty.mjs visual-control:layers --strict
-          node tools/quality/ui-certainty.mjs visual-control:report --strict
-          node tools/quality/ui-certainty.mjs visual-control:certify --strict
+          OUT="$RUNNER_TEMP/pc-visual-control-fresh"
+          mkdir -p "$OUT"
+          node tools/quality/ui-visual-control.mjs visual-control:report --surface pc --output-root "$OUT"
+          echo "VISUAL_OUT=$OUT" >> "$GITHUB_ENV"
 
-      - name: Snapshot generated PC coverage
-        working-directory: apps/terminal-de-venta-system
+      - name: Summarize exact PC authority
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, pathlib
-          root = pathlib.Path('.prisma-ui/visual-control')
-          out = pathlib.Path('.prisma-ui/current/PC_VISUAL_CONTROL_REFRESH_SUMMARY.json')
-          summary = {'files': {}, 'pc': {}}
-          for name in ['surfaces.json','routes.json','components.json','owners.json','editable-slots.json','layers.json']:
-              p = root / name
-              data = json.loads(p.read_text(encoding='utf-8'))
-              summary['files'][name] = {
-                  'topLevelKeys': list(data.keys()) if isinstance(data, dict) else [],
-                  'countsBySurface': data.get('countsBySurface') if isinstance(data, dict) else None,
-              }
-              if name == 'surfaces.json' and isinstance(data, dict):
-                  surfaces = data.get('surfaces') or []
-                  summary['pc']['surfaceRecords'] = [s for s in surfaces if str(s.get('surfaceId') or s.get('id') or '').lower() == 'pc']
-              if name == 'routes.json' and isinstance(data, dict):
-                  routes = data.get('routes') or []
-                  summary['pc']['routeCount'] = sum(1 for r in routes if str(r.get('surfaceId') or r.get('surface') or '').lower() == 'pc')
-              if name == 'components.json' and isinstance(data, dict):
-                  rows = data.get('components') or []
-                  summary['pc']['componentCount'] = sum(1 for r in rows if str(r.get('surfaceId') or r.get('surface') or '').lower() == 'pc')
-              if name == 'owners.json' and isinstance(data, dict):
-                  summary['pc']['ownerCountsBySurface'] = data.get('countsBySurface')
-              if name == 'editable-slots.json' and isinstance(data, dict):
-                  summary['pc']['slotCountsBySurface'] = data.get('countsBySurface')
-              if name == 'layers.json' and isinstance(data, dict):
-                  summary['pc']['layerCountsBySurface'] = data.get('countsBySurface')
-          out.parent.mkdir(parents=True, exist_ok=True)
-          out.write_text(json.dumps(summary, indent=2) + '\n', encoding='utf-8')
-          print(out.read_text())
+          import json, os, pathlib
+          out = pathlib.Path(os.environ['VISUAL_OUT'])
+          vc = out / 'visual-control'
+          summary_path = out / 'PC_VISUAL_CONTROL_REFRESH_SUMMARY.json'
+          def load(name):
+              return json.loads((vc / name).read_text(encoding='utf-8'))
+          surfaces = load('surfaces.json')
+          routes = load('routes.json')
+          components = load('components.json')
+          owners = load('owners.json')
+          slots = load('editable-slots.json')
+          layers = load('layers.json')
+          risks = load('risks.json')
+          summary = {
+              'status': risks.get('status'),
+              'pc': {
+                  'surfaceRecords': surfaces.get('surfaces', []),
+                  'routeCount': routes.get('routeCount'),
+                  'componentCount': components.get('componentCount'),
+                  'componentOwnerCount': owners.get('componentOwnerCount'),
+                  'cssOwnerCount': owners.get('cssOwnerCount'),
+                  'regionOwnerCount': owners.get('regionOwnerCount'),
+                  'editableSlotCount': slots.get('editableSlotCount'),
+                  'slotUnitCount': slots.get('slotUnitCount'),
+                  'layerCount': layers.get('layerCount'),
+                  'countsByLayer': layers.get('countsByLayer'),
+                  'countsByVisualRegion': layers.get('countsByVisualRegion'),
+                  'activeImportantCount': risks.get('activeImportantCount'),
+                  'ambiguousActiveLayerOwnerCount': risks.get('ambiguousActiveLayerOwnerCount'),
+                  'blockerCount': risks.get('blockerCount'),
+                  'warningCount': risks.get('warningCount'),
+              },
+              'source': 'fresh current-source PC-only visual-control report; external evidence only; canonical repo indexes not mutated'
+          }
+          summary_path.write_text(json.dumps(summary, indent=2) + '\n', encoding='utf-8')
+          print(summary_path.read_text())
           PY
 
-      - name: Show generated diff
+      - name: Prove repo source was not mutated
         working-directory: apps/terminal-de-venta-system
         shell: bash
         run: |
           set -euo pipefail
           rm -f node_modules
           git status --short
-          git diff -- .prisma-ui/visual-control .prisma-ui/current || true
+          test -z "$(git status --short -- products/pc .prisma-ui .governance)"
 
-      - name: Upload regenerated governance evidence
+      - name: Upload fresh PC visual-control evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pc-visual-control-refresh-audit
           path: |
-            apps/terminal-de-venta-system/.prisma-ui/visual-control/**
-            apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json
-            apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_REPORT.md
-            apps/terminal-de-venta-system/.prisma-ui/current/PC_VISUAL_CONTROL_REFRESH_SUMMARY.json
-          if-no-files-found: warn
+            ${{ runner.temp }}/pc-visual-control-fresh/**
+          if-no-files-found: error
           retention-days: 7
