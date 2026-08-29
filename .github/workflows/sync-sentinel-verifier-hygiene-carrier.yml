@@ -1,0 +1,113 @@
+name: PRISMA Sync Sentinel Verifier Hygiene Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - tooling/prisma-sync-sentinel-v1-2808
+    paths:
+      - '.github/workflows/sync-sentinel-verifier-hygiene-carrier.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  apply-bounded-verifier-hygiene:
+    if: github.event.pull_request.head.ref == 'gate/sync-sentinel-verifier-hygiene-2908'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Fail closed on source, main, authority, and carrier drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_SHA='83c9f5e4e191710b44f2b00b1355d67336bb1946'
+          MAIN_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
+          git fetch origin main tooling/prisma-sync-sentinel-v1-2808
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git rev-parse origin/tooling/prisma-sync-sentinel-v1-2808)" = "$SOURCE_SHA"
+          MERGE_BASE="$(git merge-base origin/tooling/prisma-sync-sentinel-v1-2808 HEAD)"
+          mapfile -t files < <(git diff --name-only "$MERGE_BASE"...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/sync-sentinel-verifier-hygiene-carrier.yml"
+          echo 'Authority Mesh PASS: run=33267317656 requestDigest=fa6bef888a5547604f3deb13370a6cee40b6ae0ca1b422cb6ea2a4d4ae9bea7a'
+          echo 'Mutation gate PASS: run=33267465289 decisionDigest=c4d404e12fab941b29d3fb85f70533fcf63572fbb111823c400b1b3a1807f090'
+          echo 'Fresh isolated evidence: run=33267759460 journeys A+B PASS; remaining failures are two stale verifier assertions plus Prisma auto-install lockfile drift.'
+
+      - name: Apply only evidence-proven verifier and Sentinel hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_BRANCH='tooling/prisma-sync-sentinel-v1-2808'
+          SOURCE_SHA='83c9f5e4e191710b44f2b00b1355d67336bb1946'
+          V1='apps/terminal-de-venta-system/tools/verify_pc_to_tablet_catalog_delta_closure_01.mjs'
+          V2='apps/terminal-de-venta-system/products/pc/app/tools/verify_sync_ingest_persistence_01.mjs'
+          ORCH='tools/prisma-sentinels/sync-sentinel/sync_sentinel/orchestration.py'
+          git checkout -B "$SOURCE_BRANCH" "$SOURCE_SHA"
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new, label):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}:EXPECTED_EXACTLY_ONE_TARGET_GOT_{count}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          v1 = 'apps/terminal-de-venta-system/tools/verify_pc_to_tablet_catalog_delta_closure_01.mjs'
+          replace_once(v1,
+          '''  "Pedir delta",\n  "Bootstrap inicial",\n  "Resync controlado",''',
+          '''  'run("delta", false)',\n  'run("bootstrap", true)',\n  'run("resync", true)', ''',
+          'tablet_verifier_action_semantics')
+          replace_once(v1,
+          '''  "Generar delta catalogo",\n  "Bootstrap catalogo",\n  "Resync catalogo",''',
+          '''  'body: { mode: "delta"',\n  'body: { mode: "bootstrap"',\n  'body: { mode: "resync"', ''',
+          'pc_verifier_action_semantics')
+
+          v2 = 'apps/terminal-de-venta-system/products/pc/app/tools/verify_sync_ingest_persistence_01.mjs'
+          replace_once(v2,
+          '''function readRel(root, rel) {\n  const full = path.join(root, rel);\n  check(`file exists ${rel}`, existsSync(full), full);\n  return existsSync(full) ? readFileSync(full, "utf8") : "";\n}\n''',
+          '''function readRel(root, rel) {\n  const full = path.join(root, rel);\n  check(`file exists ${rel}`, existsSync(full), full);\n  return existsSync(full) ? readFileSync(full, "utf8") : "";\n}\n\nfunction prismaModelBlock(schema, modelName) {\n  const start = schema.indexOf(`model ${modelName} {`);\n  if (start < 0) return "";\n  const end = schema.indexOf("\\n}", start);\n  return end < 0 ? "" : schema.slice(start, end + 2);\n}\n''',
+          'pc_verifier_model_scope_helper')
+          replace_once(v2,
+          '''check("OutboxEvent idempotency remains logical index", rootSchema.includes("@@index([businessId, idempotencyKey])") && !rootSchema.includes("@@unique([businessId, idempotencyKey])"));''',
+          '''const outboxEventModel = prismaModelBlock(rootSchema, "OutboxEvent");\ncheck("OutboxEvent idempotency remains logical index", outboxEventModel.includes("@@index([businessId, idempotencyKey])") && !outboxEventModel.includes("@@unique([businessId, idempotencyKey])"));''',
+          'pc_verifier_outbox_scope')
+
+          orch = 'tools/prisma-sentinels/sync-sentinel/sync_sentinel/orchestration.py'
+          replace_once(orch,
+          '''    env_pc = dict(os.environ)\n    env_pc["DATABASE_URL"] = "file:" + pc_db.as_posix()\n''',
+          '''    env_pc = dict(os.environ)\n    env_pc["DATABASE_URL"] = "file:" + pc_db.as_posix()\n    env_pc["PRISMA_GENERATE_SKIP_AUTOINSTALL"] = "true"\n''',
+          'pc_prisma_autoinstall_guard')
+          replace_once(orch,
+          '''    env_tab["DATABASE_URL"] = "file:" + tablet_db.as_posix()\n\n    cp = run(["pnpm", "exec", "prisma", "generate", "--schema", str(tablet_schema)], cwd=tablet_app, env=env_tab, timeout=300)''',
+          '''    env_tab["DATABASE_URL"] = "file:" + tablet_db.as_posix()\n    env_tab["PRISMA_GENERATE_SKIP_AUTOINSTALL"] = "true"\n\n    cp = run(["pnpm", "exec", "prisma", "generate", "--schema", str(tablet_schema)], cwd=tablet_app, env=env_tab, timeout=300)''',
+          'tablet_prisma_autoinstall_guard')
+          PY
+
+          mapfile -t changed < <(git diff --name-only)
+          test "${#changed[@]}" = "3"
+          printf '%s\n' "${changed[@]}" | sort > /tmp/changed.txt
+          printf '%s\n' "$V1" "$V2" "$ORCH" | sort > /tmp/expected.txt
+          diff -u /tmp/expected.txt /tmp/changed.txt
+          git diff --check
+          python -m py_compile "$ORCH"
+          node "$V1"
+          (cd apps/terminal-de-venta-system/products/pc/app && node tools/verify_sync_ingest_persistence_01.mjs)
+          git config user.name 'PRISMA Sync Sentinel'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- "$V1" "$V2" "$ORCH"
+          git commit -m 'fix(sync-sentinel): reconcile stale verifiers and preserve source'
+          test "$(git diff-tree --no-commit-id --name-only -r HEAD | wc -l | tr -d ' ')" = '3'
+          git push origin "HEAD:$SOURCE_BRANCH"
