@@ -1,0 +1,100 @@
+name: PC Visual Control Refresh Audit
+
+on:
+  push:
+    branches:
+      - agent/pc-atlasfin-bindings-preflight-20260829
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  visual-control-refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install parser dependency only
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: npm install --no-save --package-lock=false --ignore-scripts postcss@8
+
+      - name: Regenerate source-only Visual Control indexes
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/quality/ui-certainty.mjs visual-control:inventory --strict
+          node tools/quality/ui-certainty.mjs visual-control:owners --strict
+          node tools/quality/ui-certainty.mjs visual-control:slots --strict
+          node tools/quality/ui-certainty.mjs visual-control:layers --strict
+          node tools/quality/ui-certainty.mjs visual-control:report --strict
+          node tools/quality/ui-certainty.mjs visual-control:certify --strict
+
+      - name: Snapshot generated PC coverage
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib
+          root = pathlib.Path('.prisma-ui/visual-control')
+          out = pathlib.Path('.prisma-ui/current/PC_VISUAL_CONTROL_REFRESH_SUMMARY.json')
+          summary = {'files': {}, 'pc': {}}
+          for name in ['surfaces.json','routes.json','components.json','owners.json','editable-slots.json','layers.json']:
+              p = root / name
+              data = json.loads(p.read_text(encoding='utf-8'))
+              summary['files'][name] = {
+                  'topLevelKeys': list(data.keys()) if isinstance(data, dict) else [],
+                  'countsBySurface': data.get('countsBySurface') if isinstance(data, dict) else None,
+              }
+              if name == 'surfaces.json' and isinstance(data, dict):
+                  surfaces = data.get('surfaces') or []
+                  summary['pc']['surfaceRecords'] = [s for s in surfaces if str(s.get('surfaceId') or s.get('id') or '').lower() == 'pc']
+              if name == 'routes.json' and isinstance(data, dict):
+                  routes = data.get('routes') or []
+                  summary['pc']['routeCount'] = sum(1 for r in routes if str(r.get('surfaceId') or r.get('surface') or '').lower() == 'pc')
+              if name == 'components.json' and isinstance(data, dict):
+                  rows = data.get('components') or []
+                  summary['pc']['componentCount'] = sum(1 for r in rows if str(r.get('surfaceId') or r.get('surface') or '').lower() == 'pc')
+              if name == 'owners.json' and isinstance(data, dict):
+                  summary['pc']['ownerCountsBySurface'] = data.get('countsBySurface')
+              if name == 'editable-slots.json' and isinstance(data, dict):
+                  summary['pc']['slotCountsBySurface'] = data.get('countsBySurface')
+              if name == 'layers.json' and isinstance(data, dict):
+                  summary['pc']['layerCountsBySurface'] = data.get('countsBySurface')
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(summary, indent=2) + '\n', encoding='utf-8')
+          print(out.read_text())
+          PY
+
+      - name: Show generated diff
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          git status --short
+          git diff -- .prisma-ui/visual-control .prisma-ui/current || true
+
+      - name: Upload regenerated governance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-visual-control-refresh-audit
+          path: |
+            apps/terminal-de-venta-system/.prisma-ui/visual-control/**
+            apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json
+            apps/terminal-de-venta-system/.prisma-ui/current/UI_VISUAL_CONTROL_REPORT.md
+            apps/terminal-de-venta-system/.prisma-ui/current/PC_VISUAL_CONTROL_REFRESH_SUMMARY.json
+          if-no-files-found: warn
+          retention-days: 7
