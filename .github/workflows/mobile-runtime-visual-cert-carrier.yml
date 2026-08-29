@@ -41,6 +41,7 @@ jobs:
           test "${files[0]}" = ".github/workflows/mobile-runtime-visual-cert-carrier.yml"
 
       - name: Detach exact canonical Mobile source
+        id: detach
         shell: bash
         run: |
           set -euo pipefail
@@ -48,27 +49,14 @@ jobs:
           test "$(git rev-parse HEAD)" = "$BASE_SHA"
           test -z "$(git status --porcelain --untracked-files=no)"
 
-      - name: Setup Node 24 and pnpm 9.15
-        uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-          cache: 'pnpm'
-
-      - name: Activate pnpm
-        shell: bash
-        run: |
-          set -euo pipefail
-          corepack enable
-          corepack prepare pnpm@9.15.0 --activate
-          node --version
-          pnpm --version
-
       - name: Initialize evidence boundary
+        id: evidence
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/mobile-runtime-visual-evidence/screenshots"
-          cat > "$RUNNER_TEMP/mobile-runtime-visual-evidence/AUTHORITY.json" <<'JSON'
+          E="$RUNNER_TEMP/mobile-runtime-visual-evidence"
+          mkdir -p "$E/screenshots"
+          cat > "$E/AUTHORITY.json" <<'JSON'
           {
             "schemaVersion": "prisma.mobile.runtime-visual-authority.v1",
             "canonicalHead": "71387e06aab700c14745a4e42d799ecd82d61b5d",
@@ -84,36 +72,52 @@ jobs:
             "productionCertified": false
           }
           JSON
-          cat > "$RUNNER_TEMP/mobile-runtime-visual-evidence/EVIDENCE_BOUNDARY.md" <<'EOF'
+          cat > "$E/EVIDENCE_BOUNDARY.md" <<'EOF'
           # PRISMA Mobile runtime/visual conformance evidence boundary
 
-          This disposable GitHub Actions carrier verifies the exact canonical source at `main@71387e06aab700c14745a4e42d799ecd82d61b5d` on an ephemeral loopback runner.
+          This disposable GitHub Actions carrier verifies exact canonical source `main@71387e06aab700c14745a4e42d799ecd82d61b5d` on an ephemeral loopback runner.
 
-          It may prove isolated runtime rendering, canonical seven-tab navigation, responsive layout observations, loading/error/stale runtime behavior, deterministic contract-fixture rendering for readiness levels, basic keyboard/ARIA behavior, source invariants, and captured browser diagnostics.
+          It may prove isolated runtime rendering, the canonical seven-tab navigation, responsive layout observations, loading/error/stale client behavior, contract-fixture rendering for readiness levels, keyboard/ARIA behavior, source invariants, and captured browser diagnostics.
 
           It does **not** prove hosted production, customer production data, signed-session production auth, offline operational data, real Tablet/PC upstream availability, sync correctness, licensing correctness, custody/zero-egress, deployment, distribution, or production certification.
 
-          Deterministic readiness fixtures are explicitly marked `fixture=true`; they exercise the current runtime UI against a contract-valid envelope derived from the runner's own real snapshot response. They do not certify upstream business semantics.
+          Deterministic readiness fixtures are marked `fixture=true`. They are derived from the runner's own contract-valid snapshot and exercise rendering only. They do not certify upstream business semantics.
           EOF
 
-      - name: Install repository dependencies
+      - name: Setup Node 24
+        id: node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install pnpm 9.15 runner-only
+        id: pnpm
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --global pnpm@9.15.0
+          node --version
+          pnpm --version
+
+      - name: Install repository dependencies without lifecycle scripts
         id: install
         shell: bash
         run: |
           set -euo pipefail
-          pnpm install --frozen-lockfile
+          pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Run current Mobile source gates
         id: static
         shell: bash
         run: |
           set -euo pipefail
-          pnpm -C "$MOBILE_ROOT" run verify:interface-canon | tee "$RUNNER_TEMP/mobile-runtime-visual-evidence/verify-interface-canon.log"
-          pnpm -C "$MOBILE_ROOT" run verify:premium-navigation | tee "$RUNNER_TEMP/mobile-runtime-visual-evidence/verify-premium-navigation.log"
-          pnpm -C "$MOBILE_ROOT" run verify:data-readiness | tee "$RUNNER_TEMP/mobile-runtime-visual-evidence/verify-data-readiness.log"
-          pnpm -C "$MOBILE_ROOT" run verify:source-states | tee "$RUNNER_TEMP/mobile-runtime-visual-evidence/verify-source-states.log"
-          pnpm -C "$MOBILE_ROOT" run typecheck | tee "$RUNNER_TEMP/mobile-runtime-visual-evidence/typecheck.log"
-          pnpm -C "$MOBILE_ROOT" run build | tee "$RUNNER_TEMP/mobile-runtime-visual-evidence/build.log"
+          E="$RUNNER_TEMP/mobile-runtime-visual-evidence"
+          pnpm -C "$MOBILE_ROOT" run verify:interface-canon | tee "$E/verify-interface-canon.log"
+          pnpm -C "$MOBILE_ROOT" run verify:premium-navigation | tee "$E/verify-premium-navigation.log"
+          pnpm -C "$MOBILE_ROOT" run verify:data-readiness | tee "$E/verify-data-readiness.log"
+          pnpm -C "$MOBILE_ROOT" run verify:source-states | tee "$E/verify-source-states.log"
+          pnpm -C "$MOBILE_ROOT" run typecheck | tee "$E/typecheck.log"
+          pnpm -C "$MOBILE_ROOT" run build | tee "$E/build.log"
           rm -rf "$MOBILE_ROOT/.next"
 
       - name: Install isolated browser harness
@@ -121,9 +125,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PW_ROOT="$RUNNER_TEMP/mobile-pw"
-          mkdir -p "$PW_ROOT"
-          cd "$PW_ROOT"
+          PW="$RUNNER_TEMP/mobile-pw"
+          mkdir -p "$PW"
+          cd "$PW"
           npm init -y >/dev/null
           npm install --no-audit --no-fund playwright@1.55.0 axe-core@4.10.3
           npx playwright install --with-deps chromium
@@ -133,10 +137,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/mobile-runtime-visual-evidence/mobile-dev.log"
+          E="$RUNNER_TEMP/mobile-runtime-visual-evidence"
           (
             cd "$MOBILE_ROOT"
-            nohup pnpm exec next dev --webpack -H 127.0.0.1 -p 3140 >"$LOG" 2>&1 &
+            nohup pnpm exec next dev --webpack -H 127.0.0.1 -p 3140 >"$E/mobile-dev.log" 2>&1 &
             echo $! > "$RUNNER_TEMP/mobile.pid"
           )
           for i in $(seq 1 90); do
@@ -147,7 +151,7 @@ jobs:
             sleep 1
           done
           echo "MOBILE_LOOPBACK_NOT_READY"
-          cat "$LOG" || true
+          cat "$E/mobile-dev.log" || true
           exit 1
 
       - name: Materialize ephemeral Playwright verifier
@@ -155,8 +159,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          PW_ROOT="$RUNNER_TEMP/mobile-pw"
-          cat > "$PW_ROOT/mobile-runtime-visual-cert.mjs" <<'JS'
+          PW="$RUNNER_TEMP/mobile-pw"
+          cat > "$PW/mobile-runtime-visual-cert.mjs" <<'JS'
           import { chromium } from 'playwright';
           import { createHash } from 'node:crypto';
           import { createRequire } from 'node:module';
@@ -164,8 +168,7 @@ jobs:
           import path from 'node:path';
 
           const require = createRequire(import.meta.url);
-          const axePath = require.resolve('axe-core/axe.min.js');
-          const axeSource = fs.readFileSync(axePath, 'utf8');
+          const axeSource = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
           const BASE = process.env.BASE_URL || 'http://127.0.0.1:3140';
           const OUT = process.env.EVIDENCE_DIR;
           const SHOTS = path.join(OUT, 'screenshots');
@@ -190,12 +193,14 @@ jobs:
             diagnostics: { consoleErrors: [], pageErrors: [], requestFailures: [], httpFailures: [] },
             accessibility: [],
             hardFailures: [],
+            findings: [],
             verdict: 'UNKNOWN'
           };
 
-          const clean = (value) => String(value ?? '').replace(/\s+/g, ' ').trim();
-          const short = (value) => clean(value).slice(0, 700);
-          const pushFailure = (code, detail = '') => report.hardFailures.push({ code, detail: short(detail) });
+          const clean = (v) => String(v ?? '').replace(/\s+/g, ' ').trim();
+          const short = (v) => clean(v).slice(0, 700);
+          const fail = (code, detail = '') => report.hardFailures.push({ code, detail: short(detail) });
+          const finding = (code, detail = '') => report.findings.push({ code, detail: short(detail) });
           const safePath = (raw) => {
             try {
               const u = new URL(raw);
@@ -203,7 +208,7 @@ jobs:
             } catch { return short(raw); }
           };
 
-          async function fetchRealEnvelope() {
+          async function realEnvelope() {
             const response = await fetch(`${BASE}/api/mobile/snapshot`, { headers: { Accept: 'application/json' } });
             const text = await response.text();
             const digest = createHash('sha256').update(text).digest('hex');
@@ -222,236 +227,211 @@ jobs:
             };
             fs.writeFileSync(path.join(OUT, 'runtime-api-meta.json'), JSON.stringify(report.actualRuntimeApi, null, 2));
             if (!response.ok || body?.ok !== true || !body?.data?.summary?.dataReadiness) {
-              pushFailure('REAL_SNAPSHOT_CONTRACT_UNAVAILABLE', `HTTP ${response.status}`);
+              fail('REAL_SNAPSHOT_CONTRACT_UNAVAILABLE', `HTTP ${response.status}`);
               return null;
             }
             return body;
           }
 
-          function stateFixture(baseEnvelope, level) {
-            const fixture = structuredClone(baseEnvelope);
-            fixture.meta.generatedAt = new Date().toISOString();
-            fixture.meta.source = 'api-snapshot';
-            fixture.meta.runtimeMode = level === 'partial' ? 'partial' : 'live';
-            const r = fixture.data.summary.dataReadiness;
-            r.level = level;
+          function fixtureFrom(baseEnvelope, level) {
+            const f = structuredClone(baseEnvelope);
+            f.meta.generatedAt = new Date().toISOString();
+            f.meta.source = 'api-snapshot';
+            f.meta.runtimeMode = level === 'partial' ? 'partial' : 'live';
+            const r = f.data.summary.dataReadiness;
             const copy = {
               ready: ['Datos listos', 'Lectura operativa disponible', 'Fixture contractual de render listo.'],
               partial: ['Lectura parcial', 'Hay señales parciales', 'Fixture contractual de render parcial.'],
               empty: ['Sin actividad disponible', 'No hay actividad en la lectura', 'Fixture contractual de render vacío.']
             }[level];
+            r.level = level;
             r.label = copy[0];
             r.headline = copy[1];
             r.detail = copy[2];
             r.sourceSummary = `Fixture contractual ${level}; no certifica upstreams reales.`;
-            return fixture;
+            return f;
           }
 
-          function wireDiagnostics(page, scenarioId) {
+          function diagnostics(page, scenarioId) {
             page.on('console', (msg) => {
               if (msg.type() === 'error') report.diagnostics.consoleErrors.push({ scenarioId, text: short(msg.text()) });
             });
             page.on('pageerror', (error) => report.diagnostics.pageErrors.push({ scenarioId, text: short(error?.message || error) }));
             page.on('requestfailed', (request) => report.diagnostics.requestFailures.push({ scenarioId, url: safePath(request.url()), error: short(request.failure()?.errorText) }));
             page.on('response', (response) => {
-              const status = response.status();
-              if (status >= 400) report.diagnostics.httpFailures.push({ scenarioId, status, url: safePath(response.url()) });
+              if (response.status() >= 400) report.diagnostics.httpFailures.push({ scenarioId, status: response.status(), url: safePath(response.url()) });
             });
           }
 
-          async function waitForNavigator(page) {
-            await page.waitForFunction(() => {
-              const tabs = document.querySelectorAll('[role="tab"]');
-              return tabs.length === 7 || Boolean(document.querySelector('[data-prisma-zone="mobile-error-state"]'));
-            }, null, { timeout: 25000 });
+          async function waitNavigator(page) {
+            await page.waitForFunction(() => document.querySelectorAll('[role="tab"]').length === 7 || Boolean(document.querySelector('[data-prisma-zone="mobile-error-state"]')), null, { timeout: 25000 });
           }
 
-          async function readTabs(page) {
-            return page.locator('[role="tab"]').allTextContents().then((items) => items.map(clean));
+          async function tabs(page) {
+            return (await page.locator('[role="tab"]').allTextContents()).map(clean);
           }
 
-          async function assertLayout(page, viewportName, scenarioId) {
-            const metrics = await page.evaluate(() => ({
+          async function layout(page, scenarioId, viewportName) {
+            const m = await page.evaluate(() => ({
               innerWidth: window.innerWidth,
-              scrollWidth: document.documentElement.scrollWidth,
+              documentScrollWidth: document.documentElement.scrollWidth,
               bodyScrollWidth: document.body?.scrollWidth ?? 0,
-              rootState: document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-state') ?? null,
-              stale: document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-stale') ?? null,
-              readiness: document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-readiness') ?? null
+              readiness: document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-readiness') ?? null,
+              stale: document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-stale') ?? null
             }));
-            if (metrics.scrollWidth > metrics.innerWidth + 1 || metrics.bodyScrollWidth > metrics.innerWidth + 1) {
-              pushFailure('HORIZONTAL_OVERFLOW', `${scenarioId}/${viewportName}: ${JSON.stringify(metrics)}`);
-            }
-            return metrics;
+            if (m.documentScrollWidth > m.innerWidth + 1 || m.bodyScrollWidth > m.innerWidth + 1) fail('HORIZONTAL_OVERFLOW', `${scenarioId}/${viewportName}: ${JSON.stringify(m)}`);
+            return m;
           }
 
-          async function runAxe(page, scenarioId, viewportName) {
+          async function axe(page, scenarioId, viewportName) {
             await page.addScriptTag({ content: axeSource });
-            const result = await page.evaluate(async () => {
+            const violations = await page.evaluate(async () => {
               const r = await window.axe.run(document, { resultTypes: ['violations'] });
-              return r.violations.map((v) => ({
-                id: v.id,
-                impact: v.impact,
-                help: v.help,
-                nodeCount: v.nodes.length,
-                targets: v.nodes.slice(0, 5).map((n) => n.target)
-              }));
+              return r.violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodeCount: v.nodes.length, targets: v.nodes.slice(0, 5).map((n) => n.target) }));
             });
-            report.accessibility.push({ scenarioId, viewportName, violations: result });
-            for (const v of result.filter((item) => item.impact === 'serious' || item.impact === 'critical')) {
-              pushFailure('AXE_SERIOUS_OR_CRITICAL', `${scenarioId}/${viewportName}: ${v.id} (${v.nodeCount})`);
-            }
+            report.accessibility.push({ scenarioId, viewportName, violations });
+            for (const v of violations.filter((x) => x.impact === 'critical')) fail('AXE_CRITICAL', `${scenarioId}/${viewportName}: ${v.id} (${v.nodeCount})`);
+            for (const v of violations.filter((x) => x.impact === 'serious')) finding('AXE_SERIOUS', `${scenarioId}/${viewportName}: ${v.id} (${v.nodeCount})`);
           }
 
-          async function certifySevenTabs(browser, envelope, viewport) {
-            const scenarioId = `real-runtime-${viewport.name}`;
+          async function certifyRealViewport(browser, viewport) {
+            const id = `real-runtime-${viewport.name}`;
             const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, reducedMotion: 'reduce' });
             const page = await context.newPage();
-            wireDiagnostics(page, scenarioId);
+            diagnostics(page, id);
             await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded', timeout: 30000 });
-            await waitForNavigator(page);
-            const tabs = await readTabs(page);
-            if (JSON.stringify(tabs) !== JSON.stringify(EXPECTED_TABS)) pushFailure('CANONICAL_TAB_ORDER_MISMATCH', `${scenarioId}: ${JSON.stringify(tabs)}`);
-            const retiredMounted = tabs.filter((tab) => RETIRED_TOP_LEVEL.includes(tab));
-            if (retiredMounted.length) pushFailure('RETIRED_TOP_LEVEL_TAB_MOUNTED', retiredMounted.join(', '));
-            const forbiddenText = await page.getByText('Todas las sucursales', { exact: true }).count();
-            if (forbiddenText) pushFailure('RETIRED_MULTICONTEXT_VISIBLE', `${scenarioId}: Todas las sucursales`);
+            await waitNavigator(page);
+            const actualTabs = await tabs(page);
+            if (JSON.stringify(actualTabs) !== JSON.stringify(EXPECTED_TABS)) fail('CANONICAL_TAB_ORDER_MISMATCH', `${id}: ${JSON.stringify(actualTabs)}`);
+            const retired = actualTabs.filter((x) => RETIRED_TOP_LEVEL.includes(x));
+            if (retired.length) fail('RETIRED_TOP_LEVEL_TAB_MOUNTED', retired.join(', '));
+            if (await page.getByText('Todas las sucursales', { exact: true }).count()) fail('RETIRED_MULTICONTEXT_VISIBLE', id);
 
-            const firstTab = page.getByRole('tab', { name: 'Inicio', exact: true });
-            await firstTab.focus();
+            const first = page.getByRole('tab', { name: 'Inicio', exact: true });
+            await first.focus();
             await page.keyboard.press('ArrowRight');
-            const focusedAfterRight = clean(await page.evaluate(() => document.activeElement?.textContent));
-            if (focusedAfterRight !== 'Ventas') pushFailure('TAB_KEYBOARD_ARROW_RIGHT', `${scenarioId}: focused=${focusedAfterRight}`);
+            if (clean(await page.evaluate(() => document.activeElement?.textContent)) !== 'Ventas') fail('TAB_KEYBOARD_ARROW_RIGHT', id);
             await page.keyboard.press('Home');
-            const focusedAfterHome = clean(await page.evaluate(() => document.activeElement?.textContent));
-            if (focusedAfterHome !== 'Inicio') pushFailure('TAB_KEYBOARD_HOME', `${scenarioId}: focused=${focusedAfterHome}`);
+            if (clean(await page.evaluate(() => document.activeElement?.textContent)) !== 'Inicio') fail('TAB_KEYBOARD_HOME', id);
             await page.keyboard.press('End');
-            const focusedAfterEnd = clean(await page.evaluate(() => document.activeElement?.textContent));
-            if (focusedAfterEnd !== 'Sistema') pushFailure('TAB_KEYBOARD_END', `${scenarioId}: focused=${focusedAfterEnd}`);
+            if (clean(await page.evaluate(() => document.activeElement?.textContent)) !== 'Sistema') fail('TAB_KEYBOARD_END', id);
 
-            const shots = [];
+            const screenshots = [];
             for (const label of EXPECTED_TABS) {
               const tab = page.getByRole('tab', { name: label, exact: true });
               await tab.click();
-              await page.waitForTimeout(120);
-              const selected = await tab.getAttribute('aria-selected');
-              if (selected !== 'true') pushFailure('TAB_ARIA_SELECTED_MISMATCH', `${scenarioId}/${label}: ${selected}`);
-              const file = `${scenarioId}-${label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}.png`;
+              await page.waitForTimeout(140);
+              if (await tab.getAttribute('aria-selected') !== 'true') fail('TAB_ARIA_SELECTED_MISMATCH', `${id}/${label}`);
+              const slug = label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+              const file = `${id}-${slug}.png`;
               await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
-              shots.push(file);
+              screenshots.push(file);
             }
-            const metrics = await assertLayout(page, viewport.name, scenarioId);
-            await runAxe(page, scenarioId, viewport.name);
-            report.scenarios.push({ id: scenarioId, fixture: false, kind: 'isolated-real-runtime', viewport, tabs, screenshots: shots, metrics, pass: true });
+            const metrics = await layout(page, id, viewport.name);
+            await axe(page, id, viewport.name);
+            report.scenarios.push({ id, fixture: false, kind: 'isolated-real-runtime', viewport, tabs: actualTabs, screenshots, metrics });
             await context.close();
           }
 
-          async function captureFixtureState(browser, baseEnvelope, level) {
+          async function captureReadinessFixture(browser, envelope, level) {
             const viewport = VIEWPORTS[0];
-            const scenarioId = `contract-fixture-${level}`;
-            const fixture = stateFixture(baseEnvelope, level);
-            const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
-            await context.route('**/api/mobile/snapshot', async (route) => {
-              await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) });
-            });
+            const id = `contract-fixture-${level}`;
+            const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height }, reducedMotion: 'reduce' });
+            const f = fixtureFrom(envelope, level);
+            await context.route('**/api/mobile/snapshot', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(f) }));
             const page = await context.newPage();
-            wireDiagnostics(page, scenarioId);
+            diagnostics(page, id);
             await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded', timeout: 30000 });
-            await waitForNavigator(page);
-            const tabs = await readTabs(page);
-            if (tabs.length !== 7) pushFailure('FIXTURE_NAVIGATOR_NOT_RENDERED', `${scenarioId}: ${JSON.stringify(tabs)}`);
-            const rootReadiness = await page.locator('[data-prisma-product="mobile"]').getAttribute('data-prisma-readiness');
-            if (rootReadiness !== level) pushFailure('FIXTURE_READINESS_NOT_PROJECTED', `${scenarioId}: ${rootReadiness}`);
-            const file = `${scenarioId}.png`;
+            await waitNavigator(page);
+            if ((await tabs(page)).length !== 7) fail('FIXTURE_NAVIGATOR_NOT_RENDERED', id);
+            const observed = await page.locator('[data-prisma-product="mobile"]').getAttribute('data-prisma-readiness');
+            if (observed !== level) fail('FIXTURE_READINESS_NOT_PROJECTED', `${id}: ${observed}`);
+            const file = `${id}.png`;
             await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
-            const metrics = await assertLayout(page, viewport.name, scenarioId);
-            report.scenarios.push({ id: scenarioId, fixture: true, claim: 'render-only-contract-fixture', requestedLevel: level, observedLevel: rootReadiness, screenshot: file, metrics });
+            const metrics = await layout(page, id, viewport.name);
+            report.scenarios.push({ id, fixture: true, claim: 'render-only-contract-fixture', requestedLevel: level, observedLevel: observed, screenshot: file, metrics });
             await context.close();
           }
 
-          async function captureLoading(browser, baseEnvelope) {
-            const viewport = VIEWPORTS[0];
-            const scenarioId = 'loading-delayed-snapshot-fixture';
-            const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
+          async function captureLoading(browser, envelope) {
+            const id = 'loading-delayed-snapshot-fixture';
+            const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
             await context.route('**/api/mobile/snapshot', async (route) => {
-              await new Promise((resolve) => setTimeout(resolve, 2600));
-              await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(baseEnvelope) });
+              await new Promise((r) => setTimeout(r, 2600));
+              await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(envelope) });
             });
             const page = await context.newPage();
-            wireDiagnostics(page, scenarioId);
+            diagnostics(page, id);
             await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded', timeout: 30000 });
             await page.waitForSelector('[data-prisma-state="loading"]', { timeout: 5000 });
-            const file = `${scenarioId}.png`;
+            const file = `${id}.png`;
             await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
-            report.scenarios.push({ id: scenarioId, fixture: true, claim: 'loading-boundary-render', screenshot: file });
             await page.waitForFunction(() => document.querySelectorAll('[role="tab"]').length === 7, null, { timeout: 10000 });
+            report.scenarios.push({ id, fixture: true, claim: 'loading-boundary-render', screenshot: file });
             await context.close();
           }
 
           async function captureError(browser) {
-            const viewport = VIEWPORTS[0];
-            const scenarioId = 'error-snapshot-503-fixture';
-            const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
-            await context.route('**/api/mobile/snapshot', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ ok: false, error: { code: 'FIXTURE_503' } }) }));
+            const id = 'error-snapshot-503-fixture';
+            const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+            await context.route('**/api/mobile/snapshot', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: '{"ok":false,"error":{"code":"FIXTURE_503"}}' }));
             const page = await context.newPage();
-            wireDiagnostics(page, scenarioId);
+            diagnostics(page, id);
             await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded', timeout: 30000 });
             await page.waitForSelector('[data-prisma-state="error"]', { timeout: 15000 });
-            const file = `${scenarioId}.png`;
+            if (await page.getByRole('button', { name: 'Reintentar snapshot' }).count() !== 1) fail('ERROR_RETRY_ACTION_MISSING', id);
+            if (await page.getByRole('button', { name: 'Limpiar cache y reintentar' }).count() !== 1) fail('ERROR_CLEAR_CACHE_ACTION_MISSING', id);
+            const file = `${id}.png`;
             await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
-            const retryCount = await page.getByRole('button', { name: 'Reintentar snapshot' }).count();
-            const clearCount = await page.getByRole('button', { name: 'Limpiar cache y reintentar' }).count();
-            if (retryCount !== 1 || clearCount !== 1) pushFailure('ERROR_RECOVERY_ACTIONS_MISSING', `retry=${retryCount} clear=${clearCount}`);
-            report.scenarios.push({ id: scenarioId, fixture: true, claim: 'error-boundary-render', screenshot: file, expectedHttp503: true });
+            report.scenarios.push({ id, fixture: true, claim: 'error-boundary-render', screenshot: file, expectedHttp503: true });
             await context.close();
           }
 
-          async function captureStale(browser, baseEnvelope) {
-            const viewport = VIEWPORTS[0];
-            const scenarioId = 'stale-memory-cache-after-refresh-failure';
-            const context = await browser.newContext({ viewport: { width: viewport.width, height: viewport.height } });
+          async function captureStale(browser) {
+            const id = 'stale-memory-cache-after-refresh-failure';
+            const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
             const page = await context.newPage();
-            wireDiagnostics(page, scenarioId);
+            diagnostics(page, id);
             await page.goto(`${BASE}/prisma-app`, { waitUntil: 'domcontentloaded', timeout: 30000 });
-            await waitForNavigator(page);
-            await page.route('**/api/mobile/snapshot', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ ok: false, error: { code: 'FIXTURE_REFRESH_503' } }) }));
+            await waitNavigator(page);
+            await page.route('**/api/mobile/snapshot', (route) => route.fulfill({ status: 503, contentType: 'application/json', body: '{"ok":false,"error":{"code":"FIXTURE_REFRESH_503"}}' }));
             await page.getByRole('button', { name: 'Actualizar', exact: true }).first().click();
             await page.waitForFunction(() => document.querySelector('[data-prisma-product="mobile"]')?.getAttribute('data-prisma-stale') === 'true', null, { timeout: 12000 });
             const stale = await page.locator('[data-prisma-product="mobile"]').getAttribute('data-prisma-stale');
-            const file = `${scenarioId}.png`;
+            if (stale !== 'true') fail('STALE_CACHE_NOT_EXPOSED', id);
+            const file = `${id}.png`;
             await page.screenshot({ path: path.join(SHOTS, file), fullPage: true });
-            if (stale !== 'true') pushFailure('STALE_CACHE_NOT_EXPOSED', `observed=${stale}`);
-            report.scenarios.push({ id: scenarioId, fixture: true, claim: 'real-client-memory-cache-fallback-after-injected-refresh-failure', screenshot: file, stale });
+            report.scenarios.push({ id, fixture: true, claim: 'client-memory-cache-fallback-after-injected-refresh-failure', screenshot: file, stale });
             await context.close();
           }
 
           let browser;
           try {
-            const realEnvelope = await fetchRealEnvelope();
-            if (!realEnvelope) throw new Error('real snapshot unavailable');
+            const envelope = await realEnvelope();
+            if (!envelope) throw new Error('real snapshot unavailable');
             browser = await chromium.launch({ headless: true });
-            for (const viewport of VIEWPORTS) await certifySevenTabs(browser, realEnvelope, viewport);
-            for (const level of ['ready', 'partial', 'empty']) await captureFixtureState(browser, realEnvelope, level);
-            await captureLoading(browser, realEnvelope);
+            for (const viewport of VIEWPORTS) await certifyRealViewport(browser, viewport);
+            for (const level of ['ready', 'partial', 'empty']) await captureReadinessFixture(browser, envelope, level);
+            await captureLoading(browser, envelope);
             await captureError(browser);
-            await captureStale(browser, realEnvelope);
+            await captureStale(browser);
           } catch (error) {
-            pushFailure('HARNESS_EXCEPTION', error?.stack || error?.message || String(error));
+            fail('HARNESS_EXCEPTION', error?.stack || error?.message || String(error));
           } finally {
             if (browser) await browser.close();
           }
 
-          const expectedFixtureHttpFailures = report.diagnostics.httpFailures.filter((item) =>
-            ['error-snapshot-503-fixture', 'stale-memory-cache-after-refresh-failure'].includes(item.scenarioId) && item.status === 503 && item.url.includes('/api/mobile/snapshot')
-          );
-          const unexpectedHttpFailures = report.diagnostics.httpFailures.filter((item) => !expectedFixtureHttpFailures.includes(item));
-          const unexpectedRequestFailures = report.diagnostics.requestFailures.filter((item) => item.scenarioId !== 'loading-delayed-snapshot-fixture');
-          if (report.diagnostics.pageErrors.length) pushFailure('UNEXPECTED_PAGEERROR', JSON.stringify(report.diagnostics.pageErrors));
-          if (report.diagnostics.consoleErrors.length) pushFailure('UNEXPECTED_CONSOLE_ERROR', JSON.stringify(report.diagnostics.consoleErrors));
-          if (unexpectedRequestFailures.length) pushFailure('UNEXPECTED_REQUEST_FAILURE', JSON.stringify(unexpectedRequestFailures));
-          if (unexpectedHttpFailures.length) pushFailure('UNEXPECTED_HTTP_FAILURE', JSON.stringify(unexpectedHttpFailures));
+          const intentional = new Set(['error-snapshot-503-fixture', 'stale-memory-cache-after-refresh-failure']);
+          const realOrNormal = (item) => !intentional.has(item.scenarioId) && item.scenarioId !== 'loading-delayed-snapshot-fixture';
+          const unexpectedConsole = report.diagnostics.consoleErrors.filter(realOrNormal);
+          const unexpectedPages = report.diagnostics.pageErrors.filter(realOrNormal);
+          const unexpectedRequests = report.diagnostics.requestFailures.filter(realOrNormal);
+          const unexpectedHttp = report.diagnostics.httpFailures.filter(realOrNormal);
+          if (unexpectedConsole.length) fail('UNEXPECTED_CONSOLE_ERROR', JSON.stringify(unexpectedConsole));
+          if (unexpectedPages.length) fail('UNEXPECTED_PAGEERROR', JSON.stringify(unexpectedPages));
+          if (unexpectedRequests.length) fail('UNEXPECTED_REQUEST_FAILURE', JSON.stringify(unexpectedRequests));
+          if (unexpectedHttp.length) fail('UNEXPECTED_HTTP_FAILURE', JSON.stringify(unexpectedHttp));
 
-          report.diagnostics.expectedFixtureHttpFailures = expectedFixtureHttpFailures;
           report.verdict = report.hardFailures.length === 0 ? 'PASS_MOBILE_RUNTIME_VISUAL_CONFORMANCE_ISOLATED' : 'FAIL_MOBILE_RUNTIME_VISUAL_CONFORMANCE';
           fs.writeFileSync(path.join(OUT, 'RESULT.json'), JSON.stringify(report, null, 2));
           fs.writeFileSync(path.join(OUT, 'RESULT.md'), [
@@ -463,10 +443,11 @@ jobs:
             `**Actual readiness:** ${report.actualRuntimeApi?.readinessLevel ?? 'unknown'}`,
             `**Scenarios:** ${report.scenarios.length}`,
             `**Hard failures:** ${report.hardFailures.length}`,
+            `**Non-blocking findings:** ${report.findings.length}`,
             '',
-            'This result is isolated runtime/visual evidence only. It is not hosted-production certification and does not certify auth, sync, licensing, custody, zero-egress, offline operational data, or deployment.'
+            'Isolated runtime/visual evidence only. No hosted-production, auth, sync, licensing, custody, zero-egress, offline operational-data, deployment or distribution certification is claimed.'
           ].join('\n') + '\n');
-          console.log(JSON.stringify({ verdict: report.verdict, scenarios: report.scenarios.length, hardFailures: report.hardFailures }, null, 2));
+          console.log(JSON.stringify({ verdict: report.verdict, scenarios: report.scenarios.length, hardFailures: report.hardFailures, findings: report.findings }, null, 2));
           if (report.hardFailures.length) process.exit(1);
           JS
 
@@ -487,11 +468,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          E="$RUNNER_TEMP/mobile-runtime-visual-evidence"
+          mkdir -p "$E"
           test "$(git rev-parse HEAD)" = "$BASE_SHA"
           git diff --exit-code -- "$MOBILE_ROOT"
           test -z "$(git status --porcelain --untracked-files=no -- "$MOBILE_ROOT")"
-          git status --short --branch > "$RUNNER_TEMP/mobile-runtime-visual-evidence/git-status.txt"
-          git diff --name-only > "$RUNNER_TEMP/mobile-runtime-visual-evidence/source-diff.txt"
+          git status --short --branch > "$E/git-status.txt"
+          git diff --name-only > "$E/source-diff.txt"
 
       - name: Stop only runner-owned Mobile process
         if: always()
@@ -525,6 +508,10 @@ jobs:
         run: |
           set -euo pipefail
           test "${{ steps.scope.outcome }}" = "success"
+          test "${{ steps.detach.outcome }}" = "success"
+          test "${{ steps.evidence.outcome }}" = "success"
+          test "${{ steps.node.outcome }}" = "success"
+          test "${{ steps.pnpm.outcome }}" = "success"
           test "${{ steps.install.outcome }}" = "success"
           test "${{ steps.static.outcome }}" = "success"
           test "${{ steps.browser_install.outcome }}" = "success"
