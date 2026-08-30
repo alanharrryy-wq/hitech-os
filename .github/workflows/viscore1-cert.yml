@@ -37,36 +37,43 @@ jobs:
           test "$(git rev-parse origin/main)" = "$PINNED_MAIN_SHA"
           git -c user.name='prisma-viscore-finalizer' -c user.email='noreply@prisma.local' merge --no-commit --no-ff "$PINNED_MAIN_SHA"
 
-      - name: Rebuild RIFAT hashes on reconciled tree
+      - name: Reproduce certified run 6 RIFAT candidate exactly
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          from __future__ import annotations
           import hashlib
           import json
           from pathlib import Path
 
-          root = Path.cwd()
-          path = root / 'prisma-html/authority/rifat/visual-source-manifest.json'
-          manifest = json.loads(path.read_text(encoding='utf-8'))
-
-          def sha256(p: Path) -> str:
-              return hashlib.sha256(p.read_bytes()).hexdigest()
-
-          for entry in manifest.get('entries', []):
-              source = root / entry['source']
-              output = root / entry['output']
-              if not source.is_file() or not output.is_file():
-                  raise SystemExit(f'missing projection pair: {source} -> {output}')
-              source_hash = sha256(source)
-              output_hash = sha256(output)
-              if entry.get('projectionMode') == 'exact-byte-copy' and source_hash != output_hash:
-                  raise SystemExit(f'exact-copy drift remains: {source} -> {output}')
-              entry['sourceSha256'] = source_hash
-              entry['outputSha256'] = output_hash
-
-          path.write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8', newline='\n')
+          repo = Path.cwd()
+          prisma = repo / 'prisma-html'
+          manifest_path = prisma / 'authority/rifat/visual-source-manifest.json'
+          targets = {
+              'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css',
+              'apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css',
+          }
+          data = json.loads(manifest_path.read_text(encoding='utf-8'))
+          seen = set()
+          for entry in data.get('entries', []):
+              output = entry.get('output')
+              if output not in targets:
+                  continue
+              source_path = repo / entry['source']
+              output_path = repo / output
+              source_bytes = source_path.read_bytes()
+              output_bytes = output_path.read_bytes()
+              if source_bytes != output_bytes:
+                  raise SystemExit(f"RIFAT repair candidate is not exact-copy: {entry['source']} -> {output}")
+              digest = hashlib.sha256(source_bytes).hexdigest()
+              entry['sourceSha256'] = digest
+              entry['outputSha256'] = digest
+              seen.add(output)
+          missing = targets - seen
+          if missing:
+              raise SystemExit(f'RIFAT repair targets missing from visual-source-manifest: {sorted(missing)}')
+          manifest_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          print(json.dumps({'status': 'PASS', 'updated': sorted(seen)}, indent=2))
           PY
 
           python prisma-html/tools/validate_rifat_authority.py
@@ -150,10 +157,7 @@ jobs:
               if not stage:
                   raise SystemExit(f'cannot resolve staged mode for {rel}')
               mode = stage.split()[0]
-              if mode == '120000':
-                  raw = os.readlink(path).encode('utf-8')
-              else:
-                  raw = path.read_bytes()
+              raw = os.readlink(path).encode('utf-8') if mode == '120000' else path.read_bytes()
               blob = post('git/blobs', {
                   'content': base64.b64encode(raw).decode('ascii'),
                   'encoding': 'base64',
