@@ -2,20 +2,30 @@
 
 Canonical chain:
 
-`neutral meaning -> identity profile -> surface adapter -> owner/slot binding -> compiled projection -> separately authorized runtime projection`
+`neutral meaning -> identity profile -> surface adapter -> owner/slot/layer binding -> compiled projection -> separately authorized runtime projection -> runtime visual evidence -> READY`
 
-This directory is the source authority for PRISMA visual identity. It is not a theme folder and it must not be treated as a CSS override layer.
+This directory is the **single editable source authority for PRISMA visual identity**. It is not a theme folder and it must not be treated as a CSS override layer.
 
-## Iteration 1 status
+Authority ownership and anti-duplication policy are declared in:
+
+- `registries/visual-authority.registry.json`
+- `contract/PRISMA_VISUAL_CORE_CONTRACT.md`
+
+## Current status
 
 - Identity profiles, semantic tokens and adapters are source-ready.
-- Tablet has certified detailed owner/region/slot evidence and is binding-ready at source level.
-- PC, Mobile, Web, Chart Lab and Control Center are intentionally blocked from runtime projection until each surface has certified Visual Control owners, layers and editable slots.
+- Tablet has certified detailed owner/region/slot/layer evidence and is binding-ready at source level.
+- PC, Mobile, Web, Chart Lab and Control Center remain blocked from runtime projection until each surface has certified Visual Control owners, layers and editable slots.
+- Shared UI remains neutral source authority rather than a surface-specific runtime binding.
 - Selecting a profile changes authority only. It does not mutate live application runtime.
+- Atlasfin is the canonical human cockpit, but it is not a second editable authority.
 
 ## Commands
 
 ```powershell
+python tools/visual_core.py status
+python tools/visual_core.py check
+python tools/visual_core.py ready tablet
 python tools/identity_dictionary.py status
 python tools/identity_dictionary.py list
 python tools/identity_dictionary.py activate prisma.pearl-premium.v1
@@ -23,4 +33,4 @@ python tools/compile_identity_dictionary.py --check
 python tools/validate_identity_dictionary.py
 ```
 
-Activation creates a reversible backup and never projects runtime. Runtime projection requires a fresh task-scoped Authority Mesh.
+Activation creates a reversible backup and never projects runtime. Runtime projection requires a fresh task-scoped Authority Mesh. `READY` additionally requires runtime/browser visual evidence; compiled/source-ready is not enough.
