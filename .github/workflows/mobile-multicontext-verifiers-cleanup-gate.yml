@@ -1,0 +1,112 @@
+name: PRISMA Mobile MultiContext + Verifier Cleanup Gate
+
+on:
+  push:
+    branches:
+      - fix/mobile-multicontext-verifiers-cleanup-3008
+    paths:
+      - '.github/workflows/mobile-multicontext-verifiers-cleanup-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  AUTHORITY_HEAD: '5d9dc64bbf30cd8858219dccff6815565d6b1a77'
+  AUTHORITY_REQUEST_DIGEST: '42bcb973c3aab5882bbd0ee4b33bf271e12fea4ca4a06f05f484258d8e4a2009'
+  AUTHORITY_ARTIFACT_DIGEST: 'sha256:0bc62c30ad82a3a0966a7758d0b4b89a8650a80891d5c7a8c15fea5742736a02'
+  AUTHORITY_RUN_ID: '33314261732'
+  AUTHORITY_ARTIFACT_ID: '9732952649'
+
+jobs:
+  mutation-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact Authority Mesh head
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.AUTHORITY_HEAD }}
+          fetch-depth: 0
+
+      - name: Prove carrier contains only disposable workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin fix/mobile-multicontext-verifiers-cleanup-3008
+          mapfile -t changed < <(git diff --name-only "$AUTHORITY_HEAD" "origin/fix/mobile-multicontext-verifiers-cleanup-3008")
+          printf 'carrier changed files:\n%s\n' "${changed[*]}"
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = '.github/workflows/mobile-multicontext-verifiers-cleanup-gate.yml'
+
+      - name: Compile and validate universal anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py'
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test
+
+      - name: Run Factory Ledger MUTATION anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/mobile-cleanup-gate"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          request = {
+            'schemaVersion': 'prisma.factory-ledger.anti-rework-gate.v1',
+            'mode': 'MUTATION',
+            'expectedHead': os.environ['AUTHORITY_HEAD'],
+            'task': 'Remove proven-dead PRISMA Mobile MultiContext source residue and reconcile claims.verifiersAligned to true with a fail-closed canonical verifier invariant. Preserve the seven-section canon and all runtime/hosted/offline/security claims. No redesign, no replacement selector, no API deletion, no non-Mobile changes.',
+            'capabilities': [
+              {'id': 'mobile.interface_specification_canon', 'requestedAction': 'ADVANCE'}
+            ],
+            'visualMutation': True,
+            'authorityMesh': {
+              'status': 'PASS_COMPOSED_AUTHORITY_MESH',
+              'repoHead': os.environ['AUTHORITY_HEAD'],
+              'requiredAuthorityCoveragePct': 100,
+              'blockers': 0,
+              'requestDigest': os.environ['AUTHORITY_REQUEST_DIGEST'],
+              'artifactDigest': os.environ['AUTHORITY_ARTIFACT_DIGEST'],
+              'layerMapPresent': True,
+              'runId': os.environ['AUTHORITY_RUN_ID'],
+              'artifactId': os.environ['AUTHORITY_ARTIFACT_ID']
+            }
+          }
+          out = Path(os.environ['RUNNER_TEMP']) / 'mobile-cleanup-gate' / 'mutation-request.json'
+          out.write_text(json.dumps(request, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          print(out)
+          PY
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' \
+            --request "$RUNNER_TEMP/mobile-cleanup-gate/mutation-request.json" \
+            | tee "$RUNNER_TEMP/mobile-cleanup-gate/mutation-decision.json"
+          grep -Fq '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/mobile-cleanup-gate/mutation-decision.json"
+
+      - name: Record authority binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/mobile-cleanup-gate/AUTHORITY_BINDING.txt" <<EOF
+          Authority Mesh run: $AUTHORITY_RUN_ID
+          Authority Mesh artifact: $AUTHORITY_ARTIFACT_ID
+          Authority Mesh artifact digest: $AUTHORITY_ARTIFACT_DIGEST
+          Authority Mesh request digest: $AUTHORITY_REQUEST_DIGEST
+          Authority Mesh head: $AUTHORITY_HEAD
+          Required authority coverage: 100
+          Blockers: 0
+          Layer map present: true
+          Final source mutation scope: Mobile MultiContext dead residue + claims.verifiersAligned invariant only
+          EOF
+
+      - name: Upload mutation-gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-cleanup-mutation-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: error
+          path: ${{ runner.temp }}/mobile-cleanup-gate/**
