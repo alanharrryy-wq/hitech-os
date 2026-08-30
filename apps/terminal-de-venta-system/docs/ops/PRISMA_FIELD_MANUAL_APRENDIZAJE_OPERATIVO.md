@@ -4,7 +4,7 @@ path: docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
 status: LIVING
 owner: PRISMA Ops / Engineering
 created: 2026-06-10
-last_updated: 2026-06-10
+last_updated: 2026-08-30
 version: 00A
 scope:
   - hot-injection
@@ -912,3 +912,40 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
 **Rollback probado:** N/A; los carriers stale se cerraron sin merge.
 **Evidencia:** Tablet Sync WAVE2 product PR #377; runtime run `32866793273`; closure Authority run `32868230568`; disposable preflight PRs #387/#388.
 **Regla corta:** **paralelismo se decide por overlap real y autoridad, no por miedo a que `main` tenga commits nuevos.**
+
+---
+
+<!-- PC_ATLASFIN_SESSION_CLOSE_20260830 -->
+### 2026-08-30 02:27 - PC Atlasfin: investigación cerrada, binding exacto pendiente
+
+**Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / COMMAND_WORKS / COMMAND_FAILS
+**Superficie:** PC / Tooling
+**Contexto:** Se cerró descubrimiento/preflight de Atlasfin para PC sin aplicar valores visuales. El target exacto quedó `/catalog` -> `ProductMediaWorkspace` -> `.workspace`.
+
+**Comando que funcionó:**
+
+```bash
+OUT="$RUNNER_TEMP/pc-visual-control-fresh"
+mkdir -p "$OUT"
+node tools/quality/ui-visual-control.mjs visual-control:report --surface pc --output-root "$OUT"
+```
+
+Precondición CI: PostCSS aislado en prefijo temporal, enlace de `node_modules` bajo `apps/terminal-de-venta-system` y resolución ESM ejecutada desde el app root.
+
+**Comando que falló:**
+
+```bash
+node --input-type=module -e "import('postcss').then(m => console.log('POSTCSS_OK=' + !!m.default))"
+```
+
+Ejecutado desde el root del repo falló con `ERR_MODULE_NOT_FOUND`; la causa fue el cwd de resolución ESM, no el source PC.
+
+**Resultado observado:** Visual Control PC-only `CERTIFIED`: 63 rutas, 130 component owners, 17 CSS owners, 305 region owners, 1789 editable slots, 906 layers, `!important=0`, blockers=0 y warnings=0. Authority Mesh exacto de `/catalog` PASS con layer map obligatorio. Atlasfin APPLY sigue pendiente/prohibido.
+
+**Evidencia:** readiness `33151472377`/`9677874685`; Visual Control `33266190565`/`9718713219`; exact-target Mesh `33266357933`/`9718767677`; closure Mesh `33302060262`/`9729265425`; handoff `docs/ops/PRISMA_PC_ATLASFIN_CONTINUATION.md`.
+
+**Causa real:** `Visual Control CERTIFIED` y `Authority Mesh PASS` no equivalen a `Atlasfin APPLY autorizado`. Falta identity-layer + element-binding canónico del target exacto.
+
+**Rollback probado:** N/A; esta fase y el cierre son source-only/documentales, sin mutación de producto/runtime.
+**Regla nueva:** primero target exacto + identity layer + binding contract; después Mesh de aplicación y evidencia visual antes/después.
+**Deuda pendiente:** en sesión nueva, con Mesh fresco si cambió `main`, autorar el contrato source-only de `/catalog` / `ProductMediaWorkspace` / `.workspace` / `VIS.SURFACE.CONTENT.PRIMARY` / `ADP.PC.ADMIN.V2`. No repetir descubrimiento amplio si el target sigue igual.
