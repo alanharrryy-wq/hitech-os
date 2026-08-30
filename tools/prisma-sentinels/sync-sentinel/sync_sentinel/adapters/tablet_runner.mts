@@ -19,6 +19,7 @@ const ids = {
   tenantId: "tenant_sync_sentinel", customerId: "customer_sync_sentinel", businessId: "biz_sync_sentinel", storeId: "store_sync_sentinel", terminalId: "terminal_sync_sentinel", deviceId: "device_sync_sentinel", taxRateId: "tax_sync_sentinel", brandId: "brand_sync_sentinel", productId: "product_sync_sentinel", eventId: "event_sync_sentinel_sale_completed", saleId: "sale_sync_sentinel",
 };
 function assert(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(`ASSERT:${message}`); }
+function iso(value: unknown) { if (!value) return null; const date = value instanceof Date ? value : new Date(String(value)); return Number.isNaN(date.getTime()) ? null : date.toISOString(); }
 
 async function seedTabletForJourneyA() {
   await prisma.business.upsert({ where: { id: ids.businessId }, update: { name: "Sync Sentinel Tablet" }, create: { id: ids.businessId, name: "Sync Sentinel Tablet", currency: "MXN" } });
@@ -49,12 +50,26 @@ async function journeyA() {
   assert(dispatch.ok === true, `Journey A dispatcher did not return ok: ${JSON.stringify(dispatch)}`);
   assert(outbox?.status === "acked", `Journey A Tablet outbox not acked: ${JSON.stringify(outbox)}`);
   assert(["projected", "reconciled", "recognized_not_projected", "duplicate"].includes(String(outbox.remoteLifecycleStatus)), `Journey A remote lifecycle unexpected: ${outbox?.remoteLifecycleStatus}`);
-  const stateResp = await fetch(`${origin}/__sentinel/state`, { headers: { "x-sync-sentinel-token": token } });
+  const stateResp = await fetch(`${origin}/__sentinel/state?eventId=${encodeURIComponent(ids.eventId)}`, { headers: { "x-sync-sentinel-token": token } });
   const state = await stateResp.json();
   assert(stateResp.ok && state?.sale?.id === ids.saleId, `Journey A PC sale projection missing: ${JSON.stringify(state)}`);
   assert(Array.isArray(state.sale.lines) && state.sale.lines.length === 1, "Journey A PC SaleLine projection missing");
   assert(Array.isArray(state.sale.paymentTenders) && state.sale.paymentTenders.length >= 1, "Journey A PC payment tender projection missing");
-  return { dispatch, tabletOutbox: { status: outbox.status, remoteLifecycleStatus: outbox.remoteLifecycleStatus, remoteEventId: outbox.remoteEventId }, pcSale: { id: state.sale.id, totalCents: state.sale.totalCents, lines: state.sale.lines.length, tenders: state.sale.paymentTenders.length } };
+  assert(state?.event?.payloadJson, "Journey A PC canonical ledger payload missing");
+  const canonical = JSON.parse(state.event.payloadJson);
+  assert(canonical.eventId === ids.eventId && canonical.idempotencyKey === event.idempotencyKey, "Journey A canonical identity mismatch");
+  assert(canonical.tenantId === ids.tenantId && canonical.businessId === ids.businessId && canonical.storeId === ids.storeId && canonical.terminalId === ids.terminalId && canonical.deviceId === ids.deviceId, "Journey A canonical scope mismatch");
+  assert(typeof canonical.payloadHash === "string" && canonical.payloadHash.length === 64 && typeof canonical.batchChecksum === "string" && canonical.batchChecksum.length === 64, "Journey A integrity hashes missing");
+  assert(state.sale.totalCents === event.payload.totalCents && state.sale.lines.length === event.payload.lines.length, "Journey A persisted canonical equality failed");
+  return {
+    dispatch,
+    identity: { eventId: canonical.eventId, idempotencyKey: canonical.idempotencyKey, sequence: canonical.sequence, payloadHash: canonical.payloadHash, batchId: canonical.batchId, batchChecksum: canonical.batchChecksum },
+    scope: { tenantId: canonical.tenantId, customerId: canonical.customerId ?? null, businessId: canonical.businessId, storeId: canonical.storeId, terminalId: canonical.terminalId, deviceId: canonical.deviceId },
+    tabletOutbox: { status: outbox.status, attempts: outbox.attempts, lastAttemptAt: iso(outbox.lastAttemptAt), syncedAt: iso(outbox.syncedAt), ackedAt: iso(outbox.ackedAt), remoteLifecycleStatus: outbox.remoteLifecycleStatus, remoteEventId: outbox.remoteEventId },
+    pcLedger: { lifecycleStatus: state.event.lifecycleStatus, receivedAt: iso(state.event.receivedAt), validatedAt: iso(state.event.validatedAt), acceptedAt: iso(state.event.acceptedAt), projectedAt: iso(state.event.projectedAt), reconciledAt: iso(state.event.reconciledAt) },
+    pcSale: { id: state.sale.id, totalCents: state.sale.totalCents, lines: state.sale.lines.length, tenders: state.sale.paymentTenders.length },
+    persistedCanonicalEquality: true,
+  };
 }
 
 async function journeyB() {
@@ -77,16 +92,32 @@ async function journeyB() {
   assert(finalProduct?.priceCents === 1777, `Journey B price did not advance: ${finalProduct?.priceCents}`);
   assert(finalProduct?.stockOnHand === 17, `Journey B local stock was overwritten: ${finalProduct?.stockOnHand}`);
   assert(Boolean(delta.cursorAfter) && delta.cursorAfter !== cursor1, `Journey B delta checkpoint did not advance: ${cursor1} -> ${delta.cursorAfter}`);
-  return { bootstrap: { reason: bootstrap.reason, counts: bootstrap.counts, cursorAfter: cursor1 }, delta: { reason: delta.reason, counts: delta.counts, cursorAfter: delta.cursorAfter }, stockInvariant: { pcAdvertisedStock: 999, tabletLocalStockBeforeDelta: 17, tabletLocalStockAfterDelta: finalProduct.stockOnHand, name: finalProduct.name, priceCents: finalProduct.priceCents } };
+  return {
+    scope: { sourceBusinessId: ids.businessId, targetBusinessId: ids.businessId, storeId: ids.storeId, terminalId: ids.terminalId },
+    bootstrap: { reason: bootstrap.reason, counts: bootstrap.counts, cursorBefore: bootstrap.cursorBefore, cursorAfter: cursor1, checkpointStatus: bootstrap.checkpoint?.status, checkpointLifecycle: bootstrap.checkpoint?.lifecycleStatus },
+    delta: { reason: delta.reason, counts: delta.counts, cursorBefore: delta.cursorBefore, cursorAfter: delta.cursorAfter, checkpointStatus: delta.checkpoint?.status, checkpointLifecycle: delta.checkpoint?.lifecycleStatus },
+    finalProduct: { id: finalProduct.id, name: finalProduct.name, priceCents: finalProduct.priceCents, stockOnHand: finalProduct.stockOnHand },
+    stockInvariant: { pcAdvertisedStock: 999, tabletLocalStockBeforeDelta: 17, tabletLocalStockAfterDelta: finalProduct.stockOnHand },
+  };
 }
 
-const result: any = { schemaVersion: "prisma.sync-sentinel.journeys.v1", startedAt: new Date().toISOString(), productionCertified: false };
+const result: any = { schemaVersion: "prisma.sync-sentinel.journeys.v2", startedAt: new Date().toISOString(), productionCertified: false };
 try {
   result.journeyA = await journeyA(); console.log("PASS_SYNC_JOURNEY_A");
   result.journeyB = await journeyB(); console.log("PASS_SYNC_JOURNEY_B");
+  const negativeOutput = path.join(path.dirname(output), "negative-fixtures.json");
+  process.env.SYNC_SENTINEL_NEGATIVE_OUTPUT = negativeOutput;
+  const negativeRunner = path.join(tabletAppRoot, "../../../../../tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/negative_runner.mts");
+  await import(pathToFileURL(negativeRunner).href);
+  const negative = JSON.parse(fs.readFileSync(negativeOutput, "utf8"));
+  result.negativeFixtures = negative;
+  assert(negative.ok === true, `negative fixture suite failed: ${JSON.stringify(negative.failures ?? [])}`);
+  for (const letter of "ABCDEFGHIJKL") assert(negative.fixtures?.[letter]?.status === "PASS", `negative fixture ${letter} did not PASS`);
   result.ok = true;
 } catch (error) {
   result.ok = false; result.error = error instanceof Error ? error.message : String(error); console.error(result.error); process.exitCode = 1;
 } finally {
-  result.finishedAt = new Date().toISOString(); fs.mkdirSync(path.dirname(output), { recursive: true }); fs.writeFileSync(output, JSON.stringify(result, null, 2), "utf8"); await prisma.$disconnect();
+  result.finishedAt = new Date().toISOString();
+  result.durationMs = Date.parse(result.finishedAt) - Date.parse(result.startedAt);
+  fs.mkdirSync(path.dirname(output), { recursive: true }); fs.writeFileSync(output, JSON.stringify(result, null, 2), "utf8"); await prisma.$disconnect();
 }
