@@ -1,0 +1,52 @@
+name: PRISMA VISCORE Docs Manifest Finalizer
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/viscore-docs-manifest-finalizer.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  finalize:
+    if: github.event.pull_request.head.ref == 'docs/viscore1-ops-close-current-3008'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate canonical manifest and validate authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd prisma-html
+          python tools/refresh_files_manifest.py --write
+          python tools/refresh_files_manifest.py --check
+          python tools/validate_rifat_authority.py
+          python tools/validate_identity_dictionary.py
+          python tools/compile_identity_dictionary.py --check
+          python extras/atlasfin/generator/validate_atlas.py extras/atlasfin
+
+      - name: Commit manifest and remove finalizer
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/viscore-docs-manifest-finalizer.yml
+          git add prisma-html/FILES_MANIFEST.json
+          git diff --cached --check
+          git config user.name 'prisma-viscore-docs-finalizer'
+          git config user.email 'noreply@prisma.local'
+          git commit -m 'docs(viscore): refresh deterministic file manifest'
+          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
