@@ -1,0 +1,107 @@
+name: PRISMA Sync Sentinel Mutation Gate Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-sentinel-mutation-gate-carrier.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  mutation-gate:
+    if: github.event.pull_request.head.ref == 'gate/prisma-sync-sentinel-mutation-3008-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Pin canonical head and carrier isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git merge-base origin/main HEAD)" = "$MAIN_SHA"
+          mapfile -t files < <(git diff --name-only "$MAIN_SHA"...HEAD)
+          test "${#files[@]}" -eq 1
+          test "${files[0]}" = '.github/workflows/sync-sentinel-mutation-gate-carrier.yml'
+      - name: Run exact current MUTATION anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+          git worktree add --detach "$RUNNER_TEMP/base" "$MAIN_SHA"
+          cd "$RUNNER_TEMP/base"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate | tee "$RUNNER_TEMP/authority.json"
+          grep -Fq 'PASS_PRISMA_ANTI_REWORK_AUTHORITY' "$RUNNER_TEMP/authority.json"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test | tee "$RUNNER_TEMP/selftest.log"
+          grep -Fq 'PASS_PRISMA_UNIVERSAL_ANTI_REWORK_GATE_SELF_TEST' "$RUNNER_TEMP/selftest.log"
+          cat > "$RUNNER_TEMP/request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"0ef7e0c67edac5d0e8166c2b952dd423cbb1841f",
+            "task":"Finish PRISMA Sync Sentinel PR #446 strictly as bounded non-visual tooling under tools/prisma-sentinels/sync-sentinel. Reconcile current main, remove accidental product-source/test-accommodation diffs, correct Sentinel capsule dependency ownership and observation without manifest or lockfile mutation, run isolated doctor, real-code Tablet-PC and PC-Tablet journeys, negatives A-L, causal diagnosis and sanitized certification evidence. Reuse frozen Tablet/PC/schema capabilities. No product source mutation absent separate fresh FIX authority, no live/customer DB, no auto-install, no fake green and productionCertified=false.",
+            "capabilities":[
+              {"id":"tooling.sync_sentinel","requestedAction":"BUILD"},
+              {"id":"tablet.sync.runtime_truth","requestedAction":"VERIFY"},
+              {"id":"pc.sync.dispatch_replay_runtime","requestedAction":"VERIFY"},
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"VERIFY"}
+            ],
+            "visualMutation":false,
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"0ef7e0c67edac5d0e8166c2b952dd423cbb1841f",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"43034c41468f44af3cc7428a413e71e64c678d8abfcc3cbac7261dcda02530b8",
+              "artifactDigest":"sha256:5fcbf567c061ea9a46c4ac7267b24c31dbf39a8a0734b526d8a459a1e7d688ea",
+              "layerMapPresent":false
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/request.json" | tee "$RUNNER_TEMP/result.json"
+          grep -Fq 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/result.json"
+          python - "$RUNNER_TEMP/result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d['result']=='PASS_ANTI_REWORK_GATE', d
+          assert d['mode']=='MUTATION', d
+          assert d['repoHead']=='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f', d
+          assert d['authorityDirty']==[], d
+          assert d['errors']==[], d
+          by={r['id']:r for r in d['selected']}
+          assert by['tooling.sync_sentinel']['requestedAction']=='BUILD' and by['tooling.sync_sentinel']['doNotRebuild'] is False, by
+          for cid in ['tablet.sync.runtime_truth','pc.sync.dispatch_replay_runtime','data.canonical_schema_reproducibility']:
+              assert by[cid]['requestedAction']=='VERIFY' and by[cid]['doNotRebuild'] is True, (cid,by[cid])
+          print('MUTATION_DECISION_DIGEST='+d['decisionDigest'])
+          PY
+      - name: Stage gate evidence
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p gate-evidence
+          cp "$RUNNER_TEMP/request.json" gate-evidence/ 2>/dev/null || true
+          cp "$RUNNER_TEMP/result.json" gate-evidence/ 2>/dev/null || true
+          cp "$RUNNER_TEMP/authority.json" gate-evidence/ 2>/dev/null || true
+          cp "$RUNNER_TEMP/selftest.log" gate-evidence/ 2>/dev/null || true
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sync-sentinel-mutation-gate-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 14
+          path: gate-evidence/**
