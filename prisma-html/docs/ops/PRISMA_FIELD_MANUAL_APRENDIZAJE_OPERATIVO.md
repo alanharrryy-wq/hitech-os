@@ -3,8 +3,11 @@ title: PRISMA HTML Field Manual de Aprendizaje Operativo
 status: LIVING
 owner: PRISMA HTML / Ops
 created: 2026-07-21
+last_updated: 2026-08-30
 scope:
   - standalone-html
+  - viscore1
+  - rifat
   - atlasfin
   - visual-glass
   - packaging
@@ -14,11 +17,13 @@ principle: "Aprender una vez; no volver a pagar la misma multa operacional."
 
 # PRISMA HTML Field Manual de Aprendizaje Operativo
 
-Este manual conserva el aprendizaje del trabajo realizado sobre el proyecto HTML independiente. No sustituye manifests, contratos ni reportes; registra las trampas que ya mordieron una vez para que no regresen con bigote falso.
+Este manual conserva el aprendizaje del trabajo realizado sobre PRISMA HTML y su autoridad visual. No sustituye manifests, contratos ni reportes; registra las trampas que ya mordieron una vez para que no regresen con bigote falso.
+
+Para operación completa de VISCORE1, usar también `PRISMA_VISUAL_AUTHORITY_RUNBOOK.md`.
 
 ## Reglas obligatorias
 
-1. `F:\repos\hitech-os-prisma-html\prisma-html` es la raíz canónica del proyecto vivo.
+1. En el repo integrado `hitech-os`, el workspace VISCORE vive en `<repo-root>\prisma-html`. La ruta histórica `F:\repos\hitech-os-prisma-html\prisma-html` sólo aplica cuando se trabaja explícitamente sobre el proyecto standalone separado; no asumirla para operaciones del monorepo.
 2. `F:\descargasf` conserva ZIPs, resultados, logs y diagnósticos.
 3. `F:\Trash-old` conserva backups y rollback.
 4. Un PASS estático no significa certificación visual.
@@ -30,6 +35,9 @@ Este manual conserva el aprendizaje del trabajo realizado sobre el proyecto HTML
 10. Cloudflare Pages, Worker/D1 y Tunnel son familias distintas. No mezclar comandos ni configuraciones.
 11. Ningún deploy debe matar procesos, liberar puertos, reiniciar `cloudflared` ni tocar los runtimes PRISMA.
 12. No declarar URL pública ni deploy PASS sin respuesta HTTP y evidencia de deployment.
+13. No editar a mano proyecciones de producto declaradas como generated/manual-edits-forbidden en `authority/rifat/visual-source-manifest.json`.
+14. No editar a mano `FILES_MANIFEST.json`; regenerarlo sólo después de terminar todos los cambios de `prisma-html`.
+15. Un SHA certificado no se vuelve a tocar antes del merge. Si cambia el head o cambia `main`, se reconcilia y se certifica de nuevo.
 
 ## Aprendizajes confirmados
 
@@ -98,7 +106,6 @@ Para declarar una mejora visual cerrada se requiere:
 - revisión humana de las capturas;
 - si está desplegado, health check de la URL pública.
 
-
 ### 2026-07-26 · VISREC2 V2 sin expansión de controles
 
 **Tipo:** SOURCE_EXTENSION / GOVERNANCE / UX
@@ -111,3 +118,33 @@ visibles de V1 y no se agregaron sliders, selectores ni controles individuales.
 **Regla:** una capacidad interna nueva no justifica un control nuevo. Exponer sólo
 decisiones humanas necesarias y mantener compatibilidad, binding, cobertura y
 readiness como semáforos separados.
+
+### 2026-08-30 · PR #475: RIFAT no puede arreglar drift degradando un runtime legítimo
+
+**Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / VISUAL_LEARNING
+
+**Contexto:** El gate `validate_rifat_authority.py` detectó drift en proyecciones Mobile y PC. Los runtime CSS actuales habían cambiado legítimamente en trabajos posteriores a la consolidación inicial de RIFAT, mientras los snapshots canónicos de RIFAT habían quedado atrás.
+
+**Resultado observado:** El cierre correcto no fue copiar la autoridad vieja sobre producto. Se verificó la genealogía, se promovieron los bytes actuales legítimos de Mobile y PC hacia sus fuentes RIFAT correspondientes y desapareció `exact-copy visual projection drift`.
+
+Después quedaron únicamente cuatro errores de hash en `visual-source-manifest.json`: source/output para Mobile y source/output para PC. Como ya no existía exact-copy drift, los bytes source/output eran iguales y sólo los digests declarados estaban obsoletos.
+
+**Causa real:** Había dos capas de drift distintas:
+
+1. drift real de bytes entre fuente RIFAT y proyección;
+2. metadata hash stale después de reconciliar los bytes.
+
+**Regla nueva:**
+
+- Si existe `exact-copy visual projection drift`, investigar historia y autoridad antes de copiar nada.
+- Si el runtime actual es un cambio legítimo más nuevo, no hacer downgrade para conseguir verde.
+- Si hay hash mismatch pero no exact-copy drift, actualizar sólo hashes desde bytes reales.
+- Regenerar `FILES_MANIFEST.json` al final, nunca antes del último cambio de `prisma-html`.
+- Si `main` avanza después de un green, reconciliar `main` y volver a certificar.
+- Una vez verde el SHA final, no agregar commits cosméticos antes del merge.
+
+**Evidencia:** PR #475 se certificó sobre un único head SHA con VISCORE1, CI, ForgeOS y repo-navigation-guard verdes, y se fusionó después con protección de expected head SHA.
+
+**Rollback probado:** N/A para la documentación. La reparación de autoridad evitó modificar/degradar los runtimes de producto.
+
+**Deuda cerrada:** El procedimiento completo quedó formalizado en `docs/ops/PRISMA_VISUAL_AUTHORITY_RUNBOOK.md`.
