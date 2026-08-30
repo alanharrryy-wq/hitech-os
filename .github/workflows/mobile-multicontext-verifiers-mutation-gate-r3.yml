@@ -120,6 +120,7 @@ jobs:
           pre="$RUNNER_TEMP/mobile-cleanup-verifiers-pre"
           par="$RUNNER_TEMP/mobile-cleanup-verifiers-par"
           comp="$RUNNER_TEMP/mobile-cleanup-verifiers-comp/payload"
+          composed="$RUNNER_TEMP/mobile-cleanup-verifiers-comp/prisma-automesh-composed-result.zip"
           mkdir -p "$pre" "$par" "$comp"
           python -m code_atlas.motors.prisma_mesh_gateway preflight \
             --repo "$GITHUB_WORKSPACE" \
@@ -141,8 +142,22 @@ jobs:
             --mesh-result "$par" \
             --out "$comp" | tee "$RUNNER_TEMP/mobile-cleanup-verifiers-compose.txt"
           grep -Fq PASS_COMPOSED_AUTHORITY_MESH "$RUNNER_TEMP/mobile-cleanup-verifiers-compose.txt"
-          test -f "$RUNNER_TEMP/mobile-cleanup-verifiers-comp/prisma-automesh-composed-result.zip"
-          find "$par" -type f -name 'LAYERS_MAP.json' -print -quit | grep -q .
+          test -f "$composed"
+          python - "$composed" <<'PY'
+          import io, sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as outer:
+              inner_bytes = outer.read('legacy_surface_mesh.zip')
+          with zipfile.ZipFile(io.BytesIO(inner_bytes)) as inner:
+              names = set(inner.namelist())
+          required = {
+              'tasks/mobile-physical-cleanup/authority_mesh/reports/LAYERS_MAP.json',
+              'tasks/mobile-verifiers-aligned-governance/authority_mesh/reports/LAYERS_MAP.json',
+          }
+          missing = sorted(required - names)
+          if missing:
+              raise SystemExit('LAYER_MAP_MISSING:' + ','.join(missing))
+          print('PASS_TASK_EXACT_LAYER_MAPS_PRESENT')
+          PY
 
       - name: Run Factory Ledger MUTATION anti-rework gate
         shell: bash
