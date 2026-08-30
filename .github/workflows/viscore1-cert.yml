@@ -75,7 +75,19 @@ jobs:
 
       - name: RIFAT authority gate
         working-directory: prisma-html
-        run: python tools/validate_rifat_authority.py
+        shell: bash
+        run: |
+          set -o pipefail
+          python tools/validate_rifat_authority.py | tee "$RUNNER_TEMP/rifat-authority.json"
+
+      - name: Upload RIFAT authority diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viscore1-rifat-authority
+          path: ${{ runner.temp }}/rifat-authority.json
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Atlasfin static gate
         working-directory: prisma-html
