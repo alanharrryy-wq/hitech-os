@@ -50,6 +50,55 @@ jobs:
           test -s .governance/ci-viscore1/LAYERS_MAP.md
           test -s .governance/ci-viscore1/LAYERS_MAP_SOURCE.json
 
+      - name: Generate current-runtime RIFAT manifest candidate
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          prisma = Path.cwd()
+          repo = prisma.parent
+          manifest_path = prisma / "authority/rifat/visual-source-manifest.json"
+          targets = {
+              "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+              "apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css",
+          }
+          data = json.loads(manifest_path.read_text(encoding="utf-8"))
+          seen = set()
+          for entry in data.get("entries", []):
+              output = entry.get("output")
+              if output not in targets:
+                  continue
+              source_path = repo / entry["source"]
+              output_path = repo / output
+              source_bytes = source_path.read_bytes()
+              output_bytes = output_path.read_bytes()
+              if source_bytes != output_bytes:
+                  raise SystemExit(f"RIFAT repair candidate is not exact-copy: {entry['source']} -> {output}")
+              digest = hashlib.sha256(source_bytes).hexdigest()
+              entry["sourceSha256"] = digest
+              entry["outputSha256"] = digest
+              seen.add(output)
+          missing = targets - seen
+          if missing:
+              raise SystemExit(f"RIFAT repair targets missing from visual-source-manifest: {sorted(missing)}")
+          manifest_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          print(json.dumps({"status": "PASS", "updated": sorted(seen)}, indent=2))
+          PY
+
+      - name: Upload RIFAT manifest candidate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viscore1-rifat-manifest-candidate
+          path: prisma-html/authority/rifat/visual-source-manifest.json
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Generate deterministic file manifest candidate
         working-directory: prisma-html
         run: python tools/refresh_files_manifest.py --write
