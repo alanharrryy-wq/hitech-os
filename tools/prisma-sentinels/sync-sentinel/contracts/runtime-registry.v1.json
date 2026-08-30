@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "prisma.sync-sentinel.runtime-registry.v1",
+  "productionCertified": false,
+  "runtimes": [
+    {
+      "runtimeId": "SURF.tb.pos",
+      "role": "tablet",
+      "status": "ACTIVE_CERTIFICATION_TARGET",
+      "appRoot": "apps/terminal-de-venta-system/products/tablet/app",
+      "prismaSchema": "apps/terminal-de-venta-system/products/tablet/app/prisma/schema.prisma",
+      "clientOwner": "apps/terminal-de-venta-system/products/tablet/app/src/server/prisma/client.ts",
+      "syncOwners": [
+        "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/dispatcher.ts",
+        "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts",
+        "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/pc-origin.ts"
+      ],
+      "adapter": "tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/tablet_runner.mts"
+    },
+    {
+      "runtimeId": "SURF.pc.admin",
+      "role": "pc",
+      "status": "ACTIVE_CERTIFICATION_TARGET",
+      "appRoot": "apps/terminal-de-venta-system/products/pc/app",
+      "prismaSchema": "apps/terminal-de-venta-system/prisma/schema.prisma",
+      "clientOwner": "apps/terminal-de-venta-system/products/pc/app/src/server/prisma/client.ts",
+      "syncOwners": [
+        "apps/terminal-de-venta-system/products/pc/app/src/server/services/sync-ingest.service.ts",
+        "apps/terminal-de-venta-system/products/pc/app/src/server/services/sync-projectors.service.ts",
+        "apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-delta-export.service.ts"
+      ],
+      "adapter": "tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/pc_runtime.mts"
+    },
+    {
+      "runtimeId": "SURF.mb.companion",
+      "role": "mobile",
+      "status": "FUTURE_ADAPTER_NOT_CERTIFIED"
+    },
+    {
+      "runtimeId": "SURF.cc.tenant_overview",
+      "role": "control-center",
+      "status": "FUTURE_ADAPTER_NOT_CERTIFIED"
+    },
+    {
+      "runtimeId": "RUNTIME.cloud",
+      "role": "cloud",
+      "status": "FUTURE_ADAPTER_NOT_CERTIFIED"
+    }
+  ],
+  "rules": {
+    "businessLogicMayBeReimplementedBySentinel": false,
+    "liveDatabaseAllowed": false,
+    "generatedClientsMustRemainInsideCapsule": true,
+    "ownedProcessesOnly": true,
+    "mandatoryUnknownMayPass": false
+  }
+}
