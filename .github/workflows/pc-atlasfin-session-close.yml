@@ -65,7 +65,7 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import os, subprocess
+          import os, subprocess, textwrap
 
           repo = Path.cwd()
           app = repo / 'apps/terminal-de-venta-system'
@@ -179,8 +179,6 @@ jobs:
 
           `Lee apps/terminal-de-venta-system/docs/ops/PRISMA_PC_ATLASFIN_CONTINUATION.md y el Field Manual; verifica que el target PC /catalog no haya drifted y continúa únicamente con el fresh Authority Mesh para autorar el identity-layer/element-binding contract source-only. No redescubras PC/Atlasfin desde cero y no apliques CSS todavía.`
           '''
-          # Normalize indentation introduced by the Python source block.
-          import textwrap
           handoff.parent.mkdir(parents=True, exist_ok=True)
           handoff.write_text(textwrap.dedent(text).lstrip(), encoding='utf-8')
 
@@ -194,8 +192,8 @@ jobs:
           <!-- PC_ATLASFIN_SESSION_CLOSE_20260830 -->
           ### 2026-08-30 02:27 - PC Atlasfin: investigación cerrada, binding exacto pendiente
 
-          **Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / COMMAND_WORKS / COMMAND_FAILS  
-          **Superficie:** PC / Tooling  
+          **Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / COMMAND_WORKS / COMMAND_FAILS
+          **Superficie:** PC / Tooling
           **Contexto:** Se cerró la fase de descubrimiento y preflight para llevar Atlasfin a PC sin aplicar todavía valores visuales. Se consolidaron UIMAP, Visual Control PC-only y un Authority Mesh exacto sobre `/catalog` → `ProductMediaWorkspace` → `.workspace`.
 
           **Comando que funcionó:**
@@ -222,12 +220,11 @@ jobs:
 
           **Causa real:** Hay dos verdades distintas que no deben mezclarse: (1) el source/Visual Control de PC puede estar estructuralmente CERTIFIED; (2) la aplicación Atlasfin sigue bloqueada hasta existir identity-layer + element-binding canónicos para el target exacto. Un PASS del Mesh autoriza lectura/alcance, no inventa automáticamente IDs de binding/capa ni certifica percepción visual.
 
-          **Rollback probado:** N/A. Los audits y Mesh de esta fase fueron source-only y el cierre no modifica producto/runtime.  
-          **Regla nueva:** Nunca traducir `Visual Control CERTIFIED` o `Authority Mesh PASS` a `Atlasfin APPLY autorizado`. Primero target exacto + identity layer + binding contract; después Mesh de aplicación y evidencia visual antes/después.  
+          **Rollback probado:** N/A. Los audits y Mesh de esta fase fueron source-only y el cierre no modifica producto/runtime.
+          **Regla nueva:** Nunca traducir `Visual Control CERTIFIED` o `Authority Mesh PASS` a `Atlasfin APPLY autorizado`. Primero target exacto + identity layer + binding contract; después Mesh de aplicación y evidencia visual antes/después.
           **Deuda pendiente:** Autorar, en sesión nueva y con Mesh fresco si cambió `main`, el contrato source-only para `/catalog` / `ProductMediaWorkspace` / `.workspace` / `VIS.SURFACE.CONTENT.PRIMARY` / `ADP.PC.ADMIN.V2`. No repetir descubrimiento amplio si owner, CSS, selector y slot siguen iguales.
           '''
-              current = current.rstrip() + textwrap.dedent(entry) + '\n'
-              # Keep the living-manual header date useful without rewriting its history.
+              current = current.rstrip() + textwrap.dedent(entry).rstrip() + '\n'
               current = current.replace('last_updated: 2026-06-10', 'last_updated: 2026-08-30', 1)
               manual.write_text(current, encoding='utf-8')
 
