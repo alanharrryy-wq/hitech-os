@@ -1,0 +1,97 @@
+name: PRISMA Sync Sentinel Final 3140 Mutation Gate Carrier
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/prisma-sync-sentinel-final-3140-mutation-gate-carrier.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PINNED_BASE: 7c129d807e36fae44f0d19c6f7c8a82d11c8c96e
+
+jobs:
+  mutation-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run task-exact Factory Ledger MUTATION gate on canonical base
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$current" = "$PINNED_BASE"
+          git worktree add --detach "$RUNNER_TEMP/base" "$PINNED_BASE"
+          cd "$RUNNER_TEMP/base"
+          cat > "$RUNNER_TEMP/gate.request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"7c129d807e36fae44f0d19c6f7c8a82d11c8c96e",
+            "task":"Extend the existing DONE/doNotRebuild PRISMA Sync Sentinel without rebuilding it. Add governed Mobile runtime verification through the canonical Mobile 3140 read-side runtime, secure projection gateway and real Tablet/PC upstream owners inside Sentinel-owned isolated resources; add Mobile M1/M2 and real negative/recovery evidence, with M3 NOT_APPLICABLE unless current authority proves a mutation owner. Install low-noise event-driven PRISMA Sync Sentinel Watch with path-aware NONE/SCAN/CERTIFY classification, relevant PR and post-merge main certification, weekly safety-net, safe concurrency, sanitized artifacts and causal fail-closed reporting. Do not modify Tablet, PC or Mobile product source merely to satisfy tests. productionCertified remains false.",
+            "capabilities":[
+              {"id":"tooling.sync_sentinel","requestedAction":"ADVANCE"},
+              {"id":"mobile.secure_projection_gateway_phase1","requestedAction":"ADVANCE"},
+              {"id":"tablet.sync.runtime_truth","requestedAction":"REUSE"},
+              {"id":"pc.sync.dispatch_replay_runtime","requestedAction":"REUSE"},
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"REUSE"}
+            ],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"7c129d807e36fae44f0d19c6f7c8a82d11c8c96e",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"b66a92120c051c43b6ddb8a9570f15500ca198ff74ff11484477d2dd2afd4857",
+              "artifactDigest":"b876f00c71cf9eeb23ead93e5be2325656dcebf2415d1cd6a4eb9380de0d5d17",
+              "layerMapPresent":false
+            },
+            "visualMutation":false
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/gate.request.json" > "$RUNNER_TEMP/gate.result.json"
+          cat "$RUNNER_TEMP/gate.result.json"
+          python - "$RUNNER_TEMP/gate.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result') == 'PASS_ANTI_REWORK_GATE', d
+          assert d.get('errors') == [], d
+          assert d.get('repoHead') == '7c129d807e36fae44f0d19c6f7c8a82d11c8c96e', d
+          rows={row['id']:row for row in d.get('selected',[])}
+          assert rows['tooling.sync_sentinel']['doNotRebuild'] is True
+          assert rows['tooling.sync_sentinel']['requestedAction'] == 'ADVANCE'
+          assert rows['mobile.secure_projection_gateway_phase1']['requestedAction'] == 'ADVANCE'
+          assert rows['tablet.sync.runtime_truth']['requestedAction'] == 'REUSE'
+          assert rows['pc.sync.dispatch_replay_runtime']['requestedAction'] == 'REUSE'
+          assert rows['data.canonical_schema_reproducibility']['requestedAction'] == 'REUSE'
+          PY
+
+      - name: Stage gate evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/sync-sentinel-3140-mutation-gate"
+          cp "$RUNNER_TEMP/gate.request.json" "$RUNNER_TEMP/sync-sentinel-3140-mutation-gate/ANTI_REWORK_REQUEST.json" 2>/dev/null || true
+          cp "$RUNNER_TEMP/gate.result.json" "$RUNNER_TEMP/sync-sentinel-3140-mutation-gate/ANTI_REWORK_GATE.json" 2>/dev/null || true
+
+      - name: Upload mutation-gate evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: prisma-sync-sentinel-final-3140-mutation-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sync-sentinel-3140-mutation-gate/**
+          if-no-files-found: error
+          retention-days: 14
