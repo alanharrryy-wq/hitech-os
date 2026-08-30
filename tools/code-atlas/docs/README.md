@@ -30,7 +30,7 @@ These documents define or describe reusable execution rules. A documentation ind
 - [`CODE_ATLAS_CUSTOMER_WOW_V1.contract.json`](CODE_ATLAS_CUSTOMER_WOW_V1.contract.json)  
   Machine-readable Customer Wow V1 contract.
 
-Current governed state remains `LOCAL_VERIFIED`, with unrelated external-repository evidence pending. `certifiable=false` and `productionCertified=false` remain unchanged by this index.
+Current governed state remains `LOCAL_VERIFIED`. External-repository evidence is broader but intentionally bounded; independent evaluator replication remains externally blocked and human usefulness remains unmeasured. `certifiable=false` and `productionCertified=false` remain unchanged by this index.
 
 ## How to interpret other files in this directory
 
@@ -89,17 +89,26 @@ Profiles and adapters are explicit opt-in. Semantic retrieval is not proof. Deri
 
 PRISMA/hitech-os documentation may reference richer product-specific systems such as Authority Mesh, Factory Ledger, NDC, visual surfaces or local Windows paths. Those are explicit product/operator contexts, **not requirements of the universal Code Atlas core**.
 
-For PRISMA/hitech-os capability maturity, the repository Factory Ledger remains the canonical anti-rework status source. This index does not override it.
+For the current PRISMA Authority Mesh / AutoMesh v2 operator flow, use:
+
+- [`../../../apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md`](../../../apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md)  
+  Current GitHub-first operation, relevant-drift revalidation, fast-path/full-refresh behavior, artifact chaining/security, Git-blob/CRLF portability, Layer Map fail-closed rules, concurrency and evidence closure.
+
+- [`../../../apps/terminal-de-venta-system/docs/ops/README.md`](../../../apps/terminal-de-venta-system/docs/ops/README.md)  
+  PRISMA operational documentation index.
+
+For PRISMA/hitech-os capability maturity, the repository Factory Ledger remains the canonical anti-rework status source. These navigation docs do not override it.
 
 ## Documentation maintenance rule
 
-When Code Atlas architecture changes materially:
+When Code Atlas architecture or a governed product adapter changes materially:
 
 1. update the canonical [`../README.md`](../README.md) only with evidence-backed current behavior;
 2. update governing contracts only when their actual contract changes;
-3. keep historical feature docs historical instead of rewriting history;
-4. add or adjust navigation here when needed;
-5. do not promote source/local verification into production claims;
-6. do not rebuild Universal Intelligence or Customer Wow merely to make documentation look current.
+3. update the appropriate product-specific runbook when operator behavior changes;
+4. keep historical feature/exception docs historical instead of rewriting history;
+5. add or adjust navigation here when needed;
+6. do not promote source/local verification into production claims;
+7. do not rebuild Universal Intelligence or Customer Wow merely to make documentation look current.
 
 If documentation and source evidence disagree, resolve the governing source/evidence first. Do not create a green claim in Markdown.
