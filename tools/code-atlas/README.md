@@ -22,7 +22,7 @@ The bounded single external-agent usefulness pilot is recorded, but the next ind
 
 `certifiable=false` and `productionCertified=false` remain invariant until separate evidence-backed gates prove otherwise.
 
-## Independent-agent replication gate — external policy blocked
+## Independent-agent replication gate: external policy blocked
 
 A fresh task-exact Authority Mesh authorized a stronger **same-task paired** replication design: six historical tasks, each evaluated once as `BASELINE` and once as `ASSISTED`, for 12 isolated external-agent sessions with ground truth sealed until paired responses were persisted.
 
@@ -198,7 +198,7 @@ python -m code_atlas.intelligence.cli `
 ```bash
 PYTHONPATH=src python -m code_atlas.intelligence.cli \
   --repo "/path/to/repository" \
-  --out "/path/to/output" \
+  --out "/path/to-output" \
   --intent DISCOVER
 ```
 
@@ -223,8 +223,8 @@ The modular top-level CLI also exposes the neutral intelligence command:
 
 ```bash
 PYTHONPATH=src python -m code_atlas.cli.main intelligence \
-  --repo "/path/to/repository" \
-  --out "/path/to/output" \
+  --repo "/path/to-repository" \
+  --out "/path/to-output" \
   --intent DISCOVER
 ```
 
@@ -241,7 +241,7 @@ request = IntelligenceRequest(
 )
 
 context = resolve_intelligence_context(
-    "/path/to/repository",
+    "/path/to-repository",
     request=request,
 )
 ```
@@ -254,7 +254,7 @@ The returned structured context includes repository inventory, authority discove
 from code_atlas.change_intelligence import prepare_change, verify_prepared_change
 
 prepared = prepare_change(
-    "/path/to/repository",
+    "/path/to-repository",
     change_request="Harden authentication without touching payments",
     target_paths=["src/auth.py"],
 )
@@ -263,7 +263,7 @@ prepared = prepare_change(
 
 verification = verify_prepared_change(
     prepared,
-    "/path/to/repository",
+    "/path/to-repository",
     changed_paths=["src/auth.py"],
 )
 ```
@@ -316,6 +316,31 @@ PRISMA/hitech-os may use richer adapters and governance such as Authority Mesh, 
 They do not mean that a foreign repository must contain PRISMA files, use Windows, live on an `F:\` drive, use Prisma ORM, expose PRISMA surfaces or adopt PRISMA's taxonomy.
 
 Any Windows, `F:\...`, hitech-os or PRISMA paths appearing in historical docs or operator examples are **local/project examples**, not Code Atlas requirements.
+
+### PRISMA Authority Mesh / AutoMesh v2 operator flow
+
+Within the explicit PRISMA/hitech-os adapter, Authority Mesh now uses relevant-drift revalidation when canonical `main` moves. The rule is not "different SHA means every Mesh is dead". The rule is "evaluate whether the delta intersects the task-bound authority, then act on evidence".
+
+Current PRISMA revalidation outcomes are:
+
+- `PASS_ALREADY_CURRENT`: exact same HEAD, validated authority bytes may be reused without repack;
+- `PASS_NO_RELEVANT_DRIFT`: unrelated canonical drift, authority is rebound to current HEAD with a new attestation;
+- `BLOCKED_RELEVANT_DRIFT`: task authority/trust/protected/Layer Map/pin drift, full fresh Mesh required;
+- `BLOCKED_NON_ANCESTOR_DRIFT`: history cannot be proven as an ancestor chain, full fresh Mesh required;
+- `BLOCKED_INVALID_PRIOR_AUTHORITY`: artifact/manifest/digest/chain is invalid or unprovable, fail closed without trusting a fallback request from that artifact.
+
+The product adapter also enforces hardened evidence envelopes, revalidated-artifact chaining, visual Layer Map requirements and portable Git-object identity. A selected checkout SHA-256 is associated with its certified repository-inventory `gitBlobSha`; current identity is validated through Git objects so Windows CRLF does not become false drift. Contradictory identity evidence remains a blocker.
+
+GitHub operator commands:
+
+```text
+/prisma-automesh task <urlsafe-base64-request-without-padding>
+/prisma-automesh revalidate <artifact-id> sha256:<artifact-digest>
+```
+
+Canonical PRISMA runbook: [`../../apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md`](../../apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md).
+
+This is an explicit product adapter. It does not change the universal rule that Code Atlas neutral core is repository/product/machine neutral.
 
 ## Customer Runner boundary
 
@@ -401,6 +426,7 @@ Start here:
 - [`docs/CODE_ATLAS_CUSTOMER_WOW_V1.md`](docs/CODE_ATLAS_CUSTOMER_WOW_V1.md): current Customer Wow architecture, evidence and limitations.
 - [`docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json`](docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json): machine-readable Customer Wow contract.
 - [`docs/README.md`](docs/README.md): navigation for current vs historical/feature-specific documentation.
+- [`../../apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md`](../../apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md): PRISMA-specific AutoMesh v2 operator runbook.
 
 For PRISMA/hitech-os specifically, the repository Factory Ledger is the canonical anti-rework source for capability maturity/status. Documentation summaries do not override that ledger.
 
@@ -417,6 +443,8 @@ Current source/local evidence supports these statements:
 - authority/evidence drift and stale exact packs block;
 - total neutrality and operational hardening passed repository CI across Ubuntu, Windows and macOS lanes for the merged Customer Wow integration.
 
+PRISMA AutoMesh v2 cross-platform evidence is product-adapter evidence. It does not, by itself, widen the neutral core's universality or production claims.
+
 ## What Code Atlas does not currently prove
 
 Current evidence does **not** prove:
@@ -430,7 +458,7 @@ Current evidence does **not** prove:
 - legal/privacy compliance;
 - production certification.
 
-The next governed gate is external-repository evidence, not another rebuild of the Universal Intelligence or Customer Wow source.
+The next governed evidence gate is determined by the current Factory Ledger and task authority, not by documentation freshness alone.
 
 ## Design principle
 
@@ -445,7 +473,7 @@ Prove the result with evidence.
 
 That is the current Code Atlas architecture.
 
-## External-agent usefulness evidence — 2026-08-15
+## External-agent usefulness evidence: 2026-08-15
 
 Governed state remains **LOCAL_VERIFIED** with `doNotRebuild=true`, `certifiable=false`, and `productionCertified=false`.
 
@@ -453,11 +481,11 @@ Governed state remains **LOCAL_VERIFIED** with `doNotRebuild=true`, `certifiable
 - Task-exact Authority Mesh: run `31913264991`, artifact `9254247789`, digest `sha256:4fa908f6f4b123b174d525158bad25d24a2c1e3d3e7b0084c09a467432b36015`.
 - Final scoring: run `31914395822`, artifact `9254539137`, digest `sha256:f6fab08f22945ce54b23ac495f2f3f797cafa4edd33e61f9295c65c3a3795b5c`, result digest `8e1a155a66fcb7c713e32d334edf3bf431cced9e909563ef48ef393c5cc737cd`.
 - ASSISTED, three tasks: authorization widening 0%; target editable inclusion 100%; changed-test recall 100%; companion-inspection recall 88.89%; valid evidence references 100%; fake-green 0; unknown omission 0.
-- BASELINE, three different tasks: authorization widening 0%; target editable inclusion 33.33%; changed-test recall 0%; companion-inspection recall 0%; valid evidence references 100%.
+- BASELINE, three different tasks: authorization widening 0%; target editable inclusion 33.33%; changed-test recall 0%; companion-inspection recall 0%; valid evidence refs 100%.
 - The condition comparison is descriptive only: task heterogeneity plus one evaluator means **no causal uplift claim**.
 - Human usefulness is **NOT_MEASURED**. Independent multi-agent replication is not yet proven.
 - Observed ROI is limited to `outOfScopeChangeRate=0.0` and `evidenceCompletenessRate=1.0`; no financial estimate was generated.
 - Two `J TEST HARNESS FAILURE` defects were repaired fail-closed before the valid score: run-volatile packet binding and an invalid `build_roi_event(metric_values=...)` call. Neither was a product-core defect.
 - Closure Authority Mesh: run `31914600435`, artifact `9254577043`, digest `sha256:fdce5a4d2b299fdc0b566e720dfab1eea0690b09f4ead60debf60303d8414a7b`.
 
-**Next evidence gate:** bounded human usefulness study and/or independent multi-agent replication. Hosted/security and production certification remain separate boundaries; do not rebuild core from this pilot.
+**Next evidence gate:** bounded human usefulness study and/or independent multi-agent replication when an evaluator is actually available. Hosted/security and production certification remain separate boundaries; do not rebuild core from this pilot.
