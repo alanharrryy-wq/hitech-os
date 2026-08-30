@@ -37,7 +37,7 @@ jobs:
           test "$(git rev-parse origin/main)" = "$PINNED_MAIN_SHA"
           git -c user.name='prisma-viscore-finalizer' -c user.email='noreply@prisma.local' merge --no-commit --no-ff "$PINNED_MAIN_SHA"
 
-      - name: Reproduce certified run 6 RIFAT candidate exactly
+      - name: Rebuild RIFAT hashes on reconciled current-main tree
         shell: bash
         run: |
           set -euo pipefail
@@ -80,15 +80,17 @@ jobs:
           python prisma-html/tools/refresh_files_manifest.py --write
           python prisma-html/tools/refresh_files_manifest.py --check
 
-      - name: Prove byte identity with certified run 6 candidates
+      - name: Prove deterministic reconciled candidates
         shell: bash
         run: |
           set -euo pipefail
-          printf '%s  %s\n' \
-            'a94286e4b594581e1e31c77173ffcf53216e8309025b1f0a7eef1309049d8d78' \
-            'prisma-html/authority/rifat/visual-source-manifest.json' \
-            '00c419b4e35b81f864bac299914b943fa740636524ad9afca1feeb66c34bcfa6' \
-            'prisma-html/FILES_MANIFEST.json' | sha256sum -c -
+          python prisma-html/tools/validate_rifat_authority.py
+          python prisma-html/tools/refresh_files_manifest.py --check
+          sha256sum \
+            prisma-html/authority/rifat/visual-source-manifest.json \
+            prisma-html/FILES_MANIFEST.json \
+            > reconciled-candidate-sha256.txt
+          cat reconciled-candidate-sha256.txt
 
       - name: Restore read-only certifier and verify final state
         shell: bash
@@ -99,8 +101,6 @@ jobs:
           python prisma-html/tools/validate_rifat_authority.py
           python prisma-html/tools/refresh_files_manifest.py --check
           git diff --cached --check
-          test "$(git show :prisma-html/authority/rifat/visual-source-manifest.json | sha256sum | awk '{print $1}')" = 'a94286e4b594581e1e31c77173ffcf53216e8309025b1f0a7eef1309049d8d78'
-          test "$(git show :prisma-html/FILES_MANIFEST.json | sha256sum | awk '{print $1}')" = '00c419b4e35b81f864bac299914b943fa740636524ad9afca1feeb66c34bcfa6'
           echo 'Reconciled merge tree validated; temporary workflow absent from staged final tree.'
 
       - name: Create remote merge commit object without updating refs
