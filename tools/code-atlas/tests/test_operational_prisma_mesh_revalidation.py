@@ -136,6 +136,25 @@ class RevalidationTests(unittest.TestCase):
             self.assertIn("candidate/retrieved.txt", result["changedPaths"])
             self.assertFalse(result["candidateRetrievalIsAuthority"])
 
+    def test_revalidated_artifact_can_chain_across_more_unrelated_drift(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
+            (r / "notes/unrelated.md").write_text("u2\n")
+            head_one = commit(r, "unrelated one")
+            first = m.revalidate(r, art, b / "out-one", digest)
+            self.assertEqual(first["status"], m.PASS_NO_RELEVANT_DRIFT)
+            first_artifact = Path(first["artifact"])
+            self.assertTrue(first_artifact.is_file())
+
+            (r / "notes/unrelated.md").write_text("u3\n")
+            head_two = commit(r, "unrelated two")
+            second = m.revalidate(r, first_artifact, b / "out-two", first["artifactSha256"])
+            self.assertEqual(second["status"], m.PASS_NO_RELEVANT_DRIFT)
+            self.assertEqual(second["baseHead"], head_one)
+            self.assertEqual(second["currentHead"], head_two)
+            self.assertEqual(second["relevantChangedPaths"], [])
+            self.assertTrue(Path(second["artifact"]).is_file())
+
     def test_required_authority_drift_blocks_and_prepares_full_refresh(self):
         with tempfile.TemporaryDirectory() as td:
             b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
