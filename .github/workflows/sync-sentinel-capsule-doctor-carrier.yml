@@ -1,0 +1,93 @@
+name: PRISMA Sync Sentinel Capsule Doctor Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - tooling/prisma-sync-sentinel-v1-2808
+    paths:
+      - '.github/workflows/sync-sentinel-capsule-doctor-carrier.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  capsule-doctor:
+    if: github.event.pull_request.head.ref == 'gate/prisma-sync-sentinel-capsule-doctor-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Guard exact source and current canonical main
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_SHA='281391806dc25d22aea45f3b0b44f5f22eb198eb'
+          MAIN_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
+          git fetch origin main tooling/prisma-sync-sentinel-v1-2808
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git rev-parse origin/tooling/prisma-sync-sentinel-v1-2808)" = "$SOURCE_SHA"
+          mapfile -t changed < <(git diff --name-only "$SOURCE_SHA" HEAD)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = '.github/workflows/sync-sentinel-capsule-doctor-carrier.yml'
+          git checkout --detach "$SOURCE_SHA"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          echo "SOURCE_SHA=$SOURCE_SHA" >> "$GITHUB_ENV"
+          echo 'Authority Mesh PASS: run=33300896435 requestDigest=7945f310bfeb7f21db10f7cccc9179cee8050827fe64f2ad24b90bbdc49060d1'
+          echo 'Anti-rework PASS: run=33301051375 decisionDigest=f5d09bde39646357ff61504b4773b42d6b4499fb02b4b20218c6edff190bc34e'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: pnpm
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install outer evidence checkout dependencies
+        shell: bash
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Compile and self-test capsule assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q tools/prisma-sentinels/sync-sentinel
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py self-test | tee /tmp/sync-sentinel-selftest.log
+          grep -Fq 'PASS_SYNC_SENTINEL_SELF_TEST' /tmp/sync-sentinel-selftest.log
+
+      - name: Run hermetic runtime doctor
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tools/_local/reports/sync-sentinel-doctor
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py doctor \
+            --repo . \
+            --expected-head "$SOURCE_SHA" \
+            --evidence-dir tools/_local/reports/sync-sentinel-doctor | tee /tmp/sync-sentinel-doctor.log
+          grep -Fq 'PASS_SENTINEL_RUNTIME_DOCTOR' /tmp/sync-sentinel-doctor.log
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test -z "$(git diff --name-only)"
+          git diff --exit-code -- pnpm-lock.yaml package.json apps/terminal-de-venta-system/package.json apps/terminal-de-venta-system/products/pc/app/package.json apps/terminal-de-venta-system/products/tablet/app/package.json
+
+      - name: Upload doctor evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sync-sentinel-capsule-doctor-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tools/_local/reports/sync-sentinel-doctor/**
+          if-no-files-found: error
+          retention-days: 14
