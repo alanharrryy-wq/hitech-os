@@ -35,7 +35,7 @@ class CapsuleAssetTests(unittest.TestCase):
             self.assertIn('output   = "../../.generated/prisma-client"', rendered)
             self.assertNotEqual(target, source)
 
-    def test_o_fixture_registry_contains_positive_and_a_through_l_negative_cases(self):
+    def test_o_fixture_registry_contains_executable_positive_and_a_through_l_cases(self):
         registry = load_fixture_registry()
         ids = {item["fixtureId"] for item in registry["fixtures"]}
         self.assertIn("SYNC.JOURNEY.A.SALE_ACK.V1", ids)
@@ -44,8 +44,10 @@ class CapsuleAssetTests(unittest.TestCase):
             self.assertTrue(any(f"SYNC.NEG.{letter}." in fixture_id for fixture_id in ids), letter)
         readiness = mandatory_fixture_readiness(registry)
         self.assertEqual(readiness["total"], 14)
-        self.assertFalse(readiness["ready"], "negative fixtures must not be marked implemented before real execution exists")
+        self.assertEqual(readiness["implemented"], 14)
+        self.assertEqual(readiness["missingImplementations"], [])
         self.assertEqual(readiness["invalidDefinitions"], [])
+        self.assertTrue(readiness["ready"], "registry may be ready only because A-L now have real runtime execution in negative_runner.mts")
 
     def test_p_runtime_registry_is_extensible_but_future_targets_are_not_certified(self):
         root = Path(__file__).resolve().parents[1]
