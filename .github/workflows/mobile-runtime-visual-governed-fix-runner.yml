@@ -1,0 +1,324 @@
+name: PRISMA Mobile Governed Runtime Visual FIX Runner
+
+on:
+  push:
+    branches: ['fix/mobile-runtime-visual-conformance-3008']
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  BASE_SHA: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+  MOBILE_ROOT: 'apps/terminal-de-venta-system/products/mobile/app'
+  BASE_URL: 'http://127.0.0.1:3140'
+  OLD_CARRIER_SHA: '3f9ba377d020451932e4a9228b157aadcb95ad3a'
+  AUTHORITY_MESH_REQUEST_DIGEST: 'd09a637d18336d17cc4018cfb66af9476a2feb6b3113a37aa1d6f50119e95725'
+  AUTHORITY_MESH_ARTIFACT_DIGEST: '5c4402c5e8d9b3b3464d0e9bfb99d4a2cb9bec1f773d40ff61296868040065a9'
+  ANTI_REWORK_DECISION_DIGEST: 'e22a525dbf719b9d3f2e728549073bb0fb182e4d896f7de36087a4492d0b6b52'
+
+jobs:
+  governed-fix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+
+    steps:
+      - name: Checkout governed fix branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Fail closed on exact base and authority decision
+        id: preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          test "$(git rev-parse HEAD^)" = "$BASE_SHA"
+          mapfile -t files < <(git diff --name-only "$BASE_SHA"...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/mobile-runtime-visual-governed-fix-runner.yml"
+          E="$RUNNER_TEMP/mobile-fix-evidence"
+          mkdir -p "$E/screenshots"
+          cat > "$E/AUTHORITY.json" <<JSON
+          {
+            "schemaVersion":"prisma.mobile.visual-fix-authority.v1",
+            "canonicalBase":"$BASE_SHA",
+            "authorityCarrierPr":468,
+            "authorityRun":33305728427,
+            "authorityArtifact":9730402837,
+            "authorityArtifactOuterDigest":"666f50e9eb27f087db309e0222c8b97d2200170a1b45e854ef358c47535143b6",
+            "composedMeshStatus":"PASS_COMPOSED_AUTHORITY_MESH",
+            "composedMeshRequestDigest":"$AUTHORITY_MESH_REQUEST_DIGEST",
+            "composedMeshArtifactDigest":"$AUTHORITY_MESH_ARTIFACT_DIGEST",
+            "antiReworkResult":"PASS_ANTI_REWORK_GATE",
+            "antiReworkDecisionDigest":"$ANTI_REWORK_DECISION_DIGEST",
+            "capability":"mobile.interface_specification_canon",
+            "requestedAction":"ADVANCE",
+            "visualMutation":true,
+            "productionCertified":false
+          }
+          JSON
+          cat > "$RUNNER_TEMP/anti-rework.request.json" <<JSON
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"$BASE_SHA",
+            "task":"Apply the already-authorized bounded root-cause repair for runtime-evidenced PRISMA Mobile /prisma-app visual/accessibility defects only: remove zoom disabling viewport constraint, structurally repair Alertas card layout, correct Licencias responsive metric density, and correct readiness heading hierarchy. Preserve the canonical seven-section IA and retired MultiContext decision. No other surfaces or product semantics.",
+            "capabilities":[{"id":"mobile.interface_specification_canon","requestedAction":"ADVANCE"}],
+            "authorityMesh":{"status":"PASS_COMPOSED_AUTHORITY_MESH","repoHead":"$BASE_SHA","requiredAuthorityCoveragePct":100,"blockers":0,"requestDigest":"$AUTHORITY_MESH_REQUEST_DIGEST","artifactDigest":"$AUTHORITY_MESH_ARTIFACT_DIGEST","layerMapPresent":true},
+            "visualMutation":true
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/anti-rework.request.json" > "$E/anti-rework.recheck.json"
+          python - "$E/anti-rework.recheck.json" "$ANTI_REWORK_DECISION_DIGEST" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE', d
+          assert d.get('errors')==[], d
+          assert d.get('decisionDigest')==sys.argv[2], (d.get('decisionDigest'),sys.argv[2])
+          PY
+
+      - name: Apply bounded root-cause source repair
+        id: patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          layout=Path('apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx')
+          nav=Path('apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx')
+          css=Path('apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css')
+
+          def replace_once(path, old, new, label):
+              text=path.read_text(encoding='utf-8')
+              count=text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{label}_EXPECTED_ONCE_GOT_{count}')
+              path.write_text(text.replace(old,new,1),encoding='utf-8')
+
+          replace_once(layout, '  maximumScale: 1,\n', '', 'VIEWPORT_MAXIMUM_SCALE')
+          replace_once(nav, '<h4>{readiness.headline}</h4>', '<h3>{readiness.headline}</h3>', 'READINESS_HEADING')
+          replace_once(css, '.dataReadinessPanel h4,\n.systemContractDrawer summary strong {', '.dataReadinessPanel h3,\n.systemContractDrawer summary strong {', 'READINESS_HEADING_STYLE')
+
+          alert_old='''.alertCompactList article {\n  grid-template-columns: 58px minmax(0, 1fr);\n}\n'''
+          alert_new='''.alertCompactList article {\n  grid-template-columns: 58px minmax(0, 1fr);\n  grid-template-areas:\n    "severity title"\n    "severity detail";\n  align-items: start;\n}\n\n.alertCompactList article > span {\n  grid-area: severity;\n  align-self: start;\n}\n\n.alertCompactList article > strong {\n  grid-area: title;\n  min-width: 0;\n}\n\n.alertCompactList article > p {\n  grid-area: detail;\n  min-width: 0;\n}\n'''
+          replace_once(css, alert_old, alert_new, 'ALERT_LAYOUT')
+
+          metric_anchor='''.statusMatrix {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n'''
+          metric_new=metric_anchor+'''\n.metricStrip[data-prisma-zone="mobile-license-devices"] {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.metricStrip[data-prisma-zone="mobile-license-devices"] :is(.primaryMetricCard, .compactMetricCard) strong {\n  font-size: clamp(15px, 4.3vw, 18px);\n  line-height: 1.05;\n  overflow-wrap: normal;\n  word-break: normal;\n}\n'''
+          replace_once(css, metric_anchor, metric_new, 'LICENSE_METRIC_LAYOUT')
+          PY
+
+          test -z "$(git diff --check)"
+          mapfile -t product < <(git diff --name-only -- "$MOBILE_ROOT")
+          printf '%s\n' "${product[@]}"
+          test "${#product[@]}" = "3"
+          test "${product[0]}" = "apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx"
+          test "${product[1]}" = "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+          test "${product[2]}" = "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+          git diff -- "$MOBILE_ROOT" > "$RUNNER_TEMP/mobile-fix-evidence/product-fix.patch"
+
+      - name: Commit bounded product repair to fix branch
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx \
+            apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx \
+            apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css
+          git commit -m 'fix(mobile): repair runtime visual conformance defects'
+          FIX_SHA="$(git rev-parse HEAD)"
+          echo "$FIX_SHA" | tee "$RUNNER_TEMP/mobile-fix-evidence/fix-sha.txt"
+          git push origin HEAD:fix/mobile-runtime-visual-conformance-3008
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install dependencies and run current Mobile source gates
+        id: static
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-fix-evidence"
+          npm install --global pnpm@9.15.0
+          pnpm install --frozen-lockfile --ignore-scripts
+          cd "$MOBILE_ROOT"
+          npm install --ignore-scripts --no-package-lock --legacy-peer-deps
+          cd "$GITHUB_WORKSPACE"
+          pnpm -C "$MOBILE_ROOT" run verify:interface-canon | tee "$E/verify-interface-canon.log"
+          pnpm -C "$MOBILE_ROOT" run verify:premium-navigation | tee "$E/verify-premium-navigation.log"
+          pnpm -C "$MOBILE_ROOT" run verify:data-readiness | tee "$E/verify-data-readiness.log"
+          pnpm -C "$MOBILE_ROOT" run verify:source-states | tee "$E/verify-source-states.log"
+          pnpm -C "$MOBILE_ROOT" run verify:zero-important | tee "$E/verify-zero-important.log"
+          pnpm -C "$MOBILE_ROOT" run typecheck | tee "$E/typecheck.log"
+          pnpm -C "$MOBILE_ROOT" run build | tee "$E/build.log"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} +
+          rm -rf "$MOBILE_ROOT/.next"
+
+      - name: Install isolated browser harness
+        id: browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          PW="$RUNNER_TEMP/mobile-pw"
+          mkdir -p "$PW"
+          cd "$PW"
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.55.0 axe-core@4.10.3
+          npx playwright install --with-deps chromium
+
+      - name: Start only runner-owned Mobile runtime
+        id: server
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-fix-evidence"
+          (cd "$MOBILE_ROOT" && nohup ./node_modules/.bin/next dev --webpack -H 127.0.0.1 -p 3140 >"$E/mobile-dev.log" 2>&1 & echo $! > "$RUNNER_TEMP/mobile.pid")
+          for i in $(seq 1 90); do
+            if curl -fsS "$BASE_URL/prisma-app" >/dev/null 2>&1; then echo MOBILE_LOOPBACK_READY; exit 0; fi
+            sleep 1
+          done
+          cat "$E/mobile-dev.log" || true
+          exit 1
+
+      - name: Materialize corrected immutable runtime verifier
+        id: materialize
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://raw.githubusercontent.com/prismahitech/hitech-os/$OLD_CARRIER_SHA/.github/workflows/mobile-runtime-visual-verify-carrier.yml"
+          curl -fsSL "$URL" -o "$RUNNER_TEMP/old-carrier.yml"
+          python - "$RUNNER_TEMP/old-carrier.yml" "$RUNNER_TEMP/mobile-pw/verify.mjs" <<'PY'
+          import sys
+          src=open(sys.argv[1],encoding='utf-8').read()
+          marker="cat > \"$RUNNER_TEMP/mobile-pw/verify.mjs\" <<'JS'\n"
+          start=src.index(marker)+len(marker); end=src.index('\n          JS\n',start)
+          raw=src[start:end]
+          lines=[line[10:] if line.startswith('          ') else line for line in raw.splitlines()]
+          out=[]; counts={'labels':0,'first':0,'active':0,'loop':0,'tab':0}
+          for line in lines:
+              if 'async function tabLabels(page)' in line:
+                  indent=line[:len(line)-len(line.lstrip())]; out.append(indent+"async function tabLabels(page) { return (await page.locator('[role=\"tab\"] > span').allTextContents()).map(clean); }"); counts['labels']+=1; continue
+              if "const first = page.getByRole('tab'" in line:
+                  indent=line[:len(line)-len(line.lstrip())]; out.append(indent+"const first = page.locator('#prisma-mobile-tab-inicio');"); counts['first']+=1; continue
+              if 'document.activeElement?.textContent' in line:
+                  out.append(line.replace('document.activeElement?.textContent',"document.activeElement?.querySelector('span')?.textContent")); counts['active']+=1; continue
+              if 'for (const label of EXPECTED) {' in line:
+                  indent=line[:len(line)-len(line.lstrip())]; out.append(indent+"const TAB_IDS = { Inicio: 'inicio', Ventas: 'ventas', 'Operación': 'operacion', Licencias: 'licencias', Alertas: 'alertas', Stock: 'stock', Sistema: 'sistema' };"); out.append(line); counts['loop']+=1; continue
+              if "const tab = page.getByRole('tab', { name: label, exact: true });" in line:
+                  indent=line[:len(line)-len(line.lstrip())]; out.append(indent+"const tab = page.locator(`#prisma-mobile-tab-${TAB_IDS[label]}`);"); counts['tab']+=1; continue
+              out.append(line)
+          assert counts['labels']==1 and counts['first']==1 and counts['loop']==1 and counts['tab']==1 and counts['active']>=3, counts
+          open(sys.argv[2],'w',encoding='utf-8').write('\n'.join(out)+'\n')
+          print(counts)
+          PY
+          node --check "$RUNNER_TEMP/mobile-pw/verify.mjs"
+
+      - name: Run runtime visual conformance and targeted layout guards
+        id: visual
+        shell: bash
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/mobile-fix-evidence
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/mobile-pw"
+          node verify.mjs
+          cat > targeted-layout.mjs <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          import path from 'node:path';
+          const BASE=process.env.BASE_URL, OUT=process.env.EVIDENCE_DIR;
+          const viewports=[{name:'phone390',width:390,height:844},{name:'phone430',width:430,height:932}];
+          const result={schemaVersion:'prisma.mobile.targeted-layout-guard.v1',viewports:[],failures:[]};
+          const browser=await chromium.launch({headless:true});
+          for (const vp of viewports) {
+            const context=await browser.newContext({viewport:{width:vp.width,height:vp.height},reducedMotion:'reduce'});
+            const page=await context.newPage();
+            await page.goto(`${BASE}/prisma-app`,{waitUntil:'domcontentloaded'});
+            await page.waitForFunction(()=>document.querySelectorAll('[role="tab"]').length===7,null,{timeout:25000});
+            await page.locator('#prisma-mobile-tab-alertas').click();
+            await page.waitForTimeout(100);
+            const alerts=await page.locator('#prisma-mobile-panel-alertas article').evaluateAll((cards)=>cards.map((card)=>{
+              const kids=[...card.children]; const [sev,title,detail]=kids;
+              const a=card.getBoundingClientRect(), s=sev?.getBoundingClientRect(), t=title?.getBoundingClientRect(), d=detail?.getBoundingClientRect();
+              return {children:kids.length,overflow:card.scrollWidth>card.clientWidth+1,card:{x:a.x,right:a.right},severity:s?{x:s.x,right:s.right}:null,title:t?{x:t.x,right:t.right,y:t.y}:null,detail:d?{x:d.x,right:d.right,y:d.y}:null};
+            }));
+            for (const [i,a] of alerts.entries()) {
+              if (a.children!==3 || a.overflow || !a.severity || !a.title || !a.detail || a.title.x < a.severity.right-1 || Math.abs(a.detail.x-a.title.x)>2 || a.detail.y < a.title.y || a.title.right>a.card.right+1 || a.detail.right>a.card.right+1) result.failures.push({vp:vp.name,kind:'alert-layout',index:i,a});
+            }
+            await page.screenshot({path:path.join(OUT,'screenshots',`${vp.name}-alertas-targeted.png`),fullPage:true});
+            await page.locator('#prisma-mobile-tab-licencias').click();
+            await page.waitForTimeout(100);
+            const license=await page.locator('[data-prisma-zone="mobile-license-devices"]').evaluate((section)=>{
+              const style=getComputedStyle(section); const cards=[...section.querySelectorAll(':scope > article')];
+              const cardData=cards.map((card)=>{const strong=card.querySelector('strong'); const range=document.createRange(); if(strong) range.selectNodeContents(strong); const rects=strong?[...range.getClientRects()].filter(r=>r.width>0&&r.height>0):[]; return {width:card.getBoundingClientRect().width,overflow:card.scrollWidth>card.clientWidth+1,strongOverflow:strong?strong.scrollWidth>strong.clientWidth+1:true,strongLines:rects.length,text:strong?.textContent||''};});
+              return {columns:style.gridTemplateColumns.split(' ').filter(Boolean).length,cardCount:cards.length,cards:cardData};
+            });
+            if (license.columns!==2 || license.cardCount!==4) result.failures.push({vp:vp.name,kind:'license-grid',license});
+            license.cards.forEach((c,i)=>{if(c.width<130 || c.overflow || c.strongOverflow || c.strongLines>4) result.failures.push({vp:vp.name,kind:'license-card',index:i,c});});
+            await page.screenshot({path:path.join(OUT,'screenshots',`${vp.name}-licencias-targeted.png`),fullPage:true});
+            result.viewports.push({vp,alerts,license});
+            await context.close();
+          }
+          await browser.close();
+          fs.writeFileSync(path.join(OUT,'TARGETED_LAYOUT.json'),JSON.stringify(result,null,2));
+          console.log(JSON.stringify(result,null,2));
+          if(result.failures.length) process.exit(1);
+          JS
+          node targeted-layout.mjs
+          python - "$EVIDENCE_DIR/RESULT.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('verdict')=='PASS_MOBILE_RUNTIME_VISUAL_CONFORMANCE_ISOLATED', d.get('hardFailures')
+          assert not d.get('hardFailures'), d.get('hardFailures')
+          heading=[]
+          for row in d.get('accessibility',[]):
+              for v in row.get('violations',[]):
+                  if v.get('id')=='heading-order': heading.append({'scenario':row.get('id'),'viewport':row.get('viewport'),'violation':v})
+          assert not heading, heading
+          PY
+
+      - name: Prove final branch scope and rollback base
+        id: source_guard
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-fix-evidence"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} + 2>/dev/null || true
+          rm -rf "$MOBILE_ROOT/.next" 2>/dev/null || true
+          mapfile -t product < <(git diff --name-only "$BASE_SHA"..HEAD -- "$MOBILE_ROOT")
+          test "${#product[@]}" = "3"
+          test "${product[0]}" = "apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx"
+          test "${product[1]}" = "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx"
+          test "${product[2]}" = "apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+          git diff "$BASE_SHA"..HEAD -- "$MOBILE_ROOT" > "$E/final-product.diff"
+          cat > "$E/ROLLBACK.json" <<JSON
+          {"rollbackBase":"$BASE_SHA","fixHead":"$(git rev-parse HEAD)","mainMutated":false,"rollbackBeforeMerge":"close PR / do not merge","rollbackAfterMerge":"revert the eventual merge commit; never reset protected main"}
+          JSON
+
+      - name: Stop only runner-owned Mobile process
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if [ -f "$RUNNER_TEMP/mobile.pid" ]; then kill "$(cat "$RUNNER_TEMP/mobile.pid")" 2>/dev/null || true; fi
+          exit 0
+
+      - name: Upload one governed fix evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-governed-visual-fix-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-fix-evidence/**
+          if-no-files-found: error
+          retention-days: 14
