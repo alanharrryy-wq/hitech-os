@@ -1,0 +1,127 @@
+name: AutoMesh Drift Mutation Gate Carrier V1
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+    paths:
+      - '.github/workflows/automesh-drift-mutation-gate-carrier-v1.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  authorize:
+    if: github.event.pull_request.head.ref == 'gate/automesh-drift-mutation-3008-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Pin exact canonical main and carrier isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git merge-base origin/main HEAD)" = "$MAIN_SHA"
+          mapfile -t files < <(git diff --name-only "$MAIN_SHA"...HEAD)
+          test "${#files[@]}" -eq 1
+          test "${files[0]}" = '.github/workflows/automesh-drift-mutation-gate-carrier-v1.yml'
+      - name: Universal anti-rework mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+          git worktree add --detach "$RUNNER_TEMP/base" "$MAIN_SHA"
+          cd "$RUNNER_TEMP/base"
+          cat > "$RUNNER_TEMP/universal.request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"0ef7e0c67edac5d0e8166c2b952dd423cbb1841f",
+            "task":"Harden PRISMA multi-chat and multi-branch Authority Mesh freshness with bounded relevant-drift revalidation while preserving exact-current-HEAD mutation authorization and fail-closed behavior. Reuse the existing Code Atlas authority, snapshot and anti-rework owners. Non-visual governance/tooling only.",
+            "capabilities":[
+              {"id":"change_intelligence.capability_anti_rework_gate","requestedAction":"ADVANCE"},
+              {"id":"code_atlas.change_intelligence.customer_wow_v1","requestedAction":"ADVANCE"}
+            ],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"0ef7e0c67edac5d0e8166c2b952dd423cbb1841f",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"300ea862ad0a5f5011a8dacdf37074d845862cb4052d3aabea87fecc0c4d908d",
+              "artifactDigest":"80095edf29a87eea2dc402438ed51ea3a7d2738218cfc73c8ac11c75519ee21d",
+              "layerMapPresent":true
+            },
+            "visualMutation":false
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/universal.request.json" | tee "$RUNNER_TEMP/universal.result.json"
+          python - "$RUNNER_TEMP/universal.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d['result']=='PASS_ANTI_REWORK_GATE', d
+          assert d['repoHead']=='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f', d
+          assert d['errors']==[], d
+          PY
+      - name: Change Assurance mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/base"
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map | tee "$RUNNER_TEMP/ca-authority.json"
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --self-test | tee "$RUNNER_TEMP/ca-selftest.log"
+          cat > "$RUNNER_TEMP/ca.request.json" <<'JSON'
+          {
+            "mode":"MUTATION",
+            "task":"Advance existing Authority Mesh snapshot-locking and authority-resolution governance with bounded relevant-drift revalidation; do not create a second registry or authority engine.",
+            "capabilityIds":[
+              "ci.core.authority_resolution",
+              "ci.core.snapshot_locking",
+              "ci.change.authority_pack"
+            ],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"0ef7e0c67edac5d0e8166c2b952dd423cbb1841f",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"300ea862ad0a5f5011a8dacdf37074d845862cb4052d3aabea87fecc0c4d908d",
+              "artifactDigest":"80095edf29a87eea2dc402438ed51ea3a7d2738218cfc73c8ac11c75519ee21d",
+              "layerMapPresent":true
+            },
+            "visualMutation":false
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$RUNNER_TEMP/ca.request.json" | tee "$RUNNER_TEMP/ca.result.json"
+          python - "$RUNNER_TEMP/ca.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d['result']=='PASS_CHANGE_ASSURANCE_CAPABILITY_GATE', d
+          assert d['errors']==[], d
+          PY
+      - name: Stage mutation gate evidence
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p gate-evidence
+          for f in universal.request.json universal.result.json ca-authority.json ca-selftest.log ca.request.json ca.result.json; do
+            cp "$RUNNER_TEMP/$f" gate-evidence/ 2>/dev/null || true
+          done
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: automesh-drift-mutation-gate-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 14
+          path: gate-evidence/**
