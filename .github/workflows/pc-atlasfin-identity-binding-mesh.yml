@@ -1,0 +1,59 @@
+name: PC Atlasfin Identity Binding Mesh
+
+on:
+  push:
+    branches:
+      - agent/pc-atlasfin-identity-binding-mesh-20260830
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  authority-mesh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run fresh task-exact PC identity binding Authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pc-atlasfin-identity-binding-mesh"
+          mkdir -p "$OUT"
+          TASK='Authorize only the next source-only governance contract step for PRISMA PC Atlasfin on the pinned exact target /catalog -> ProductMediaWorkspace -> .workspace. Current main baseline is 8a4df38032149f4ef30b3289cd22fa5c4babfe58. Pin componentUiId PC-HOME-FORM-COMPONENTS-CATALOG-PRODUCT-MEDIA-WORKSPACE-WORKSPACE-FRM-01; owner apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.tsx; CSS owner apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.module.css; selector .workspace; slot SLOT.pc.components_catalog_product_media_workspace.form.components_catalog_product_media_workspace.workspace; semantic candidate VIS.SURFACE.CONTENT.PRIMARY; recipe RCP.ATLAS.CONTENT.GLASS.02; preset PRESET.ATLAS.CONTENT.GLASS.01; material MAT.ATLAS.GLASS.CONTENT.01; adapter ADP.PC.ADMIN.V2. The goal is to determine the canonical identity-layer and element-binding authority needed to author the bounded source-only contract without inventing IDs from naming intuition. Resolve exact authority files, existing registries/contracts, precedent bindings, layer ownership, required gates, app impact, contract/gate matrix, missing-or-unmapped risks and mandatory layer map. Preserve the existing /stock StockFicha governed pilot as protected precedent and exclude it from mutation. Explicitly exclude Tablet, Mobile, Chart Lab, Web, SaaS Control Center, Cloud Command Center and Shared UI runtime source. Do not modify product-media-workspace.tsx, do not modify its CSS module, do not apply Atlasfin visual values, do not mutate runtime behavior, do not start or stop processes, do not touch ports, do not run Prisma generate, do not mutate databases, do not run browser automation, and do not claim visual certification. This run is read-only Authority Mesh evidence only. The deliverable must say exactly which source/governance contract files may be authored next, which canonical IDs may be reused or must be created according to authority, what blockers remain, and what validation gates are mandatory. No fake green.'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            --task "$TASK" \
+            --surface pc \
+            --repo "$GITHUB_WORKSPACE" \
+            --out "$OUT" \
+            --workers 18 \
+            --shards 54 \
+            --max-files 180 \
+            --max-mb 80
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+
+      - name: Show result
+        if: always()
+        shell: bash
+        run: |
+          find "$RUNNER_TEMP/pc-atlasfin-identity-binding-mesh" -maxdepth 2 -type f -printf '%p\n' || true
+
+      - name: Upload Authority Mesh evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-atlasfin-identity-binding-mesh
+          path: ${{ runner.temp }}/pc-atlasfin-identity-binding-mesh/*.zip
+          if-no-files-found: error
+          retention-days: 7
