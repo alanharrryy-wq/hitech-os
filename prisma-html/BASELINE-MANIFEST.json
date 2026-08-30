@@ -1,41 +1,39 @@
 {
-  "schema_version": "3.0.0",
-  "name": "PRISMA HTML canonical all-chat integration",
-  "classification": "MIGRATION_AND_CLOUD_READINESS",
-  "status": "SOURCE_READY_NOT_DEPLOYED",
-  "visual_certified": false,
+  "schema_version": "4.0.0",
+  "name": "PRISMA HTML visual authority baseline",
+  "classification": "VISUAL_AUTHORITY_AND_COCKPIT",
+  "status": "VISCORE1_CANONICAL_AUTHORITY_CONSOLIDATION",
   "master_entry": "index.html",
-  "canonical_root": "F:\\repos\\hitech-os-prisma-html\\prisma-html",
+  "visual_cockpit": "extras/atlasfin/index.html",
+  "editable_visual_authority": "authority/rifat/identity",
+  "binding_authority": "authority/rifat/prisma-ui",
+  "projection_manifest": "authority/rifat/visual-source-manifest.json",
+  "visual_core": "tools/visual_core.py",
   "pages": {
     "page1": "paginas/pagina-1-prisma/index.html",
     "page2": "paginas/pagina-2-inversionistas/index.html",
     "page3": "paginas/pagina-3-por-que-prisma/index.html",
     "page4": "paginas/pagina-4-ecosistema-producto/index.html",
-    "catalog": "sistema-ui/catalogo/index.html",
-    "atlas_extra": "extras/atlasfin/index.html"
+    "catalog_reference": "sistema-ui/catalogo/index.html",
+    "legacy_identity_workbench": "sistema-ui/identidad/index.html",
+    "atlasfin": "extras/atlasfin/index.html"
   },
   "atlas": {
     "pages": 27,
     "sections": 26,
-    "elements": 418
+    "elements": 418,
+    "current_truth": "extras/atlasfin/assets/data/atlas.manifest.json"
   },
-  "latest_migration": "PRISMA.HTML.ALLCHAT.CLOUDFLARE.READY.1",
-  "cloudflare_pages": {
-    "status": "CONFIGURED_NOT_DEPLOYED",
-    "project_name": "prisma-html",
-    "public_output": "dist"
+  "authority_policy": {
+    "editable_visual_authority_count": 1,
+    "generated_copies_allowed": true,
+    "competing_editable_visual_truths_forbidden": true,
+    "generated_product_manual_edits_forbidden": true,
+    "ready_requires_runtime_visual_evidence": true
   },
-  "excluded": [
-    "hitech-os main",
-    "Tablet",
-    "PC",
-    "Mobile",
-    "Chart Lab code",
-    "Control Center",
-    "Worker/D1",
-    "Tunnel",
-    "DNS",
-    "processes",
-    "ports"
-  ]
+  "historical": {
+    "previous_status": "SOURCE_READY_NOT_DEPLOYED",
+    "previous_migration": "PRISMA.HTML.ALLCHAT.CLOUDFLARE.READY.1",
+    "cloudflare_pages": "configured separately; deployment is not implied by visual readiness"
+  }
 }

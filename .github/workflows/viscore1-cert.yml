@@ -1,0 +1,124 @@
+name: PRISMA VISCORE1 Certification
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh_run.py'
+      - 'apps/terminal-de-venta-system/tools/prisma-governance/README.md'
+      - 'prisma-html/**'
+      - '.github/workflows/viscore1-cert.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  viscore1:
+    name: visual authority / readiness gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Install prisma-html validator dependency
+        run: python -m pip install -r prisma-html/requirements-dev.txt
+
+      - name: Canonical Authority Mesh runner self-test
+        working-directory: apps/terminal-de-venta-system
+        run: python tools/prisma-governance/authority_mesh_run.py --selftest
+
+      - name: Fresh task-scoped Mesh with native Layer Map
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          TASK='Consolidar prisma-html como unica autoridad visual editable de PRISMA; Atlasfin cockpit unico; VISCORE readiness; cero runtime visual APPLY; Layer Map obligatorio.'
+          python tools/prisma-governance/authority_mesh_run.py \
+            --task "$TASK" \
+            --full \
+            --output .governance/ci-viscore1
+          test -s .governance/ci-viscore1/LAYERS_MAP.json
+          test -s .governance/ci-viscore1/LAYERS_MAP.md
+          test -s .governance/ci-viscore1/LAYERS_MAP_SOURCE.json
+
+      - name: Generate deterministic file manifest candidate
+        working-directory: prisma-html
+        run: python tools/refresh_files_manifest.py --write
+
+      - name: PRISMA HTML source validator
+        working-directory: prisma-html
+        run: python tools/validate_project.py --root . --report "$RUNNER_TEMP/source-validator-viscore1.json"
+
+      - name: VISCORE architecture check
+        working-directory: prisma-html
+        run: python tools/visual_core.py check
+
+      - name: VISCORE generated report smoke
+        working-directory: prisma-html
+        shell: bash
+        run: python tools/visual_core.py write --out "$RUNNER_TEMP/visual-core"
+
+      - name: Identity Dictionary gate
+        working-directory: prisma-html
+        run: |
+          python tools/validate_identity_dictionary.py
+          python tools/compile_identity_dictionary.py --check
+
+      - name: RIFAT authority gate
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -o pipefail
+          python tools/validate_rifat_authority.py | tee "$RUNNER_TEMP/rifat-authority.json"
+
+      - name: Upload RIFAT authority diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viscore1-rifat-authority
+          path: ${{ runner.temp }}/rifat-authority.json
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Atlasfin static gate
+        working-directory: prisma-html
+        run: python extras/atlasfin/generator/validate_atlas.py extras/atlasfin
+
+      - name: Prove no fake READY
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set +e
+          python tools/visual_core.py ready tablet
+          code=$?
+          set -e
+          if [ "$code" -ne 2 ]; then
+            echo "Expected Tablet to remain source-ready/not-runtime-READY, got exit=$code"
+            exit 1
+          fi
+
+      - name: Upload deterministic manifest candidate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viscore1-files-manifest
+          path: prisma-html/FILES_MANIFEST.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Committed file manifest must already match
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- FILES_MANIFEST.json
+          python tools/refresh_files_manifest.py --check

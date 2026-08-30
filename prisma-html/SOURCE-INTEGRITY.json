@@ -1,38 +1,47 @@
 {
-  "status": "GOVERNED_DERIVATIVE_CANONICAL_MIGRATION",
-  "sources": [
+  "schema_version": "2.0.0",
+  "status": "HISTORICAL_PROVENANCE_WITH_CURRENT_VISUAL_AUTHORITY",
+  "current_authority": {
+    "editable_visual_authority": "authority/rifat/identity",
+    "binding_authority": "authority/rifat/prisma-ui",
+    "projection_manifest": "authority/rifat/visual-source-manifest.json",
+    "human_cockpit": "extras/atlasfin/index.html",
+    "readiness_engine": "tools/visual_core.py",
+    "precedence": "current machine-readable authority overrides historical package prose"
+  },
+  "historical_sources": [
     {
       "name": "prisma-html (2).zip",
-      "role": "target baseline",
+      "role": "historical target baseline",
       "sha256": "8CD177221AC1DA66F243D04FB8E7E610BCB5C68F64D65598EA2F1A3A41FC5A1B"
     },
     {
       "name": "htmlfix1 fix1 2007 1835.zip",
-      "role": "stable corrected source",
+      "role": "historical stable corrected source",
       "sha256": "824D68E243D028F390CA9BC8DD7B2E3AE50C0C0C31A19C51262237315D4431B5"
     },
     {
       "name": "ovrglass1 fix1 2107 0215.zip",
-      "role": "premium patch/evidence",
+      "role": "historical premium patch/evidence",
       "sha256": "15F5E75765485D9096E4C3DC64690FC5A07078D8A4AAD666958E44DE5839A31E"
     },
     {
       "name": "cloudflare.zip",
-      "role": "Worker/D1 separation authority",
+      "role": "historical Worker/D1 separation authority",
       "sha256": "82F3ABCF41B0B13189B33143FBE6BEC50CA0398FB5DF8212B15E32B1BA148EE3"
     },
     {
       "name": "prisma-control-center.zip",
-      "role": "Pages/Tunnel authority",
+      "role": "historical Pages/Tunnel authority",
       "sha256": "B37A84233D722E6E0CA6D1D4C74089ED4A701478E126A9D126694924A32DC309"
     },
     {
       "name": "Prisma Cloud Ctr.zip",
-      "role": "Cloud SaaS authority",
+      "role": "historical Cloud SaaS authority",
       "sha256": "08A92B25C7275216891773FED188A14429EDE2A3F9BD71902789015FC890524F"
     }
   ],
-  "intentional_changes": [
+  "historical_intentional_changes": [
     "restore complete atlasfin",
     "apply stable glass repair",
     "apply premium targeted owners",
@@ -40,5 +49,10 @@
     "add Pages build/no-leak tooling",
     "add project-specific field manual",
     "remove historical rollback copies from canonical payload"
-  ]
+  ],
+  "policy": {
+    "historical_packages_do_not_override_current_authority": true,
+    "unknown_history_remains_unknown": true,
+    "generated_projection_drift_is_blocking": true
+  }
 }
