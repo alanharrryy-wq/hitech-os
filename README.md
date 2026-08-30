@@ -11,6 +11,7 @@
   <a href="#prisma-at-a-glance">PRISMA</a> ·
   <a href="#architecture">Architecture</a> ·
   <a href="#change-assurance">Change Assurance</a> ·
+  <a href="#authority-mesh--automesh-v2">Authority Mesh</a> ·
   <a href="#engineering-doctrine">Engineering Doctrine</a> ·
   <a href="#quick-start">Quick Start</a>
 </p>
@@ -111,6 +112,36 @@ It is designed to answer questions coding agents alone cannot safely answer by c
 
 Canonical product contract: [`tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md`](tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md)
 
+## Authority Mesh / AutoMesh v2
+
+PRISMA uses **Authority Mesh** to decide which repository truth governs a task before mutation. The current GitHub-first operator flow is **AutoMesh v2**.
+
+The central rule is:
+
+> **`main` moving triggers relevant-drift evaluation, not unconditional authority destruction.**
+
+If canonical `main` changes after a valid task-exact Mesh, the operator must revalidate the prior artifact against the new HEAD. Same-head authority can reuse validated bytes; unrelated drift can be rebound to current HEAD with a new attestation; relevant or non-ancestor drift requires a full fresh Mesh; invalid/unprovable prior evidence fails closed.
+
+```text
+/prisma-automesh task <urlsafe-base64-request-without-padding>
+/prisma-automesh revalidate <artifact-id> sha256:<artifact-digest>
+```
+
+The v2 path also preserves these boundaries:
+
+- `CANDIDATE` retrieval is not authority;
+- the AutoMesh/revalidation workflows and other governance sources can be trust anchors;
+- visual work requires governed surface Mesh + Layer Map evidence;
+- selected-file evidence is bound to certified Git blob identity so Windows CRLF does not create false drift;
+- contradictory identity evidence fails closed;
+- revalidated GitHub artifacts can chain only when digest/report/HEAD evidence verifies;
+- independent read-only revalidations can run concurrently without forcing every task into one global queue;
+- CI, AutoMesh and revalidation success do not imply production certification.
+
+Canonical operator runbook: [`apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md`](apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md)
+
+Operational documentation index: [`apps/terminal-de-venta-system/docs/ops/README.md`](apps/terminal-de-venta-system/docs/ops/README.md)
+
 ## Factory Ledger
 
 Repository prose is not maturity truth.
@@ -135,6 +166,7 @@ HITECH OS favors explicit authority over optimistic inference.
 8. **Rollback and evidence belong with the change.** Recovery and proof are part of completion.
 9. **Secrets and customer data require explicit boundaries.** Diagnostic convenience never outranks custody.
 10. **Do not rebuild proven capability.** Anti-rework is a first-class engineering constraint.
+11. **Parallelism follows real overlap.** A different `main` SHA is a signal to evaluate drift, not proof that every task must restart.
 
 ## Repository map
 
@@ -218,10 +250,11 @@ If you are new to the repository:
 
 1. Read the [`PRISMA Factory Ledger Agent Gate`](PRISMA%20Factory%20Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md) before technical change work.
 2. Read the [`Factory Ledger`](PRISMA%20Factory%20Ledger/PRISMA_FACTORY_LEDGER.json) for current capability truth.
-3. Read the [`PRISMA Field Manual`](apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md) before operational repository work.
-4. Use the [`surface registry`](apps/terminal-de-venta-system/.prisma-ui/surfaces.json) before touching UI.
-5. Use the [`NDC canon`](apps/terminal-de-venta-system/docs/ndc/00_NDC_README.md) before inventing app-specific data meaning.
-6. Use Change Assurance / Code Atlas when the question is not merely “where is the code?” but “what may change, what is protected, and what must be proven?”
+3. Read the [`Authority Mesh / AutoMesh v2 operator runbook`](apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md) before governed repository mutation or stale-authority decisions.
+4. Read the [`PRISMA Field Manual`](apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md) before operational repository work.
+5. Use the [`surface registry`](apps/terminal-de-venta-system/.prisma-ui/surfaces.json) before touching UI.
+6. Use the [`NDC canon`](apps/terminal-de-venta-system/docs/ndc/00_NDC_README.md) before inventing app-specific data meaning.
+7. Use Change Assurance / Code Atlas when the question is not merely “where is the code?” but “what may change, what is protected, and what must be proven?”
 
 ## About HITECH
 
