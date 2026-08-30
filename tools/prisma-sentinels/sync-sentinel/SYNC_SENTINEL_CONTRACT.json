@@ -1,17 +1,49 @@
 {
-  "schemaVersion": "prisma.sync-sentinel.contract.v1",
+  "schemaVersion": "prisma.sync-sentinel.contract.v2",
   "capabilityId": "tooling.sync_sentinel",
-  "modes": ["scan", "diagnose", "certify", "self-test"],
-  "businessLogicPolicy": "REUSE_CANONICAL_SYNC_SOURCE_DO_NOT_REIMPLEMENT_IN_PYTHON",
+  "classification": "DONE",
+  "reusePolicy": "EXTEND_EXISTING_SENTINEL_DO_NOT_REBUILD",
+  "modes": ["scan", "diagnose", "doctor", "e2e", "certify", "self-test"],
+  "businessLogicPolicy": "REUSE_CANONICAL_PRODUCT_OWNERS_DO_NOT_REIMPLEMENT_IN_PYTHON",
+  "canonicalRuntimes": {
+    "tablet": 3120,
+    "pc": 3130,
+    "mobile": 3140
+  },
   "journeys": {
     "A": "Tablet real dispatcher -> Sentinel loopback test transport -> PC real ingest/projectors -> Tablet real ACK reconciliation",
-    "B": "PC real catalog exporter -> Tablet real pull/apply/checkpoint with local-stock preservation invariant"
+    "B": "PC real catalog exporter -> Tablet real pull/apply/checkpoint with local-stock preservation invariant",
+    "M1": "Tablet/PC real source owners behind Sentinel loopback transports -> Mobile data plane -> secure projection gateway -> Mobile canonical runtime 3140 -> RM.SYNC.SOURCE_HEALTH -> final Mobile projection",
+    "M2": "Synthetic canonical owner change in Sentinel-owned Tablet persistence -> real Tablet source owner -> Mobile data plane refresh -> Mobile canonical runtime 3140 -> changed projection observed",
+    "M3": "NOT_APPLICABLE while mobile.secure_projection_gateway_phase1 remains governed read-only with commandPathsEnabled=false; never invent a Mobile mutation owner"
+  },
+  "mobile": {
+    "capability": "mobile.secure_projection_gateway_phase1",
+    "phase": "read-only",
+    "runtimeHttpRequired": true,
+    "canonicalSourceRuntimeAssertion": "3140",
+    "signedSessionRequired": true,
+    "permissionBoundary": "permissionScopes",
+    "upstreamOwners": ["TABLET", "PC"],
+    "mutationOwnerPresent": false
+  },
+  "watch": {
+    "contract": "SYNC_SENTINEL_WATCH_CONTRACT.json",
+    "eventDriven": true,
+    "impactAware": true,
+    "weeklySafetyNet": true,
+    "passSilent": true,
+    "failCausal": true
   },
   "hardSafety": {
     "temporaryDatabasesOnly": true,
     "customerLiveDatabaseAllowed": false,
     "globalProcessCleanupAllowed": false,
+    "ownedProcessesOnly": true,
+    "loopbackPortsOnly": true,
+    "productSourceMutationToSatisfyTestsAllowed": false,
     "productUiMutationAllowed": false,
+    "manifestOrLockfileMutationAllowed": false,
     "unknownMayPass": false,
     "sourceDriftMayPass": false,
     "evidenceSecretLeakMayPass": false
@@ -22,12 +54,17 @@
     "headLocked": true,
     "sourceDriftChecked": true,
     "knownLiveDbNonTouchChecked": true,
-    "ownedProcessCleanupChecked": true
+    "ownedProcessCleanupChecked": true,
+    "mobileTruthMap": true,
+    "mobileFaultZones": true,
+    "watchWakeFiles": true
   },
   "productionCertified": false,
   "doesNotProve": [
     "hosted/customer production operation",
-    "future source/configuration drift",
-    "arbitrary external database paths not present in the repository"
+    "future source/configuration/dependency drift",
+    "arbitrary external database paths not present in the repository",
+    "a Mobile mutation capability",
+    "a production entitlement issuer or hosted session service"
   ]
 }
