@@ -1,0 +1,50 @@
+name: PR475 Ready Helper
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pr475-ready-helper.yml'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  TARGET_PR: '475'
+  CERTIFIED_HEAD: '546fa8d9997c274493708306bb3b7b422184edb5'
+  HELPER_BRANCH: 'pr475-ready-helper-3008'
+
+jobs:
+  ready:
+    if: github.event.pull_request.head.ref == 'pr475-ready-helper-3008'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify certified PR and mark ready
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          before="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${TARGET_PR}")"
+          test "$(jq -r '.state' <<<"$before")" = 'open'
+          test "$(jq -r '.draft' <<<"$before")" = 'true'
+          test "$(jq -r '.head.sha' <<<"$before")" = "$CERTIFIED_HEAD"
+
+          gh pr ready "$TARGET_PR" --repo "$GITHUB_REPOSITORY"
+
+          after="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${TARGET_PR}")"
+          test "$(jq -r '.draft' <<<"$after")" = 'false'
+          test "$(jq -r '.head.sha' <<<"$after")" = "$CERTIFIED_HEAD"
+          echo "PR ${TARGET_PR} READY at certified head ${CERTIFIED_HEAD}"
+
+      - name: Delete helper branch
+        if: success()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/${HELPER_BRANCH}"
+          echo 'Temporary helper branch deleted.'
