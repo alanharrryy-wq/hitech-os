@@ -12,12 +12,14 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PINNED_MAIN_SHA: 'dec4ef395778be09cfe4b9ac2bc527efb80a9b0d'
+  SAFE_WORKFLOW_COMMIT: 'e5cdbe33efd2189c4ccafa83ec5c2e38d261920e'
 
 jobs:
   finalize:
-    name: build final reconciled commit object
+    name: build final reconciled merge commit object
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
         with:
@@ -28,7 +30,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Rebuild RIFAT projection hashes from exact current bytes
+      - name: Merge pinned current main without committing
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse origin/main)" = "$PINNED_MAIN_SHA"
+          git -c user.name='prisma-viscore-finalizer' -c user.email='noreply@prisma.local' merge --no-commit --no-ff "$PINNED_MAIN_SHA"
+
+      - name: Rebuild RIFAT hashes on reconciled tree
         shell: bash
         run: |
           set -euo pipefail
@@ -64,7 +73,7 @@ jobs:
           python prisma-html/tools/refresh_files_manifest.py --write
           python prisma-html/tools/refresh_files_manifest.py --check
 
-      - name: Prove candidates are byte-identical to certified run 6 artifacts
+      - name: Prove byte identity with certified run 6 candidates
         shell: bash
         run: |
           set -euo pipefail
@@ -74,34 +83,20 @@ jobs:
             '00c419b4e35b81f864bac299914b943fa740636524ad9afca1feeb66c34bcfa6' \
             'prisma-html/FILES_MANIFEST.json' | sha256sum -c -
 
-      - name: Restore read-only certification workflow and verify final tree delta
+      - name: Restore read-only certifier and verify final state
         shell: bash
-        env:
-          SAFE_WORKFLOW_COMMIT: e5cdbe33efd2189c4ccafa83ec5c2e38d261920e
         run: |
           set -euo pipefail
           git show "${SAFE_WORKFLOW_COMMIT}:.github/workflows/viscore1-cert.yml" > .github/workflows/viscore1-cert.yml
+          git add -A
           python prisma-html/tools/validate_rifat_authority.py
           python prisma-html/tools/refresh_files_manifest.py --check
-          git diff --check
-          python - <<'PY'
-          import subprocess
-          expected = {
-              '.github/workflows/viscore1-cert.yml',
-              'prisma-html/FILES_MANIFEST.json',
-              'prisma-html/authority/rifat/visual-source-manifest.json',
-          }
-          changed = {
-              line.strip()
-              for line in subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines()
-              if line.strip()
-          }
-          if changed != expected:
-              raise SystemExit(f'unexpected final delta: {sorted(changed)}')
-          print('final delta verified:', sorted(changed))
-          PY
+          git diff --cached --check
+          test "$(git show :prisma-html/authority/rifat/visual-source-manifest.json | sha256sum | awk '{print $1}')" = 'a94286e4b594581e1e31c77173ffcf53216e8309025b1f0a7eef1309049d8d78'
+          test "$(git show :prisma-html/FILES_MANIFEST.json | sha256sum | awk '{print $1}')" = '00c419b4e35b81f864bac299914b943fa740636524ad9afca1feeb66c34bcfa6'
+          echo 'Reconciled merge tree validated; temporary workflow absent from staged final tree.'
 
-      - name: Create final commit object without moving branch
+      - name: Create remote merge commit object without updating refs
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -118,14 +113,17 @@ jobs:
 
           repo = os.environ['GITHUB_REPOSITORY']
           token = os.environ['GH_TOKEN']
+          main_sha = os.environ['PINNED_MAIN_SHA']
           root = Path.cwd()
           parent = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           base_tree = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip()
-          paths = [
-              '.github/workflows/viscore1-cert.yml',
-              'prisma-html/FILES_MANIFEST.json',
-              'prisma-html/authority/rifat/visual-source-manifest.json',
+          changed = [
+              p.decode('utf-8')
+              for p in subprocess.check_output(['git', 'diff', '--cached', '--name-only', '-z', 'HEAD']).split(b'\0')
+              if p
           ]
+          if not changed:
+              raise SystemExit('no staged merge delta')
 
           def post(endpoint: str, payload: dict) -> dict:
               req = urllib.request.Request(
@@ -143,26 +141,37 @@ jobs:
                   return json.load(response)
 
           entries = []
-          for rel in paths:
-              raw = (root / rel).read_bytes()
+          for rel in changed:
+              path = root / rel
+              if not path.exists() and not path.is_symlink():
+                  entries.append({'path': rel, 'mode': '100644', 'type': 'blob', 'sha': None})
+                  continue
+              stage = subprocess.check_output(['git', 'ls-files', '-s', '--', rel], text=True).strip()
+              if not stage:
+                  raise SystemExit(f'cannot resolve staged mode for {rel}')
+              mode = stage.split()[0]
+              if mode == '120000':
+                  raw = os.readlink(path).encode('utf-8')
+              else:
+                  raw = path.read_bytes()
               blob = post('git/blobs', {
                   'content': base64.b64encode(raw).decode('ascii'),
                   'encoding': 'base64',
               })
-              entries.append({'path': rel, 'mode': '100644', 'type': 'blob', 'sha': blob['sha']})
+              entries.append({'path': rel, 'mode': mode, 'type': 'blob', 'sha': blob['sha']})
 
           tree = post('git/trees', {'base_tree': base_tree, 'tree': entries})
           commit = post('git/commits', {
-              'message': 'fix(rifat): persist reconciled visual authority manifests',
+              'message': 'fix(rifat): reconcile VISCORE1 with current main authority',
               'tree': tree['sha'],
-              'parents': [parent],
+              'parents': [parent, main_sha],
           })
-          out = root / 'final-commit-sha.txt'
-          out.write_text(commit['sha'] + '\n', encoding='utf-8')
+          (root / 'final-commit-sha.txt').write_text(commit['sha'] + '\n', encoding='utf-8')
           print(f'FINAL_COMMIT_SHA={commit["sha"]}')
+          print(f'FINAL_CHANGED_PATHS={len(changed)}')
           PY
 
-      - name: Upload final commit SHA
+      - name: Upload final merge commit SHA
         uses: actions/upload-artifact@v4
         with:
           name: viscore1-final-commit-sha
