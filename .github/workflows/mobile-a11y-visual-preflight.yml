@@ -43,7 +43,7 @@ jobs:
           TASK='PRISMA Mobile /prisma-app is the single included product surface for this repair. Allowed product files are exactly apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx and apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css. Repair exactly three proven runtime defects at 390x844 and 430x932. A: in apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx remove only maximumScale:1 from the Next Viewport object so browser zoom/scaling remains available, preserving width device-width, initialScale 1, viewportFit cover and themeColor. B: in apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css repair Alertas card layout where severity, title and action text collide because three direct children are laid out by a two-column grid. C: in that same CSS repair Licencias y dispositivos metric values that break pathologically by character or syllable on phone widths, using the narrowest selector scope such as data-prisma-zone mobile-license-devices. Preserve all copy, values, seven-tab canon, business semantics, Mobile APIs, snapshot/runtime contracts, Cloudglass/background identity and all non-target behavior. Every repository path other than the two allowed product files is outside patch scope. Tablet, PC, Shared UI, Chart Lab, database, Prisma schema/migrations, deployment, production hosting, customer data, sync semantics and licensing semantics remain untouched. Require before/after evidence at 390x844 and 430x932, browser zoom accessibility, axe serious/critical verification, Mobile source gates, zero-important, typecheck, build, minimal rollback-safe diff, no !important and no fake green.'
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
             --task "$TASK" \
-            --surface 'Mobile /prisma-app accessibility visual repair' \
+            --surface mobile \
             --repo "$GITHUB_WORKSPACE" \
             --out "$OUT" \
             --workers 18 \
@@ -76,8 +76,9 @@ jobs:
           cp -R "$A/reports" "$RUNNER_TEMP/evidence/reports"
           cp -R "$A/.governance" "$RUNNER_TEMP/evidence/.governance"
           grep -R '"status"[[:space:]]*:[[:space:]]*"PASS"' "$A" >/dev/null
+          grep -A8 '^## Included' "$A/reports/APP_IMPACT_MATRIX.md" | grep -Eq '^- mobile$'
           ! grep -A20 '^## Explicitly excluded' "$A/reports/APP_IMPACT_MATRIX.md" | grep -Eq '^- mobile$'
-          ! grep -A10 '^## Explicit task paths not present in repo' "$A/reports/MISSING_OR_UNMAPPED_RISK.md" | grep -Eq '^-' || grep -A10 '^## Explicit task paths not present in repo' "$A/reports/MISSING_OR_UNMAPPED_RISK.md" | grep -F 'None detected' >/dev/null
+          grep -A10 '^## Explicit task paths not present in repo' "$A/reports/MISSING_OR_UNMAPPED_RISK.md" | grep -F 'None detected' >/dev/null
       - name: Upload authority evidence
         if: always()
         uses: actions/upload-artifact@v7
