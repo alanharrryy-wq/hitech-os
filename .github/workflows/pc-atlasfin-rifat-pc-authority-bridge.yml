@@ -1,0 +1,333 @@
+name: PC Atlasfin RIFAT PC Authority Bridge
+
+on:
+  push:
+    branches:
+      - agent/pc-atlasfin-rifat-pc-authority-bridge-20260830
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate fresh PC-only Visual Control source evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          PARSER_ROOT="$RUNNER_TEMP/prisma-visual-parser"
+          mkdir -p "$PARSER_ROOT"
+          npm install --prefix "$PARSER_ROOT" --package-lock=false --ignore-scripts postcss@8 >/dev/null
+          APP_ROOT="$GITHUB_WORKSPACE/apps/terminal-de-venta-system"
+          test ! -e "$APP_ROOT/node_modules"
+          ln -s "$PARSER_ROOT/node_modules" "$APP_ROOT/node_modules"
+          cd "$APP_ROOT"
+          node --input-type=module -e "import('postcss').then(m => console.log('POSTCSS_OK=' + !!m.default))"
+          OUT="$RUNNER_TEMP/pc-visual-control-fresh"
+          mkdir -p "$OUT"
+          node tools/quality/ui-visual-control.mjs visual-control:certify --surface pc --strict --output-root "$OUT" | tee "$RUNNER_TEMP/pc-visual-control-certify.log"
+          echo "PC_VC_OUT=$OUT" >> "$GITHUB_ENV"
+          rm -f "$APP_ROOT/node_modules"
+          test -z "$(git status --short -- products/pc .prisma-ui .governance)"
+
+      - name: Apply source-only per-surface RIFAT bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, os, shutil
+
+          repo = Path(os.environ['GITHUB_WORKSPACE'])
+          vc = Path(os.environ['PC_VC_OUT']) / 'visual-control'
+          rifat = repo / 'prisma-html' / 'authority' / 'rifat'
+          dst = rifat / 'prisma-ui' / 'visual-control' / 'pc'
+          dst.mkdir(parents=True, exist_ok=True)
+
+          required = ['registry.json','surfaces.json','routes.json','components.json','editable-slots.json','owners.json','layers.json','risks.json']
+          for name in required:
+              src = vc / name
+              if not src.is_file():
+                  raise SystemExit(f'MISSING_PC_VISUAL_CONTROL={src}')
+              shutil.copy2(src, dst / name)
+
+          risks = json.loads((vc / 'risks.json').read_text(encoding='utf-8'))
+          owners = json.loads((vc / 'owners.json').read_text(encoding='utf-8'))
+          slots = json.loads((vc / 'editable-slots.json').read_text(encoding='utf-8'))
+          layers = json.loads((vc / 'layers.json').read_text(encoding='utf-8'))
+          routes = json.loads((vc / 'routes.json').read_text(encoding='utf-8'))
+          components = json.loads((vc / 'components.json').read_text(encoding='utf-8'))
+          if risks.get('status') != 'CERTIFIED' or risks.get('blockerCount') != 0 or risks.get('warningCount') != 0:
+              raise SystemExit(f'PC_VISUAL_CONTROL_NOT_CLEAN={risks}')
+          if risks.get('activeImportantCount') != 0:
+              raise SystemExit('PC_ACTIVE_IMPORTANT_NOT_ZERO')
+
+          bindings_path = rifat / 'identity' / 'registries' / 'bindings.registry.json'
+          bindings = json.loads(bindings_path.read_text(encoding='utf-8'))
+          pc = next((x for x in bindings.get('bindings', []) if x.get('surface') == 'pc'), None)
+          if pc is None:
+              raise SystemExit('PC_BINDING_SOURCE_ENTRY_MISSING')
+          pc.update({
+              'readiness': 'CERTIFIED_BINDING_SOURCE',
+              'routeSource': 'authority/rifat/prisma-ui/routes.json',
+              'ownerSource': 'authority/rifat/prisma-ui/visual-control/pc/owners.json',
+              'componentSource': 'authority/rifat/prisma-ui/visual-control/pc/components.json',
+              'slotSource': 'authority/rifat/prisma-ui/visual-control/pc/editable-slots.json',
+              'layerSource': 'authority/rifat/prisma-ui/visual-control/pc/layers.json',
+              'routeCount': routes.get('routeCount'),
+              'routeOwnerCount': owners.get('routeOwnerCount'),
+              'regionOwnerCount': owners.get('regionOwnerCount'),
+              'editableSlotCount': slots.get('editableSlotCount'),
+              'slotUnitCount': slots.get('slotUnitCount'),
+              'layerCount': layers.get('layerCount'),
+              'componentCount': components.get('componentCount'),
+              'missing': [],
+              'runtimeProjectionAllowed': False,
+              'sourceCertification': {
+                  'status': 'CERTIFIED',
+                  'surface': 'pc',
+                  'generator': 'apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs',
+                  'mode': 'source-only',
+                  'productMutationAllowed': False
+              }
+          })
+          bindings['version'] = '1.1.0'
+          bindings_path.write_text(json.dumps(bindings, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          core_path = repo / 'prisma-html' / 'tools' / 'identity_binding_resolver_core.py'
+          core = core_path.read_text(encoding='utf-8')
+          needle = 'REGISTRY_PATH = IDENTITY / "registries" / "element-bindings.registry.json"\n'
+          if 'BINDINGS_REGISTRY_PATH' not in core:
+              if needle not in core:
+                  raise SystemExit('RESOLVER_REGISTRY_ANCHOR_NOT_FOUND')
+              core = core.replace(needle, needle + 'BINDINGS_REGISTRY_PATH = IDENTITY / "registries" / "bindings.registry.json"\n', 1)
+
+          start = core.index('def authority_indexes() -> dict[str, Any]:\n')
+          end = core.index('\n\ndef selector_from_artifact', start)
+          replacement = '''def authority_indexes() -> dict[str, Any]:
+    """Load binding authority from the per-surface sources declared by bindings.registry.json.
+
+    Legacy Tablet paths remain valid. New surfaces can publish isolated certified
+    visual-control sources without overwriting another surface's authority.
+    """
+    source_registry = load_json(BINDINGS_REGISTRY_PATH)
+    indexes: dict[str, dict[str, Any]] = {
+        "routes": {},
+        "componentOwners": {},
+        "cssOwners": {},
+        "regionOwners": {},
+        "components": {},
+        "slots": {},
+        "layers": {},
+    }
+    loaded: dict[str, dict[str, Any]] = {}
+
+    def doc(rel_path: str | None) -> dict[str, Any] | None:
+        if not rel_path:
+            return None
+        if rel_path not in loaded:
+            path = ROOT / rel_path
+            if not path.is_file():
+                raise FileNotFoundError(f"declared binding authority source is missing: {rel_path}")
+            loaded[rel_path] = load_json(path)
+        return loaded[rel_path]
+
+    def same_surface(item: dict[str, Any], surface: str) -> bool:
+        value = item.get("surface")
+        return value in {None, surface}
+
+    for binding_source in source_registry.get("bindings", []):
+        surface = str(binding_source.get("surface") or "")
+        routes_doc = doc(binding_source.get("routeSource"))
+        if routes_doc:
+            for item in routes_doc.get("routes", []):
+                if same_surface(item, surface):
+                    indexes["routes"][item["route_id"]] = item
+
+        owners_doc = doc(binding_source.get("ownerSource"))
+        components_doc = doc(binding_source.get("componentSource"))
+        if components_doc is None and binding_source.get("ownerSource"):
+            owner_parent = str(Path(binding_source["ownerSource"]).parent)
+            candidate = f"{owner_parent}/components.json"
+            candidate_path = ROOT / candidate
+            if candidate_path.is_file():
+                components_doc = doc(candidate)
+
+        if components_doc:
+            for item in components_doc.get("components", []):
+                if same_surface(item, surface):
+                    indexes["components"][item["component_id"]] = item
+                    # Component records are direct source ownership evidence. This
+                    # fallback prevents compact owner sampling from orphaning a
+                    # real component while preserving explicit owner records.
+                    indexes["componentOwners"].setdefault(item["component_id"], item)
+
+        if owners_doc:
+            for item in owners_doc.get("componentOwnerSamples", []):
+                if same_surface(item, surface):
+                    indexes["componentOwners"][item["component_id"]] = item
+            for item in owners_doc.get("cssOwnerSamples", []):
+                if same_surface(item, surface):
+                    indexes["cssOwners"][item["owner_id"]] = item
+            for item in owners_doc.get("regionOwnerSamples", []):
+                if same_surface(item, surface):
+                    indexes["regionOwners"][item["region_id"]] = item
+
+        slots_doc = doc(binding_source.get("slotSource"))
+        if slots_doc:
+            for item in slots_doc.get("slotUnitSamples", []):
+                if same_surface(item, surface):
+                    indexes["slots"][item["slot_unit_id"]] = item
+
+        layers_doc = doc(binding_source.get("layerSource"))
+        if layers_doc:
+            for item in [*layers_doc.get("layerSamples", []), *layers_doc.get("certifiedLayers", [])]:
+                if same_surface(item, surface):
+                    indexes["layers"][item["layer_id"]] = item
+
+    return indexes
+'''
+          core = core[:start] + replacement + core[end:]
+          core_path.write_text(core, encoding='utf-8')
+
+          element_path = rifat / 'identity' / 'registries' / 'element-bindings.registry.json'
+          element = json.loads(element_path.read_text(encoding='utf-8'))
+          snap = element['authoritySnapshot']
+          wanted = [
+              'authority/rifat/prisma-ui/visual-control/pc/owners.json',
+              'authority/rifat/prisma-ui/visual-control/pc/components.json',
+              'authority/rifat/prisma-ui/visual-control/pc/editable-slots.json',
+              'authority/rifat/prisma-ui/visual-control/pc/layers.json',
+          ]
+          existing = {x['path'] for x in snap.get('files', [])}
+          for rel in wanted:
+              if rel not in existing:
+                  snap['files'].append({'path': rel, 'sha256': '', 'bytes': 0, 'required': True, 'readOnly': True})
+          snap['files'] = sorted(snap['files'], key=lambda x: x['path'])
+          snap['meshRunId'] = 'github-actions-33305075845-rifat-pc-authority-mesh'
+          element_path.write_text(json.dumps(element, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          print(json.dumps({
+              'pcReadiness': pc['readiness'],
+              'routeCount': pc['routeCount'],
+              'componentCount': pc['componentCount'],
+              'regionOwnerCount': pc['regionOwnerCount'],
+              'editableSlotCount': pc['editableSlotCount'],
+              'layerCount': pc['layerCount'],
+              'snapshotFilesAdded': wanted,
+          }, indent=2))
+          PY
+
+      - name: Refresh identity snapshot and compiled projections
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/identity_binding_resolver.py refresh-snapshot --write | tee "$RUNNER_TEMP/identity-refresh.log"
+          cd prisma-html
+          python tools/compile_identity_dictionary.py --write | tee "$RUNNER_TEMP/identity-compile-write.log"
+          python tools/compile_identity_dictionary.py --check | tee "$RUNNER_TEMP/identity-compile-check.log"
+          python tools/validate_identity_dictionary.py | tee "$RUNNER_TEMP/identity-dictionary-validate.log"
+          python tools/validate_identity_bindings.py | tee "$RUNNER_TEMP/identity-bindings-validate.log"
+          python tools/identity_binding_resolver.py example | tee "$RUNNER_TEMP/tablet-example-regression.log"
+
+      - name: Enforce bridge invariants and allowed diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json, subprocess, os
+          repo = Path(os.environ['GITHUB_WORKSPACE'])
+          bindings = json.loads((repo/'prisma-html/authority/rifat/identity/registries/bindings.registry.json').read_text())
+          pc = next(x for x in bindings['bindings'] if x['surface'] == 'pc')
+          tb = next(x for x in bindings['bindings'] if x['surface'] == 'tablet')
+          assert pc['readiness'] == 'CERTIFIED_BINDING_SOURCE'
+          assert pc['ownerSource'].endswith('/visual-control/pc/owners.json')
+          assert pc['componentSource'].endswith('/visual-control/pc/components.json')
+          assert pc['slotSource'].endswith('/visual-control/pc/editable-slots.json')
+          assert pc['layerSource'].endswith('/visual-control/pc/layers.json')
+          assert pc['runtimeProjectionAllowed'] is False
+          assert tb['readiness'] == 'CERTIFIED_BINDING_SOURCE'
+          assert tb['ownerSource'] == 'authority/rifat/prisma-ui/visual-control/owners.json'
+          reg = json.loads((repo/'prisma-html/authority/rifat/identity/registries/element-bindings.registry.json').read_text())
+          cobrar = next(x for x in reg['bindings'] if x['bindingId'] == 'BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1')
+          target = cobrar['targets'][0]
+          assert target['layerId'] == 'LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE'
+          assert target['status'] == 'RESOLVED'
+          changed = subprocess.check_output(['git','diff','--name-only'], cwd=repo, text=True).splitlines()
+          allowed_prefixes = (
+              'prisma-html/authority/rifat/prisma-ui/visual-control/pc/',
+              'prisma-html/authority/rifat/identity/compiled/current/',
+          )
+          allowed_exact = {
+              'prisma-html/authority/rifat/identity/registries/bindings.registry.json',
+              'prisma-html/authority/rifat/identity/registries/element-bindings.registry.json',
+              'prisma-html/authority/rifat/identity/bindings/reports/BINDING_COVERAGE.json',
+              'prisma-html/authority/rifat/identity/bindings/examples/preview-primary-tablet.binding-envelope.json',
+              'prisma-html/tools/identity_binding_resolver_core.py',
+          }
+          bad = [p for p in changed if p not in allowed_exact and not p.startswith(allowed_prefixes)]
+          if bad:
+              raise SystemExit('UNEXPECTED_DIFF=' + json.dumps(bad))
+          product = [p for p in changed if p.startswith('apps/terminal-de-venta-system/products/')]
+          if product:
+              raise SystemExit('PRODUCT_MUTATION=' + json.dumps(product))
+          print(json.dumps({'status':'PASS_SOURCE_ONLY_BRIDGE','changed':changed}, indent=2))
+          (Path(os.environ['RUNNER_TEMP'])/'bridge-invariants.json').write_text(json.dumps({'status':'PASS_SOURCE_ONLY_BRIDGE','changed':changed}, indent=2)+'\n')
+          PY
+          git diff --check
+          git diff --stat | tee "$RUNNER_TEMP/diff-stat.txt"
+
+      - name: Commit validated source-only bridge and remove carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "PRISMA GitHub Carrier"
+          git config user.email "actions@users.noreply.github.com"
+          git add prisma-html/authority/rifat/prisma-ui/visual-control/pc \
+                  prisma-html/authority/rifat/identity/registries/bindings.registry.json \
+                  prisma-html/authority/rifat/identity/registries/element-bindings.registry.json \
+                  prisma-html/authority/rifat/identity/bindings/reports/BINDING_COVERAGE.json \
+                  prisma-html/authority/rifat/identity/bindings/examples/preview-primary-tablet.binding-envelope.json \
+                  prisma-html/authority/rifat/identity/compiled/current \
+                  prisma-html/tools/identity_binding_resolver_core.py
+          git rm .github/workflows/pc-atlasfin-rifat-pc-authority-bridge.yml
+          git diff --cached --check
+          git commit -m "feat(identity): add per-surface PC binding authority"
+          git push origin HEAD:agent/pc-atlasfin-rifat-pc-authority-bridge-20260830
+
+      - name: Upload bridge evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-atlasfin-rifat-pc-authority-bridge-evidence
+          path: |
+            ${{ runner.temp }}/pc-visual-control-certify.log
+            ${{ runner.temp }}/identity-refresh.log
+            ${{ runner.temp }}/identity-compile-write.log
+            ${{ runner.temp }}/identity-compile-check.log
+            ${{ runner.temp }}/identity-dictionary-validate.log
+            ${{ runner.temp }}/identity-bindings-validate.log
+            ${{ runner.temp }}/tablet-example-regression.log
+            ${{ runner.temp }}/bridge-invariants.json
+            ${{ runner.temp }}/diff-stat.txt
+          if-no-files-found: warn
+          retention-days: 7
