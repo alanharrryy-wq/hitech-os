@@ -3,6 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "visual:status": "python tools/visual_core.py status",
+    "visual:check": "python tools/visual_core.py check",
+    "visual:write": "python tools/visual_core.py write --atlas-export",
+    "visual:tree": "python tools/visual_core.py tree",
     "rifat:validate": "python tools/validate_rifat_authority.py",
     "rifat:generate:check": "python tools/generate_tablet_visual_runtime.py --check",
     "cf:build": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/cloudflare/PRISMA_HTML_CLOUDFLARE.ps1 -Action Build",
@@ -21,7 +25,9 @@
     "identity:bindings:inspect": "python -B tools/identity_binding_resolver.py example",
     "identity:bindings:coverage": "python -B tools/identity_binding_resolver.py coverage",
     "identity:bindings:sources": "python -B tools/identity_binding_resolver.py sources",
-    "identity:bindings:refresh": "python -B tools/identity_binding_resolver.py refresh-snapshot --write"
+    "identity:bindings:refresh": "python -B tools/identity_binding_resolver.py refresh-snapshot --write",
+    "manifest:refresh": "python tools/refresh_files_manifest.py --write",
+    "manifest:check": "python tools/refresh_files_manifest.py --check"
   },
   "devDependencies": {
     "wrangler": "4.93.0"
