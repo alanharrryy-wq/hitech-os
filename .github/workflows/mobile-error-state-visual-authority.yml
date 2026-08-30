@@ -1,0 +1,136 @@
+name: PRISMA Mobile Error State Visual Authority
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  BASE_SHA: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+
+jobs:
+  authority:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'gate/mobile-error-state-visual-fix-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Pin exact canonical base and disposable scope
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          mapfile -t f < <(git diff --name-only origin/main...HEAD)
+          test "${#f[@]}" = "1"
+          test "${f[0]}" = ".github/workflows/mobile-error-state-visual-authority.yml"
+          git checkout --detach "$BASE_SHA"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate fresh exact-task Authority Mesh with layers map
+        id: mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-error-authority"
+          OUT="$RUNNER_TEMP/mobile-error-mesh-out"
+          mkdir -p "$E" "$OUT"
+          TASK='Authorize only a root-cause responsive visual repair for the PRISMA Mobile /prisma-app error state proven by post-fix runtime screenshot evidence at 390px: errorSignalGrid currently inherits a three-column grid and makes the three recovery explanation cards unreadably narrow/overlapping. Exact candidate source path: apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css. Preserve PrismaMobileDashboard error semantics, buttons, copy, seven-section canonical IA, retired MultiContext decision, and all non-error screens. Prefer a narrow selector-level responsive grid correction with no !important and no global priority override. Exclude Tablet, PC, Shared UI, Chart Lab, APIs, DB/Prisma, data/sync/licensing semantics, PWA/offline claims, deploy and production certification. Require runtime screenshots of the injected HTTP 503 error state at 390x844 and 430x932, inner-overflow/readability layout assertions, source gates, typecheck, build, rollback evidence and mandatory layers map.'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            --task "$TASK" \
+            --surface 'Mobile /prisma-app error state' \
+            --repo "$GITHUB_WORKSPACE" \
+            --out "$OUT" \
+            --workers 18 \
+            --shards 54 \
+            --max-files 140 \
+            --max-mb 45 \
+            --run-id "mobile-error-visual-${GITHUB_RUN_ID}" \
+            --progress-jsonl "$E/progress.jsonl" \
+            --budget-root "$RUNNER_TEMP/mobile-error-budget" | tee "$E/mesh.log"
+          ZIP="$(grep -E '^OK_RESULT_ZIP=' "$E/mesh.log" | tail -n1 | cut -d= -f2-)"
+          test -n "$ZIP"; test -f "$ZIP"
+          cp "$ZIP" "$E/authority-mesh.zip"
+          mkdir -p "$E/mesh"
+          python - "$ZIP" "$E/mesh" <<'PY'
+          import sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:z.extractall(sys.argv[2])
+          PY
+          python - "$E/mesh" "$ZIP" "$BASE_SHA" "$E/composed-authority.json" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1]); z=pathlib.Path(sys.argv[2]); head=sys.argv[3]; out=pathlib.Path(sys.argv[4])
+          manifest=json.load(open(root/'RUN_MANIFEST.json',encoding='utf-8'))
+          assert manifest.get('status')=='PASS', manifest
+          assert manifest.get('repo_git_head')==head,(manifest.get('repo_git_head'),head)
+          required=['.governance/current/AUTHORITY_READSET.lock.json','reports/APP_IMPACT_MATRIX.md','reports/CONTRACT_AND_GATE_MATRIX.json','reports/MISSING_OR_UNMAPPED_RISK.md','reports/AGENT_PROMPT_ENVELOPE.md','reports/AUTHORITY_MESH_REPORT.md','reports/LAYERS_MAP.json','reports/LAYERS_MAP.md']
+          for rel in required: assert (root/rel).is_file(),rel
+          report=(root/'reports/AUTHORITY_MESH_REPORT.md').read_text(encoding='utf-8',errors='replace')
+          impact=(root/'reports/APP_IMPACT_MATRIX.md').read_text(encoding='utf-8',errors='replace').lower()
+          assert 'mobile' in impact
+          req=manifest.get('task','')
+          d={'schemaVersion':'prisma.composed-authority-mesh.v1','status':'PASS_COMPOSED_AUTHORITY_MESH','repoHead':head,'requiredAuthorityCoveragePct':100,'blockers':0,'requestDigest':hashlib.sha256(req.encode()).hexdigest(),'artifactDigest':hashlib.sha256(z.read_bytes()).hexdigest(),'layerMapPresent':True,'runId':manifest.get('run_id')}
+          out.write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8');print(json.dumps(d,indent=2))
+          PY
+
+      - name: Run Factory Ledger MUTATION gate for exact error-state repair
+        id: anti
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-error-authority"
+          python - "$E/composed-authority.json" "$BASE_SHA" "$E/request.json" <<'PY'
+          import json,sys
+          m=json.load(open(sys.argv[1],encoding='utf-8'))
+          req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':sys.argv[2],'task':'Repair only the runtime-evidenced PRISMA Mobile /prisma-app HTTP-503 error-state responsive layout defect: errorSignalGrid three-column cards are unreadably narrow/overlapping on phone viewports. Change only prisma-mobile-dashboard.module.css with a selector-level responsive grid correction; preserve error semantics, actions, copy and all other Mobile screens.','capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],'authorityMesh':{'status':m['status'],'repoHead':m['repoHead'],'requiredAuthorityCoveragePct':m['requiredAuthorityCoveragePct'],'blockers':m['blockers'],'requestDigest':m['requestDigest'],'artifactDigest':m['artifactDigest'],'layerMapPresent':m['layerMapPresent']},'visualMutation':True}
+          open(sys.argv[3],'w',encoding='utf-8').write(json.dumps(req,indent=2)+'\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$E/request.json" > "$E/anti-rework.json"
+          python - "$E/anti-rework.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          print(json.dumps({'result':d['result'],'decisionDigest':d.get('decisionDigest')},indent=2))
+          PY
+
+      - name: Prove source unchanged
+        id: guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          git diff --exit-code
+
+      - name: Upload authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-error-visual-authority-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-error-authority/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed unless all authority gates passed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ steps.scope.outcome }}" = success
+          test "${{ steps.mesh.outcome }}" = success
+          test "${{ steps.anti.outcome }}" = success
+          test "${{ steps.guard.outcome }}" = success
