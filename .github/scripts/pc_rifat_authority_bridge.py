@@ -158,7 +158,8 @@ def main() -> int:
         raise SystemExit("PC_BINDING_SOURCE_ENTRY_MISSING")
     pc.update(
         {
-            "readiness": "CERTIFIED_BINDING_SOURCE",
+            "readiness": "BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS",
+            "sourceEvidenceReadiness": "CERTIFIED_SOURCE_AVAILABLE",
             "routeSource": "authority/rifat/prisma-ui/routes.json",
             "ownerSource": "authority/rifat/prisma-ui/visual-control/pc/owners.json",
             "componentSource": "authority/rifat/prisma-ui/visual-control/pc/components.json",
@@ -171,7 +172,7 @@ def main() -> int:
             "slotUnitCount": slots.get("slotUnitCount"),
             "layerCount": layers.get("layerCount"),
             "componentCount": components.get("componentCount"),
-            "missing": [],
+            "missing": ["surface-specific-element-binding"],
             "runtimeProjectionAllowed": False,
             "sourceCertification": {
                 "status": "CERTIFIED",
@@ -179,6 +180,7 @@ def main() -> int:
                 "generator": "apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs",
                 "mode": "source-only",
                 "productMutationAllowed": False,
+                "hardTruth": "Certified PC source evidence does not make the PC identity binding ready; readiness stays blocked until the exact element binding is grounded and validated."
             },
         }
     )
@@ -211,6 +213,7 @@ def main() -> int:
             {
                 "status": "SOURCE_BRIDGE_STAGED",
                 "pcReadiness": pc["readiness"],
+                "pcSourceEvidenceReadiness": pc["sourceEvidenceReadiness"],
                 "routeCount": pc["routeCount"],
                 "componentCount": pc["componentCount"],
                 "regionOwnerCount": pc["regionOwnerCount"],
