@@ -1,0 +1,142 @@
+name: PRISMA Sync Sentinel Final Carrier V13
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - tooling/prisma-sync-sentinel-v1-2808
+    paths:
+      - '.github/workflows/sync-sentinel-final-carrier-v13.yml'
+      - '.github/DO_NOT_MERGE_SYNC_SENTINEL_FINAL_V13.txt'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  sentinel-final:
+    if: github.event.pull_request.head.ref == 'gate/prisma-sync-sentinel-final-3008-v13'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Guard exact source and canonical main
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_SHA='61e502631f2cc35551d1588ddd79a68d0f6eddf4'
+          MAIN_SHA='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+          git fetch origin main tooling/prisma-sync-sentinel-v1-2808
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git rev-parse origin/tooling/prisma-sync-sentinel-v1-2808)" = "$SOURCE_SHA"
+          mapfile -t changed < <(git diff --name-only "$SOURCE_SHA" HEAD)
+          test "${#changed[@]}" -eq 2
+          printf '%s\n' "${changed[@]}" | grep -Fxq '.github/workflows/sync-sentinel-final-carrier-v13.yml'
+          printf '%s\n' "${changed[@]}" | grep -Fxq '.github/DO_NOT_MERGE_SYNC_SENTINEL_FINAL_V13.txt'
+          git checkout --detach "$SOURCE_SHA"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          echo "SOURCE_SHA=$SOURCE_SHA" >> "$GITHUB_ENV"
+          echo "SYNC_SENTINEL_CANONICAL_HEAD=$MAIN_SHA" >> "$GITHUB_ENV"
+          echo "SYNC_SENTINEL_PRODUCT_TARGET=$SOURCE_SHA" >> "$GITHUB_ENV"
+          echo "SYNC_SENTINEL_EVIDENCE_BASE=$SOURCE_SHA" >> "$GITHUB_ENV"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile and self-test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q tools/prisma-sentinels/sync-sentinel
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py self-test | tee /tmp/sync-sentinel-selftest.log
+          grep -Fq 'PASS_SYNC_SENTINEL_SELF_TEST' /tmp/sync-sentinel-selftest.log
+
+      - name: Runtime doctor
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tools/_local/reports/sync-sentinel-v13/doctor
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py doctor \
+            --repo . --expected-head "$SOURCE_SHA" \
+            --evidence-dir tools/_local/reports/sync-sentinel-v13/doctor | tee /tmp/sync-sentinel-doctor.log
+          grep -Fq 'PASS_SENTINEL_RUNTIME_DOCTOR' /tmp/sync-sentinel-doctor.log
+
+      - name: Real-code E2E including A-L
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tools/_local/reports/sync-sentinel-v13/e2e
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py e2e \
+            --repo . --expected-head "$SOURCE_SHA" --workers 18 \
+            --evidence-dir tools/_local/reports/sync-sentinel-v13/e2e | tee /tmp/sync-sentinel-e2e.log
+          grep -Fq 'PASS_SYNC_E2E' /tmp/sync-sentinel-e2e.log
+
+      - name: Final certification including A-L
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p tools/_local/reports/sync-sentinel-v13/certify
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py certify \
+            --repo . --expected-head "$SOURCE_SHA" --workers 18 \
+            --evidence-dir tools/_local/reports/sync-sentinel-v13/certify | tee /tmp/sync-sentinel-certify.log
+          grep -Fq 'PASS_SYNC_CERTIFICATION' /tmp/sync-sentinel-certify.log
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test -z "$(git diff --name-only)"
+
+      - name: Verify final evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          E=tools/_local/reports/sync-sentinel-v13/certify
+          for f in SYNC_SUMMARY.json SYNC_MATRIX.csv SYNC_FAILURE_LOCALIZATION.json SYNC_TIMELINE.json SYNC_ASSERTIONS.json SYNC_ENVIRONMENT_SANITIZED.json SYNC_CONTRACTS.json SYNC_EVIDENCE_INDEX.json CONTINUATION.md SYNC_CERTIFICATION.json SYNC_SANDBOX_MANIFEST.json SYNC_DEPENDENCY_RESOLUTION.json SYNC_FIXTURE_MATRIX.csv SYNC_NEGATIVE_FIXTURES.json SYNC_JOURNEYS.json SYNC_PC_RUNTIME.log; do
+            test -f "$E/$f"
+          done
+          python - <<'PY'
+          import json, pathlib
+          e=pathlib.Path('tools/_local/reports/sync-sentinel-v13/certify')
+          s=json.loads((e/'SYNC_SUMMARY.json').read_text())
+          assert s['status']=='PASS_SYNC_CERTIFICATION'
+          assert s['CANONICAL_HEAD']=='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+          assert s['PRODUCT_TARGET']=='61e502631f2cc35551d1588ddd79a68d0f6eddf4'
+          assert s['EVIDENCE_BASE']=='61e502631f2cc35551d1588ddd79a68d0f6eddf4'
+          assert s['liveDbTouched'] is False
+          assert s['sourceDrift'] is False
+          assert s['cleanupPass'] is True
+          assert s['orphanProcesses'] is False
+          assert s['productionCertified'] is False
+          loc=json.loads((e/'SYNC_FAILURE_LOCALIZATION.json').read_text())
+          assert loc['status']=='CLEAR' and loc['unknownCount']==0 and loc['unknownMayPass'] is False
+          neg=json.loads((e/'SYNC_NEGATIVE_FIXTURES.json').read_text())
+          assert neg['ok'] is True
+          assert all(neg['fixtures'][x]['status']=='PASS' for x in 'ABCDEFGHIJKL')
+          env=json.loads((e/'SYNC_ENVIRONMENT_SANITIZED.json').read_text())
+          assert env['liveDbTouched'] is False and env['productionCertified'] is False
+          manifest=json.loads((e/'SYNC_SENTINEL_MANIFEST.json').read_text())
+          assert manifest['remainingSecretFindings']==0 and manifest['productionCertified'] is False
+          print('PASS_SYNC_EVIDENCE_CONTRACT_V13')
+          PY
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sync-sentinel-final-v13-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tools/_local/reports/sync-sentinel-v13/**
+          if-no-files-found: error
+          retention-days: 14
