@@ -1,42 +1,120 @@
-# PRISMA HTML · Sistema narrativo y Atlas
+# PRISMA HTML · Visual Authority + Atlasfin
 
-Proyecto canónico:
+`prisma-html` is PRISMA's governed visual-authority workspace. It is not only a static site and it is not a second copy of the product apps.
 
-`F:\repos\hitech-os-prisma-html\prisma-html`
+## Current model
 
-## Entradas públicas
+PRISMA uses one editable visual authority and multiple deterministic projections:
 
-- Recorrido principal: `index.html`
-- Catálogo UI: `sistema-ui/catalogo/index.html`
-- Atlas completo: `extras/atlasfin/index.html`
+`neutral meaning -> identity profile -> surface adapter -> certified binding -> compiled projection -> governed runtime -> visual evidence -> READY`
 
-## Estado integrado
+The canonical roles are:
 
-- Recorrido narrativo principal presente.
-- Atlas: 27 páginas, 26 secciones y 418 elementos.
-- Glass owner repair estable incorporado.
-- Premium target owners incorporados para Product Card/CAFÉ, Circular Progress y overlays.
-- Evidencia y targets premium conservados bajo `docs/evidence/premium-overlay-glass/`.
-- Cloudflare Pages preparado con salida pública gobernada `dist/`.
-- Publicación autorizada por el usuario y trazada en el PR existente `#178`.
-- Deploy de Cloudflare Pages, DNS y dominio todavía no ejecutados por este paquete.
+- **Identity Dictionary**: `authority/rifat/identity/` owns neutral visual meaning, profiles, semantic tokens, recipes, assets and surface adapters.
+- **RIFAT / prisma-ui**: `authority/rifat/prisma-ui/` owns surface, route, owner, region, editable-slot and layer location truth.
+- **Projection manifest**: `authority/rifat/visual-source-manifest.json` declares deterministic source-to-product projections and forbids manual edits to generated outputs.
+- **Atlasfin**: `extras/atlasfin/index.html` is the canonical human visual-control cockpit. It is a consumer/operator of authority, not a competing authority.
+- **Product apps**: Tablet, PC, Mobile, Web, Chart Lab and Control Center consume governed projections. A runtime file does not become visual authority merely because it renders.
 
-## Validación
+The detailed contract lives in `authority/rifat/identity/contract/PRISMA_VISUAL_CORE_CONTRACT.md`.
+
+## Open the visual system
+
+- Canonical cockpit: `extras/atlasfin/index.html`
+- Identity source authority: `authority/rifat/identity/`
+- Reference catalog: `sistema-ui/catalogo/index.html`
+- Legacy compatibility workbench: `sistema-ui/identidad/index.html`
+
+Atlasfin currently contains **27 public pages, 26 A–Z sections and 418 catalogued elements**. Current structural truth comes from its manifest and validators, not from historical prose.
+
+## One-command status
+
+From `prisma-html/`:
 
 ```powershell
-python tools/validate_project.py --root . --report reports/source-validator-current.json
-python extras/atlasfin/generator/validate_atlas.py extras/atlasfin
-& '.\tools\cloudflare\PRISMA_HTML_CLOUDFLARE.ps1' -Action Build
+python tools/visual_core.py status
+python tools/visual_core.py check
+python tools/visual_core.py ready tablet
+python tools/visual_core.py write --atlas-export
 ```
 
-## Cloudflare
+Equivalent package scripts:
 
-Este sitio usa Cloudflare Pages para publicación estática. No usa el Worker LICFLOW3 ni los launchers de Cloudflare Tunnel para servir su contenido.
+```powershell
+npm run visual:status
+npm run visual:check
+npm run visual:write
+```
 
-- Runbook: `docs/ops/PRISMA_HTML_CLOUDFLARE_PAGES_RUNBOOK.md`
-- Rollback: `docs/ops/PRISMA_HTML_CLOUDFLARE_PAGES_ROLLBACK.md`
-- Contrato: `governance/PRISMA_HTML_CLOUDFLARE_PAGES_CONTRACT.json`
+`ready <surface>` is fail-closed. It returns blockers unless the entire governed readiness chain is proven. Compiled/source-ready is not runtime visual certification.
 
-## Límites
+## Identity commands
 
-Este paquete no modifica Tablet, PC, Mobile, Chart Lab, Control Center, bases de datos, Prisma schema, procesos, puertos, Tunnel, Worker, D1, DNS, Git remoto ni Cloudflare.
+```powershell
+python tools/identity_dictionary.py status
+python tools/identity_dictionary.py list
+python tools/compile_identity_dictionary.py --check
+python tools/validate_identity_dictionary.py
+python tools/identity_binding_resolver.py coverage
+```
+
+Profile activation changes authority only. It does not directly mutate product runtime.
+
+## Validation
+
+```powershell
+python tools/visual_core.py check
+python tools/validate_rifat_authority.py
+python tools/validate_identity_dictionary.py
+python tools/compile_identity_dictionary.py --check
+python extras/atlasfin/generator/validate_atlas.py extras/atlasfin
+python tools/validate_project.py --root . --report reports/source-validator-current.json
+```
+
+A functional or static PASS is not a visual PASS. Runtime/browser visual evidence remains a separate gate.
+
+## Duplication rule
+
+The goal is **not zero copies**. The goal is **zero competing editable copies**.
+
+Allowed:
+
+- deterministic generated projections;
+- evidence snapshots;
+- public/reference views derived from authority;
+- compatibility exports with provenance.
+
+Forbidden:
+
+- two editable registries for the same visual meaning;
+- hand-maintained counters that contradict route/manifest authority;
+- manual edits to generated product projections;
+- Atlasfin, catalog pages or README prose overriding machine-readable authority;
+- `!important` priority overrides in governed visual authority.
+
+## Public/narrative pages
+
+- Main narrative: `index.html`
+- Page 1: `paginas/pagina-1-prisma/index.html`
+- Page 2: `paginas/pagina-2-inversionistas/index.html`
+- Page 3: `paginas/pagina-3-por-que-prisma/index.html`
+- Page 4: `paginas/pagina-4-ecosistema-producto/index.html`
+- UI reference catalog: `sistema-ui/catalogo/index.html`
+- Visual cockpit: `extras/atlasfin/index.html`
+
+Cloudflare Pages tooling remains under `tools/cloudflare/`. Deployment, DNS and cloud publication are separate gates and are not implied by visual-source readiness.
+
+## Historical migration material
+
+`BASELINE-MANIFEST.json`, `SOURCE-INTEGRITY.json`, old completion batches and Cloudflare migration notes preserve provenance/history. They are not allowed to override the current authority registry, Identity Dictionary, RIFAT/prisma-ui, projection manifest or VISCORE status.
+
+## Deterministic repository inventory
+
+`TREE.md` is intentionally conceptual. The exhaustive file inventory is `FILES_MANIFEST.json` and must be generated/checked mechanically:
+
+```powershell
+python tools/refresh_files_manifest.py --write
+python tools/refresh_files_manifest.py --check
+```
+
+Do not maintain an exhaustive tree or file hashes by hand.
