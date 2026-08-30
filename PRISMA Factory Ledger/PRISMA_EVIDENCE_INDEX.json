@@ -721,9 +721,44 @@
         "V4 run 33148746934 artifact 9676872731 sha256:afb6f28c01a7991f862fbfe87aff509b5e8a84d5d5e72327f420f1bfe2f88a48",
         "post-merge run 33149246082 artifact 9677044001 sha256:f1381c6779c55e758db0da1ad8b0db4b82466c24c029d59f9762d9fbc01f7c01"
       ]
+    },
+    {
+      "artifact": "PRISMA Sync Sentinel V15 — PR #446 / run 33314496417 / artifact 9733024541",
+      "type": "prisma_sync_sentinel_runtime_verification",
+      "scope": [
+        "tooling",
+        "sync",
+        "tablet",
+        "pc",
+        "governance",
+        "quality"
+      ],
+      "status": "PASS_RUNTIME_VERIFIED",
+      "proves": [
+        "Bounded reusable PRISMA Sync Sentinel tooling is merged in PR #446 without product-source files in the final PR diff",
+        "Real Tablet to PC Journey A exercised the real Tablet Outbox and dispatcher, loopback transport, real PC ingest/projector/ACK and Tablet reconciliation in isolated persistence",
+        "Real PC to Tablet Journey B exercised the real catalog exporter, Tablet pull/validation/apply/checkpoint path and preserved the Tablet local stock invariant",
+        "Mandatory negative cases A through L passed through real owner paths with fail-closed behavior and causal fault localization",
+        "Sentinel capsule resolved PC and Tablet app-local Prisma dependencies using frozen lockfiles without package or lockfile mutation",
+        "V15 recorded liveDbTouched=false, sourceDrift=false, cleanupPass=true, orphanProcesses=false and secretFindings=0",
+        "Fresh current-main post-merge Authority Mesh and universal anti-rework MUTATION gate authorize this Factory Ledger promotion"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Mutation or certification of any live/customer database",
+        "productionCertified=true; V15 explicitly records productionCertified=false",
+        "Distribution or release readiness",
+        "Future correctness after relevant source, dependency, contract or Prisma drift without recertification",
+        "Runtime or visual certification of unrelated product or UI surfaces"
+      ],
+      "evidence": [
+        "V15 artifact sha256:7e12f08c2d48302806017e80baa7fd6659d1efc43186e8d18a08a0b865ddcb12",
+        "Post-merge Authority Mesh run 33316409123 artifact 9733593166 composed sha256:8f76446b1c2bebe2765b59ff03b483ad6c8b797abab9c8b405f25ebde396262c",
+        "MUTATION gate run 33316601408 artifact 9733633837 sha256:6220e6678d5e01bc8750dd600e47459e8bf11f40509aa280034b8a52cb9b3311 decision bf0d03389f40fe365809d7100db7927c8ac23cec60f412884a423473b474f52b"
+      ]
     }
   ],
-  "updatedAt": "2026-08-27T22:08:29-06:00",
+  "updatedAt": "2026-08-30T14:28:15Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",

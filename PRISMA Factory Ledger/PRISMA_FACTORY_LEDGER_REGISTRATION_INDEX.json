@@ -238,7 +238,15 @@
       "sourceEvidenceSha256": "97821A53DE7941B160EC330BA7E9659474525F302DE5F402823482FBA599599B",
       "doNotRebuild": true,
       "nextGate": "Reuse this frozen Wave 3 runtime baseline. Future changes require fresh task-exact authority and isolated regression evidence; hosted production, distribution and future-drift certification are separate gates."
+    },
+    "tooling.sync_sentinel": {
+      "status": "DONE_RUNTIME_VERIFIED",
+      "updatedAt": "2026-08-30T14:28:15Z",
+      "evidence": "PR #446 merge 7d2124db8eb56a861e401323e799a5ef546f1829 / V15 run 33314496417 artifact 9733024541 / post-merge Authority run 33316409123 / MUTATION gate run 33316601408",
+      "sourceEvidenceSha256": "7E12F08C2D48302806017E80BAA7FD6659D1EFC43186E8D18A08A0B865DDCB12",
+      "doNotRebuild": true,
+      "nextGate": "Reuse the merged Sync Sentinel V15 runtime-verified baseline. Re-run isolated read-only/runtime recertification after relevant Sentinel, sync-contract, dependency, Prisma or source drift. Hosted/customer production, live/customer database use, distribution/release readiness and future-drift certification remain separate governed gates."
     }
   },
-  "updatedAt": "2026-08-27T22:08:29-06:00"
+  "updatedAt": "2026-08-30T14:28:15Z"
 }
