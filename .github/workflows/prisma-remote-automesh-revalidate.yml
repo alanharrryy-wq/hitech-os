@@ -1,0 +1,269 @@
+name: PRISMA Remote AutoMesh Revalidate
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PYTHONPATH: tools/code-atlas/src
+
+# Revalidation is read-only. Isolate each request so an unrelated AutoMesh or another
+# PR comment cannot serialize this fast path behind a shared issue-level lock.
+concurrency:
+  group: prisma-remote-automesh-revalidate-${{ github.event.issue.number }}-${{ github.event.comment.id }}
+  cancel-in-progress: false
+
+jobs:
+  revalidate-authority-mesh:
+    if: >-
+      github.event.issue.pull_request != null &&
+      (github.actor == 'chatgpt-codex-connector[bot]' || github.actor == 'alanharrryy-wq') &&
+      startsWith(github.event.comment.body, '/prisma-automesh revalidate ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout bounded revalidation tooling
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            .github/workflows/prisma-remote-automesh.yml
+            .github/workflows/prisma-remote-automesh-revalidate.yml
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_revalidation.py
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py
+            tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+            tools/code-atlas/tests/test_operational_prisma_mesh_revalidation.py
+            tools/code-atlas/CODE_ATLAS_NEUTRALITY_CONTRACT.json
+            tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile and self-test bounded revalidation tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/code-atlas/src/code_atlas/motors/prisma_mesh_revalidation.py \
+            tools/code-atlas/tests/test_operational_prisma_mesh_revalidation.py
+          python -m unittest -v \
+            tools/code-atlas/tests/test_operational_prisma_mesh_revalidation.py
+
+      - name: Decode revalidation request
+        id: spec
+        shell: bash
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          comment = os.environ.get('COMMENT_BODY', '').strip()
+          parts = comment.split()
+          if len(parts) != 4 or parts[:2] != ['/prisma-automesh', 'revalidate']:
+              raise SystemExit('INVALID_REVALIDATE_COMMAND')
+          artifact_id = parts[2]
+          digest = parts[3].lower()
+          if not re.fullmatch(r'[1-9][0-9]{0,19}', artifact_id):
+              raise SystemExit('INVALID_REVALIDATE_ARTIFACT_ID')
+          if not re.fullmatch(r'(?:sha256:)?[0-9a-f]{64}', digest):
+              raise SystemExit('INVALID_REVALIDATE_ARTIFACT_DIGEST')
+          request = {
+              'schemaVersion': 'prisma.remote_automesh.revalidate.request.v2',
+              'artifactId': int(artifact_id),
+              'artifactDigest': digest,
+          }
+          canonical = json.dumps(request, sort_keys=True, separators=(',', ':')).encode('utf-8')
+          request_id = hashlib.sha256(canonical).hexdigest()[:16]
+          path = Path(os.environ['RUNNER_TEMP']) / 'remote-automesh.revalidate.request.json'
+          path.write_text(json.dumps(request, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as fh:
+              fh.write(f'artifact_id={artifact_id}\n')
+              fh.write(f'artifact_digest={digest}\n')
+              fh.write(f'request_id={request_id}\n')
+          print(f'REVALIDATE_REQUEST_ID={request_id}')
+          print(f'REVALIDATE_ARTIFACT_ID={artifact_id}')
+          PY
+
+      - name: Download prior Authority Mesh artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.spec.outputs.artifact_id }}
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 3 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" \
+            --output "$RUNNER_TEMP/prior-authority-artifact.zip"
+          test -s "$RUNNER_TEMP/prior-authority-artifact.zip"
+
+      - name: Evaluate relevant drift
+        id: revalidate
+        shell: bash
+        env:
+          ARTIFACT_DIGEST: ${{ steps.spec.outputs.artifact_digest }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/prisma-revalidation"
+          set +e
+          python -m code_atlas.motors.prisma_mesh_revalidation \
+            --repo "$GITHUB_WORKSPACE" \
+            --artifact "$RUNNER_TEMP/prior-authority-artifact.zip" \
+            --expected-artifact-sha256 "$ARTIFACT_DIGEST" \
+            --out "$RUNNER_TEMP/prisma-revalidation"
+          rc=$?
+          set -e
+          state=fatal
+          if [ "$rc" -eq 0 ]; then
+            state=revalidated
+          elif [ "$rc" -eq 2 ]; then
+            state=full_refresh
+            test -f "$RUNNER_TEMP/prisma-revalidation/fallback_request.json"
+            cp "$RUNNER_TEMP/prisma-revalidation/fallback_request.json" "$RUNNER_TEMP/remote-automesh.request.json"
+          fi
+          echo "state=$state" >> "$GITHUB_OUTPUT"
+          echo "revalidation_rc=$rc" >> "$GITHUB_OUTPUT"
+          echo "REVALIDATION_STATE=$state"
+
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          import os
+          from pathlib import Path
+          report = json.loads((Path(os.environ['RUNNER_TEMP']) / 'prisma-revalidation' / 'PRISMA_MESH_REVALIDATION.json').read_text())
+          print('### PRISMA AutoMesh revalidation')
+          print(f"- Status: `{report.get('status')}`")
+          print(f"- Changed paths: `{report.get('changedCount', 0)}`")
+          print(f"- Relevant paths: `{report.get('relevantChangedCount', 0)}`")
+          print(f"- Pinned hash source: `{report.get('pinnedHashSource', 'n/a')}`")
+          print(f"- Revalidation elapsed: `{report.get('elapsedMs', 'n/a')} ms`")
+          PY
+
+      - name: Materialize full repository only when fresh Mesh is required
+        if: steps.revalidate.outputs.state == 'full_refresh'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git sparse-checkout disable
+          git checkout --force HEAD
+          test -f tools/code-atlas/src/code_atlas/motors/prisma_mesh_gateway.py
+          test -f tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py
+
+      - name: Run fresh universal authority preflight when drift is relevant
+        id: preflight
+        if: steps.revalidate.outputs.state == 'full_refresh'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m code_atlas.motors.prisma_mesh_gateway preflight \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$RUNNER_TEMP/remote-automesh.request.json" \
+            --out "$RUNNER_TEMP/prisma-authority-preflight"
+
+      - name: Run fresh task-exact parallel surface mesh when drift is relevant
+        id: mesh
+        if: steps.revalidate.outputs.state == 'full_refresh' && steps.preflight.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --out-root "$RUNNER_TEMP/prisma-automesh-out" \
+            --budget-root "$RUNNER_TEMP/prisma-automesh-budget" \
+            --task-spec "$RUNNER_TEMP/prisma-authority-preflight/legacy_tasks.json" \
+            --parallel 6 \
+            --workers 18 \
+            --shards 54 \
+            --max-files 120 \
+            --max-mb 40
+
+      - name: Compose fresh authority when drift is relevant
+        id: compose
+        if: steps.revalidate.outputs.state == 'full_refresh' && steps.preflight.outcome == 'success' && steps.mesh.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/prisma-composed/payload"
+          python -m code_atlas.motors.prisma_mesh_gateway compose \
+            --repo "$GITHUB_WORKSPACE" \
+            --request "$RUNNER_TEMP/remote-automesh.request.json" \
+            --preflight "$RUNNER_TEMP/prisma-authority-preflight" \
+            --mesh-result "$RUNNER_TEMP/prisma-automesh-out" \
+            --out "$RUNNER_TEMP/prisma-composed/payload"
+
+      - name: Stage revalidated or refreshed evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p remote-automesh-artifacts
+          [ ! -f "$RUNNER_TEMP/remote-automesh.revalidate.request.json" ] || cp "$RUNNER_TEMP/remote-automesh.revalidate.request.json" remote-automesh-artifacts/
+          [ ! -f "$RUNNER_TEMP/remote-automesh.request.json" ] || cp "$RUNNER_TEMP/remote-automesh.request.json" remote-automesh-artifacts/
+          [ ! -f "$RUNNER_TEMP/prisma-revalidation/PRISMA_MESH_REVALIDATION.json" ] || cp "$RUNNER_TEMP/prisma-revalidation/PRISMA_MESH_REVALIDATION.json" remote-automesh-artifacts/
+          if [ -f "$RUNNER_TEMP/prisma-revalidation/prisma-automesh-revalidated-result.zip" ]; then
+            cp "$RUNNER_TEMP/prisma-revalidation/prisma-automesh-revalidated-result.zip" remote-automesh-artifacts/
+          elif [ -f "$RUNNER_TEMP/prisma-composed/prisma-automesh-composed-result.zip" ]; then
+            cp "$RUNNER_TEMP/prisma-composed/prisma-automesh-composed-result.zip" remote-automesh-artifacts/
+          else
+            if [ -d "$RUNNER_TEMP/prisma-authority-preflight" ]; then
+              cp -R "$RUNNER_TEMP/prisma-authority-preflight" remote-automesh-artifacts/preflight
+            fi
+            if [ -d "$RUNNER_TEMP/prisma-automesh-out" ]; then
+              find "$RUNNER_TEMP/prisma-automesh-out" -maxdepth 1 -type f \
+                \( -name '*_result.zip' -o -name '*_fail.zip' \) \
+                -exec cp {} remote-automesh-artifacts/ \;
+            fi
+          fi
+          find remote-automesh-artifacts -maxdepth 3 -type f -print
+
+      - name: Upload Authority Mesh revalidation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: prisma-automesh-revalidate-${{ steps.spec.outputs.request_id }}-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+          path: remote-automesh-artifacts/**
+
+      - name: Enforce fail-closed final state
+        if: always()
+        shell: bash
+        env:
+          STATE: ${{ steps.revalidate.outputs.state }}
+          PREFLIGHT: ${{ steps.preflight.outcome }}
+          MESH: ${{ steps.mesh.outcome }}
+          COMPOSE: ${{ steps.compose.outcome }}
+        run: |
+          set -euo pipefail
+          if [ "$STATE" = "revalidated" ]; then
+            echo 'PASS_REVALIDATED_CURRENT_HEAD'
+            exit 0
+          fi
+          if [ "$STATE" = "full_refresh" ] && [ "$PREFLIGHT" = "success" ] && [ "$MESH" = "success" ] && [ "$COMPOSE" = "success" ]; then
+            echo 'PASS_FULL_MESH_REFRESH_AFTER_RELEVANT_DRIFT'
+            exit 0
+          fi
+          echo "BLOCKED_REVALIDATION state=$STATE preflight=$PREFLIGHT mesh=$MESH compose=$COMPOSE" >&2
+          exit 1

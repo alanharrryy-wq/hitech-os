@@ -598,7 +598,7 @@ async function upsertPricingProjectionRecord(tx: any, item: CatalogDeltaRecord, 
        "version"=excluded."version", "status"=excluded."status",
        "startsAt"=excluded."startsAt", "endsAt"=excluded."endsAt",
        "payloadJson"=excluded."payloadJson", "sourceCursor"=excluded."sourceCursor",
-       "sourceOccurredAt"=excluded."sourceOccurredAt", "updatedAt"=excluded."updatedAt` ,
+       "sourceOccurredAt"=excluded."sourceOccurredAt", "updatedAt"=excluded."updatedAt"` ,
     id, targetBusinessId, entityType, entityId, version, status, startsAt, endsAt,
     JSON.stringify(payload), item.cursor, occurredAt, occurredAt, occurredAt
   );
