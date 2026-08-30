@@ -115,9 +115,9 @@ for (const token of [
 for (const token of [
   "CatalogPullPanel",
   "\"/api/pos/sync/pull\"",
-  'run("delta", false)',
-  'run("bootstrap", true)',
-  'run("resync", true)',
+  "Pedir delta",
+  "Bootstrap inicial",
+  "Resync controlado",
   "pc_unavailable",
   "partial",
   "successVisibleOnlyAfterServiceResponse"
@@ -130,9 +130,9 @@ requireToken("tablet sync screen", sources.tabletSyncScreen, "<CatalogPullPanel 
 for (const token of [
   "PcCommandActions",
   "method?: \"GET\" | \"POST\"",
-  'body: { mode: "delta"',
-  'body: { mode: "bootstrap"',
-  'body: { mode: "resync"',
+  "Generar delta catalogo",
+  "Bootstrap catalogo",
+  "Resync catalogo",
   "getPcCatalogDeltaStatus",
   "method: \"POST\""
 ]) requireToken("pc ui wiring", sources.pcCommandService + sources.pcCommandPage + sources.pcCommandActions, token);
