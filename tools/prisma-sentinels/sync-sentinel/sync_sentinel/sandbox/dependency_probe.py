@@ -6,8 +6,18 @@ from pathlib import Path
 
 APP_REL = Path("apps/terminal-de-venta-system")
 TARGETS = {
-    "pc": APP_REL / "products/pc/app",
-    "tablet": APP_REL / "products/tablet/app",
+    "pc": {
+        "path": APP_REL / "products/pc/app",
+        "packages": ("@prisma/client", "prisma"),
+    },
+    "tablet": {
+        "path": APP_REL / "products/tablet/app",
+        "packages": ("@prisma/client", "prisma"),
+    },
+    "mobile": {
+        "path": APP_REL / "products/mobile/app",
+        "packages": ("next", "react", "react-dom", "zod"),
+    },
 }
 
 
@@ -24,7 +34,7 @@ const pkg=process.argv[2];
 try {
   const entry=require.resolve(pkg,{paths:[app]});
   let cur=path.dirname(entry), manifest=null;
-  for (let i=0;i<12;i++) {
+  for (let i=0;i<16;i++) {
     const candidate=path.join(cur,'package.json');
     if (fs.existsSync(candidate)) {
       const data=JSON.parse(fs.readFileSync(candidate,'utf8'));
@@ -65,17 +75,22 @@ try {
     return data
 
 
+def _declared_version(package_json: dict, package_name: str) -> str | None:
+    return (
+        (package_json.get("dependencies") or {}).get(package_name)
+        or (package_json.get("devDependencies") or {}).get(package_name)
+    )
+
+
 def probe_dependencies(repo: Path) -> dict[str, object]:
     rows: dict[str, object] = {}
     all_ok = True
-    for label, rel in TARGETS.items():
-        app = repo / rel
+    for label, spec in TARGETS.items():
+        app = repo / spec["path"]
         package_json = _load_json(app / "package.json")
-        declared = {
-            "@prisma/client": (package_json.get("dependencies") or {}).get("@prisma/client") or (package_json.get("devDependencies") or {}).get("@prisma/client"),
-            "prisma": (package_json.get("dependencies") or {}).get("prisma") or (package_json.get("devDependencies") or {}).get("prisma"),
-        }
-        resolved = {name: _node_resolution(app, name) for name in ("@prisma/client", "prisma")}
+        packages = tuple(spec["packages"])
+        declared = {name: _declared_version(package_json, name) for name in packages}
+        resolved = {name: _node_resolution(app, name) for name in packages}
         exact = True
         for name, expected in declared.items():
             actual = ((resolved.get(name) or {}).get("manifest") or {}).get("version") if isinstance(resolved.get(name), dict) else None
@@ -83,5 +98,16 @@ def probe_dependencies(repo: Path) -> dict[str, object]:
                 exact = False
         row_ok = exact and all(bool((resolved[name] or {}).get("ok")) for name in resolved)
         all_ok = all_ok and row_ok
-        rows[label] = {"declared": declared, "resolved": resolved, "versionsMatch": exact, "ok": row_ok}
-    return {"schemaVersion": "prisma.sync-sentinel.dependency-resolution.v1", "targets": rows, "ok": all_ok}
+        rows[label] = {
+            "declared": declared,
+            "resolved": resolved,
+            "versionsMatch": exact,
+            "runtimeRole": "canonical-mobile-3140" if label == "mobile" else f"canonical-{label}",
+            "ok": row_ok,
+        }
+    return {
+        "schemaVersion": "prisma.sync-sentinel.dependency-resolution.v2",
+        "targets": rows,
+        "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
+        "ok": all_ok,
+    }
