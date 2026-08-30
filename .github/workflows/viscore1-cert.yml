@@ -1,94 +1,124 @@
-name: PRISMA VISCORE1 Finalizer
+name: PRISMA VISCORE1 Certification
 
 on:
   pull_request:
     branches: [main]
     paths:
-      - '.github/workflows/viscore1-cert.yml'
+      - 'apps/terminal-de-venta-system/tools/prisma-governance/authority_mesh_run.py'
+      - 'apps/terminal-de-venta-system/tools/prisma-governance/README.md'
       - 'prisma-html/**'
+      - '.github/workflows/viscore1-cert.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  PINNED_MAIN_SHA: 'dec4ef395778be09cfe4b9ac2bc527efb80a9b0d'
 
 jobs:
-  finalize:
-    if: github.actor != 'github-actions[bot]'
-    name: validate and push reconciled merge
+  viscore1:
+    name: visual authority / readiness gates
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
 
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
-      - name: Merge pinned current main without committing
+      - name: Install prisma-html validator dependency
+        run: python -m pip install -r prisma-html/requirements-dev.txt
+
+      - name: Canonical Authority Mesh runner self-test
+        working-directory: apps/terminal-de-venta-system
+        run: python tools/prisma-governance/authority_mesh_run.py --selftest
+
+      - name: Fresh task-scoped Mesh with native Layer Map
+        working-directory: apps/terminal-de-venta-system
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse origin/main)" = "$PINNED_MAIN_SHA"
-          git -c user.name='prisma-viscore-finalizer' -c user.email='noreply@prisma.local' merge --no-commit --no-ff "$PINNED_MAIN_SHA"
+          TASK='Consolidar prisma-html como unica autoridad visual editable de PRISMA; Atlasfin cockpit unico; VISCORE readiness; cero runtime visual APPLY; Layer Map obligatorio.'
+          python tools/prisma-governance/authority_mesh_run.py \
+            --task "$TASK" \
+            --full \
+            --output .governance/ci-viscore1
+          test -s .governance/ci-viscore1/LAYERS_MAP.json
+          test -s .governance/ci-viscore1/LAYERS_MAP.md
+          test -s .governance/ci-viscore1/LAYERS_MAP_SOURCE.json
 
-      - name: Rebuild and validate RIFAT on reconciled tree
+      - name: Generate deterministic file manifest candidate
+        working-directory: prisma-html
+        run: python tools/refresh_files_manifest.py --write
+
+      - name: PRISMA HTML source validator
+        working-directory: prisma-html
+        run: python tools/validate_project.py --root . --report "$RUNNER_TEMP/source-validator-viscore1.json"
+
+      - name: VISCORE architecture check
+        working-directory: prisma-html
+        run: python tools/visual_core.py check
+
+      - name: VISCORE generated report smoke
+        working-directory: prisma-html
+        shell: bash
+        run: python tools/visual_core.py write --out "$RUNNER_TEMP/visual-core"
+
+      - name: Identity Dictionary gate
+        working-directory: prisma-html
+        run: |
+          python tools/validate_identity_dictionary.py
+          python tools/compile_identity_dictionary.py --check
+
+      - name: RIFAT authority gate
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -o pipefail
+          python tools/validate_rifat_authority.py | tee "$RUNNER_TEMP/rifat-authority.json"
+
+      - name: Upload RIFAT authority diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viscore1-rifat-authority
+          path: ${{ runner.temp }}/rifat-authority.json
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Atlasfin static gate
+        working-directory: prisma-html
+        run: python extras/atlasfin/generator/validate_atlas.py extras/atlasfin
+
+      - name: Prove no fake READY
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set +e
+          python tools/visual_core.py ready tablet
+          code=$?
+          set -e
+          if [ "$code" -ne 2 ]; then
+            echo "Expected Tablet to remain source-ready/not-runtime-READY, got exit=$code"
+            exit 1
+          fi
+
+      - name: Upload deterministic manifest candidate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viscore1-files-manifest
+          path: prisma-html/FILES_MANIFEST.json
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Committed file manifest must already match
+        working-directory: prisma-html
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          import hashlib
-          import json
-          from pathlib import Path
-
-          repo = Path.cwd()
-          manifest_path = repo / 'prisma-html/authority/rifat/visual-source-manifest.json'
-          targets = {
-              'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css',
-              'apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css',
-          }
-          data = json.loads(manifest_path.read_text(encoding='utf-8'))
-          seen = set()
-          for entry in data.get('entries', []):
-              output = entry.get('output')
-              if output not in targets:
-                  continue
-              source = repo / entry['source']
-              projected = repo / output
-              source_bytes = source.read_bytes()
-              output_bytes = projected.read_bytes()
-              if source_bytes != output_bytes:
-                  raise SystemExit(f"exact-copy drift remains: {entry['source']} -> {output}")
-              digest = hashlib.sha256(source_bytes).hexdigest()
-              entry['sourceSha256'] = digest
-              entry['outputSha256'] = digest
-              seen.add(output)
-          missing = targets - seen
-          if missing:
-              raise SystemExit(f'missing RIFAT projection targets: {sorted(missing)}')
-          manifest_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-          PY
-
-          python prisma-html/tools/validate_rifat_authority.py
-          python prisma-html/tools/refresh_files_manifest.py --write
-          python prisma-html/tools/refresh_files_manifest.py --check
-          python prisma-html/tools/validate_rifat_authority.py
-          sha256sum prisma-html/authority/rifat/visual-source-manifest.json prisma-html/FILES_MANIFEST.json
-
-      - name: Commit and push reconciled merge
-        shell: bash
-        run: |
-          set -euo pipefail
-          git add -A
-          python prisma-html/tools/validate_rifat_authority.py
-          python prisma-html/tools/refresh_files_manifest.py --check
-          git diff --cached --check
-          git config user.name 'prisma-viscore-finalizer'
-          git config user.email 'noreply@prisma.local'
-          git commit -m 'fix(rifat): reconcile VISCORE1 with current main authority'
-          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
+          git diff --exit-code -- FILES_MANIFEST.json
+          python tools/refresh_files_manifest.py --check
