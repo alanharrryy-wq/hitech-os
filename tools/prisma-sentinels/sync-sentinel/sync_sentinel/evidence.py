@@ -318,6 +318,41 @@ def _continuation(report: dict[str, Any], localization: dict[str, Any]) -> str:
     ])
 
 
+def _runtime_evidence_from_extras(extra_files: list[Path] | None) -> tuple[dict[str, Any] | None, dict[str, Any] | None]:
+    journeys: dict[str, Any] | None = None
+    negatives: dict[str, Any] | None = None
+    for path in extra_files or []:
+        if path.name != "SYNC_JOURNEYS.json" or not path.is_file():
+            continue
+        try:
+            loaded = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if isinstance(loaded, dict):
+            journeys = loaded
+            candidate = loaded.get("negativeFixtures")
+            if isinstance(candidate, dict):
+                negatives = candidate
+    return journeys, negatives
+
+
+def _timing_from_journeys(journeys: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not journeys:
+        return None
+    started = journeys.get("startedAt")
+    finished = journeys.get("finishedAt")
+    if not started or not finished:
+        return None
+    duration_ms = None
+    try:
+        start_dt = datetime.fromisoformat(str(started).replace("Z", "+00:00"))
+        finish_dt = datetime.fromisoformat(str(finished).replace("Z", "+00:00"))
+        duration_ms = max(0, round((finish_dt - start_dt).total_seconds() * 1000))
+    except Exception:
+        pass
+    return {"startedAt": started, "finishedAt": finished, "durationMs": duration_ms}
+
+
 def build_bundle(out_dir: Path, report: dict[str, Any], extra_files: list[Path] | None = None) -> tuple[Path, int, list[str]]:
     out_dir.mkdir(parents=True, exist_ok=True)
     report = dict(report)
@@ -326,6 +361,10 @@ def build_bundle(out_dir: Path, report: dict[str, Any], extra_files: list[Path] 
     identity = _run_identity(report)
     for key, value in identity.items():
         report.setdefault(key, value)
+    journeys, negative_fixture_evidence = _runtime_evidence_from_extras(extra_files)
+    timing = _timing_from_journeys(journeys)
+    if timing:
+        report.setdefault("runtimeTiming", timing)
     checks = list(report.get("checks", []))
     localization = _failure_localization(report)
 
@@ -359,6 +398,8 @@ def build_bundle(out_dir: Path, report: dict[str, Any], extra_files: list[Path] 
         add_json("SYNC_SANDBOX_MANIFEST.json", sandbox)
     if dependencies:
         add_json("SYNC_DEPENDENCY_RESOLUTION.json", dependencies)
+    if negative_fixture_evidence is not None:
+        add_json("SYNC_NEGATIVE_FIXTURES.json", negative_fixture_evidence)
 
     try:
         fixture_registry = load_fixture_registry()
