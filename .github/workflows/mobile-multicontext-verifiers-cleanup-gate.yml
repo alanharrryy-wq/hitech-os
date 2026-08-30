@@ -8,7 +8,7 @@ on:
       - '.github/workflows/mobile-multicontext-verifiers-cleanup-gate.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -19,11 +19,13 @@ env:
   AUTHORITY_ARTIFACT_DIGEST: 'sha256:0bc62c30ad82a3a0966a7758d0b4b89a8650a80891d5c7a8c15fea5742736a02'
   AUTHORITY_RUN_ID: '33314261732'
   AUTHORITY_ARTIFACT_ID: '9732952649'
+  WORK_BRANCH: 'fix/mobile-multicontext-verifiers-cleanup-3008'
+  MOBILE_ROOT: 'apps/terminal-de-venta-system/products/mobile/app'
 
 jobs:
-  mutation-gate:
+  governed-cleanup:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - name: Checkout exact Authority Mesh head
         uses: actions/checkout@v6
@@ -31,12 +33,12 @@ jobs:
           ref: ${{ env.AUTHORITY_HEAD }}
           fetch-depth: 0
 
-      - name: Prove carrier contains only disposable workflow
+      - name: Prove pre-mutation carrier contains only disposable workflow
         shell: bash
         run: |
           set -euo pipefail
-          git fetch origin fix/mobile-multicontext-verifiers-cleanup-3008
-          mapfile -t changed < <(git diff --name-only "$AUTHORITY_HEAD" "origin/fix/mobile-multicontext-verifiers-cleanup-3008")
+          git fetch origin "$WORK_BRANCH"
+          mapfile -t changed < <(git diff --name-only "$AUTHORITY_HEAD" "origin/$WORK_BRANCH")
           printf 'carrier changed files:\n%s\n' "${changed[*]}"
           test "${#changed[@]}" -eq 1
           test "${changed[0]}" = '.github/workflows/mobile-multicontext-verifiers-cleanup-gate.yml'
@@ -53,7 +55,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/mobile-cleanup-gate"
+          mkdir -p "$RUNNER_TEMP/mobile-cleanup"
           python - <<'PY'
           import json, os
           from pathlib import Path
@@ -76,86 +78,156 @@ jobs:
               'artifactId': os.environ['AUTHORITY_ARTIFACT_ID']
             }
           }
-          out = Path(os.environ['RUNNER_TEMP']) / 'mobile-cleanup-gate' / 'mutation-request.json'
-          out.write_text(json.dumps(request, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          p = Path(os.environ['RUNNER_TEMP']) / 'mobile-cleanup' / 'mutation-request.json'
+          p.write_text(json.dumps(request, indent=2, sort_keys=True) + '\n', encoding='utf-8')
           PY
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' \
-            --request "$RUNNER_TEMP/mobile-cleanup-gate/mutation-request.json" \
-            | tee "$RUNNER_TEMP/mobile-cleanup-gate/mutation-decision.json"
-          grep -Fq '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/mobile-cleanup-gate/mutation-decision.json"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/mobile-cleanup/mutation-request.json" | tee "$RUNNER_TEMP/mobile-cleanup/mutation-decision.json"
+          grep -Fq '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/mobile-cleanup/mutation-decision.json"
 
       - name: Prove exact MultiContext consumers before deletion
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
-          import json, re, os
+          import json, os
           from pathlib import Path
-          root = Path('apps/terminal-de-venta-system/products/mobile/app')
+          root = Path(os.environ['MOBILE_ROOT'])
           terms = ['PrismaMobileMultiContextSwitcher', 'prisma-mobile-multi-context-switcher', 'multiContextRoot', 'mobile-multi-context-switcher']
           refs = []
           for base in [root / 'src', root / 'app']:
             for p in base.rglob('*'):
-              if not p.is_file() or p.suffix.lower() not in {'.ts','.tsx','.js','.jsx','.mjs','.css','.json'}:
-                continue
+              if not p.is_file() or p.suffix.lower() not in {'.ts','.tsx','.js','.jsx','.mjs','.css','.json'}: continue
               text = p.read_text(encoding='utf-8', errors='replace')
-              hits = [term for term in terms if term in text]
-              if hits:
-                refs.append({'path': p.as_posix(), 'terms': hits})
-          pkg = root / 'package.json'
-          if pkg.is_file():
-            text = pkg.read_text(encoding='utf-8', errors='replace')
-            hits = [term for term in terms if term in text]
-            if hits: refs.append({'path': pkg.as_posix(), 'terms': hits})
-          component = (root / 'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx').as_posix()
-          index = (root / 'src/components/prisma-app/index.ts').as_posix()
-          own_css = (root / 'src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css').as_posix()
-          dashboard_css = (root / 'src/components/prisma-app/prisma-mobile-dashboard.module.css').as_posix()
-          allowed = {component, index, own_css, dashboard_css}
-          unexpected = [r for r in refs if r['path'] not in allowed]
-          dash = root / 'src/components/prisma-app/prisma-mobile-dashboard.module.css'
-          dash_text = dash.read_text(encoding='utf-8')
-          lines = dash_text.splitlines()
-          dash_hits = []
-          for i, line in enumerate(lines, 1):
-            if any(term.lower() in line.lower() for term in ['multicontext', 'multi-context']):
-              dash_hits.append({'line': i, 'text': line.strip()})
-          branches = root / 'app/api/mobile/branches/route.ts'
-          report = {
-            'authorityHead': os.environ['AUTHORITY_HEAD'],
-            'references': refs,
-            'unexpectedRuntimeConsumers': unexpected,
-            'dashboardCssMultiContextHits': dash_hits,
-            'branchesApiExistsAndIsOutOfScope': branches.is_file(),
-            'verdict': 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS' if not unexpected else 'FAIL_EXTERNAL_RUNTIME_CONSUMERS'
+              hits = [t for t in terms if t in text]
+              if hits: refs.append({'path': p.as_posix(), 'terms': hits})
+          allowed = {
+            (root/'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx').as_posix(),
+            (root/'src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css').as_posix(),
+            (root/'src/components/prisma-app/prisma-mobile-dashboard.module.css').as_posix(),
+            (root/'src/components/prisma-app/index.ts').as_posix(),
           }
-          out = Path(os.environ['RUNNER_TEMP']) / 'mobile-cleanup-gate' / 'MULTICONTEXT_CONSUMER_PROOF.json'
-          out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-          print(json.dumps(report, indent=2, ensure_ascii=False))
+          unexpected = [r for r in refs if r['path'] not in allowed]
+          report = {'authorityHead': os.environ['AUTHORITY_HEAD'], 'references': refs, 'unexpectedRuntimeConsumers': unexpected, 'branchesApiExistsAndIsOutOfScope': (root/'app/api/mobile/branches/route.ts').is_file(), 'verdict': 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS' if not unexpected else 'FAIL_EXTERNAL_RUNTIME_CONSUMERS'}
+          (Path(os.environ['RUNNER_TEMP'])/'mobile-cleanup'/'MULTICONTEXT_CONSUMER_PROOF.json').write_text(json.dumps(report, indent=2)+'\n')
+          print(json.dumps(report, indent=2))
           if unexpected: raise SystemExit(2)
-          if not branches.is_file(): raise SystemExit('BRANCHES_API_MISSING_OUT_OF_SCOPE_INVARIANT')
+          if not report['branchesApiExistsAndIsOutOfScope']: raise SystemExit(3)
           PY
 
-      - name: Record authority binding
+      - name: Apply exact authorized cleanup
         shell: bash
         run: |
           set -euo pipefail
-          cat > "$RUNNER_TEMP/mobile-cleanup-gate/AUTHORITY_BINDING.txt" <<EOF
-          Authority Mesh run: $AUTHORITY_RUN_ID
-          Authority Mesh artifact: $AUTHORITY_ARTIFACT_ID
-          Authority Mesh artifact digest: $AUTHORITY_ARTIFACT_DIGEST
-          Authority Mesh request digest: $AUTHORITY_REQUEST_DIGEST
-          Authority Mesh head: $AUTHORITY_HEAD
-          Required authority coverage: 100
-          Blockers: 0
-          Layer map present: true
-          Final source mutation scope: Mobile MultiContext dead residue + claims.verifiersAligned invariant only
-          EOF
+          git switch -C "$WORK_BRANCH" "origin/$WORK_BRANCH"
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path(os.environ['MOBILE_ROOT'])
+          report = {'deleted': [], 'updated': [], 'preserved': []}
+          def digest(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          component = root/'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx'
+          own_css = root/'src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css'
+          index = root/'src/components/prisma-app/index.ts'
+          dash = root/'src/components/prisma-app/prisma-mobile-dashboard.module.css'
+          contract = root/'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json'
+          verifier = root/'tools/verify_prisma_mobile_interface_canon.mjs'
+          branches = root/'app/api/mobile/branches/route.ts'
+          for p in (component, own_css):
+            if not p.is_file(): raise SystemExit(f'MISSING_EXPECTED_DEAD_FILE:{p}')
+            report['deleted'].append({'path': p.as_posix(), 'sha256': digest(p)})
+            p.unlink()
+          old = index.read_text(encoding='utf-8')
+          needle = 'export { PrismaMobileMultiContextSwitcher } from "./PrismaMobileMultiContextSwitcher";\n'
+          if old.count(needle) != 1: raise SystemExit('INDEX_EXPORT_COUNT_NOT_ONE')
+          new = old.replace(needle, '')
+          index.write_text(new, encoding='utf-8')
+          report['updated'].append(index.as_posix())
+          old = dash.read_text(encoding='utf-8')
+          needle = '.crystalCommand,\n.multiContextRoot {\n  display: grid;\n  gap: 9px;\n}'
+          replacement = '.crystalCommand {\n  display: grid;\n  gap: 9px;\n}'
+          if old.count(needle) != 1: raise SystemExit('DASHBOARD_MULTICONTEXT_SELECTOR_COUNT_NOT_ONE')
+          dash.write_text(old.replace(needle, replacement), encoding='utf-8')
+          report['updated'].append(dash.as_posix())
+          old = contract.read_text(encoding='utf-8')
+          needle = '"verifiersAligned": false'
+          if old.count(needle) != 1: raise SystemExit('VERIFIERS_ALIGNED_FALSE_COUNT_NOT_ONE')
+          contract.write_text(old.replace(needle, '"verifiersAligned": true'), encoding='utf-8')
+          report['updated'].append(contract.as_posix())
+          old = verifier.read_text(encoding='utf-8')
+          anchor = 'for (const key of ["staleOrPartialIsHealthy", "componentExistsMeansMounted", "historicalVerifierMeansCurrentAuthority", "offlineRouteMeansOfflineDataCertified"]) {\n  if (noFakeGreen[key] !== false) fail("No-fake-green contract must stay false", { key, value: noFakeGreen[key] });\n}\n\n'
+          addition = anchor + 'if (contract.claims?.verifiersAligned !== true) {\n  fail("Canon contract must declare reconciled verifier alignment", { verifiersAligned: contract.claims?.verifiersAligned });\n}\n\n'
+          if old.count(anchor) != 1: raise SystemExit('VERIFIER_INSERTION_ANCHOR_COUNT_NOT_ONE')
+          verifier.write_text(old.replace(anchor, addition), encoding='utf-8')
+          report['updated'].append(verifier.as_posix())
+          if not branches.is_file(): raise SystemExit('OUT_OF_SCOPE_BRANCHES_API_WAS_REMOVED')
+          report['preserved'].append(branches.as_posix())
+          data = json.loads(contract.read_text(encoding='utf-8'))
+          claims = data['claims']
+          expected_false = ['runtimeCertified','visualCertified','hostedProductionCertified','offlineOperationalDataCertified']
+          if any(claims.get(k) is not False for k in expected_false): raise SystemExit('UNAUTHORIZED_CLAIM_INFLATION')
+          if claims.get('verifiersAligned') is not True: raise SystemExit('VERIFIERS_ALIGNED_NOT_TRUE')
+          out = Path(os.environ['RUNNER_TEMP'])/'mobile-cleanup'/'MUTATION_REPORT.json'
+          out.write_text(json.dumps(report, indent=2)+'\n')
+          print(json.dumps(report, indent=2))
+          PY
 
-      - name: Upload mutation-gate evidence
+      - name: Focused source invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "$MOBILE_ROOT/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx"
+          test ! -e "$MOBILE_ROOT/src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css"
+          test -f "$MOBILE_ROOT/app/api/mobile/branches/route.ts"
+          ! grep -R -n --exclude-dir=node_modules -E 'PrismaMobileMultiContextSwitcher|prisma-mobile-multi-context-switcher|multiContextRoot|mobile-multi-context-switcher' "$MOBILE_ROOT/src" "$MOBILE_ROOT/app"
+          ! grep -n '!important' "$MOBILE_ROOT/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+          cd "$MOBILE_ROOT"
+          node tools/verify_prisma_mobile_interface_canon.mjs
+          node tools/verify_prisma_mobile_premium_navigation.mjs
+          node tools/verify_prisma_mobile_data_readiness.mjs
+          node tools/verify_prisma_mobile_source_states.mjs
+
+      - name: Typecheck and production build without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          corepack enable
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm -C "$MOBILE_ROOT" typecheck
+          pnpm -C "$MOBILE_ROOT" build
+
+      - name: Prove exact mutation scope and push
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only "$AUTHORITY_HEAD")
+          printf '%s\n' "${changed[@]}" | tee "$RUNNER_TEMP/mobile-cleanup/FINAL_CHANGED_FILES.txt"
+          python - <<'PY'
+          import os, subprocess
+          allowed = {
+            '.github/workflows/mobile-multicontext-verifiers-cleanup-gate.yml',
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx',
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css',
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/index.ts',
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css',
+            'apps/terminal-de-venta-system/products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json',
+            'apps/terminal-de-venta-system/products/mobile/app/tools/verify_prisma_mobile_interface_canon.mjs',
+          }
+          changed = set(subprocess.check_output(['git','diff','--name-only',os.environ['AUTHORITY_HEAD']], text=True).splitlines())
+          if not changed <= allowed: raise SystemExit('UNAUTHORIZED_SCOPE:'+','.join(sorted(changed-allowed)))
+          required = allowed - {'.github/workflows/mobile-multicontext-verifiers-cleanup-gate.yml'}
+          if not required <= changed: raise SystemExit('MISSING_EXPECTED_MUTATION:'+','.join(sorted(required-changed)))
+          PY
+          git config user.name 'prisma-governed-bot'
+          git config user.email 'prisma-governed-bot@users.noreply.github.com'
+          git add -A
+          git commit -m 'chore(mobile): remove retired MultiContext residue and align canon verifier'
+          git push origin "$WORK_BRANCH"
+
+      - name: Upload cleanup evidence
+        if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: mobile-cleanup-mutation-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          name: mobile-multicontext-verifier-cleanup-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 14
-          if-no-files-found: error
-          path: ${{ runner.temp }}/mobile-cleanup-gate/**
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/mobile-cleanup/**
