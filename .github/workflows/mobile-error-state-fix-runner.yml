@@ -1,0 +1,220 @@
+name: PRISMA Mobile Error State Governed FIX Runner
+
+on:
+  push:
+    branches: ['fix/mobile-runtime-visual-conformance-3008']
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  BASE_SHA: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+  MOBILE_ROOT: 'apps/terminal-de-venta-system/products/mobile/app'
+  BASE_URL: 'http://127.0.0.1:3140'
+  OLD_CARRIER_SHA: '3f9ba377d020451932e4a9228b157aadcb95ad3a'
+  ERROR_AUTH_REQUEST_DIGEST: 'e9684553bbb361f468823ad425548fd2c5b744f2695d646298787a7bc8aef966'
+  ERROR_AUTH_ARTIFACT_DIGEST: '1751e4f15e0c68cf045da0dcf1f4267f2b3de4e83191f1e4ec2778313f077cc4'
+  ERROR_ANTI_REWORK_DIGEST: 'bb1c81faffa7f7d3d0c9c80c53f0fbf4b4e15f9435211a961abe31858d6c6bc7'
+
+jobs:
+  error-state-fix:
+    if: github.event.head_commit.message == 'test(mobile): stage error-state fix runner'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - name: Checkout fix branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Fail closed on base, existing bounded repair and fresh authority
+        id: preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          test "$(git log --format=%H --all --grep='^fix(mobile): repair runtime visual conformance defects$' -n1)" = "1f70883462e83a797e64573796a33a310177f76b"
+          E="$RUNNER_TEMP/mobile-final-evidence"
+          mkdir -p "$E/screenshots"
+          cat > "$RUNNER_TEMP/error-anti-rework.request.json" <<JSON
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"$BASE_SHA",
+            "task":"Repair only the runtime-evidenced PRISMA Mobile /prisma-app HTTP-503 error-state responsive layout defect: errorSignalGrid three-column cards are unreadably narrow/overlapping on phone viewports. Change only prisma-mobile-dashboard.module.css with a selector-level responsive grid correction; preserve error semantics, actions, copy and all other Mobile screens.",
+            "capabilities":[{"id":"mobile.interface_specification_canon","requestedAction":"ADVANCE"}],
+            "authorityMesh":{"status":"PASS_COMPOSED_AUTHORITY_MESH","repoHead":"$BASE_SHA","requiredAuthorityCoveragePct":100,"blockers":0,"requestDigest":"$ERROR_AUTH_REQUEST_DIGEST","artifactDigest":"$ERROR_AUTH_ARTIFACT_DIGEST","layerMapPresent":true},
+            "visualMutation":true
+          }
+          JSON
+          git worktree add --detach "$RUNNER_TEMP/error-authority-base" "$BASE_SHA"
+          (cd "$RUNNER_TEMP/error-authority-base" && python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/error-anti-rework.request.json" > "$E/error-anti-rework.recheck.json")
+          git worktree remove "$RUNNER_TEMP/error-authority-base" --force
+          python - "$E/error-anti-rework.recheck.json" "$ERROR_ANTI_REWORK_DIGEST" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert d.get('decisionDigest')==sys.argv[2],(d.get('decisionDigest'),sys.argv[2])
+          PY
+
+      - name: Apply exact selector-level error-state repair
+        id: patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css')
+          text=p.read_text(encoding='utf-8')
+          anchor='''.crystalQuickRead article,\n.metricCard,\n'''
+          if text.count(anchor)!=1:
+              raise SystemExit(f'ERROR_GRID_ANCHOR_COUNT_{text.count(anchor)}')
+          addition='''.errorSignalGrid {\n  grid-template-columns: minmax(0, 1fr);\n}\n\n'''
+          if addition in text:
+              raise SystemExit('ERROR_GRID_REPAIR_ALREADY_PRESENT')
+          text=text.replace(anchor,addition+anchor,1)
+          p.write_text(text,encoding='utf-8')
+          PY
+          test -z "$(git diff --check)"
+          mapfile -t changed < <(git diff --name-only)
+          test "${#changed[@]}" = "1"
+          test "${changed[0]}" = "$MOBILE_ROOT/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+          git diff -- "$MOBILE_ROOT" > "$RUNNER_TEMP/mobile-final-evidence/error-state-fix.patch"
+
+      - name: Commit exact error-state repair
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$MOBILE_ROOT/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+          git commit -m 'fix(mobile): repair error-state responsive grid'
+          git push origin HEAD:fix/mobile-runtime-visual-conformance-3008
+          git rev-parse HEAD | tee "$RUNNER_TEMP/mobile-final-evidence/final-fix-sha.txt"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Run source gates and build
+        id: static
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-final-evidence"
+          npm install --global pnpm@9.15.0
+          pnpm install --frozen-lockfile --ignore-scripts
+          cd "$MOBILE_ROOT"
+          npm install --ignore-scripts --no-package-lock --legacy-peer-deps
+          cd "$GITHUB_WORKSPACE"
+          pnpm -C "$MOBILE_ROOT" run verify:interface-canon | tee "$E/verify-interface-canon.log"
+          pnpm -C "$MOBILE_ROOT" run verify:premium-navigation | tee "$E/verify-premium-navigation.log"
+          pnpm -C "$MOBILE_ROOT" run verify:data-readiness | tee "$E/verify-data-readiness.log"
+          pnpm -C "$MOBILE_ROOT" run verify:source-states | tee "$E/verify-source-states.log"
+          pnpm -C "$MOBILE_ROOT" run verify:zero-important | tee "$E/verify-zero-important.log"
+          pnpm -C "$MOBILE_ROOT" run typecheck | tee "$E/typecheck.log"
+          pnpm -C "$MOBILE_ROOT" run build | tee "$E/build.log"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} +
+          rm -rf "$MOBILE_ROOT/.next"
+
+      - name: Install browser and start runner-owned Mobile
+        id: browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          PW="$RUNNER_TEMP/mobile-pw-final"; E="$RUNNER_TEMP/mobile-final-evidence"
+          mkdir -p "$PW"; cd "$PW"; npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.55.0 axe-core@4.10.3
+          npx playwright install --with-deps chromium
+          (cd "$GITHUB_WORKSPACE/$MOBILE_ROOT" && nohup ./node_modules/.bin/next dev --webpack -H 127.0.0.1 -p 3140 >"$E/mobile-dev.log" 2>&1 & echo $! > "$RUNNER_TEMP/mobile.pid")
+          for i in $(seq 1 90); do if curl -fsS "$BASE_URL/prisma-app" >/dev/null 2>&1; then exit 0; fi; sleep 1; done
+          cat "$E/mobile-dev.log"; exit 1
+
+      - name: Re-run full runtime visual conformance plus exact error-state guard
+        id: visual
+        shell: bash
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/mobile-final-evidence
+        run: |
+          set -euo pipefail
+          PW="$RUNNER_TEMP/mobile-pw-final"
+          curl -fsSL "https://raw.githubusercontent.com/prismahitech/hitech-os/$OLD_CARRIER_SHA/.github/workflows/mobile-runtime-visual-verify-carrier.yml" -o "$RUNNER_TEMP/old-carrier.yml"
+          python - "$RUNNER_TEMP/old-carrier.yml" "$PW/verify.mjs" <<'PY'
+          import sys
+          src=open(sys.argv[1],encoding='utf-8').read(); marker="cat > \"$RUNNER_TEMP/mobile-pw/verify.mjs\" <<'JS'\n"; start=src.index(marker)+len(marker); end=src.index('\n          JS\n',start)
+          lines=[line[10:] if line.startswith('          ') else line for line in src[start:end].splitlines()]; out=[]; c={'labels':0,'first':0,'active':0,'loop':0,'tab':0}
+          for line in lines:
+              if 'async function tabLabels(page)' in line: out.append(line[:len(line)-len(line.lstrip())]+"async function tabLabels(page) { return (await page.locator('[role=\"tab\"] > span').allTextContents()).map(clean); }"); c['labels']+=1; continue
+              if "const first = page.getByRole('tab'" in line: out.append(line[:len(line)-len(line.lstrip())]+"const first = page.locator('#prisma-mobile-tab-inicio');"); c['first']+=1; continue
+              if 'document.activeElement?.textContent' in line: out.append(line.replace('document.activeElement?.textContent',"document.activeElement?.querySelector('span')?.textContent")); c['active']+=1; continue
+              if 'for (const label of EXPECTED) {' in line: out.append(line[:len(line)-len(line.lstrip())]+"const TAB_IDS = { Inicio: 'inicio', Ventas: 'ventas', 'Operación': 'operacion', Licencias: 'licencias', Alertas: 'alertas', Stock: 'stock', Sistema: 'sistema' };"); out.append(line); c['loop']+=1; continue
+              if "const tab = page.getByRole('tab', { name: label, exact: true });" in line: out.append(line[:len(line)-len(line.lstrip())]+"const tab = page.locator(`#prisma-mobile-tab-${TAB_IDS[label]}`);"); c['tab']+=1; continue
+              out.append(line)
+          assert c['labels']==1 and c['first']==1 and c['loop']==1 and c['tab']==1 and c['active']>=3,c
+          open(sys.argv[2],'w',encoding='utf-8').write('\n'.join(out)+'\n')
+          PY
+          cd "$PW"; node verify.mjs
+          cat > error-guard.mjs <<'JS'
+          import { chromium } from 'playwright'; import fs from 'node:fs'; import path from 'node:path';
+          const BASE=process.env.BASE_URL,OUT=process.env.EVIDENCE_DIR; const result={viewports:[],failures:[]}; const browser=await chromium.launch({headless:true});
+          for(const vp of [{name:'phone390',width:390,height:844},{name:'phone430',width:430,height:932}]){
+            const c=await browser.newContext({viewport:{width:vp.width,height:vp.height},reducedMotion:'reduce'}); await c.route('**/api/mobile/snapshot',r=>r.fulfill({status:503,contentType:'application/json',body:'{"ok":false,"error":{"code":"FIXTURE_503"}}'})); const p=await c.newPage(); await p.goto(`${BASE}/prisma-app`,{waitUntil:'domcontentloaded'}); await p.waitForSelector('[data-prisma-state="error"]',{timeout:15000});
+            const m=await p.locator('[aria-label="Que puede hacer el usuario ahora"]').evaluate(grid=>{const style=getComputedStyle(grid);const cards=[...grid.querySelectorAll(':scope > article')];return{columns:style.gridTemplateColumns.split(' ').filter(Boolean).length,overflow:grid.scrollWidth>grid.clientWidth+1,cards:cards.map(x=>{const r=x.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,overflow:x.scrollWidth>x.clientWidth+1,text:x.innerText}})}});
+            if(m.columns!==1||m.overflow||m.cards.length!==3)result.failures.push({vp:vp.name,kind:'grid',m}); m.cards.forEach((x,i)=>{if(x.overflow||x.width<300)result.failures.push({vp:vp.name,kind:'card',i,x}); if(i&&x.y<=m.cards[i-1].y)result.failures.push({vp:vp.name,kind:'order',i,x});});
+            await p.screenshot({path:path.join(OUT,'screenshots',`${vp.name}-error-final.png`),fullPage:true}); result.viewports.push({vp,m}); await c.close();
+          }
+          await browser.close(); fs.writeFileSync(path.join(OUT,'ERROR_STATE_LAYOUT.json'),JSON.stringify(result,null,2)); console.log(JSON.stringify(result,null,2)); if(result.failures.length)process.exit(1);
+          JS
+          node error-guard.mjs
+          python - "$EVIDENCE_DIR/RESULT.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'));assert d.get('verdict')=='PASS_MOBILE_RUNTIME_VISUAL_CONFORMANCE_ISOLATED',d.get('hardFailures');assert not d.get('hardFailures'),d.get('hardFailures')
+          assert all(not row.get('violations') for row in d.get('accessibility',[])),d.get('accessibility')
+          PY
+
+      - name: Prove final product diff and record rollback
+        id: guard
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-final-evidence"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} + 2>/dev/null || true
+          rm -rf "$MOBILE_ROOT/.next" 2>/dev/null || true
+          mapfile -t p < <(git diff --name-only "$BASE_SHA"..HEAD -- "$MOBILE_ROOT")
+          test "${#p[@]}" = 3
+          printf '%s\n' "${p[@]}" > "$E/product-files.txt"
+          git diff "$BASE_SHA"..HEAD -- "$MOBILE_ROOT" > "$E/final-product.diff"
+          cat > "$E/ROLLBACK.json" <<JSON
+          {"rollbackBase":"$BASE_SHA","fixHead":"$(git rev-parse HEAD)","mainMutated":false,"beforeMerge":"close PR","afterMerge":"revert merge commit; never reset protected main"}
+          JSON
+
+      - name: Stop runner-owned Mobile
+        if: always()
+        shell: bash
+        run: |
+          set +e; if [ -f "$RUNNER_TEMP/mobile.pid" ]; then kill "$(cat "$RUNNER_TEMP/mobile.pid")" 2>/dev/null || true; fi; exit 0
+
+      - name: Upload final visual evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-final-visual-evidence-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-final-evidence/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Remove disposable fix workflows only after evidence PASS
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/mobile-runtime-visual-governed-fix-runner.yml .github/workflows/mobile-error-state-fix-runner.yml
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore(mobile): remove disposable visual fix carriers'
+          git push origin HEAD:fix/mobile-runtime-visual-conformance-3008
