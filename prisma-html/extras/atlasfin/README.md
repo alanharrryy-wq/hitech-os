@@ -1,176 +1,147 @@
-# PRISMA Visual Family Atlas · Piloto 1
+# PRISMA Atlasfin · Canonical Visual Cockpit
 
-## Páginas
+## Current state
 
-1. `index.html`
-2. `a-fundamentos.html`
-3. `g-tablas.html`
-4. `m-overlays.html`
-5. `z-gobierno.html`
+- Status: `ATLAS_COMPLETE_27_PAGES`
+- Public pages: **27** (`index.html` + A–Z)
+- Sections: **26**
+- Catalogued elements: **418**
+- Canonical human role: **visual-control cockpit**
+- Direct product mutation from browser: **forbidden**
 
-## Alcance
+Current structural truth is read from:
 
-- 418 elementos en el manifiesto.
-- 26 secciones A–Z.
-- 5 páginas públicas implementadas.
-- 7 acentos semánticos.
-- búsqueda global local;
-- motion normal, reducido o apagado;
-- sin servidor;
-- sin dependencias externas;
-- no modifica el repositorio.
+- `assets/data/atlas.manifest.json`
+- `assets/data/atlas.tokens.json`
+- `governance/ATLAS_COMPLETION_CONTRACT.json`
+- `generator/validate_atlas.py`
 
-## Abrir
+Atlasfin is **not** a second editable visual authority. PRISMA visual meaning lives under `../../authority/rifat/identity/`; exact route/owner/region/slot/layer location truth lives under `../../authority/rifat/prisma-ui/`.
+
+The canonical chain is:
+
+`Identity Dictionary -> surface adapter -> RIFAT/prisma-ui binding -> compiled projection -> Atlasfin preview/control -> separately authorized product projection -> runtime visual evidence`
+
+## Open
 
 `index.html`
 
-## Fuente
+## A–Z coverage
 
-- `source/atlasui.md`
-- `assets/data/atlas.manifest.json`
-- `assets/data/atlas.tokens.json`
+The current manifest maps 26 sections A–Z to 26 section pages plus `index.html`. Atlasfin includes foundations, materials, actions, text input, selection/filtering, navigation, tables, lists, panels/cards, expansion, states/feedback, loading/progress, overlays, operational components, screen patterns, motion, responsive/accessibility, content, analytics, files/media, calendar, commerce/payments, identity/security, diagnostics, internationalization/printing/offline and governance.
 
-Imagen canónica SHA-256:
+Do not use old pilot counters as current truth.
 
-`5fe81f9b981e881eaefe15284ab53f767f43ebfe9c8e771a5ce71e6074d647d4`
+## VISCORE status feed
 
+`tools/visual_core.py write --atlas-export` produces:
 
-## Corrección V2
+- `assets/data/visual-core.status.json`
+- `assets/data/visual-core.status.js`
 
-- Fondo exacto suministrado por el usuario.
-- Logo PRISMA real en topbar y portada.
-- Alcance visual: Tablet + PC + App.
-- Smoke ajustable entre 0% y 100%.
-- Valor smoke persistente en el navegador.
+Those files expose the current multi-surface readiness state to Atlasfin without turning Atlasfin into authority. The feed is derived from Identity Dictionary, RIFAT/prisma-ui and the projection manifest.
 
-### Hashes de autoridad visual
+## Exact visual control and product application
 
-- Fondo: `b78d7b4a33fb6cab1f0dafbd657f38d2929bb38bc7088d4a06138b1cadc2d346`
-- Logo completo: `37554226f3e05cf65fc0e9588a7a6eb4910c493a4ee0db4c5a40009ce970ae8a`
-- Isotipo: `51baaf426570d75f7ba7584e57674ac856bed59ee871dd1d7866e18ae5a01ccb`
+Atlasfin can prepare/export governed visual requests and read BEFORE, patch, gates, rollback, result and AFTER evidence. The browser does not write product files directly.
 
+The Tablet POS → Cobrar pilot remains the reference exact-target binding. Historical instruction-only artifacts retain `runtimeMutationAllowed=false` and `productApplicationAllowed=false`; product application requires a separately authorized exact runner and evidence.
 
-## Corrección V3
+Regenerate the canonical visual-control projection only with an immutable certified UIMAP batch:
 
-El fondo estaba oculto por un contexto de apilamiento incorrecto:
+```text
+py -3 generator/build_canonical_visual_control.py . --uimap-batch <batch.json> --mamastrophic-evidence <evidence.json> --application-result <result.json> --application-evidence <bundle.json>
+```
 
-- `.atlas-scene` pasó de `z-index: -3` a `z-index: 0`;
-- `.atlas-shell` ahora ocupa `z-index: 1`;
-- `body` es transparente;
-- `html` conserva el color de respaldo;
-- smoke predeterminado: 32%;
-- superficies documentales ligeramente más transparentes;
-- la preferencia smoke V3 se aplica a todas las páginas.
+Validate Atlasfin without opening a browser:
 
+```text
+powershell -NoProfile -File RUN.ps1
+```
 
-## Corrección V4
+Run the fail-closed static browser layout gate:
 
-- Grafito es el acento predeterminado.
-- Ocho acentos semánticos.
-- Tres controles independientes:
-  - smoke de escena;
-  - opacidad del chrome global;
-  - opacidad de superficies de contenido.
-- Topbar y sidebar usan saturación del backdrop.
-- Bordes de chrome con difracción prismática.
-- Trazas especulares horizontales y verticales.
-- Preferencias V4 aisladas de versiones anteriores.
+```text
+powershell -NoProfile -File RUN.ps1 -VisualLayoutGate -EvidenceRoot <output-directory>
+```
 
+The gate measures collisions, containment and overflow at 1365x768, 1024x768, 900x768 and 640x900, including long status-label wrapping.
 
-## Lote 2
+## Authority boundaries
 
-Páginas añadidas:
+Atlasfin may:
 
-- `b-materiales.html`
-- `c-acciones.html`
-- `d-entrada-texto.html`
-- `e-seleccion-filtros.html`
-- `f-navegacion.html`
+- visualize authority;
+- search/catalog components;
+- preview governed recipes;
+- inspect compatibility and migration information;
+- prepare/export requests;
+- display readiness/evidence.
 
-Total público: 10 páginas.
+Atlasfin may not:
 
-Incluye laboratorios interactivos de materiales, botones, campos, selección,
-filtros y navegación. Conserva grafito, tres controles de transparencia,
-difracción especular y el fondo canónico.
+- invent route/owner/slot/layer bindings;
+- override Identity Dictionary semantic meaning;
+- silently promote a reference catalog token into cross-app authority;
+- mutate generated product runtime directly;
+- claim READY from a static or functional smoke alone.
 
+## What is known and what is not
 
-## Polish Pass 1
+The repository proves the completed 27-page Atlas, its manifests, contracts, shared runtime and validators. It does **not** currently preserve enough tracked evidence to identify a single original general-purpose builder that produced every A–Z HTML page. That generation mechanism therefore remains `UNKNOWN` rather than being inferred.
 
-Embellecimiento incremental sobre A-G, M y Z:
+`atlas.js` consumes manifest data for runtime behavior such as search/navigation, while `validate_atlas.py` validates the materialized pages. Neither fact proves an original all-pages HTML generator.
 
-- bloom gaussiano localizado;
-- anillo de energía al presionar;
-- progreso multicapa con brillo y punto energético;
-- cards y laboratorios con reflejo localizado;
-- foco premium;
-- navegación y footer con mayor profundidad;
-- scrollbar premium;
-- sin reconstruir layouts ni añadir secciones.
+## Historical evolution
 
+The following chronology is retained as history. It is not current-state authority.
 
-## Interaction Refinement 1
+### Pilot 1
 
-- puntos/anillos de clic retirados;
-- brillo de puntero reducido y limitado a botones;
-- botones sólidos;
-- rail izquierdo translúcido;
-- cromatismo del rail reducido;
-- layouts y secciones intactos.
+The initial public pilot exposed `index.html`, `a-fundamentos.html`, `g-tablas.html`, `m-overlays.html` and `z-gobierno.html`, with local search, motion modes and no server dependency.
 
+### V2
 
-## Batch 3 · H–L
+- User-supplied canonical background.
+- Real PRISMA logo in topbar/cover.
+- Tablet + PC + App visual scope.
+- Adjustable/persistent smoke.
 
-Páginas añadidas:
+Historical visual hashes:
 
-- `h-listas.html`
-- `i-paneles-cards.html`
-- `j-expansion.html`
-- `k-estados-feedback.html`
-- `l-carga-progreso.html`
+- Background: `b78d7b4a33fb6cab1f0dafbd657f38d2929bb38bc7088d4a06138b1cadc2d346`
+- Full logo: `37554226f3e05cf65fc0e9588a7a6eb4910c493a4ee0db4c5a40009ce970ae8a`
+- Mark: `51baaf426570d75f7ba7584e57674ac856bed59ee871dd1d7866e18ae5a01ccb`
 
-El lote conserva todo lo aprobado en `atlasb2r.zip`. Sólo actualiza la
-navegación compartida y añade los contratos, estilos e interacciones necesarios
-para H–L.
+### V3
 
-Total público después de la fusión: 15 páginas.
+Corrected the scene/shell stacking context, transparent body handling and shared smoke preference.
 
+### V4
 
-## Completion N–Y
+- Graphite default accent.
+- Eight semantic accents.
+- Independent scene smoke, global chrome opacity and content-surface opacity controls.
+- Backdrop saturation and prism/chrome refinements.
 
-Añade doce páginas:
+### Batch 2
 
-N Operativos, O Patrones, P Movimiento, Q Responsive y accesibilidad,
-R Contenido, S Analítica, T Archivos, U Calendario, V Comercio,
-W Seguridad, X Diagnóstico y Y Internacionalización/impresión/offline.
+Added B–F and reached 10 public pages, with interactive material/action/input/selection/navigation labs.
 
-Resultado final: 27 páginas, 26 secciones y 418 elementos.
-Los cuerpos A–M y Z permanecen congelados; únicamente se refresca su navegación.
+### Polish Pass 1
 
-## Canonical visual control and exact Cobrar application
+Incremental A–G/M/Z visual polish without rebuilding page layout or sections.
 
-Atlasfin is the single canonical visual-control cabin. The Tablet POS → Cobrar pilot joins the certified UIMAP hierarchy, RIFAT binding and recipe, and the existing Code Atlas UI Bridge into one regenerable read-only projection.
+### Interaction Refinement 1
 
-- Open the control from `index.html`; its payload loads only on demand.
-- The plan is paginated and uses precomputed scalar search text.
-- The historical V1 pilot still has `runtimeMutationAllowed=false` and `productApplicationAllowed=false`.
-- The separate current transaction projection is `assets/data/visual-application.cobrar.current.json`.
-- The browser prepares/exports requests and reads BEFORE, patch, gates, rollback, result, and AFTER; it never writes product files.
-- Only the existing UI Bridge exact Cobrar runner can validate/apply the one-file product transaction.
-- Mamastrophic evidence records real state skips instead of fabricating loading or focus on a disabled control.
+Reduced pointer/click ornamentation, solidified buttons and simplified rail chroma while keeping structure intact.
 
-Regenerate only with an immutable certified UIMAP batch:
+### Batch 3 · H–L
 
-`py -3 generator/build_canonical_visual_control.py . --uimap-batch <batch.json> --mamastrophic-evidence <evidence.json> --application-result <result.json> --application-evidence <bundle.json>`
+Added H–L and reached 15 public pages. Existing bodies were preserved while shared navigation was refreshed.
 
-Validate without opening a browser:
+### Completion N–Y
 
-`powershell -NoProfile -File RUN.ps1`
+Added N–Y and completed the current Atlas at **27 pages, 26 sections and 418 elements**. Existing A–M and Z bodies remained preserved; navigation was refreshed.
 
-Run the fail-closed static browser layout gate without a server:
-
-`powershell -NoProfile -File RUN.ps1 -VisualLayoutGate -EvidenceRoot <output-directory>`
-
-The gate measures card collisions, parent containment, horizontal and vertical
-overflow, and client/scroll dimensions at 1365x768, 1024x768, 900x768, and
-640x900. It also injects long status labels in browser memory to exercise the
-canonical wrapping rules without changing Atlasfin data.
+Historical batches remain useful provenance, but all current counters and authority decisions must come from current manifests/registries/validators.
