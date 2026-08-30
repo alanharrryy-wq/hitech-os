@@ -6,6 +6,8 @@ Status: `VISCORE1_SOURCE_READY`
 
 PRISMA has one editable visual authority and many generated/runtime projections. The system must make visual work fast without turning Tablet, PC, Mobile, Web, Chart Lab, Control Center, Shared UI, Atlasfin and site catalogs into competing sources of truth.
 
+This file is the normative architecture contract. Daily operating procedure, validator troubleshooting, deterministic manifest refresh and PR closure are documented in `../../../../docs/ops/PRISMA_VISUAL_AUTHORITY_RUNBOOK.md`.
+
 ## Canonical chain
 
 `neutral meaning -> identity profile -> surface adapter -> certified owner/route/region/slot/layer binding -> compiled projection -> governed product projection -> static gates -> runtime visual evidence -> READY`
@@ -68,6 +70,10 @@ The intended daily workflow is:
 7. Promote only when all gates are green; otherwise show blockers and preserve rollback.
 
 Humans should not need to hunt through CSS files, parallel registries or stale README counters to discover visual truth.
+
+## Reconciliation invariant
+
+Static authority must not be used as an excuse to downgrade a legitimate newer product runtime. When an exact-byte-copy projection drifts, current history and the fresh task-scoped Authority Mesh determine the correct reconciliation direction. Once source and output bytes are intentionally equal, manifest hashes must be derived from those actual bytes and deterministic repository inventory must be regenerated mechanically.
 
 ## Non-goals of VISCORE1
 

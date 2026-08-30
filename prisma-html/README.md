@@ -18,6 +18,14 @@ The canonical roles are:
 
 The detailed contract lives in `authority/rifat/identity/contract/PRISMA_VISUAL_CORE_CONTRACT.md`.
 
+## Operator documentation
+
+Start with `docs/ops/PRISMA_VISUAL_AUTHORITY_RUNBOOK.md` for the complete operating flow: Authority Mesh preflight, what is editable, projection/reconciliation rules, validator semantics, deterministic `FILES_MANIFEST.json`, no-fake-green boundaries, CI certification, troubleshooting and safe PR closure.
+
+`docs/ops/README.md` indexes all operator-facing documentation.
+
+Important operating rule: if RIFAT and a product runtime disagree, do not overwrite the runtime merely to make validation green. Inspect current authority and Git history first, reconcile without downgrade, validate exact-byte-copy state, then refresh manifest hashes and `FILES_MANIFEST.json` mechanically.
+
 ## Open the visual system
 
 - Canonical cockpit: `extras/atlasfin/index.html`
@@ -46,7 +54,7 @@ npm run visual:check
 npm run visual:write
 ```
 
-`ready <surface>` is fail-closed. It returns blockers unless the entire governed readiness chain is proven. Compiled/source-ready is not runtime visual certification.
+`ready <surface>` is fail-closed. It returns blockers unless the entire governed readiness chain is proven. Compiled/source-ready is not runtime visual certification. A `ready` command that exits `2` is a truthful blocked state, not a failed architecture check to be bypassed.
 
 ## Identity commands
 
@@ -69,9 +77,26 @@ python tools/validate_identity_dictionary.py
 python tools/compile_identity_dictionary.py --check
 python extras/atlasfin/generator/validate_atlas.py extras/atlasfin
 python tools/validate_project.py --root . --report reports/source-validator-current.json
+python tools/refresh_files_manifest.py --check
 ```
 
 A functional or static PASS is not a visual PASS. Runtime/browser visual evidence remains a separate gate.
+
+## Governed change order
+
+For authority or runtime visual work, use this order:
+
+1. Generate a fresh task-scoped Authority Mesh with Layer Map.
+2. Review the readset, app-impact matrix, contract/gate matrix and unmapped-risk report.
+3. Change only the authorized authority layer.
+4. Validate Identity/RIFAT/Atlasfin as applicable.
+5. Reconcile deterministic product projections without downgrading legitimate newer runtime changes.
+6. Refresh `FILES_MANIFEST.json` only after all `prisma-html` edits are final.
+7. Run certification on one exact PR head SHA.
+8. If `main` moved, reconcile it and certify a new head SHA.
+9. Once the final SHA is green, do not add another cosmetic closing commit before merge.
+
+The detailed commands and failure cases are in `docs/ops/PRISMA_VISUAL_AUTHORITY_RUNBOOK.md`.
 
 ## Duplication rule
 
@@ -117,4 +142,4 @@ python tools/refresh_files_manifest.py --write
 python tools/refresh_files_manifest.py --check
 ```
 
-Do not maintain an exhaustive tree or file hashes by hand.
+Do not maintain an exhaustive tree or file hashes by hand. Generate `FILES_MANIFEST.json` after all other `prisma-html` changes are complete, because any later documentation or authority edit makes it stale again.

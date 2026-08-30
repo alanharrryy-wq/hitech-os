@@ -40,7 +40,10 @@ prisma-html/
 ├── reports/
 │   └── visual-core/                  # generated VISCORE status reports
 ├── paginas/                          # public narrative pages
-├── docs/                             # runbooks, history and evidence
+├── docs/
+│   └── ops/
+│       ├── README.md                 # operator documentation index
+│       └── PRISMA_VISUAL_AUTHORITY_RUNBOOK.md # canonical VISCORE operating guide
 └── README.md                         # current human entrypoint
 ```
 
@@ -62,3 +65,5 @@ python tools/refresh_files_manifest.py --check
 ```
 
 For a real filesystem inventory, query `FILES_MANIFEST.json`, the filesystem or Code Atlas at runtime. Do not extend this file into another manually maintained 500-line snapshot.
+
+For operating procedure, drift recovery, deterministic manifest refresh and exact-SHA certification closure, use `docs/ops/PRISMA_VISUAL_AUTHORITY_RUNBOOK.md`.

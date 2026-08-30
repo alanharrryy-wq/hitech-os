@@ -22,9 +22,23 @@ The canonical chain is:
 
 `Identity Dictionary -> surface adapter -> RIFAT/prisma-ui binding -> compiled projection -> Atlasfin preview/control -> separately authorized product projection -> runtime visual evidence`
 
+The complete operator runbook is `../../docs/ops/PRISMA_VISUAL_AUTHORITY_RUNBOOK.md`.
+
 ## Open
 
 `index.html`
+
+## Operator flow
+
+Use Atlasfin to inspect and prepare governed visual intent, not to bypass authority:
+
+1. Inspect the current VISCORE status and selected identity profile.
+2. Choose only a target backed by certified surface/owner/slot/layer truth.
+3. Preview or export the governed request.
+4. Run the separately authorized projection/application flow outside the browser when runtime mutation is approved.
+5. Require static gates, runtime/browser visual evidence and rollback/evidence before `READY`.
+
+If a product runtime and RIFAT source disagree, leave the browser out of the repair decision. Use the runbook, current Git history, the fresh Authority Mesh and `validate_rifat_authority.py` to reconcile without downgrade.
 
 ## A–Z coverage
 
@@ -40,6 +54,8 @@ Do not use old pilot counters as current truth.
 - `assets/data/visual-core.status.js`
 
 Those files expose the current multi-surface readiness state to Atlasfin without turning Atlasfin into authority. The feed is derived from Identity Dictionary, RIFAT/prisma-ui and the projection manifest.
+
+A surface displayed as blocked is not an Atlasfin failure. It is the intended fail-closed representation of missing readiness evidence.
 
 ## Exact visual control and product application
 
