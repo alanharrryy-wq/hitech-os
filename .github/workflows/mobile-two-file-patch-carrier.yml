@@ -1,0 +1,92 @@
+name: PRISMA Mobile Two File Repair Executor
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: write
+
+env:
+  BASE_SHA: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+  LAYOUT_PATH: 'apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx'
+  CSS_PATH: 'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css'
+
+jobs:
+  patch:
+    if: github.event.pull_request.head.ref == 'fix/mobile-a11y-visual-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail closed on base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+
+      - name: Apply exact governed repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          layout_path = Path('apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx')
+          css_path = Path('apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css')
+          layout = layout_path.read_text(encoding='utf-8')
+          css = css_path.read_text(encoding='utf-8')
+
+          layout_old = '  maximumScale: 1,\n'
+          alert_old = '.alertCompactList article {\n  grid-template-columns: 58px minmax(0, 1fr);\n}\n'
+          alert_new = '.alertCompactList article {\n  grid-template-columns: 58px minmax(0, 1fr);\n  grid-template-areas:\n    "severity title"\n    "severity action";\n  align-items: start;\n}\n\n.alertCompactList article > span {\n  grid-area: severity;\n  align-self: start;\n}\n\n.alertCompactList article > strong {\n  grid-area: title;\n  min-width: 0;\n}\n\n.alertCompactList article > p {\n  grid-area: action;\n  min-width: 0;\n}\n'
+          metric_anchor = '.metricStrip,\n.statusMatrix,\n.systemSignalGrid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n}\n'
+          metric_scoped = '\n.metricStrip[data-prisma-zone="mobile-license-devices"] {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.metricStrip[data-prisma-zone="mobile-license-devices"] .primaryMetricCard strong,\n.metricStrip[data-prisma-zone="mobile-license-devices"] .compactMetricCard strong {\n  font-size: clamp(17px, 4.6vw, 21px);\n  line-height: 1.08;\n  overflow-wrap: normal;\n  word-break: normal;\n  hyphens: none;\n}\n'
+
+          if layout_old in layout:
+              assert layout.count(layout_old) == 1
+              layout = layout.replace(layout_old, '', 1)
+          elif 'maximumScale:' in layout:
+              raise SystemExit('UNEXPECTED_MAXIMUM_SCALE_SHAPE')
+
+          if alert_new not in css:
+              if css.count(alert_old) != 1:
+                  raise SystemExit(f'ALERT_RULE_COUNT={css.count(alert_old)}')
+              css = css.replace(alert_old, alert_new, 1)
+
+          if metric_scoped.strip() not in css:
+              if css.count(metric_anchor) != 1:
+                  raise SystemExit(f'METRIC_ANCHOR_COUNT={css.count(metric_anchor)}')
+              css = css.replace(metric_anchor, metric_anchor + metric_scoped, 1)
+
+          if '!important' in alert_new or '!important' in metric_scoped:
+              raise SystemExit('IMPORTANT_FORBIDDEN')
+
+          layout_path.write_text(layout, encoding='utf-8')
+          css_path.write_text(css, encoding='utf-8')
+          PY
+
+          grep -F 'maximumScale' "$LAYOUT_PATH" && exit 1 || true
+          grep -F 'grid-template-areas:' "$CSS_PATH" >/dev/null
+          grep -F 'mobile-license-devices' "$CSS_PATH" >/dev/null
+
+          if git diff --quiet -- "$LAYOUT_PATH" "$CSS_PATH"; then
+            echo PATCH_ALREADY_PRESENT
+            exit 0
+          fi
+          mapfile -t files < <(git diff --name-only)
+          test "${#files[@]}" = "2"
+          printf '%s\n' "${files[@]}" | grep -Fx "$LAYOUT_PATH"
+          printf '%s\n' "${files[@]}" | grep -Fx "$CSS_PATH"
+          ! git diff -- "$LAYOUT_PATH" "$CSS_PATH" | grep -F '!important'
+          git config user.name 'PRISMA Governed Repair Runner'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- "$LAYOUT_PATH" "$CSS_PATH"
+          git commit -m 'fix(mobile): restore accessible phone readability'
+          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
