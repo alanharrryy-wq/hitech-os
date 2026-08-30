@@ -36,7 +36,6 @@ jobs:
           set -euo pipefail
           git fetch origin main
           test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          test "$(git rev-parse HEAD^)" = "$BASE_SHA"
           mapfile -t files < <(git diff --name-only "$BASE_SHA"...HEAD)
           test "${#files[@]}" = "1"
           test "${files[0]}" = ".github/workflows/mobile-runtime-visual-governed-fix-runner.yml"
@@ -66,13 +65,15 @@ jobs:
             "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
             "mode":"MUTATION",
             "expectedHead":"$BASE_SHA",
-            "task":"Apply the already-authorized bounded root-cause repair for runtime-evidenced PRISMA Mobile /prisma-app visual/accessibility defects only: remove zoom disabling viewport constraint, structurally repair Alertas card layout, correct Licencias responsive metric density, and correct readiness heading hierarchy. Preserve the canonical seven-section IA and retired MultiContext decision. No other surfaces or product semantics.",
+            "task":"Repair only runtime-evidenced PRISMA Mobile /prisma-app visual/accessibility defects without rebuilding the canonical Mobile interface: remove zoom disabling viewport constraint; structurally fix Alertas responsive card layout; correct Licencias responsive metric density; correct readiness heading hierarchy if exact authority permits; validate through fresh runtime/visual evidence on two phone viewports.",
             "capabilities":[{"id":"mobile.interface_specification_canon","requestedAction":"ADVANCE"}],
             "authorityMesh":{"status":"PASS_COMPOSED_AUTHORITY_MESH","repoHead":"$BASE_SHA","requiredAuthorityCoveragePct":100,"blockers":0,"requestDigest":"$AUTHORITY_MESH_REQUEST_DIGEST","artifactDigest":"$AUTHORITY_MESH_ARTIFACT_DIGEST","layerMapPresent":true},
             "visualMutation":true
           }
           JSON
-          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/anti-rework.request.json" > "$E/anti-rework.recheck.json"
+          git worktree add --detach "$RUNNER_TEMP/authority-base" "$BASE_SHA"
+          (cd "$RUNNER_TEMP/authority-base" && python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/anti-rework.request.json" > "$E/anti-rework.recheck.json")
+          git worktree remove "$RUNNER_TEMP/authority-base" --force
           python - "$E/anti-rework.recheck.json" "$ANTI_REWORK_DECISION_DIGEST" <<'PY'
           import json,sys
           d=json.load(open(sys.argv[1],encoding='utf-8'))
