@@ -9,7 +9,7 @@ on:
       - '.github/workflows/sync-sentinel-ledger-close-mutation-gate-v2.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -96,13 +96,191 @@ jobs:
           print('PASS_SYNC_SENTINEL_LEDGER_CLOSE_MUTATION_AUTHORITY_V2')
           print('DECISION_DIGEST=' + d['decisionDigest'])
           PY
-      - name: Stage gate evidence
+      - name: Apply exact Factory Ledger promotion on clean main worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/base"
+          test "$(git rev-parse HEAD)" = '5e79c3c36c635b2051681e510b3ab61fc348c627'
+          test -z "$(git status --porcelain)"
+          OUT_BRANCH='governance/sync-sentinel-ledger-close-3008-v2'
+          if git ls-remote --exit-code --heads origin "$OUT_BRANCH" >/dev/null 2>&1; then
+            echo "OUT_BRANCH_ALREADY_EXISTS:$OUT_BRANCH" >&2
+            exit 41
+          fi
+          git switch -c "$OUT_BRANCH"
+          python - <<'PY'
+          from __future__ import annotations
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          root = Path.cwd()
+          ledger_path = root / 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
+          dnr_path = root / 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json'
+          reg_path = root / 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
+          evidence_path = root / 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+          paths = [ledger_path, dnr_path, reg_path, evidence_path]
+          docs = [json.loads(p.read_text(encoding='utf-8')) for p in paths]
+          ledger, dnr, reg, evidence = docs
+
+          caps = {row['id']: row for row in ledger['capabilities']}
+          target = caps['tooling.sync_sentinel']
+          assert target['classification'] == 'BUILD', target
+          assert target['status'] == 'NOT_STARTED', target
+          assert target['doNotRebuild'] is False, target
+          for cid, status in (
+              ('tablet.sync.runtime_truth', 'RUNTIME_VERIFIED'),
+              ('pc.sync.dispatch_replay_runtime', 'RUNTIME_VERIFIED'),
+              ('data.canonical_schema_reproducibility', 'LOCAL_VERIFIED'),
+          ):
+              row = caps[cid]
+              assert row['classification'] == 'DONE', row
+              assert row['status'] == status, row
+              assert row['doNotRebuild'] is True, row
+
+          stamp = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
+          v15_digest = '7e12f08c2d48302806017e80baa7fd6659d1efc43186e8d18a08a0b865ddcb12'
+          mesh_digest = '8f76446b1c2bebe2765b59ff03b483ad6c8b797abab9c8b405f25ebde396262c'
+          decision = 'bf0d03389f40fe365809d7100db7927c8ac23cec60f412884a423473b474f52b'
+          gate_digest = '6220e6678d5e01bc8750dd600e47459e8bf11f40509aa280034b8a52cb9b3311'
+          next_gate = ('Reuse the merged Sync Sentinel V15 runtime-verified baseline. Re-run isolated read-only/runtime '
+                       'recertification after relevant Sentinel, sync-contract, dependency, Prisma or source drift. '
+                       'Hosted/customer production, live/customer database use, distribution/release readiness and '
+                       'future-drift certification remain separate governed gates.')
+
+          target['classification'] = 'DONE'
+          target['status'] = 'RUNTIME_VERIFIED'
+          target['stateLabel'] = 'PASS_SYNC_SENTINEL_V15_RUNTIME_VERIFIED'
+          target['doNotRebuild'] = True
+          target['nextGate'] = next_gate
+          for item in [
+              'PR #446 merge 7d2124db8eb56a861e401323e799a5ef546f1829',
+              f'Final Sync Sentinel V15 run 33314496417 artifact 9733024541 sha256:{v15_digest}',
+              'V15 doctor, real Journey A/B, negative A-L and certification PASS; liveDbTouched=false; sourceDrift=false; cleanupPass=true; orphanProcesses=false; secretFindings=0; productionCertified=false',
+              f'Post-merge close Authority Mesh run 33316409123 artifact 9733593166 requestDigest 3b5e6733e27d8839675263d7deb111ecdf6dd4808fc3f874583f0cc133afe8a0 composed sha256:{mesh_digest}',
+              f'Post-merge close MUTATION gate run 33316601408 artifact 9733633837 sha256:{gate_digest} decision {decision}',
+          ]:
+              if item not in target['evidence']:
+                  target['evidence'].append(item)
+          target['doesNotProve'] = [
+              'Hosted production or customer deployment readiness',
+              'Any mutation or certification of a live/customer database; V15 used Sentinel-owned isolated temporary persistence only',
+              'Deployed/customer network topology or hosted production PC transport end-to-end certification',
+              'Distribution or release readiness',
+              'Future correctness after relevant Sentinel, sync-contract, dependency, Prisma or source drift without recertification',
+              'productionCertified=true; V15 and this closure explicitly preserve productionCertified=false',
+          ]
+          target['allowedActions'] = [
+              'reuse the merged runtime-verified Sync Sentinel without rebuilding it',
+              'run scan, diagnose, doctor, e2e and certify in the Sentinel-owned isolated capsule',
+              'run read-only or isolated recertification after relevant drift under fresh exact authority',
+              'fix demonstrated Sync Sentinel tooling drift only under fresh task-exact Authority Mesh and anti-rework MUTATION authority',
+          ]
+          target['forbiddenActions'] = [
+              'reimplement Tablet or PC sync business logic in Python',
+              'modify Tablet or PC product sync source merely to facilitate Sentinel tests',
+              'modify CSS, visual components, layouts, pages, visual tokens, Shared UI, Chart Lab, Mobile or visual recipes under this capability',
+              'touch customer/live databases or global user processes during isolated E2E',
+              'claim PASS when any mandatory assertion is UNKNOWN or BLOCKED',
+              'claim productionCertified from isolated or local evidence',
+          ]
+          target['forbiddenClaims'] = [
+              'Do not claim hosted production or customer-live certification from V15 isolated evidence.',
+              'Do not claim productionCertified=true; the certified evidence explicitly records productionCertified=false.',
+              'Do not claim future correctness after relevant source, dependency, contract or Prisma drift without fresh recertification.',
+          ]
+          ledger['updatedAt'] = stamp
+
+          assert 'tooling.sync_sentinel' not in dnr.get('verifyOrFix', {}), dnr.get('verifyOrFix', {}).get('tooling.sync_sentinel')
+          dnr.setdefault('doNotRebuild', {})['tooling.sync_sentinel'] = {
+              'value': True,
+              'reason': 'PASS_SYNC_SENTINEL_V15_RUNTIME_VERIFIED',
+              'evidence': f'PR #446 merge 7d2124db8eb56a861e401323e799a5ef546f1829 / V15 run 33314496417 artifact 9733024541 sha256:{v15_digest} / post-merge Authority run 33316409123 / MUTATION gate run 33316601408',
+              'updatedAt': stamp,
+          }
+          dnr['updatedAt'] = stamp
+
+          reg.setdefault('registrations', {})['tooling.sync_sentinel'] = {
+              'status': 'DONE_RUNTIME_VERIFIED',
+              'updatedAt': stamp,
+              'evidence': f'PR #446 merge 7d2124db8eb56a861e401323e799a5ef546f1829 / V15 run 33314496417 artifact 9733024541 / post-merge Authority run 33316409123 / MUTATION gate run 33316601408',
+              'sourceEvidenceSha256': v15_digest.upper(),
+              'doNotRebuild': True,
+              'nextGate': next_gate,
+          }
+          if 'updatedAt' in reg:
+              reg['updatedAt'] = stamp
+
+          artifact_name = 'PRISMA Sync Sentinel V15 — PR #446 / run 33314496417 / artifact 9733024541'
+          assert not any(row.get('artifact') == artifact_name for row in evidence.get('artifacts', [])), artifact_name
+          evidence['artifacts'].append({
+              'artifact': artifact_name,
+              'type': 'prisma_sync_sentinel_runtime_verification',
+              'scope': ['tooling', 'sync', 'tablet', 'pc', 'governance', 'quality'],
+              'status': 'PASS_RUNTIME_VERIFIED',
+              'proves': [
+                  'Bounded reusable PRISMA Sync Sentinel tooling is merged in PR #446 without product-source files in the final PR diff',
+                  'Real Tablet to PC Journey A exercised the real Tablet Outbox and dispatcher, loopback transport, real PC ingest/projector/ACK and Tablet reconciliation in isolated persistence',
+                  'Real PC to Tablet Journey B exercised the real catalog exporter, Tablet pull/validation/apply/checkpoint path and preserved the Tablet local stock invariant',
+                  'Mandatory negative cases A through L passed through real owner paths with fail-closed behavior and causal fault localization',
+                  'Sentinel capsule resolved PC and Tablet app-local Prisma dependencies using frozen lockfiles without package or lockfile mutation',
+                  'V15 recorded liveDbTouched=false, sourceDrift=false, cleanupPass=true, orphanProcesses=false and secretFindings=0',
+                  'Fresh current-main post-merge Authority Mesh and universal anti-rework MUTATION gate authorize this Factory Ledger promotion',
+              ],
+              'doesNotProve': [
+                  'Hosted production or customer deployment readiness',
+                  'Mutation or certification of any live/customer database',
+                  'productionCertified=true; V15 explicitly records productionCertified=false',
+                  'Distribution or release readiness',
+                  'Future correctness after relevant source, dependency, contract or Prisma drift without recertification',
+                  'Runtime or visual certification of unrelated product or UI surfaces',
+              ],
+              'evidence': [
+                  f'V15 artifact sha256:{v15_digest}',
+                  f'Post-merge Authority Mesh run 33316409123 artifact 9733593166 composed sha256:{mesh_digest}',
+                  f'MUTATION gate run 33316601408 artifact 9733633837 sha256:{gate_digest} decision {decision}',
+              ],
+          })
+          if 'updatedAt' in evidence:
+              evidence['updatedAt'] = stamp
+
+          # Cross-record fail-closed consistency checks before writing.
+          assert target['classification'] == 'DONE' and target['status'] == 'RUNTIME_VERIFIED' and target['doNotRebuild'] is True
+          assert dnr['doNotRebuild']['tooling.sync_sentinel']['value'] is True
+          assert reg['registrations']['tooling.sync_sentinel']['status'] == 'DONE_RUNTIME_VERIFIED'
+          assert reg['registrations']['tooling.sync_sentinel']['doNotRebuild'] is True
+          assert any(row.get('artifact') == artifact_name and row.get('status') == 'PASS_RUNTIME_VERIFIED' for row in evidence['artifacts'])
+          for p, obj in zip(paths, docs):
+              p.write_text(json.dumps(obj, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('PASS_SYNC_SENTINEL_LEDGER_TRANSFORM_EXACT_4')
+          PY
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate | tee "$RUNNER_TEMP/post-mutation-authority.json"
+          grep -Fq 'PASS_PRISMA_ANTI_REWORK_AUTHORITY' "$RUNNER_TEMP/post-mutation-authority.json"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test | tee "$RUNNER_TEMP/post-mutation-selftest.log"
+          grep -Fq 'PASS_PRISMA_UNIVERSAL_ANTI_REWORK_GATE_SELF_TEST' "$RUNNER_TEMP/post-mutation-selftest.log"
+          mapfile -t changed < <(git diff --name-only)
+          test "${#changed[@]}" -eq 4
+          printf '%s\n' "${changed[@]}" | grep -Fxq 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json'
+          printf '%s\n' "${changed[@]}" | grep -Fxq 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json'
+          printf '%s\n' "${changed[@]}" | grep -Fxq 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json'
+          printf '%s\n' "${changed[@]}" | grep -Fxq 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+          git diff --check
+          git config user.name 'prisma-governance-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -- 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json' 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json'
+          git diff --cached --quiet && { echo 'NO_LEDGER_DIFF' >&2; exit 42; }
+          git commit -m 'chore(governance): close Sync Sentinel ledger'
+          git push origin "HEAD:refs/heads/$OUT_BRANCH"
+          git rev-parse HEAD | tee "$RUNNER_TEMP/governance-branch-head.txt"
+          printf '%s\n' "${changed[@]}" > "$RUNNER_TEMP/governance-changed-files.txt"
+      - name: Stage gate and apply evidence
         if: always()
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p mutation-gate-evidence
-          for f in anti-rework-authority.json anti-rework-selftest.log gate.request.json gate.result.json; do
+          for f in anti-rework-authority.json anti-rework-selftest.log gate.request.json gate.result.json post-mutation-authority.json post-mutation-selftest.log governance-branch-head.txt governance-changed-files.txt; do
             [ ! -f "$RUNNER_TEMP/$f" ] || cp "$RUNNER_TEMP/$f" mutation-gate-evidence/
           done
           printf '%s\n' \
@@ -110,6 +288,7 @@ jobs:
             'AUTHORITY_MESH_RUN=33316409123' \
             'AUTHORITY_MESH_REQUEST_DIGEST=3b5e6733e27d8839675263d7deb111ecdf6dd4808fc3f874583f0cc133afe8a0' \
             'AUTHORITY_MESH_COMPOSED_SHA256=8f76446b1c2bebe2765b59ff03b483ad6c8b797abab9c8b405f25ebde396262c' \
+            'MUTATION_DECISION=bf0d03389f40fe365809d7100db7927c8ac23cec60f412884a423473b474f52b' \
             'VISUAL_MUTATION=false' \
             'PRODUCT_MUTATION_AUTHORIZED=false' > mutation-gate-evidence/CONTEXT.txt
       - name: Upload mutation gate evidence
