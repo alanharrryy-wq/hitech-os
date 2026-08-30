@@ -29,6 +29,9 @@ const ids = {
   priceListItemId: "price_list_item_sync_sentinel",
 };
 
+type FaultMode = "online" | "ingest_unavailable";
+let faultMode: FaultMode = "online";
+
 async function seedPc() {
   const now = new Date();
   await prisma.business.upsert({ where: { id: ids.businessId }, update: { name: "Sync Sentinel PC" }, create: { id: ids.businessId, name: "Sync Sentinel PC", currency: "MXN" } });
@@ -76,8 +79,9 @@ await seedPc();
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url ?? "/", "http://127.0.0.1");
-    if (req.method === "GET" && url.pathname === "/api/health") return json(res, 200, { ok: true, source: "sync-sentinel-loopback-bridge" });
+    if (req.method === "GET" && url.pathname === "/api/health") return json(res, 200, { ok: true, source: "sync-sentinel-loopback-bridge", faultMode });
     if (req.method === "POST" && url.pathname === "/api/backoffice/sync/ingest") {
+      if (faultMode === "ingest_unavailable") return json(res, 503, { ok: false, code: "SYNC_SENTINEL_PC_INGEST_UNAVAILABLE" });
       const payload = await body(req);
       const result = await persistSyncIngestPayload(payload);
       return json(res, ingestHttpStatus(result), { ok: Number(result?.summary?.rejected ?? 0) === 0, data: result, endpoint: "POST /api/backoffice/sync/ingest", persistence: result?.meta?.persistence });
@@ -87,20 +91,46 @@ const server = http.createServer(async (req, res) => {
       const result = await exportPcCatalogDelta({ ...payload, businessId: payload.businessId || ids.businessId }, { recordAudit: false });
       return json(res, 200, { ok: true, data: result.envelope, auditEventId: null });
     }
+    if (req.method === "POST" && url.pathname === "/__sentinel/fault") {
+      if (!controlAuthorized(req)) return json(res, 403, { ok: false, code: "FORBIDDEN" });
+      const payload = (await body(req)) ?? {};
+      const requested = String(payload.mode || "online");
+      if (requested !== "online" && requested !== "ingest_unavailable") return json(res, 400, { ok: false, code: "INVALID_FAULT_MODE" });
+      faultMode = requested as FaultMode;
+      return json(res, 200, { ok: true, faultMode });
+    }
+    if (req.method === "POST" && url.pathname === "/__sentinel/expected-scope") {
+      if (!controlAuthorized(req)) return json(res, 403, { ok: false, code: "FORBIDDEN" });
+      const payload = (await body(req)) ?? {};
+      process.env.PRISMA_SYNC_TENANT_ID = String(payload.tenantId || "").trim();
+      process.env.PRISMA_SYNC_CUSTOMER_ID = String(payload.customerId || "").trim();
+      return json(res, 200, { ok: true, tenantScopeEnabled: Boolean(process.env.PRISMA_SYNC_TENANT_ID), customerScopeEnabled: Boolean(process.env.PRISMA_SYNC_CUSTOMER_ID) });
+    }
     if (req.method === "POST" && url.pathname === "/__sentinel/catalog-mutation") {
       if (!controlAuthorized(req)) return json(res, 403, { ok: false, code: "FORBIDDEN" });
       const payload = (await body(req)) ?? {};
       const product = await prisma.product.update({ where: { id: ids.productId }, data: { name: String(payload.name || "Sentinel Product v2"), priceCents: Number(payload.priceCents ?? 1777), stockOnHand: Number(payload.stockOnHand ?? 999) } });
       return json(res, 200, { ok: true, product: { id: product.id, name: product.name, priceCents: product.priceCents, stockOnHand: product.stockOnHand, updatedAt: product.updatedAt } });
     }
+    if (req.method === "POST" && url.pathname === "/__sentinel/catalog-envelope") {
+      if (!controlAuthorized(req)) return json(res, 403, { ok: false, code: "FORBIDDEN" });
+      const payload = (await body(req)) ?? {};
+      const result = await exportPcCatalogDelta({ ...payload, businessId: payload.businessId || ids.businessId }, { recordAudit: false });
+      return json(res, 200, { ok: true, data: result.envelope });
+    }
     if (req.method === "GET" && url.pathname === "/__sentinel/state") {
       if (!controlAuthorized(req)) return json(res, 403, { ok: false, code: "FORBIDDEN" });
-      const [sale, product, outbox] = await Promise.all([
-        prisma.sale.findFirst({ where: { businessId: ids.businessId, folio: "SYNC-SENTINEL-SALE" }, include: { lines: true, paymentTenders: true } }),
+      const businessId = url.searchParams.get("businessId")?.trim() || ids.businessId;
+      const eventId = url.searchParams.get("eventId")?.trim() || "";
+      const folio = url.searchParams.get("folio")?.trim() || "SYNC-SENTINEL-SALE";
+      const [sale, saleCount, product, outbox, event] = await Promise.all([
+        prisma.sale.findFirst({ where: { businessId, folio }, include: { lines: true, paymentTenders: true } }),
+        prisma.sale.count({ where: { businessId } }),
         prisma.product.findUnique({ where: { id: ids.productId } }),
-        prisma.outboxEvent.findMany({ where: { businessId: ids.businessId, topic: "sale.completed" }, orderBy: { createdAt: "desc" }, take: 5 }),
+        prisma.outboxEvent.findMany({ where: { businessId, topic: "sale.completed" }, orderBy: { createdAt: "desc" }, take: 25 }),
+        eventId ? prisma.outboxEvent.findUnique({ where: { id: eventId } }) : Promise.resolve(null),
       ]);
-      return json(res, 200, { ok: true, sale, product, outbox });
+      return json(res, 200, { ok: true, sale, saleCount, product, outbox, event, faultMode });
     }
     return json(res, 404, { ok: false, code: "NOT_FOUND" });
   } catch (error) {
