@@ -182,7 +182,30 @@ def _verify_composed(composed_bytes: bytes) -> tuple[zipfile.ZipFile, dict[str, 
     if report.get("requestDigest") != request.get("requestDigest"):
         raise RevalidationError("PRIOR_REQUEST_DIGEST_MISMATCH")
     if report.get("repoHead") != request.get("expectedHead"):
-        raise RevalidationError("PRIOR_HEAD_REQUEST_MISMATCH")
+        revalidation_name = "PRISMA_MESH_REVALIDATION.json"
+        if revalidation_name not in names:
+            raise RevalidationError("PRIOR_HEAD_REQUEST_MISMATCH")
+        revalidation = _load_json(z, revalidation_name)
+        recorded_digest = str(revalidation.get("revalidationDigest") or "")
+        digest_input = dict(revalidation)
+        digest_input.pop("revalidationDigest", None)
+        valid_chain = (
+            report.get("authorityReusePolicy") == "REVALIDATED_RELEVANT_DRIFT_NOT_STALE_REUSE"
+            and report.get("revalidationStatus") in {PASS_NO_RELEVANT_DRIFT, PASS_ALREADY_CURRENT}
+            and report.get("revalidationCurrentHead") == report.get("repoHead")
+            and revalidation.get("currentHead") == report.get("repoHead")
+            and revalidation.get("status") == report.get("revalidationStatus")
+            and recorded_digest != ""
+            and recorded_digest == report.get("revalidationDigest")
+            and _digest_json(digest_input) == recorded_digest
+            and report.get("fullMeshRerun") is False
+            and report.get("readOnly") is True
+            and report.get("productionCertified") is False
+            and revalidation.get("readOnly") is True
+            and revalidation.get("productionCertified") is False
+        )
+        if not valid_chain:
+            raise RevalidationError("PRIOR_REVALIDATION_CHAIN_INVALID")
     return z, manifest, report, request
 
 
