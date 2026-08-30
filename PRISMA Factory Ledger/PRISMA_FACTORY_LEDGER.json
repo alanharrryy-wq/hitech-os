@@ -1493,11 +1493,11 @@
         "pc",
         "governance"
       ],
-      "classification": "BUILD",
-      "status": "NOT_STARTED",
-      "stateLabel": "SYNC_SENTINEL_CANONICAL_REGISTERED_NOT_STARTED",
-      "doNotRebuild": false,
-      "nextGate": "Build the bounded reusable Sync Sentinel under tools/prisma-sentinels using a fresh exact-current-main Authority Mesh and universal anti-rework MUTATION gate. Reuse tablet.sync.runtime_truth and pc.sync.dispatch_replay_runtime; do not modify Tablet/PC product sync owners or any visual/product UI surface unless separate evidence proves a real defect and fresh FIX authority is obtained.",
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_SYNC_SENTINEL_V15_RUNTIME_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "Reuse the merged Sync Sentinel V15 runtime-verified baseline. Re-run isolated read-only/runtime recertification after relevant Sentinel, sync-contract, dependency, Prisma or source drift. Hosted/customer production, live/customer database use, distribution/release readiness and future-drift certification remain separate governed gates.",
       "evidence": [
         "PRISMA Sync Sentinel registration preflight Remote AutoMesh run 33144935939",
         "Remote AutoMesh artifact 9675400060 sha256:2ed8a6b369d31e3ea84d884fb993c0a1e4ba18057f50d9090f2099db178939ef",
@@ -1505,23 +1505,26 @@
         "Authority requestDigest 0400e28ec99b7392ee63a070d6c4308e683f91a0b7d510941c6ec6a41b8208b9",
         "main@214a83b5c13f104d1e86b1dd4e7096e63308dc74",
         "apps/terminal-de-venta-system/docs/sync/PC_TABLET_SYNC_CURRENT_AUTHORITY.md",
-        "tools/prisma-sentinels/README_TABLET_SENTINEL.md"
+        "tools/prisma-sentinels/README_TABLET_SENTINEL.md",
+        "PR #446 merge 7d2124db8eb56a861e401323e799a5ef546f1829",
+        "Final Sync Sentinel V15 run 33314496417 artifact 9733024541 sha256:7e12f08c2d48302806017e80baa7fd6659d1efc43186e8d18a08a0b865ddcb12",
+        "V15 doctor, real Journey A/B, negative A-L and certification PASS; liveDbTouched=false; sourceDrift=false; cleanupPass=true; orphanProcesses=false; secretFindings=0; productionCertified=false",
+        "Post-merge close Authority Mesh run 33316409123 artifact 9733593166 requestDigest 3b5e6733e27d8839675263d7deb111ecdf6dd4808fc3f874583f0cc133afe8a0 composed sha256:8f76446b1c2bebe2765b59ff03b483ad6c8b797abab9c8b405f25ebde396262c",
+        "Post-merge close MUTATION gate run 33316601408 artifact 9733633837 sha256:6220e6678d5e01bc8750dd600e47459e8bf11f40509aa280034b8a52cb9b3311 decision bf0d03389f40fe365809d7100db7927c8ac23cec60f412884a423473b474f52b"
       ],
       "doesNotProve": [
-        "Sync Sentinel source exists or is merged",
-        "SCAN, DIAGNOSE, E2E or CERTIFY behavior",
-        "DB-backed Tablet ↔ PC end-to-end synchronization",
-        "PC → Tablet catalog-delta end-to-end synchronization",
-        "Negative-test coverage or fail-closed behavior",
-        "Live/customer database safety until the Sentinel safety guard is implemented and verified",
-        "Hosted production readiness or production certification",
-        "Future correctness after source drift"
+        "Hosted production or customer deployment readiness",
+        "Any mutation or certification of a live/customer database; V15 used Sentinel-owned isolated temporary persistence only",
+        "Deployed/customer network topology or hosted production PC transport end-to-end certification",
+        "Distribution or release readiness",
+        "Future correctness after relevant Sentinel, sync-contract, dependency, Prisma or source drift without recertification",
+        "productionCertified=true; V15 and this closure explicitly preserve productionCertified=false"
       ],
       "allowedActions": [
-        "build the bounded reusable Sync Sentinel tooling under fresh exact authority",
-        "reuse existing Tablet and PC sync owners, contracts and verifiers read-only",
-        "run isolated temporary-DB verification without mutating customer/live databases",
-        "advance evidence only after fail-closed tests and real end-to-end proof"
+        "reuse the merged runtime-verified Sync Sentinel without rebuilding it",
+        "run scan, diagnose, doctor, e2e and certify in the Sentinel-owned isolated capsule",
+        "run read-only or isolated recertification after relevant drift under fresh exact authority",
+        "fix demonstrated Sync Sentinel tooling drift only under fresh task-exact Authority Mesh and anti-rework MUTATION authority"
       ],
       "forbiddenActions": [
         "reimplement Tablet or PC sync business logic in Python",
@@ -1529,12 +1532,12 @@
         "modify CSS, visual components, layouts, pages, visual tokens, Shared UI, Chart Lab, Mobile or visual recipes under this capability",
         "touch customer/live databases or global user processes during isolated E2E",
         "claim PASS when any mandatory assertion is UNKNOWN or BLOCKED",
-        "claim productionCertified from local or isolated evidence"
+        "claim productionCertified from isolated or local evidence"
       ],
       "forbiddenClaims": [
-        "Do not claim Sync Sentinel is implemented from this registration.",
-        "Do not claim Tablet ↔ PC E2E is certified until the full real-code isolated journeys and mandatory negative tests pass.",
-        "Do not claim hosted production or customer-live certification from local isolated evidence."
+        "Do not claim hosted production or customer-live certification from V15 isolated evidence.",
+        "Do not claim productionCertified=true; the certified evidence explicitly records productionCertified=false.",
+        "Do not claim future correctness after relevant source, dependency, contract or Prisma drift without fresh recertification."
       ]
     },
     {
@@ -1625,5 +1628,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-08-29T17:21:18Z"
+  "updatedAt": "2026-08-30T14:28:15Z"
 }
