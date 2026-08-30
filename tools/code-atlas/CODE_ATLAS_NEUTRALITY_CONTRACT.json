@@ -29,6 +29,7 @@
     "src/code_atlas/motors/smart_allmesh_parallel.py",
     "src/code_atlas/motors/smart_allmesh_controller.py",
     "src/code_atlas/motors/prisma_mesh_gateway.py",
+    "src/code_atlas/motors/prisma_mesh_revalidation.py",
     "src/code_atlas/ui/legal_readiness.py",
     "src/code_atlas/ui/motor_hub.py",
     "src/code_atlas/appbrain_workbench/runner.py",
@@ -64,7 +65,8 @@
     "src/code_atlas/evidence_ingestion/licscope_evidence_adapter.py": "Explicit product licensing-scope evidence adapter.",
     "src/code_atlas/operational/verify_licscope_bridge.py": "Verifier for the explicit licensing-scope compatibility adapter.",
     "src/code_atlas/evidence_ingestion/triad_close.py": "Legacy product evidence triad closer that writes product registers; never selected by neutral execution.",
-    "src/code_atlas/motors/prisma_mesh_gateway.py": "Explicit product authority gateway that consumes neutral repository intelligence and composes product-specific authority requirements and legacy surface evidence."
+    "src/code_atlas/motors/prisma_mesh_gateway.py": "Explicit product authority gateway that consumes neutral repository intelligence and composes product-specific authority requirements and legacy surface evidence.",
+    "src/code_atlas/motors/prisma_mesh_revalidation.py": "Explicit PRISMA Authority Mesh revalidation adapter. It consumes previously composed product authority evidence, evaluates task-bound relevant drift, and is reachable only through its named module/workflow entrypoint; neutral Code Atlas execution never selects it implicitly."
   },
   "forbiddenNeutralLiterals": [
     "hitech-os",
