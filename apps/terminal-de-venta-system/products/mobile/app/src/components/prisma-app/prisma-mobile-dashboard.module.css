@@ -303,6 +303,15 @@
   gap: 7px;
 }
 
+.errorSignalGrid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.errorSignalGrid article {
+  display: grid;
+  gap: 5px;
+}
+
 .crystalQuickRead article,
 .metricCard,
 .commandScoreCard,
@@ -1225,6 +1234,17 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.metricStrip[data-prisma-zone="mobile-license-devices"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.metricStrip[data-prisma-zone="mobile-license-devices"] :is(.primaryMetricCard, .compactMetricCard) strong {
+  font-size: clamp(15px, 4.3vw, 18px);
+  line-height: 1.05;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
 .primaryMetricCard,
 .compactMetricCard,
 .statusMatrix article,
@@ -1290,7 +1310,7 @@
 .systemSignalGrid strong,
 .alertCompactList strong,
 .stockCompactList strong,
-.dataReadinessPanel h4,
+.dataReadinessPanel h3,
 .systemContractDrawer summary strong {
   margin: 0;
   color: var(--mcc-ink);
@@ -1377,6 +1397,25 @@
 
 .alertCompactList article {
   grid-template-columns: 58px minmax(0, 1fr);
+  grid-template-areas:
+    "severity title"
+    "severity detail";
+  align-items: start;
+}
+
+.alertCompactList article > span {
+  grid-area: severity;
+  align-self: start;
+}
+
+.alertCompactList article > strong {
+  grid-area: title;
+  min-width: 0;
+}
+
+.alertCompactList article > p {
+  grid-area: detail;
+  min-width: 0;
 }
 
 .stockCompactList em {
