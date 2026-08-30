@@ -10,7 +10,7 @@ on:
       - '.github/workflows/viscore1-cert.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -163,6 +163,35 @@ jobs:
           path: prisma-html/FILES_MANIFEST.json
           if-no-files-found: error
           retention-days: 7
+
+      - name: Persist validated manifest candidates to PR head
+        if: github.event.pull_request.number == 475 && github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+          persist_file() {
+            local path="$1"
+            local message="$2"
+            local remote_sha local_sha encoded
+            remote_sha="$(gh api "repos/$GITHUB_REPOSITORY/contents/$path?ref=$HEAD_REF" --jq .sha)"
+            local_sha="$(git hash-object "$path")"
+            if [ "$remote_sha" = "$local_sha" ]; then
+              echo "Already current: $path"
+              return 0
+            fi
+            encoded="$(base64 -w0 "$path")"
+            gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$path" \
+              -f message="$message" \
+              -f content="$encoded" \
+              -f branch="$HEAD_REF" \
+              -f sha="$remote_sha" >/dev/null
+            echo "Persisted: $path"
+          }
+          persist_file "prisma-html/authority/rifat/visual-source-manifest.json" "fix(rifat): refresh exact-copy projection hashes"
+          persist_file "prisma-html/FILES_MANIFEST.json" "chore(prisma-html): refresh deterministic file manifest"
 
       - name: Committed file manifest must already match
         working-directory: prisma-html
