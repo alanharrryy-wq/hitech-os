@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import stat
 import subprocess
 import tempfile
 import unittest
@@ -12,9 +13,10 @@ from pathlib import Path
 from code_atlas.motors import prisma_mesh_revalidation as m
 
 
-def git(repo: Path, *args: str) -> str:
+def git(repo: Path, *args: str, allow: set[int] | None = None) -> str:
     p = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=False)
-    if p.returncode:
+    allowed = allow if allow is not None else {0}
+    if p.returncode not in allowed:
         raise AssertionError(p.stderr)
     return p.stdout.strip()
 
@@ -41,6 +43,7 @@ def repo(base: Path) -> Path:
     (r / "candidate/retrieved.txt").write_text("candidate-v1\n")
     (r / ".github/workflows").mkdir(parents=True)
     (r / ".github/workflows/prisma-remote-automesh.yml").write_text("name: mesh\n")
+    (r / ".github/workflows/prisma-remote-automesh-revalidate.yml").write_text("name: revalidate\n")
     commit(r, "base")
     return r
 
@@ -49,7 +52,27 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def composed_bytes(r: Path) -> bytes:
+def legacy_visual_bytes() -> bytes:
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+        readset = {
+            "layer_map_required": True,
+            "surface_argument": "tablet",
+            "explicit_existing_paths": [],
+            "missing_expected_authority_files": [],
+        }
+        z.writestr(
+            "x/authority_mesh/.governance/current/AUTHORITY_READSET.lock.json",
+            json.dumps(readset),
+        )
+        z.writestr(
+            "x/authority_mesh/reports/LAYERS_MAP.json",
+            json.dumps({"path": "scope/target.txt"}),
+        )
+    return out.getvalue()
+
+
+def composed_bytes(r: Path, *, visual: bool = False, include_legacy: bool = False) -> bytes:
     head = git(r, "rev-parse", "HEAD")
     tree = git(r, "rev-parse", "HEAD^{tree}")
     request = {
@@ -58,10 +81,10 @@ def composed_bytes(r: Path) -> bytes:
         "profile": "test",
         "tasks": [{
             "id": "lane",
-            "surface": "governance",
+            "surface": "tablet" if visual else "governance",
             "task": "test bounded drift",
             "intent": "VERIFY",
-            "domain": "testing",
+            "domain": "visual" if visual else "testing",
             "requiredAuthorities": ["authority/core.txt"],
             "requiredDirectories": ["scope"],
             "requiredCapabilities": [],
@@ -78,8 +101,18 @@ def composed_bytes(r: Path) -> bytes:
         "requiredAuthorities": ["authority/core.txt"],
         "requiredDirectories": ["scope"],
         "selected_files": [
-            {"path": "authority/core.txt", "state": "SUPPORTED", "sha256": sha(r / "authority/core.txt"), "whySelected": ["required-by-task"]},
-            {"path": "candidate/retrieved.txt", "state": "CANDIDATE", "sha256": sha(r / "candidate/retrieved.txt"), "whySelected": ["semantic-retrieval"]},
+            {
+                "path": "authority/core.txt",
+                "state": "SUPPORTED",
+                "sha256": sha(r / "authority/core.txt"),
+                "whySelected": ["required-by-task"],
+            },
+            {
+                "path": "candidate/retrieved.txt",
+                "state": "CANDIDATE",
+                "sha256": sha(r / "candidate/retrieved.txt"),
+                "whySelected": ["semantic-retrieval"],
+            },
         ],
     }
     report = {
@@ -96,7 +129,12 @@ def composed_bytes(r: Path) -> bytes:
         "authority/normalized_request.json": json.dumps(request, sort_keys=True).encode(),
         "authority/lanes/lane/AUTHORITY_READSET.lock.json": json.dumps(lane, sort_keys=True).encode(),
     }
-    rows = [{"path": n, "sha256": hashlib.sha256(b).hexdigest(), "bytes": len(b)} for n, b in sorted(files.items())]
+    if include_legacy:
+        files["legacy_surface_mesh.zip"] = legacy_visual_bytes()
+    rows = [
+        {"path": n, "sha256": hashlib.sha256(b).hexdigest(), "bytes": len(b)}
+        for n, b in sorted(files.items())
+    ]
     files["MANIFEST.json"] = json.dumps({"report": report, "files": rows}, sort_keys=True).encode()
     out = io.BytesIO()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
@@ -105,93 +143,132 @@ def composed_bytes(r: Path) -> bytes:
     return out.getvalue()
 
 
-def outer_artifact(path: Path, composed: bytes) -> str:
+def outer_artifact(
+    path: Path,
+    composed: bytes,
+    member: str = "prisma-automesh-composed-result.zip",
+) -> str:
     with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
-        z.writestr("prisma-automesh-composed-result.zip", composed)
+        z.writestr(member, composed)
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 class RevalidationTests(unittest.TestCase):
-    def test_same_head_emits_current_attestation(self):
+    def test_same_head_reuses_validated_authority_bytes_without_repack(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
+            b = Path(td)
+            r = repo(b)
+            raw = composed_bytes(r)
+            art = b / "a.zip"
+            digest = outer_artifact(art, raw)
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.PASS_ALREADY_CURRENT)
-            final = Path(result["artifact"])
-            self.assertTrue(final.is_file())
-            with zipfile.ZipFile(final) as z:
-                report = json.loads(z.read("PRISMA_MESH_GATEWAY_REPORT.json"))
-            self.assertEqual(report["repoHead"], git(r, "rev-parse", "HEAD"))
-            self.assertEqual(report["revalidationStatus"], m.PASS_ALREADY_CURRENT)
+            self.assertEqual(result["artifactReuse"], "VALIDATED_AUTHORITY_BYTES_NO_REPACK")
+            self.assertEqual(Path(result["artifact"]).read_bytes(), raw)
 
     def test_unrelated_and_candidate_drift_do_not_destroy_authority(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(art, composed_bytes(r))
             (r / "notes/unrelated.md").write_text("u2\n")
             (r / "candidate/retrieved.txt").write_text("candidate-v2\n")
             commit(r, "unrelated")
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.PASS_NO_RELEVANT_DRIFT)
             self.assertEqual(result["relevantChangedPaths"], [])
-            self.assertIn("candidate/retrieved.txt", result["changedPaths"])
             self.assertFalse(result["candidateRetrievalIsAuthority"])
 
-    def test_revalidated_artifact_can_chain_across_more_unrelated_drift(self):
+    def test_revalidated_github_outer_artifact_can_chain(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(art, composed_bytes(r))
             (r / "notes/unrelated.md").write_text("u2\n")
-            head_one = commit(r, "unrelated one")
-            first = m.revalidate(r, art, b / "out-one", digest)
-            self.assertEqual(first["status"], m.PASS_NO_RELEVANT_DRIFT)
-            first_artifact = Path(first["artifact"])
-            self.assertTrue(first_artifact.is_file())
-
+            commit(r, "one")
+            first = m.revalidate(r, art, b / "one", digest)
+            github_outer = b / "github.zip"
+            outer_digest = outer_artifact(
+                github_outer,
+                Path(first["artifact"]).read_bytes(),
+                "prisma-automesh-revalidated-result.zip",
+            )
             (r / "notes/unrelated.md").write_text("u3\n")
-            head_two = commit(r, "unrelated two")
-            second = m.revalidate(r, first_artifact, b / "out-two", first["artifactSha256"])
+            head_two = commit(r, "two")
+            second = m.revalidate(r, github_outer, b / "two", outer_digest)
             self.assertEqual(second["status"], m.PASS_NO_RELEVANT_DRIFT)
-            self.assertEqual(second["baseHead"], head_one)
             self.assertEqual(second["currentHead"], head_two)
-            self.assertEqual(second["relevantChangedPaths"], [])
-            self.assertTrue(Path(second["artifact"]).is_file())
+            self.assertEqual(second["priorAuthorityMember"], "prisma-automesh-revalidated-result.zip")
 
-    def test_required_authority_drift_blocks_and_prepares_full_refresh(self):
+    def test_required_authority_drift_blocks_with_reasons_and_fallback(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(art, composed_bytes(r))
             (r / "authority/core.txt").write_text("authority-v2\n")
             commit(r, "authority change")
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.BLOCK_RELEVANT_DRIFT)
-            self.assertIn("authority/core.txt", result["relevantChangedPaths"])
+            self.assertIn("authority/core.txt", result["relevanceReasons"])
             fallback = json.loads((b / "out/fallback_request.json").read_text())
             self.assertEqual(fallback["expectedHead"], git(r, "rev-parse", "HEAD"))
             self.assertNotIn("requestDigest", fallback)
 
     def test_required_directory_drift_blocks(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(art, composed_bytes(r))
             (r / "scope/new.txt").write_text("new\n")
             commit(r, "scope change")
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.BLOCK_RELEVANT_DRIFT)
             self.assertIn("scope/new.txt", result["relevantChangedPaths"])
 
-    def test_trust_anchor_drift_blocks_even_if_task_did_not_select_it(self):
+    def test_both_workflows_are_trust_anchors(self):
+        for target in (
+            "prisma-remote-automesh.yml",
+            "prisma-remote-automesh-revalidate.yml",
+        ):
+            with self.subTest(target=target), tempfile.TemporaryDirectory() as td:
+                b = Path(td)
+                r = repo(b)
+                art = b / "a.zip"
+                digest = outer_artifact(art, composed_bytes(r))
+                p = r / ".github/workflows" / target
+                p.write_text("name: changed\n")
+                commit(r, "trust change")
+                result = m.revalidate(r, art, b / "out", digest)
+                self.assertEqual(result["status"], m.BLOCK_RELEVANT_DRIFT)
+                self.assertIn(p.relative_to(r).as_posix(), result["relevantChangedPaths"])
+
+    def test_pinned_hashes_use_git_object_database_not_worktree(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
-            p = r / ".github/workflows/prisma-remote-automesh.yml"
-            p.write_text("name: changed\n")
-            commit(r, "trust change")
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(art, composed_bytes(r))
+            (r / "notes/unrelated.md").write_text("u2\n")
+            commit(r, "unrelated")
+            (r / "authority/core.txt").unlink()
             result = m.revalidate(r, art, b / "out", digest)
-            self.assertEqual(result["status"], m.BLOCK_RELEVANT_DRIFT)
-            self.assertIn(".github/workflows/prisma-remote-automesh.yml", result["relevantChangedPaths"])
+            self.assertEqual(result["status"], m.PASS_NO_RELEVANT_DRIFT)
+            self.assertEqual(result["pinnedHashSource"], "git-object-database")
+            self.assertEqual(result["pinnedHashMismatches"], [])
 
     def test_non_ancestor_requires_full_refresh(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); root = git(r, "rev-parse", "HEAD")
+            b = Path(td)
+            r = repo(b)
+            root = git(r, "rev-parse", "HEAD")
             (r / "notes/unrelated.md").write_text("branch-a\n")
             commit(r, "a")
-            art = b / "a.zip"; digest = outer_artifact(art, composed_bytes(r))
+            art = b / "a.zip"
+            digest = outer_artifact(art, composed_bytes(r))
             git(r, "checkout", "--detach", root)
             (r / "notes/unrelated.md").write_text("branch-b\n")
             commit(r, "b")
@@ -199,27 +276,112 @@ class RevalidationTests(unittest.TestCase):
             self.assertEqual(result["status"], m.BLOCK_NON_ANCESTOR)
             self.assertTrue(result["canFallbackFullMesh"])
 
-    def test_digest_mismatch_is_invalid_evidence_without_trusted_fallback(self):
+    def test_digest_mismatch_is_invalid_without_trusted_fallback(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); art = b / "a.zip"; outer_artifact(art, composed_bytes(r))
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            outer_artifact(art, composed_bytes(r))
             result = m.revalidate(r, art, b / "out", "0" * 64)
             self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
             self.assertFalse(result["canFallbackFullMesh"])
 
-    def test_manifest_tamper_is_invalid_even_with_matching_outer_digest(self):
+    def test_manifest_tamper_is_invalid(self):
         with tempfile.TemporaryDirectory() as td:
-            b = Path(td); r = repo(b); raw = composed_bytes(r)
-            zin = zipfile.ZipFile(io.BytesIO(raw)); out = io.BytesIO()
+            b = Path(td)
+            r = repo(b)
+            raw = composed_bytes(r)
+            zin = zipfile.ZipFile(io.BytesIO(raw))
+            out = io.BytesIO()
             with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zout:
                 for n in zin.namelist():
                     data = zin.read(n)
                     if n == "authority/normalized_request.json":
                         data += b" \n"
                     zout.writestr(n, data)
-            art = b / "a.zip"; digest = outer_artifact(art, out.getvalue())
+            art = b / "a.zip"
+            digest = outer_artifact(art, out.getvalue())
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
             self.assertIn("COMPOSED_MANIFEST_", result["error"])
+
+    def test_unmanifested_composed_member_is_invalid(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            zin = zipfile.ZipFile(io.BytesIO(composed_bytes(r)))
+            out = io.BytesIO()
+            with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zout:
+                for n in zin.namelist():
+                    zout.writestr(n, zin.read(n))
+                zout.writestr("extra.txt", b"not in manifest")
+            art = b / "a.zip"
+            digest = outer_artifact(art, out.getvalue())
+            result = m.revalidate(r, art, b / "out", digest)
+            self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
+            self.assertIn("COMPOSED_UNMANIFESTED_FILE", result["error"])
+
+    def test_outer_zip_traversal_member_is_invalid(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            with zipfile.ZipFile(art, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("prisma-automesh-composed-result.zip", composed_bytes(r))
+                z.writestr("../escape", b"x")
+            result = m.revalidate(
+                r,
+                art,
+                b / "out",
+                hashlib.sha256(art.read_bytes()).hexdigest(),
+            )
+            self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
+            self.assertIn("OUTER_ARTIFACT_UNSAFE_MEMBER", result["error"])
+
+    def test_outer_zip_symlink_member_is_invalid(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            with zipfile.ZipFile(art, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("prisma-automesh-composed-result.zip", composed_bytes(r))
+                info = zipfile.ZipInfo("link")
+                info.create_system = 3
+                info.external_attr = (stat.S_IFLNK | 0o777) << 16
+                z.writestr(info, "target")
+            result = m.revalidate(
+                r,
+                art,
+                b / "out",
+                hashlib.sha256(art.read_bytes()).hexdigest(),
+            )
+            self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
+            self.assertIn("OUTER_ARTIFACT_SYMLINK_MEMBER", result["error"])
+
+    def test_visual_request_without_legacy_layer_evidence_fails_closed(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(
+                art,
+                composed_bytes(r, visual=True, include_legacy=False),
+            )
+            result = m.revalidate(r, art, b / "out", digest)
+            self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
+            self.assertIn("VISUAL_LEGACY_SURFACE_MESH_MISSING", result["error"])
+
+    def test_visual_request_with_layer_map_can_revalidate(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(
+                art,
+                composed_bytes(r, visual=True, include_legacy=True),
+            )
+            result = m.revalidate(r, art, b / "out", digest)
+            self.assertEqual(result["status"], m.PASS_ALREADY_CURRENT)
 
 
 if __name__ == "__main__":
