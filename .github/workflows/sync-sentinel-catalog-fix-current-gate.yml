@@ -1,0 +1,100 @@
+name: PRISMA Sync Sentinel Catalog Fix Current Gate
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-sentinel-catalog-fix-current-gate.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  anti-rework-gate:
+    if: github.event.pull_request.head.ref == 'gate/sync-sentinel-catalog-fix-current-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Pin current main and isolate carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git merge-base origin/main HEAD)" = "$MAIN_SHA"
+          mapfile -t files < <(git diff --name-only "$MAIN_SHA"...HEAD)
+          test "${#files[@]}" -eq 1
+          test "${files[0]}" = '.github/workflows/sync-sentinel-catalog-fix-current-gate.yml'
+          git worktree add --detach "$RUNNER_TEMP/base" "$MAIN_SHA"
+      - name: Universal anti-rework exact product repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/base"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate | tee "$RUNNER_TEMP/authority.json"
+          grep -Fq 'PASS_PRISMA_ANTI_REWORK_AUTHORITY' "$RUNNER_TEMP/authority.json"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test | tee "$RUNNER_TEMP/selftest.log"
+          cat > "$RUNNER_TEMP/request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"0ef7e0c67edac5d0e8166c2b952dd423cbb1841f",
+            "task":"Evidence-backed exact product correctness repair discovered by PRISMA Sync Sentinel Journey B. Modify only apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts to close the missing double quote in excluded.\"updatedAt\" inside upsertPricingProjectionRecord ON CONFLICT UPDATE SQL. Preserve all existing catalog-delta semantics, scope, cursor/checkpoint, replay/idempotency, local-first behavior and the invariant that PC catalog updates do not overwrite Tablet local operational stock. No UI, schema/model/migration, sync redesign, package/lock mutation, live/customer database or unrelated cleanup. Require focused regression evidence before merge.",
+            "capabilities":[
+              {"id":"tablet.sync.runtime_truth","requestedAction":"ADVANCE"},
+              {"id":"pc.sync.dispatch_replay_runtime","requestedAction":"VERIFY"},
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"VERIFY"}
+            ],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"0ef7e0c67edac5d0e8166c2b952dd423cbb1841f",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"1eaef5cde8063575928aaff35f6d88b791d66f586282d70730d2c86a9f0bcb8f",
+              "artifactDigest":"9bcf764d0bf8821336db666006ee771b89633d8118353862c8e63073d071bd74",
+              "layerMapPresent":false
+            },
+            "visualMutation":false
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/request.json" | tee "$RUNNER_TEMP/result.json"
+          grep -Fq 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/result.json"
+          python - "$RUNNER_TEMP/result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d['result']=='PASS_ANTI_REWORK_GATE' and d['errors']==[], d
+          rows={x['id']:x for x in d['selected']}
+          assert rows['tablet.sync.runtime_truth']['classification']=='DONE'
+          assert rows['tablet.sync.runtime_truth']['requestedAction']=='ADVANCE'
+          assert rows['tablet.sync.runtime_truth']['doNotRebuild'] is True
+          print('PASS_SYNC_SENTINEL_CATALOG_FIX_AUTHORITY')
+          print('DECISION_DIGEST='+d['decisionDigest'])
+          PY
+      - name: Stage evidence
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p gate-evidence
+          for f in authority.json selftest.log request.json result.json; do [ ! -f "$RUNNER_TEMP/$f" ] || cp "$RUNNER_TEMP/$f" gate-evidence/; done
+          printf '%s\n' 'AUTHORITY_MESH_RUN=33305993347' 'PRODUCT_FIX_SCOPE=catalog-pull.ts one-character quote repair' 'VISUAL_MUTATION=false' > gate-evidence/CONTEXT.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sync-sentinel-catalog-fix-gate-${{ github.run_id }}
+          path: gate-evidence/**
+          if-no-files-found: error
+          retention-days: 14
