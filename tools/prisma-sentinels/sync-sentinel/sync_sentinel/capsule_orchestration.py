@@ -11,7 +11,13 @@ from pathlib import Path
 from .evidence import build_bundle, now_iso
 from .fixtures import load_fixture_registry, mandatory_fixture_readiness
 from .model import Check, RunReport, Verdict
-from .probes import authority_presence, static_probe_suite, sync_source_presence, toolchain_presence
+from .probes import (
+    authority_presence,
+    reconcile_static_probe_baseline_drift,
+    static_probe_suite,
+    sync_source_presence,
+    toolchain_presence,
+)
 from .progress import Progress
 from .registry import APP_REL
 from .safety import git_head, git_tree, known_live_db_snapshot, snapshots_equal
@@ -274,8 +280,16 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
         runtime_evidence.append(journey_path)
         report.add(journey); progress.step("Journey A and Journey B")
 
-        for check in static_probe_suite(capsule.worktree, workers=workers):
+        native_checks = static_probe_suite(capsule.worktree, workers=workers)
+        reconciled_checks, baseline_drift = reconcile_static_probe_baseline_drift(native_checks, journey)
+        for check in reconciled_checks:
             report.add(check)
+        if baseline_drift:
+            report.facts["baselineVerifierDrift"] = baseline_drift
+            for item in baseline_drift:
+                report.warnings.append(
+                    f"{item['checkId']}: KNOWN_BASELINE_VERIFIER_DRIFT preserved; canonical verifier not modified"
+                )
         progress.step("native contract probes")
 
         fixture_registry = load_fixture_registry(capsule.worktree / "tools/prisma-sentinels/sync-sentinel")
