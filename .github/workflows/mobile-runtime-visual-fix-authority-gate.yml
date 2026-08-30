@@ -1,0 +1,171 @@
+name: PRISMA Mobile Runtime Visual FIX Authority Gate
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  BASE_SHA: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+
+jobs:
+  authority-gate:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'gate/mobile-runtime-visual-fix-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout disposable authority carrier
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Fail closed on baseline and carrier scope
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/mobile-runtime-visual-fix-authority-gate.yml"
+          git checkout --detach "$BASE_SHA"
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          test -z "$(git status --porcelain --untracked-files=no)"
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate fresh three-lane task-exact Authority Mesh
+        id: mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-fix-authority"
+          OUT="$RUNNER_TEMP/parallel-out"
+          mkdir -p "$E" "$OUT"
+          cat > "$RUNNER_TEMP/tasks.json" <<'JSON'
+          {
+            "tasks": [
+              {
+                "id": "governance",
+                "surface": "Mobile /prisma-app visual FIX governance",
+                "task": "Authorize only a root-cause repair of defects proven by runtime/visual evidence on PRISMA Mobile /prisma-app at exact current main. Proven defects: axe meta-viewport serious/critical because app/layout.tsx disables zoom with maximumScale 1; responsive visual compression in Licencias device/license metrics; broken Alertas card three-child layout inside a two-column grid; moderate heading-order in PrismaMobileReadinessPanel. Exact candidate paths: apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx; apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx; apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css. Preserve the canonical seven-section IA and retired MultiContext decision. No rebuild of mobile.interface_specification_canon. Exclude Tablet, PC, Shared UI, Chart Lab, DB, Prisma schema/migrations, APIs, sync semantics, licensing semantics, custody/zero-egress, deploy and distribution. Require layers map, no !important, no global priority override, runtime screenshots after repair and rollback-safe bounded diff."
+              },
+              {
+                "id": "implementation",
+                "surface": "Mobile /prisma-app visual FIX implementation",
+                "task": "Discover exact implementation authority for the bounded PRISMA Mobile /prisma-app defect repair only. Inspect and pin apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx, PrismaMobilePremiumNavigator.tsx and prisma-mobile-dashboard.module.css plus their current Mobile verifiers/contracts. Repair must remove zoom disabling rather than suppress axe, correct Alertas child layout structurally, make Licencias cards responsive without broad global visual changes, and correct readiness heading semantics if authority permits. Preserve exact seven tabs Inicio Ventas Operación Licencias Alertas Stock Sistema and zero product behavior redesign. Exclude Tablet, PC, Shared UI, Chart Lab, DB, Prisma schema/migrations, APIs, data/sync/licensing behavior, PWA/offline claims, deploy and production certification. Generate mandatory layers map and exact impacted/excluded surface matrix."
+              },
+              {
+                "id": "quality",
+                "surface": "Mobile /prisma-app visual FIX quality",
+                "task": "Discover quality gates and evidence required for a bounded PRISMA Mobile /prisma-app visual/accessibility defect repair. Candidate source paths are app/layout.tsx, PrismaMobilePremiumNavigator.tsx and prisma-mobile-dashboard.module.css only. Required post-fix evidence: current interface canon, premium navigation, data readiness, source states, zero-important, typecheck, build, two phone viewports, all seven tabs, axe serious/critical zero, heading-order observation, no page horizontal overflow, targeted Alertas/Licencias inner overflow/wrapping checks, loading/error/stale/ready/partial/empty render evidence, console/page/request/HTTP diagnostics, screenshots and tracked-source scope guard. No functional smoke may substitute for visual evidence. Exclude all non-Mobile surfaces and all production/deploy/data-semantic claims. Require mandatory layers map and no fake green."
+              }
+            ]
+          }
+          JSON
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_parallel.py \
+            --repo "$GITHUB_WORKSPACE" \
+            --out-root "$OUT" \
+            --budget-root "$RUNNER_TEMP/authority-budget" \
+            --task-spec "$RUNNER_TEMP/tasks.json" \
+            --parallel 3 \
+            --workers 18 \
+            --shards 54 \
+            --max-files 160 \
+            --max-mb 50 \
+            --run-id "mobile-visual-fix-${GITHUB_RUN_ID}" | tee "$E/parallel.log"
+          ZIP="$(grep -E '^FINAL_RESULT_ZIP=' "$E/parallel.log" | tail -n1 | cut -d= -f2-)"
+          test -n "$ZIP"
+          test -f "$ZIP"
+          cp "$ZIP" "$E/authority-mesh.zip"
+          mkdir -p "$E/mesh"
+          python - "$ZIP" "$E/mesh" <<'PY'
+          import sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              z.extractall(sys.argv[2])
+          PY
+          python - "$E/mesh" "$RUNNER_TEMP/tasks.json" "$ZIP" "$BASE_SHA" "$E/composed-authority.json" <<'PY'
+          import hashlib, json, pathlib, sys
+          mesh=pathlib.Path(sys.argv[1]); spec=pathlib.Path(sys.argv[2]); z=pathlib.Path(sys.argv[3]); head=sys.argv[4]; out=pathlib.Path(sys.argv[5])
+          cert=json.load(open(mesh/'PARALLEL_CERTIFICATION.json',encoding='utf-8'))
+          assert cert.get('status')=='PASS', cert
+          assert cert.get('repo_drift',{}).get('stable') is True, cert.get('repo_drift')
+          assert cert.get('provenance_verified') is True, cert
+          required=['.governance/current/AUTHORITY_READSET.lock.json','reports/APP_IMPACT_MATRIX.md','reports/CONTRACT_AND_GATE_MATRIX.json','reports/MISSING_OR_UNMAPPED_RISK.md','reports/AGENT_PROMPT_ENVELOPE.md','reports/AUTHORITY_MESH_REPORT.md','reports/LAYERS_MAP.json','reports/LAYERS_MAP.md']
+          lanes=['governance','implementation','quality']
+          for lane in lanes:
+              root=mesh/'tasks'/lane/'authority_mesh'
+              manifest=json.load(open(root/'RUN_MANIFEST.json',encoding='utf-8'))
+              assert manifest.get('status')=='PASS', (lane, manifest)
+              assert manifest.get('repo_git_head')==head, (lane, manifest.get('repo_git_head'), head)
+              for rel in required:
+                  assert (root/rel).is_file(), (lane, rel)
+              impact=(root/'reports/APP_IMPACT_MATRIX.md').read_text(encoding='utf-8',errors='replace').lower()
+              assert 'mobile' in impact, (lane,'mobile missing')
+          composed={'schemaVersion':'prisma.composed-authority-mesh.v1','status':'PASS_COMPOSED_AUTHORITY_MESH','repoHead':head,'lanes':lanes,'requiredAuthorityCoveragePct':100,'blockers':0,'requestDigest':hashlib.sha256(spec.read_bytes()).hexdigest(),'artifactDigest':hashlib.sha256(z.read_bytes()).hexdigest(),'layerMapPresent':True,'source':'fresh three-lane smart_allmesh_parallel.py result','runId':cert.get('run_id')}
+          out.write_text(json.dumps(composed,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(composed,indent=2))
+          PY
+
+      - name: Run Factory Ledger MUTATION anti-rework gate
+        id: anti_rework
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-fix-authority"
+          python - "$E/composed-authority.json" "$BASE_SHA" "$E/anti-rework.request.json" <<'PY'
+          import json,sys
+          mesh=json.load(open(sys.argv[1],encoding='utf-8'))
+          req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':sys.argv[2],'task':'Repair only runtime-evidenced PRISMA Mobile /prisma-app visual/accessibility defects without rebuilding the canonical Mobile interface: remove zoom disabling viewport constraint; structurally fix Alertas responsive card layout; correct Licencias responsive metric density; correct readiness heading hierarchy if exact authority permits; validate through fresh runtime/visual evidence on two phone viewports.','capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],'authorityMesh':{'status':mesh['status'],'repoHead':mesh['repoHead'],'requiredAuthorityCoveragePct':mesh['requiredAuthorityCoveragePct'],'blockers':mesh['blockers'],'requestDigest':mesh['requestDigest'],'artifactDigest':mesh['artifactDigest'],'layerMapPresent':mesh['layerMapPresent']},'visualMutation':True}
+          open(sys.argv[3],'w',encoding='utf-8').write(json.dumps(req,indent=2)+'\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$E/anti-rework.request.json" > "$E/anti-rework.result.json"
+          python - "$E/anti-rework.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE', d
+          assert d.get('errors')==[], d
+          print(json.dumps({'result':d['result'],'decisionDigest':d.get('decisionDigest'),'selected':d.get('selected')},indent=2))
+          PY
+
+      - name: Prove carrier did not mutate tracked source
+        id: source_guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          git diff --exit-code
+
+      - name: Upload one authority decision artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-visual-fix-authority-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-fix-authority/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed unless authority and anti-rework gate pass
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ steps.scope.outcome }}" = "success"
+          test "${{ steps.mesh.outcome }}" = "success"
+          test "${{ steps.anti_rework.outcome }}" = "success"
+          test "${{ steps.source_guard.outcome }}" = "success"
+          grep -F '"status": "PASS_COMPOSED_AUTHORITY_MESH"' "$RUNNER_TEMP/mobile-fix-authority/composed-authority.json"
+          grep -F '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/mobile-fix-authority/anti-rework.result.json"
