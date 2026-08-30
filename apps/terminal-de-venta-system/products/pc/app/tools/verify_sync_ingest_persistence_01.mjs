@@ -20,13 +20,6 @@ function readRel(root, rel) {
   return existsSync(full) ? readFileSync(full, "utf8") : "";
 }
 
-function prismaModelBlock(schema, modelName) {
-  const start = schema.indexOf(`model ${modelName} {`);
-  if (start < 0) return "";
-  const end = schema.indexOf("\n}", start);
-  return end < 0 ? "" : schema.slice(start, end + 2);
-}
-
 const rootSchema = readRel(projectRoot, "prisma/schema.prisma");
 const migration = readRel(projectRoot, "prisma/migrations/20260512000100_sync_observability_tables/migration.sql");
 const ingest = readRel(appRoot, "src/server/services/sync-ingest.service.ts");
@@ -47,8 +40,7 @@ for (const delegate of ["syncAttempt", "syncConflict", "syncCheckpoint", "syncOu
   check(`observability writes ${delegate}`, observability.includes(delegate));
 }
 check("no future-table marker shortcut", !/futureTables|missingFutureTables/.test(observability + ingest));
-const outboxEventModel = prismaModelBlock(rootSchema, "OutboxEvent");
-check("OutboxEvent idempotency remains logical index", outboxEventModel.includes("@@index([businessId, idempotencyKey])") && !outboxEventModel.includes("@@unique([businessId, idempotencyKey])"));
+check("OutboxEvent idempotency remains logical index", rootSchema.includes("@@index([businessId, idempotencyKey])") && !rootSchema.includes("@@unique([businessId, idempotencyKey])"));
 
 if (failures.length) {
   console.error("PRISMA_SYNC_INGEST_PERSISTENCE_01 failed");
