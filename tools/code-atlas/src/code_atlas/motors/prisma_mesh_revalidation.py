@@ -56,8 +56,7 @@ class RevalidationError(RuntimeError):
 
 
 def _norm_digest(value: str | None) -> str:
-    raw = str(value or "").strip().lower()
-    return raw.removeprefix("sha256:")
+    return str(value or "").strip().lower().removeprefix("sha256:")
 
 
 def _sha_bytes(data: bytes) -> str:
@@ -79,8 +78,14 @@ def _digest_json(value: Any) -> str:
 
 def _git(repo: Path, *args: str, allow: set[int] | None = None) -> subprocess.CompletedProcess[str]:
     p = subprocess.run(
-        ["git", "-C", str(repo), *args], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        text=True, encoding="utf-8", errors="replace", timeout=60, check=False,
+        ["git", "-C", str(repo), *args],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=60,
+        check=False,
     )
     allowed = allow if allow is not None else {0}
     if p.returncode not in allowed:
@@ -90,8 +95,11 @@ def _git(repo: Path, *args: str, allow: set[int] | None = None) -> subprocess.Co
 
 def _git_bytes(repo: Path, *args: str, allow: set[int] | None = None) -> subprocess.CompletedProcess[bytes]:
     p = subprocess.run(
-        ["git", "-C", str(repo), *args], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        timeout=60, check=False,
+        ["git", "-C", str(repo), *args],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=60,
+        check=False,
     )
     allowed = allow if allow is not None else {0}
     if p.returncode not in allowed:
@@ -164,10 +172,10 @@ def _validate_zip(z: zipfile.ZipFile, label: str) -> set[str]:
         if info.compress_size == 0:
             if info.file_size > 0:
                 raise RevalidationError(f"{label}_INVALID_COMPRESSION:{raw}")
-        else:
-            ratio = info.file_size / info.compress_size
-            if ratio > MAX_COMPRESSION_RATIO:
-                raise RevalidationError(f"{label}_COMPRESSION_RATIO:{raw}:{ratio:.1f}")
+        elif info.file_size / info.compress_size > MAX_COMPRESSION_RATIO:
+            raise RevalidationError(
+                f"{label}_COMPRESSION_RATIO:{raw}:{info.file_size / info.compress_size:.1f}"
+            )
         files.add(norm)
     return files
 
@@ -192,7 +200,11 @@ def _open_artifact(path: Path, expected_digest: str) -> tuple[bytes, str, str, s
     except zipfile.BadZipFile as exc:
         raise RevalidationError("ARTIFACT_NOT_ZIP") from exc
     outer_files = _validate_zip(outer, "OUTER_ARTIFACT")
-    candidates = [n for n in ("prisma-automesh-composed-result.zip", "prisma-automesh-revalidated-result.zip") if n in outer_files]
+    candidates = [
+        n
+        for n in ("prisma-automesh-composed-result.zip", "prisma-automesh-revalidated-result.zip")
+        if n in outer_files
+    ]
     direct = {"PRISMA_MESH_GATEWAY_REPORT.json", "MANIFEST.json"}.issubset(outer_files)
     if len(candidates) > 1 or (candidates and direct):
         raise RevalidationError("AMBIGUOUS_AUTHORITY_ARTIFACT")
@@ -217,13 +229,19 @@ def _open_artifact(path: Path, expected_digest: str) -> tuple[bytes, str, str, s
     return composed_bytes, outer_sha, composed_sha, matched, authority_name
 
 
-def _verify_composed(composed_bytes: bytes) -> tuple[zipfile.ZipFile, dict[str, Any], dict[str, Any], dict[str, Any]]:
+def _verify_composed(
+    composed_bytes: bytes,
+) -> tuple[zipfile.ZipFile, dict[str, Any], dict[str, Any], dict[str, Any]]:
     try:
         z = zipfile.ZipFile(io.BytesIO(composed_bytes))
     except zipfile.BadZipFile as exc:
         raise RevalidationError("COMPOSED_ARTIFACT_NOT_ZIP") from exc
     files = _validate_zip(z, "COMPOSED_ARTIFACT")
-    for required in ("MANIFEST.json", "PRISMA_MESH_GATEWAY_REPORT.json", "authority/normalized_request.json"):
+    for required in (
+        "MANIFEST.json",
+        "PRISMA_MESH_GATEWAY_REPORT.json",
+        "authority/normalized_request.json",
+    ):
         if required not in files:
             raise RevalidationError("COMPOSED_REQUIRED_FILE_MISSING:" + required)
     manifest = _load_json(z, "MANIFEST.json")
@@ -257,27 +275,29 @@ def _verify_composed(composed_bytes: bytes) -> tuple[zipfile.ZipFile, dict[str, 
     if report.get("requestDigest") != request.get("requestDigest"):
         raise RevalidationError("PRIOR_REQUEST_DIGEST_MISMATCH")
     if report.get("repoHead") != request.get("expectedHead"):
-        revalidation_name = "PRISMA_MESH_REVALIDATION.json"
-        if revalidation_name not in files:
+        name = "PRISMA_MESH_REVALIDATION.json"
+        if name not in files:
             raise RevalidationError("PRIOR_HEAD_REQUEST_MISMATCH")
-        revalidation = _load_json(z, revalidation_name)
-        recorded_digest = str(revalidation.get("revalidationDigest") or "")
-        digest_input = dict(revalidation)
+        rv = _load_json(z, name)
+        recorded = str(rv.get("revalidationDigest") or "")
+        digest_input = dict(rv)
         digest_input.pop("revalidationDigest", None)
         valid_chain = (
-            report.get("authorityReusePolicy") == "REVALIDATED_RELEVANT_DRIFT_NOT_STALE_REUSE"
-            and report.get("revalidationStatus") in {PASS_NO_RELEVANT_DRIFT, PASS_ALREADY_CURRENT}
+            report.get("authorityReusePolicy")
+            == "REVALIDATED_RELEVANT_DRIFT_NOT_STALE_REUSE"
+            and report.get("revalidationStatus")
+            in {PASS_NO_RELEVANT_DRIFT, PASS_ALREADY_CURRENT}
             and report.get("revalidationCurrentHead") == report.get("repoHead")
-            and revalidation.get("currentHead") == report.get("repoHead")
-            and revalidation.get("status") == report.get("revalidationStatus")
-            and bool(recorded_digest)
-            and recorded_digest == report.get("revalidationDigest")
-            and _digest_json(digest_input) == recorded_digest
+            and rv.get("currentHead") == report.get("repoHead")
+            and rv.get("status") == report.get("revalidationStatus")
+            and bool(recorded)
+            and recorded == report.get("revalidationDigest")
+            and _digest_json(digest_input) == recorded
             and report.get("fullMeshRerun") is False
             and report.get("readOnly") is True
             and report.get("productionCertified") is False
-            and revalidation.get("readOnly") is True
-            and revalidation.get("productionCertified") is False
+            and rv.get("readOnly") is True
+            and rv.get("productionCertified") is False
         )
         if not valid_chain:
             raise RevalidationError("PRIOR_REVALIDATION_CHAIN_INVALID")
@@ -309,10 +329,13 @@ def _collect_binding(z: zipfile.ZipFile, request: dict[str, Any]) -> dict[str, A
         exact.add(rel)
         sources.setdefault(rel, set()).add(source)
         if sha:
+            expected = sha.lower()
+            if not re.fullmatch(r"[0-9a-f]{64}", expected):
+                raise RevalidationError("PINNED_SHA256_INVALID:" + rel)
             old = pinned.get(rel)
-            if old and old.lower() != sha.lower():
+            if old and old != expected:
                 raise RevalidationError("CONTRADICTORY_PINNED_HASH:" + rel)
-            pinned[rel] = sha.lower()
+            pinned[rel] = expected
 
     def prefix_add(path: str, source: str) -> None:
         try:
@@ -340,7 +363,11 @@ def _collect_binding(z: zipfile.ZipFile, request: dict[str, Any]) -> dict[str, A
             if isinstance(p, str):
                 prefix_add(p, "normalized-request:required-directory")
 
-    lane_names = sorted(n for n in z.namelist() if re.fullmatch(r"authority/lanes/[^/]+/AUTHORITY_READSET\.lock\.json", n))
+    lane_names = sorted(
+        n
+        for n in z.namelist()
+        if re.fullmatch(r"authority/lanes/[^/]+/AUTHORITY_READSET\.lock\.json", n)
+    )
     if not lane_names:
         raise RevalidationError("AUTHORITY_LANE_READSETS_MISSING")
     for name in lane_names:
@@ -352,10 +379,54 @@ def _collect_binding(z: zipfile.ZipFile, request: dict[str, Any]) -> dict[str, A
             if isinstance(p, str):
                 prefix_add(p, "neutral-readset:required-directory")
         for row in lane.get("selected_files") or []:
-            if not isinstance(row, dict):
+            if (
+                isinstance(row, dict)
+                and row.get("state") == "SUPPORTED"
+                and row.get("path")
+            ):
+                exact_add(
+                    str(row["path"]),
+                    "neutral-readset:supported",
+                    str(row.get("sha256") or "") or None,
+                )
+
+    inventory_blob_pins: dict[str, str] = {}
+    inventory_name = "authority/repository_inventory.json"
+    if inventory_name in set(z.namelist()):
+        inventory = _load_json(z, inventory_name)
+        identity = inventory.get("identity")
+        if not isinstance(identity, dict):
+            raise RevalidationError("REPOSITORY_INVENTORY_IDENTITY_REQUIRED")
+        expected_head = str(request.get("expectedHead") or "")
+        if str(identity.get("head") or "") != expected_head:
+            raise RevalidationError("REPOSITORY_INVENTORY_HEAD_MISMATCH")
+        rows = inventory.get("files")
+        if not isinstance(rows, list):
+            raise RevalidationError("REPOSITORY_INVENTORY_FILES_REQUIRED")
+        by_path: dict[str, dict[str, Any]] = {}
+        for row in rows:
+            if not isinstance(row, dict) or not row.get("path"):
                 continue
-            if row.get("state") == "SUPPORTED" and row.get("path"):
-                exact_add(str(row["path"]), "neutral-readset:supported", str(row.get("sha256") or "") or None)
+            rel = _safe_rel(str(row["path"]))
+            if rel in by_path:
+                raise RevalidationError("REPOSITORY_INVENTORY_DUPLICATE_PATH:" + rel)
+            by_path[rel] = row
+        for rel, pinned_sha in sorted(pinned.items()):
+            row = by_path.get(rel)
+            if row is None:
+                continue
+            file_sha = str(row.get("fileSha256") or "").lower()
+            if file_sha != pinned_sha:
+                raise RevalidationError("REPOSITORY_INVENTORY_FILE_HASH_MISMATCH:" + rel)
+            oid = str(row.get("gitBlobSha") or "").lower()
+            if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", oid):
+                raise RevalidationError("REPOSITORY_INVENTORY_GIT_BLOB_INVALID:" + rel)
+            if row.get("exists") is not True or row.get("isSymlink") is True:
+                raise RevalidationError("REPOSITORY_INVENTORY_UNSAFE_ENTRY:" + rel)
+            stage = row.get("gitStage")
+            if stage not in (None, 0):
+                raise RevalidationError("REPOSITORY_INVENTORY_NONZERO_STAGE:" + rel)
+            inventory_blob_pins[rel] = oid
 
     names = set(z.namelist())
     legacy_present = "legacy_surface_mesh.zip" in names
@@ -369,7 +440,9 @@ def _collect_binding(z: zipfile.ZipFile, request: dict[str, Any]) -> dict[str, A
             raise RevalidationError("LEGACY_SURFACE_MESH_INVALID") from exc
         _validate_zip(legacy, "LEGACY_SURFACE_MESH")
         for name in legacy.namelist():
-            if not name.endswith("authority_mesh/.governance/current/AUTHORITY_READSET.lock.json"):
+            if not name.endswith(
+                "authority_mesh/.governance/current/AUTHORITY_READSET.lock.json"
+            ):
                 continue
             row = _load_json(legacy, name)
             for p in row.get("explicit_existing_paths") or []:
@@ -378,9 +451,16 @@ def _collect_binding(z: zipfile.ZipFile, request: dict[str, Any]) -> dict[str, A
             for p in row.get("missing_expected_authority_files") or []:
                 if isinstance(p, str):
                     exact_add(p, "legacy-readset:missing-expected")
-            visual = visual or bool(row.get("layer_map_required") and str(row.get("surface_argument") or "") in VISUAL_SURFACES)
+            visual = visual or bool(
+                row.get("layer_map_required")
+                and str(row.get("surface_argument") or "") in VISUAL_SURFACES
+            )
         if visual:
-            layer_names = sorted(n for n in legacy.namelist() if n.endswith("authority_mesh/reports/LAYERS_MAP.json"))
+            layer_names = sorted(
+                n
+                for n in legacy.namelist()
+                if n.endswith("authority_mesh/reports/LAYERS_MAP.json")
+            )
             if not layer_names:
                 raise RevalidationError("VISUAL_LAYER_MAP_MISSING")
             layer_map_present = True
@@ -396,11 +476,24 @@ def _collect_binding(z: zipfile.ZipFile, request: dict[str, Any]) -> dict[str, A
                         rel = _safe_rel(cleaned)
                     except RevalidationError:
                         continue
-                    if re.search(r"\.(?:tsx?|jsx?|css|scss|json|md|prisma|mjs|cjs|py|yml|yaml)$", rel, re.I):
+                    if re.search(
+                        r"\.(?:tsx?|jsx?|css|scss|json|md|prisma|mjs|cjs|py|yml|yaml)$",
+                        rel,
+                        re.I,
+                    ):
                         exact_add(rel, "visual-layer-map")
     if visual and not layer_map_present:
         raise RevalidationError("VISUAL_LAYER_MAP_MISSING")
-    return {"exact": exact, "prefixes": prefixes, "pinned": pinned, "sources": sources, "visual": visual, "layerMapPresent": layer_map_present}
+
+    return {
+        "exact": exact,
+        "prefixes": prefixes,
+        "pinned": pinned,
+        "gitBlobPins": inventory_blob_pins,
+        "sources": sources,
+        "visual": visual,
+        "layerMapPresent": layer_map_present,
+    }
 
 
 def _changed_paths(repo: Path, base: str, head: str) -> list[str]:
@@ -424,7 +517,9 @@ def _changed_paths(repo: Path, base: str, head: str) -> list[str]:
     return sorted(set(out))
 
 
-def _relevant(paths: list[str], binding: dict[str, Any]) -> tuple[list[str], dict[str, list[str]]]:
+def _relevant(
+    paths: list[str], binding: dict[str, Any]
+) -> tuple[list[str], dict[str, list[str]]]:
     reasons: dict[str, list[str]] = {}
     exact: set[str] = binding["exact"]
     prefixes: set[str] = binding["prefixes"]
@@ -441,7 +536,7 @@ def _relevant(paths: list[str], binding: dict[str, Any]) -> tuple[list[str], dic
     return sorted(reasons), reasons
 
 
-def _git_blob_sha256(repo: Path, head: str, rel: str) -> tuple[str | None, str | None]:
+def _git_blob_oid(repo: Path, head: str, rel: str) -> tuple[str | None, str | None]:
     tree = _git(repo, "ls-tree", "-z", head, "--", rel)
     raw = tree.stdout
     if not raw:
@@ -453,20 +548,92 @@ def _git_blob_sha256(repo: Path, head: str, rel: str) -> tuple[str | None, str |
     bits = meta.split()
     if len(bits) != 3 or bits[1] != "blob":
         return None, "NOT_BLOB"
-    data = _git_bytes(repo, "cat-file", "blob", bits[2]).stdout
+    oid = bits[2].lower()
+    if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", oid):
+        return None, "INVALID_BLOB_ID"
+    return oid, None
+
+
+def _git_blob_sha256(repo: Path, head: str, rel: str) -> tuple[str | None, str | None]:
+    oid, reason = _git_blob_oid(repo, head, rel)
+    if reason or oid is None:
+        return None, reason
+    data = _git_bytes(repo, "cat-file", "blob", oid).stdout
     return _sha_bytes(data), None
 
 
-def _hash_mismatches(repo: Path, pinned: dict[str, str], head: str) -> tuple[list[dict[str, str]], int]:
+def _validate_base_pins(
+    repo: Path,
+    pinned: dict[str, str],
+    git_blob_pins: dict[str, str],
+    base: str,
+) -> tuple[int, set[str]]:
+    """Validate portable inventory pins and identify portable legacy raw-byte pins."""
+    checked = 0
+    raw_portable: set[str] = set()
+    for rel, expected_sha in sorted(pinned.items()):
+        if rel in git_blob_pins:
+            checked += 1
+            actual_oid, reason = _git_blob_oid(repo, base, rel)
+            if reason or actual_oid != git_blob_pins[rel]:
+                why = reason or "GIT_BLOB_ID_MISMATCH"
+                raise RevalidationError(f"PRIOR_PINNED_IDENTITY_MISMATCH:{rel}:{why}")
+            continue
+        # Legacy/readsets made on platforms without repository_inventory can carry
+        # worktree-normalized SHA256 values. Only promote such a SHA to a portable
+        # raw Git-object pin when it proves itself at the captured base commit.
+        actual_sha, reason = _git_blob_sha256(repo, base, rel)
+        if reason:
+            raise RevalidationError(f"PRIOR_PINNED_IDENTITY_MISSING:{rel}:{reason}")
+        if actual_sha == expected_sha:
+            checked += 1
+            raw_portable.add(rel)
+    return checked, raw_portable
+
+
+def _hash_mismatches(
+    repo: Path,
+    pinned: dict[str, str],
+    git_blob_pins: dict[str, str],
+    raw_portable: set[str],
+    head: str,
+) -> tuple[list[dict[str, str]], int]:
     mismatches: list[dict[str, str]] = []
     checked = 0
-    for rel, expected in sorted(pinned.items()):
-        checked += 1
-        actual, reason = _git_blob_sha256(repo, head, rel)
-        if reason:
-            mismatches.append({"path": rel, "reason": reason, "expected": expected, "actual": actual or ""})
-        elif actual and actual.lower() != expected.lower():
-            mismatches.append({"path": rel, "reason": "HASH_MISMATCH", "expected": expected, "actual": actual})
+    for rel, expected_sha in sorted(pinned.items()):
+        if rel in git_blob_pins:
+            checked += 1
+            actual, reason = _git_blob_oid(repo, head, rel)
+            expected = git_blob_pins[rel]
+            if reason:
+                mismatches.append(
+                    {"path": rel, "reason": reason, "expected": expected, "actual": actual or ""}
+                )
+            elif actual != expected:
+                mismatches.append(
+                    {
+                        "path": rel,
+                        "reason": "GIT_BLOB_ID_MISMATCH",
+                        "expected": expected,
+                        "actual": actual or "",
+                    }
+                )
+        elif rel in raw_portable:
+            checked += 1
+            actual, reason = _git_blob_sha256(repo, head, rel)
+            if reason:
+                mismatches.append(
+                    {"path": rel, "reason": reason, "expected": expected_sha, "actual": actual or ""}
+                )
+            elif actual != expected_sha:
+                mismatches.append(
+                    {
+                        "path": rel,
+                        "reason": "HASH_MISMATCH",
+                        "expected": expected_sha,
+                        "actual": actual or "",
+                    }
+                )
     return mismatches, checked
 
 
@@ -480,14 +647,31 @@ def _fallback_request(request: dict[str, Any], current_head: str) -> dict[str, A
 
 def _write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
-def _build_revalidated_zip(composed: zipfile.ZipFile, prior_report: dict[str, Any], revalidation: dict[str, Any], out_dir: Path) -> Path:
+def _build_revalidated_zip(
+    composed: zipfile.ZipFile,
+    prior_report: dict[str, Any],
+    revalidation: dict[str, Any],
+    out_dir: Path,
+) -> Path:
     staging = out_dir / "payload"
     staging.mkdir(parents=True, exist_ok=True)
     for name in composed.namelist():
-        if name in {"MANIFEST.json", "PRISMA_MESH_GATEWAY_REPORT.json", "PRIOR_PRISMA_MESH_GATEWAY_REPORT.json", "PRISMA_MESH_REVALIDATION.json"} or name.endswith("/"):
+        if (
+            name
+            in {
+                "MANIFEST.json",
+                "PRISMA_MESH_GATEWAY_REPORT.json",
+                "PRIOR_PRISMA_MESH_GATEWAY_REPORT.json",
+                "PRISMA_MESH_REVALIDATION.json",
+            }
+            or name.endswith("/")
+        ):
             continue
         target = staging / _safe_rel(name)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -495,27 +679,34 @@ def _build_revalidated_zip(composed: zipfile.ZipFile, prior_report: dict[str, An
     _write_json(staging / "PRIOR_PRISMA_MESH_GATEWAY_REPORT.json", prior_report)
     _write_json(staging / "PRISMA_MESH_REVALIDATION.json", revalidation)
     report = dict(prior_report)
-    report.update({
-        "status": "PASS_COMPOSED_AUTHORITY_MESH",
-        "repoHead": revalidation["currentHead"],
-        "repoTree": revalidation["currentTree"],
-        "revalidatedFromHead": revalidation["baseHead"],
-        "revalidationCurrentHead": revalidation["currentHead"],
-        "revalidationStatus": revalidation["status"],
-        "revalidationDigest": revalidation["revalidationDigest"],
-        "priorComposedArtifactSha256": revalidation["priorComposedArtifactSha256"],
-        "requiredAuthorityCoveragePct": 100,
-        "blockers": 0,
-        "layerMapPresent": bool(revalidation["visualLayerMapPresent"]),
-        "fullMeshRerun": False,
-        "authorityReusePolicy": "REVALIDATED_RELEVANT_DRIFT_NOT_STALE_REUSE",
-        "readOnly": True,
-        "productionCertified": False,
-    })
+    report.update(
+        {
+            "status": "PASS_COMPOSED_AUTHORITY_MESH",
+            "repoHead": revalidation["currentHead"],
+            "repoTree": revalidation["currentTree"],
+            "revalidatedFromHead": revalidation["baseHead"],
+            "revalidationCurrentHead": revalidation["currentHead"],
+            "revalidationStatus": revalidation["status"],
+            "revalidationDigest": revalidation["revalidationDigest"],
+            "priorComposedArtifactSha256": revalidation["priorComposedArtifactSha256"],
+            "requiredAuthorityCoveragePct": 100,
+            "blockers": 0,
+            "layerMapPresent": bool(revalidation["visualLayerMapPresent"]),
+            "fullMeshRerun": False,
+            "authorityReusePolicy": "REVALIDATED_RELEVANT_DRIFT_NOT_STALE_REUSE",
+            "readOnly": True,
+            "productionCertified": False,
+        }
+    )
     _write_json(staging / "PRISMA_MESH_GATEWAY_REPORT.json", report)
-    rows = []
-    for path in sorted(p for p in staging.rglob("*") if p.is_file()):
-        rows.append({"path": path.relative_to(staging).as_posix(), "sha256": _sha_file(path), "bytes": path.stat().st_size})
+    rows = [
+        {
+            "path": path.relative_to(staging).as_posix(),
+            "sha256": _sha_file(path),
+            "bytes": path.stat().st_size,
+        }
+        for path in sorted(p for p in staging.rglob("*") if p.is_file())
+    ]
     _write_json(staging / "MANIFEST.json", {"report": report, "files": rows})
     final = out_dir / "prisma-automesh-revalidated-result.zip"
     with zipfile.ZipFile(final, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
@@ -524,17 +715,28 @@ def _build_revalidated_zip(composed: zipfile.ZipFile, prior_report: dict[str, An
     return final
 
 
-def revalidate(repo: Path, artifact: Path, out_dir: Path, expected_artifact_sha256: str) -> dict[str, Any]:
+def revalidate(
+    repo: Path,
+    artifact: Path,
+    out_dir: Path,
+    expected_artifact_sha256: str,
+) -> dict[str, Any]:
     started = time.perf_counter()
     repo = repo.resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     current = _head(repo)
     current_tree = _tree(repo)
     try:
-        composed_bytes, outer_sha, composed_sha, digest_match, authority_name = _open_artifact(artifact, expected_artifact_sha256)
+        (
+            composed_bytes,
+            outer_sha,
+            composed_sha,
+            digest_match,
+            authority_name,
+        ) = _open_artifact(artifact, expected_artifact_sha256)
         composed, _manifest, prior, request = _verify_composed(composed_bytes)
         base = str(prior.get("repoHead") or "").strip()
-        if not re.fullmatch(r"[0-9a-fA-F]{40}", base):
+        if not re.fullmatch(r"[0-9a-fA-F]{40,64}", base):
             raise RevalidationError("PRIOR_BASE_HEAD_INVALID:" + base)
         binding = _collect_binding(composed, request)
         cat = _git(repo, "cat-file", "-e", f"{base}^{{commit}}", allow={0, 1, 128})
@@ -545,8 +747,15 @@ def revalidate(repo: Path, artifact: Path, out_dir: Path, expected_artifact_sha2
         reasons: dict[str, list[str]] = {}
         hash_mismatches: list[dict[str, str]] = []
         hash_checked = 0
+        base_hash_checked = 0
+        raw_portable: set[str] = set()
         if base_exists:
-            anc = _git(repo, "merge-base", "--is-ancestor", base, current, allow={0, 1})
+            base_hash_checked, raw_portable = _validate_base_pins(
+                repo, binding["pinned"], binding["gitBlobPins"], base
+            )
+            anc = _git(
+                repo, "merge-base", "--is-ancestor", base, current, allow={0, 1}
+            )
             ancestor = anc.returncode == 0
         if base == current:
             status_value = PASS_ALREADY_CURRENT
@@ -556,16 +765,38 @@ def revalidate(repo: Path, artifact: Path, out_dir: Path, expected_artifact_sha2
         else:
             changed = _changed_paths(repo, base, current)
             relevant, reasons = _relevant(changed, binding)
-            hash_mismatches, hash_checked = _hash_mismatches(repo, binding["pinned"], current)
+            hash_mismatches, hash_checked = _hash_mismatches(
+                repo,
+                binding["pinned"],
+                binding["gitBlobPins"],
+                raw_portable,
+                current,
+            )
             for row in hash_mismatches:
                 path = row["path"]
-                reasons.setdefault(path, []).append("pinned-hash-mismatch:" + row["reason"])
+                reasons.setdefault(path, []).append(
+                    "pinned-hash-mismatch:" + row["reason"]
+                )
                 if path not in relevant:
                     relevant.append(path)
             relevant = sorted(set(relevant))
-            reasons = {k: sorted(set(v)) for k, v in sorted(reasons.items())}
-            status_value = PASS_NO_RELEVANT_DRIFT if not relevant else BLOCK_RELEVANT_DRIFT
+            reasons = {
+                k: sorted(set(v)) for k, v in sorted(reasons.items())
+            }
+            status_value = (
+                PASS_NO_RELEVANT_DRIFT if not relevant else BLOCK_RELEVANT_DRIFT
+            )
         can_fallback = status_value in {BLOCK_RELEVANT_DRIFT, BLOCK_NON_ANCESTOR}
+        git_pin_count = len(binding["gitBlobPins"])
+        raw_pin_count = len(raw_portable)
+        if git_pin_count and git_pin_count == len(binding["pinned"]):
+            pin_source = "certified-repository-inventory-git-object-id"
+        elif git_pin_count:
+            pin_source = "mixed-certified-git-object-id-and-legacy-portable-sha256"
+        elif raw_pin_count:
+            pin_source = "legacy-git-object-sha256"
+        else:
+            pin_source = "legacy-nonportable-pin-diff-guard-only"
         report = {
             "schemaVersion": SCHEMA,
             "status": status_value,
@@ -588,17 +819,26 @@ def revalidate(repo: Path, artifact: Path, out_dir: Path, expected_artifact_sha2
             "sensitiveExactPathCount": len(binding["exact"]),
             "sensitiveDirectoryPrefixCount": len(binding["prefixes"]),
             "pinnedHashCount": len(binding["pinned"]),
+            "certifiedGitBlobPinCount": git_pin_count,
+            "legacyPortablePinCount": raw_pin_count,
+            "basePinnedHashChecked": base_hash_checked,
             "pinnedHashChecked": hash_checked,
             "pinnedHashMismatches": hash_mismatches,
-            "pinnedHashSource": "git-object-database",
+            "pinnedHashSource": pin_source,
             "visualTask": bool(binding["visual"]),
-            "visualLayerMapPresent": bool(binding["visual"] is False or binding["layerMapPresent"]),
-            "fullMeshRerunRequired": status_value in {BLOCK_RELEVANT_DRIFT, BLOCK_NON_ANCESTOR},
+            "visualLayerMapPresent": bool(
+                binding["visual"] is False or binding["layerMapPresent"]
+            ),
+            "fullMeshRerunRequired": status_value
+            in {BLOCK_RELEVANT_DRIFT, BLOCK_NON_ANCESTOR},
             "canFallbackFullMesh": can_fallback,
             "readOnly": True,
             "productionCertified": False,
             "candidateRetrievalIsAuthority": False,
-            "policy": "MAIN_MOVEMENT_TRIGGERS_RELEVANT_DRIFT_EVALUATION_NOT_UNCONDITIONAL_AUTHORITY_DESTRUCTION",
+            "policy": (
+                "MAIN_MOVEMENT_TRIGGERS_RELEVANT_DRIFT_EVALUATION_"
+                "NOT_UNCONDITIONAL_AUTHORITY_DESTRUCTION"
+            ),
         }
         report["revalidationDigest"] = _digest_json(report)
         _write_json(out_dir / "PRISMA_MESH_REVALIDATION.json", report)
@@ -614,7 +854,10 @@ def revalidate(repo: Path, artifact: Path, out_dir: Path, expected_artifact_sha2
             report["artifact"] = str(final)
             report["artifactSha256"] = _sha_file(final)
         elif can_fallback:
-            _write_json(out_dir / "fallback_request.json", _fallback_request(request, current))
+            _write_json(
+                out_dir / "fallback_request.json",
+                _fallback_request(request, current),
+            )
         report["elapsedMs"] = round((time.perf_counter() - started) * 1000, 3)
         _write_json(out_dir / "PRISMA_MESH_REVALIDATION.json", report)
         return report
@@ -644,7 +887,12 @@ def _main() -> int:
     ap.add_argument("--expected-artifact-sha256", required=True)
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
-    result = revalidate(Path(args.repo), Path(args.artifact), Path(args.out), args.expected_artifact_sha256)
+    result = revalidate(
+        Path(args.repo),
+        Path(args.artifact),
+        Path(args.out),
+        args.expected_artifact_sha256,
+    )
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
     if result.get("status") in {PASS_NO_RELEVANT_DRIFT, PASS_ALREADY_CURRENT}:
         return 0

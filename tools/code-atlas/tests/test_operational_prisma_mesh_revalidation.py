@@ -14,7 +14,12 @@ from code_atlas.motors import prisma_mesh_revalidation as m
 
 
 def git(repo: Path, *args: str, allow: set[int] | None = None) -> str:
-    p = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=False)
+    p = subprocess.run(
+        ["git", "-C", str(repo), *args],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
     allowed = allow if allow is not None else {0}
     if p.returncode not in allowed:
         raise AssertionError(p.stderr)
@@ -43,13 +48,23 @@ def repo(base: Path) -> Path:
     (r / "candidate/retrieved.txt").write_text("candidate-v1\n")
     (r / ".github/workflows").mkdir(parents=True)
     (r / ".github/workflows/prisma-remote-automesh.yml").write_text("name: mesh\n")
-    (r / ".github/workflows/prisma-remote-automesh-revalidate.yml").write_text("name: revalidate\n")
+    (r / ".github/workflows/prisma-remote-automesh-revalidate.yml").write_text(
+        "name: revalidate\n"
+    )
     commit(r, "base")
     return r
 
 
 def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def blob_oid(r: Path, rel: str) -> str:
+    row = git(r, "ls-tree", "HEAD", "--", rel)
+    parts = row.split()
+    if len(parts) < 3:
+        raise AssertionError(row)
+    return parts[2]
 
 
 def legacy_visual_bytes() -> bytes:
@@ -72,7 +87,13 @@ def legacy_visual_bytes() -> bytes:
     return out.getvalue()
 
 
-def composed_bytes(r: Path, *, visual: bool = False, include_legacy: bool = False) -> bytes:
+def composed_bytes(
+    r: Path,
+    *,
+    visual: bool = False,
+    include_legacy: bool = False,
+    include_inventory: bool = True,
+) -> bytes:
     head = git(r, "rev-parse", "HEAD")
     tree = git(r, "rev-parse", "HEAD^{tree}")
     request = {
@@ -94,7 +115,12 @@ def composed_bytes(r: Path, *, visual: bool = False, include_legacy: bool = Fals
         }],
     }
     request["requestDigest"] = hashlib.sha256(
-        json.dumps(request, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+        json.dumps(
+            request,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        ).encode()
     ).hexdigest()
     lane = {
         "repoHead": head,
@@ -124,22 +150,100 @@ def composed_bytes(r: Path, *, visual: bool = False, include_legacy: bool = Fals
         "readOnly": True,
         "productionCertified": False,
     }
-    files = {
-        "PRISMA_MESH_GATEWAY_REPORT.json": json.dumps(report, sort_keys=True).encode(),
-        "authority/normalized_request.json": json.dumps(request, sort_keys=True).encode(),
-        "authority/lanes/lane/AUTHORITY_READSET.lock.json": json.dumps(lane, sort_keys=True).encode(),
+    files: dict[str, bytes] = {
+        "PRISMA_MESH_GATEWAY_REPORT.json": json.dumps(
+            report, sort_keys=True
+        ).encode(),
+        "authority/normalized_request.json": json.dumps(
+            request, sort_keys=True
+        ).encode(),
+        "authority/lanes/lane/AUTHORITY_READSET.lock.json": json.dumps(
+            lane, sort_keys=True
+        ).encode(),
     }
+    if include_inventory:
+        inventory_rows = []
+        for rel in ("authority/core.txt", "candidate/retrieved.txt"):
+            inventory_rows.append({
+                "path": rel,
+                "fileSha256": sha(r / rel),
+                "contentSha256": sha(r / rel),
+                "gitBlobSha": blob_oid(r, rel),
+                "gitMode": "100644",
+                "gitStage": 0,
+                "exists": True,
+                "isSymlink": False,
+                "isText": True,
+            })
+        inventory = {
+            "schemaVersion": "code_atlas_repository_discovery.v1",
+            "identity": {
+                "head": head,
+                "tree": tree,
+                "dirty": False,
+                "isGit": True,
+            },
+            "inventorySource": "git-index",
+            "files": inventory_rows,
+            "readOnly": True,
+            "productionCertified": False,
+        }
+        files["authority/repository_inventory.json"] = json.dumps(
+            inventory, sort_keys=True
+        ).encode()
     if include_legacy:
         files["legacy_surface_mesh.zip"] = legacy_visual_bytes()
     rows = [
-        {"path": n, "sha256": hashlib.sha256(b).hexdigest(), "bytes": len(b)}
+        {
+            "path": n,
+            "sha256": hashlib.sha256(b).hexdigest(),
+            "bytes": len(b),
+        }
         for n, b in sorted(files.items())
     ]
-    files["MANIFEST.json"] = json.dumps({"report": report, "files": rows}, sort_keys=True).encode()
+    files["MANIFEST.json"] = json.dumps(
+        {"report": report, "files": rows},
+        sort_keys=True,
+    ).encode()
     out = io.BytesIO()
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
         for n, b in files.items():
             z.writestr(n, b)
+    return out.getvalue()
+
+
+def rebuild_with_json_mutation(
+    raw: bytes,
+    target: str,
+    mutator,
+) -> bytes:
+    zin = zipfile.ZipFile(io.BytesIO(raw))
+    payload: dict[str, bytes] = {}
+    report = json.loads(zin.read("PRISMA_MESH_GATEWAY_REPORT.json"))
+    for name in zin.namelist():
+        if name == "MANIFEST.json":
+            continue
+        data = zin.read(name)
+        if name == target:
+            value = json.loads(data.decode("utf-8"))
+            mutator(value)
+            data = json.dumps(value, sort_keys=True).encode()
+        payload[name] = data
+    rows = [
+        {
+            "path": n,
+            "sha256": hashlib.sha256(b).hexdigest(),
+            "bytes": len(b),
+        }
+        for n, b in sorted(payload.items())
+    ]
+    payload["MANIFEST.json"] = json.dumps(
+        {"report": report, "files": rows}, sort_keys=True
+    ).encode()
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zout:
+        for n, b in payload.items():
+            zout.writestr(n, b)
     return out.getvalue()
 
 
@@ -163,8 +267,12 @@ class RevalidationTests(unittest.TestCase):
             digest = outer_artifact(art, raw)
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.PASS_ALREADY_CURRENT)
-            self.assertEqual(result["artifactReuse"], "VALIDATED_AUTHORITY_BYTES_NO_REPACK")
+            self.assertEqual(
+                result["artifactReuse"],
+                "VALIDATED_AUTHORITY_BYTES_NO_REPACK",
+            )
             self.assertEqual(Path(result["artifact"]).read_bytes(), raw)
+            self.assertEqual(result["certifiedGitBlobPinCount"], 1)
 
     def test_unrelated_and_candidate_drift_do_not_destroy_authority(self):
         with tempfile.TemporaryDirectory() as td:
@@ -200,7 +308,10 @@ class RevalidationTests(unittest.TestCase):
             second = m.revalidate(r, github_outer, b / "two", outer_digest)
             self.assertEqual(second["status"], m.PASS_NO_RELEVANT_DRIFT)
             self.assertEqual(second["currentHead"], head_two)
-            self.assertEqual(second["priorAuthorityMember"], "prisma-automesh-revalidated-result.zip")
+            self.assertEqual(
+                second["priorAuthorityMember"],
+                "prisma-automesh-revalidated-result.zip",
+            )
 
     def test_required_authority_drift_blocks_with_reasons_and_fallback(self):
         with tempfile.TemporaryDirectory() as td:
@@ -214,7 +325,10 @@ class RevalidationTests(unittest.TestCase):
             self.assertEqual(result["status"], m.BLOCK_RELEVANT_DRIFT)
             self.assertIn("authority/core.txt", result["relevanceReasons"])
             fallback = json.loads((b / "out/fallback_request.json").read_text())
-            self.assertEqual(fallback["expectedHead"], git(r, "rev-parse", "HEAD"))
+            self.assertEqual(
+                fallback["expectedHead"],
+                git(r, "rev-parse", "HEAD"),
+            )
             self.assertNotIn("requestDigest", fallback)
 
     def test_required_directory_drift_blocks(self):
@@ -244,7 +358,10 @@ class RevalidationTests(unittest.TestCase):
                 commit(r, "trust change")
                 result = m.revalidate(r, art, b / "out", digest)
                 self.assertEqual(result["status"], m.BLOCK_RELEVANT_DRIFT)
-                self.assertIn(p.relative_to(r).as_posix(), result["relevantChangedPaths"])
+                self.assertIn(
+                    p.relative_to(r).as_posix(),
+                    result["relevantChangedPaths"],
+                )
 
     def test_pinned_hashes_use_git_object_database_not_worktree(self):
         with tempfile.TemporaryDirectory() as td:
@@ -257,8 +374,60 @@ class RevalidationTests(unittest.TestCase):
             (r / "authority/core.txt").unlink()
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.PASS_NO_RELEVANT_DRIFT)
-            self.assertEqual(result["pinnedHashSource"], "git-object-database")
+            self.assertEqual(
+                result["pinnedHashSource"],
+                "certified-repository-inventory-git-object-id",
+            )
             self.assertEqual(result["pinnedHashMismatches"], [])
+
+    def test_crlf_worktree_pin_uses_certified_git_blob_identity(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            git(r, "config", "core.autocrlf", "true")
+            (r / "authority/core.txt").write_bytes(b"authority-v1\r\n")
+            (r / "notes/unrelated.md").write_text("crlf-base\n")
+            commit(r, "crlf base fixture")
+            self.assertNotEqual(
+                sha(r / "authority/core.txt"),
+                hashlib.sha256(
+                    subprocess.check_output(
+                        ["git", "-C", str(r), "show", "HEAD:authority/core.txt"]
+                    )
+                ).hexdigest(),
+            )
+            art = b / "a.zip"
+            digest = outer_artifact(art, composed_bytes(r))
+            (r / "notes/unrelated.md").write_text("crlf-drift\n")
+            commit(r, "unrelated drift")
+            result = m.revalidate(r, art, b / "out", digest)
+            self.assertEqual(result["status"], m.PASS_NO_RELEVANT_DRIFT)
+            self.assertEqual(result["certifiedGitBlobPinCount"], 1)
+            self.assertEqual(result["pinnedHashMismatches"], [])
+
+    def test_tampered_inventory_blob_identity_fails_closed(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            raw = composed_bytes(r)
+            wrong_oid = blob_oid(r, "candidate/retrieved.txt")
+
+            def mutate(value):
+                for row in value["files"]:
+                    if row.get("path") == "authority/core.txt":
+                        row["gitBlobSha"] = wrong_oid
+
+            tampered = rebuild_with_json_mutation(
+                raw,
+                "authority/repository_inventory.json",
+                mutate,
+            )
+            art = b / "a.zip"
+            digest = outer_artifact(art, tampered)
+            result = m.revalidate(r, art, b / "out", digest)
+            self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
+            self.assertIn("PRIOR_PINNED_IDENTITY_MISMATCH", result["error"])
+            self.assertFalse(result["canFallbackFullMesh"])
 
     def test_non_ancestor_requires_full_refresh(self):
         with tempfile.TemporaryDirectory() as td:
@@ -327,7 +496,10 @@ class RevalidationTests(unittest.TestCase):
             r = repo(b)
             art = b / "a.zip"
             with zipfile.ZipFile(art, "w", zipfile.ZIP_DEFLATED) as z:
-                z.writestr("prisma-automesh-composed-result.zip", composed_bytes(r))
+                z.writestr(
+                    "prisma-automesh-composed-result.zip",
+                    composed_bytes(r),
+                )
                 z.writestr("../escape", b"x")
             result = m.revalidate(
                 r,
@@ -344,7 +516,10 @@ class RevalidationTests(unittest.TestCase):
             r = repo(b)
             art = b / "a.zip"
             with zipfile.ZipFile(art, "w", zipfile.ZIP_DEFLATED) as z:
-                z.writestr("prisma-automesh-composed-result.zip", composed_bytes(r))
+                z.writestr(
+                    "prisma-automesh-composed-result.zip",
+                    composed_bytes(r),
+                )
                 info = zipfile.ZipInfo("link")
                 info.create_system = 3
                 info.external_attr = (stat.S_IFLNK | 0o777) << 16
@@ -369,7 +544,10 @@ class RevalidationTests(unittest.TestCase):
             )
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.BLOCK_INVALID_EVIDENCE)
-            self.assertIn("VISUAL_LEGACY_SURFACE_MESH_MISSING", result["error"])
+            self.assertIn(
+                "VISUAL_LEGACY_SURFACE_MESH_MISSING",
+                result["error"],
+            )
 
     def test_visual_request_with_layer_map_can_revalidate(self):
         with tempfile.TemporaryDirectory() as td:
@@ -382,6 +560,20 @@ class RevalidationTests(unittest.TestCase):
             )
             result = m.revalidate(r, art, b / "out", digest)
             self.assertEqual(result["status"], m.PASS_ALREADY_CURRENT)
+
+    def test_legacy_artifact_without_inventory_still_revalidates_by_diff(self):
+        with tempfile.TemporaryDirectory() as td:
+            b = Path(td)
+            r = repo(b)
+            art = b / "a.zip"
+            digest = outer_artifact(
+                art,
+                composed_bytes(r, include_inventory=False),
+            )
+            (r / "notes/unrelated.md").write_text("u2\n")
+            commit(r, "unrelated")
+            result = m.revalidate(r, art, b / "out", digest)
+            self.assertEqual(result["status"], m.PASS_NO_RELEVANT_DRIFT)
 
 
 if __name__ == "__main__":
