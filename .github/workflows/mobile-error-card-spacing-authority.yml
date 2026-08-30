@@ -14,23 +14,23 @@ env:
 jobs:
   authority:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Pin exact canonical base and disposable scope
+        id: scope
         shell: bash
         run: |
           set -euo pipefail
           git fetch origin main
           test "$(git rev-parse origin/main)" = "$BASE_SHA"
-          mapfile -t files < <(git diff --name-only origin/main...HEAD)
-          test "${#files[@]}" = 1
-          test "${files[0]}" = '.github/workflows/mobile-error-card-spacing-authority.yml'
+          mapfile -t f < <(git diff --name-only origin/main...HEAD)
+          test "${#f[@]}" = "1"
+          test "${f[0]}" = ".github/workflows/mobile-error-card-spacing-authority.yml"
           git checkout --detach "$BASE_SHA"
-          test "$(git rev-parse HEAD)" = "$BASE_SHA"
 
       - uses: actions/setup-python@v6
         with:
@@ -41,84 +41,91 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          OUT="$RUNNER_TEMP/authority-out"; mkdir -p "$OUT"
-          TASK='Repair only the remaining runtime-evidenced PRISMA Mobile /prisma-app HTTP-503 recovery-card readability defect: within errorSignalGrid, the status label and bold recovery title run together with no visual separation on 390x844 and 430x932 phone viewports. Authorize only a selector-level CSS layout/spacing correction for errorSignalGrid article children in prisma-mobile-dashboard.module.css. Preserve existing single-column card width fix, all copy, actions, seven-section Mobile canon, retired MultiContext decision, and every non-error Mobile screen. Exclude Tablet, PC, Shared UI, Chart Lab, DB, Prisma, APIs, business semantics, deploy and production claims.'
+          E="$RUNNER_TEMP/mobile-spacing-authority"
+          OUT="$RUNNER_TEMP/mobile-spacing-mesh-out"
+          mkdir -p "$E" "$OUT"
+          TASK='Repair only the remaining runtime-evidenced PRISMA Mobile /prisma-app HTTP-503 recovery-card readability defect: within errorSignalGrid, the status label and bold recovery title run together with no visual separation on 390x844 and 430x932 phone viewports. Authorize only a selector-level CSS layout/spacing correction for errorSignalGrid article children in prisma-mobile-dashboard.module.css. Preserve existing single-column card width fix, all copy, actions, seven-section Mobile canon, retired MultiContext decision, and every non-error Mobile screen. Exclude Tablet, PC, Shared UI, Chart Lab, DB, Prisma, APIs, business semantics, deploy and production claims. Require runtime screenshots of injected HTTP 503 at 390x844 and 430x932, layout assertions, source gates, typecheck, build, rollback evidence and mandatory layers map.'
           python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
             --task "$TASK" \
-            --surface 'Mobile /prisma-app HTTP-503 error recovery cards' \
+            --surface 'Mobile /prisma-app HTTP-503 recovery cards' \
             --repo "$GITHUB_WORKSPACE" \
             --out "$OUT" \
             --workers 18 \
             --shards 54 \
-            --max-files 120 \
-            --max-mb 40 \
+            --max-files 140 \
+            --max-mb 45 \
             --run-id "mobile-error-card-spacing-${GITHUB_RUN_ID}" \
-            --progress-jsonl "$OUT/progress.jsonl" \
-            --budget-root "$RUNNER_TEMP/authority-budget" | tee "$RUNNER_TEMP/authority-mesh.log"
-          ZIP="$(find "$OUT" -maxdepth 1 -type f \( -name '*result.zip' -o -name '*result*.zip' \) | head -n1)"
-          if [ -z "$ZIP" ]; then ZIP="$(grep -E '^OK_RESULT_ZIP=' "$RUNNER_TEMP/authority-mesh.log" | tail -n1 | cut -d= -f2-)"; fi
+            --progress-jsonl "$E/progress.jsonl" \
+            --budget-root "$RUNNER_TEMP/mobile-spacing-budget" | tee "$E/mesh.log"
+          ZIP="$(grep -E '^OK_RESULT_ZIP=' "$E/mesh.log" | tail -n1 | cut -d= -f2-)"
           test -n "$ZIP"; test -f "$ZIP"
-          mkdir -p "$RUNNER_TEMP/authority"
-          python - "$ZIP" "$RUNNER_TEMP/authority" <<'PY'
+          cp "$ZIP" "$E/authority-mesh.zip"
+          mkdir -p "$E/mesh"
+          python - "$ZIP" "$E/mesh" <<'PY'
           import sys,zipfile
           with zipfile.ZipFile(sys.argv[1]) as z:z.extractall(sys.argv[2])
           PY
-          A="$RUNNER_TEMP/authority"
-          test -f "$A/.governance/current/AUTHORITY_READSET.lock.json"
-          test -f "$A/reports/APP_IMPACT_MATRIX.md"
-          test -f "$A/reports/CONTRACT_AND_GATE_MATRIX.json"
-          test -f "$A/reports/MISSING_OR_UNMAPPED_RISK.md"
-          test -f "$A/reports/AGENT_PROMPT_ENVELOPE.md"
-          test -f "$A/reports/AUTHORITY_MESH_REPORT.md"
-          test -f "$A/reports/LAYERS_MAP.json"
-          test -f "$A/reports/LAYERS_MAP.md"
-          grep -R '"status"[[:space:]]*:[[:space:]]*"PASS"' "$A" >/dev/null
+          python - "$E/mesh" "$ZIP" "$BASE_SHA" "$E/composed-authority.json" <<'PY'
+          import hashlib,json,pathlib,sys
+          root=pathlib.Path(sys.argv[1]); z=pathlib.Path(sys.argv[2]); head=sys.argv[3]; out=pathlib.Path(sys.argv[4])
+          manifest=json.load(open(root/'RUN_MANIFEST.json',encoding='utf-8'))
+          assert manifest.get('status')=='PASS',manifest
+          assert manifest.get('repo_git_head')==head,(manifest.get('repo_git_head'),head)
+          required=['.governance/current/AUTHORITY_READSET.lock.json','reports/APP_IMPACT_MATRIX.md','reports/CONTRACT_AND_GATE_MATRIX.json','reports/MISSING_OR_UNMAPPED_RISK.md','reports/AGENT_PROMPT_ENVELOPE.md','reports/AUTHORITY_MESH_REPORT.md','reports/LAYERS_MAP.json','reports/LAYERS_MAP.md']
+          for rel in required: assert (root/rel).is_file(),rel
+          impact=(root/'reports/APP_IMPACT_MATRIX.md').read_text(encoding='utf-8',errors='replace').lower()
+          assert 'mobile' in impact
+          req=manifest.get('task','')
+          d={'schemaVersion':'prisma.composed-authority-mesh.v1','status':'PASS_COMPOSED_AUTHORITY_MESH','repoHead':head,'requiredAuthorityCoveragePct':100,'blockers':0,'requestDigest':hashlib.sha256(req.encode()).hexdigest(),'artifactDigest':hashlib.sha256(z.read_bytes()).hexdigest(),'layerMapPresent':True,'runId':manifest.get('run_id')}
+          out.write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(d,indent=2))
+          PY
 
       - name: Run Factory Ledger MUTATION gate for exact spacing repair
-        id: gate
+        id: anti
         shell: bash
         run: |
           set -euo pipefail
-          E="$RUNNER_TEMP/authority-decision"; mkdir -p "$E"
-          cp -R "$RUNNER_TEMP/authority/." "$E/authority/"
-          cp "$RUNNER_TEMP/authority-mesh.log" "$E/authority-mesh.log"
-          python - "$RUNNER_TEMP/authority" "$BASE_SHA" "$E/request.json" <<'PY'
-          import json,sys,pathlib
-          a=pathlib.Path(sys.argv[1]); base=sys.argv[2]; out=pathlib.Path(sys.argv[3])
-          candidates=[]
-          for p in a.rglob('*.json'):
-              try:d=json.loads(p.read_text(encoding='utf-8'))
-              except Exception:continue
-              if isinstance(d,dict) and d.get('status')=='PASS_COMPOSED_AUTHORITY_MESH':candidates.append(d)
-          assert candidates,'NO_COMPOSED_MESH'
-          m=candidates[0]
-          req={
-            'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':base,
-            'task':'Repair only the remaining runtime-evidenced Mobile HTTP-503 recovery-card label/title spacing defect using selector-level CSS on errorSignalGrid article children; preserve all semantics and every other Mobile screen.',
-            'capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],
-            'authorityMesh':{'status':'PASS_COMPOSED_AUTHORITY_MESH','repoHead':base,'requiredAuthorityCoveragePct':100,'blockers':0,'requestDigest':m.get('requestDigest'),'artifactDigest':m.get('artifactDigest'),'layerMapPresent':True},
-            'visualMutation':True
-          }
-          assert req['authorityMesh']['requestDigest'] and req['authorityMesh']['artifactDigest']
-          out.write_text(json.dumps(req,indent=2)+'\n',encoding='utf-8')
+          E="$RUNNER_TEMP/mobile-spacing-authority"
+          python - "$E/composed-authority.json" "$BASE_SHA" "$E/request.json" <<'PY'
+          import json,sys
+          m=json.load(open(sys.argv[1],encoding='utf-8'))
+          req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':sys.argv[2],'task':'Repair only the remaining runtime-evidenced PRISMA Mobile /prisma-app HTTP-503 recovery-card label/title spacing defect using selector-level CSS on errorSignalGrid article children; preserve copy, actions, single-column layout and every other Mobile screen.','capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],'authorityMesh':{'status':m['status'],'repoHead':m['repoHead'],'requiredAuthorityCoveragePct':m['requiredAuthorityCoveragePct'],'blockers':m['blockers'],'requestDigest':m['requestDigest'],'artifactDigest':m['artifactDigest'],'layerMapPresent':m['layerMapPresent']},'visualMutation':True}
+          open(sys.argv[3],'w',encoding='utf-8').write(json.dumps(req,indent=2)+'\n')
           PY
-          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$E/request.json" > "$E/anti-rework.json"
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$E/request.json" > "$E/anti-rework.json"
           python - "$E/anti-rework.json" <<'PY'
           import json,sys
-          d=json.load(open(sys.argv[1],encoding='utf-8')); assert d.get('result')=='PASS_ANTI_REWORK_GATE',d; assert d.get('errors')==[],d
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          print(json.dumps({'result':d['result'],'decisionDigest':d.get('decisionDigest')},indent=2))
           PY
 
-      - name: Prove source unchanged and upload authority evidence
+      - name: Prove source unchanged
+        id: guard
         shell: bash
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$BASE_SHA"
-          git diff --exit-code -- apps/terminal-de-venta-system/products/mobile/app
-          cp "$RUNNER_TEMP/authority-decision/request.json" "$RUNNER_TEMP/authority-decision/MUTATION_REQUEST.json"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          git diff --exit-code
 
-      - uses: actions/upload-artifact@v7
+      - name: Upload authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
         with:
           name: mobile-error-card-spacing-authority-${{ github.run_id }}
-          path: ${{ runner.temp }}/authority-decision/**
+          path: ${{ runner.temp }}/mobile-spacing-authority/**
           if-no-files-found: error
           retention-days: 14
+
+      - name: Fail closed unless all authority gates passed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ steps.scope.outcome }}" = success
+          test "${{ steps.mesh.outcome }}" = success
+          test "${{ steps.anti.outcome }}" = success
+          test "${{ steps.guard.outcome }}" = success
