@@ -1,0 +1,91 @@
+name: PRISMA Sync Sentinel Capsule Mutation Gate Carrier
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - main
+    paths:
+      - '.github/workflows/sync-sentinel-capsule-gate-carrier.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  anti-rework-gate:
+    if: github.event.pull_request.head.ref == 'gate/prisma-sync-sentinel-capsule-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Fail closed on main and carrier drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          BASE="$(git merge-base origin/main HEAD)"
+          test "$BASE" = "$MAIN_SHA"
+          mapfile -t files < <(git diff --name-only "$MAIN_SHA"...HEAD)
+          test "${#files[@]}" -eq 1
+          test "${files[0]}" = '.github/workflows/sync-sentinel-capsule-gate-carrier.yml'
+
+      - name: Validate and run universal anti-rework mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='a751520bbc559adbfced29abdd82ef0dfa6e0566'
+          git worktree add --detach "$RUNNER_TEMP/base" "$MAIN_SHA"
+          cd "$RUNNER_TEMP/base"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate > "$RUNNER_TEMP/anti-rework-authority.json"
+          grep -Fq 'PASS_PRISMA_ANTI_REWORK_AUTHORITY' "$RUNNER_TEMP/anti-rework-authority.json"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test | tee "$RUNNER_TEMP/anti-rework-selftest.log"
+          grep -Fq 'PASS_PRISMA_UNIVERSAL_ANTI_REWORK_GATE_SELF_TEST' "$RUNNER_TEMP/anti-rework-selftest.log"
+          cat > "$RUNNER_TEMP/gate.request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"a751520bbc559adbfced29abdd82ef0dfa6e0566",
+            "task":"Expand the registered PRISMA Sync Sentinel tooling capability with a hermetic isolated runtime capsule, fail-closed doctor, dependency-resolution probes, Sentinel-owned detached worktree/SQLite/process/source guards, versioned synthetic fixture and runtime registries, sandbox/evidence manifests, and focused self-tests. Reuse frozen Tablet and PC sync business logic read-only. No visual/UI mutation, no customer/live database, no package manifest or lockfile mutation, no global process scans or kills, and no production certification claim.",
+            "capabilities":[
+              {"id":"tooling.sync_sentinel","requestedAction":"BUILD"},
+              {"id":"tablet.sync.runtime_truth","requestedAction":"VERIFY"},
+              {"id":"pc.sync.dispatch_replay_runtime","requestedAction":"VERIFY"},
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"VERIFY"}
+            ],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"a751520bbc559adbfced29abdd82ef0dfa6e0566",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"7945f310bfeb7f21db10f7cccc9179cee8050827fe64f2ad24b90bbdc49060d1",
+              "artifactDigest":"3a151e1c92a99358ede623611a0d3868f4283b1d00ca02ff91792d655a9b7e1c",
+              "layerMapPresent":false
+            },
+            "visualMutation":false
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/gate.request.json" | tee "$RUNNER_TEMP/gate.result.json"
+          grep -Fq 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/gate.result.json"
+          python - "$RUNNER_TEMP/gate.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result') == 'PASS_ANTI_REWORK_GATE', d
+          assert d.get('errors') == [], d
+          assert d.get('repoHead') == 'a751520bbc559adbfced29abdd82ef0dfa6e0566', d
+          print('DECISION_DIGEST=' + d['decisionDigest'])
+          PY
