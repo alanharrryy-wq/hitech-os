@@ -1,0 +1,214 @@
+name: PC Atlasfin Session Finalize
+
+on:
+  push:
+    branches:
+      - handoff/pc-atlasfin-session-close-3008
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  finalize-handoff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Persist durable continuation only
+        shell: bash
+        env:
+          FINALIZE_RUN_ID: ${{ github.run_id }}
+          FINALIZE_HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import os, subprocess, textwrap
+
+          repo = Path.cwd()
+          app = repo / 'apps/terminal-de-venta-system'
+          handoff = app / 'docs/ops/PRISMA_PC_ATLASFIN_CONTINUATION.md'
+          manual = app / 'docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md'
+          main_sha = subprocess.check_output(['git', 'rev-parse', 'origin/main'], text=True).strip()
+          run_id = os.environ['FINALIZE_RUN_ID']
+          head_sha = os.environ['FINALIZE_HEAD_SHA']
+
+          handoff_text = f'''---
+          title: PRISMA PC Atlasfin Continuation
+          status: HANDOFF_READY_IMPLEMENTATION_PENDING
+          updated: 2026-08-30
+          surface: PC
+          owner_scope: apps/terminal-de-venta-system/products/pc/app
+          ---
+
+          # PRISMA PC Atlasfin Continuation
+
+          This is the canonical restart point for the next chat. The investigation/preflight is closed. Atlasfin visual implementation is not started.
+
+          ## Restart rule
+
+          Read this file and `docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md`, fetch current `main`, and verify the exact target below. If owner, CSS module, selector and slot are unchanged, do not repeat broad PC/Atlasfin discovery or broad UIMAP work. Continue from the next gate only.
+
+          ## Closure baseline
+
+          - main at closure: `{main_sha}`
+          - finalize carrier: `{head_sha}`
+          - finalize run: `{run_id}`
+          - product/runtime mutation during closure: none
+          - Atlasfin visual APPLY: NOT STARTED
+          - canonical identity-layer / element-binding for this target: PENDING
+          - runtime screenshot certification for this target: NOT RUN
+
+          ## Evidence already completed
+
+          ### Initial readiness and fresh UIMAP
+
+          - GitHub Actions run `33151472377`, artifact `9677874685`, digest `sha256:72f98aadfc7603dd7bc1d7ade9aef514a78bcc543bc401afbae74ff2679b8a86`.
+          - Draft PR `#442` was closed without merge.
+          - Its top-level RESULT had a known false-negative because it scanned only a shallow UIMAP path. Raw UIMAP is authoritative for that run.
+          - Fresh UIMAP status: `PASS_SOURCE_MAP_WITH_EXPLICIT_GAPS`.
+          - PC: `1968` identified components, `0` conflicts, `100%` identification coverage.
+          - Application remained blocked because canonical neutral meaning / certified layer / visual binding authority was not established.
+
+          ### Fresh PC-only Visual Control
+
+          - GitHub Actions run `33266190565`, artifact `9718713219`, digest `sha256:cb65214663e4497fb46bbd0bf5132c8097670148cb135e5b3b09017b96167764`.
+          - Source-only status `CERTIFIED`.
+          - PC routes `63`; component owners `130`; CSS owners `17`; region owners `305`; editable slots `1789`; slot units `303`; parsed layers `906`.
+          - `activeImportantCount=0`; `ambiguousActiveLayerOwnerCount=0`; blockers `0`; warnings `0`.
+          - Evidence was generated outside canonical indexes and the run proved no mutation under product PC, `.prisma-ui`, or `.governance`.
+          - `Visual Control CERTIFIED` means the structural source/control map is healthy. It does not authorize Atlasfin APPLY.
+
+          ### Exact target selected by source provenance
+
+          - route: `/catalog`
+          - componentUiId: `PC-HOME-FORM-COMPONENTS-CATALOG-PRODUCT-MEDIA-WORKSPACE-WORKSPACE-FRM-01`
+          - component: `ProductMediaWorkspace`
+          - owner: `apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.tsx`
+          - CSS owner: `apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.module.css`
+          - exact selector: `.workspace`
+          - slot: `SLOT.pc.components_catalog_product_media_workspace.form.components_catalog_product_media_workspace.workspace`
+          - semantic candidate: `VIS.SURFACE.CONTENT.PRIMARY`
+          - recipe candidate: `RCP.ATLAS.CONTENT.GLASS.02`
+          - preset: `PRESET.ATLAS.CONTENT.GLASS.01`
+          - material: `MAT.ATLAS.GLASS.CONTENT.01`
+          - adapter: `ADP.PC.ADMIN.V2`
+          - existing `/stock` StockFicha pilot is protected precedent and excluded from this pilot.
+
+          ### Task-exact Authority Mesh
+
+          - GitHub Actions run `33266357933`, artifact `9718767677`, digest `sha256:81defc677ec0cdab5090eed33bbdde5b2308d7448fd046411c67a036f017b028`.
+          - PASS with `18` workers, `54` shards, `13472` hits, `180` selected files and mandatory layer map.
+          - No explicit task paths were missing.
+          - It explicitly prohibited inventing a certified identity-layer ID and prohibited applying Atlasfin values.
+
+          ### Closure-specific Authority Mesh
+
+          - Run `33302060262` produced closure Mesh artifact `9729265425`, digest `sha256:fcb5c21156904912d263c63e327f1f8194fd61c8233b477ce9063ddb0d29f733`.
+          - A second corrected closure run `33302173724` again passed the Mesh and all source-scope validation; its only failure was the carrier commit command referencing a workflow file after that file had already been staged for deletion. This was CI carrier bookkeeping, not repo/product failure.
+          - Both closure Mesh executions included the mandatory layer map and prohibited product/runtime mutation.
+
+          ## Authority truth at handoff
+
+          `SOURCE TARGET PROVEN -> VISUAL CONTROL CERTIFIED -> TASK-EXACT MESH PASS -> IDENTITY LAYER / BINDING CONTRACT PENDING -> VISUAL APPLY FORBIDDEN`
+
+          The missing bridge is the canonical source-only identity-layer / element-binding contract connecting the exact `.workspace` target to `VIS.SURFACE.CONTENT.PRIMARY` under `ADP.PC.ADMIN.V2` and the selected recipe/preset/material. Do not invent a binding ID or certified layer ID from naming intuition.
+
+          ## Next gate, and only next gate
+
+          In the new chat, read this handoff, verify current `main`, then generate a fresh task-exact Authority Mesh for authoring the source-only identity-layer / element-binding contract for the pinned `/catalog` target. If the exact source target has not drifted, skip broad rediscovery.
+
+          The next change is governance/source-contract only. Do not modify `product-media-workspace.tsx` or its CSS module, do not apply Atlasfin values, do not start/stop processes, change ports, regenerate Prisma, mutate DB, or claim visual certification.
+
+          Only after the binding contract exists and passes its gates should a separate visual-application Mesh be generated. That later APPLY phase requires exact-target before/after screenshots, state checks, zero-important, focused static validation, rollback, and no functional-smoke-only visual PASS.
+
+          ## Tooling lesson
+
+          The first isolated PostCSS CI attempt failed because ESM resolution was tested from repo root while the temporary dependency link lived under the app root. The corrected PC-only Visual Control run changed into the app root and used external `--output-root`. Treat the original error as CI environment resolution, not a PC source defect.
+
+          ## Disposable audit carrier
+
+          `agent/pc-atlasfin-bindings-preflight-20260829` is disposable, has no open PR, and must not be merged. Durable authority is this handoff plus the immutable evidence run/artifact IDs above.
+
+          ## One-line restart prompt
+
+          `Lee apps/terminal-de-venta-system/docs/ops/PRISMA_PC_ATLASFIN_CONTINUATION.md y el Field Manual; verifica que el target PC /catalog no haya drifted y continúa únicamente con el fresh Authority Mesh para autorar el identity-layer/element-binding contract source-only. No redescubras PC/Atlasfin desde cero y no apliques CSS todavía.`
+          '''
+          handoff.parent.mkdir(parents=True, exist_ok=True)
+          handoff.write_text(textwrap.dedent(handoff_text).lstrip(), encoding='utf-8')
+
+          marker = '<!-- PC_ATLASFIN_SESSION_CLOSE_20260830 -->'
+          current = manual.read_text(encoding='utf-8')
+          if marker not in current:
+              entry = r'''
+
+          ---
+
+          <!-- PC_ATLASFIN_SESSION_CLOSE_20260830 -->
+          ### 2026-08-30 02:27 - PC Atlasfin: investigación cerrada, binding exacto pendiente
+
+          **Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / COMMAND_WORKS / COMMAND_FAILS
+          **Superficie:** PC / Tooling
+          **Contexto:** Se cerró descubrimiento/preflight de Atlasfin para PC sin aplicar valores visuales. El target exacto quedó `/catalog` -> `ProductMediaWorkspace` -> `.workspace`.
+
+          **Comando que funcionó:**
+
+          ```bash
+          OUT="$RUNNER_TEMP/pc-visual-control-fresh"
+          mkdir -p "$OUT"
+          node tools/quality/ui-visual-control.mjs visual-control:report --surface pc --output-root "$OUT"
+          ```
+
+          Precondición CI: PostCSS aislado en prefijo temporal, enlace de `node_modules` bajo `apps/terminal-de-venta-system` y resolución ESM ejecutada desde el app root.
+
+          **Comando que falló:**
+
+          ```bash
+          node --input-type=module -e "import('postcss').then(m => console.log('POSTCSS_OK=' + !!m.default))"
+          ```
+
+          Ejecutado desde el root del repo falló con `ERR_MODULE_NOT_FOUND`; la causa fue el cwd de resolución ESM, no el source PC.
+
+          **Resultado observado:** Visual Control PC-only `CERTIFIED`: 63 rutas, 130 component owners, 17 CSS owners, 305 region owners, 1789 editable slots, 906 layers, `!important=0`, blockers=0 y warnings=0. Authority Mesh exacto de `/catalog` PASS con layer map obligatorio. Atlasfin APPLY sigue pendiente/prohibido.
+
+          **Evidencia:** readiness `33151472377`/`9677874685`; Visual Control `33266190565`/`9718713219`; exact-target Mesh `33266357933`/`9718767677`; closure Mesh `33302060262`/`9729265425`; handoff `docs/ops/PRISMA_PC_ATLASFIN_CONTINUATION.md`.
+
+          **Causa real:** `Visual Control CERTIFIED` y `Authority Mesh PASS` no equivalen a `Atlasfin APPLY autorizado`. Falta identity-layer + element-binding canónico del target exacto.
+
+          **Rollback probado:** N/A; esta fase y el cierre son source-only/documentales, sin mutación de producto/runtime.
+          **Regla nueva:** primero target exacto + identity layer + binding contract; después Mesh de aplicación y evidencia visual antes/después.
+          **Deuda pendiente:** en sesión nueva, con Mesh fresco si cambió `main`, autorar el contrato source-only de `/catalog` / `ProductMediaWorkspace` / `.workspace` / `VIS.SURFACE.CONTENT.PRIMARY` / `ADP.PC.ADMIN.V2`. No repetir descubrimiento amplio si el target sigue igual.
+          '''
+              current = current.rstrip() + textwrap.dedent(entry).rstrip() + '\n'
+              current = current.replace('last_updated: 2026-06-10', 'last_updated: 2026-08-30', 1)
+              manual.write_text(current, encoding='utf-8')
+          PY
+
+      - name: Validate and self-remove carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          test -f apps/terminal-de-venta-system/docs/ops/PRISMA_PC_ATLASFIN_CONTINUATION.md
+          grep -q 'PC_ATLASFIN_SESSION_CLOSE_20260830' apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
+          test -z "$(git status --short -- apps/terminal-de-venta-system/products/pc prisma-html/extras/atlasfin apps/terminal-de-venta-system/.prisma-ui apps/terminal-de-venta-system/.governance)"
+          git rm .github/workflows/pc-atlasfin-session-finalize.yml
+          git diff --check
+
+      - name: Commit and push documentation-only handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'PRISMA Session Handoff'
+          git config user.email 'actions@users.noreply.github.com'
+          git add apps/terminal-de-venta-system/docs/ops/PRISMA_PC_ATLASFIN_CONTINUATION.md \
+                  apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md
+          git commit -m 'docs(pc): persist Atlasfin continuation handoff'
+          git push origin HEAD:handoff/pc-atlasfin-session-close-3008
