@@ -85,7 +85,7 @@ function PrismaMobileReadinessPanel({ clientSnapshot }: { clientSnapshot: Prisma
     <section className={styles.dataReadinessPanel} data-readiness-level={readiness.level} data-prisma-zone={readinessZone} aria-label="Madurez y calidad de datos">
       <header>
         <span>{readiness.label}</span>
-        <h4>{readiness.headline}</h4>
+        <h3>{readiness.headline}</h3>
         <p>{readiness.detail}</p>
       </header>
       <div className={styles.dataReadinessMeta}>
