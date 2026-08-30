@@ -62,9 +62,7 @@ jobs:
             'mode': 'MUTATION',
             'expectedHead': os.environ['AUTHORITY_HEAD'],
             'task': 'Remove proven-dead PRISMA Mobile MultiContext source residue and reconcile claims.verifiersAligned to true with a fail-closed canonical verifier invariant. Preserve the seven-section canon and all runtime/hosted/offline/security claims. No redesign, no replacement selector, no API deletion, no non-Mobile changes.',
-            'capabilities': [
-              {'id': 'mobile.interface_specification_canon', 'requestedAction': 'ADVANCE'}
-            ],
+            'capabilities': [{'id': 'mobile.interface_specification_canon', 'requestedAction': 'ADVANCE'}],
             'visualMutation': True,
             'authorityMesh': {
               'status': 'PASS_COMPOSED_AUTHORITY_MESH',
@@ -80,12 +78,63 @@ jobs:
           }
           out = Path(os.environ['RUNNER_TEMP']) / 'mobile-cleanup-gate' / 'mutation-request.json'
           out.write_text(json.dumps(request, indent=2, sort_keys=True) + '\n', encoding='utf-8')
-          print(out)
           PY
           python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' \
             --request "$RUNNER_TEMP/mobile-cleanup-gate/mutation-request.json" \
             | tee "$RUNNER_TEMP/mobile-cleanup-gate/mutation-decision.json"
           grep -Fq '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/mobile-cleanup-gate/mutation-decision.json"
+
+      - name: Prove exact MultiContext consumers before deletion
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, re, os
+          from pathlib import Path
+          root = Path('apps/terminal-de-venta-system/products/mobile/app')
+          terms = ['PrismaMobileMultiContextSwitcher', 'prisma-mobile-multi-context-switcher', 'multiContextRoot', 'mobile-multi-context-switcher']
+          refs = []
+          for base in [root / 'src', root / 'app']:
+            for p in base.rglob('*'):
+              if not p.is_file() or p.suffix.lower() not in {'.ts','.tsx','.js','.jsx','.mjs','.css','.json'}:
+                continue
+              text = p.read_text(encoding='utf-8', errors='replace')
+              hits = [term for term in terms if term in text]
+              if hits:
+                refs.append({'path': p.as_posix(), 'terms': hits})
+          pkg = root / 'package.json'
+          if pkg.is_file():
+            text = pkg.read_text(encoding='utf-8', errors='replace')
+            hits = [term for term in terms if term in text]
+            if hits: refs.append({'path': pkg.as_posix(), 'terms': hits})
+          component = (root / 'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx').as_posix()
+          index = (root / 'src/components/prisma-app/index.ts').as_posix()
+          own_css = (root / 'src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css').as_posix()
+          dashboard_css = (root / 'src/components/prisma-app/prisma-mobile-dashboard.module.css').as_posix()
+          allowed = {component, index, own_css, dashboard_css}
+          unexpected = [r for r in refs if r['path'] not in allowed]
+          dash = root / 'src/components/prisma-app/prisma-mobile-dashboard.module.css'
+          dash_text = dash.read_text(encoding='utf-8')
+          lines = dash_text.splitlines()
+          dash_hits = []
+          for i, line in enumerate(lines, 1):
+            if any(term.lower() in line.lower() for term in ['multicontext', 'multi-context']):
+              dash_hits.append({'line': i, 'text': line.strip()})
+          branches = root / 'app/api/mobile/branches/route.ts'
+          report = {
+            'authorityHead': os.environ['AUTHORITY_HEAD'],
+            'references': refs,
+            'unexpectedRuntimeConsumers': unexpected,
+            'dashboardCssMultiContextHits': dash_hits,
+            'branchesApiExistsAndIsOutOfScope': branches.is_file(),
+            'verdict': 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS' if not unexpected else 'FAIL_EXTERNAL_RUNTIME_CONSUMERS'
+          }
+          out = Path(os.environ['RUNNER_TEMP']) / 'mobile-cleanup-gate' / 'MULTICONTEXT_CONSUMER_PROOF.json'
+          out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          print(json.dumps(report, indent=2, ensure_ascii=False))
+          if unexpected: raise SystemExit(2)
+          if not branches.is_file(): raise SystemExit('BRANCHES_API_MISSING_OUT_OF_SCOPE_INVARIANT')
+          PY
 
       - name: Record authority binding
         shell: bash
