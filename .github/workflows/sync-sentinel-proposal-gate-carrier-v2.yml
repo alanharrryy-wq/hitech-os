@@ -1,0 +1,98 @@
+name: PRISMA Sync Sentinel Proposal Gate Carrier V2
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-sentinel-proposal-gate-carrier-v2.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  classify:
+    if: github.event.pull_request.head.ref == 'gate/prisma-sync-sentinel-proposal-3008-v2'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Pin exact canonical main and carrier isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='8a4df38032149f4ef30b3289cd22fa5c4babfe58'
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$MAIN_SHA"
+          test "$(git merge-base origin/main HEAD)" = "$MAIN_SHA"
+          mapfile -t files < <(git diff --name-only "$MAIN_SHA"...HEAD)
+          test "${#files[@]}" -eq 1
+          test "${files[0]}" = '.github/workflows/sync-sentinel-proposal-gate-carrier-v2.yml'
+      - name: Universal anti-rework proposal classification
+        shell: bash
+        run: |
+          set -euo pipefail
+          MAIN_SHA='8a4df38032149f4ef30b3289cd22fa5c4babfe58'
+          git worktree add --detach "$RUNNER_TEMP/base" "$MAIN_SHA"
+          cd "$RUNNER_TEMP/base"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate | tee "$RUNNER_TEMP/authority.json"
+          grep -Fq 'PASS_PRISMA_ANTI_REWORK_AUTHORITY' "$RUNNER_TEMP/authority.json"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --self-test | tee "$RUNNER_TEMP/selftest.log"
+          grep -Fq 'PASS_PRISMA_UNIVERSAL_ANTI_REWORK_GATE_SELF_TEST' "$RUNNER_TEMP/selftest.log"
+          cat > "$RUNNER_TEMP/request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"PROPOSAL",
+            "expectedHead":"8a4df38032149f4ef30b3289cd22fa5c4babfe58",
+            "task":"Finish the registered PRISMA Sync Sentinel on PR #446 as bounded reusable non-visual tooling. Reconcile with current main, audit and remove accidental out-of-scope changes, repair the Sentinel dependency-resolution/runtime-capsule observer according to canonical nested PC and Tablet package ownership without package or lockfile mutation, run isolated doctor and real-code Tablet-PC and PC-Tablet journeys plus negative cases A-L, causal fault localization and complete sanitized evidence. Reuse frozen Tablet Sync Wave2, PC Wave3 sync dispatch/replay and canonical schema truth. Do not modify Tablet or PC product sync source unless a separately evidenced real defect obtains fresh task-exact FIX authority. No live/customer database, no production certification, no visual/UI mutation, no global process killing and no fake green.",
+            "capabilities":[
+              {"id":"tooling.sync_sentinel","requestedAction":"BUILD"},
+              {"id":"tablet.sync.runtime_truth","requestedAction":"VERIFY"},
+              {"id":"pc.sync.dispatch_replay_runtime","requestedAction":"VERIFY"},
+              {"id":"data.canonical_schema_reproducibility","requestedAction":"VERIFY"}
+            ],
+            "visualMutation":false
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/request.json" | tee "$RUNNER_TEMP/result.json"
+          grep -Fq 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/result.json"
+          python - "$RUNNER_TEMP/result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d['result']=='PASS_ANTI_REWORK_GATE', d
+          assert d['mode']=='PROPOSAL', d
+          assert d['repoHead']=='8a4df38032149f4ef30b3289cd22fa5c4babfe58', d
+          by={r['id']:r for r in d['selected']}
+          assert by['tooling.sync_sentinel']['classification']=='BUILD', by
+          assert by['tooling.sync_sentinel']['doNotRebuild'] is False, by
+          for cid in ['tablet.sync.runtime_truth','pc.sync.dispatch_replay_runtime','data.canonical_schema_reproducibility']:
+              assert by[cid]['doNotRebuild'] is True, (cid,by[cid])
+          assert d['errors']==[], d
+          print('PROPOSAL_DECISION_DIGEST='+d['decisionDigest'])
+          PY
+      - name: Stage gate evidence
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p gate-evidence
+          cp "$RUNNER_TEMP/request.json" gate-evidence/ 2>/dev/null || true
+          cp "$RUNNER_TEMP/result.json" gate-evidence/ 2>/dev/null || true
+          cp "$RUNNER_TEMP/authority.json" gate-evidence/ 2>/dev/null || true
+          cp "$RUNNER_TEMP/selftest.log" gate-evidence/ 2>/dev/null || true
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sync-sentinel-proposal-gate-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 14
+          path: gate-evidence/**
