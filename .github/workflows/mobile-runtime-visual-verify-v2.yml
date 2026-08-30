@@ -173,26 +173,54 @@ jobs:
           curl -fsSL "$URL" -o "$RUNNER_TEMP/old-carrier.yml"
           python - "$RUNNER_TEMP/old-carrier.yml" "$RUNNER_TEMP/mobile-pw/verify.mjs" <<'PY'
           import sys
-          src=open(sys.argv[1],encoding='utf-8').read()
-          marker="cat > \"$RUNNER_TEMP/mobile-pw/verify.mjs\" <<'JS'\n"
-          start=src.index(marker)+len(marker)
-          end=src.index('\n          JS\n', start)
-          js=src[start:end]
-          lines=[]
-          for line in js.splitlines():
-              lines.append(line[10:] if line.startswith('          ') else line)
-          js='\n'.join(lines)+'\n'
-          js=js.replace("async function tabLabels(page) { return (await page.locator('[role=\\\"tab\\\"]').allTextContents()).map(clean); }", "async function tabLabels(page) { return (await page.locator('[role=\\\"tab\\\"] > span').allTextContents()).map(clean); }")
-          js=js.replace("const first = page.getByRole('tab', { name: 'Inicio', exact: true });", "const first = page.locator('#prisma-mobile-tab-inicio');")
-          js=js.replace("clean(await page.evaluate(() => document.activeElement?.textContent))", "clean(await page.evaluate(() => document.activeElement?.querySelector('span')?.textContent))")
-          js=js.replace("for (const label of EXPECTED) {\n      const tab = page.getByRole('tab', { name: label, exact: true });", "const TAB_IDS = { Inicio: 'inicio', Ventas: 'ventas', 'Operación': 'operacion', Licencias: 'licencias', Alertas: 'alertas', Stock: 'stock', Sistema: 'sistema' };\n    for (const label of EXPECTED) {\n      const tab = page.locator(`#prisma-mobile-tab-${TAB_IDS[label]}`);")
-          required=["'[role=\\\"tab\\\"] > span'", "#prisma-mobile-tab-inicio", "TAB_IDS"]
-          if not all(x in js for x in required):
-              raise SystemExit('SELECTOR_PATCH_DID_NOT_APPLY')
-          open(sys.argv[2],'w',encoding='utf-8').write(js)
+          src = open(sys.argv[1], encoding='utf-8').read()
+          marker = "cat > \"$RUNNER_TEMP/mobile-pw/verify.mjs\" <<'JS'\n"
+          start = src.index(marker) + len(marker)
+          end = src.index('\n          JS\n', start)
+          raw = src[start:end]
+          lines = [line[10:] if line.startswith('          ') else line for line in raw.splitlines()]
+          out = []
+          counts = {'labels': 0, 'first': 0, 'active': 0, 'loop': 0, 'tab': 0}
+          for line in lines:
+              if 'async function tabLabels(page)' in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "async function tabLabels(page) { return (await page.locator('[role=\"tab\"] > span').allTextContents()).map(clean); }")
+                  counts['labels'] += 1
+                  continue
+              if "const first = page.getByRole('tab'" in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "const first = page.locator('#prisma-mobile-tab-inicio');")
+                  counts['first'] += 1
+                  continue
+              if 'document.activeElement?.textContent' in line:
+                  out.append(line.replace('document.activeElement?.textContent', "document.activeElement?.querySelector('span')?.textContent"))
+                  counts['active'] += 1
+                  continue
+              if 'for (const label of EXPECTED) {' in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "const TAB_IDS = { Inicio: 'inicio', Ventas: 'ventas', 'Operación': 'operacion', Licencias: 'licencias', Alertas: 'alertas', Stock: 'stock', Sistema: 'sistema' };")
+                  out.append(line)
+                  counts['loop'] += 1
+                  continue
+              if "const tab = page.getByRole('tab', { name: label, exact: true });" in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "const tab = page.locator(`#prisma-mobile-tab-${TAB_IDS[label]}`);")
+                  counts['tab'] += 1
+                  continue
+              out.append(line)
+          expected = {'labels': 1, 'first': 1, 'loop': 1, 'tab': 1}
+          for key, value in expected.items():
+              if counts[key] != value:
+                  raise SystemExit(f'SELECTOR_PATCH_COUNT_{key.upper()}={counts[key]}')
+          if counts['active'] < 3:
+              raise SystemExit(f'SELECTOR_PATCH_COUNT_ACTIVE={counts["active"]}')
+          js = '\n'.join(out) + '\n'
+          open(sys.argv[2], 'w', encoding='utf-8').write(js)
+          print('SELECTOR_PATCH_COUNTS=' + repr(counts))
           PY
           node --check "$RUNNER_TEMP/mobile-pw/verify.mjs"
           grep -F "#prisma-mobile-tab-inicio" "$RUNNER_TEMP/mobile-pw/verify.mjs" >/dev/null
+          grep -F "[role=\"tab\"] > span" "$RUNNER_TEMP/mobile-pw/verify.mjs" >/dev/null
 
       - name: Run isolated runtime and visual VERIFY
         id: visual
