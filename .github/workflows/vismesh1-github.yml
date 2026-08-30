@@ -1,0 +1,68 @@
+name: VISMESH1 GitHub Authority Preflight
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/vismesh1-github.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  authority-mesh:
+    name: Fresh PRISMA visual authority mesh
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run exact full-surface Authority Mesh
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          TASK='Consolidar prisma-html como unica autoridad visual editable de PRISMA; eliminar autoridades visuales editables duplicadas sin eliminar proyecciones generadas; convertir Atlasfin en la cabina visual humana unica; reconciliar Identity Dictionary, RIFAT, prisma-ui, sistema-ui y Atlasfin; generalizar bindings, layers, editable slots y runtime projection para Tablet, PC, Mobile, Web, Chart Lab, Control Center y Shared UI; reconciliar READMEs, TREE, manifests y readiness; preservar comportamiento funcional; cero !important; cero DB/Prisma/process/port changes; incluir Layer Map completo y no reclamar ready sin evidencia.'
+          python tools/prisma-governance/authority_mesh.py \
+            --task "$TASK" \
+            --full \
+            --output .governance/current
+
+      - name: Verify mandatory authority outputs
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in \
+            AUTHORITY_READSET.lock.json \
+            APP_IMPACT_MATRIX.md \
+            CONTRACT_AND_GATE_MATRIX.json \
+            MISSING_OR_UNMAPPED_RISK.md \
+            AGENT_PROMPT_ENVELOPE.md \
+            AUTHORITY_MESH_REPORT.md \
+            LAYERS_MAP.json \
+            LAYERS_MAP.md
+          do
+            test -s ".governance/current/$f" || { echo "MISSING_OR_EMPTY=$f"; exit 1; }
+          done
+          echo 'VISMESH1_MANDATORY_OUTPUTS=PASS'
+
+      - name: Upload fresh Mesh artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vismesh1-authority-mesh
+          path: apps/terminal-de-venta-system/.governance/current
+          if-no-files-found: error
+          retention-days: 14
