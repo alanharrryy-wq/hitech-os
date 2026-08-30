@@ -1,0 +1,137 @@
+name: PRISMA Mobile Runtime Visual Current Main Merge Gate
+
+on:
+  push:
+    branches: ['gate/mobile-runtime-visual-merge-current-3008']
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  CURRENT_MAIN_SHA: '68699563803b9c8a904782bf60f68ebbfa3c43b4'
+  ORIGINAL_MOBILE_BASE: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+  FIX_BRANCH: 'fix/mobile-runtime-visual-conformance-3008'
+  FIX_HEAD: '8d42aeae0a080959c8c1247a43f7e24301198a73'
+  CURRENT_MESH_REQUEST_DIGEST: 'c9f34154d66bd41e74d69a64d6af443fd1bc67c2503474bcaeddb7e2ef2f9b51'
+  CURRENT_MESH_ARTIFACT_DIGEST: 'd06813ac5e221ea8f22907d3e1adf8559cc3c4d938299de6358552315502c21a'
+
+jobs:
+  merge-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Pin current main and disposable carrier scope
+        id: pin
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main "$FIX_BRANCH"
+          test "$(git rev-parse origin/main)" = "$CURRENT_MAIN_SHA"
+          test "$(git rev-parse HEAD^)" = "$CURRENT_MAIN_SHA"
+          mapfile -t carrier < <(git diff --name-only "$CURRENT_MAIN_SHA"...HEAD)
+          test "${#carrier[@]}" = 1
+          test "${carrier[0]}" = '.github/workflows/mobile-runtime-visual-current-main-merge-gate.yml'
+          git checkout --detach "$CURRENT_MAIN_SHA"
+          test "$(git rev-parse HEAD)" = "$CURRENT_MAIN_SHA"
+
+      - name: Prove intervening main drift did not touch Mobile and PR scope is exact
+        id: drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-merge-gate"; mkdir -p "$E"
+          git diff --name-only "$ORIGINAL_MOBILE_BASE".."$CURRENT_MAIN_SHA" > "$E/intervening-main-files.txt"
+          if grep -E '^apps/terminal-de-venta-system/products/mobile/app/' "$E/intervening-main-files.txt"; then
+            echo 'RELEVANT_MOBILE_DRIFT_DETECTED' >&2
+            exit 1
+          fi
+          test "$(git rev-parse origin/$FIX_BRANCH)" = "$FIX_HEAD"
+          git diff --name-only origin/main...origin/$FIX_BRANCH > "$E/pr-product-scope.txt"
+          python - "$E/pr-product-scope.txt" <<'PY'
+          import sys
+          got=[x.strip() for x in open(sys.argv[1],encoding='utf-8') if x.strip()]
+          expected=[
+            'apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx',
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobilePremiumNavigator.tsx',
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css',
+          ]
+          assert got==expected,(got,expected)
+          PY
+          git diff origin/main...origin/$FIX_BRANCH -- apps/terminal-de-venta-system/products/mobile/app > "$E/current-main-to-fix.diff"
+
+      - name: Run Factory Ledger anti-rework gate on current main authority
+        id: anti
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-merge-gate"
+          cat > "$E/request.json" <<JSON
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"$CURRENT_MAIN_SHA",
+            "task":"Merge the already runtime-certified bounded PRISMA Mobile /prisma-app visual/accessibility repair into current main after fresh current-head Authority Mesh confirms Mobile authority and intervening main drift is unrelated. Product scope remains exactly layout.tsx, PrismaMobilePremiumNavigator.tsx, and prisma-mobile-dashboard.module.css. Preserve the seven canonical tabs and retired MultiContext decision. No Tablet, PC, Shared UI, Chart Lab, DB, Prisma, API/business semantics, hosted production, auth, sync, licensing, offline, custody, deploy or distribution claims.",
+            "capabilities":[{"id":"mobile.interface_specification_canon","requestedAction":"ADVANCE"}],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"$CURRENT_MAIN_SHA",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"$CURRENT_MESH_REQUEST_DIGEST",
+              "artifactDigest":"$CURRENT_MESH_ARTIFACT_DIGEST",
+              "layerMapPresent":true
+            },
+            "visualMutation":true
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$E/request.json" > "$E/anti-rework.json"
+          python - "$E/anti-rework.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          selected=d.get('selected') or []
+          assert len(selected)==1,selected
+          row=selected[0]
+          assert row.get('id')=='mobile.interface_specification_canon',row
+          assert row.get('requestedAction')=='ADVANCE',row
+          print(json.dumps({'result':d['result'],'decisionDigest':d.get('decisionDigest'),'selected':row},indent=2))
+          PY
+
+      - name: Record current Authority Mesh and rollback boundary
+        id: evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-merge-gate"
+          cat > "$E/CURRENT_MAIN_AUTHORITY.json" <<JSON
+          {
+            "status":"PASS_COMPOSED_AUTHORITY_MESH",
+            "repoHead":"$CURRENT_MAIN_SHA",
+            "repoTree":"6eb943629de6ba2a787856b9e5280e6f0b53f81c",
+            "requestDigest":"$CURRENT_MESH_REQUEST_DIGEST",
+            "composedArtifactSha256":"$CURRENT_MESH_ARTIFACT_DIGEST",
+            "remoteAutoMeshRun":33309106119,
+            "remoteAutoMeshArtifact":9731432458,
+            "remoteAutoMeshOuterDigest":"sha256:29a81baad489ab2e3fe19d403588a7ab29aba03b004af779df12696ccf38f36a",
+            "requiredAuthorityCoveragePct":100,
+            "layerMapPresent":true,
+            "productionCertified":false
+          }
+          JSON
+          cat > "$E/ROLLBACK.json" <<JSON
+          {"preMergeMain":"$CURRENT_MAIN_SHA","candidateHead":"$FIX_HEAD","beforeMerge":"close PR 483","afterMerge":"revert the merge commit; never reset protected main"}
+          JSON
+          git status --short --branch > "$E/git-status.txt"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: mobile-current-main-merge-gate-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-merge-gate/**
+          if-no-files-found: error
+          retention-days: 14
