@@ -28,6 +28,14 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Reset temporary governance workspace
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .governance/current
+          mkdir -p .governance/current
+
       - name: Run exact full-surface Authority Mesh
         working-directory: apps/terminal-de-venta-system
         shell: bash
@@ -38,6 +46,40 @@ jobs:
             --task "$TASK" \
             --full \
             --output .governance/current
+
+      - name: Snapshot canonical Layer Map from current repository commit
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp docs/visual-layer-map/layer-map.json .governance/current/LAYERS_MAP.json
+          cp docs/visual-layer-map/LAYER_MAP.md .governance/current/LAYERS_MAP.md
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          out = Path('.governance/current')
+          sources = [
+              ('docs/visual-layer-map/layer-map.json', out / 'LAYERS_MAP.json'),
+              ('docs/visual-layer-map/LAYER_MAP.md', out / 'LAYERS_MAP.md'),
+          ]
+          rows = []
+          for source, snap in sources:
+              data = snap.read_bytes()
+              rows.append({
+                  'source': source,
+                  'snapshot': snap.name,
+                  'bytes': len(data),
+                  'sha256': hashlib.sha256(data).hexdigest(),
+              })
+          payload = {
+              'schema': 'prisma.authority-mesh.layer-map-snapshot.v1',
+              'taskScoped': True,
+              'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'policy': 'Current tracked canonical layer map is snapshotted into the fresh Mesh artifact; no stale .governance/current residue is accepted.',
+              'files': rows,
+          }
+          (out / 'LAYERS_MAP_SOURCE.json').write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
 
       - name: Verify mandatory authority outputs
         working-directory: apps/terminal-de-venta-system
@@ -52,7 +94,8 @@ jobs:
             AGENT_PROMPT_ENVELOPE.md \
             AUTHORITY_MESH_REPORT.md \
             LAYERS_MAP.json \
-            LAYERS_MAP.md
+            LAYERS_MAP.md \
+            LAYERS_MAP_SOURCE.json
           do
             test -s ".governance/current/$f" || { echo "MISSING_OR_EMPTY=$f"; exit 1; }
           done
