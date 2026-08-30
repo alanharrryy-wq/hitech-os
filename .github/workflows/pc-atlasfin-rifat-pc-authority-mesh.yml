@@ -1,0 +1,58 @@
+name: PC Atlasfin RIFAT PC Authority Mesh
+
+on:
+  push:
+    branches:
+      - agent/pc-atlasfin-rifat-pc-authority-mesh-20260830
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  authority-mesh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run task-exact RIFAT PC authority Mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pc-atlasfin-rifat-pc-authority-mesh"
+          mkdir -p "$OUT"
+          TASK='Authorize only the source/governance architecture bridge required to make PRISMA RIFAT identity binding authority consume certified PC visual-control evidence without replacing, weakening, or contaminating existing Tablet authority. This is a prerequisite for the already-pinned Atlasfin target /catalog -> ProductMediaWorkspace -> .workspace. Current main baseline is 8a4df38032149f4ef30b3289cd22fa5c4babfe58. Proven target facts remain: route /catalog and pc.catalog.route; source owner apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.tsx; CSS owner apps/terminal-de-venta-system/products/pc/app/components/catalog/product-media-workspace.module.css; selector .workspace; UIMAP componentUiId PC-HOME-FORM-COMPONENTS-CATALOG-PRODUCT-MEDIA-WORKSPACE-WORKSPACE-FRM-01; UIMAP slot SLOT.pc.components_catalog_product_media_workspace.form.components_catalog_product_media_workspace.workspace; semantic VIS.SURFACE.CONTENT.PRIMARY; recipe RCP.ATLAS.CONTENT.GLASS.02; preset PRESET.ATLAS.CONTENT.GLASS.01; material MAT.ATLAS.GLASS.CONTENT.01; adapter ADP.PC.ADMIN.V2. Fresh PC-only Visual Control evidence is source CERTIFIED but the canonical RIFAT identity bindings registry currently marks pc BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS, while identity_binding_resolver_core.py hardcodes generic authority/rifat/prisma-ui/visual-control indexes that currently contain Tablet authority. Determine the canonical root-cause solution: whether RIFAT should gain per-surface visual-control authority sources, how bindings.registry.json should reference them, how the resolver must consume them without changing Tablet behavior, how authoritySnapshot drift protection must cover them, and which exact files/gates are required before a PC binding can become RESOLVED. Preserve all existing Tablet Cobrar IDs and behavior exactly. Do not overwrite Tablet visual-control authority with PC-only outputs. Do not modify PC TSX or CSS, do not apply Atlasfin values, do not mutate runtime, do not start/stop processes, do not touch ports, do not regenerate Prisma, do not mutate DB, do not run browser automation, and do not claim visual certification. Explicitly exclude Tablet product runtime, Mobile, Chart Lab, Web, Shared UI product runtime, SaaS Control Center and Cloud Command Center. The deliverable is read-only authority with mandatory layer map, app-impact matrix, contract/gate matrix, risks, exact source/governance files allowed for a clean per-surface RIFAT bridge, migration/backward-compatibility requirements, and blockers. No fake green.'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            --task "$TASK" \
+            --surface pc \
+            --repo "$GITHUB_WORKSPACE" \
+            --out "$OUT" \
+            --workers 18 \
+            --shards 54 \
+            --max-files 200 \
+            --max-mb 80
+
+      - name: Show result
+        if: always()
+        shell: bash
+        run: |
+          find "$RUNNER_TEMP/pc-atlasfin-rifat-pc-authority-mesh" -maxdepth 2 -type f -printf '%p\n' || true
+
+      - name: Upload Authority Mesh evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-atlasfin-rifat-pc-authority-mesh
+          path: ${{ runner.temp }}/pc-atlasfin-rifat-pc-authority-mesh/*.zip
+          if-no-files-found: error
+          retention-days: 7
