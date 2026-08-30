@@ -9,7 +9,7 @@ import unittest
 import zipfile
 from pathlib import Path
 
-import prisma_mesh_revalidation as m
+from code_atlas.motors import prisma_mesh_revalidation as m
 
 
 def git(repo: Path, *args: str) -> str:
