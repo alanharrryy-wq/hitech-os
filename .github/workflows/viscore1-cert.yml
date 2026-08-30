@@ -13,11 +13,11 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PINNED_MAIN_SHA: 'dec4ef395778be09cfe4b9ac2bc527efb80a9b0d'
-  SAFE_WORKFLOW_COMMIT: 'e5cdbe33efd2189c4ccafa83ec5c2e38d261920e'
 
 jobs:
   finalize:
-    name: build final reconciled merge commit object
+    if: github.actor != 'github-actions[bot]'
+    name: validate and push reconciled merge
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -37,7 +37,7 @@ jobs:
           test "$(git rev-parse origin/main)" = "$PINNED_MAIN_SHA"
           git -c user.name='prisma-viscore-finalizer' -c user.email='noreply@prisma.local' merge --no-commit --no-ff "$PINNED_MAIN_SHA"
 
-      - name: Rebuild RIFAT hashes on reconciled current-main tree
+      - name: Rebuild and validate RIFAT on reconciled tree
         shell: bash
         run: |
           set -euo pipefail
@@ -47,8 +47,7 @@ jobs:
           from pathlib import Path
 
           repo = Path.cwd()
-          prisma = repo / 'prisma-html'
-          manifest_path = prisma / 'authority/rifat/visual-source-manifest.json'
+          manifest_path = repo / 'prisma-html/authority/rifat/visual-source-manifest.json'
           targets = {
               'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css',
               'apps/terminal-de-venta-system/products/pc/app/components/inventory/pc-inventory-master-detail.module.css',
@@ -59,126 +58,37 @@ jobs:
               output = entry.get('output')
               if output not in targets:
                   continue
-              source_path = repo / entry['source']
-              output_path = repo / output
-              source_bytes = source_path.read_bytes()
-              output_bytes = output_path.read_bytes()
+              source = repo / entry['source']
+              projected = repo / output
+              source_bytes = source.read_bytes()
+              output_bytes = projected.read_bytes()
               if source_bytes != output_bytes:
-                  raise SystemExit(f"RIFAT repair candidate is not exact-copy: {entry['source']} -> {output}")
+                  raise SystemExit(f"exact-copy drift remains: {entry['source']} -> {output}")
               digest = hashlib.sha256(source_bytes).hexdigest()
               entry['sourceSha256'] = digest
               entry['outputSha256'] = digest
               seen.add(output)
           missing = targets - seen
           if missing:
-              raise SystemExit(f'RIFAT repair targets missing from visual-source-manifest: {sorted(missing)}')
+              raise SystemExit(f'missing RIFAT projection targets: {sorted(missing)}')
           manifest_path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-          print(json.dumps({'status': 'PASS', 'updated': sorted(seen)}, indent=2))
           PY
 
           python prisma-html/tools/validate_rifat_authority.py
           python prisma-html/tools/refresh_files_manifest.py --write
           python prisma-html/tools/refresh_files_manifest.py --check
-
-      - name: Prove deterministic reconciled candidates
-        shell: bash
-        run: |
-          set -euo pipefail
           python prisma-html/tools/validate_rifat_authority.py
-          python prisma-html/tools/refresh_files_manifest.py --check
-          sha256sum \
-            prisma-html/authority/rifat/visual-source-manifest.json \
-            prisma-html/FILES_MANIFEST.json \
-            > reconciled-candidate-sha256.txt
-          cat reconciled-candidate-sha256.txt
+          sha256sum prisma-html/authority/rifat/visual-source-manifest.json prisma-html/FILES_MANIFEST.json
 
-      - name: Restore read-only certifier and verify final state
+      - name: Commit and push reconciled merge
         shell: bash
         run: |
           set -euo pipefail
-          git show "${SAFE_WORKFLOW_COMMIT}:.github/workflows/viscore1-cert.yml" > .github/workflows/viscore1-cert.yml
           git add -A
           python prisma-html/tools/validate_rifat_authority.py
           python prisma-html/tools/refresh_files_manifest.py --check
           git diff --cached --check
-          echo 'Reconciled merge tree validated; temporary workflow absent from staged final tree.'
-
-      - name: Create remote merge commit object without updating refs
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          from __future__ import annotations
-          import base64
-          import json
-          import os
-          import subprocess
-          import urllib.request
-          from pathlib import Path
-
-          repo = os.environ['GITHUB_REPOSITORY']
-          token = os.environ['GH_TOKEN']
-          main_sha = os.environ['PINNED_MAIN_SHA']
-          root = Path.cwd()
-          parent = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
-          base_tree = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip()
-          changed = [
-              p.decode('utf-8')
-              for p in subprocess.check_output(['git', 'diff', '--cached', '--name-only', '-z', 'HEAD']).split(b'\0')
-              if p
-          ]
-          if not changed:
-              raise SystemExit('no staged merge delta')
-
-          def post(endpoint: str, payload: dict) -> dict:
-              req = urllib.request.Request(
-                  f'https://api.github.com/repos/{repo}/{endpoint}',
-                  data=json.dumps(payload).encode('utf-8'),
-                  method='POST',
-                  headers={
-                      'Authorization': f'Bearer {token}',
-                      'Accept': 'application/vnd.github+json',
-                      'X-GitHub-Api-Version': '2022-11-28',
-                      'User-Agent': 'prisma-viscore1-finalizer',
-                  },
-              )
-              with urllib.request.urlopen(req, timeout=60) as response:
-                  return json.load(response)
-
-          entries = []
-          for rel in changed:
-              path = root / rel
-              if not path.exists() and not path.is_symlink():
-                  entries.append({'path': rel, 'mode': '100644', 'type': 'blob', 'sha': None})
-                  continue
-              stage = subprocess.check_output(['git', 'ls-files', '-s', '--', rel], text=True).strip()
-              if not stage:
-                  raise SystemExit(f'cannot resolve staged mode for {rel}')
-              mode = stage.split()[0]
-              raw = os.readlink(path).encode('utf-8') if mode == '120000' else path.read_bytes()
-              blob = post('git/blobs', {
-                  'content': base64.b64encode(raw).decode('ascii'),
-                  'encoding': 'base64',
-              })
-              entries.append({'path': rel, 'mode': mode, 'type': 'blob', 'sha': blob['sha']})
-
-          tree = post('git/trees', {'base_tree': base_tree, 'tree': entries})
-          commit = post('git/commits', {
-              'message': 'fix(rifat): reconcile VISCORE1 with current main authority',
-              'tree': tree['sha'],
-              'parents': [parent, main_sha],
-          })
-          (root / 'final-commit-sha.txt').write_text(commit['sha'] + '\n', encoding='utf-8')
-          print(f'FINAL_COMMIT_SHA={commit["sha"]}')
-          print(f'FINAL_CHANGED_PATHS={len(changed)}')
-          PY
-
-      - name: Upload final merge commit SHA
-        uses: actions/upload-artifact@v4
-        with:
-          name: viscore1-final-commit-sha
-          path: final-commit-sha.txt
-          if-no-files-found: error
-          retention-days: 1
+          git config user.name 'prisma-viscore-finalizer'
+          git config user.email 'noreply@prisma.local'
+          git commit -m 'fix(rifat): reconcile VISCORE1 with current main authority'
+          git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
