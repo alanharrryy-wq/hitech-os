@@ -21,10 +21,51 @@ def _run(cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, timeou
 
 
 def install_workspace(worktree: Path) -> dict[str, object]:
-    return _run(
-        ["pnpm", "install", "--frozen-lockfile", "--ignore-scripts"],
-        cwd=worktree, timeout=900,
-    )
+    """Install every canonical dependency island inside the disposable capsule.
+
+    The repository root workspace does not include the deeply nested PC/Tablet app
+    package roots. Those apps own their own package.json + pnpm-lock.yaml, so a root
+    install alone cannot prove that @prisma/client/prisma resolve from the package
+    that actually owns them. All installs are frozen and script-disabled; no manifest
+    or lockfile mutation is permitted.
+    """
+    terminal = worktree / APP_REL
+    targets = [
+        ("repo_root", worktree),
+        ("pc_app", terminal / "products/pc/app"),
+        ("tablet_app", terminal / "products/tablet/app"),
+    ]
+    command = ["pnpm", "install", "--frozen-lockfile", "--ignore-scripts"]
+    steps: dict[str, object] = {}
+    first_failure = 0
+    for label, root in targets:
+        package_json = root / "package.json"
+        lockfile = root / "pnpm-lock.yaml"
+        if not package_json.is_file() or not lockfile.is_file():
+            step = {
+                "ok": False,
+                "returncode": 2,
+                "tail": f"BLOCKED_DEPENDENCY_OWNER_MISSING:{label}:package.json={package_json.is_file()}:pnpm-lock.yaml={lockfile.is_file()}",
+                "root": label,
+            }
+        else:
+            step = _run(command, cwd=root, timeout=900)
+            step["root"] = label
+            step["lockfile"] = lockfile.relative_to(worktree).as_posix()
+        steps[label] = step
+        if not step.get("ok"):
+            first_failure = int(step.get("returncode") or 1)
+            break
+    return {
+        "ok": len(steps) == len(targets) and all(bool(step.get("ok")) for step in steps.values()),
+        "returncode": first_failure,
+        "command": "pnpm install --frozen-lockfile --ignore-scripts",
+        "topology": [
+            {"label": label, "root": root.relative_to(worktree).as_posix() if root != worktree else "."}
+            for label, root in targets
+        ],
+        "steps": steps,
+    }
 
 
 def _pc_sentinel_schema(worktree: Path) -> Path:
