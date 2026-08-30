@@ -23,17 +23,19 @@ def _run(cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, timeou
 def install_workspace(worktree: Path) -> dict[str, object]:
     """Install every canonical dependency island inside the disposable capsule.
 
-    The repository root workspace does not include the deeply nested PC/Tablet app
-    package roots. Those apps own their own package.json + pnpm-lock.yaml, so a root
-    install alone cannot prove that @prisma/client/prisma resolve from the package
-    that actually owns them. All installs are frozen and script-disabled; no manifest
-    or lockfile mutation is permitted.
+    The repository root workspace does not include the deeply nested PC/Tablet/Mobile
+    app package roots. Those apps own package.json + pnpm-lock.yaml islands, so a root
+    install alone cannot prove the dependencies used by the actual runtime owners.
+    All installs are frozen and script-disabled; no manifest or lockfile mutation is
+    permitted. Mobile is installed because certification now boots its real Next
+    runtime whose canonical product port is 3140.
     """
     terminal = worktree / APP_REL
     targets = [
         ("repo_root", worktree),
         ("pc_app", terminal / "products/pc/app"),
         ("tablet_app", terminal / "products/tablet/app"),
+        ("mobile_app", terminal / "products/mobile/app"),
     ]
     command = ["pnpm", "install", "--frozen-lockfile", "--ignore-scripts"]
     steps: dict[str, object] = {}
@@ -64,6 +66,7 @@ def install_workspace(worktree: Path) -> dict[str, object]:
             {"label": label, "root": root.relative_to(worktree).as_posix() if root != worktree else "."}
             for label, root in targets
         ],
+        "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
         "steps": steps,
     }
 
