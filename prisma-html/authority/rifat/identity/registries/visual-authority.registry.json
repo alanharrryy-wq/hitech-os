@@ -1,0 +1,79 @@
+{
+  "schema": "prisma.visual.authority.registry.v1",
+  "version": "1.0.0",
+  "status": "VISCORE1_CANONICAL_AUTHORITY_DECLARED",
+  "editableAuthorityCount": 1,
+  "editableAuthority": {
+    "id": "AUTH.PRISMA.VISUAL.IDENTITY",
+    "path": "authority/rifat/identity",
+    "role": "neutral visual meaning, identity profiles, semantic tokens, recipes, assets and surface adapters",
+    "manualEditsAllowed": true
+  },
+  "bindingAuthority": {
+    "id": "AUTH.PRISMA.UI.BINDINGS",
+    "path": "authority/rifat/prisma-ui",
+    "role": "surface, route, owner, region, editable-slot and layer location truth",
+    "manualEditsAllowed": "governed-source-only"
+  },
+  "cockpit": {
+    "id": "UI.PRISMA.VISUAL.COCKPIT",
+    "path": "extras/atlasfin/index.html",
+    "role": "single human visual-control cockpit",
+    "authority": false,
+    "mayPrepareRequests": true,
+    "mayMutateProductRuntimeDirectly": false
+  },
+  "projectionAuthority": {
+    "manifest": "authority/rifat/visual-source-manifest.json",
+    "rule": "Generated product copies are allowed; competing editable visual truths are not.",
+    "manualEditsToGeneratedOutputsForbidden": true
+  },
+  "derivedViews": [
+    {
+      "path": "extras/atlasfin/assets/data",
+      "role": "cockpit datasets and generated status projections",
+      "authority": false
+    },
+    {
+      "path": "sistema-ui/catalogo",
+      "role": "reference/showcase catalog",
+      "authority": false
+    },
+    {
+      "path": "sistema-ui/identidad",
+      "role": "legacy identity workbench / compatibility view",
+      "authority": false
+    },
+    {
+      "path": "sistema-ui/css/tokens",
+      "role": "prisma-html site presentation tokens; not cross-app identity authority",
+      "authority": false
+    }
+  ],
+  "readiness": {
+    "stages": [
+      "DISCOVERED",
+      "BOUND",
+      "COMPILED",
+      "PROJECTED",
+      "STATIC_GREEN",
+      "RUNTIME_VISUAL_GREEN",
+      "READY"
+    ],
+    "readyRequiresRuntimeVisualEvidence": true,
+    "compiledIsNotReady": true,
+    "functionalSmokeIsNotVisualEvidence": true
+  },
+  "policies": {
+    "oneEditableVisualAuthority": true,
+    "neutralMeaningFirst": true,
+    "atlasfinIsCockpitNotSecondAuthority": true,
+    "generatedCopiesAllowed": true,
+    "manualEditsToGeneratedProjectionsForbidden": true,
+    "catalogsCannotOverrideAuthority": true,
+    "routeCountsDerivedFromRouteAuthority": true,
+    "unknownOrAmbiguousBindingsRemainBlocked": true,
+    "priorityOverridesForbidden": true,
+    "noFakeReady": true
+  }
+}
