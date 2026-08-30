@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "prisma.sync-sentinel.fixture-registry.v1",
+  "productionCertified": false,
+  "fixtures": [
+    {
+      "fixtureId": "SYNC.JOURNEY.A.SALE_ACK.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "positive",
+      "expectedOutcome": "ACK",
+      "expectedFaultZone": null,
+      "mandatoryAssertions": ["tablet_outbox_created", "pc_ingested", "pc_canonical_projected", "ack_persisted", "final_outbox_acked"],
+      "implemented": true
+    },
+    {
+      "fixtureId": "SYNC.JOURNEY.B.CATALOG_DELTA.V1",
+      "direction": "pc_to_tablet",
+      "topic": "catalog.delta",
+      "kind": "positive",
+      "expectedOutcome": "APPLIED_WITH_CHECKPOINT",
+      "expectedFaultZone": null,
+      "mandatoryAssertions": ["pc_catalog_exported", "tablet_catalog_applied", "checkpoint_advanced", "local_stock_preserved"],
+      "implemented": true
+    },
+    {
+      "fixtureId": "SYNC.NEG.A.DUPLICATE_EVENT.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "DUPLICATE_ACK",
+      "expectedFaultZone": "IDEMPOTENCY",
+      "mandatoryAssertions": ["same_event_not_reprojected", "duplicate_explicit", "tablet_final_acked"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.B.IDEMPOTENCY_PAYLOAD_CONFLICT.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "CONFLICT",
+      "expectedFaultZone": "IDEMPOTENCY",
+      "mandatoryAssertions": ["same_idempotency_key_detected", "different_payload_detected", "conflict_evidence_preserved", "no_auto_retry"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.C.BAD_PAYLOAD_HASH.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "REJECTED",
+      "expectedFaultZone": "CONTRACT_VALIDATION",
+      "mandatoryAssertions": ["payload_hash_rejected", "no_projection", "rejection_evidence_preserved"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.D.BAD_BATCH_CHECKSUM.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "REJECTED",
+      "expectedFaultZone": "CONTRACT_VALIDATION",
+      "mandatoryAssertions": ["batch_checksum_rejected", "no_projection"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.E.WRONG_SCOPE.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "REJECTED_OR_CONFLICT",
+      "expectedFaultZone": "SCOPE",
+      "mandatoryAssertions": ["scope_mismatch_explicit", "no_cross_scope_projection"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.F.PC_UNAVAILABLE.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "RETRYABLE_FAILURE_NO_ACK",
+      "expectedFaultZone": "NETWORK",
+      "mandatoryAssertions": ["tablet_continues", "no_fake_ack", "retryable_state_persisted"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.G.RETRY_PROVENANCE.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "RETRY_RECORDED",
+      "expectedFaultZone": "TABLET_DISPATCHER",
+      "mandatoryAssertions": ["attempt_count_increments", "last_attempt_changes", "provenance_preserved"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.H.CONFLICT_NO_RETRY.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative",
+      "expectedOutcome": "CONFLICT_TERMINAL",
+      "expectedFaultZone": "IDEMPOTENCY",
+      "mandatoryAssertions": ["conflict_not_auto_retried", "conflict_evidence_preserved"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.I.PC_RECOVERY_EVENTUAL_ACK.V1",
+      "direction": "tablet_to_pc",
+      "topic": "sale.completed",
+      "kind": "negative_recovery",
+      "expectedOutcome": "EVENTUAL_ACK",
+      "expectedFaultZone": null,
+      "mandatoryAssertions": ["initial_failure_no_ack", "pc_recovers", "retry_succeeds", "final_outbox_acked"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.J.DUPLICATE_CATALOG_DELTA.V1",
+      "direction": "pc_to_tablet",
+      "topic": "catalog.delta",
+      "kind": "negative",
+      "expectedOutcome": "DUPLICATE_NO_BAD_REAPPLY",
+      "expectedFaultZone": "CHECKPOINT",
+      "mandatoryAssertions": ["duplicate_explicit", "checkpoint_stable", "local_stock_preserved"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.K.MISSING_CATALOG_DEPENDENCY.V1",
+      "direction": "pc_to_tablet",
+      "topic": "catalog.delta",
+      "kind": "negative",
+      "expectedOutcome": "CONFLICT_OR_REJECTED",
+      "expectedFaultZone": "TABLET_CATALOG_PULL",
+      "mandatoryAssertions": ["missing_dependency_explicit", "no_partial_corrupt_apply"],
+      "implemented": false
+    },
+    {
+      "fixtureId": "SYNC.NEG.L.INVALID_CATALOG_PAYLOAD.V1",
+      "direction": "pc_to_tablet",
+      "topic": "catalog.delta",
+      "kind": "negative",
+      "expectedOutcome": "REJECTED",
+      "expectedFaultZone": "CONTRACT_VALIDATION",
+      "mandatoryAssertions": ["invalid_payload_rejected", "checkpoint_not_advanced"],
+      "implemented": false
+    }
+  ],
+  "certificationRule": "Every mandatory fixture must be implemented and pass before CERTIFY may return PASS."
+}
