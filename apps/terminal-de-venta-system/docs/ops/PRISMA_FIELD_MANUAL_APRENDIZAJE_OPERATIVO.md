@@ -5,7 +5,7 @@ status: LIVING
 owner: PRISMA Ops / Engineering
 created: 2026-06-10
 last_updated: 2026-08-30
-version: 00A
+version: 00B
 scope:
   - hot-injection
   - rollback
@@ -15,6 +15,8 @@ scope:
   - packaging
   - Windows/Prisma gotchas
   - evidence-ledger
+  - authority-mesh
+  - parallel-governance
 principle: "Aprender una vez; no volver a pagar la misma multa operacional."
 ---
 
@@ -45,6 +47,8 @@ Este manual nace debajo de estas reglas de gobierno ya existentes:
 | `quality/contracts/no-fake-green.contract.json` | No cantar verde sin evidencia. Verde de palabra no vale, carajo. |
 | `quality/contracts/traceable-operation.contract.json` | Cada resultado debe rastrearse de acción a evidencia. |
 | `quality/contracts/release-evidence-required.contract.json` | Nada listo para release sin evidencia empaquetable. |
+| `PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md` | Anti-rework, Authority Mesh vigente, revalidación de drift y cierre de evidencia. |
+| `docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md` | Operación GitHub-first de AutoMesh v2, revalidación, chaining, Layer Map y fail-closed. |
 | `prisma-control-center/internal/py/prismo_learning/**` | Ya existe memoria/aprendizaje en tooling; este manual es la capa humana, operativa y legible. |
 
 ## 2. Reglas de oro
@@ -59,6 +63,7 @@ Este manual nace debajo de estas reglas de gobierno ya existentes:
 8. No subir `.env`, DBs vivas, tokens, zips con secretos o evidencia sensible a canales externos.
 9. Tablet POS se protege como superficie autónoma de venta. No introducir dependencia de PC o Mobile para vender.
 10. Todo rollback debe restaurar el repo y dejar log de qué backup usó.
+11. Si `main` cambia después de una Authority Mesh válida, revalidar drift relevante. No conservar autoridad vieja a ciegas y no destruirla sólo porque cambió el SHA.
 
 ## 3. Taxonomía de entradas
 
@@ -477,6 +482,7 @@ Un hotfix visual puede entrar al repo final si trae:
 
 | Fecha | Cambio |
 |---|---|
+| 2026-08-30 | AutoMesh v2: `main` movement pasa a drift relevante, revalidación encadenable, fast/full refresh, Git blob portable/CRLF, Layer Map fail-closed y concurrencia read-only aislada. |
 | 2026-07-03 | Aprendizaje LICFLOW4 Admin Bridge: token solo backend, confirmaciones obligatorias, dry-run primero y commit sin Mobile/PC/Tablet ni generated evidence. |
 | 2026-06-18 | Cierre operativo POS /pos: governance limpio con govclean2, posctx limpio, AutoMesh PASS, Layer Map obligatorio y ruta app-root del manual corregida. |
 | 2026-06-10 | Creación del manual vivo con primeras entradas de TodoALV, hot-injection, Prisma EPERM, smoke funcional, delayer visual y gobernanza tri-superficie. |
@@ -597,7 +603,6 @@ o mediante `npx wrangler`, pasando el valor por stdin desde el proceso seguro.
 ### Evidencia permitida
 
 Sólo se conserva fingerprint truncado:
-
 ```python
 fingerprint = sha256(token)[:16]
 ```
@@ -905,10 +910,10 @@ PYTHONPATH=tools/code-atlas/src python -m unittest discover -s tools/code-atlas/
 3. Un `PRODUCT_TARGET` fijo puede seguir siendo el objeto exacto de certificación aunque `main` avance independientemente, siempre que el harness esté aislado y la evidencia declare ese SHA.
 4. Si dos agentes tocan el **mismo archivo**, el segundo debe releer el blob/SHA actual, comparar el cambio fresco y reconciliar el solapamiento semántico. Nunca sobrescribir silenciosamente trabajo ajeno.
 5. Si el mismo archivo cambió pero las regiones/owners son independientes, se permite reconciliación explícita. Si el solapamiento no puede resolverse con certeza, **fail closed** y obtener evidencia fresca.
-6. El paralelismo seguro **no elimina** la regla de Authority Mesh exacto: una mutación gobernada que exige autoridad sobre el HEAD canónico debe refrescar su Authority Mesh/anti-rework gate si ese HEAD cambió antes de la mutación, incluso cuando el drift sea ajeno y seguro.
+6. Regla histórica al 2026-08-25: se refrescaba Authority Mesh ante cualquier cambio de HEAD antes de una mutación gobernada. **SUPERSEDED 2026-08-30:** AutoMesh v2 ahora revalida drift relevante; sólo drift relevante/no-ancestro exige full Mesh, mientras drift ajeno puede reanclarse con atestación válida al HEAD actual.
 7. Distinguir siempre tres conceptos: `PRODUCT_TARGET` = qué commit se certifica; `EVIDENCE_BASE` = contra qué base se mide el carrier; `CANONICAL_HEAD` = HEAD actual que autoriza una nueva mutación gobernada.
 
-**Ejemplo confirmado:** el avance de `main` por PR #386 tocó únicamente Change Assurance Cloud Center y no solapó Tablet Sync, Factory Ledger ni este manual. Se clasificó como drift paralelo seguro. Aun así se refrescó el Authority Mesh porque la posterior mutación del Ledger requería HEAD canónico exacto.
+**Ejemplo confirmado:** el avance de `main` por PR #386 tocó únicamente Change Assurance Cloud Center y no solapó Tablet Sync, Factory Ledger ni este manual. Se clasificó como drift paralelo seguro. En aquel flujo todavía se refrescó el Mesh completo bajo la regla previa; la operación actual debe usar revalidación v2.
 **Rollback probado:** N/A; los carriers stale se cerraron sin merge.
 **Evidencia:** Tablet Sync WAVE2 product PR #377; runtime run `32866793273`; closure Authority run `32868230568`; disposable preflight PRs #387/#388.
 **Regla corta:** **paralelismo se decide por overlap real y autoridad, no por miedo a que `main` tenga commits nuevos.**
@@ -949,3 +954,52 @@ Ejecutado desde el root del repo falló con `ERR_MODULE_NOT_FOUND`; la causa fue
 **Rollback probado:** N/A; esta fase y el cierre son source-only/documentales, sin mutación de producto/runtime.
 **Regla nueva:** primero target exacto + identity layer + binding contract; después Mesh de aplicación y evidencia visual antes/después.
 **Deuda pendiente:** en sesión nueva, con Mesh fresco si cambió `main`, autorar el contrato source-only de `/catalog` / `ProductMediaWorkspace` / `.workspace` / `VIS.SURFACE.CONTENT.PRIMARY` / `ADP.PC.ADMIN.V2`. No repetir descubrimiento amplio si el target sigue igual.
+
+---
+
+<!-- PRISMA_AUTOMESH_V2_20260830 -->
+### 2026-08-30 08:35 - AutoMesh v2 deja de serializar chats por cualquier movimiento de `main`
+
+**Tipo:** GOVERNANCE_LEARNING / EVIDENCE_LEARNING / COMMAND_WORKS / GOTCHA
+**Superficie:** Governance / Tooling / Code Atlas / todas las superficies gobernadas
+**Contexto:** El gate de mutación trataba `mesh.repoHead != HEAD` como `MUTATION_MESH_STALE_HEAD` absoluto. En un repo con varios chats/agentes/PRs en paralelo, cualquier merge ajeno podía destruir autoridad válida y convertir la concurrencia en una fila global alrededor de `main`.
+
+**Causa real:** El modelo de stale estaba basado en igualdad de SHA, no en si el delta intersectaba el Authority Readset, required directories, trust anchors, Layer Map, protected scope o pins certificados de la tarea.
+
+**Corrección canónica:** PR #487 instaló revalidación v2. `main` movement ahora dispara evaluación de drift relevante. Same-head reutiliza bytes validados; drift no relevante produce atestación ligada al HEAD actual; drift relevante o no-ancestro ejecuta full fresh Mesh; evidencia inválida/no demostrable falla cerrado.
+
+**Comandos GitHub confirmados:**
+
+```text
+/prisma-automesh task <urlsafe-base64-request-without-padding>
+/prisma-automesh revalidate <artifact-id> sha256:<artifact-digest>
+```
+
+**Resultado observado:** PASS.
+
+- PR #487 mergeado como `5e79c3c36c635b2051681e510b3ab61fc348c627`.
+- CI, ForgeOS, anti-rework, navigation guard y Code Atlas hardening pasaron; Windows/Linux/macOS verificaron la implementación.
+- Suite focal/adversarial en el merge: 18 pruebas.
+- E2E post-merge `33316050565`: el propio cambio v2 tocó trust anchors, revalidation detectó drift relevante y ejecutó full checkout + universal preflight + task-exact Mesh + compose + evidence upload + final fail-closed gate, todo PASS.
+- Mesh documental `33316921023` salió PASS sobre `5e79c3c3...`, artifact `9733744471`, digest `sha256:1a9bd15280f3c38c4382c484aa61281e7b93ec7db3ed98dbd98dfabf6a374222`.
+- Mientras se preparaba esta documentación, `main` avanzó a `dec4ef395778be09cfe4b9ac2bc527efb80a9b0d` por cierre del Ledger de Sync Sentinel. Revalidation `33317174167` lo clasificó correctamente como drift relevante de governance/Factory Ledger y ejecutó full fresh Mesh PASS; artifact `9733821589`, digest `sha256:53413da237fe498d9c809036d7567ec5c34a1807f9cdc9d51288fb82bd1cccd5`.
+
+**Gotcha Windows/CRLF:** El readset podía guardar SHA-256 de bytes del checkout mientras Git conserva el blob canónico. Compararlos directamente generaba falso drift en Windows. v2 enlaza el pin seleccionado con `repository_inventory.gitBlobSha`, valida esa relación contra el base commit y después compara identidad Git canónica. Si inventario/hash/blob se contradicen, bloquea.
+
+**Gotcha artifact chaining:** Un artifact GitHub revalidado puede contener `prisma-automesh-revalidated-result.zip`. v2 acepta esa envoltura sólo si manifest, digest, report, HEAD y `revalidationDigest` prueban la cadena. No revivir el workaround v1 que sólo reconocía el composed result original.
+
+**Gotcha request encoding/taxonomía:** El gateway exige Base64 URL-safe sin padding para el token. Un request documental con `domain=documentation` falló correctamente con `INVALID_DOMAIN`; la lane canónica para esta documentación usa `domain=governance`. No forzar valores inventados para pasar request validation.
+
+**Seguridad de evidencia:** Rechazar traversal, rutas absolutas/backslash inseguras, symlinks, duplicados/colisiones normalizadas, miembros no manifestados, hash/size mismatch, payload excesivo, compresión patológica y envelopes ambiguos.
+
+**Visual:** Si la tarea es visual, `legacy_surface_mesh.zip` y `LAYERS_MAP.json` son obligatorios. Sin Layer Map no hay revalidación visual verde.
+
+**Concurrencia:** Revalidaciones read-only independientes se aíslan por request/comment. No compartir un lock issue-wide que serialice trabajo ajeno. Mutación/merge siguen sujetos a autoridad actual y overlap real.
+
+**Rollback probado:** El cambio source v2 quedó gobernado por PR y Git; rollback es revert del merge #487 si una regresión futura lo exige. Esta entrada documental no toca producto/runtime/DB/Prisma/deploy.
+
+**Regla nueva:** **Que `main` se mueva no significa que “valió el Mesh”. Significa: prueba qué cambió y si toca tu autoridad.** Revalidar primero; full refresh sólo cuando la evidencia diga que corresponde.
+
+**Runbook canónico:** `apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md`.
+
+**Límite:** AutoMesh v2, sus tests, CI y E2E no promueven `productionCertified=true` ni prueban seguridad hosted, cumplimiento legal/privacidad o correctness de superficies de producto no incluidas.
