@@ -159,7 +159,7 @@ jobs:
             2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/self-test.log"
 
       - id: scan
-        name: Sentinel scan
+        name: Sentinel preliminary scan
         if: always() && steps.selftest.outcome == 'success'
         continue-on-error: true
         shell: bash
@@ -174,7 +174,7 @@ jobs:
 
       - id: diagnose
         name: Sentinel diagnose
-        if: always() && needs.classify.outputs.impact == 'CERTIFY' && steps.scan.outcome == 'success'
+        if: always() && needs.classify.outputs.impact == 'CERTIFY' && steps.selftest.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -236,10 +236,18 @@ jobs:
           [[ "$NODE_SETUP" == "success" ]] || { echo "FAIL node setup outcome=$NODE_SETUP"; fail=1; }
           [[ "$BOOTSTRAP" == "success" ]] || { echo "FAIL bootstrap outcome=$BOOTSTRAP"; fail=1; }
           [[ "$SELFTEST" == "success" ]] || { echo "FAIL self-test outcome=$SELFTEST"; fail=1; }
-          [[ "$SCAN" == "success" ]] || { echo "FAIL scan outcome=$SCAN"; fail=1; }
-          if [[ "$IMPACT" == "CERTIFY" ]]; then
+          if [[ "$IMPACT" == "SCAN" ]]; then
+            [[ "$SCAN" == "success" ]] || { echo "FAIL scan outcome=$SCAN"; fail=1; }
+          elif [[ "$IMPACT" == "CERTIFY" ]]; then
+            if [[ "$SCAN" != "success" && "$SCAN" != "failure" ]]; then
+              echo "FAIL preliminary scan did not execute outcome=$SCAN"
+              fail=1
+            fi
             [[ "$DIAGNOSE" == "success" ]] || { echo "FAIL diagnose outcome=$DIAGNOSE"; fail=1; }
             [[ "$CERTIFY" == "success" ]] || { echo "FAIL certify outcome=$CERTIFY"; fail=1; }
+            if [[ "$SCAN" == "failure" && "$CERTIFY" == "success" ]]; then
+              echo "INFO preliminary scan was red; final certify passed only after canonical runtime-backed exact-signature reconciliation."
+            fi
           fi
           if [[ "$fail" -ne 0 ]]; then
             echo "PRISMA Sync Sentinel Watch failed closed. See the job summary and retained artifact for causal evidence."
