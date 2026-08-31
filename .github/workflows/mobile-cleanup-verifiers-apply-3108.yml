@@ -18,6 +18,7 @@ env:
   AUTH_ARTIFACT_SHA256: e2e251f5d33824cc86abe9a3127e8d00c2819c71d635b11e591abb11f97c8140
   MESH_REQUEST_DIGEST: 4b7d5afe229cdff106ad79654b44fc6ce7cbd2c251cfdd680ad58d30f332f624
   MESH_COMPOSED_SHA256: bafb60010dfbb30edc9cab902120f53012960ad70588c99e3feb2680879fa849
+  BASELINE_BLOCKER_FILE: docs/prisma-app/qa/prisma-app-mobile-38-optional-adder-boundary-scenarios.json
 
 jobs:
   apply:
@@ -112,6 +113,30 @@ jobs:
           print(json.dumps(binding,indent=2))
           PY
 
+      - name: Install exact workspace dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          corepack enable
+          corepack prepare pnpm@9.15.0 --activate
+          pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Prove pre-existing full Mobile gate blocker on baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          mobile='apps/terminal-de-venta-system/products/mobile/app'
+          test ! -f "$mobile/$BASELINE_BLOCKER_FILE"
+          set +e
+          pnpm -C "$mobile" check:all 2>&1 | tee "$RUNNER_TEMP/BASELINE_CHECK_ALL.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -ne 0
+          grep -Fq 'verify:optional-adder-boundary' "$RUNNER_TEMP/BASELINE_CHECK_ALL.log"
+          grep -Fq 'Missing required Mobile boundary file.' "$RUNNER_TEMP/BASELINE_CHECK_ALL.log"
+          grep -Fq "$BASELINE_BLOCKER_FILE" "$RUNNER_TEMP/BASELINE_CHECK_ALL.log"
+          printf '%s\n' 'BASELINE_CHECK_ALL=BLOCKED_PREEXISTING_OPTIONAL_ADDER_BOUNDARY' > "$RUNNER_TEMP/BASELINE_STATUS.txt"
+
       - name: Apply exact authorized cleanup in working tree
         shell: bash
         run: |
@@ -175,7 +200,7 @@ jobs:
           print(json.dumps(report,ensure_ascii=False,indent=2))
           PY
 
-      - name: Prove post-cleanup source state and exact scope
+      - name: Prove post-cleanup source state and focused gates
         shell: bash
         run: |
           set -euo pipefail
@@ -205,19 +230,28 @@ jobs:
           )
           node tools/quality/verify-zero-important.mjs
 
-      - name: Install exact workspace dependencies
+      - name: Prove candidate full-gate parity with baseline blocker
         shell: bash
         run: |
           set -euo pipefail
-          corepack enable
-          corepack prepare pnpm@9.15.0 --activate
-          pnpm install --frozen-lockfile --ignore-scripts
+          mobile='apps/terminal-de-venta-system/products/mobile/app'
+          set +e
+          pnpm -C "$mobile" check:all 2>&1 | tee "$RUNNER_TEMP/CANDIDATE_CHECK_ALL.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          test "$rc" -ne 0
+          grep -Fq 'verify:optional-adder-boundary' "$RUNNER_TEMP/CANDIDATE_CHECK_ALL.log"
+          grep -Fq 'Missing required Mobile boundary file.' "$RUNNER_TEMP/CANDIDATE_CHECK_ALL.log"
+          grep -Fq "$BASELINE_BLOCKER_FILE" "$RUNNER_TEMP/CANDIDATE_CHECK_ALL.log"
+          printf '%s\n' 'CANDIDATE_CHECK_ALL=BLOCKED_SAME_PREEXISTING_OPTIONAL_ADDER_BOUNDARY' > "$RUNNER_TEMP/CANDIDATE_STATUS.txt"
 
-      - name: Run complete Mobile gate
+      - name: Run independent typecheck and production build
         shell: bash
         run: |
           set -euo pipefail
-          pnpm -C apps/terminal-de-venta-system/products/mobile/app check:all
+          mobile='apps/terminal-de-venta-system/products/mobile/app'
+          pnpm -C "$mobile" typecheck
+          pnpm -C "$mobile" build
 
       - name: Final scope guard and self-remove carrier
         shell: bash
@@ -245,9 +279,19 @@ jobs:
           mkdir -p "$out"
           cp "$RUNNER_TEMP/AUTHORITY_BINDING.json" "$out/"
           cp "$RUNNER_TEMP/MUTATION_REPORT.json" "$out/"
+          cp "$RUNNER_TEMP/BASELINE_STATUS.txt" "$out/"
+          cp "$RUNNER_TEMP/CANDIDATE_STATUS.txt" "$out/"
+          cp "$RUNNER_TEMP/BASELINE_CHECK_ALL.log" "$out/"
+          cp "$RUNNER_TEMP/CANDIDATE_CHECK_ALL.log" "$out/"
           git diff --name-status origin/main > "$out/DIFF_NAME_STATUS.txt"
           git diff --stat origin/main > "$out/DIFF_STAT.txt"
-          printf '%s\n' 'PASS_POST_CLEANUP_SOURCE_PROOF' 'PASS_MOBILE_CHECK_ALL' 'PASS_EXACT_SCOPE' > "$out/VALIDATION.txt"
+          printf '%s\n' \
+            'PASS_POST_CLEANUP_SOURCE_PROOF' \
+            'PASS_FOCUSED_MOBILE_GATES' \
+            'PASS_TYPECHECK' \
+            'PASS_BUILD' \
+            'PASS_EXACT_SCOPE' \
+            'CHECK_ALL_BLOCKED_BY_IDENTICAL_PREEXISTING_OPTIONAL_ADDER_BOUNDARY' > "$out/VALIDATION.txt"
 
       - name: Commit and push governed product change
         shell: bash
