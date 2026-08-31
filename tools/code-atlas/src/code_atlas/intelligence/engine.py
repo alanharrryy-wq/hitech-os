@@ -19,6 +19,8 @@ from .index import build_derived_index
 from .repository import discover_repository
 from .snapshot import build_snapshot
 
+_C_FAMILY_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx"}
+
 
 @dataclass(frozen=True)
 class IntelligenceRequest:
@@ -42,6 +44,33 @@ def _zip_tree(source: Path, target: Path) -> None:
         for path in sorted(source.rglob("*")):
             if path.is_file():
                 bundle.write(path, path.relative_to(source).as_posix())
+
+
+def _focus_supported_change_family(
+    graphs: dict[str, Any],
+    repo: Path,
+    changed_paths: tuple[str, ...],
+    semantic_query: str,
+) -> dict[str, Any]:
+    if not changed_paths:
+        return graphs
+    suffixes = {Path(path).suffix.lower() for path in changed_paths}
+    if suffixes <= {".go"}:
+        return focus_change_impact(repo, graphs, semantic_query=semantic_query)
+    if suffixes <= _C_FAMILY_SUFFIXES:
+        impact = graphs.get("changeImpact") or {}
+        go_actionable = impact.get("actionableReview")
+        impact["actionableReview"] = {}
+        graphs["changeImpact"] = impact
+        try:
+            graphs = focus_change_impact(repo, graphs, semantic_query=semantic_query)
+        finally:
+            restored = graphs.get("changeImpact") or {}
+            if go_actionable is not None:
+                restored["actionableReview"] = go_actionable
+            graphs["changeImpact"] = restored
+        return graphs
+    return graphs
 
 
 def resolve_intelligence_context(
@@ -84,10 +113,11 @@ def resolve_intelligence_context(
         changed_paths=normalized_changed_paths,
         semantic_query=request.semantic_query,
     )
-    graphs = focus_change_impact(
-        repo,
+    graphs = _focus_supported_change_family(
         graphs,
-        semantic_query=request.semantic_query,
+        repo,
+        normalized_changed_paths,
+        request.semantic_query,
     )
     profile_version = profile.metadata.get("profileVersion") if isinstance(profile.metadata, dict) else None
     snapshot = build_snapshot(
