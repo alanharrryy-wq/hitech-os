@@ -120,8 +120,14 @@ def _stage_payload(log_path: Path) -> dict[str, Any] | None:
         return None
     text = log_path.read_text(encoding="utf-8", errors="replace")
     candidates = _json_objects(text)
+    # A stage report may contain nested check objects that also have a `verdict`.
+    # Prefer the enclosing report contract (`status` or `checks`) before considering
+    # a lone check. Otherwise a final nested PASS can mask the parent FAIL.
     for value in reversed(candidates):
-        if "status" in value or "checks" in value or "verdict" in value:
+        if "status" in value or "checks" in value:
+            return value
+    for value in reversed(candidates):
+        if "verdict" in value:
             return value
     return None
 
