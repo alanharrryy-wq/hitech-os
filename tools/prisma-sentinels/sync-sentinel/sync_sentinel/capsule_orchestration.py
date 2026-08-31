@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .evidence import build_bundle, now_iso
 from .fixtures import load_fixture_registry, mandatory_fixture_readiness
+from .mobile_runtime import run_mobile_runtime_extension
 from .model import Check, RunReport, Verdict
 from .probes import (
     authority_presence,
@@ -139,6 +140,10 @@ def _copy_runtime_evidence(paths: list[Path], evidence_dir: Path) -> list[Path]:
     mapping = {
         "pc-runtime.log": "SYNC_PC_RUNTIME.log",
         "tablet-journeys.json": "SYNC_JOURNEYS.json",
+        "tablet-mobile-runtime.log": "SYNC_TABLET_MOBILE_RUNTIME.log",
+        "mobile-runtime-3140.log": "SYNC_MOBILE_RUNTIME_3140.log",
+        "mobile-journeys.json": "SYNC_MOBILE_JOURNEYS.json",
+        "mobile-truth-map.json": "SYNC_MOBILE_TRUTH_MAP.json",
     }
     evidence_dir.mkdir(parents=True, exist_ok=True)
     for src in paths:
@@ -182,13 +187,13 @@ def doctor(repo: Path, expected_head: str | None = None, *, keep_work: bool = Fa
         report.add(Check(
             "capsule_workspace_install",
             Verdict.PASS if setup.install_ok else Verdict.BLOCKED,
-            "frozen workspace installed inside detached capsule" if setup.install_ok else "capsule workspace install failed",
+            "frozen PC/Tablet/Mobile dependency islands installed inside detached capsule" if setup.install_ok else "capsule workspace install failed",
             {"command": "pnpm install --frozen-lockfile --ignore-scripts"},
         ))
         report.add(Check(
             "capsule_dependency_resolution",
             Verdict.PASS if setup.dependency_ok else Verdict.BLOCKED,
-            "declared Prisma dependencies resolve exactly inside capsule" if setup.dependency_ok else "Prisma dependency resolution failed closed",
+            "declared runtime dependencies resolve exactly inside capsule" if setup.dependency_ok else "runtime dependency resolution failed closed",
             setup.manifest.get("dependencyResolution", {}),
         ))
         progress.step("capsule and dependency doctor")
@@ -205,10 +210,11 @@ def doctor(repo: Path, expected_head: str | None = None, *, keep_work: bool = Fa
     finally:
         result = capsule.cleanup()
         live_after = known_live_db_snapshot(repo)
+        unchanged = snapshots_equal(live_before, live_after)
         report.add(Check(
             "live_db_unchanged",
-            Verdict.PASS if snapshots_equal(live_before, live_after) else Verdict.FAIL,
-            "known live DB candidates unchanged" if snapshots_equal(live_before, live_after) else "known live DB candidate changed",
+            Verdict.PASS if unchanged else Verdict.FAIL,
+            "known live DB candidates unchanged" if unchanged else "known live DB candidate changed",
         )); progress.step("live DB guard")
         report.add(Check(
             "capsule_cleanup",
@@ -218,7 +224,7 @@ def doctor(repo: Path, expected_head: str | None = None, *, keep_work: bool = Fa
         )); progress.step("capsule cleanup")
         report.facts["sandboxManifest"] = result.manifest
         report.facts["dependencyResolution"] = result.manifest.get("dependencyResolution", {})
-        report.facts["liveDbTouched"] = not snapshots_equal(live_before, live_after)
+        report.facts["liveDbTouched"] = not unchanged
         progress.step("doctor evidence ready")
     report.finalize()
     return report
@@ -227,10 +233,10 @@ def doctor(repo: Path, expected_head: str | None = None, *, keep_work: bool = Fa
 def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, *, keep_work: bool, workers: int, include_certification_gates: bool) -> tuple[RunReport, Path | None]:
     mode = "certify" if include_certification_gates else "e2e"
     report = _base_report(mode, repo, expected_head)
-    progress = Progress(12)
+    progress = Progress(14)
     progress.step("source HEAD locked")
     report.add(authority_presence(repo)); progress.step("authority presence")
-    report.add(sync_source_presence(repo)); progress.step("sync source presence")
+    report.add(sync_source_presence(repo)); progress.step("Tablet PC Mobile source presence")
     report.add(toolchain_presence()); progress.step("toolchain presence")
     if any(c.verdict != Verdict.PASS for c in report.checks):
         report.finalize()
@@ -241,18 +247,19 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
     capsule = RuntimeCapsule(repo, source_head, keep=keep_work)
     runtime_evidence: list[Path] = []
     pc_log_fh = None
+    bundle: Path | None = None
     try:
         setup = capsule.setup()
         report.add(Check(
             "capsule_workspace_install",
             Verdict.PASS if setup.install_ok else Verdict.BLOCKED,
-            "frozen workspace installed inside detached capsule" if setup.install_ok else "capsule workspace install failed",
+            "frozen PC/Tablet/Mobile dependency islands installed inside detached capsule" if setup.install_ok else "capsule workspace install failed",
             {"command": "pnpm install --frozen-lockfile --ignore-scripts"},
         ))
         report.add(Check(
             "capsule_dependency_resolution",
             Verdict.PASS if setup.dependency_ok else Verdict.BLOCKED,
-            "Prisma and @prisma/client resolve from declared workspace dependencies" if setup.dependency_ok else "dependency resolution blocked",
+            "PC, Tablet and Mobile runtime dependencies resolve from declared package islands" if setup.dependency_ok else "dependency resolution blocked",
             setup.manifest.get("dependencyResolution", {}),
         )); progress.step("capsule dependencies")
         if not setup.install_ok or not setup.dependency_ok or not capsule.worktree or not capsule.data_root or not capsule.temp_root:
@@ -271,14 +278,21 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
         ready = capsule.temp_root / "pc-ready.json"
         proc, pc_log_fh, bridge, pc_log = _start_pc_bridge(capsule, pc_db, ready, token)
         runtime_evidence.append(pc_log)
-        report.add(Check("pc_test_bridge", Verdict.PASS, "Sentinel-owned loopback PC bridge ready", {
+        report.add(Check("pc_test_bridge", Verdict.PASS, "Sentinel-owned loopback PC bridge ready from canonical PC owners", {
             "pid": proc.pid,
-            "port": bridge.get("port"),
-        })); progress.step("real PC service bridge ready")
+            "boundPort": bridge.get("port"),
+            "canonicalRuntime": "3130",
+        })); progress.step("real PC owner bridge ready")
 
         journey, journey_path = _run_tablet_journeys(capsule, tablet_db, bridge, token)
         runtime_evidence.append(journey_path)
-        report.add(journey); progress.step("Journey A and Journey B")
+        report.add(journey); progress.step("Tablet PC Journey A and Journey B")
+
+        mobile_check, mobile_paths, mobile_facts = run_mobile_runtime_extension(capsule, tablet_db, bridge, token)
+        runtime_evidence.extend(mobile_paths)
+        report.add(mobile_check)
+        report.facts["mobileRuntime"] = mobile_facts
+        progress.step("Mobile canonical 3140 M1 M2 M3 and negatives")
 
         native_checks = static_probe_suite(capsule.worktree, workers=workers)
         reconciled_checks, baseline_drift = reconcile_static_probe_baseline_drift(native_checks, journey)
@@ -290,7 +304,7 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
                 report.warnings.append(
                     f"{item['checkId']}: KNOWN_BASELINE_VERIFIER_DRIFT preserved; canonical verifier not modified"
                 )
-        progress.step("native contract probes")
+        progress.step("native Tablet PC Mobile contract probes")
 
         fixture_registry = load_fixture_registry(capsule.worktree / "tools/prisma-sentinels/sync-sentinel")
         readiness = mandatory_fixture_readiness(fixture_registry)
@@ -298,7 +312,7 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
             report.add(Check(
                 "mandatory_fixture_readiness",
                 Verdict.PASS if readiness["ready"] else Verdict.BLOCKED,
-                "all mandatory positive and negative fixtures are implemented" if readiness["ready"] else "mandatory negative fixtures remain unimplemented",
+                "all mandatory Tablet/PC/Mobile positive and negative fixtures are implemented" if readiness["ready"] else "mandatory fixtures remain unimplemented",
                 readiness,
             ))
         else:
@@ -329,7 +343,7 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
             Verdict.PASS if result.cleanup_pass else Verdict.FAIL,
             "detached capsule destroyed without source drift or orphan process" if result.cleanup_pass else "capsule cleanup/source guard failed",
             {"cleanup": result.manifest.get("cleanup", {}), "errors": result.errors},
-        )); progress.step("source/live guards verified")
+        )); progress.step("source live guards verified")
 
         report.facts.update({
             "sandboxManifest": result.manifest,
@@ -338,14 +352,16 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
             "sourceDrift": result.source_drift,
             "cleanupPass": result.cleanup_pass,
             "orphanProcesses": bool(result.orphan_processes),
+            "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
         })
         report.finalize()
         success = report.verdict == Verdict.PASS
         payload = report.to_dict() | {
-            "schemaVersion": "prisma.sync-sentinel.certification.v2" if include_certification_gates else "prisma.sync-sentinel.e2e.v1",
+            "schemaVersion": "prisma.sync-sentinel.certification.v3" if include_certification_gates else "prisma.sync-sentinel.e2e.v2",
             "status": "PASS_SYNC_CERTIFICATION" if success and include_certification_gates else ("PASS_SYNC_E2E" if success else f"{report.verdict.value}_{'SYNC_CERTIFICATION' if include_certification_gates else 'SYNC_E2E'}"),
             "generatedAt": now_iso(),
             "repoHead": source_head,
+            "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
             "liveDbTouched": live_touched,
             "sourceDrift": result.source_drift,
             "cleanupPass": result.cleanup_pass,
@@ -356,6 +372,8 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
                 "Hosted/customer production operation",
                 "Customer or historical database mutation safety beyond the explicit no-live-DB guards",
                 "Future source/dependency/configuration drift",
+                "A Mobile mutation capability",
+                "A hosted production entitlement/session issuer",
             ],
         }
         bundle, secret_count, secret_items = build_bundle(evidence_dir, payload, copied)
@@ -368,8 +386,6 @@ def _run_capsule_e2e(repo: Path, evidence_dir: Path, expected_head: str | None, 
         report.finalize()
         progress.step("sanitized evidence bundle")
         progress.step("final verdict")
-        if report.verdict != Verdict.PASS:
-            return report, bundle
     return report, bundle
 
 
