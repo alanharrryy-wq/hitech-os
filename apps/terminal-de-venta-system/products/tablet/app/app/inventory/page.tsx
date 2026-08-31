@@ -6,5 +6,13 @@ export const dynamic = "force-dynamic";
 
 export default async function InventoryPage() {
   const runtimeSnapshot = await getTabletRuntimeSnapshot(readRuntimeSnapshotInput());
-  return <InventoryWorkspace currentPath="/inventory" runtimeSnapshot={runtimeSnapshot} />;
+  return (
+    <div
+      data-prisma-panel="tablet.inventory.route"
+      data-prisma-surface="tablet"
+      data-prisma-route="/inventory"
+    >
+      <InventoryWorkspace currentPath="/inventory" runtimeSnapshot={runtimeSnapshot} />
+    </div>
+  );
 }
