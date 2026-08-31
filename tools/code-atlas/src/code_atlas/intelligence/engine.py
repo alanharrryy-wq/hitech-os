@@ -14,6 +14,7 @@ from .common import safe_repo_relative, sha256_file
 from .edge_provenance import normalize_system_graph_edge_provenance
 from .graphs import build_system_graphs
 from .impact_enrichment import enrich_change_impact
+from .impact_focus import focus_change_impact
 from .index import build_derived_index
 from .repository import discover_repository
 from .snapshot import build_snapshot
@@ -81,6 +82,11 @@ def resolve_intelligence_context(
         inventory,
         graphs,
         changed_paths=normalized_changed_paths,
+        semantic_query=request.semantic_query,
+    )
+    graphs = focus_change_impact(
+        repo,
+        graphs,
         semantic_query=request.semantic_query,
     )
     profile_version = profile.metadata.get("profileVersion") if isinstance(profile.metadata, dict) else None
