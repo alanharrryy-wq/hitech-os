@@ -53,6 +53,14 @@ class Cdp {
       this.ws.send(JSON.stringify({ id, method, params }));
     });
   }
+  async close() {
+    if (!this.ws || this.ws.readyState === WebSocket.CLOSED) return;
+    await new Promise(resolve => {
+      const timer = setTimeout(resolve, 1500);
+      this.ws.addEventListener('close', () => { clearTimeout(timer); resolve(); }, { once: true });
+      this.ws.close();
+    });
+  }
 }
 
 let target;
@@ -205,4 +213,5 @@ const report = {
   screenshots:['inventory-viewport.png','inventory-full.png']
 };
 fs.writeFileSync(path.join(out,'inventory-results.json'), JSON.stringify(report,null,2)+'\n');
+await cdp.close();
 console.log('PASS_TABLET_INVENTORY_VISCORE_RUNTIME_EVIDENCE');
