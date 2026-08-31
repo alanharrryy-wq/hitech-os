@@ -13,12 +13,12 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
-  TARGET_HEAD: 6f5b3df2ccd4b83a613648fef8e0874df3e1ac09
-  MESH_RUN_ID: '33368314782'
-  MESH_ARTIFACT_ID: '9749112362'
-  MESH_OUTER_SHA256: d8c9bb98166b203c2f049d741b7ae1cd17c778507cf2fcb53029399a4f7f0f6a
-  MESH_COMPOSED_SHA256: bafb60010dfbb30edc9cab902120f53012960ad70588c99e3feb2680879fa849
-  MESH_REQUEST_DIGEST: 4b7d5afe229cdff106ad79654b44fc6ce7cbd2c251cfdd680ad58d30f332f624
+  TARGET_HEAD: 0400c7cbc307d156a0c5cd0e10b253deac9bf318
+  MESH_RUN_ID: '33415196591'
+  MESH_ARTIFACT_ID: '9766762213'
+  MESH_OUTER_SHA256: f5b1cdf075020e48b783378475b03eebc6fc802561d643957679552b7a429c11
+  MESH_COMPOSED_SHA256: b121b8e559d970020e3b463698e10cf8942d0b3daa416e10d1432425b295cb02
+  MESH_REQUEST_DIGEST: 1f1b6f1f69fb6ca424b0ad0e4e0430082e35ee661ef2c9e41b5c9a9b09a744e0
 
 jobs:
   authority-gate:
@@ -166,8 +166,8 @@ jobs:
               raise SystemExit(f'MESH_COVERAGE_NOT_100:{coverage}')
           with zipfile.ZipFile(io.BytesIO(legacy)) as z:
               required = [
-                  'tasks/mobile-multicontext-dead-code-cleanup/authority_mesh/reports/LAYERS_MAP.json',
-                  'tasks/mobile-verifiers-aligned-contract-reconcile/authority_mesh/reports/LAYERS_MAP.json',
+                  'tasks/mobile-physical-cleanup/authority_mesh/reports/LAYERS_MAP.json',
+                  'tasks/mobile-verifiers-aligned-governance/authority_mesh/reports/LAYERS_MAP.json',
               ]
               for name in required:
                   if name not in z.namelist():
