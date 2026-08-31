@@ -103,7 +103,7 @@ export function ProductMediaWorkspace({ initialWorkspace }: { initialWorkspace: 
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ productId: selected.id, expectedUpdatedAt: selected.updatedAt, mediaRef: nextMediaRef })
       }));
-      setProducts((current) => current.map((product) => data.product.id === product.id ? data.product : product));
+      setProducts((current) => current.map((product) => product.id === data.product.id ? data.product : product));
       setNotice(data.product.mediaRef
         ? "Imagen guardada. El catálogo PC→Tablet proyectará la misma referencia portable."
         : "Imagen retirada. El POS conservará su fallback oscuro genérico.");
