@@ -1,0 +1,159 @@
+name: PRISMA Sync Sentinel Ledger Close Applicator V2
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/prisma-sync-sentinel-ledger-close-applicator-v2.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PINNED_BASE: 65f45505b66abf7d22ce6cd07a7396ea5a887ccf
+
+jobs:
+  apply-ledger-close-v2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact PR head branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Reuse bounded transformation and compare baseline verifier debt
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$current" = "$PINNED_BASE"
+
+          # Reuse the exact first heredoc from V1. V1 already proved the four
+          # authorized input SHA-256 values and the bounded semantic assertions.
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+          src=Path('.github/workflows/prisma-sync-sentinel-ledger-close-applicator.yml').read_text(encoding='utf-8')
+          marker="          python - <<'PY'\n"
+          start=src.index(marker)+len(marker)
+          end=src.index("\n          PY\n", start)
+          code=textwrap.dedent(src[start:end])
+          Path('/tmp/prisma-ledger-close-apply.py').write_text(code+'\n',encoding='utf-8')
+          PY
+          python /tmp/prisma-ledger-close-apply.py
+
+          rm -rf "$RUNNER_TEMP/ledger-baseline" "$RUNNER_TEMP/ledger-proposed"
+          mkdir -p "$RUNNER_TEMP/ledger-baseline" "$RUNNER_TEMP/ledger-proposed"
+          git archive "$PINNED_BASE" "PRISMA Factory Ledger" | tar -x -C "$RUNNER_TEMP/ledger-baseline"
+          cp -a "PRISMA Factory Ledger" "$RUNNER_TEMP/ledger-proposed/"
+
+          set +e
+          python "$RUNNER_TEMP/ledger-baseline/PRISMA Factory Ledger/tools/verify_prisma_factory_ledger.py" \
+            "$RUNNER_TEMP/ledger-baseline/PRISMA Factory Ledger" > "$RUNNER_TEMP/baseline-verifier.log" 2>&1
+          base_rc=$?
+          python "$RUNNER_TEMP/ledger-proposed/PRISMA Factory Ledger/tools/verify_prisma_factory_ledger.py" \
+            "$RUNNER_TEMP/ledger-proposed/PRISMA Factory Ledger" > "$RUNNER_TEMP/proposed-verifier.log" 2>&1
+          proposed_rc=$?
+          set -e
+          cat "$RUNNER_TEMP/baseline-verifier.log"
+          cat "$RUNNER_TEMP/proposed-verifier.log"
+
+          python - "$RUNNER_TEMP/baseline-verifier.log" "$RUNNER_TEMP/proposed-verifier.log" "$base_rc" "$proposed_rc" <<'PY'
+          import sys
+          from pathlib import Path
+          expected={
+            'runtime.tablet.zero_idle_guard: invalid status LOCAL_SHADOW_VERIFIED',
+            'visual.atlasfin.tablet_pos_cobrar: invalid status RUNTIME_VISUAL_CERTIFIED',
+          }
+          def errors(path):
+              out=set()
+              for line in Path(path).read_text(encoding='utf-8',errors='replace').splitlines():
+                  if line.startswith('ERROR '):
+                      out.add(line[6:])
+              return out
+          base=errors(sys.argv[1]); proposed=errors(sys.argv[2])
+          assert int(sys.argv[3]) == 1, sys.argv[3]
+          assert int(sys.argv[4]) == 1, sys.argv[4]
+          assert base == expected, {'baseline':sorted(base),'expected':sorted(expected)}
+          assert proposed == base, {'baseline':sorted(base),'proposed':sorted(proposed)}
+          print('PASS_LEDGER_VERIFIER_NO_NEW_DEBT')
+          print('preExistingVerifierDebtCount=2')
+          PY
+
+          git diff --check -- \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json" \
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+
+          python - <<'PY' > "$RUNNER_TEMP/LEDGER_CLOSE_RESULT.json"
+          import hashlib,json
+          from pathlib import Path
+          root=Path('PRISMA Factory Ledger')
+          names=[
+            'PRISMA_FACTORY_LEDGER.json',
+            'PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+            'PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+            'PRISMA_EVIDENCE_INDEX.json',
+          ]
+          print(json.dumps({
+            'status':'PASS_SYNC_SENTINEL_LEDGER_CLOSE_APPLY',
+            'baseHead':'65f45505b66abf7d22ce6cd07a7396ea5a887ccf',
+            'postMergeWatchRun':33344270490,
+            'postMergeWatchArtifact':9741492976,
+            'postMergeWatchArtifactSha256':'e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6',
+            'authorityRun':33345023406,
+            'mutationGateRun':33345210530,
+            'canonicalVerifier':{
+              'baselineStatus':'FAIL_PREEXISTING_DEBT',
+              'proposedStatus':'FAIL_SAME_PREEXISTING_DEBT_NO_NEW_ERRORS',
+              'newErrors':0,
+              'preExistingErrors':[
+                'runtime.tablet.zero_idle_guard: invalid status LOCAL_SHADOW_VERIFIED',
+                'visual.atlasfin.tablet_pos_cobrar: invalid status RUNTIME_VISUAL_CERTIFIED',
+              ],
+            },
+            'productionCertified':False,
+            'files':{n:hashlib.sha256((root/n).read_bytes()).hexdigest() for n in names},
+          },indent=2))
+          PY
+          cat "$RUNNER_TEMP/LEDGER_CLOSE_RESULT.json"
+
+      - name: Upload bounded closure evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: prisma-sync-sentinel-ledger-close-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/LEDGER_CLOSE_RESULT.json
+            ${{ runner.temp }}/baseline-verifier.log
+            ${{ runner.temp }}/proposed-verifier.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit four canonical JSONs and self-remove both applicators
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "prisma-governance-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json" \
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+          git rm \
+            ".github/workflows/prisma-sync-sentinel-ledger-close-applicator.yml" \
+            ".github/workflows/prisma-sync-sentinel-ledger-close-applicator-v2.yml"
+          mapfile -t staged < <(git diff --cached --name-only | sort)
+          printf '%s\n' "${staged[@]}"
+          test "${#staged[@]}" -eq 6
+          git commit -m "docs(governance): close Sync Sentinel Mobile Watch ledger"
+          git push origin "HEAD:${{ github.head_ref }}"
