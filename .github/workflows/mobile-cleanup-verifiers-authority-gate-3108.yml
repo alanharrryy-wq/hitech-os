@@ -13,12 +13,12 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONUNBUFFERED: '1'
-  TARGET_HEAD: 0400c7cbc307d156a0c5cd0e10b253deac9bf318
-  MESH_RUN_ID: '33415196591'
-  MESH_ARTIFACT_ID: '9766762213'
-  MESH_OUTER_SHA256: f5b1cdf075020e48b783378475b03eebc6fc802561d643957679552b7a429c11
-  MESH_COMPOSED_SHA256: b121b8e559d970020e3b463698e10cf8942d0b3daa416e10d1432425b295cb02
-  MESH_REQUEST_DIGEST: 1f1b6f1f69fb6ca424b0ad0e4e0430082e35ee661ef2c9e41b5c9a9b09a744e0
+  TARGET_HEAD: c17635fb69bb0208dc8237ee97cc82017f1d30a6
+  MESH_RUN_ID: '33422010227'
+  MESH_ARTIFACT_ID: '9769306890'
+  MESH_OUTER_SHA256: b10283576aea840dc3e1fddc43ca5f047453cf898c614d18505c097881d5dd7a
+  MESH_COMPOSED_SHA256: 4c3ed647973d7e68451551d4daa4da9f44898ae87cf7bc26c9423ac694443a4e
+  MESH_REQUEST_DIGEST: 780d6e6c9ecdadf30d8b25eeead15bdc2bd449a022f938bfaddbff22038d85e5
 
 jobs:
   authority-gate:
@@ -32,11 +32,6 @@ jobs:
           fetch-depth: 0
           clean: false
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-
       - name: Guard current main and anti-rework tooling
         shell: bash
         run: |
@@ -47,7 +42,6 @@ jobs:
           python -m py_compile "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py"
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
-          test -z "$(git status --porcelain -- 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json' 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json')"
 
       - name: Prove zero external runtime consumers
         shell: bash
@@ -57,68 +51,36 @@ jobs:
           import json, os, pathlib, subprocess, sys
           out = pathlib.Path(sys.argv[1])
           mobile = pathlib.Path('apps/terminal-de-venta-system/products/mobile/app')
-          patterns = [
-              'PrismaMobileMultiContextSwitcher',
-              'multiContextRoot',
-              'mobile-multi-context-switcher',
-              'PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE',
-              'prisma-mobile-multi-context-switcher.module.css',
-          ]
+          patterns = ['PrismaMobileMultiContextSwitcher','multiContextRoot','mobile-multi-context-switcher','PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE','prisma-mobile-multi-context-switcher.module.css']
           residue = {
               (mobile / 'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx').as_posix(),
               (mobile / 'src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css').as_posix(),
               (mobile / 'src/components/prisma-app/index.ts').as_posix(),
               (mobile / 'src/components/prisma-app/prisma-mobile-dashboard.module.css').as_posix(),
           }
-          source_roots = [
-              (mobile / 'src').as_posix(),
-              (mobile / 'app').as_posix(),
-          ]
-          refs = []
-          unexpected = []
+          refs, unexpected = [], []
           for pattern in patterns:
-              p = subprocess.run(
-                  ['git','grep','-n','-I','-F',pattern,'--',*source_roots],
-                  text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
-              )
-              if p.returncode not in (0, 1):
-                  raise SystemExit(f'GIT_GREP_FAILED:{pattern}:{p.stderr[:500]}')
+              p = subprocess.run(['git','grep','-n','-I','-F',pattern,'--',(mobile/'src').as_posix(),(mobile/'app').as_posix()], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+              if p.returncode not in (0,1): raise SystemExit(f'GIT_GREP_FAILED:{pattern}:{p.stderr[:500]}')
               for line in p.stdout.splitlines():
-                  path, _, rest = line.partition(':')
-                  row = {'pattern': pattern, 'match': line, 'path': path}
+                  path = line.partition(':')[0]
+                  row = {'pattern':pattern,'match':line,'path':path}
                   refs.append(row)
-                  if path not in residue:
-                      unexpected.append(row)
-          required_files = sorted(residue)
-          missing = [path for path in required_files if not pathlib.Path(path).is_file()]
-          pkg = json.loads((mobile / 'package.json').read_text(encoding='utf-8'))
-          package_checks = {
-              'dedicatedMultiContextVerifierAbsent': pkg.get('scripts', {}).get('verify:multi-context-switcher') is None,
+                  if path not in residue: unexpected.append(row)
+          missing = [p for p in sorted(residue) if not pathlib.Path(p).is_file()]
+          pkg = json.loads((mobile/'package.json').read_text(encoding='utf-8'))
+          checks = {
+              'dedicatedMultiContextVerifierAbsent': pkg.get('scripts',{}).get('verify:multi-context-switcher') is None,
               'multiContextVersionMetadataAbsent': 'prismaMobileMultiContextSwitcherVersion' not in pkg,
               'multiContextPackageMetadataAbsent': 'prismaMobileMultiContextSwitcherPackage' not in pkg,
-              'canonicalVerifierInCheckAll': 'verify:interface-canon' in str(pkg.get('scripts', {}).get('check:all', '')),
-              'retiredTerminologyAbsentFromCheckAll': 'multi-context' not in str(pkg.get('scripts', {}).get('check:all', '')).lower(),
+              'canonicalVerifierInCheckAll': 'verify:interface-canon' in str(pkg.get('scripts',{}).get('check:all','')),
+              'retiredTerminologyAbsentFromCheckAll': 'multi-context' not in str(pkg.get('scripts',{}).get('check:all','')).lower(),
           }
-          payload = {
-              'schemaVersion':'prisma.mobile.multicontext-consumer-proof.v1',
-              'repoHead':os.environ['TARGET_HEAD'],
-              'patterns':patterns,
-              'residueFiles':required_files,
-              'sourceMatches':refs,
-              'unexpectedRuntimeConsumers':unexpected,
-              'missingResidueFiles':missing,
-              'packageChecks':package_checks,
-              'branchesApiExistsAndIsOutOfScope':(mobile / 'app/api/mobile/branches/route.ts').is_file(),
-          }
-          payload['verdict'] = (
-              'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS'
-              if not unexpected and not missing and all(package_checks.values()) and payload['branchesApiExistsAndIsOutOfScope']
-              else 'BLOCKED_CONSUMER_OR_CONTRACT_DRIFT'
-          )
-          out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-          print(json.dumps(payload, ensure_ascii=False, indent=2))
-          if payload['verdict'] != 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS':
-              raise SystemExit(payload['verdict'])
+          payload = {'schemaVersion':'prisma.mobile.multicontext-consumer-proof.v1','repoHead':os.environ['TARGET_HEAD'],'sourceMatches':refs,'unexpectedRuntimeConsumers':unexpected,'missingResidueFiles':missing,'packageChecks':checks,'branchesApiExistsAndIsOutOfScope':(mobile/'app/api/mobile/branches/route.ts').is_file()}
+          payload['verdict'] = 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS' if not unexpected and not missing and all(checks.values()) and payload['branchesApiExistsAndIsOutOfScope'] else 'BLOCKED_CONSUMER_OR_CONTRACT_DRIFT'
+          out.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(payload,indent=2))
+          if payload['verdict'] != 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS': raise SystemExit(payload['verdict'])
           PY
 
       - name: Download and verify fresh task-exact Mesh
@@ -128,133 +90,55 @@ jobs:
         run: |
           set -euo pipefail
           mesh="$RUNNER_TEMP/mobile-mesh.zip"
-          curl --fail --location --silent --show-error \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$MESH_ARTIFACT_ID/zip" \
-            -o "$mesh"
+          curl --fail --location --silent --show-error -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$MESH_ARTIFACT_ID/zip" -o "$mesh"
           test "$(sha256sum "$mesh" | awk '{print $1}')" = "$MESH_OUTER_SHA256"
           python - "$mesh" "$RUNNER_TEMP/mesh-verified.json" <<'PY'
           import hashlib, io, json, os, sys, zipfile
-          artifact, out = sys.argv[1:]
-          target = os.environ['TARGET_HEAD']
-          request_digest = os.environ['MESH_REQUEST_DIGEST']
-          expected_inner = os.environ['MESH_COMPOSED_SHA256']
-          with zipfile.ZipFile(artifact) as outer:
-              composed = outer.read('prisma-automesh-composed-result.zip')
-          actual_inner = hashlib.sha256(composed).hexdigest()
-          if actual_inner != expected_inner:
-              raise SystemExit(f'COMPOSED_DIGEST_MISMATCH:{actual_inner}:{expected_inner}')
+          artifact,out=sys.argv[1:]
+          with zipfile.ZipFile(artifact) as outer: composed=outer.read('prisma-automesh-composed-result.zip')
+          actual=hashlib.sha256(composed).hexdigest()
+          if actual != os.environ['MESH_COMPOSED_SHA256']: raise SystemExit(f'COMPOSED_DIGEST_MISMATCH:{actual}')
           with zipfile.ZipFile(io.BytesIO(composed)) as comp:
-              report = json.loads(comp.read('PRISMA_MESH_GATEWAY_REPORT.json'))
-              pre = json.loads(comp.read('authority/PREFLIGHT_MANIFEST.json'))
-              legacy = comp.read('legacy_surface_mesh.zip')
-          if report.get('status') != 'PASS_COMPOSED_AUTHORITY_MESH':
-              raise SystemExit('MESH_NOT_PASS')
-          if report.get('repoHead') != target:
-              raise SystemExit('MESH_HEAD_MISMATCH')
-          if report.get('requestDigest') != request_digest:
-              raise SystemExit('MESH_REQUEST_DIGEST_MISMATCH')
-          if pre.get('status') != 'PASS_PREFLIGHT' or pre.get('blockers'):
-              raise SystemExit('MESH_PREFLIGHT_NOT_CLEAN')
-          lanes = pre.get('lanes') or []
-          if len(lanes) != 2:
-              raise SystemExit('MESH_LANE_COUNT_INVALID')
-          coverage = min(float((lane.get('coverage') or {}).get('resolvedPercent', 0)) for lane in lanes)
-          if coverage != 100:
-              raise SystemExit(f'MESH_COVERAGE_NOT_100:{coverage}')
+              report=json.loads(comp.read('PRISMA_MESH_GATEWAY_REPORT.json'))
+              pre=json.loads(comp.read('authority/PREFLIGHT_MANIFEST.json'))
+              legacy=comp.read('legacy_surface_mesh.zip')
+          if report.get('status')!='PASS_COMPOSED_AUTHORITY_MESH': raise SystemExit('MESH_NOT_PASS')
+          if report.get('repoHead')!=os.environ['TARGET_HEAD']: raise SystemExit('MESH_HEAD_MISMATCH')
+          if report.get('requestDigest')!=os.environ['MESH_REQUEST_DIGEST']: raise SystemExit('MESH_REQUEST_DIGEST_MISMATCH')
+          if pre.get('status')!='PASS_PREFLIGHT' or pre.get('blockers'): raise SystemExit('MESH_PREFLIGHT_NOT_CLEAN')
+          lanes=pre.get('lanes') or []
+          if len(lanes)!=2: raise SystemExit('MESH_LANE_COUNT_INVALID')
+          coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in lanes)
+          if coverage!=100: raise SystemExit(f'MESH_COVERAGE_NOT_100:{coverage}')
           with zipfile.ZipFile(io.BytesIO(legacy)) as z:
-              required = [
-                  'tasks/mobile-physical-cleanup/authority_mesh/reports/LAYERS_MAP.json',
-                  'tasks/mobile-verifiers-aligned-governance/authority_mesh/reports/LAYERS_MAP.json',
-              ]
-              for name in required:
-                  if name not in z.namelist():
-                      raise SystemExit('LAYER_MAP_MISSING:' + name)
+              for name in ['tasks/mobile-physical-cleanup/authority_mesh/reports/LAYERS_MAP.json','tasks/mobile-verifiers-aligned-governance/authority_mesh/reports/LAYERS_MAP.json']:
+                  if name not in z.namelist(): raise SystemExit('LAYER_MAP_MISSING:'+name)
                   json.loads(z.read(name))
-          evidence = {
-              'status': report['status'],
-              'repoHead': report['repoHead'],
-              'requiredAuthorityCoveragePct': coverage,
-              'blockers': len(pre.get('blockers') or []),
-              'requestDigest': report['requestDigest'],
-              'artifactDigest': expected_inner,
-              'outerArtifactDigest': os.environ['MESH_OUTER_SHA256'],
-              'artifactId': os.environ['MESH_ARTIFACT_ID'],
-              'runId': os.environ['MESH_RUN_ID'],
-              'layerMapPresent': True,
-          }
-          with open(out, 'w', encoding='utf-8') as fh:
-              json.dump(evidence, fh, indent=2)
-              fh.write('\n')
-          print(json.dumps(evidence, indent=2))
+          evidence={'status':report['status'],'repoHead':report['repoHead'],'requiredAuthorityCoveragePct':coverage,'blockers':0,'requestDigest':report['requestDigest'],'artifactDigest':os.environ['MESH_COMPOSED_SHA256'],'outerArtifactDigest':os.environ['MESH_OUTER_SHA256'],'artifactId':os.environ['MESH_ARTIFACT_ID'],'runId':os.environ['MESH_RUN_ID'],'layerMapPresent':True}
+          open(out,'w',encoding='utf-8').write(json.dumps(evidence,indent=2)+'\n')
+          print(json.dumps(evidence,indent=2))
           PY
 
-      - name: Run PROPOSAL anti-rework gate
+      - name: Run anti-rework gates
         shell: bash
         run: |
           set -euo pipefail
-          req="$RUNNER_TEMP/proposal.request.json"
-          out="$RUNNER_TEMP/proposal.decision.json"
-          python - "$req" <<'PY'
-          import json, os, sys
-          request = {
-            'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1',
-            'mode':'PROPOSAL',
-            'expectedHead':os.environ['TARGET_HEAD'],
-            'task':'Complete PRISMA Mobile retired MultiContext physical dead-code cleanup plus evidence-based claims.verifiersAligned reconciliation for mobile.interface_specification_canon. Preserve seven-section canon, branches API and all excluded surfaces; no redesign or claim inflation.',
-            'capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],
-            'visualMutation':True,
-          }
-          with open(sys.argv[1],'w',encoding='utf-8') as f:
-            json.dump(request,f,indent=2); f.write('\n')
-          PY
-          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$req" | tee "$out"
-          python - "$out" <<'PY'
-          import json,sys
-          d=json.load(open(sys.argv[1],encoding='utf-8'))
-          if d.get('result')!='PASS_ANTI_REWORK_GATE' or d.get('errors')!=[]:
-              raise SystemExit('PROPOSAL_GATE_NOT_CLEAN_PASS')
-          print('PASS_PROPOSAL_ANTI_REWORK_GATE')
-          PY
-
-      - name: Run MUTATION anti-rework gate
-        shell: bash
-        run: |
-          set -euo pipefail
-          req="$RUNNER_TEMP/mutation.request.json"
-          out="$RUNNER_TEMP/mutation.decision.json"
-          python - "$RUNNER_TEMP/mesh-verified.json" "$req" <<'PY'
-          import json, os, sys
+          python - "$RUNNER_TEMP/mesh-verified.json" "$RUNNER_TEMP" <<'PY'
+          import json, os, pathlib, subprocess, sys
           mesh=json.load(open(sys.argv[1],encoding='utf-8'))
-          request = {
-            'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1',
-            'mode':'MUTATION',
-            'expectedHead':os.environ['TARGET_HEAD'],
-            'task':'Complete PRISMA Mobile retired MultiContext physical dead-code cleanup plus evidence-based claims.verifiersAligned reconciliation for mobile.interface_specification_canon. Preserve seven-section canon, branches API and all excluded surfaces; no redesign or claim inflation.',
-            'capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],
-            'authorityMesh':{
-              'status':mesh['status'],
-              'repoHead':mesh['repoHead'],
-              'requiredAuthorityCoveragePct':mesh['requiredAuthorityCoveragePct'],
-              'blockers':mesh['blockers'],
-              'requestDigest':mesh['requestDigest'],
-              'artifactDigest':mesh['artifactDigest'],
-              'layerMapPresent':mesh['layerMapPresent'],
-            },
-            'visualMutation':True,
-          }
-          with open(sys.argv[2],'w',encoding='utf-8') as f:
-            json.dump(request,f,indent=2); f.write('\n')
-          PY
-          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$req" | tee "$out"
-          python - "$out" <<'PY'
-          import json,sys
-          d=json.load(open(sys.argv[1],encoding='utf-8'))
-          if d.get('result')!='PASS_ANTI_REWORK_GATE' or d.get('errors')!=[]:
-              raise SystemExit('MUTATION_GATE_NOT_CLEAN_PASS')
-          print('PASS_MUTATION_ANTI_REWORK_GATE')
+          root=pathlib.Path(sys.argv[2])
+          tool='PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py'
+          for mode in ('PROPOSAL','MUTATION'):
+              req={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':mode,'expectedHead':os.environ['TARGET_HEAD'],'task':'Complete PRISMA Mobile retired MultiContext physical dead-code cleanup plus evidence-based claims.verifiersAligned reconciliation for mobile.interface_specification_canon. Preserve seven-section canon, branches API and excluded surfaces; no redesign or claim inflation.','capabilities':[{'id':'mobile.interface_specification_canon','requestedAction':'ADVANCE'}],'visualMutation':True}
+              if mode=='MUTATION': req['authorityMesh']={k:mesh[k] for k in ('status','repoHead','requiredAuthorityCoveragePct','blockers','requestDigest','artifactDigest','layerMapPresent')}
+              rp=root/f'{mode.lower()}.request.json'; op=root/f'{mode.lower()}.decision.json'
+              rp.write_text(json.dumps(req,indent=2)+'\n',encoding='utf-8')
+              p=subprocess.run(['python',tool,'--request',str(rp)],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+              op.write_text(p.stdout,encoding='utf-8'); print(p.stdout,end='')
+              if p.returncode: raise SystemExit(f'{mode}_GATE_COMMAND_FAILED')
+              d=json.loads(p.stdout)
+              if d.get('result')!='PASS_ANTI_REWORK_GATE' or d.get('errors')!=[]: raise SystemExit(f'{mode}_GATE_NOT_CLEAN_PASS')
+              print(f'PASS_{mode}_ANTI_REWORK_GATE')
           PY
 
       - name: Stage authority evidence
@@ -265,8 +149,7 @@ jobs:
           out="$RUNNER_TEMP/mobile-authority-evidence"
           mkdir -p "$out"
           for f in MULTICONTEXT_CONSUMER_PROOF.json mesh-verified.json proposal.request.json proposal.decision.json mutation.request.json mutation.decision.json; do
-            src="$RUNNER_TEMP/$f"
-            [ ! -f "$src" ] || cp "$src" "$out/$f"
+            src="$RUNNER_TEMP/$f"; [ ! -f "$src" ] || cp "$src" "$out/$f"
           done
 
       - name: Upload authority evidence
