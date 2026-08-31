@@ -21,21 +21,23 @@ def _run(cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, timeou
 
 
 def install_workspace(worktree: Path) -> dict[str, object]:
-    """Install every canonical dependency island inside the disposable capsule.
+    """Install every canonical dependency owner inside the disposable capsule.
 
-    The repository root workspace does not include the deeply nested PC/Tablet/Mobile
-    app package roots. Those apps own package.json + pnpm-lock.yaml islands, so a root
-    install alone cannot prove the dependencies used by the actual runtime owners.
-    All installs are frozen and script-disabled; no manifest or lockfile mutation is
-    permitted. Mobile is installed because certification now boots its real Next
-    runtime whose canonical product port is 3140.
+    PC and Tablet keep their historical package-local frozen lockfile checks. Mobile
+    does *not* own a package-local lockfile: it is an importer of the canonical
+    `apps/terminal-de-venta-system` pnpm workspace. Therefore Mobile runtime
+    dependencies must be materialized from that Terminal workspace lockfile rather
+    than inventing a nonexistent Mobile dependency island.
+
+    All installs are frozen and script-disabled. No manifest or lockfile mutation is
+    allowed. The root install is retained for Sentinel tooling such as `tsx`.
     """
     terminal = worktree / APP_REL
     targets = [
         ("repo_root", worktree),
+        ("terminal_workspace_mobile_owner", terminal),
         ("pc_app", terminal / "products/pc/app"),
         ("tablet_app", terminal / "products/tablet/app"),
-        ("mobile_app", terminal / "products/mobile/app"),
     ]
     command = ["pnpm", "install", "--frozen-lockfile", "--ignore-scripts"]
     steps: dict[str, object] = {}
@@ -67,6 +69,7 @@ def install_workspace(worktree: Path) -> dict[str, object]:
             for label, root in targets
         ],
         "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
+        "mobileDependencyOwner": "apps/terminal-de-venta-system/pnpm-lock.yaml",
         "steps": steps,
     }
 
