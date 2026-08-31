@@ -1,0 +1,84 @@
+name: Change Assurance Blast V2 Historical Evidence
+
+on:
+  pull_request:
+    paths:
+      - 'tools/code-atlas/src/code_atlas/intelligence/engine.py'
+      - 'tools/code-atlas/src/code_atlas/intelligence/impact_enrichment.py'
+      - 'tools/code-atlas/tests/test_operational_blast_intelligence_v2.py'
+      - '.github/scripts/caext_historical_blast_v2.py'
+      - '.github/scripts/caext_historical_real_diff_v1.py'
+      - '.github/workflows/caext-historical-blast-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONUTF8: '1'
+  PYTHONPATH: tools/code-atlas/src
+  CAEXT_WORKERS: '18'
+
+jobs:
+  historical-blast-v2:
+    name: Historical Blast V2 / ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Compile and self-test reused historical carrier
+        run: |
+          python -m py_compile .github/scripts/caext_historical_real_diff_v1.py .github/scripts/caext_historical_blast_v2.py
+          python .github/scripts/caext_historical_real_diff_v1.py --self-test
+          python .github/scripts/caext_historical_blast_v2.py --self-test
+
+      - name: Guard bounded Blast V2 source and harness scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only origin/main...HEAD)"
+          unexpected="$(printf '%s\n' "$changed" | grep -v -F \
+            -e 'tools/code-atlas/src/code_atlas/intelligence/engine.py' \
+            -e 'tools/code-atlas/src/code_atlas/intelligence/impact_enrichment.py' \
+            -e 'tools/code-atlas/tests/test_operational_blast_intelligence_v2.py' \
+            -e '.github/scripts/caext_historical_blast_v2.py' \
+            -e '.github/workflows/caext-historical-blast-v2.yml' \
+            -e 'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_BLAST_V2.md' \
+            -e 'tools/code-atlas/docs/PRISMA_CHANGE_ASSURANCE_V1.md' \
+            -e 'apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md' \
+            -e 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json' \
+            -e 'PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.md' || true)"
+          if [ -n "$unexpected" ]; then
+            echo 'Unexpected Blast V2 diff:'
+            printf '%s\n' "$unexpected"
+            exit 1
+          fi
+          echo 'PASS_BLAST_V2_BOUNDED_SCOPE'
+
+      - name: Run current-core baseline vs Blast V2 historical real-diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="${RUNNER_TEMP}/caext-blast-v2"
+          mkdir -p "$out"
+          python .github/scripts/caext_historical_blast_v2.py --output "$out" --hitech-root .
+
+      - name: Upload Blast V2 historical evidence even when red
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: caext-blast-v2-${{ matrix.os }}
+          if-no-files-found: error
+          path: ${{ runner.temp }}/caext-blast-v2/*.zip
