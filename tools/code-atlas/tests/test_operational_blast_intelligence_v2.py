@@ -7,6 +7,7 @@ from pathlib import Path
 
 from code_atlas.change_intelligence import prepare_change
 from code_atlas.intelligence import IntelligenceRequest, resolve_intelligence_context
+from code_atlas.intelligence.impact_focus import focus_change_impact
 
 
 class ImpactInspectionV2Tests(unittest.TestCase):
@@ -41,43 +42,105 @@ class ImpactInspectionV2Tests(unittest.TestCase):
         self._commit_all(repo, "baseline")
         return repo
 
-    def test_cpp_include_chain_and_cross_language_test_companion_extend_inspection_not_legacy_radius(self) -> None:
+    def test_cpp_include_chain_uses_bridges_and_keeps_real_companion_in_primary_inspection(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             repo = self._cpp_fixture(Path(td))
             context = resolve_intelligence_context(
                 repo,
-                request=IntelligenceRequest(changed_paths=("include/lib/detail/function_ref.h",), workers=4),
+                request=IntelligenceRequest(
+                    changed_paths=("include/lib/detail/function_ref.h",),
+                    semantic_query="allow function_ref copy move behavior",
+                    workers=4,
+                ),
             )
             impact = context["graphs"]["changeImpact"]
             self.assertEqual(impact["impacted"], ["include/lib/detail/function_ref.h"])
             self.assertEqual(
                 impact["inspectionPaths"],
                 [
-                    "include/lib/core.h",
                     "include/lib/detail/function_ref.h",
-                    "include/lib/stl.h",
                     "tests/test_copy_move.cpp",
                     "tests/test_copy_move.py",
                 ],
             )
+            self.assertEqual(impact["evidenceBridgePaths"], ["include/lib/core.h", "include/lib/stl.h"])
             self.assertFalse(impact["impactRadiusIsAuthorization"])
             relation_types = {row["type"] for row in impact["inspectionV2"]["relations"]}
             self.assertIn("c-family-include", relation_types)
             self.assertIn("typed-test-companion", relation_types)
             why = {row["path"]: row for row in impact["whyIsThisInBlast"]}
             self.assertTrue(any(reason["kind"] == "typed-test-companion" for reason in why["tests/test_copy_move.py"]["reasons"]))
+            self.assertTrue(any(reason["disposition"] == "EVIDENCE_BRIDGE" for reason in why["include/lib/stl.h"]["reasons"]))
             self.assertTrue(all(row["authorizationGranted"] is False for row in why.values()))
 
     def test_same_input_is_deterministic_and_backslash_path_normalizes(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             repo = self._cpp_fixture(Path(td))
-            request1 = IntelligenceRequest(changed_paths=(r"include\lib\detail\function_ref.h",), workers=2)
-            request2 = IntelligenceRequest(changed_paths=("include/lib/detail/function_ref.h",), workers=4)
+            request1 = IntelligenceRequest(
+                changed_paths=(r"include\lib\detail\function_ref.h",), semantic_query="function_ref copy move", workers=2,
+            )
+            request2 = IntelligenceRequest(
+                changed_paths=("include/lib/detail/function_ref.h",), semantic_query="function_ref copy move", workers=4,
+            )
             first = resolve_intelligence_context(repo, request=request1)["graphs"]["changeImpact"]
             second = resolve_intelligence_context(repo, request=request2)["graphs"]["changeImpact"]
             self.assertEqual(first["blastDigest"], second["blastDigest"])
             self.assertEqual(first["inspectionPaths"], second["inspectionPaths"])
+            self.assertEqual(first["evidenceBridgePaths"], second["evidenceBridgePaths"])
             self.assertEqual(first["whyIsThisInBlast"], second["whyIsThisInBlast"])
+
+    def test_go_focus_reuses_existing_actionable_review_instead_of_rebuilding_it(self) -> None:
+        graphs = {
+            "changeImpact": {
+                "changed": ["command.go"],
+                "impacted": ["command.go", "completions.go", "structural.go"],
+                "actionableReview": {
+                    "schemaVersion": "code_atlas_actionable_review.v1",
+                    "scope": "GO_BOUNDED_V1",
+                    "paths": ["command.go", "completions.go"],
+                    "structuralOnlyImpacted": ["structural.go"],
+                    "authorizationRule": "ACTIONABLE_REVIEW_NEVER_EXPANDS_ALLOWED_SCOPE",
+                },
+                "inspectionPaths": ["command.go", "completions.go", "structural.go"],
+                "inspectOnlyCandidates": [],
+                "inspectionV2": {
+                    "relations": [],
+                    "inspectionPaths": ["command.go", "completions.go", "structural.go"],
+                    "inspectOnlyCandidates": [],
+                    "whyIsThisInBlast": [],
+                    "unknownOrUnsupported": [],
+                    "blastDigest": "sha256:legacy",
+                },
+            }
+        }
+        focused = focus_change_impact(".", graphs, semantic_query="completion behavior")["changeImpact"]
+        self.assertEqual(focused["inspectionPaths"], ["command.go", "completions.go"])
+        self.assertEqual(focused["inspectOnlyCandidates"], ["structural.go"])
+        self.assertEqual(focused["focusV2"]["mode"], "REUSE_GO_BOUNDED_V1_ACTIONABLE_REVIEW")
+        self.assertFalse(focused["impactRadiusIsAuthorization"])
+
+    def test_high_fanout_without_unique_semantic_support_stays_inspect_only_and_unknown(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            repo = Path(td) / "ambiguous fanout"
+            self._init(repo)
+            (repo / "include").mkdir()
+            (repo / "tests").mkdir()
+            (repo / "include/root.h").write_text("#pragma once\n", encoding="utf-8")
+            for index in range(6):
+                (repo / f"tests/case_{index}.cpp").write_text('#include <root.h>\nint main(){return 0;}\n', encoding="utf-8")
+            self._commit_all(repo, "baseline")
+            impact = resolve_intelligence_context(
+                repo,
+                request=IntelligenceRequest(
+                    changed_paths=("include/root.h",), semantic_query="unrelated semantic banana", workers=2,
+                ),
+            )["graphs"]["changeImpact"]
+            self.assertEqual(impact["inspectionPaths"], ["include/root.h"])
+            self.assertTrue(all(path.startswith("tests/case_") for path in impact["inspectOnlyCandidates"]))
+            self.assertTrue(any(
+                row.get("reason") == "HIGH_FANOUT_STATIC_BRANCH_NOT_UNIQUELY_SUPPORTED_BY_SEMANTIC_EVIDENCE"
+                for row in impact["unknownOrUnsupported"]
+            ))
 
     def test_unsupported_language_is_explicit_unknown_not_green(self) -> None:
         with tempfile.TemporaryDirectory() as td:
@@ -104,7 +167,7 @@ class ImpactInspectionV2Tests(unittest.TestCase):
             self._commit_all(repo, "baseline")
             impact = resolve_intelligence_context(
                 repo,
-                request=IntelligenceRequest(changed_paths=("src/a.cpp",), workers=2),
+                request=IntelligenceRequest(changed_paths=("src/a.cpp",), semantic_query="missing include", workers=2),
             )["graphs"]["changeImpact"]
             self.assertNotIn("does/not/exist.h", impact["inspectionPaths"])
             self.assertTrue(any(
@@ -148,7 +211,9 @@ class ImpactInspectionV2Tests(unittest.TestCase):
             repo = self._cpp_fixture(Path(td))
             impact = resolve_intelligence_context(
                 repo,
-                request=IntelligenceRequest(changed_paths=("include/lib/detail/function_ref.h",), workers=2),
+                request=IntelligenceRequest(
+                    changed_paths=("include/lib/detail/function_ref.h",), semantic_query="function_ref copy move", workers=2,
+                ),
             )["graphs"]["changeImpact"]
             for row in impact["inspectionV2"]["relations"]:
                 if row.get("supportLevel") != "UNKNOWN":
@@ -163,12 +228,12 @@ class ImpactInspectionV2Tests(unittest.TestCase):
                     request=IntelligenceRequest(changed_paths=("../outside.cpp",), workers=2),
                 )
 
-    def test_prepare_never_widens_authority_from_inspection_or_inspect_only_candidates(self) -> None:
+    def test_prepare_never_widens_authority_from_primary_bridges_or_inspect_only_candidates(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             repo = self._cpp_fixture(Path(td))
             prepared = prepare_change(
                 repo,
-                change_request="change function_ref and inspect bounded companions",
+                change_request="change function_ref copy move behavior and inspect bounded companions",
                 target_paths=["include/lib/detail/function_ref.h"],
                 policy={
                     "schemaVersion": "code_atlas_customer_policy.v1",
@@ -188,7 +253,9 @@ class ImpactInspectionV2Tests(unittest.TestCase):
             self.assertEqual(prepared["authorityPack"]["allowedScope"], ["include/lib/detail/function_ref.h"])
             impact = prepared["changeModel"]["impactRadius"]
             self.assertIn("tests/test_copy_move.py", impact["inspectionPaths"])
+            self.assertIn("include/lib/stl.h", impact["evidenceBridgePaths"])
             self.assertNotIn("tests/test_copy_move.py", prepared["authorityPack"]["allowedScope"])
+            self.assertNotIn("include/lib/stl.h", prepared["authorityPack"]["allowedScope"])
 
 
 if __name__ == "__main__":
