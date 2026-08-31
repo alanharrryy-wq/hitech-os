@@ -77,9 +77,9 @@ class SyncSentinelWatchTests(unittest.TestCase):
             payload = {
                 "status": "FAIL_SYNC_CERTIFICATION",
                 "checks": [
-                    {"id": "head_lock", "verdict": "PASS", "summary": "ok"},
-                    {"id": "mobile_runtime_3140_journeys", "verdict": "FAIL", "summary": "runtime failed"},
-                    {"id": "capsule_cleanup", "verdict": "PASS", "summary": "cleanup"},
+                    {"id": "head_lock", "verdict": "PASS", "detail": "ok"},
+                    {"id": "mobile_runtime_3140_journeys", "verdict": "FAIL", "detail": "runtime failed"},
+                    {"id": "capsule_cleanup", "verdict": "PASS", "detail": "cleanup"},
                 ],
                 "facts": {"sourceDrift": False, "cleanupPass": True, "orphanProcesses": False, "liveDbTouched": False},
             }
@@ -94,6 +94,7 @@ class SyncSentinelWatchTests(unittest.TestCase):
             self.assertIn("mobile_runtime_3140_journeys", summary)
             self.assertIn("head_lock", summary)
             self.assertIn("sourceDrift", summary)
+            self.assertIn("runtime failed", summary)
 
     def test_summary_recognizes_self_test_pass_token(self) -> None:
         with tempfile.TemporaryDirectory() as td:
@@ -108,6 +109,31 @@ class SyncSentinelWatchTests(unittest.TestCase):
             }, root)
             self.assertIn("PASS_SYNC_SENTINEL_SELF_TEST", summary)
             self.assertNotIn("Failed stage: `self-test`", summary)
+
+    def test_certify_pass_can_reconcile_preliminary_scan_but_keeps_it_visible(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "self-test.log").write_text("PASS_SYNC_SENTINEL_SELF_TEST\n", encoding="utf-8")
+            (root / "scan.log").write_text(json.dumps({
+                "status": "FAIL_SYNC_SCAN",
+                "checks": [{"id": "legacy_native_probe", "verdict": "FAIL", "detail": "known baseline signature"}],
+            }), encoding="utf-8")
+            (root / "diagnose.log").write_text(json.dumps({"status": "PASS_SYNC_DIAGNOSIS", "checks": []}), encoding="utf-8")
+            (root / "certify.log").write_text(json.dumps({
+                "status": "PASS_SYNC_CERTIFICATION",
+                "checks": [{"id": "runtime_backed_reconciliation", "verdict": "PASS", "detail": "exact signature reconciled"}],
+            }), encoding="utf-8")
+            summary = build_summary({
+                "impact": "CERTIFY",
+                "head": "abc",
+                "base": "def",
+                "event": "pull_request",
+                "wakeFiles": ["x"],
+            }, root)
+            self.assertIn("FAIL_SYNC_SCAN", summary)
+            self.assertIn("PASS_SYNC_CERTIFICATION", summary)
+            self.assertIn("strict runtime-backed exact-signature reconciliation", summary)
+            self.assertNotIn("Causal failure localization", summary)
 
 
 if __name__ == "__main__":
