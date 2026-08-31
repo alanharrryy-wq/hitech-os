@@ -10,12 +10,16 @@ from typing import Any
 from code_atlas.core.runtime_context import RuntimeContext
 
 from .authority import AuthorityRequest, discover_authorities, semantic_retrieve
-from .common import sha256_file
+from .common import safe_repo_relative, sha256_file
 from .edge_provenance import normalize_system_graph_edge_provenance
 from .graphs import build_system_graphs
+from .impact_enrichment import enrich_change_impact
+from .impact_focus import focus_change_impact
 from .index import build_derived_index
 from .repository import discover_repository
 from .snapshot import build_snapshot
+
+_C_FAMILY_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx"}
 
 
 @dataclass(frozen=True)
@@ -42,6 +46,33 @@ def _zip_tree(source: Path, target: Path) -> None:
                 bundle.write(path, path.relative_to(source).as_posix())
 
 
+def _focus_supported_change_family(
+    graphs: dict[str, Any],
+    repo: Path,
+    changed_paths: tuple[str, ...],
+    semantic_query: str,
+) -> dict[str, Any]:
+    if not changed_paths:
+        return graphs
+    suffixes = {Path(path).suffix.lower() for path in changed_paths}
+    if suffixes <= {".go"}:
+        return focus_change_impact(repo, graphs, semantic_query=semantic_query)
+    if suffixes <= _C_FAMILY_SUFFIXES:
+        impact = graphs.get("changeImpact") or {}
+        go_actionable = impact.get("actionableReview")
+        impact["actionableReview"] = {}
+        graphs["changeImpact"] = impact
+        try:
+            graphs = focus_change_impact(repo, graphs, semantic_query=semantic_query)
+        finally:
+            restored = graphs.get("changeImpact") or {}
+            if go_actionable is not None:
+                restored["actionableReview"] = go_actionable
+            graphs["changeImpact"] = restored
+        return graphs
+    return graphs
+
+
 def resolve_intelligence_context(
     repo_root: str | Path | None = None,
     output_root: str | Path | None = None,
@@ -52,13 +83,14 @@ def resolve_intelligence_context(
     """Resolve the canonical neutral intelligence context without packaging it.
 
     This is the structured consumer API for higher layers such as Change
-    Intelligence. It owns no customer/product semantics and performs no source
+    Assurance. It owns no customer/product semantics and performs no source
     mutation. The returned SQLite/search projections remain non-authoritative.
     """
     request = request or IntelligenceRequest()
     context = RuntimeContext.resolve(repo_root, output_root, output_root, profile_path=profile_path)
     repo = context.repo_root
     profile = context.profile
+    normalized_changed_paths = tuple(safe_repo_relative(repo, path) for path in request.changed_paths)
 
     inventory = discover_repository(repo, workers=request.workers)
     authority_request = AuthorityRequest(
@@ -72,8 +104,21 @@ def resolve_intelligence_context(
     authorities = discover_authorities(
         repo, inventory, request=authority_request, profile_metadata=profile.metadata,
     )
-    raw_graphs = build_system_graphs(repo, inventory, authorities, changed_paths=list(request.changed_paths))
+    raw_graphs = build_system_graphs(repo, inventory, authorities, changed_paths=list(normalized_changed_paths))
     graphs = normalize_system_graph_edge_provenance(raw_graphs, authorities)
+    graphs = enrich_change_impact(
+        repo,
+        inventory,
+        graphs,
+        changed_paths=normalized_changed_paths,
+        semantic_query=request.semantic_query,
+    )
+    graphs = _focus_supported_change_family(
+        graphs,
+        repo,
+        normalized_changed_paths,
+        request.semantic_query,
+    )
     profile_version = profile.metadata.get("profileVersion") if isinstance(profile.metadata, dict) else None
     snapshot = build_snapshot(
         repo,
