@@ -49,6 +49,78 @@ jobs:
           python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
           test -z "$(git status --porcelain -- 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json' 'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json' 'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json')"
 
+      - name: Prove zero external runtime consumers
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/MULTICONTEXT_CONSUMER_PROOF.json" <<'PY'
+          import json, os, pathlib, subprocess, sys
+          out = pathlib.Path(sys.argv[1])
+          mobile = pathlib.Path('apps/terminal-de-venta-system/products/mobile/app')
+          patterns = [
+              'PrismaMobileMultiContextSwitcher',
+              'multiContextRoot',
+              'mobile-multi-context-switcher',
+              'PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE',
+              'prisma-mobile-multi-context-switcher.module.css',
+          ]
+          residue = {
+              (mobile / 'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx').as_posix(),
+              (mobile / 'src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css').as_posix(),
+              (mobile / 'src/components/prisma-app/index.ts').as_posix(),
+              (mobile / 'src/components/prisma-app/prisma-mobile-dashboard.module.css').as_posix(),
+          }
+          source_roots = [
+              (mobile / 'src').as_posix(),
+              (mobile / 'app').as_posix(),
+          ]
+          refs = []
+          unexpected = []
+          for pattern in patterns:
+              p = subprocess.run(
+                  ['git','grep','-n','-I','-F',pattern,'--',*source_roots],
+                  text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+              )
+              if p.returncode not in (0, 1):
+                  raise SystemExit(f'GIT_GREP_FAILED:{pattern}:{p.stderr[:500]}')
+              for line in p.stdout.splitlines():
+                  path, _, rest = line.partition(':')
+                  row = {'pattern': pattern, 'match': line, 'path': path}
+                  refs.append(row)
+                  if path not in residue:
+                      unexpected.append(row)
+          required_files = sorted(residue)
+          missing = [path for path in required_files if not pathlib.Path(path).is_file()]
+          pkg = json.loads((mobile / 'package.json').read_text(encoding='utf-8'))
+          package_checks = {
+              'dedicatedMultiContextVerifierAbsent': pkg.get('scripts', {}).get('verify:multi-context-switcher') is None,
+              'multiContextVersionMetadataAbsent': 'prismaMobileMultiContextSwitcherVersion' not in pkg,
+              'multiContextPackageMetadataAbsent': 'prismaMobileMultiContextSwitcherPackage' not in pkg,
+              'canonicalVerifierInCheckAll': 'verify:interface-canon' in str(pkg.get('scripts', {}).get('check:all', '')),
+              'retiredTerminologyAbsentFromCheckAll': 'multi-context' not in str(pkg.get('scripts', {}).get('check:all', '')).lower(),
+          }
+          payload = {
+              'schemaVersion':'prisma.mobile.multicontext-consumer-proof.v1',
+              'repoHead':os.environ['TARGET_HEAD'],
+              'patterns':patterns,
+              'residueFiles':required_files,
+              'sourceMatches':refs,
+              'unexpectedRuntimeConsumers':unexpected,
+              'missingResidueFiles':missing,
+              'packageChecks':package_checks,
+              'branchesApiExistsAndIsOutOfScope':(mobile / 'app/api/mobile/branches/route.ts').is_file(),
+          }
+          payload['verdict'] = (
+              'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS'
+              if not unexpected and not missing and all(package_checks.values()) and payload['branchesApiExistsAndIsOutOfScope']
+              else 'BLOCKED_CONSUMER_OR_CONTRACT_DRIFT'
+          )
+          out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(payload, ensure_ascii=False, indent=2))
+          if payload['verdict'] != 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS':
+              raise SystemExit(payload['verdict'])
+          PY
+
       - name: Download and verify fresh task-exact Mesh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -192,7 +264,7 @@ jobs:
           set -euo pipefail
           out="$RUNNER_TEMP/mobile-authority-evidence"
           mkdir -p "$out"
-          for f in mesh-verified.json proposal.request.json proposal.decision.json mutation.request.json mutation.decision.json; do
+          for f in MULTICONTEXT_CONSUMER_PROOF.json mesh-verified.json proposal.request.json proposal.decision.json mutation.request.json mutation.decision.json; do
             src="$RUNNER_TEMP/$f"
             [ ! -f "$src" ] || cp "$src" "$out/$f"
           done
