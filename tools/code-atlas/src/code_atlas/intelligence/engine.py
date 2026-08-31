@@ -10,7 +10,7 @@ from typing import Any
 from code_atlas.core.runtime_context import RuntimeContext
 
 from .authority import AuthorityRequest, discover_authorities, semantic_retrieve
-from .common import sha256_file
+from .common import safe_repo_relative, sha256_file
 from .edge_provenance import normalize_system_graph_edge_provenance
 from .graphs import build_system_graphs
 from .impact_enrichment import enrich_change_impact
@@ -60,6 +60,7 @@ def resolve_intelligence_context(
     context = RuntimeContext.resolve(repo_root, output_root, output_root, profile_path=profile_path)
     repo = context.repo_root
     profile = context.profile
+    normalized_changed_paths = tuple(safe_repo_relative(repo, path) for path in request.changed_paths)
 
     inventory = discover_repository(repo, workers=request.workers)
     authority_request = AuthorityRequest(
@@ -73,13 +74,13 @@ def resolve_intelligence_context(
     authorities = discover_authorities(
         repo, inventory, request=authority_request, profile_metadata=profile.metadata,
     )
-    raw_graphs = build_system_graphs(repo, inventory, authorities, changed_paths=list(request.changed_paths))
+    raw_graphs = build_system_graphs(repo, inventory, authorities, changed_paths=list(normalized_changed_paths))
     graphs = normalize_system_graph_edge_provenance(raw_graphs, authorities)
     graphs = enrich_change_impact(
         repo,
         inventory,
         graphs,
-        changed_paths=request.changed_paths,
+        changed_paths=normalized_changed_paths,
         semantic_query=request.semantic_query,
     )
     profile_version = profile.metadata.get("profileVersion") if isinstance(profile.metadata, dict) else None
