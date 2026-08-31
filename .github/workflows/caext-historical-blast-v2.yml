@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/code-atlas/src/code_atlas/intelligence/engine.py'
       - 'tools/code-atlas/src/code_atlas/intelligence/impact_enrichment.py'
+      - 'tools/code-atlas/src/code_atlas/intelligence/impact_focus.py'
       - 'tools/code-atlas/tests/test_operational_blast_intelligence_v2.py'
       - '.github/scripts/caext_historical_blast_v2.py'
       - '.github/scripts/caext_historical_real_diff_v1.py'
@@ -52,6 +53,7 @@ jobs:
           unexpected="$(printf '%s\n' "$changed" | grep -v -F \
             -e 'tools/code-atlas/src/code_atlas/intelligence/engine.py' \
             -e 'tools/code-atlas/src/code_atlas/intelligence/impact_enrichment.py' \
+            -e 'tools/code-atlas/src/code_atlas/intelligence/impact_focus.py' \
             -e 'tools/code-atlas/tests/test_operational_blast_intelligence_v2.py' \
             -e '.github/scripts/caext_historical_blast_v2.py' \
             -e '.github/workflows/caext-historical-blast-v2.yml' \
