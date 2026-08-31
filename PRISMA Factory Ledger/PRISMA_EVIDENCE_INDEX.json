@@ -830,9 +830,33 @@
         "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17",
         "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4"
       ]
+    },
+    {
+      "artifact": "PR #514 / GVAE registration authority and rebound revalidation",
+      "type": "generic_visual_application_engine_v1_capability_registration_authority",
+      "scope": [
+        "factory_ledger",
+        "governance",
+        "prisma-html",
+        "visual_application"
+      ],
+      "status": "PASS_REGISTRATION_AUTHORITY_ONLY",
+      "proves": [
+        "The missing Generic Visual Application Engine V1 capability was classified for canonical Factory Ledger registration",
+        "Task-exact composed Authority Mesh passed at main 0400c7cbc307d156a0c5cd0e10b253deac9bf318 with required authority coverage and zero blockers",
+        "AutoMesh v2 revalidation returned PASS_NO_RELEVANT_DRIFT and rebound the authority to main c17635fb69bb0208dc8237ee97cc82017f1d30a6",
+        "The registration preserves Code Atlas UI Bridge as read-only and preserves certified Cobrar evidence as a golden reference"
+      ],
+      "doesNotProve": [
+        "Engine implementation, target-index generation, writers, schemas or CI exist",
+        "Anti-rework PROPOSAL or MUTATION has passed for the newly registered BUILD capability",
+        "Cobrar parity, rollback, idempotency or native negative tests",
+        "Any product/source/runtime visual mutation",
+        "Any runtime visual or production certification"
+      ]
     }
   ],
-  "updatedAt": "2026-08-31T00:40:18Z",
+  "updatedAt": "2026-08-31T17:59:05Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -986,6 +1010,21 @@
         "Mobile M1/M2 PASS; M3 NOT_APPLICABLE; 12 Mobile negatives PASS",
         "Ledger-close Authority run 33345023406 artifact 9741718058",
         "Ledger-close MUTATION gate run 33345210530 artifact 9741759165"
+      ]
+    },
+    {
+      "capabilityId": "visual.generic_application_engine_v1",
+      "status": "BUILD_NOT_STARTED",
+      "runId": "33422482889",
+      "evidence": [
+        "base Authority run 33416410140 artifact 9767220861",
+        "requestDigest efab1ba6c1276b4b8abea0290bde2ba2c57d3dcc8a52b50da634a7887be9d2fd",
+        "base composed sha256 33908c0bfc2e200483d0601f2302aea95f227c96b840b1954ea5eee0233f6a8d",
+        "revalidation run 33422482889 artifact 9769443280",
+        "PASS_NO_RELEVANT_DRIFT rebound main c17635fb69bb0208dc8237ee97cc82017f1d30a6",
+        "revalidated artifact sha256 889ba892d992179ec49c8d068a3f3f99cbec5187b93721abe261cda5212d6d39",
+        "issue #513",
+        "PR #514"
       ]
     }
   ]
