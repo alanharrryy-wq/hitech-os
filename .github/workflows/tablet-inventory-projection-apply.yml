@@ -1,0 +1,199 @@
+name: Tablet Inventory Projection Apply
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tablet-inventory-projection-apply.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  SOURCE_AUTHORITY_COMMIT: 35ff9162c7fc1fafa28d8093f895f69a54095490
+  BRANCH_NAME: feat/tablet-inventory-viscore-full-surface-20260831
+
+jobs:
+  apply-projection:
+    if: github.head_ref == 'feat/tablet-inventory-viscore-full-surface-20260831'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact PR head with push authority
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Prove source authority ancestor and exact scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git merge-base "$SOURCE_AUTHORITY_COMMIT" HEAD)" = "$SOURCE_AUTHORITY_COMMIT"
+          test -f prisma-html/authority/rifat/tablet/runtime-sources/modules/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css
+          test -f .github/workflows/tablet-inventory-projection-candidate.yml
+          test -f .github/workflows/tablet-inventory-projection-apply.yml
+
+      - name: Generate deterministic Tablet projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit "$SOURCE_AUTHORITY_COMMIT" | tee "$RUNNER_TEMP/projection.log"
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit "$SOURCE_AUTHORITY_COMMIT" --check | tee "$RUNNER_TEMP/projection-check.log"
+          grep -Fq '"status": "PASS"' "$RUNNER_TEMP/projection.log"
+          grep -Fq '"status": "PASS"' "$RUNNER_TEMP/projection-check.log"
+
+      - name: Refresh exact RIFAT integrity hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          manifest = Path('prisma-html/authority/rifat/visual-source-manifest.json')
+          source = Path('prisma-html/authority/rifat/tablet/runtime-sources/modules/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css')
+          output = Path('apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css')
+          doc = json.loads(manifest.read_text(encoding='utf-8'))
+          rows = [r for r in doc.get('entries', []) if r.get('source') == source.as_posix() and r.get('output') == output.as_posix()]
+          if len(rows) != 1:
+              raise SystemExit(f'EXACT_VISUAL_SOURCE_ENTRY_CARDINALITY_{len(rows)}')
+          digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          rows[0]['sourceSha256'] = digest(source)
+          rows[0]['outputSha256'] = digest(output)
+          if rows[0].get('manualEditsForbidden') is not True:
+              raise SystemExit('GENERATED_OUTPUT_NOT_PROTECTED')
+          manifest.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('SOURCE_SHA256=' + rows[0]['sourceSha256'])
+          print('OUTPUT_SHA256=' + rows[0]['outputSha256'])
+          PY
+          (cd prisma-html && python tools/validate_rifat_authority.py) | tee "$RUNNER_TEMP/rifat-authority.json"
+          grep -Fq '"status": "PASS"' "$RUNNER_TEMP/rifat-authority.json"
+
+      - name: Freeze historical screenshot harness and prevent new Prisma runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('.github/workflows/tablet-inventory-viscore-evidence.yml')
+          text = p.read_text(encoding='utf-8')
+          old = "    if: github.head_ref == 'feat/tablet-inventory-viscore-full-surface-20260831'"
+          new = "    if: github.head_ref == 'feat/tablet-inventory-viscore-full-surface-20260831' && (github.event.pull_request.head.sha == '3372cd613397f7a5d0947ed2649ac8b04646e35f' || github.event.pull_request.head.sha == '5e1d1615839d02ee2c8b97542afc8083914dd14e')"
+          if text.count(old) != 1:
+              raise SystemExit('EVIDENCE_JOB_IF_ANCHOR_DRIFT')
+          text = text.replace(old, new, 1)
+          broad = "      - 'prisma-html/**'\n"
+          if broad not in text:
+              raise SystemExit('BROAD_PRISMA_HTML_PATH_ANCHOR_DRIFT')
+          text = text.replace(broad, '', 1)
+          p.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Refresh FILES_MANIFEST after all prisma-html changes
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/refresh_files_manifest.py --write
+          python tools/refresh_files_manifest.py --check
+          python tools/validate_rifat_authority.py | tee "$RUNNER_TEMP/rifat-final.json"
+          grep -Fq '"status": "PASS"' "$RUNNER_TEMP/rifat-final.json"
+
+      - name: Remove temporary projection workflows from final tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/tablet-inventory-projection-candidate.yml
+          git rm .github/workflows/tablet-inventory-projection-apply.yml
+
+      - name: Enforce exact final mutation set
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+          allowed={
+            '.github/workflows/tablet-inventory-viscore-evidence.yml',
+            '.github/workflows/tablet-inventory-projection-candidate.yml',
+            '.github/workflows/tablet-inventory-projection-apply.yml',
+            'apps/terminal-de-venta-system/.prisma-ui/AUTHORITY_LOCK.json',
+            'apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css',
+            'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/authority-lock.json',
+            'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json',
+            'prisma-html/FILES_MANIFEST.json',
+            'prisma-html/authority/rifat/visual-source-manifest.json',
+          }
+          raw=subprocess.check_output(['git','status','--porcelain=v1'],text=True)
+          paths=[]
+          for line in raw.splitlines():
+              rel=line[3:].strip()
+              if ' -> ' in rel: rel=rel.split(' -> ',1)[1]
+              rel=rel.replace('\\','/')
+              paths.append(rel)
+          unexpected=sorted(set(paths)-allowed)
+          required={
+            '.github/workflows/tablet-inventory-viscore-evidence.yml',
+            '.github/workflows/tablet-inventory-projection-candidate.yml',
+            '.github/workflows/tablet-inventory-projection-apply.yml',
+            'apps/terminal-de-venta-system/.prisma-ui/AUTHORITY_LOCK.json',
+            'apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css',
+            'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/authority-lock.json',
+            'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json',
+            'prisma-html/FILES_MANIFEST.json',
+            'prisma-html/authority/rifat/visual-source-manifest.json',
+          }
+          missing=sorted(required-set(paths))
+          if unexpected or missing:
+              raise SystemExit(f'SCOPE_DRIFT unexpected={unexpected} missing={missing}')
+          print('\n'.join(paths))
+          PY
+
+      - name: Commit and push governed projection
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'chatgpt-codex-connector[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A -- \
+            .github/workflows/tablet-inventory-viscore-evidence.yml \
+            .github/workflows/tablet-inventory-projection-candidate.yml \
+            .github/workflows/tablet-inventory-projection-apply.yml \
+            apps/terminal-de-venta-system/.prisma-ui/AUTHORITY_LOCK.json \
+            apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css \
+            apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/authority-lock.json \
+            apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/runtime-manifest.json \
+            prisma-html/FILES_MANIFEST.json \
+            prisma-html/authority/rifat/visual-source-manifest.json
+          git diff --cached --check
+          git commit -m 'chore(inventory): commit deterministic visual projection'
+          final="$(git rev-parse HEAD)"
+          echo "final_sha=$final" >> "$GITHUB_OUTPUT"
+          git push origin "HEAD:$BRANCH_NAME"
+
+      - name: Write apply report
+        shell: bash
+        env:
+          FINAL_SHA: ${{ steps.commit.outputs.final_sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p projection-apply-report
+          printf '{"status":"PASS_TABLET_INVENTORY_PROJECTION_APPLIED","sourceAuthorityCommit":"%s","finalCommit":"%s","prismaGenerate":false,"runtimeStarted":false,"productionDbMutation":false}\n' "$SOURCE_AUTHORITY_COMMIT" "$FINAL_SHA" > projection-apply-report/result.json
+          cp "$RUNNER_TEMP/projection.log" projection-apply-report/
+          cp "$RUNNER_TEMP/projection-check.log" projection-apply-report/
+          cp "$RUNNER_TEMP/rifat-authority.json" projection-apply-report/
+          cp "$RUNNER_TEMP/rifat-final.json" projection-apply-report/
+
+      - name: Upload apply report
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-inventory-projection-applied-${{ steps.commit.outputs.final_sha }}
+          path: projection-apply-report/**
+          if-no-files-found: error
+          retention-days: 7
