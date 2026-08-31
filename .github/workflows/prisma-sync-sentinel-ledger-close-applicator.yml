@@ -1,0 +1,352 @@
+name: PRISMA Sync Sentinel Ledger Close Applicator
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/prisma-sync-sentinel-ledger-close-applicator.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  PINNED_BASE: 65f45505b66abf7d22ce6cd07a7396ea5a887ccf
+
+jobs:
+  apply-ledger-close:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact PR head branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Apply bounded canonical closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$current" = "$PINNED_BASE"
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          import json
+          from pathlib import Path
+
+          TS = "2026-08-31T00:40:18Z"
+          ROOT = Path("PRISMA Factory Ledger")
+          PATHS = {
+              "ledger": ROOT / "PRISMA_FACTORY_LEDGER.json",
+              "dnr": ROOT / "PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json",
+              "registration": ROOT / "PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json",
+              "evidence": ROOT / "PRISMA_EVIDENCE_INDEX.json",
+          }
+          EXPECTED = {
+              "ledger": "bb0fbe376ef56274ef4dc472e20aa1c5ead16a553d72fa52746478cb8bafbea8",
+              "dnr": "21ee2c3cc03eba337a0ba0101311768a9e339b5be325c2f1b16791acdcde4389",
+              "registration": "de9e5022655750fcf14594320fa91bbd37e50aa26138d6ca9d81e826930f6ec2",
+              "evidence": "826421abfae6e9c723e3f17523442e22b24e58856d7d751aca6716380a105863",
+          }
+          FINAL_ARTIFACT_SHA = "e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6"
+
+          def sha(path: Path) -> str:
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+
+          def load(path: Path):
+              return json.loads(path.read_text(encoding="utf-8"))
+
+          def save(path: Path, obj) -> None:
+              path.write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+          def append_unique(seq: list, value) -> None:
+              if value not in seq:
+                  seq.append(value)
+
+          before = {key: sha(path) for key, path in PATHS.items()}
+          assert before == EXPECTED, {"expected": EXPECTED, "actual": before}
+
+          ledger = load(PATHS["ledger"])
+          caps = {c["id"]: c for c in ledger["capabilities"]}
+          assert "tooling.sync_sentinel_watch" not in caps
+          tool = caps["tooling.sync_sentinel"]
+          mobile = caps["mobile.secure_projection_gateway_phase1"]
+
+          assert tool["classification"] == "DONE"
+          assert tool["status"] == "RUNTIME_VERIFIED"
+          assert tool["doNotRebuild"] is True
+          assert mobile["classification"] == "VERIFY"
+          assert mobile["status"] == "LOCAL_VERIFIED"
+          assert mobile["doNotRebuild"] is False
+
+          tool["displayName"] = "PRISMA Sync Sentinel Tablet ↔ PC + Mobile 3140 verification, diagnostics and Watch tooling"
+          append_unique(tool["surfaces"], "mobile")
+          tool["status"] = "RUNTIME_VERIFIED"
+          tool["stateLabel"] = "PASS_SYNC_SENTINEL_MOBILE_3140_WATCH_POSTMERGE_RUNTIME_VERIFIED"
+          tool["doNotRebuild"] = True
+          tool["nextGate"] = (
+              "Reuse the merged multi-surface Sync Sentinel and permanent impact-aware Watch. Relevant PR/main drift is "
+              "recertified automatically and the weekly safety net remains enabled. Any future demonstrated Sentinel/product "
+              "drift requires fresh task-exact authority before repair. Hosted/customer production, live/customer database use, "
+              "distribution/release readiness and deployed Mobile issuer/network certification remain separate governed gates."
+          )
+          for item in [
+              "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+              "Post-merge Sync Sentinel Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+              "Post-merge certify PASS: Tablet/PC Journey A/B and negatives A-L; Mobile M1/M2 PASS, M3 NOT_APPLICABLE, 12 Mobile negatives PASS; liveDbTouched=false; sourceDrift=false; cleanupPass=true; orphanProcesses=false; secretFindings=0; productionCertified=false",
+              "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17 requestDigest c4c68614772835a7a271aba7b128ff394bce9d16e9d2f8786ffda7a39d273f7c",
+              "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4 decision ade3d12d163ad9cba4ecab54bdc80a6674f828bb77dab6ff70e655813d1abca4",
+          ]:
+              append_unique(tool["evidence"], item)
+          append_unique(tool["doesNotProve"], "Hosted/deployed Mobile session issuer, customer network topology, Mobile mutations, offline commands or runtime zero-egress certification")
+          append_unique(tool["allowedActions"], "reuse the permanent impact-aware Sync Sentinel Watch for PR, main and weekly recertification")
+          append_unique(tool["allowedActions"], "run isolated Mobile 3140 signed-session read-side projection recertification through real Tablet/PC owners")
+          append_unique(tool["forbiddenActions"], "modify Tablet, PC or Mobile product source merely to facilitate Sentinel tests")
+          append_unique(tool["forbiddenClaims"], "Do not claim hosted/deployed Mobile issuer, Mobile mutation, offline-command or zero-egress certification from isolated Mobile 3140 evidence.")
+
+          mobile["status"] = "RUNTIME_VERIFIED"
+          mobile["stateLabel"] = "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME_VERIFIED"
+          mobile["doNotRebuild"] = True
+          mobile["nextGate"] = (
+              "Reuse the runtime-verified Phase 1 read-only signed-session projection baseline. Future hosted/deployed session "
+              "issuance, customer LAN/cloud reachability, production device/license entitlement ownership, offline commands, "
+              "Mobile mutations and runtime zero-egress certification remain separate governed gates; do not enable mutations under Phase 1."
+          )
+          for item in [
+              "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+              "Post-merge Sync Sentinel Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+              "Mobile M1/M2 PASS; M3 NOT_APPLICABLE; 12 Mobile negative/recovery cases PASS on canonical runtime 3140",
+              "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17",
+              "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4",
+          ]:
+              append_unique(mobile["evidence"], item)
+          append_unique(mobile["doesNotProve"], "Hosted/deployed customer session issuer and customer network topology")
+          append_unique(mobile["allowedActions"], "reuse the runtime-verified Phase 1 read-only projection gateway without rebuilding")
+          append_unique(mobile["allowedActions"], "rerun isolated signed-session and cross-context read-side certification after relevant drift")
+          append_unique(mobile["forbiddenActions"], "claim Mobile mutation or offline support from Phase 1 read-side runtime evidence")
+          ledger["updatedAt"] = TS
+
+          dnr = load(PATHS["dnr"])
+          dnr["doNotRebuild"]["tooling.sync_sentinel"] = {
+              "value": True,
+              "reason": "PASS_SYNC_SENTINEL_MOBILE_3140_WATCH_POSTMERGE_RUNTIME_VERIFIED",
+              "evidence": "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf / post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6 / ledger-close Authority run 33345023406 / MUTATION gate run 33345210530",
+              "updatedAt": TS,
+          }
+          dnr["doNotRebuild"]["mobile.secure_projection_gateway_phase1"] = {
+              "value": True,
+              "reason": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME_VERIFIED; reuse the read-only signed-session runtime baseline instead of rebuilding.",
+              "evidence": "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf / post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6 / ledger-close Authority run 33345023406 / MUTATION gate run 33345210530",
+              "updatedAt": TS,
+          }
+          dnr.get("verifyOrFix", {}).pop("mobile.secure_projection_gateway_phase1", None)
+          dnr["updatedAt"] = TS
+
+          reg = load(PATHS["registration"])
+          reg["registrations"]["tooling.sync_sentinel"] = {
+              "status": "DONE_RUNTIME_VERIFIED",
+              "updatedAt": TS,
+              "evidence": "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf / post-merge Watch run 33344270490 artifact 9741492976 / ledger-close Authority run 33345023406 / MUTATION gate run 33345210530",
+              "sourceEvidenceSha256": FINAL_ARTIFACT_SHA.upper(),
+              "doNotRebuild": True,
+              "nextGate": "Reuse the merged multi-surface Sync Sentinel and permanent impact-aware Watch. Relevant PR/main drift is recertified automatically and the weekly safety net remains enabled. Future demonstrated drift requires fresh task-exact authority; hosted/customer production, live/customer DB, distribution/release and deployed Mobile issuer/network certification remain separate gates.",
+          }
+          reg["registrations"]["mobile.secure_projection_gateway_phase1"] = {
+              "status": "VERIFY_RUNTIME_VERIFIED",
+              "updatedAt": TS,
+              "evidence": "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf / post-merge Watch run 33344270490 artifact 9741492976 / ledger-close Authority run 33345023406 / MUTATION gate run 33345210530",
+              "sourceEvidenceSha256": FINAL_ARTIFACT_SHA.upper(),
+              "doNotRebuild": True,
+              "nextGate": "Reuse the Phase 1 read-only runtime baseline. Hosted/deployed issuer, customer network, production device/license entitlement ownership, offline commands, Mobile mutation and zero-egress certification remain separate governed gates.",
+          }
+          reg["updatedAt"] = TS
+
+          evidence = load(PATHS["evidence"])
+          sentinel_artifact_name = "PRISMA Sync Sentinel Mobile 3140 + Watch — PR #502 / post-merge run 33344270490 / artifact 9741492976"
+          mobile_artifact_name = "PRISMA Mobile secure projection gateway phase 1 — PR #502 / post-merge run 33344270490 / artifact 9741492976"
+          evidence["artifacts"] = [a for a in evidence["artifacts"] if a.get("artifact") not in {sentinel_artifact_name, mobile_artifact_name}]
+          evidence["artifacts"].extend([
+              {
+                  "artifact": sentinel_artifact_name,
+                  "type": "prisma_sync_sentinel_multi_surface_watch_runtime_verification",
+                  "scope": ["tooling", "sync", "tablet", "pc", "mobile", "governance", "quality", "github_actions"],
+                  "status": "PASS_RUNTIME_VERIFIED",
+                  "proves": [
+                      "PR #502 merged the governed Sentinel extension and permanent Watch without Tablet, PC or Mobile product-source mutation",
+                      "Tablet/PC Journey A/B and mandatory negatives A-L pass through real owner paths in isolated Sentinel persistence",
+                      "Mobile M1 and M2 pass through canonical runtime 3140 and real Tablet/PC upstream owners; M3 is NOT_APPLICABLE because Phase 1 remains read-only",
+                      "Twelve Mobile negative/recovery cases pass with fail-closed causal fault localization",
+                      "Watch classifies NONE/SCAN/CERTIFY, runs on relevant PR and main events, retains distinct main-SHA evidence, and includes a weekly safety net",
+                      "Post-merge evidence records liveDbTouched=false, sourceDrift=false, cleanupPass=true, orphanProcesses=false, secretFindings=0 and productionCertified=false",
+                      "Fresh current-main closure Authority Mesh and MUTATION anti-rework gate authorize canonical evidence promotion without rebuilding the Sentinel",
+                  ],
+                  "doesNotProve": [
+                      "Hosted production or customer deployment readiness",
+                      "Mutation or certification of any live/customer database",
+                      "Hosted/deployed Mobile session issuer or customer network topology",
+                      "Mobile mutations or offline commands",
+                      "Runtime zero-egress certification",
+                      "Distribution or release readiness",
+                      "Future correctness after relevant drift without recertification",
+                  ],
+                  "evidence": [
+                      "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+                      "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+                      "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17 requestDigest c4c68614772835a7a271aba7b128ff394bce9d16e9d2f8786ffda7a39d273f7c",
+                      "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4 decision ade3d12d163ad9cba4ecab54bdc80a6674f828bb77dab6ff70e655813d1abca4",
+                  ],
+              },
+              {
+                  "artifact": mobile_artifact_name,
+                  "type": "mobile_secure_projection_gateway_phase1_runtime",
+                  "scope": ["mobile", "auth_context", "projection_gateway", "tablet", "pc", "quality"],
+                  "status": "PASS_RUNTIME_VERIFIED",
+                  "proves": [
+                      "Signed-session Mobile read-side projection runs through canonical Mobile runtime 3140 with tenant/business/branch/terminal/device/license/actor scope",
+                      "M1 reads real Tablet/PC owner state through the Mobile Data Plane and governed secure projection gateway",
+                      "M2 observes a real Sentinel-owned Tablet outbox change through Mobile runtime 3140",
+                      "M3 is NOT_APPLICABLE because the governed Phase 1 gateway has commandPathsEnabled=false and no Mobile mutation owner",
+                      "Twelve Mobile negative/recovery cases cover invalid/expired sessions, permissions, scope isolation, upstream failures, recovery, staleness and malformed upstream state",
+                      "Evidence is isolated, read-only with respect to product/customer state, and productionCertified=false",
+                  ],
+                  "doesNotProve": [
+                      "Hosted/deployed live session issuer",
+                      "Customer LAN/cloud reachability",
+                      "Production device or license entitlement owner lookup beyond signed-session trust boundary",
+                      "Offline commands",
+                      "Mobile mutations",
+                      "Runtime zero-egress certification",
+                  ],
+                  "evidence": [
+                      "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+                      "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+                      "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17",
+                      "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4",
+                  ],
+              },
+          ])
+          run_ids = {"PR502_SYNC_SENTINEL_MOBILE_3140_WATCH_POSTMERGE_RUNTIME", "PR502_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME"}
+          evidence["entries"] = [e for e in evidence.get("entries", []) if e.get("runId") not in run_ids]
+          evidence["entries"].extend([
+              {
+                  "capabilityId": "tooling.sync_sentinel",
+                  "status": "RUNTIME_VERIFIED",
+                  "runId": "PR502_SYNC_SENTINEL_MOBILE_3140_WATCH_POSTMERGE_RUNTIME",
+                  "evidence": [
+                      "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+                      "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+                      "Ledger-close Authority run 33345023406 artifact 9741718058",
+                      "Ledger-close MUTATION gate run 33345210530 artifact 9741759165",
+                  ],
+              },
+              {
+                  "capabilityId": "mobile.secure_projection_gateway_phase1",
+                  "status": "RUNTIME_VERIFIED",
+                  "runId": "PR502_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME",
+                  "evidence": [
+                      "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+                      "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+                      "Mobile M1/M2 PASS; M3 NOT_APPLICABLE; 12 Mobile negatives PASS",
+                      "Ledger-close Authority run 33345023406 artifact 9741718058",
+                      "Ledger-close MUTATION gate run 33345210530 artifact 9741759165",
+                  ],
+              },
+          ])
+          evidence["updatedAt"] = TS
+
+          save(PATHS["ledger"], ledger)
+          save(PATHS["dnr"], dnr)
+          save(PATHS["registration"], reg)
+          save(PATHS["evidence"], evidence)
+
+          # Fail-closed semantic assertions after serialization.
+          ledger2 = load(PATHS["ledger"])
+          caps2 = {c["id"]: c for c in ledger2["capabilities"]}
+          assert "tooling.sync_sentinel_watch" not in caps2
+          assert caps2["tooling.sync_sentinel"]["classification"] == "DONE"
+          assert caps2["tooling.sync_sentinel"]["status"] == "RUNTIME_VERIFIED"
+          assert caps2["tooling.sync_sentinel"]["doNotRebuild"] is True
+          assert caps2["mobile.secure_projection_gateway_phase1"]["classification"] == "VERIFY"
+          assert caps2["mobile.secure_projection_gateway_phase1"]["status"] == "RUNTIME_VERIFIED"
+          assert caps2["mobile.secure_projection_gateway_phase1"]["doNotRebuild"] is True
+          dnr2 = load(PATHS["dnr"])
+          assert dnr2["doNotRebuild"]["tooling.sync_sentinel"]["value"] is True
+          assert dnr2["doNotRebuild"]["mobile.secure_projection_gateway_phase1"]["value"] is True
+          assert "mobile.secure_projection_gateway_phase1" not in dnr2.get("verifyOrFix", {})
+          reg2 = load(PATHS["registration"])["registrations"]
+          assert reg2["tooling.sync_sentinel"]["status"] == "DONE_RUNTIME_VERIFIED"
+          assert reg2["mobile.secure_projection_gateway_phase1"]["status"] == "VERIFY_RUNTIME_VERIFIED"
+          assert reg2["tooling.sync_sentinel"]["sourceEvidenceSha256"] == FINAL_ARTIFACT_SHA.upper()
+          assert reg2["mobile.secure_projection_gateway_phase1"]["sourceEvidenceSha256"] == FINAL_ARTIFACT_SHA.upper()
+          assert all(sha(path) != EXPECTED[key] for key, path in PATHS.items())
+          print("PASS_SYNC_SENTINEL_LEDGER_CLOSE_APPLY")
+          for key, path in PATHS.items():
+              print(f"{key}={sha(path)}")
+          PY
+
+          rm -rf "$RUNNER_TEMP/ledger-verify"
+          cp -a "PRISMA Factory Ledger" "$RUNNER_TEMP/ledger-verify"
+          python "$RUNNER_TEMP/ledger-verify/tools/verify_prisma_factory_ledger.py" "$RUNNER_TEMP/ledger-verify"
+          git diff --check -- \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json" \
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+
+          python - <<'PY' > "$RUNNER_TEMP/LEDGER_CLOSE_RESULT.json"
+          import hashlib, json
+          from pathlib import Path
+          root=Path('PRISMA Factory Ledger')
+          names=[
+            'PRISMA_FACTORY_LEDGER.json',
+            'PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+            'PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+            'PRISMA_EVIDENCE_INDEX.json',
+          ]
+          out={
+            'status':'PASS_SYNC_SENTINEL_LEDGER_CLOSE_APPLY',
+            'baseHead':'65f45505b66abf7d22ce6cd07a7396ea5a887ccf',
+            'postMergeWatchRun':33344270490,
+            'postMergeWatchArtifact':9741492976,
+            'postMergeWatchArtifactSha256':'e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6',
+            'authorityRun':33345023406,
+            'mutationGateRun':33345210530,
+            'productionCertified':False,
+            'files':{n:hashlib.sha256((root/n).read_bytes()).hexdigest() for n in names},
+          }
+          print(json.dumps(out,indent=2))
+          PY
+          cat "$RUNNER_TEMP/LEDGER_CLOSE_RESULT.json"
+
+      - name: Upload bounded closure evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: prisma-sync-sentinel-ledger-close-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/LEDGER_CLOSE_RESULT.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit canonical JSONs and self-remove applicator
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "prisma-governance-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json" \
+            "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json" \
+            "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+          git rm ".github/workflows/prisma-sync-sentinel-ledger-close-applicator.yml"
+          mapfile -t staged < <(git diff --cached --name-only | sort)
+          printf '%s\n' "${staged[@]}"
+          test "${#staged[@]}" -eq 5
+          git commit -m "docs(governance): close Sync Sentinel Mobile Watch ledger"
+          git push origin "HEAD:${{ github.head_ref }}"
