@@ -165,6 +165,8 @@ for (const key of ["staleOrPartialIsHealthy", "componentExistsMeansMounted", "hi
   if (noFakeGreen[key] !== false) fail("No-fake-green contract must stay false", { key, value: noFakeGreen[key] });
 }
 
+if (contract.claims?.verifiersAligned !== true) fail("Canon claims.verifiersAligned must stay true after verifier reconciliation", { verifiersAligned: contract.claims?.verifiersAligned });
+
 const canonicalCommand = "node tools/verify_prisma_mobile_interface_canon.mjs";
 if (pkg.scripts?.["verify:interface-canon"] !== canonicalCommand) fail("package.json must register verify:interface-canon", { actual: pkg.scripts?.["verify:interface-canon"] });
 
