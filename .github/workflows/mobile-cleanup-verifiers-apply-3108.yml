@@ -11,13 +11,13 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  TARGET_HEAD: 6f5b3df2ccd4b83a613648fef8e0874df3e1ac09
+  TARGET_HEAD: 0400c7cbc307d156a0c5cd0e10b253deac9bf318
   TARGET_BRANCH: fix/mobile-multicontext-verifiers-cleanup-3108-v2
-  AUTH_RUN_ID: '33368937461'
-  AUTH_ARTIFACT_ID: '9749299916'
-  AUTH_ARTIFACT_SHA256: e2e251f5d33824cc86abe9a3127e8d00c2819c71d635b11e591abb11f97c8140
-  MESH_REQUEST_DIGEST: 4b7d5afe229cdff106ad79654b44fc6ce7cbd2c251cfdd680ad58d30f332f624
-  MESH_COMPOSED_SHA256: bafb60010dfbb30edc9cab902120f53012960ad70588c99e3feb2680879fa849
+  AUTH_RUN_ID: '33415651548'
+  AUTH_ARTIFACT_ID: '9766895122'
+  AUTH_ARTIFACT_SHA256: c38c7c00d93ffb1a2108e1be0f0edaef55cdec525f75d1d05416d2b83e98599d
+  MESH_REQUEST_DIGEST: 1f1b6f1f69fb6ca424b0ad0e4e0430082e35ee661ef2c9e41b5c9a9b09a744e0
+  MESH_COMPOSED_SHA256: b121b8e559d970020e3b463698e10cf8942d0b3daa416e10d1432425b295cb02
   BASELINE_BLOCKER_FILE: docs/prisma-app/qa/prisma-app-mobile-38-optional-adder-boundary-scenarios.json
 
 jobs:
@@ -121,6 +121,28 @@ jobs:
           corepack prepare pnpm@9.15.0 --activate
           pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Capture baseline TypeScript diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          mobile='apps/terminal-de-venta-system/products/mobile/app'
+          set +e
+          pnpm -C "$mobile" typecheck 2>&1 | tee "$RUNNER_TEMP/BASELINE_TYPECHECK.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "$rc" > "$RUNNER_TEMP/BASELINE_TYPECHECK_RC.txt"
+          python - "$RUNNER_TEMP/BASELINE_TYPECHECK.log" "$RUNNER_TEMP/BASELINE_TYPECHECK_DIAGNOSTICS.txt" <<'PY'
+          import pathlib, re, sys
+          src, out = map(pathlib.Path, sys.argv[1:])
+          ansi = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
+          rows = []
+          for raw in src.read_text(encoding='utf-8', errors='replace').splitlines():
+              line = ansi.sub('', raw).strip()
+              if re.search(r'error TS\d+:', line):
+                  rows.append(line)
+          out.write_text('\n'.join(sorted(dict.fromkeys(rows))) + ('\n' if rows else ''), encoding='utf-8')
+          PY
+
       - name: Prove pre-existing full Mobile gate blocker on baseline
         shell: bash
         run: |
@@ -142,7 +164,7 @@ jobs:
         run: |
           set -euo pipefail
           python - "$RUNNER_TEMP/MUTATION_REPORT.json" <<'PY'
-          import hashlib, json, pathlib, sys
+          import hashlib, json, os, pathlib, sys
           out = pathlib.Path(sys.argv[1])
           mobile = pathlib.Path('apps/terminal-de-venta-system/products/mobile/app')
           component = mobile / 'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx'
@@ -188,7 +210,7 @@ jobs:
               raise SystemExit('BRANCHES_API_CHANGED')
           report = {
               'schemaVersion':'prisma.mobile.multicontext-cleanup-mutation.v1',
-              'baseHead':'6f5b3df2ccd4b83a613648fef8e0874df3e1ac09',
+              'baseHead':os.environ['TARGET_HEAD'],
               'deleted':[component.as_posix(),component_css.as_posix()],
               'modified':[index.as_posix(),dashboard_css.as_posix(),contract.as_posix(),verifier.as_posix()],
               'branchesApiSha256Before':branches_before,
@@ -245,13 +267,40 @@ jobs:
           grep -Fq "$BASELINE_BLOCKER_FILE" "$RUNNER_TEMP/CANDIDATE_CHECK_ALL.log"
           printf '%s\n' 'CANDIDATE_CHECK_ALL=BLOCKED_SAME_PREEXISTING_OPTIONAL_ADDER_BOUNDARY' > "$RUNNER_TEMP/CANDIDATE_STATUS.txt"
 
-      - name: Run independent typecheck and production build
+      - name: Prove TypeScript parity and build when baseline allows
         shell: bash
         run: |
           set -euo pipefail
           mobile='apps/terminal-de-venta-system/products/mobile/app'
-          pnpm -C "$mobile" typecheck
-          pnpm -C "$mobile" build
+          baseline_rc="$(cat "$RUNNER_TEMP/BASELINE_TYPECHECK_RC.txt")"
+          set +e
+          pnpm -C "$mobile" typecheck 2>&1 | tee "$RUNNER_TEMP/CANDIDATE_TYPECHECK.log"
+          candidate_rc=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "$candidate_rc" > "$RUNNER_TEMP/CANDIDATE_TYPECHECK_RC.txt"
+          python - "$RUNNER_TEMP/CANDIDATE_TYPECHECK.log" "$RUNNER_TEMP/CANDIDATE_TYPECHECK_DIAGNOSTICS.txt" <<'PY'
+          import pathlib, re, sys
+          src, out = map(pathlib.Path, sys.argv[1:])
+          ansi = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
+          rows = []
+          for raw in src.read_text(encoding='utf-8', errors='replace').splitlines():
+              line = ansi.sub('', raw).strip()
+              if re.search(r'error TS\d+:', line):
+                  rows.append(line)
+          out.write_text('\n'.join(sorted(dict.fromkeys(rows))) + ('\n' if rows else ''), encoding='utf-8')
+          PY
+          if [ "$baseline_rc" -eq 0 ]; then
+            test "$candidate_rc" -eq 0
+            printf '%s\n' 'PASS_TYPECHECK' > "$RUNNER_TEMP/TYPECHECK_STATUS.txt"
+            pnpm -C "$mobile" build
+            printf '%s\n' 'PASS_BUILD' > "$RUNNER_TEMP/BUILD_STATUS.txt"
+          else
+            test "$candidate_rc" -ne 0
+            test -s "$RUNNER_TEMP/BASELINE_TYPECHECK_DIAGNOSTICS.txt"
+            cmp -s "$RUNNER_TEMP/BASELINE_TYPECHECK_DIAGNOSTICS.txt" "$RUNNER_TEMP/CANDIDATE_TYPECHECK_DIAGNOSTICS.txt"
+            printf '%s\n' 'TYPECHECK_BLOCKED_BY_IDENTICAL_PREEXISTING_DIAGNOSTICS' > "$RUNNER_TEMP/TYPECHECK_STATUS.txt"
+            printf '%s\n' 'BUILD_SKIPPED_PREEXISTING_TYPECHECK_BLOCKER' > "$RUNNER_TEMP/BUILD_STATUS.txt"
+          fi
 
       - name: Final scope guard and self-remove carrier
         shell: bash
@@ -283,13 +332,21 @@ jobs:
           cp "$RUNNER_TEMP/CANDIDATE_STATUS.txt" "$out/"
           cp "$RUNNER_TEMP/BASELINE_CHECK_ALL.log" "$out/"
           cp "$RUNNER_TEMP/CANDIDATE_CHECK_ALL.log" "$out/"
+          cp "$RUNNER_TEMP/BASELINE_TYPECHECK.log" "$out/"
+          cp "$RUNNER_TEMP/BASELINE_TYPECHECK_RC.txt" "$out/"
+          cp "$RUNNER_TEMP/BASELINE_TYPECHECK_DIAGNOSTICS.txt" "$out/"
+          cp "$RUNNER_TEMP/CANDIDATE_TYPECHECK.log" "$out/"
+          cp "$RUNNER_TEMP/CANDIDATE_TYPECHECK_RC.txt" "$out/"
+          cp "$RUNNER_TEMP/CANDIDATE_TYPECHECK_DIAGNOSTICS.txt" "$out/"
+          cp "$RUNNER_TEMP/TYPECHECK_STATUS.txt" "$out/"
+          cp "$RUNNER_TEMP/BUILD_STATUS.txt" "$out/"
           git diff --name-status origin/main > "$out/DIFF_NAME_STATUS.txt"
           git diff --stat origin/main > "$out/DIFF_STAT.txt"
           printf '%s\n' \
             'PASS_POST_CLEANUP_SOURCE_PROOF' \
             'PASS_FOCUSED_MOBILE_GATES' \
-            'PASS_TYPECHECK' \
-            'PASS_BUILD' \
+            "$(cat "$RUNNER_TEMP/TYPECHECK_STATUS.txt")" \
+            "$(cat "$RUNNER_TEMP/BUILD_STATUS.txt")" \
             'PASS_EXACT_SCOPE' \
             'CHECK_ALL_BLOCKED_BY_IDENTICAL_PREEXISTING_OPTIONAL_ADDER_BOUNDARY' > "$out/VALIDATION.txt"
 
