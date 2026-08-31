@@ -1,0 +1,88 @@
+name: TEMP Inventory Primary Exact Target Mutation Gate
+
+on:
+  push:
+    branches:
+      - preflight/tablet-inventory-primary-exact-target-3108
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  mutation-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact canonical main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Assert exact canonical HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          expected='6f5b3df2ccd4b83a613648fef8e0874df3e1ac09'
+          test "$actual" = "$expected" || { echo "STALE_MAIN:$actual:$expected"; exit 2; }
+
+      - name: Build exact anti-rework MUTATION request
+        shell: bash
+        run: |
+          cat > "$RUNNER_TEMP/inventory-primary-mutation-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+            "mode": "MUTATION",
+            "expectedHead": "6f5b3df2ccd4b83a613648fef8e0874df3e1ac09",
+            "task": "Apply only the governed exact-target visual treatment for the final operation commit button on Tablet /inventory, using existing visual.atlasfin.tablet_system_homologation authority and neutral ACT.primary / REC.button.primary meaning. Preserve certified Cobrar, tabs that reuse primaryAction, functional handlers, APIs, DB/Prisma, other Tablet routes, all non-Tablet surfaces, and generated-runtime manual-edit prohibition. Do not authorize open PR #509 full-surface refresh. Require deterministic RIFAT projection and real runtime BEFORE/AFTER evidence before any visual certification.",
+            "capabilities": [
+              {"id": "visual.atlasfin.tablet_system_homologation", "requestedAction": "FIX"},
+              {"id": "visual.atlasfin.tablet_pos_cobrar", "requestedAction": "REUSE"},
+              {"id": "visual.atlasfin.tablet_pos_cobrar.evidence_hardening", "requestedAction": "REUSE"}
+            ],
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "6f5b3df2ccd4b83a613648fef8e0874df3e1ac09",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "294a7aa5408be3ed38e6bb4a92044bcae4d6871a3510e0d8c78551c3828d52a9",
+              "artifactDigest": "sha256:1a2002a7c3aed2c9df2b0d42da379bb5dcb409696786e29506c357ec2818b6fd",
+              "layerMapPresent": true
+            },
+            "visualMutation": true
+          }
+          JSON
+
+      - name: Validate canonical anti-rework authority
+        run: python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
+
+      - name: Run permanent negative self-test
+        run: python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+
+      - name: Execute exact MUTATION gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/inventory-primary-mutation-request.json" | tee "$RUNNER_TEMP/inventory-primary-mutation-decision.json"
+          grep -Fq '"result": "PASS_ANTI_REWORK_GATE"' "$RUNNER_TEMP/inventory-primary-mutation-decision.json"
+
+      - name: Upload exact decision evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inventory-primary-exact-target-mutation-gate
+          path: |
+            ${{ runner.temp }}/inventory-primary-mutation-request.json
+            ${{ runner.temp }}/inventory-primary-mutation-decision.json
+          if-no-files-found: error
+          retention-days: 14
