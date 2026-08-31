@@ -697,7 +697,7 @@ function visualRegionForPanel(panel) {
   return 'panel';
 }
 
-function buildVisualRegions(routes, panels, layers, components = []) {
+function buildVisualRegions(routes, panels, layers, components = [], certifiedLayers = []) {
   const regions = [];
   for (const route of routes) {
     regions.push({
@@ -758,6 +758,30 @@ function buildVisualRegions(routes, panels, layers, components = []) {
       safetyClassification: layer.safetyClassification,
       excludedSurfaces: excludedSurfaces(layer.surface),
       layerOwner: layer.layer_id
+    });
+  }
+  const materialLayerIds = new Set(
+    layers
+      .filter((item) => item.background || item.backdropFilter || item.zIndex)
+      .map((item) => item.layer_id)
+  );
+  for (const layer of certifiedLayers.filter((item) => !materialLayerIds.has(item.implementationLayerId))) {
+    const routeOwner = routes.find((item) => item.route_id === layer.routeId) || null;
+    regions.push({
+      region_id: `${layer.layer_id}.layer`,
+      surface: layer.surface,
+      route: routeOwner?.route || null,
+      human_id: `${layer.neutralMeaningId} certified structural layer`,
+      visualRegion: layer.visualRegion,
+      ownerComponent: layer.ownerComponent || null,
+      ownerCss: [layer.ownerCss].filter(Boolean),
+      assetOwner: [],
+      tokenOwner: tokenOwners(),
+      safetyClassification: layer.safetyClassification,
+      excludedSurfaces: excludedSurfaces(layer.surface),
+      layerOwner: layer.layer_id,
+      implementationLayerId: layer.implementationLayerId,
+      certificationStatus: layer.certificationStatus
     });
   }
   for (const component of components.filter((item) => item.hasButton)) {
@@ -1059,7 +1083,7 @@ function buildModel(flags = {}) {
   });
   const components = mergeDiscoveredComponents(buildComponentMap(state, routes, panels), allFiles);
   const layerPayload = buildLayers(allFiles);
-  const regions = buildVisualRegions(routes, panels, layerPayload.layers, components);
+  const regions = buildVisualRegions(routes, panels, layerPayload.layers, components, layerPayload.certifiedLayers);
   const slots = buildEditableSlots(regions, components);
   const owners = buildOwners(routes, regions, components, layerPayload.layers, layerPayload.assets);
   const risks = buildRisks(state, routes, regions, slots, layerPayload.layers, activeFiles, allFiles, requestedSurface);
@@ -1389,6 +1413,9 @@ function compactIndexPolicy(kind, expandedCount) {
 function writeArtifacts(model) {
   const root = model.state.visualRoot;
   const compact = compactModelForRepo(model);
+  const certifiedRegionIds = new Set(model.certifiedLayers.map((layer) => `${layer.layer_id}.layer`));
+  const certifiedRegionOwners = compact.owners.regionOwners.filter((owner) => certifiedRegionIds.has(owner.region_id));
+  const certifiedSlotUnits = compact.slotUnits.filter((slot) => certifiedRegionIds.has(slot.target));
   writeJson(path.join(root, 'registry.json'), {
     schema: 'prisma.ui.visual-control.registry.v1',
     createdAt: nowIso(),
@@ -1439,6 +1466,8 @@ function writeArtifacts(model) {
     compactIndex: compactIndexPolicy('editable-slots', model.slots.length),
     editableSlotCount: model.slots.length,
     slotUnitCount: compact.slotUnits.length,
+    certifiedSlotUnitCount: certifiedSlotUnits.length,
+    certifiedSlotUnits,
     countsBySurface: countBy(compact.slotUnits, 'surface'),
     countsBySafetyClassification: countBy(model.slots, 'safetyClassification'),
     countsByRegion: countBy(compact.slotUnits, 'visualRegion'),
@@ -1456,6 +1485,8 @@ function writeArtifacts(model) {
     tokenThemeOwnerCount: compact.owners.tokenThemeOwners.length,
     routeOwnerCount: compact.owners.routeOwners.length,
     regionOwnerCount: compact.owners.regionOwners.length,
+    certifiedRegionOwnerCount: certifiedRegionOwners.length,
+    certifiedRegionOwners,
     countsBySurface: countBy(compact.owners.regionOwners, 'surface'),
     countsBySafetyClassification: countBy(compact.owners.regionOwners, 'safetyClassification'),
     profileSummary: summarizeProfiles(compact.profiles),

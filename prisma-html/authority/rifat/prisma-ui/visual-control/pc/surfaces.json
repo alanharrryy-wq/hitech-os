@@ -1,0 +1,36 @@
+{
+  "schema": "prisma.ui.visual-control.surfaces.v1",
+  "status": "CERTIFIED",
+  "surfaces": [
+    {
+      "surface": "pc",
+      "app": "PRISMA PC Backoffice",
+      "root": "products/pc/app",
+      "port": 3130,
+      "routeCount": 63,
+      "panelCount": 6,
+      "visualRegionCount": 306,
+      "editableSlotCount": 1800,
+      "owners": [
+        "products/pc/app/components/layout/app-shell.tsx",
+        "products/pc/app/components/uiux/pc-module-shell.tsx",
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx"
+      ],
+      "allowedScope": [
+        "products/pc/**"
+      ],
+      "runtimeCertification": {
+        "app": "PRISMA PC Backoffice",
+        "port": 3130,
+        "routeCount": 63,
+        "runtimeRoutes": 58,
+        "sourceOnlyDynamicRoutes": 0,
+        "sourceOnlyRedirectRoutes": 5,
+        "runtimeCertifiedCount": 58,
+        "sourceCertifiedCount": 5,
+        "runtimeBlockedCount": 0
+      },
+      "status": "CERTIFIED"
+    }
+  ]
+}

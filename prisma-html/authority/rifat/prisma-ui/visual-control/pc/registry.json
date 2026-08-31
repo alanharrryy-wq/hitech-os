@@ -1,0 +1,42 @@
+{
+  "schema": "prisma.ui.visual-control.registry.v1",
+  "createdAt": "2026-08-31T09:25:48.376Z",
+  "status": "CERTIFIED",
+  "detailPolicy": "repo contains compact indexes; full expanded detail belongs in external evidence/result.zip when needed",
+  "targetSurfaces": [
+    "pc"
+  ],
+  "authoritativeInputs": [
+    ".prisma-ui/registry.json",
+    ".prisma-ui/surfaces.json",
+    ".prisma-ui/routes.json",
+    ".prisma-ui/panels/*.json",
+    ".governance/current/AUTHORITY_READSET.lock.json",
+    "docs/visual-layer-map/layer-map.json",
+    "config/prisma-visual/identity-layer-certifications.registry.json"
+  ],
+  "outputs": [
+    ".prisma-ui/visual-control/surfaces.json",
+    ".prisma-ui/visual-control/routes.json",
+    ".prisma-ui/visual-control/components.json",
+    ".prisma-ui/visual-control/editable-slots.json",
+    ".prisma-ui/visual-control/owners.json",
+    ".prisma-ui/visual-control/layers.json",
+    ".prisma-ui/visual-control/risks.json",
+    ".prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json",
+    ".prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json"
+  ],
+  "gates": [
+    "ui:visual-control:inventory",
+    "ui:visual-control:owners",
+    "ui:visual-control:slots",
+    "ui:visual-control:layers",
+    "ui:visual-control:report",
+    "ui:visual-control:certify"
+  ],
+  "nonGoals": [
+    "No visual redesign",
+    "No CSS hotfix",
+    "No route, auth, Prisma, DB, sync or POS behavior change"
+  ]
+}

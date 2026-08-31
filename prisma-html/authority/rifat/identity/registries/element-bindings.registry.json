@@ -1,19 +1,34 @@
 {
   "schema": "prisma.identity.element-bindings.registry.v1",
-  "version": "1.1.0",
-  "status": "SOURCE_READY_ONE_RESOLVED_BINDING",
+  "version": "1.2.0",
+  "status": "SOURCE_READY_ROUTE_SCOPED_PC_CATALOG_BINDING_RESOLVED",
   "scope": [
-    "tablet",
-    "shared-ui"
+    "pc",
+    "shared-ui",
+    "tablet"
   ],
   "instructionOnly": true,
   "runtimeMutationAllowed": false,
   "productApplicationAllowed": false,
   "authoritySnapshot": {
-    "snapshotId": "6cd4f88bdd1e8c6fe12d585cef8a6613ba59177cc7d2f23d6ec05247daf798f5",
-    "meshRunId": "idlayer1-2507-120436",
-    "generatedAt": "2026-08-02T19:06:58.357908+00:00",
+    "snapshotId": "415d11872344b5d6bd74c56720b1cc25f430f31f2087640459a43d313a7437c6",
+    "meshRunId": "github-actions-33370426993-pc-catalog-route-binding-mesh",
+    "generatedAt": "2026-08-31T09:25:48.521789+00:00",
     "files": [
+      {
+        "path": "authority/rifat/identity/registries/bindings.registry.json",
+        "sha256": "47863d182b12abf29dd32084a5f47b53d1242fc69f86d336971a1cd2836cb168",
+        "bytes": 4719,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/identity/registries/portable-export.registry.json",
+        "sha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
+        "bytes": 2696,
+        "required": true,
+        "readOnly": true
+      },
       {
         "path": "authority/rifat/prisma-ui/routes.json",
         "sha256": "af4c674fa3eb1dee0b81db5e14b1d3856fa809d54bf907f2a8d0303c30be7017",
@@ -25,13 +40,6 @@
         "path": "authority/rifat/prisma-ui/surfaces.json",
         "sha256": "9fcc3ddaa5fe82427a3f94e6632ef38397d2e8c25b4462272a7a98b01ab831fe",
         "bytes": 9588,
-        "required": true,
-        "readOnly": true
-      },
-      {
-        "path": "authority/rifat/prisma-ui/visual-control/owners.json",
-        "sha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
-        "bytes": 123370,
         "required": true,
         "readOnly": true
       },
@@ -51,22 +59,57 @@
       },
       {
         "path": "authority/rifat/prisma-ui/visual-control/layers.json",
-        "sha256": "717734a3c1aa9eb05c0fac7c2543a50c99b7035a8c008df218ce2ea34c3b833d",
-        "bytes": 175729,
+        "sha256": "7dee5ced38ea9ebed722ba3f6ded10979f60c8bb7af881ef44609524802527b4",
+        "bytes": 172289,
         "required": true,
         "readOnly": true
       },
       {
-        "path": "authority/rifat/identity/registries/bindings.registry.json",
-        "sha256": "b903f02c50f6b4fb8ffc5024130bbb46abed2a02cfa2ca79ba9f16437ff9496f",
-        "bytes": 3847,
+        "path": "authority/rifat/prisma-ui/visual-control/owners.json",
+        "sha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
+        "bytes": 123370,
         "required": true,
         "readOnly": true
       },
       {
-        "path": "authority/rifat/identity/registries/portable-export.registry.json",
-        "sha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
-        "bytes": 2696,
+        "path": "authority/rifat/prisma-ui/visual-control/pc/components.json",
+        "sha256": "dbf785d3491ac9cebf02b0ed7d19a3e1138fc5d42e189b5d3d789c8e09e76ba4",
+        "bytes": 149514,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/editable-slots.json",
+        "sha256": "b3b90f9502e5b08f3760e1385cd6537d2ea500a640a46d3bba974a5c0338747c",
+        "bytes": 318058,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/layers.json",
+        "sha256": "cc4b39221bb9e90f488cb30bdcdd574ef1b2af6c012b45bd61916cbd586f3ea8",
+        "bytes": 131994,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/owners.json",
+        "sha256": "f6a62ac8a00b7207ff64caed3ca810020390f6dceaf4fa12dbf908766f0a9f48",
+        "bytes": 128933,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/routes.json",
+        "sha256": "ef5bd98f2ac317d2a2201958c809e109d93d467c74eb4fbe84ef409460eb4f25",
+        "bytes": 76500,
+        "required": true,
+        "readOnly": true
+      },
+      {
+        "path": "tools/identity_binding_resolver_core.py",
+        "sha256": "775acf583bd3cd924d50d7e546637a7cdd982fc93c7a3f4871b86906deab8a0e",
+        "bytes": 15684,
         "required": true,
         "readOnly": true
       },
@@ -246,6 +289,52 @@
       "status": "BLOCKED_BY_MISSING_BINDING",
       "reason": "An identity profile is neutral meaning, not a concrete UI element.",
       "targets": []
+    },
+    {
+      "bindingId": "BND.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.V1",
+      "selector": {
+        "neutralMeaningId": "VIS.SURFACE.CONTENT.PRIMARY",
+        "identityProfileId": "*",
+        "recipePresetId": "*",
+        "objectId": "PC-HOME-FORM-COMPONENTS-CATALOG-PRODUCT-MEDIA-WORKSPACE-WORKSPACE-FRM-01",
+        "surfaceId": "pc"
+      },
+      "cardinality": "ONE_TO_ONE_CANDIDATE",
+      "status": "RESOLVED",
+      "reason": "Fresh PC-only Visual Control and the certified structural-layer registry prove one exact /catalog .workspace coordinate. Visual recipe values remain gated to the later APPLY Mesh.",
+      "targets": [
+        {
+          "targetId": "TGT.PC.CATALOG.WORKSPACE.CONTENT.PRIMARY.V1",
+          "ownerId": "products.pc.app.components.catalog.product.media.workspace.tsx",
+          "routeId": "pc.catalog.route",
+          "regionId": "LYR.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.BASE.layer",
+          "slotId": "pc.catalog.lyr.vis.surface.content.primary.pc.catalog.workspace.base.layer",
+          "componentUiId": "products.pc.app.components.catalog.product.media.workspace.tsx",
+          "layerId": "LYR.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.BASE",
+          "ownerCssId": "products.pc.app.components.catalog.product.media.workspace.module.css",
+          "selector": ".workspace",
+          "missingBindings": [],
+          "status": "RESOLVED",
+          "safetyClassification": "safeVisualOnly",
+          "evidence": {
+            "routeSource": "authority/rifat/prisma-ui/visual-control/pc/routes.json",
+            "ownerSource": "authority/rifat/prisma-ui/visual-control/pc/owners.json",
+            "componentSource": "authority/rifat/prisma-ui/visual-control/pc/components.json",
+            "slotSource": "authority/rifat/prisma-ui/visual-control/pc/editable-slots.json",
+            "layerSource": "authority/rifat/prisma-ui/visual-control/pc/layers.json",
+            "sourceComponentPath": "products/pc/app/components/catalog/product-media-workspace.tsx",
+            "sourceCssPath": "products/pc/app/components/catalog/product-media-workspace.module.css",
+            "layerLookupResult": "CERTIFIED_EXACT_LAYER_RECORD",
+            "layerCertificationRegistry": "apps/terminal-de-venta-system/config/prisma-visual/identity-layer-certifications.registry.json",
+            "layerGenerator": "apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs",
+            "surfaceAdapterId": "prisma.adapter.pc.v1",
+            "authorityMeshRunId": 33370426993,
+            "visualControlAuditRunId": 33371314103,
+            "recipeStatus": "APPLY_STAGE_CANONICAL_RECIPE_PENDING"
+          },
+          "implementationLayerId": "products.pc.app.components.catalog.product.media.workspace.module.css.workspace"
+        }
+      ]
     }
   ]
 }

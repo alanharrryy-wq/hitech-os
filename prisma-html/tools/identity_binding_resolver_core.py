@@ -11,6 +11,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 IDENTITY = ROOT / "authority" / "rifat" / "identity"
 REGISTRY_PATH = IDENTITY / "registries" / "element-bindings.registry.json"
+BINDINGS_REGISTRY_PATH = IDENTITY / "registries" / "bindings.registry.json"
 COVERAGE_PATH = IDENTITY / "bindings" / "reports" / "BINDING_COVERAGE.json"
 PORTABLE_SCHEMA = "prisma.identity.portable-element-export.v1"
 ENVELOPE_SCHEMA = "prisma.identity.binding-envelope.v1"
@@ -110,26 +111,78 @@ def current_authority_snapshot(registry: dict[str, Any]) -> dict[str, Any]:
 
 
 def authority_indexes() -> dict[str, Any]:
-    routes_doc = load_json(ROOT / "authority/rifat/prisma-ui/routes.json")
-    owners_doc = load_json(ROOT / "authority/rifat/prisma-ui/visual-control/owners.json")
-    components_doc = load_json(ROOT / "authority/rifat/prisma-ui/visual-control/components.json")
-    slots_doc = load_json(ROOT / "authority/rifat/prisma-ui/visual-control/editable-slots.json")
-    layers_doc = load_json(ROOT / "authority/rifat/prisma-ui/visual-control/layers.json")
-    return {
-        "routes": {item["route_id"]: item for item in routes_doc.get("routes", [])},
-        "componentOwners": {item["component_id"]: item for item in owners_doc.get("componentOwnerSamples", [])},
-        "cssOwners": {item["owner_id"]: item for item in owners_doc.get("cssOwnerSamples", [])},
-        "regionOwners": {item["region_id"]: item for item in owners_doc.get("regionOwnerSamples", [])},
-        "components": {item["component_id"]: item for item in components_doc.get("components", [])},
-        "slots": {item["slot_unit_id"]: item for item in slots_doc.get("slotUnitSamples", [])},
-        "layers": {
-            item["layer_id"]: item
-            for item in [
-                *layers_doc.get("layerSamples", []),
-                *layers_doc.get("certifiedLayers", []),
-            ]
-        },
+    """Load binding authority only from per-surface sources declared by bindings.registry.json."""
+    source_registry = load_json(BINDINGS_REGISTRY_PATH)
+    indexes: dict[str, dict[str, Any]] = {
+        "routes": {},
+        "componentOwners": {},
+        "cssOwners": {},
+        "regionOwners": {},
+        "components": {},
+        "slots": {},
+        "layers": {},
     }
+    loaded: dict[str, dict[str, Any]] = {}
+
+    def doc(rel_path: str | None) -> dict[str, Any] | None:
+        if not rel_path:
+            return None
+        if rel_path not in loaded:
+            candidate = ROOT / rel_path
+            if not candidate.is_file():
+                raise FileNotFoundError(f"declared binding authority source is missing: {rel_path}")
+            loaded[rel_path] = load_json(candidate)
+        return loaded[rel_path]
+
+    def same_surface(item: dict[str, Any], surface: str) -> bool:
+        return item.get("surface") in {None, surface}
+
+    for binding_source in source_registry.get("bindings", []):
+        surface = str(binding_source.get("surface") or "")
+        routes_doc = doc(binding_source.get("routeSource"))
+        if routes_doc:
+            for item in routes_doc.get("routes", []):
+                if same_surface(item, surface):
+                    indexes["routes"][item["route_id"]] = item
+
+        owners_doc = doc(binding_source.get("ownerSource"))
+        components_doc = doc(binding_source.get("componentSource"))
+        if components_doc is None and binding_source.get("ownerSource"):
+            parent = str(Path(binding_source["ownerSource"]).parent)
+            candidate = f"{parent}/components.json"
+            if (ROOT / candidate).is_file():
+                components_doc = doc(candidate)
+
+        if components_doc:
+            for item in components_doc.get("components", []):
+                if same_surface(item, surface):
+                    indexes["components"][item["component_id"]] = item
+                    indexes["componentOwners"].setdefault(item["component_id"], item)
+
+        if owners_doc:
+            for item in owners_doc.get("componentOwnerSamples", []):
+                if same_surface(item, surface):
+                    indexes["componentOwners"][item["component_id"]] = item
+            for item in owners_doc.get("cssOwnerSamples", []):
+                if same_surface(item, surface):
+                    indexes["cssOwners"][item["owner_id"]] = item
+            for item in [*owners_doc.get("regionOwnerSamples", []), *owners_doc.get("certifiedRegionOwners", [])]:
+                if same_surface(item, surface):
+                    indexes["regionOwners"][item["region_id"]] = item
+
+        slots_doc = doc(binding_source.get("slotSource"))
+        if slots_doc:
+            for item in [*slots_doc.get("slotUnitSamples", []), *slots_doc.get("certifiedSlotUnits", [])]:
+                if same_surface(item, surface):
+                    indexes["slots"][item["slot_unit_id"]] = item
+
+        layers_doc = doc(binding_source.get("layerSource"))
+        if layers_doc:
+            for item in [*layers_doc.get("layerSamples", []), *layers_doc.get("certifiedLayers", [])]:
+                if same_surface(item, surface):
+                    indexes["layers"][item["layer_id"]] = item
+
+    return indexes
 
 
 def selector_from_artifact(artifact: dict[str, Any]) -> dict[str, Any]:

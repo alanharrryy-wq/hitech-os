@@ -1,6 +1,6 @@
 {
   "schema": "prisma.identity.bindings.registry.v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "surfaceCount": 7,
   "bindings": [
     {
@@ -34,19 +34,36 @@
     },
     {
       "surface": "pc",
-      "readiness": "BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS",
-      "routeSource": "authority/rifat/prisma-ui/routes.json",
-      "ownerSource": null,
-      "slotSource": null,
-      "layerSource": null,
-      "routeCount": 61,
+      "readiness": "ROUTE_SCOPED_BINDING_SOURCE_READY",
+      "routeSource": "authority/rifat/prisma-ui/visual-control/pc/routes.json",
+      "ownerSource": "authority/rifat/prisma-ui/visual-control/pc/owners.json",
+      "slotSource": "authority/rifat/prisma-ui/visual-control/pc/editable-slots.json",
+      "layerSource": "authority/rifat/prisma-ui/visual-control/pc/layers.json",
+      "routeCount": 63,
       "missing": [
-        "surface-specific-route-owner-map",
-        "surface-specific-region-owner-map",
-        "surface-specific-editable-slot-map",
-        "surface-specific-layer-map"
+        "surface-wide-binding-coverage"
       ],
-      "runtimeProjectionAllowed": false
+      "runtimeProjectionAllowed": false,
+      "sourceEvidenceReadiness": "CERTIFIED_SOURCE_AVAILABLE",
+      "componentSource": "authority/rifat/prisma-ui/visual-control/pc/components.json",
+      "routeOwnerCount": 63,
+      "regionOwnerCount": 306,
+      "certifiedRegionOwnerCount": 1,
+      "editableSlotCount": 1800,
+      "slotUnitCount": 304,
+      "certifiedSlotUnitCount": 1,
+      "layerCount": 906,
+      "componentCount": 130,
+      "certifiedLayerCount": 1,
+      "sourceCertification": {
+        "status": "CERTIFIED",
+        "surface": "pc",
+        "scope": "route-scoped-authority-enabled; surface-wide coverage remains incomplete",
+        "generator": "apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs",
+        "auditRunId": 33371314103,
+        "authorityMeshRunId": 33370426993,
+        "productMutationAllowed": false
+      }
     },
     {
       "surface": "mobile",
