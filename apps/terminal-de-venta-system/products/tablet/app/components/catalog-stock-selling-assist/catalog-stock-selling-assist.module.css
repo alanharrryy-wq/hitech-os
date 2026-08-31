@@ -237,6 +237,302 @@
   .operationStatus { min-height: 44px; padding: 10px 12px; display: flex; align-items: center; color: var(--prisma-success-400); background: var(--prisma-surface-info); border: 1px solid rgba(99, 230, 173, 0.28); border-radius: var(--prisma-radius-control); }
   .operationStatus[data-state="error"] { color: var(--prisma-danger-400); border-color: rgba(255, 142, 156, 0.30); }
 
+  /* Governed Tablet /inventory full-surface refresh. */
+  [data-prisma-route="/inventory"] .screen { gap: 18px; }
+
+  [data-prisma-route="/inventory"] .onlineStrip,
+  [data-prisma-route="/inventory"] .offlineStrip {
+    min-height: 42px;
+    padding: 9px 14px;
+    border-radius: 16px;
+    border-color: color-mix(in srgb, var(--prisma-line-medium) 72%, transparent);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--prisma-surface-info) 92%, transparent), color-mix(in srgb, var(--prisma-surface-panel) 76%, transparent));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 6%, transparent);
+  }
+
+  [data-prisma-route="/inventory"] .heroCard {
+    min-height: 168px;
+    padding: clamp(22px, 2.5vw, 30px);
+    align-items: center;
+    border: 1px solid color-mix(in srgb, var(--prisma-line-medium) 82%, transparent);
+    border-radius: 26px;
+    background:
+      radial-gradient(circle at 84% 12%, color-mix(in srgb, var(--prisma-cyan-300) 16%, transparent), transparent 28%),
+      linear-gradient(135deg, color-mix(in srgb, var(--prisma-surface-panel) 96%, #07111c), color-mix(in srgb, var(--prisma-surface-rail) 88%, #02070c));
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.24), inset 0 1px 0 color-mix(in srgb, #fff 7%, transparent);
+    overflow: hidden;
+  }
+  [data-prisma-route="/inventory"] .heroCard > div:first-child { min-width: 0; display: grid; gap: 8px; }
+  [data-prisma-route="/inventory"] .heroCard h1 {
+    max-width: 760px;
+    margin: 0;
+    color: var(--prisma-text-primary);
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-size: clamp(2rem, 3.15vw, 3rem);
+    line-height: 1.03;
+    letter-spacing: -0.035em;
+    font-weight: 650;
+  }
+  [data-prisma-route="/inventory"] .heroCard p { max-width: 68ch; margin: 0; color: var(--prisma-text-secondary); line-height: 1.5; }
+  [data-prisma-route="/inventory"] .kicker,
+  [data-prisma-route="/inventory"] .detailKicker { color: color-mix(in srgb, var(--prisma-cyan-300) 88%, #fff); letter-spacing: 0.17em; }
+  [data-prisma-route="/inventory"] .cartChip {
+    min-width: 218px;
+    padding: 11px 14px;
+    justify-content: flex-start;
+    border-color: color-mix(in srgb, var(--prisma-cyan-300) 28%, var(--prisma-line-soft));
+    background: color-mix(in srgb, var(--prisma-surface-control) 88%, transparent);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+  }
+  [data-prisma-route="/inventory"] .cartChip a { margin-left: auto; color: var(--prisma-cyan-300); font-weight: 800; }
+
+  [data-prisma-route="/inventory"] .metricGrid { gap: 11px; }
+  [data-prisma-route="/inventory"] .metricCard {
+    min-height: 108px;
+    padding: 16px 17px;
+    align-content: start;
+    border-radius: 19px;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--prisma-surface-card) 96%, #07111c), color-mix(in srgb, var(--prisma-surface-panel) 84%, transparent));
+    box-shadow: 0 15px 32px rgba(0, 0, 0, 0.17), inset 0 1px 0 color-mix(in srgb, #fff 5%, transparent);
+  }
+  [data-prisma-route="/inventory"] .metricCard > span { color: var(--prisma-text-muted); font-size: 0.76rem; font-weight: 760; letter-spacing: 0.04em; text-transform: uppercase; }
+  [data-prisma-route="/inventory"] .metricCard > strong { color: var(--prisma-text-primary); font-family: "Bahnschrift", "Aptos Display", sans-serif; font-size: 1.72rem; line-height: 1; }
+  [data-prisma-route="/inventory"] .metricCard > small { color: var(--prisma-text-secondary); line-height: 1.35; }
+
+  [data-prisma-route="/inventory"] .operationsSurface {
+    padding: 18px;
+    gap: 15px;
+    border-radius: 22px;
+    border-color: color-mix(in srgb, var(--prisma-cyan-300) 24%, var(--prisma-line-soft));
+    background:
+      radial-gradient(circle at 6% 0%, color-mix(in srgb, var(--prisma-cyan-300) 10%, transparent), transparent 34%),
+      linear-gradient(145deg, color-mix(in srgb, var(--prisma-surface-panel) 96%, #07111c), color-mix(in srgb, var(--prisma-surface-rail) 90%, transparent));
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.22), inset 0 1px 0 color-mix(in srgb, #fff 6%, transparent);
+  }
+  [data-prisma-route="/inventory"] .operationsHeader > div { gap: 6px; }
+  [data-prisma-route="/inventory"] .operationsHeader strong { color: var(--prisma-text-primary); font-size: 1.05rem; }
+  [data-prisma-route="/inventory"] .operationsHeader small { max-width: 72ch; line-height: 1.45; }
+  [data-prisma-route="/inventory"] .operationsTabs {
+    width: max-content;
+    max-width: 100%;
+    padding: 4px;
+    gap: 7px;
+    border: 1px solid var(--prisma-line-soft);
+    border-radius: 17px;
+    background: color-mix(in srgb, var(--prisma-surface-control) 72%, transparent);
+  }
+  [data-prisma-route="/inventory"] .operationsTabs > button { min-height: 44px; border-radius: 13px; box-shadow: none; }
+  [data-prisma-route="/inventory"] .operationForm { gap: 12px; }
+  [data-prisma-route="/inventory"] .operationField { gap: 7px; color: var(--prisma-text-secondary); font-size: 0.84rem; font-weight: 700; }
+  [data-prisma-route="/inventory"] .operationField :where(input, select) {
+    min-height: 52px;
+    padding: 10px 13px;
+    border-color: color-mix(in srgb, var(--prisma-line-medium) 80%, transparent);
+    background: color-mix(in srgb, var(--prisma-surface-control) 91%, #02070c);
+  }
+  [data-prisma-route="/inventory"] .operationForm > .primaryAction {
+    min-height: 52px;
+    border-radius: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, color-mix(in srgb, #2563eb 78%, #0f172a));
+    border-color: color-mix(in srgb, #fff 26%, #2563eb);
+    box-shadow: 0 14px 32px color-mix(in srgb, #2563eb 28%, transparent), inset 0 1px 0 color-mix(in srgb, #fff 30%, transparent);
+  }
+
+  [data-prisma-route="/inventory"] .workspace {
+    grid-template-columns: minmax(0, 1.72fr) minmax(300px, 0.58fr);
+    gap: 15px;
+  }
+  [data-prisma-route="/inventory"] .mainPanel,
+  [data-prisma-route="/inventory"] .detailPanel {
+    padding: clamp(16px, 1.7vw, 22px);
+    gap: 16px;
+    border-radius: 23px;
+    border-color: color-mix(in srgb, var(--prisma-line-medium) 80%, transparent);
+    background: linear-gradient(155deg, color-mix(in srgb, var(--prisma-surface-panel) 97%, #07111c), color-mix(in srgb, var(--prisma-surface-rail) 86%, transparent));
+    box-shadow: 0 22px 46px rgba(0, 0, 0, 0.22), inset 0 1px 0 color-mix(in srgb, #fff 5%, transparent);
+  }
+  [data-prisma-route="/inventory"] .detailPanel {
+    top: 92px;
+    background:
+      radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--prisma-cyan-300) 8%, transparent), transparent 34%),
+      linear-gradient(165deg, color-mix(in srgb, var(--prisma-surface-rail) 96%, #07111c), color-mix(in srgb, var(--prisma-surface-panel) 88%, transparent));
+  }
+
+  [data-prisma-route="/inventory"] .searchPanel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: end;
+  }
+  [data-prisma-route="/inventory"] .searchPanel > label { min-width: 0; display: grid; gap: 7px; color: var(--prisma-text-secondary); font-size: 0.82rem; font-weight: 760; }
+  [data-prisma-route="/inventory"] .searchInputWrap {
+    min-height: 54px;
+    padding: 9px 14px;
+    border-radius: 16px;
+    border-color: color-mix(in srgb, var(--prisma-line-medium) 82%, transparent);
+    background: color-mix(in srgb, var(--prisma-surface-control) 91%, #02070c);
+  }
+  [data-prisma-route="/inventory"] .searchActions { justify-content: flex-end; }
+  [data-prisma-route="/inventory"] .searchActions > button,
+  [data-prisma-route="/inventory"] .searchActions > details > summary { min-height: 50px; }
+
+  [data-prisma-route="/inventory"] .filterRail {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    overflow: visible;
+  }
+  [data-prisma-route="/inventory"] .filterButton,
+  [data-prisma-route="/inventory"] .filterActive {
+    min-width: 0;
+    min-height: 70px;
+    padding: 10px 12px;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 3px;
+    text-align: left;
+    border-radius: 16px;
+    box-shadow: none;
+  }
+  [data-prisma-route="/inventory"] .filterButton span,
+  [data-prisma-route="/inventory"] .filterActive span { color: var(--prisma-text-muted); font-size: 0.72rem; line-height: 1.18; font-weight: 600; }
+  [data-prisma-route="/inventory"] .filterActive {
+    color: color-mix(in srgb, var(--prisma-cyan-300) 88%, #fff);
+    border-color: color-mix(in srgb, var(--prisma-cyan-300) 46%, var(--prisma-line-soft));
+    background: linear-gradient(145deg, color-mix(in srgb, var(--prisma-cyan-300) 13%, var(--prisma-surface-control)), color-mix(in srgb, var(--prisma-surface-control) 92%, transparent));
+  }
+
+  [data-prisma-route="/inventory"] .productList { gap: 8px; }
+  [data-prisma-route="/inventory"] .productRow,
+  [data-prisma-route="/inventory"] .productRowSelected {
+    min-height: 72px;
+    padding: 10px 11px;
+    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+    gap: 11px;
+    border-color: color-mix(in srgb, var(--prisma-line-soft) 62%, transparent);
+    border-radius: 17px;
+    background: color-mix(in srgb, var(--prisma-surface-card) 90%, transparent);
+  }
+  [data-prisma-route="/inventory"] .productRowSelected {
+    border-color: color-mix(in srgb, var(--prisma-cyan-300) 46%, var(--prisma-line-soft));
+    background: linear-gradient(100deg, color-mix(in srgb, var(--prisma-cyan-300) 12%, var(--prisma-surface-card-hover)), color-mix(in srgb, var(--prisma-surface-card) 92%, transparent));
+  }
+  [data-prisma-route="/inventory"] .productMainButton {
+    min-width: 0;
+    width: 100%;
+    min-height: 50px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    justify-content: stretch;
+    text-align: left;
+    color: var(--prisma-text-primary);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  [data-prisma-route="/inventory"] .productGlyph {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--prisma-line-medium) 70%, transparent);
+    background: color-mix(in srgb, var(--prisma-surface-control) 92%, #07111c);
+  }
+  [data-prisma-route="/inventory"] .productTextBlock { align-content: center; }
+  [data-prisma-route="/inventory"] .productTextBlock > strong { color: var(--prisma-text-primary); font-size: 0.92rem; }
+  [data-prisma-route="/inventory"] .productTextBlock > small { color: var(--prisma-text-muted); font-size: 0.72rem; }
+  [data-prisma-route="/inventory"] .priceCell { min-width: 68px; font-weight: 720; }
+  [data-prisma-route="/inventory"] .stockCell { min-width: 56px; text-align: right; }
+  [data-prisma-route="/inventory"] .rowAddButton {
+    min-height: 44px;
+    padding-inline: 13px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #2563eb, color-mix(in srgb, #2563eb 74%, #0f172a));
+    border-color: color-mix(in srgb, #fff 22%, #2563eb);
+    box-shadow: 0 10px 24px color-mix(in srgb, #2563eb 22%, transparent);
+  }
+
+  [data-prisma-route="/inventory"] .detailHeader { justify-content: space-between; }
+  [data-prisma-route="/inventory"] .detailPanel h2 {
+    margin: 0;
+    color: var(--prisma-text-primary);
+    font-family: "Bahnschrift", "Aptos Display", sans-serif;
+    font-size: clamp(1.45rem, 2vw, 2rem);
+    line-height: 1.08;
+  }
+  [data-prisma-route="/inventory"] .detailPanel > p { margin: 0; color: var(--prisma-text-secondary); line-height: 1.5; }
+  [data-prisma-route="/inventory"] .detailGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  [data-prisma-route="/inventory"] .detailGrid > div {
+    min-width: 0;
+    padding: 10px 11px;
+    display: grid;
+    gap: 4px;
+    border: 1px solid color-mix(in srgb, var(--prisma-line-soft) 72%, transparent);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--prisma-surface-control) 70%, transparent);
+  }
+  [data-prisma-route="/inventory"] .detailGrid dt { color: var(--prisma-text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  [data-prisma-route="/inventory"] .detailGrid dd { margin: 0; color: var(--prisma-text-primary); font-weight: 700; }
+  [data-prisma-route="/inventory"] .detailActions { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  [data-prisma-route="/inventory"] .detailActions .primaryAction {
+    min-height: 52px;
+    border-radius: 14px;
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, color-mix(in srgb, #2563eb 78%, #0f172a));
+    border-color: color-mix(in srgb, #fff 24%, #2563eb);
+    box-shadow: 0 14px 30px color-mix(in srgb, #2563eb 24%, transparent);
+  }
+
+  [data-prisma-route="/inventory"] :where(.primaryAction, .secondaryAction, .ghostAction, .rowAddButton, .filterButton, .filterActive, .exportMenu summary) {
+    transition: transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 120ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  [data-prisma-route="/inventory"] :where(.primaryAction, .secondaryAction, .ghostAction, .rowAddButton, .filterButton, .filterActive, .exportMenu summary):hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+  }
+  [data-prisma-route="/inventory"] .primaryAction:focus-visible,
+  [data-prisma-route="/inventory"] .secondaryAction:focus-visible,
+  [data-prisma-route="/inventory"] .ghostAction:focus-visible,
+  [data-prisma-route="/inventory"] .rowAddButton:focus-visible,
+  [data-prisma-route="/inventory"] .productMainButton:focus-visible,
+  [data-prisma-route="/inventory"] .filterButton:focus-visible,
+  [data-prisma-route="/inventory"] .filterActive:focus-visible,
+  [data-prisma-route="/inventory"] .cartChip:focus-visible,
+  [data-prisma-route="/inventory"] .exportMenu summary:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--prisma-cyan-300) 62%, transparent);
+    outline-offset: 3px;
+  }
+  [data-prisma-route="/inventory"] .operationForm > .primaryAction:active:not(:disabled) { transform: scale(0.985); }
+  [data-prisma-route="/inventory"] .operationForm > .primaryAction:disabled { opacity: 0.48; filter: saturate(0.2) brightness(0.96); box-shadow: none; transform: none; cursor: not-allowed; }
+
+  @media (max-width: 1100px) {
+    [data-prisma-route="/inventory"] .filterRail { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    [data-prisma-route="/inventory"] .searchPanel { grid-template-columns: 1fr; }
+    [data-prisma-route="/inventory"] .searchActions { justify-content: flex-start; }
+  }
+
+  @media (max-width: 980px) {
+    [data-prisma-route="/inventory"] .workspace { grid-template-columns: 1fr; }
+    [data-prisma-route="/inventory"] .detailPanel { position: relative; top: auto; }
+  }
+
+  @media (max-width: 760px) {
+    [data-prisma-route="/inventory"] .heroCard { min-height: 0; align-items: stretch; flex-direction: column; }
+    [data-prisma-route="/inventory"] .cartChip { width: 100%; }
+    [data-prisma-route="/inventory"] .filterRail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    [data-prisma-route="/inventory"] .productRow,
+    [data-prisma-route="/inventory"] .productRowSelected { grid-template-columns: minmax(0, 1fr) auto auto; }
+    [data-prisma-route="/inventory"] .priceCell,
+    [data-prisma-route="/inventory"] .stockCell { grid-column: 1; text-align: left; }
+    [data-prisma-route="/inventory"] .detailGrid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-prisma-route="/inventory"] :where(.primaryAction, .secondaryAction, .ghostAction, .rowAddButton, .filterButton, .filterActive, .exportMenu summary) { transition: none; }
+  }
+
   @media (max-width: 980px) {
     .workspace { grid-template-columns: 1fr; }
     .detailPanel { position: relative; top: auto; }
