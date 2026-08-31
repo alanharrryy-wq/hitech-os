@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import shutil
 import subprocess
 import sys
@@ -16,7 +15,6 @@ RIFAT = PRISMA_HTML / "authority/rifat"
 
 LAYER_ID = "LYR.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.BASE"
 REGION_ID = LAYER_ID + ".layer"
-SLOT_ID = "pc.catalog.lyr.vis.surface.content.primary.pc.catalog.workspace.base.layer"
 COMPONENT_ID = "products.pc.app.components.catalog.product.media.workspace.tsx"
 CSS_ID = "products.pc.app.components.catalog.product.media.workspace.module.css"
 IMPLEMENTATION_LAYER_ID = "products.pc.app.components.catalog.product.media.workspace.module.css.workspace"
@@ -32,6 +30,12 @@ def run(args: list[str], cwd: Path | None = None) -> None:
 def write_json(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def reset_output(path: Path) -> None:
+    if path.exists():
+        shutil.rmtree(path)
+    path.mkdir(parents=True, exist_ok=True)
 
 
 def patch_visual_control() -> None:
@@ -84,7 +88,7 @@ def patch_visual_control() -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def patch_layer_certification() -> None:
+def patch_layer_certification(slot_id: str | None) -> None:
     path = APP / "config/prisma-visual/identity-layer-certifications.registry.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     certification = {
@@ -96,7 +100,7 @@ def patch_layer_certification() -> None:
         "ownerComponent": COMPONENT_PATH,
         "routeId": "pc.catalog.route",
         "regionId": REGION_ID,
-        "slotId": SLOT_ID,
+        "slotId": slot_id,
         "expectedImplementationLayerId": IMPLEMENTATION_LAYER_ID,
         "safetyClassification": "safeVisualOnly",
         "certificationPolicy": "EXACTLY_ONE_IMPLEMENTATION_MATCH_REQUIRED",
@@ -106,11 +110,47 @@ def patch_layer_certification() -> None:
     write_json(path, data)
 
 
+def run_visual_control(output_root: Path) -> Path:
+    reset_output(output_root)
+    run(
+        [
+            "node",
+            "tools/quality/ui-visual-control.mjs",
+            "visual-control:report",
+            "--surface",
+            "pc",
+            "--output-root",
+            str(output_root),
+        ],
+        cwd=APP,
+    )
+    return output_root / "visual-control"
+
+
 def load_vc(vc: Path, name: str) -> dict:
     return json.loads((vc / name).read_text(encoding="utf-8"))
 
 
-def prove_and_promote(vc: Path) -> None:
+def discover_structural_slot(vc: Path) -> str:
+    slots = load_vc(vc, "editable-slots.json")
+    matches = [
+        item
+        for item in slots.get("slotUnitSamples", [])
+        if item.get("surface") == "pc"
+        and item.get("route") == "/catalog"
+        and item.get("target") == REGION_ID
+    ]
+    if len(matches) != 1:
+        print("STRUCTURAL_SLOT_MATCHES=" + json.dumps(matches, indent=2, ensure_ascii=False))
+        raise SystemExit(f"EXPECTED_ONE_STRUCTURAL_SLOT_ACTUAL={len(matches)}")
+    slot_id = matches[0].get("slot_unit_id")
+    if not slot_id:
+        raise SystemExit("STRUCTURAL_SLOT_ID_EMPTY")
+    print(f"ACTUAL_SLOT_ID={slot_id}")
+    return str(slot_id)
+
+
+def prove_and_promote(vc: Path, slot_id: str) -> None:
     routes = load_vc(vc, "routes.json")
     owners = load_vc(vc, "owners.json")
     components = load_vc(vc, "components.json")
@@ -122,12 +162,13 @@ def prove_and_promote(vc: Path) -> None:
     assert risks.get("blockerCount") == 0, risks
     assert risks.get("warningCount") == 0, risks
     assert risks.get("activeImportantCount") == 0, risks
+    assert risks.get("ambiguousActiveLayerOwnerCount") == 0, risks
 
     route = next((x for x in routes.get("routes", []) if x.get("route_id") == "pc.catalog.route"), None)
     component = next((x for x in components.get("components", []) if x.get("component_id") == COMPONENT_ID), None)
     css_owner = next((x for x in owners.get("cssOwnerSamples", []) if x.get("owner_id") == CSS_ID), None)
     region = next((x for x in owners.get("regionOwnerSamples", []) if x.get("region_id") == REGION_ID), None)
-    slot = next((x for x in slots.get("slotUnitSamples", []) if x.get("slot_unit_id") == SLOT_ID), None)
+    slot = next((x for x in slots.get("slotUnitSamples", []) if x.get("slot_unit_id") == slot_id), None)
     certified = next((x for x in layers.get("certifiedLayers", []) if x.get("layer_id") == LAYER_ID), None)
     implementation = next((x for x in layers.get("layerSamples", []) if x.get("layer_id") == IMPLEMENTATION_LAYER_ID), None)
 
@@ -139,6 +180,9 @@ def prove_and_promote(vc: Path) -> None:
     assert slot and slot.get("route") == "/catalog" and slot.get("target") == REGION_ID, slot
     assert certified and certified.get("implementationLayerId") == IMPLEMENTATION_LAYER_ID, certified
     assert certified.get("selector") == ".workspace", certified
+    assert certified.get("slotId") == slot_id, certified
+    assert certified.get("routeId") == "pc.catalog.route", certified
+    assert certified.get("regionId") == REGION_ID, certified
     assert implementation and implementation.get("selector") == ".workspace", implementation
 
     pc_dst = RIFAT / "prisma-ui/visual-control/pc"
@@ -275,7 +319,7 @@ def patch_resolver() -> None:
     path.write_text(core[:start] + replacement + core[end:], encoding="utf-8")
 
 
-def patch_element_registry() -> None:
+def patch_element_registry(slot_id: str) -> None:
     path = RIFAT / "identity/registries/element-bindings.registry.json"
     registry = json.loads(path.read_text(encoding="utf-8"))
     binding_id = "BND.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.V1"
@@ -297,7 +341,7 @@ def patch_element_registry() -> None:
                 "ownerId": COMPONENT_ID,
                 "routeId": "pc.catalog.route",
                 "regionId": REGION_ID,
-                "slotId": SLOT_ID,
+                "slotId": slot_id,
                 "componentUiId": COMPONENT_ID,
                 "layerId": LAYER_ID,
                 "ownerCssId": CSS_ID,
@@ -347,7 +391,7 @@ def patch_element_registry() -> None:
     write_json(path, registry)
 
 
-def validate_final() -> None:
+def validate_final(slot_id: str) -> None:
     sys.path.insert(0, str(PRISMA_HTML / "tools"))
     from identity_binding_resolver_core import authority_indexes, load_registry, validate_registry
 
@@ -360,16 +404,20 @@ def validate_final() -> None:
         "componentOwners": COMPONENT_ID,
         "cssOwners": CSS_ID,
         "regionOwners": REGION_ID,
-        "slots": SLOT_ID,
+        "slots": slot_id,
         "layers": LAYER_ID,
     }
     for index, value in expected.items():
         if value not in indexes[index]:
             raise SystemExit(f"MISSING_CANONICAL_INDEX={index}:{value}")
     binding = next(x for x in load_registry()["bindings"] if x.get("bindingId") == "BND.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.V1")
-    if binding.get("status") != "RESOLVED" or binding["targets"][0].get("status") != "RESOLVED":
+    target = binding["targets"][0]
+    if binding.get("status") != "RESOLVED" or target.get("status") != "RESOLVED":
         raise SystemExit("PC_CATALOG_BINDING_NOT_RESOLVED")
+    if target.get("slotId") != slot_id:
+        raise SystemExit("PC_CATALOG_BINDING_SLOT_DRIFT")
     print("PC_CATALOG_BINDING_SOURCE_ONLY=RESOLVED")
+    print(f"PC_CATALOG_BINDING_SLOT={slot_id}")
     print("WARNINGS=" + repr(warnings))
 
 
@@ -378,18 +426,26 @@ def main() -> int:
     parser.add_argument("--vc-out", required=True)
     args = parser.parse_args()
     vc_out = Path(args.vc_out).resolve()
-    vc_out.mkdir(parents=True, exist_ok=True)
 
     patch_visual_control()
-    patch_layer_certification()
+    patch_layer_certification(None)
     run(["node", "--check", "tools/quality/ui-visual-control.mjs"], cwd=APP)
-    run(["node", "tools/quality/ui-visual-control.mjs", "visual-control:report", "--surface", "pc", "--output-root", str(vc_out)], cwd=APP)
-    prove_and_promote(vc_out / "visual-control")
+
+    pass1 = run_visual_control(vc_out / "pass1")
+    slot_id = discover_structural_slot(pass1)
+
+    patch_layer_certification(slot_id)
+    pass2 = run_visual_control(vc_out / "pass2")
+    slot_id_pass2 = discover_structural_slot(pass2)
+    if slot_id_pass2 != slot_id:
+        raise SystemExit(f"STRUCTURAL_SLOT_NONDETERMINISTIC={slot_id}->{slot_id_pass2}")
+
+    prove_and_promote(pass2, slot_id)
     patch_resolver()
     run([sys.executable, "-m", "py_compile", "tools/identity_binding_resolver_core.py"], cwd=PRISMA_HTML)
-    patch_element_registry()
+    patch_element_registry(slot_id)
     run([sys.executable, "tools/identity_binding_resolver.py", "refresh-snapshot", "--write"], cwd=PRISMA_HTML)
-    validate_final()
+    validate_final(slot_id)
     return 0
 
 
