@@ -1,0 +1,148 @@
+name: TEMP Sync Sentinel 3140 Patcher
+
+on:
+  push:
+    branches: [feat/sync-sentinel-mobile-watch-final-3140]
+
+permissions:
+  contents: write
+
+env:
+  PINNED_BASE: 7c129d807e36fae44f0d19c6f7c8a82d11c8c96e
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: feat/sync-sentinel-mobile-watch-final-3140
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify fresh authority base is still current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          current="$(git rev-parse origin/main)"
+          test "$current" = "$PINNED_BASE"
+
+      - name: Patch orchestrator and human contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path_s: str, old: str, new: str) -> None:
+              path=Path(path_s)
+              text=path.read_text(encoding='utf-8')
+              count=text.count(old)
+              if count != 1:
+                  raise SystemExit(f'PATCH_EXPECTATION_FAILED:{path_s}:count={count}:needle={old[:80]!r}')
+              path.write_text(text.replace(old,new,1),encoding='utf-8',newline='\n')
+
+          capsule='tools/prisma-sentinels/sync-sentinel/sync_sentinel/capsule_orchestration.py'
+          replace_once(
+              capsule,
+              'from .model import Check, RunReport, Verdict\n',
+              'from .model import Check, RunReport, Verdict\nfrom .mobile_runtime import run_mobile_runtime_extension\n',
+          )
+          replace_once(
+              capsule,
+              '        "tablet-journeys.json": "SYNC_JOURNEYS.json",\n',
+              '        "tablet-journeys.json": "SYNC_JOURNEYS.json",\n'
+              '        "tablet-mobile-runtime.log": "SYNC_TABLET_MOBILE_RUNTIME.log",\n'
+              '        "mobile-runtime-3140.log": "SYNC_MOBILE_RUNTIME_3140.log",\n'
+              '        "mobile-journeys.json": "SYNC_MOBILE_JOURNEYS.json",\n'
+              '        "mobile-truth-map.json": "SYNC_MOBILE_TRUTH_MAP.json",\n',
+          )
+          replace_once(capsule, '    progress = Progress(12)\n', '    progress = Progress(14)\n')
+          replace_once(
+              capsule,
+              '        report.add(journey); progress.step("Journey A and Journey B")\n\n        native_checks = static_probe_suite(capsule.worktree, workers=workers)\n',
+              '        report.add(journey); progress.step("Journey A and Journey B")\n\n'
+              '        mobile_check, mobile_paths, mobile_facts = run_mobile_runtime_extension(capsule, tablet_db, bridge, token)\n'
+              '        runtime_evidence.extend(mobile_paths)\n'
+              '        report.add(mobile_check)\n'
+              '        report.facts["mobileRuntime"] = mobile_facts\n'
+              '        progress.step("Mobile runtime 3140 journeys and negatives")\n\n'
+              '        native_checks = static_probe_suite(capsule.worktree, workers=workers)\n',
+          )
+          replace_once(
+              capsule,
+              '            "orphanProcesses": bool(result.orphan_processes),\n        })\n',
+              '            "orphanProcesses": bool(result.orphan_processes),\n'
+              '            "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},\n'
+              '        })\n',
+          )
+          replace_once(
+              capsule,
+              '"schemaVersion": "prisma.sync-sentinel.certification.v2" if include_certification_gates else "prisma.sync-sentinel.e2e.v1",',
+              '"schemaVersion": "prisma.sync-sentinel.certification.v3" if include_certification_gates else "prisma.sync-sentinel.e2e.v2",',
+          )
+
+          probes='tools/prisma-sentinels/sync-sentinel/sync_sentinel/probes.py'
+          replace_once(
+              probes,
+              'return Check("sync_source_presence", Verdict.PASS, "Tablet↔PC canonical sync evidence paths are present")',
+              'return Check("sync_source_presence", Verdict.PASS, "Tablet/PC sync and Mobile 3140 projection evidence paths are present")',
+          )
+
+          watch='tools/prisma-sentinels/sync-sentinel/sync_sentinel/watch.py'
+          replace_once(
+              watch,
+              '        payload = _stage_payload(log_path)\n        status = str((payload or {}).get("status") or (payload or {}).get("verdict") or "UNKNOWN")\n',
+              '        text = log_path.read_text(encoding="utf-8", errors="replace")\n'
+              '        payload = _stage_payload(log_path)\n'
+              '        if payload is None and stage == "self-test" and "PASS_SYNC_SENTINEL_SELF_TEST" in text:\n'
+              '            status = "PASS_SYNC_SENTINEL_SELF_TEST"\n'
+              '        else:\n'
+              '            status = str((payload or {}).get("status") or (payload or {}).get("verdict") or "UNKNOWN")\n',
+          )
+
+          readme=Path('tools/prisma-sentinels/sync-sentinel/README.md')
+          readme.write_text('''# PRISMA Sync Sentinel\n\nFail-closed, evidence-first verification tooling for the **existing** PRISMA Tablet ↔ PC synchronization architecture plus the governed **Mobile read-side runtime on canonical port 3140**.\n\nThe Sentinel is an orchestrator, probe, safety guard and evidence producer. It does **not** reimplement product business logic. Tablet/PC continue to own their canonical synchronization logic; Mobile consumes their governed read-side projections. Runtime certification exercises existing product owners only against Sentinel-owned temporary SQLite databases and loopback transports.\n\n## Canonical runtime topology\n\n- Tablet product runtime: `3120`.\n- PC product runtime: `3130`.\n- Mobile product runtime: `3140`.\n- In isolated certification, Tablet/PC owner transports may bind Sentinel-owned ephemeral loopback ports. Mobile must assert canonical source runtime `3140`; GitHub CI binds the actual Mobile Next runtime to 3140 and fails closed if that port is unexpectedly occupied.\n\n## Scope\n\n- `scan`: authority/source presence plus native static sync and Mobile secure-projection verifiers.\n- `diagnose`: HEAD/worktree/live-DB inventory without mutation.\n- `certify`: isolated Tablet/PC Journey A + B, Mobile M1 + M2 through real Mobile HTTP runtime, Mobile M3 governed disposition, negative matrices, native verifiers, drift checks, cleanup and evidence ZIP.\n- `self-test`: fail-closed safety, Watch classification and evidence unit tests.\n\n## Mobile journeys\n\n### M1 — canonical read projection\n\nReal Tablet/PC source owners behind Sentinel loopback transports → Mobile data plane → signed-session secure projection gateway → real Mobile Next runtime → `GET /api/mobile/v1/read-models/sync-source-health` → final scoped projection. The envelope must identify `sourceRuntime: "3140"`, owner `TABLET|PC`, signed session, tenant/business/branch/terminal/device/license/actor scope and the correct final owner value.\n\n### M2 — canonical owner change observed later\n\nA synthetic event is written only to Sentinel-owned Tablet persistence. Mobile is read again through its HTTP runtime and must observe the changed real owner state. Python never calculates or substitutes the product projection.\n\n### M3 — governed boundary\n\n`NOT_APPLICABLE` while `mobile.secure_projection_gateway_phase1` remains read-only and its canonical verifier reports `commandPathsEnabled=false`. A future Mobile mutation requires fresh authority and a real mutation owner; Sentinel will not invent one.\n\n## Tablet / PC journeys\n\n### Journey A\n\nReal Tablet `dispatchTabletOutboxOnce` → loopback Sentinel transport → real PC `persistSyncIngestPayload` / projectors → real Tablet ACK reconciliation.\n\n### Journey B\n\nReal PC `exportPcCatalogDelta` → real Tablet `pullCatalogDeltaFromPc` / `applyCatalogDeltaEnvelope` / checkpoint, including local-stock preservation.\n\n## PRISMA Sync Sentinel Watch\n\n`.github/workflows/prisma-sync-sentinel-watch.yml` classifies changed paths as `NONE`, `SCAN` or `CERTIFY`.\n\n- `NONE`: clean skip.\n- `SCAN`: self-test + scan.\n- `CERTIFY`: self-test + scan + diagnose + full isolated Tablet/PC/Mobile certify.\n- relevant pushes to `main` are classified against the prior SHA.\n- a weekly Monday safety-net forces full `CERTIFY`.\n- PR concurrency cancels obsolete runs of the same PR; main certifications are grouped by SHA and are never cancelled by a different canonical SHA.\n- PASS stores evidence without opening issues or posting automated noise. FAIL/BLOCKED/UNKNOWN stays red and writes causal localization into the job summary.\n\nThe exact impact contract lives in `SYNC_SENTINEL_WATCH_CONTRACT.json`.\n\n## Safety invariants\n\n- Temporary DB paths stay under the Sentinel-owned temp root.\n- Customer/live DB mutation is forbidden and guarded.\n- Only exact processes spawned by Sentinel may be terminated.\n- No global process cleanup or port freeing.\n- No product source modification merely to satisfy a test.\n- No manifest/lockfile mutation to manufacture green.\n- HEAD/source drift fails closed.\n- `UNKNOWN` never passes.\n- Evidence is sanitized before ZIP creation.\n- `productionCertified=false` remains mandatory.\n\n## Commands\n\n```bash\npython tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py self-test\npython tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py scan --repo .\npython tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py diagnose --repo .\npython tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py certify --repo . --expected-head <sha> --evidence-dir tools/_local/reports/sync-sentinel\n```\n\n`certify` may generate Prisma clients only inside its disposable capsule and points runtime database URLs to temporary files. It is not a hot-injection gate for live dev processes.\n''',encoding='utf-8',newline='\n')
+          PY
+
+      - name: Validate patch without product mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py \
+            tools/prisma-sentinels/sync-sentinel/sync_sentinel/capsule_orchestration.py \
+            tools/prisma-sentinels/sync-sentinel/sync_sentinel/mobile_runtime.py \
+            tools/prisma-sentinels/sync-sentinel/sync_sentinel/watch.py \
+            tools/prisma-sentinels/sync-sentinel/sync_sentinel/sandbox/prisma_runtime.py \
+            tools/prisma-sentinels/sync-sentinel/sync_sentinel/sandbox/dependency_probe.py
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py self-test
+          git diff --check
+          { git diff --name-only origin/main...HEAD; git diff --name-only; } | sort -u > "$RUNNER_TEMP/changed.txt"
+          cat "$RUNNER_TEMP/changed.txt"
+          if grep -E '^apps/terminal-de-venta-system/products/(tablet|pc|mobile)/' "$RUNNER_TEMP/changed.txt"; then
+            echo 'BLOCKED_ACCIDENTAL_PRODUCT_SOURCE_MUTATION'
+            exit 1
+          fi
+
+      - name: Commit deterministic tooling patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools/prisma-sentinels/sync-sentinel
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'No patch changes to commit.'
+            exit 0
+          fi
+          git commit -m 'feat(sync-sentinel): wire Mobile 3140 into certification'
+          git push origin HEAD:feat/sync-sentinel-mobile-watch-final-3140
