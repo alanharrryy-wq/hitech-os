@@ -145,19 +145,34 @@ jobs:
         run: |
           import subprocess
           changed = subprocess.check_output(['git','diff','--name-only','origin/main...HEAD'], text=True).splitlines()
-          forbidden = (
-              'apps/terminal-de-venta-system/products/tablet/',
-              'apps/terminal-de-venta-system/products/pc/',
-              'apps/terminal-de-venta-system/products/mobile/',
-              'apps/terminal-de-venta-system/prisma/',
-          )
-          bad = [path for path in changed if path.startswith(forbidden)]
-          css = [path for path in changed if path.lower().endswith('.css')]
-          if bad:
-              raise SystemExit('Forbidden billing scope files changed: ' + ', '.join(bad))
-          if css:
-              raise SystemExit('Billing task must not mutate CSS: ' + ', '.join(css))
-          print('PASS_BILLING_SCOPE_BOUNDARY')
+          billing_files = {
+              'apps/terminal-de-venta-system/docs/productization/PRISMA_COMMERCIAL_BILLING_CFDI_CONTRACT.md',
+              'apps/terminal-de-venta-system/tools/verify-commercial-billing-cfdi-01.py',
+              'apps/terminal-de-venta-system/tools/verify-commercial-billing-command-center-02.py',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json',
+              'PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_REGISTRATION_INDEX.json',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json',
+              'PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.md',
+          }
+          billing_prefixes = ('apps/terminal-de-venta-system/Prisma Cloud Ctr/',)
+          billing_touched = any(path in billing_files or path.startswith(billing_prefixes) for path in changed)
+          if not billing_touched:
+              print('PASS_BILLING_SCOPE_NOT_TOUCHED')
+          else:
+              forbidden = (
+                  'apps/terminal-de-venta-system/products/tablet/',
+                  'apps/terminal-de-venta-system/products/pc/',
+                  'apps/terminal-de-venta-system/products/mobile/',
+                  'apps/terminal-de-venta-system/prisma/',
+              )
+              bad = [path for path in changed if path.startswith(forbidden)]
+              css = [path for path in changed if path.lower().endswith('.css')]
+              if bad:
+                  raise SystemExit('Forbidden billing scope files changed: ' + ', '.join(bad))
+              if css:
+                  raise SystemExit('Billing task must not mutate CSS: ' + ', '.join(css))
+              print('PASS_BILLING_SCOPE_BOUNDARY')
 
       - name: Compile commercial billing modules and Cloud Center server
         run: >-

@@ -63,9 +63,23 @@
     }
   ],
   "authoritySnapshot": {
-    "snapshotId": "6cd4f88bdd1e8c6fe12d585cef8a6613ba59177cc7d2f23d6ec05247daf798f5",
+    "snapshotId": "415d11872344b5d6bd74c56720b1cc25f430f31f2087640459a43d313a7437c6",
     "status": "PASS",
     "files": [
+      {
+        "path": "authority/rifat/identity/registries/bindings.registry.json",
+        "expectedSha256": "47863d182b12abf29dd32084a5f47b53d1242fc69f86d336971a1cd2836cb168",
+        "actualSha256": "47863d182b12abf29dd32084a5f47b53d1242fc69f86d336971a1cd2836cb168",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/identity/registries/portable-export.registry.json",
+        "expectedSha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
+        "actualSha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
+        "exists": true,
+        "matches": true
+      },
       {
         "path": "authority/rifat/prisma-ui/routes.json",
         "expectedSha256": "af4c674fa3eb1dee0b81db5e14b1d3856fa809d54bf907f2a8d0303c30be7017",
@@ -77,13 +91,6 @@
         "path": "authority/rifat/prisma-ui/surfaces.json",
         "expectedSha256": "9fcc3ddaa5fe82427a3f94e6632ef38397d2e8c25b4462272a7a98b01ab831fe",
         "actualSha256": "9fcc3ddaa5fe82427a3f94e6632ef38397d2e8c25b4462272a7a98b01ab831fe",
-        "exists": true,
-        "matches": true
-      },
-      {
-        "path": "authority/rifat/prisma-ui/visual-control/owners.json",
-        "expectedSha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
-        "actualSha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
         "exists": true,
         "matches": true
       },
@@ -103,22 +110,57 @@
       },
       {
         "path": "authority/rifat/prisma-ui/visual-control/layers.json",
-        "expectedSha256": "717734a3c1aa9eb05c0fac7c2543a50c99b7035a8c008df218ce2ea34c3b833d",
-        "actualSha256": "717734a3c1aa9eb05c0fac7c2543a50c99b7035a8c008df218ce2ea34c3b833d",
+        "expectedSha256": "7dee5ced38ea9ebed722ba3f6ded10979f60c8bb7af881ef44609524802527b4",
+        "actualSha256": "7dee5ced38ea9ebed722ba3f6ded10979f60c8bb7af881ef44609524802527b4",
         "exists": true,
         "matches": true
       },
       {
-        "path": "authority/rifat/identity/registries/bindings.registry.json",
-        "expectedSha256": "b903f02c50f6b4fb8ffc5024130bbb46abed2a02cfa2ca79ba9f16437ff9496f",
-        "actualSha256": "b903f02c50f6b4fb8ffc5024130bbb46abed2a02cfa2ca79ba9f16437ff9496f",
+        "path": "authority/rifat/prisma-ui/visual-control/owners.json",
+        "expectedSha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
+        "actualSha256": "69cef69e74ca8c28e2b4ba7f2e1f0e8416c1b90ec616f0c742908d3fe1dbf602",
         "exists": true,
         "matches": true
       },
       {
-        "path": "authority/rifat/identity/registries/portable-export.registry.json",
-        "expectedSha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
-        "actualSha256": "2f3ed08d78221fa584889ad2027cfb813b473bfd9edf44cdbc7514bc17596586",
+        "path": "authority/rifat/prisma-ui/visual-control/pc/components.json",
+        "expectedSha256": "dbf785d3491ac9cebf02b0ed7d19a3e1138fc5d42e189b5d3d789c8e09e76ba4",
+        "actualSha256": "dbf785d3491ac9cebf02b0ed7d19a3e1138fc5d42e189b5d3d789c8e09e76ba4",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/editable-slots.json",
+        "expectedSha256": "b3b90f9502e5b08f3760e1385cd6537d2ea500a640a46d3bba974a5c0338747c",
+        "actualSha256": "b3b90f9502e5b08f3760e1385cd6537d2ea500a640a46d3bba974a5c0338747c",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/layers.json",
+        "expectedSha256": "cc4b39221bb9e90f488cb30bdcdd574ef1b2af6c012b45bd61916cbd586f3ea8",
+        "actualSha256": "cc4b39221bb9e90f488cb30bdcdd574ef1b2af6c012b45bd61916cbd586f3ea8",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/owners.json",
+        "expectedSha256": "f6a62ac8a00b7207ff64caed3ca810020390f6dceaf4fa12dbf908766f0a9f48",
+        "actualSha256": "f6a62ac8a00b7207ff64caed3ca810020390f6dceaf4fa12dbf908766f0a9f48",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "authority/rifat/prisma-ui/visual-control/pc/routes.json",
+        "expectedSha256": "ef5bd98f2ac317d2a2201958c809e109d93d467c74eb4fbe84ef409460eb4f25",
+        "actualSha256": "ef5bd98f2ac317d2a2201958c809e109d93d467c74eb4fbe84ef409460eb4f25",
+        "exists": true,
+        "matches": true
+      },
+      {
+        "path": "tools/identity_binding_resolver_core.py",
+        "expectedSha256": "775acf583bd3cd924d50d7e546637a7cdd982fc93c7a3f4871b86906deab8a0e",
+        "actualSha256": "775acf583bd3cd924d50d7e546637a7cdd982fc93c7a3f4871b86906deab8a0e",
         "exists": true,
         "matches": true
       },
@@ -136,11 +178,11 @@
     "allowed": false,
     "reason": "IDBIND1 resolves evidence only. Runtime/product application requires a future exact-target Mesh and visual certification."
   },
-  "envelopeId": "BENV.PEX.preview-component-recipe-iddict-preview-primary-btn-01.733104ad5ccd.0cbfb034dd93",
+  "envelopeId": "BENV.PEX.preview-component-recipe-iddict-preview-primary-btn-01.733104ad5ccd.0444769ba36e",
   "integrity": {
     "algorithm": "SHA-256",
     "canonicalization": "json-sort-keys-compact-utf8-v1",
-    "canonicalPayloadSha256": "0cbfb034dd939f807073ccbb97295ef7f1b0b02e99315839c6e20f73d2da5b76",
+    "canonicalPayloadSha256": "0444769ba36e0469ab789091f1fe82d16d79671ec639bf139ec79e3da269b9fb",
     "coveredTopLevelFields": [
       "applicationGate",
       "authoritySnapshot",

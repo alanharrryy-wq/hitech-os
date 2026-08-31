@@ -1,6 +1,6 @@
 {
   "schema": "prisma.ui.visual-control.layer-certifications.v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "SOURCE_READY",
   "instructionOnly": true,
   "runtimeMutationAllowed": false,
@@ -18,6 +18,20 @@
       "slotId": "tablet.any.products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton.layer",
       "expectedImplementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
       "safetyClassification": "visualWithFunctionalRisk",
+      "certificationPolicy": "EXACTLY_ONE_IMPLEMENTATION_MATCH_REQUIRED"
+    },
+    {
+      "layerId": "LYR.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.BASE",
+      "neutralMeaningId": "VIS.SURFACE.CONTENT.PRIMARY",
+      "surface": "pc",
+      "file": "products/pc/app/components/catalog/product-media-workspace.module.css",
+      "selector": ".workspace",
+      "ownerComponent": "products/pc/app/components/catalog/product-media-workspace.tsx",
+      "routeId": "pc.catalog.route",
+      "regionId": "LYR.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.BASE.layer",
+      "slotId": "pc.catalog.lyr.vis.surface.content.primary.pc.catalog.workspace.base.layer",
+      "expectedImplementationLayerId": "products.pc.app.components.catalog.product.media.workspace.module.css.workspace",
+      "safetyClassification": "safeVisualOnly",
       "certificationPolicy": "EXACTLY_ONE_IMPLEMENTATION_MATCH_REQUIRED"
     }
   ]
