@@ -1,0 +1,333 @@
+name: Tablet Inventory Primary Exact Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tablet-inventory-primary-exact-evidence.yml'
+      - '.github/evidence/tablet-inventory-primary-exact-capture.mjs'
+      - 'prisma-html/authority/rifat/tablet/runtime-sources/modules/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css'
+      - 'prisma-html/authority/rifat/identity/**'
+      - 'prisma-html/authority/rifat/prisma-ui/**'
+      - 'prisma-html/authority/rifat/visual-source-manifest.json'
+      - 'prisma-html/FILES_MANIFEST.json'
+      - 'apps/terminal-de-venta-system/config/prisma-visual/identity-layer-certifications.registry.json'
+      - 'apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css'
+      - 'apps/terminal-de-venta-system/products/tablet/app/generated/prisma-visual-runtime/**'
+      - 'apps/terminal-de-venta-system/.prisma-ui/**'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: tablet-inventory-primary-exact-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+  TARGET_HEAD: 6f5b3df2ccd4b83a613648fef8e0874df3e1ac09
+  MESH_RUN_ID: '33409958529'
+  MESH_ARTIFACT_ID: '9764737867'
+  MESH_OUTER_SHA256: 9f22488a54acc731b203600222e3d0d8f1656885db8b9d769ed172686a96ee7d
+  MESH_COMPOSED_SHA256: bc718d105f4d560edbeeace1b918ebbd3ee43e8366e115f1e843365624331c96
+  MESH_REQUEST_DIGEST: 22e53f49aded96d5aeee061ba5ad3c47d66cb604fd0babf6e48bc88f01b3fd5e
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-inventory-primary-exact
+  RUNTIME_PORT: '3120'
+  CHROME_DEBUG_PORT: '9224'
+  MARKER: PRISMA_GOVERNED_INVENTORY_OPERATION_COMMIT_PRIMARY_V1
+
+jobs:
+  exact-inventory-primary:
+    if: github.head_ref == 'feat/tablet-inventory-primary-exact-3108'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout candidate and preserve harness
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Preserve candidate harness and classify phase
+        id: meta
+        shell: bash
+        env:
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/inventory-primary-harness" "$EVIDENCE_DIR"
+          cp .github/evidence/tablet-inventory-primary-exact-capture.mjs "$RUNNER_TEMP/inventory-primary-harness/capture.mjs"
+          test "$(git merge-base "$TARGET_HEAD" "$PR_HEAD")" = "$TARGET_HEAD"
+          if grep -Fq "$MARKER" prisma-html/authority/rifat/tablet/runtime-sources/modules/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css; then phase=AFTER; else phase=BEFORE; fi
+          echo "phase=$phase" >> "$GITHUB_OUTPUT"
+          echo "pr_head=$PR_HEAD" >> "$GITHUB_OUTPUT"
+          echo "EVIDENCE_PHASE=$phase" >> "$GITHUB_ENV"
+          git diff --name-only "$TARGET_HEAD..$PR_HEAD" | tee "$EVIDENCE_DIR/changed-files.txt"
+          printf '{"schemaVersion":"tablet.inventory.primary.exact.scope.v1","phase":"%s","base":"%s","candidate":"%s","route":"/inventory","viewport":{"width":1365,"height":1000},"prismaGenerate":false,"databaseUsed":false,"operationSubmitAllowed":false,"productionCertified":false}\n' "$phase" "$TARGET_HEAD" "$PR_HEAD" > "$EVIDENCE_DIR/scope.json"
+
+      - name: Checkout exact governed main for anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach "$TARGET_HEAD"
+          test "$(git rev-parse HEAD)" = "$TARGET_HEAD"
+          remote_head="$(git ls-remote origin refs/heads/main | cut -f1)"
+          test "$remote_head" = "$TARGET_HEAD"
+          python -m py_compile "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py"
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --validate
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --self-test
+
+      - name: Download and cryptographically verify exact FIX Mesh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mesh="$RUNNER_TEMP/inventory-primary-mesh.zip"
+          curl --fail --location --silent --show-error \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$MESH_ARTIFACT_ID/zip" -o "$mesh"
+          test "$(sha256sum "$mesh" | awk '{print $1}')" = "$MESH_OUTER_SHA256"
+          python - "$mesh" "$RUNNER_TEMP/mesh-verified.json" <<'PY'
+          import hashlib,io,json,os,sys,zipfile
+          artifact,out=sys.argv[1:]
+          with zipfile.ZipFile(artifact) as outer: composed=outer.read('prisma-automesh-composed-result.zip')
+          if hashlib.sha256(composed).hexdigest()!=os.environ['MESH_COMPOSED_SHA256']: raise SystemExit('COMPOSED_DIGEST_MISMATCH')
+          with zipfile.ZipFile(io.BytesIO(composed)) as comp:
+              report=json.loads(comp.read('PRISMA_MESH_GATEWAY_REPORT.json'))
+              pre=json.loads(comp.read('authority/PREFLIGHT_MANIFEST.json'))
+              caps=json.loads(comp.read('authority/capability_requirements.json'))
+              legacy=comp.read('legacy_surface_mesh.zip')
+          if report.get('status')!='PASS_COMPOSED_AUTHORITY_MESH': raise SystemExit('MESH_NOT_PASS')
+          if report.get('repoHead')!=os.environ['TARGET_HEAD']: raise SystemExit('MESH_HEAD_MISMATCH')
+          if report.get('requestDigest')!=os.environ['MESH_REQUEST_DIGEST']: raise SystemExit('MESH_REQUEST_DIGEST_MISMATCH')
+          if pre.get('status')!='PASS_PREFLIGHT' or pre.get('blockers'): raise SystemExit('PREFLIGHT_NOT_CLEAN')
+          lanes=pre.get('lanes') or []
+          if {x.get('id') for x in lanes}!={'inventory-primary-visual-fix','inventory-primary-governance-fix'}: raise SystemExit('LANE_SET_MISMATCH')
+          coverage=min(float((x.get('coverage') or {}).get('resolvedPercent',0)) for x in lanes)
+          if coverage!=100: raise SystemExit(f'COVERAGE_NOT_100:{coverage}')
+          for lane in lanes:
+              c=lane.get('capabilities') or {}
+              if c.get('missing') or c.get('requested')!=['visual.atlasfin.tablet_system_homologation']: raise SystemExit('CAPABILITY_NOT_RESOLVED')
+          with zipfile.ZipFile(io.BytesIO(legacy)) as z:
+              for task in ('inventory-primary-visual-fix','inventory-primary-governance-fix'):
+                  for leaf in ('LAYERS_MAP.json','LAYERS_MAP.md'):
+                      name=f'tasks/{task}/authority_mesh/reports/{leaf}'
+                      if name not in z.namelist(): raise SystemExit('LAYER_MAP_MISSING:'+name)
+          evidence={'status':report['status'],'repoHead':report['repoHead'],'requiredAuthorityCoveragePct':coverage,'blockers':0,'requestDigest':report['requestDigest'],'artifactDigest':os.environ['MESH_COMPOSED_SHA256'],'outerArtifactDigest':os.environ['MESH_OUTER_SHA256'],'artifactId':int(os.environ['MESH_ARTIFACT_ID']),'runId':int(os.environ['MESH_RUN_ID']),'layerMapPresent':True,'capability':'visual.atlasfin.tablet_system_homologation'}
+          json.dump(evidence,open(out,'w',encoding='utf-8'),indent=2); open(out,'a').write('\n')
+          print(json.dumps(evidence,indent=2))
+          PY
+
+      - name: Run universal PROPOSAL anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          req="$RUNNER_TEMP/proposal.request.json"; out="$RUNNER_TEMP/proposal.decision.json"
+          python - "$req" <<'PY'
+          import json,os,sys
+          task='Governed exact-target visual FIX for only the final Inventory operation commit primary button on Tablet /inventory. Reuse ACT.primary and REC.button.primary through canonical prisma-html/RIFAT authority, preserve behavior and frozen Cobrar semantics, exclude unrelated surfaces, DB/Prisma/process/port changes, require deterministic projection, zero-important and real BEFORE/AFTER evidence.'
+          d={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'PROPOSAL','expectedHead':os.environ['TARGET_HEAD'],'task':task,'capabilities':[{'id':'visual.atlasfin.tablet_system_homologation','requestedAction':'FIX'}],'visualMutation':True}
+          json.dump(d,open(sys.argv[1],'w',encoding='utf-8'),indent=2); open(sys.argv[1],'a').write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$req" | tee "$out"
+          python - "$out" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          if d.get('result')!='PASS_ANTI_REWORK_GATE' or d.get('errors')!=[]: raise SystemExit('PROPOSAL_GATE_NOT_CLEAN_PASS')
+          PY
+
+      - name: Run universal MUTATION anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          req="$RUNNER_TEMP/mutation.request.json"; out="$RUNNER_TEMP/mutation.decision.json"
+          python - "$RUNNER_TEMP/mesh-verified.json" "$req" <<'PY'
+          import json,os,sys
+          mesh=json.load(open(sys.argv[1],encoding='utf-8'))
+          task='Governed exact-target visual FIX for only the final Inventory operation commit primary button on Tablet /inventory. Reuse ACT.primary and REC.button.primary through canonical prisma-html/RIFAT authority, preserve behavior and frozen Cobrar semantics, exclude unrelated surfaces, DB/Prisma/process/port changes, require deterministic projection, zero-important and real BEFORE/AFTER evidence.'
+          d={'schemaVersion':'prisma.factory-ledger.anti-rework-gate.v1','mode':'MUTATION','expectedHead':os.environ['TARGET_HEAD'],'task':task,'capabilities':[{'id':'visual.atlasfin.tablet_system_homologation','requestedAction':'FIX'}],'authorityMesh':{'status':mesh['status'],'repoHead':mesh['repoHead'],'requiredAuthorityCoveragePct':mesh['requiredAuthorityCoveragePct'],'blockers':mesh['blockers'],'requestDigest':mesh['requestDigest'],'artifactDigest':mesh['artifactDigest'],'layerMapPresent':mesh['layerMapPresent']},'visualMutation':True}
+          json.dump(d,open(sys.argv[2],'w',encoding='utf-8'),indent=2); open(sys.argv[2],'a').write('\n')
+          PY
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$req" | tee "$out"
+          python - "$out" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          if d.get('result')!='PASS_ANTI_REWORK_GATE' or d.get('errors')!=[]: raise SystemExit('MUTATION_GATE_NOT_CLEAN_PASS')
+          PY
+
+      - name: Return to governed candidate and enforce phase scope
+        shell: bash
+        env:
+          PR_HEAD: ${{ steps.meta.outputs.pr_head }}
+        run: |
+          set -euo pipefail
+          git checkout --detach "$PR_HEAD"
+          test "$(git rev-parse HEAD)" = "$PR_HEAD"
+          changed="$(git diff --name-only "$TARGET_HEAD..$PR_HEAD")"
+          if [ "$EVIDENCE_PHASE" = BEFORE ]; then
+            expected=$'.github/evidence/tablet-inventory-primary-exact-capture.mjs\n.github/workflows/tablet-inventory-primary-exact-evidence.yml'
+            test "$(printf '%s\n' "$changed" | sort)" = "$(printf '%s\n' "$expected" | sort)"
+          fi
+          if printf '%s\n' "$changed" | grep -Eq '^apps/terminal-de-venta-system/products/(pc|mobile|web|chart-lab|shared-ui)/|^apps/terminal-de-venta-system/prisma-control-center/'; then
+            echo 'BLOCKED_EXCLUDED_SURFACE_MUTATION'; exit 1
+          fi
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Project canonical Tablet visual authority
+        shell: bash
+        env:
+          AUTHORITY_COMMIT: ${{ steps.meta.outputs.pr_head }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit "$AUTHORITY_COMMIT" 2>&1 | tee "$EVIDENCE_DIR/rifat-projection.log"
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit "$AUTHORITY_COMMIT" --check 2>&1 | tee "$EVIDENCE_DIR/rifat-projection-check.log"
+          python prisma-html/tools/validate_rifat_authority.py 2>&1 | tee "$EVIDENCE_DIR/rifat-authority.log"
+          python prisma-html/tools/validate_identity_dictionary.py 2>&1 | tee "$EVIDENCE_DIR/identity-validation.log"
+          if grep -Fq '!important' "$APP_ROOT/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css"; then echo 'BLOCKED_IMPORTANT_IN_PROJECTED_CSS'; exit 1; fi
+
+      - name: Install Tablet without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
+          pnpm -C "$APP_ROOT" run verify:zero-important 2>&1 | tee "$EVIDENCE_DIR/verify-zero-important.log"
+
+      - name: Create runner-ephemeral fail-closed Prisma import stub without generate or DB
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "$APP_ROOT/.generated/prisma-client/index.js"
+          mkdir -p "$APP_ROOT/.generated/prisma-client"
+          cat > "$APP_ROOT/.generated/prisma-client/index.js" <<'JS'
+          export class PrismaClient {
+            constructor() {
+              return new Proxy(this, {
+                get(target, prop) {
+                  if (prop in target) return target[prop];
+                  return new Proxy({}, { get() { return async () => { throw new Error('RUNNER_EPHEMERAL_PRISMA_DISABLED'); }; } });
+                }
+              });
+            }
+            async $disconnect() {}
+          }
+          JS
+          printf '{"type":"module","private":true,"description":"runner-ephemeral import stub; no DB and no prisma generate"}\n' > "$APP_ROOT/.generated/prisma-client/package.json"
+          test ! -e "$APP_ROOT/data/tablet-pos.db"
+          echo 'PASS_NO_PRISMA_GENERATE_NO_DATABASE_RUNNER_STUB' | tee "$EVIDENCE_DIR/prisma-policy.txt"
+
+      - name: Prepare runner-ephemeral unsigned development license only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/tablet-inventory-primary-license.json" <<'JSON'
+          {"schemaVersion":"1.0.0","licenseId":"lic_inventory_primary_visual","customerId":"fixture_only","businessId":"biz_inventory_visual","storeId":"store_inventory_visual","terminalId":"term_inventory_visual","plan":"DEVELOPMENT","state":"development","assignmentState":"assigned","validFrom":"2026-01-01T00:00:00.000Z","validUntil":"2027-12-31T23:59:59.000Z","offlineGraceDays":30,"notes":["Runner-only visual evidence fixture; no production/customer data."]}
+          JSON
+
+      - name: Resolve Chrome
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=''
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break; done
+          test -n "$chrome"
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome-version.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start runner-owned Tablet runtime only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/inventory" >/dev/null 2>&1; then echo "BLOCKED occupied runner port $RUNTIME_PORT"; exit 1; fi
+          setsid bash -lc "cd '$APP_ROOT' && export TABLET_OPERATOR_ID='operator_visual' TABLET_OPERATOR_NAME='Operador Visual' TABLET_BUSINESS_ID='biz_inventory_visual' TABLET_TERMINAL_ID='term_inventory_visual' PRISMA_LICENSE_FILE='$RUNNER_TEMP/tablet-inventory-primary-license.json' PRISMA_LICENSE_ALLOW_UNSIGNED='1' PRISMA_RUNTIME_MODE='dev' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/server.pid"
+          for _ in $(seq 1 120); do
+            curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/inventory" >/dev/null 2>&1 && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break
+            sleep 1
+          done
+          tail -n 200 "$EVIDENCE_DIR/server.log" || true
+          exit 1
+
+      - name: Start runner-owned headless Chrome
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: |
+          set -euo pipefail
+          "$CHROME_BIN" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-address=127.0.0.1 --remote-debugging-port="$CHROME_DEBUG_PORT" --user-data-dir="$RUNNER_TEMP/inventory-primary-chrome" about:blank > "$EVIDENCE_DIR/chrome-runtime.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/chrome.pid"
+          for _ in $(seq 1 80); do curl -sf --max-time 1 "http://127.0.0.1:$CHROME_DEBUG_PORT/json/version" > "$EVIDENCE_DIR/chrome-debug.json" 2>/dev/null && exit 0; sleep 0.25; done
+          exit 1
+
+      - name: Capture exact Inventory primary runtime evidence without submitting operation
+        shell: bash
+        env:
+          RUNTIME_URL: http://127.0.0.1:3120
+          PRISMA_EVIDENCE_SHA: ${{ steps.meta.outputs.pr_head }}
+        run: |
+          set -euo pipefail
+          node "$RUNNER_TEMP/inventory-primary-harness/capture.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+          grep -Fxq "PASS_TABLET_INVENTORY_PRIMARY_${EVIDENCE_PHASE}_RUNTIME_EVIDENCE" "$EVIDENCE_DIR/browser-capture.log"
+          test -s "$EVIDENCE_DIR/screenshots/${EVIDENCE_PHASE,,}-target.png"
+          test -s "$EVIDENCE_DIR/screenshots/${EVIDENCE_PHASE,,}-viewport.png"
+          test -s "$EVIDENCE_DIR/screenshots/${EVIDENCE_PHASE,,}-full.png"
+          node - "$EVIDENCE_DIR/${EVIDENCE_PHASE,,}-results.json" <<'JS'
+          const fs=require('fs'); const p=process.argv[2]; const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          if(x.route!='/inventory'||x.state.operationSubmitted||x.forbiddenMutationRequests.length||x.runtimeErrors.length||x.consoleErrors.length||x.networkErrors.length||x.target.disabled) process.exit(1);
+          JS
+
+      - name: Stage immutable evidence summary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in mesh-verified.json proposal.request.json proposal.decision.json mutation.request.json mutation.decision.json; do [ ! -f "$RUNNER_TEMP/$f" ] || cp "$RUNNER_TEMP/$f" "$EVIDENCE_DIR/$f"; done
+          python - "$EVIDENCE_DIR" <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          root=Path(sys.argv[1]); rows=[]
+          for p in sorted(root.rglob('*.png')): rows.append({'path':p.relative_to(root).as_posix(),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          payload={'schemaVersion':'tablet.inventory.primary.exact.evidence-manifest.v1','phase':os.environ.get('EVIDENCE_PHASE'),'base':os.environ['TARGET_HEAD'],'candidate':os.environ.get('GITHUB_SHA'),'screenshots':rows,'prismaGenerate':False,'databaseUsed':False,'operationSubmitted':False,'productionCertified':False}
+          (root/'EVIDENCE_MANIFEST.json').write_text(json.dumps(payload,indent=2)+'\n')
+          PY
+
+      - name: Stop runner-owned processes
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          for pidfile in "$EVIDENCE_DIR/chrome.pid" "$EVIDENCE_DIR/server.pid"; do [ ! -f "$pidfile" ] || kill "$(cat "$pidfile")" >/dev/null 2>&1 || true; done
+
+      - name: Upload exact Inventory evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-inventory-primary-${{ steps.meta.outputs.phase }}-${{ github.event.pull_request.head.sha }}
+          path: ${{ env.EVIDENCE_DIR }}/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Final no-fake-green gate
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fxq "PASS_TABLET_INVENTORY_PRIMARY_${EVIDENCE_PHASE}_RUNTIME_EVIDENCE" "$EVIDENCE_DIR/browser-capture.log"
+          test -s "$EVIDENCE_DIR/EVIDENCE_MANIFEST.json"
