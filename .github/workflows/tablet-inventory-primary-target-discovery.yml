@@ -1,0 +1,110 @@
+name: Tablet Inventory Primary Target Discovery
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tablet-inventory-primary-target-discovery.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  TARGET_HEAD: 6f5b3df2ccd4b83a613648fef8e0874df3e1ac09
+  CANONICAL_CSS: prisma-html/authority/rifat/tablet/runtime-sources/modules/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css
+  PRODUCT_CSS: apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css
+  SELECTOR: '[data-prisma-panel="tablet.inventory.route"] .operationForm > .primaryAction'
+
+jobs:
+  derive-target:
+    if: github.head_ref == 'feat/tablet-inventory-primary-exact-3108'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Guard exact base and non-product discovery scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git merge-base "$TARGET_HEAD" HEAD)" = "$TARGET_HEAD"
+          changed="$(git diff --name-only "$TARGET_HEAD..HEAD")"
+          if printf '%s\n' "$changed" | grep -Eq '^prisma-html/authority/rifat/tablet/runtime-sources/|^apps/terminal-de-venta-system/products/tablet/'; then
+            echo 'BLOCKED_PRODUCT_ALREADY_MUTATED_BEFORE_TARGET_DISCOVERY'; exit 1
+          fi
+
+      - name: Inject selector into runner-only canonical preview and project it
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "$CANONICAL_CSS" "$RUNNER_TEMP/canonical-before.css"
+          python - "$CANONICAL_CSS" <<'PY'
+          from pathlib import Path
+          import os,sys
+          p=Path(sys.argv[1]); text=p.read_text(encoding='utf-8')
+          marker='PRISMA_INVENTORY_PRIMARY_TARGET_DISCOVERY_ONLY'
+          if marker in text: raise SystemExit('DISCOVERY_MARKER_ALREADY_PRESENT')
+          block='''\n  /* PRISMA_INVENTORY_PRIMARY_TARGET_DISCOVERY_ONLY */\n  [data-prisma-panel="tablet.inventory.route"] .operationForm > .primaryAction { outline-color: transparent; }\n'''
+          pos=text.rfind('\n}')
+          if pos<0: raise SystemExit('CANONICAL_LAYER_CLOSE_NOT_FOUND')
+          p.write_text(text[:pos]+block+text[pos:],encoding='utf-8',newline='\n')
+          PY
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit "${{ github.event.pull_request.head.sha }}"
+          grep -Fq "$SELECTOR" "$PRODUCT_CSS"
+
+      - name: Let canonical Visual Control derive implementation layer and slot
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/vc-discovery"
+          node apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs visual-control:certify --surface tablet --output-root "$out"
+          python - "$out" "$RUNNER_TEMP/EXACT_TARGET_DISCOVERY.json" <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          root=Path(sys.argv[1]); target=Path(sys.argv[2])
+          selector=os.environ['SELECTOR']
+          product='products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css'
+          layers=json.loads((root/'visual-control/layers.json').read_text(encoding='utf-8'))
+          slots=json.loads((root/'visual-control/editable-slots.json').read_text(encoding='utf-8'))
+          owners=json.loads((root/'visual-control/owners.json').read_text(encoding='utf-8'))
+          components=json.loads((root/'visual-control/components.json').read_text(encoding='utf-8'))
+          matches=[x for x in layers.get('layerSamples',[]) if x.get('surface')=='tablet' and x.get('file')==product and x.get('selector')==selector]
+          if len(matches)!=1: raise SystemExit(f'EXACT_IMPLEMENTATION_LAYER_CARDINALITY:{len(matches)}')
+          impl=matches[0]['layer_id']
+          direct=[x for x in slots.get('slotUnitSamples',[]) if x.get('layer_id')==impl or x.get('implementation_layer_id')==impl or x.get('selector')==selector]
+          if len(direct)!=1:
+              # Current generator names a layer slot from the implementation layer; prove by exact file/selector when compact samples expose it differently.
+              direct=[x for x in slots.get('slotUnitSamples',[]) if x.get('file')==product and x.get('selector')==selector]
+          if len(direct)!=1: raise SystemExit(f'EXACT_SLOT_CARDINALITY:{len(direct)}')
+          slot=direct[0].get('slot_unit_id') or direct[0].get('slotId') or direct[0].get('id')
+          if not slot: raise SystemExit('EXACT_SLOT_ID_MISSING')
+          owner_component='products.tablet.app.components.inventory.inventory.operations.workspace.tsx'
+          region='tablet.inventory.route.main-content'
+          owner_ok=any(x.get('component_id')==owner_component for x in owners.get('componentOwnerSamples',[]))
+          region_ok=any(x.get('region_id')==region for x in owners.get('regionOwnerSamples',[]))
+          component_ok=any(x.get('component_id')==owner_component for x in components.get('components',[]))
+          if not all((owner_ok,region_ok,component_ok)): raise SystemExit(f'OWNER_REGION_COMPONENT_NOT_PROVEN:{owner_ok}:{region_ok}:{component_ok}')
+          payload={'status':'PASS_EXACT_TARGET_DISCOVERY','routeId':'tablet.inventory.route','regionId':region,'ownerComponentId':owner_component,'selector':selector,'productCss':product,'implementationLayerId':impl,'slotId':slot,'visualControlOutputRoot':'runner-temp'}
+          target.write_text(json.dumps(payload,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(payload,indent=2))
+          PY
+
+      - name: Prove runner-only mutation and restore source bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/canonical-before.css" "$CANONICAL_CSS"
+          test -z "$(git diff -- "$CANONICAL_CSS")"
+          grep -Fxq 'PASS_EXACT_TARGET_DISCOVERY' <(python -c "import json;print(json.load(open('$RUNNER_TEMP/EXACT_TARGET_DISCOVERY.json'))['status'])")
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: tablet-inventory-primary-exact-target-discovery
+          path: ${{ runner.temp }}/EXACT_TARGET_DISCOVERY.json
+          if-no-files-found: error
+          retention-days: 14
