@@ -13,6 +13,7 @@ from .authority import AuthorityRequest, discover_authorities, semantic_retrieve
 from .common import sha256_file
 from .edge_provenance import normalize_system_graph_edge_provenance
 from .graphs import build_system_graphs
+from .impact_enrichment import enrich_change_impact
 from .index import build_derived_index
 from .repository import discover_repository
 from .snapshot import build_snapshot
@@ -52,7 +53,7 @@ def resolve_intelligence_context(
     """Resolve the canonical neutral intelligence context without packaging it.
 
     This is the structured consumer API for higher layers such as Change
-    Intelligence. It owns no customer/product semantics and performs no source
+    Assurance. It owns no customer/product semantics and performs no source
     mutation. The returned SQLite/search projections remain non-authoritative.
     """
     request = request or IntelligenceRequest()
@@ -74,6 +75,13 @@ def resolve_intelligence_context(
     )
     raw_graphs = build_system_graphs(repo, inventory, authorities, changed_paths=list(request.changed_paths))
     graphs = normalize_system_graph_edge_provenance(raw_graphs, authorities)
+    graphs = enrich_change_impact(
+        repo,
+        inventory,
+        graphs,
+        changed_paths=request.changed_paths,
+        semantic_query=request.semantic_query,
+    )
     profile_version = profile.metadata.get("profileVersion") if isinstance(profile.metadata, dict) else None
     snapshot = build_snapshot(
         repo,
