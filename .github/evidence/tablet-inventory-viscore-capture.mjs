@@ -66,7 +66,7 @@ class Cdp {
 let target;
 for (let i = 0; i < 40 && !target; i++) {
   try {
-    const response = await fetch(`http://127.0.0.1:${debugPort}/json/new?${encodeURIComponent(base + '/inventory')}`, { method: 'PUT' });
+    const response = await fetch(`http://127.0.0.1:${debugPort}/json/new?${encodeURIComponent('about:blank')}`, { method: 'PUT' });
     if (response.ok) target = await response.json();
   } catch {}
   if (!target) await sleep(250);
