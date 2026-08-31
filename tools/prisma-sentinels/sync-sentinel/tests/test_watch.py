@@ -41,6 +41,17 @@ class SyncSentinelWatchTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertEqual(classify_paths([path], self.contract)["impact"], "CERTIFY")
 
+    def test_watch_workflow_wakes_itself_with_or_without_dot_prefix(self) -> None:
+        paths = [
+            ".github/workflows/prisma-sync-sentinel-watch.yml",
+            "./.github/workflows/prisma-sync-sentinel-watch.yml",
+        ]
+        for path in paths:
+            with self.subTest(path=path):
+                result = classify_paths([path], self.contract)
+                self.assertEqual(result["impact"], "CERTIFY")
+                self.assertEqual(result["wakeFiles"], [".github/workflows/prisma-sync-sentinel-watch.yml"])
+
     def test_certify_wins_over_scan(self) -> None:
         result = classify_paths([
             "tools/prisma-sentinels/sync-sentinel/README.md",
@@ -83,6 +94,20 @@ class SyncSentinelWatchTests(unittest.TestCase):
             self.assertIn("mobile_runtime_3140_journeys", summary)
             self.assertIn("head_lock", summary)
             self.assertIn("sourceDrift", summary)
+
+    def test_summary_recognizes_self_test_pass_token(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "self-test.log").write_text("Ran 20 tests\nOK\nPASS_SYNC_SENTINEL_SELF_TEST\n", encoding="utf-8")
+            summary = build_summary({
+                "impact": "SCAN",
+                "head": "abc",
+                "base": "def",
+                "event": "pull_request",
+                "wakeFiles": ["tools/prisma-sentinels/sync-sentinel/README.md"],
+            }, root)
+            self.assertIn("PASS_SYNC_SENTINEL_SELF_TEST", summary)
+            self.assertNotIn("Failed stage: `self-test`", summary)
 
 
 if __name__ == "__main__":
