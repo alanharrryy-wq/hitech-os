@@ -29,7 +29,10 @@ def load_contract() -> dict[str, Any]:
 
 
 def normalize_path(value: str) -> str:
-    return value.strip().replace("\\", "/").lstrip("./")
+    normalized = value.strip().replace("\\", "/")
+    while normalized.startswith("./"):
+        normalized = normalized[2:]
+    return normalized.lstrip("/")
 
 
 def _matches(path: str, pattern: str) -> bool:
@@ -145,6 +148,13 @@ def _first_failed_check(payload: dict[str, Any]) -> tuple[list[str], dict[str, A
     return passed, failed, not_established
 
 
+def _stage_status(stage: str, log_path: Path, payload: dict[str, Any] | None) -> str:
+    text = log_path.read_text(encoding="utf-8", errors="replace")
+    if stage == "self-test" and "PASS_SYNC_SENTINEL_SELF_TEST" in text:
+        return "PASS_SYNC_SENTINEL_SELF_TEST"
+    return str((payload or {}).get("status") or (payload or {}).get("verdict") or "UNKNOWN")
+
+
 def build_summary(classification: dict[str, Any], logs_dir: Path) -> str:
     stage_names = ["self-test", "scan", "diagnose", "certify"]
     lines = [
@@ -154,7 +164,7 @@ def build_summary(classification: dict[str, Any], logs_dir: Path) -> str:
         f"- **HEAD:** `{classification.get('head', 'unknown')}`",
         f"- **Base:** `{classification.get('base', 'unknown')}`",
         f"- **Event:** `{classification.get('event', 'unknown')}`",
-        f"- **productionCertified:** `false`",
+        "- **productionCertified:** `false`",
     ]
     wake = classification.get("wakeFiles") or []
     lines.append(f"- **Wake files:** `{len(wake)}`")
@@ -170,7 +180,7 @@ def build_summary(classification: dict[str, Any], logs_dir: Path) -> str:
             stage_rows.append((stage, "NOT_RUN", None))
             continue
         payload = _stage_payload(log_path)
-        status = str((payload or {}).get("status") or (payload or {}).get("verdict") or "UNKNOWN")
+        status = _stage_status(stage, log_path, payload)
         upper = status.upper()
         stage_rows.append((stage, status, payload))
         if first_stage_failure is None and not (upper.startswith("PASS") or upper == "PASS"):
