@@ -196,10 +196,13 @@ jobs:
           test ! -f "$mobile/src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css"
           ! grep -Fq 'PrismaMobileMultiContextSwitcher' "$mobile/src/components/prisma-app/index.ts"
           ! grep -Fq '.multiContextRoot' "$mobile/src/components/prisma-app/prisma-mobile-dashboard.module.css"
-          node "$mobile/tools/verify_prisma_mobile_interface_canon.mjs"
-          node "$mobile/tools/verify_prisma_app_mobile_27_premium_navigation.mjs"
-          node "$mobile/tools/verify_prisma_app_mobile_28_data_readiness.mjs"
-          node "$mobile/tools/verify_prisma_app_mobile_32_source_states.mjs"
+          (
+            cd "$mobile"
+            node tools/verify_prisma_mobile_interface_canon.mjs
+            node tools/verify_prisma_app_mobile_27_premium_navigation.mjs
+            node tools/verify_prisma_app_mobile_28_data_readiness.mjs
+            node tools/verify_prisma_app_mobile_32_source_states.mjs
+          )
           node tools/quality/verify-zero-important.mjs
 
       - name: Install exact workspace dependencies
