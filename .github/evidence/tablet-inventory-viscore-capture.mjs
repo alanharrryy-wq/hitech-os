@@ -131,13 +131,15 @@ let body = '';
 while (Date.now() - started < 45000) {
   body = String(await evalv("document.body ? document.body.innerText : ''") || '');
   const ready = await evalv("document.readyState === 'complete'");
-  if (ready && body.includes('Control de existencias') && body.includes('Abrir operaciones') && body.includes('Coca-Cola Original 600 ml')) break;
+  const bodyLower = body.toLowerCase();
+  if (ready && bodyLower.includes('control de existencias') && bodyLower.includes('abrir operaciones') && bodyLower.includes('coca-cola original 600 ml')) break;
   await sleep(250);
 }
-if (!(body.includes('Control de existencias') && body.includes('Abrir operaciones') && body.includes('Coca-Cola Original 600 ml'))) throw new Error(`INVENTORY_NOT_READY:${body.slice(0,1800)}`);
+const bodyLower = body.toLowerCase();
+if (!(bodyLower.includes('control de existencias') && bodyLower.includes('abrir operaciones') && bodyLower.includes('coca-cola original 600 ml'))) throw new Error(`INVENTORY_NOT_READY:${body.slice(0,1800)}`);
 
 const opened = await evalv(`(() => {
-  const button=[...document.querySelectorAll('button')].find(el => (el.textContent||'').trim()==='Abrir operaciones');
+  const button=[...document.querySelectorAll('button')].find(el => (el.textContent||'').trim().toLowerCase()==='abrir operaciones');
   if (!button) return false;
   button.click();
   return true;
@@ -147,10 +149,11 @@ if (!opened) throw new Error('INVENTORY_OPERATIONS_REVEAL_BUTTON_MISSING');
 const openStarted = Date.now();
 while (Date.now() - openStarted < 15000) {
   body = String(await evalv("document.body ? document.body.innerText : ''") || '');
-  if (body.includes('Confirmar ajuste') && body.includes('Producto') && body.includes('Existencia final')) break;
+  const openLower = body.toLowerCase();
+  if (openLower.includes('confirmar ajuste') && openLower.includes('producto') && openLower.includes('existencia final')) break;
   await sleep(200);
 }
-if (!body.includes('Confirmar ajuste')) throw new Error(`INVENTORY_OPERATIONS_NOT_REVEALED:${body.slice(0,1800)}`);
+if (!body.toLowerCase().includes('confirmar ajuste')) throw new Error(`INVENTORY_OPERATIONS_NOT_REVEALED:${body.slice(0,1800)}`);
 await sleep(900);
 
 const meta = await evalv(`(() => {
