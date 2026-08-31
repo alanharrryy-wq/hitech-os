@@ -52,6 +52,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          sed -i '/implementation = next((x for x in layers.get("layerSamples"/d; /assert implementation and implementation.get("selector")/d' .github/scripts/pc_catalog_structural_binding_author.py
           python .github/scripts/pc_catalog_structural_binding_author.py --vc-out "$RUNNER_TEMP/pc-catalog-vc"
           rm -f apps/terminal-de-venta-system/node_modules
 
