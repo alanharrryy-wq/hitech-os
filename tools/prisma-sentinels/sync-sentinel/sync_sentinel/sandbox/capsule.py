@@ -115,11 +115,10 @@ class RuntimeCapsule:
             "createdAt": _now(),
             "sourceHead": self.source_sha,
             "worktreeHead": self.result.worktree_head,
-            "workspaceInstall": {
-                "command": "pnpm install --frozen-lockfile --ignore-scripts",
-                "ok": self.result.install_ok,
-                "returncode": install.get("returncode"),
-            },
+            # Preserve owner-by-owner frozen-install output. Evidence bundling performs
+            # sanitization later, so future dependency failures remain causal instead
+            # of collapsing to a bare return code.
+            "workspaceInstall": install,
             "dependencyResolution": dependencies,
             "ownership": {
                 "worktree": "sentinel-owned-temporary",

@@ -31,8 +31,8 @@ def authority_presence(repo: Path) -> Check:
 def sync_source_presence(repo: Path) -> Check:
     missing = [p.as_posix() for p in SYNC_SOURCE_PATHS if not (repo / p).is_file()]
     if missing:
-        return Check("sync_source_presence", Verdict.BLOCKED, "sync source evidence is incomplete", {"missing": missing})
-    return Check("sync_source_presence", Verdict.PASS, "Tablet↔PC canonical sync evidence paths are present")
+        return Check("sync_source_presence", Verdict.BLOCKED, "Tablet/PC sync or Mobile 3140 projection source evidence is incomplete", {"missing": missing})
+    return Check("sync_source_presence", Verdict.PASS, "Tablet/PC canonical sync and Mobile 3140 projection evidence paths are present")
 
 
 def toolchain_presence() -> Check:

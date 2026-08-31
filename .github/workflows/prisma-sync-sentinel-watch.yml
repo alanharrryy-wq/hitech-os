@@ -1,0 +1,256 @@
+name: PRISMA Sync Sentinel Watch
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 10 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('prisma-sync-sentinel-pr-{0}', github.event.pull_request.number) || github.event_name == 'push' && format('prisma-sync-sentinel-main-{0}', github.sha) || format('prisma-sync-sentinel-{0}', github.event_name) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  classify:
+    name: Classify sync impact
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      impact: ${{ steps.classify.outputs.impact }}
+      head: ${{ steps.classify.outputs.head }}
+      base: ${{ steps.classify.outputs.base }}
+    steps:
+      - name: Checkout exact event head
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - id: classify
+        name: Classify changed paths
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_BEFORE: ${{ github.event.before }}
+          EVENT_SHA: ${{ github.sha }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/sync-sentinel-classification.json"
+          event="$EVENT_NAME"
+          head="$EVENT_SHA"
+          base="${EVENT_BEFORE:-}"
+          if [[ "$event" == "pull_request" ]]; then
+            base="$PR_BASE_SHA"
+            head="$PR_HEAD_SHA"
+          elif [[ "$event" == "schedule" || "$event" == "workflow_dispatch" ]]; then
+            base="$head"
+          fi
+          python tools/prisma-sentinels/sync-sentinel/sync_sentinel/watch.py classify \
+            --repo . --event "$event" --base "$base" --head "$head" --output "$out"
+          python - "$out" "$GITHUB_OUTPUT" <<'PY'
+          import json,sys
+          data=json.load(open(sys.argv[1],encoding='utf-8'))
+          with open(sys.argv[2],'a',encoding='utf-8') as f:
+              f.write(f"impact={data['impact']}\n")
+              f.write(f"head={data['head']}\n")
+              f.write(f"base={data['base']}\n")
+          PY
+          cat "$out"
+
+      - name: Publish clean skip summary
+        if: steps.classify.outputs.impact == 'NONE'
+        shell: bash
+        run: |
+          {
+            echo '## PRISMA Sync Sentinel Watch'
+            echo
+            echo '**NO_SYNC_RELEVANCE** — changed paths do not intersect governed sync/Sentinel/Mobile owners.'
+            echo
+            echo "HEAD: \`${{ steps.classify.outputs.head }}\`"
+            echo
+            echo 'No runtime dependency islands were installed and no certify was launched.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preserve classification evidence
+        if: steps.classify.outputs.impact != 'NONE'
+        uses: actions/upload-artifact@v7
+        with:
+          name: prisma-sync-sentinel-classification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sync-sentinel-classification.json
+          if-no-files-found: error
+          retention-days: 30
+
+  sentinel:
+    name: Sentinel ${{ needs.classify.outputs.impact }}
+    needs: classify
+    if: needs.classify.outputs.impact != 'NONE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact certification head
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.classify.outputs.head }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - id: evidence_root
+        name: Prepare evidence root and exact classification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/sync-sentinel-watch/logs"
+          python tools/prisma-sentinels/sync-sentinel/sync_sentinel/watch.py classify \
+            --repo . --event "${{ github.event_name }}" \
+            --base "${{ needs.classify.outputs.base }}" \
+            --head "${{ needs.classify.outputs.head }}" \
+            --output "$RUNNER_TEMP/sync-sentinel-watch/classification.json" \
+            2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/classification.log"
+
+      - id: node_setup
+        name: Set up Node for Sentinel runtime
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - id: bootstrap
+        name: Activate canonical pnpm and verify toolchain
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            corepack enable
+            corepack prepare pnpm@9.15.0 --activate
+            python --version
+            node --version
+            pnpm --version
+            git --version
+          } 2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/bootstrap.log"
+
+      - id: selftest
+        name: Sentinel self-test
+        if: always() && steps.evidence_root.outcome == 'success' && steps.node_setup.outcome == 'success' && steps.bootstrap.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py self-test \
+            2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/self-test.log"
+
+      - id: scan
+        name: Sentinel preliminary scan
+        if: always() && steps.selftest.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py scan \
+            --repo . \
+            --expected-head "${{ needs.classify.outputs.head }}" \
+            --workers 18 \
+            --evidence-dir "$RUNNER_TEMP/sync-sentinel-watch/scan-evidence" \
+            2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/scan.log"
+
+      - id: diagnose
+        name: Sentinel diagnose
+        if: always() && needs.classify.outputs.impact == 'CERTIFY' && steps.selftest.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py diagnose \
+            --repo . \
+            --expected-head "${{ needs.classify.outputs.head }}" \
+            --evidence-dir "$RUNNER_TEMP/sync-sentinel-watch/diagnose-evidence" \
+            2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/diagnose.log"
+
+      - id: certify
+        name: Sentinel full Tablet PC Mobile certification
+        if: always() && needs.classify.outputs.impact == 'CERTIFY' && steps.diagnose.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python tools/prisma-sentinels/sync-sentinel/prisma_sync_sentinel.py certify \
+            --repo . \
+            --expected-head "${{ needs.classify.outputs.head }}" \
+            --workers 18 \
+            --evidence-dir "$RUNNER_TEMP/sync-sentinel-watch/certify-evidence" \
+            2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/certify.log"
+
+      - name: Write causal job summary
+        if: always() && steps.evidence_root.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/prisma-sentinels/sync-sentinel/sync_sentinel/watch.py summarize \
+            --classification "$RUNNER_TEMP/sync-sentinel-watch/classification.json" \
+            --logs-dir "$RUNNER_TEMP/sync-sentinel-watch/logs"
+
+      - name: Upload Sentinel evidence
+        if: always() && steps.evidence_root.outcome == 'success'
+        uses: actions/upload-artifact@v7
+        with:
+          name: prisma-sync-sentinel-${{ needs.classify.outputs.impact }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ needs.classify.outputs.head }}
+          path: ${{ runner.temp }}/sync-sentinel-watch/**
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce fail-closed result
+        if: always()
+        shell: bash
+        env:
+          IMPACT: ${{ needs.classify.outputs.impact }}
+          EVIDENCE_ROOT: ${{ steps.evidence_root.outcome }}
+          NODE_SETUP: ${{ steps.node_setup.outcome }}
+          BOOTSTRAP: ${{ steps.bootstrap.outcome }}
+          SELFTEST: ${{ steps.selftest.outcome }}
+          SCAN: ${{ steps.scan.outcome }}
+          DIAGNOSE: ${{ steps.diagnose.outcome }}
+          CERTIFY: ${{ steps.certify.outcome }}
+        run: |
+          set -euo pipefail
+          fail=0
+          [[ "$EVIDENCE_ROOT" == "success" ]] || { echo "FAIL evidence/classification outcome=$EVIDENCE_ROOT"; fail=1; }
+          [[ "$NODE_SETUP" == "success" ]] || { echo "FAIL node setup outcome=$NODE_SETUP"; fail=1; }
+          [[ "$BOOTSTRAP" == "success" ]] || { echo "FAIL bootstrap outcome=$BOOTSTRAP"; fail=1; }
+          [[ "$SELFTEST" == "success" ]] || { echo "FAIL self-test outcome=$SELFTEST"; fail=1; }
+          if [[ "$IMPACT" == "SCAN" ]]; then
+            [[ "$SCAN" == "success" ]] || { echo "FAIL scan outcome=$SCAN"; fail=1; }
+          elif [[ "$IMPACT" == "CERTIFY" ]]; then
+            if [[ "$SCAN" != "success" && "$SCAN" != "failure" ]]; then
+              echo "FAIL preliminary scan did not execute outcome=$SCAN"
+              fail=1
+            fi
+            [[ "$DIAGNOSE" == "success" ]] || { echo "FAIL diagnose outcome=$DIAGNOSE"; fail=1; }
+            [[ "$CERTIFY" == "success" ]] || { echo "FAIL certify outcome=$CERTIFY"; fail=1; }
+            if [[ "$SCAN" == "failure" && "$CERTIFY" == "success" ]]; then
+              echo "INFO preliminary scan was red; final certify passed only after canonical runtime-backed exact-signature reconciliation."
+            fi
+          fi
+          if [[ "$fail" -ne 0 ]]; then
+            echo "PRISMA Sync Sentinel Watch failed closed. See the job summary and retained artifact for causal evidence."
+            exit 1
+          fi
+          echo "PASS_SYNC_SENTINEL_WATCH_${IMPACT}"

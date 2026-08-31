@@ -10,10 +10,16 @@ const tempRoot = process.env.SYNC_SENTINEL_TEMP_ROOT;
 if (!readyFile || !token || !tempRoot) throw new Error("SYNC_SENTINEL_RUNTIME_ENV_MISSING");
 
 const importFile = async (rel: string) => import(pathToFileURL(path.join(pcAppRoot, rel)).href);
-const [{ prisma }, { persistSyncIngestPayload }, { exportPcCatalogDelta }] = await Promise.all([
+const [
+  { prisma },
+  { persistSyncIngestPayload },
+  { exportPcCatalogDelta },
+  { GET: getSalesControl },
+] = await Promise.all([
   importFile("src/server/prisma/client.ts"),
   importFile("src/server/services/sync-ingest.service.ts"),
   importFile("src/server/services/catalog-delta-export.service.ts"),
+  importFile("app/api/backoffice/sales-control/route.ts"),
 ]);
 
 const ids = {
@@ -29,7 +35,7 @@ const ids = {
   priceListItemId: "price_list_item_sync_sentinel",
 };
 
-type FaultMode = "online" | "ingest_unavailable";
+type FaultMode = "online" | "ingest_unavailable" | "mobile_read_unavailable";
 let faultMode: FaultMode = "online";
 
 async function seedPc() {
@@ -55,7 +61,7 @@ async function seedPc() {
 
 function json(res: http.ServerResponse, status: number, value: unknown) {
   const responseBody = JSON.stringify(value);
-  res.writeHead(status, { "content-type": "application/json", "content-length": Buffer.byteLength(responseBody) });
+  res.writeHead(status, { "content-type": "application/json", "content-length": Buffer.byteLength(responseBody), "cache-control": "no-store" });
   res.end(responseBody);
 }
 
@@ -64,6 +70,16 @@ async function body(req: http.IncomingMessage) {
   for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
   if (!chunks.length) return null;
   return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+}
+
+async function sendWebResponse(res: http.ServerResponse, response: Response) {
+  const bytes = Buffer.from(await response.arrayBuffer());
+  const headers: Record<string, string> = {};
+  response.headers.forEach((value, key) => { headers[key] = value; });
+  headers["content-length"] = String(bytes.length);
+  headers["cache-control"] = headers["cache-control"] || "no-store";
+  res.writeHead(response.status, headers);
+  res.end(bytes);
 }
 
 function ingestHttpStatus(result: any) {
@@ -79,7 +95,15 @@ await seedPc();
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url ?? "/", "http://127.0.0.1");
-    if (req.method === "GET" && url.pathname === "/api/health") return json(res, 200, { ok: true, source: "sync-sentinel-loopback-bridge", faultMode });
+    if (req.method === "GET" && url.pathname === "/api/health") {
+      if (faultMode === "mobile_read_unavailable") return json(res, 503, { ok: false, code: "SYNC_SENTINEL_PC_MOBILE_READ_UNAVAILABLE" });
+      return json(res, 200, { ok: true, source: "sync-sentinel-loopback-bridge", canonicalRuntime: "3130", faultMode });
+    }
+    if (req.method === "GET" && url.pathname === "/api/backoffice/sales-control") {
+      if (faultMode === "mobile_read_unavailable") return json(res, 503, { ok: false, code: "SYNC_SENTINEL_PC_MOBILE_READ_UNAVAILABLE" });
+      const request = new Request(`http://127.0.0.1${url.pathname}${url.search}`, { method: "GET", headers: { Accept: "application/json" } });
+      return sendWebResponse(res, await getSalesControl(request));
+    }
     if (req.method === "POST" && url.pathname === "/api/backoffice/sync/ingest") {
       if (faultMode === "ingest_unavailable") return json(res, 503, { ok: false, code: "SYNC_SENTINEL_PC_INGEST_UNAVAILABLE" });
       const payload = await body(req);
@@ -95,7 +119,7 @@ const server = http.createServer(async (req, res) => {
       if (!controlAuthorized(req)) return json(res, 403, { ok: false, code: "FORBIDDEN" });
       const payload = (await body(req)) ?? {};
       const requested = String(payload.mode || "online");
-      if (requested !== "online" && requested !== "ingest_unavailable") return json(res, 400, { ok: false, code: "INVALID_FAULT_MODE" });
+      if (!(["online", "ingest_unavailable", "mobile_read_unavailable"] as string[]).includes(requested)) return json(res, 400, { ok: false, code: "INVALID_FAULT_MODE" });
       faultMode = requested as FaultMode;
       return json(res, 200, { ok: true, faultMode });
     }
@@ -143,7 +167,7 @@ server.listen(0, "127.0.0.1", () => {
   const address = server.address();
   if (!address || typeof address === "string") throw new Error("SENTINEL_BRIDGE_ADDRESS_INVALID");
   fs.mkdirSync(path.dirname(readyFile), { recursive: true });
-  fs.writeFileSync(readyFile, JSON.stringify({ ready: true, pid: process.pid, port: address.port, businessId: ids.businessId, terminalId: ids.terminalId, storeId: ids.storeId, productId: ids.productId }, null, 2), "utf8");
+  fs.writeFileSync(readyFile, JSON.stringify({ ready: true, pid: process.pid, port: address.port, canonicalRuntime: "3130", businessId: ids.businessId, terminalId: ids.terminalId, storeId: ids.storeId, productId: ids.productId }, null, 2), "utf8");
   console.log(`SYNC_SENTINEL_PC_BRIDGE_READY port=${address.port}`);
 });
 

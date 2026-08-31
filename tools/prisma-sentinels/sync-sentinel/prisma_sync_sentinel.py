@@ -13,7 +13,7 @@ from sync_sentinel.safety import detect_repo
 
 
 def parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="PRISMA Sync Sentinel: fail-closed Tablet↔PC sync verification tooling")
+    p = argparse.ArgumentParser(description="PRISMA Sync Sentinel: fail-closed Tablet/PC/Mobile sync and projection verification tooling")
     p.add_argument("mode", choices=["scan", "diagnose", "doctor", "e2e", "certify", "self-test"])
     p.add_argument("--repo", default=None)
     p.add_argument("--expected-head", default=None)
@@ -43,6 +43,7 @@ def _simple_payload(report, status: str) -> dict:
         "status": status,
         "generatedAt": now_iso(),
         "repoHead": report.facts.get("repoHead"),
+        "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
         "productionCertified": False,
     }
 
@@ -54,7 +55,7 @@ def main() -> int:
     try:
         repo = detect_repo(args.repo)
     except Exception as exc:
-        print(json.dumps({"status": "BLOCKED_SYNC_SENTINEL", "error": str(exc)}, indent=2))
+        print(json.dumps({"status": "BLOCKED_SYNC_SENTINEL", "error": str(exc), "productionCertified": False}, indent=2))
         return 2
 
     evidence_dir = Path(args.evidence_dir).resolve() if args.evidence_dir else repo / "tools/_local/reports/sync-sentinel"
@@ -100,6 +101,7 @@ def main() -> int:
         "status": pass_token if success else f"{report.verdict.value}_{fail_suffix}",
         "repoHead": report.facts.get("repoHead") or args.expected_head,
         "evidenceBundle": str(bundle) if bundle else None,
+        "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
         "productionCertified": False,
     }
     print(json.dumps(final, indent=2))

@@ -21,17 +21,21 @@ def _run(cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, timeou
 
 
 def install_workspace(worktree: Path) -> dict[str, object]:
-    """Install every canonical dependency island inside the disposable capsule.
+    """Install every canonical dependency owner inside the disposable capsule.
 
-    The repository root workspace does not include the deeply nested PC/Tablet app
-    package roots. Those apps own their own package.json + pnpm-lock.yaml, so a root
-    install alone cannot prove that @prisma/client/prisma resolve from the package
-    that actually owns them. All installs are frozen and script-disabled; no manifest
-    or lockfile mutation is permitted.
+    PC and Tablet keep their historical package-local frozen lockfile checks. Mobile
+    does *not* own a package-local lockfile: it is an importer of the canonical
+    `apps/terminal-de-venta-system` pnpm workspace. Therefore Mobile runtime
+    dependencies must be materialized from that Terminal workspace lockfile rather
+    than inventing a nonexistent Mobile dependency island.
+
+    All installs are frozen and script-disabled. No manifest or lockfile mutation is
+    allowed. The root install is retained for Sentinel tooling such as `tsx`.
     """
     terminal = worktree / APP_REL
     targets = [
         ("repo_root", worktree),
+        ("terminal_workspace_mobile_owner", terminal),
         ("pc_app", terminal / "products/pc/app"),
         ("tablet_app", terminal / "products/tablet/app"),
     ]
@@ -64,6 +68,8 @@ def install_workspace(worktree: Path) -> dict[str, object]:
             {"label": label, "root": root.relative_to(worktree).as_posix() if root != worktree else "."}
             for label, root in targets
         ],
+        "canonicalRuntimes": {"tablet": 3120, "pc": 3130, "mobile": 3140},
+        "mobileDependencyOwner": "apps/terminal-de-venta-system/pnpm-lock.yaml",
         "steps": steps,
     }
 

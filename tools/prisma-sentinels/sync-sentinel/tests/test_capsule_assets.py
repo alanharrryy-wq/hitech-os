@@ -35,27 +35,35 @@ class CapsuleAssetTests(unittest.TestCase):
             self.assertIn('output   = "../../.generated/prisma-client"', rendered)
             self.assertNotEqual(target, source)
 
-    def test_o_fixture_registry_contains_executable_positive_and_a_through_l_cases(self):
+    def test_o_fixture_registry_contains_tablet_pc_and_mobile_runtime_matrix(self):
         registry = load_fixture_registry()
         ids = {item["fixtureId"] for item in registry["fixtures"]}
         self.assertIn("SYNC.JOURNEY.A.SALE_ACK.V1", ids)
         self.assertIn("SYNC.JOURNEY.B.CATALOG_DELTA.V1", ids)
         for letter in "ABCDEFGHIJKL":
             self.assertTrue(any(f"SYNC.NEG.{letter}." in fixture_id for fixture_id in ids), letter)
+        self.assertIn("SYNC.MOBILE.M1.READ_PROJECTION.V1", ids)
+        self.assertIn("SYNC.MOBILE.M2.CANONICAL_CHANGE_REFRESH.V1", ids)
+        self.assertIn("SYNC.MOBILE.M3.MUTATION.V1", ids)
+        for number in range(1, 13):
+            self.assertTrue(any(f"SYNC.MOBILE.N{number}." in fixture_id for fixture_id in ids), number)
         readiness = mandatory_fixture_readiness(registry)
-        self.assertEqual(readiness["total"], 14)
-        self.assertEqual(readiness["implemented"], 14)
+        self.assertEqual(readiness["total"], 34)
+        self.assertEqual(readiness["implemented"], 34)
         self.assertEqual(readiness["missingImplementations"], [])
         self.assertEqual(readiness["invalidDefinitions"], [])
-        self.assertTrue(readiness["ready"], "registry may be ready only because A-L now have real runtime execution in negative_runner.mts")
+        self.assertTrue(readiness["ready"])
 
-    def test_p_runtime_registry_is_extensible_but_future_targets_are_not_certified(self):
+    def test_p_runtime_registry_has_mobile_3140_as_active_read_side_target(self):
         root = Path(__file__).resolve().parents[1]
         data = json.loads((root / "contracts/runtime-registry.v1.json").read_text(encoding="utf-8"))
-        roles = {item["role"]: item["status"] for item in data["runtimes"]}
-        self.assertEqual(roles["tablet"], "ACTIVE_CERTIFICATION_TARGET")
-        self.assertEqual(roles["pc"], "ACTIVE_CERTIFICATION_TARGET")
-        self.assertEqual(roles["mobile"], "FUTURE_ADAPTER_NOT_CERTIFIED")
+        by_role = {item["role"]: item for item in data["runtimes"]}
+        self.assertEqual(by_role["tablet"]["status"], "ACTIVE_CERTIFICATION_TARGET")
+        self.assertEqual(by_role["pc"]["status"], "ACTIVE_CERTIFICATION_TARGET")
+        self.assertEqual(by_role["mobile"]["status"], "ACTIVE_CERTIFICATION_TARGET")
+        self.assertEqual(by_role["mobile"]["canonicalPort"], 3140)
+        self.assertEqual(by_role["mobile"]["phase"], "read-only")
+        self.assertIn("NOT_APPLICABLE", by_role["mobile"]["mutationJourney"])
         self.assertFalse(data["productionCertified"])
 
 
