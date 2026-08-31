@@ -120,9 +120,9 @@ def _stage_payload(log_path: Path) -> dict[str, Any] | None:
         return None
     text = log_path.read_text(encoding="utf-8", errors="replace")
     candidates = _json_objects(text)
-    # A stage report may contain nested check objects that also have a `verdict`.
-    # Prefer the enclosing report contract (`status` or `checks`) before considering
-    # a lone check. Otherwise a final nested PASS can mask the parent FAIL.
+    # Reports contain nested checks that themselves have a verdict. Prefer an
+    # enclosing report (`status` or `checks`) so a trailing nested PASS cannot
+    # mask a parent FAIL.
     for value in reversed(candidates):
         if "status" in value or "checks" in value:
             return value
@@ -161,12 +161,18 @@ def _stage_status(stage: str, log_path: Path, payload: dict[str, Any] | None) ->
     return str((payload or {}).get("status") or (payload or {}).get("verdict") or "UNKNOWN")
 
 
+def _passed(status: str) -> bool:
+    upper = status.upper()
+    return upper == "PASS" or upper.startswith("PASS_")
+
+
 def build_summary(classification: dict[str, Any], logs_dir: Path) -> str:
     stage_names = ["self-test", "scan", "diagnose", "certify"]
+    impact = str(classification.get("impact", "UNKNOWN")).upper()
     lines = [
         "## PRISMA Sync Sentinel Watch",
         "",
-        f"- **Impact:** `{classification.get('impact', 'UNKNOWN')}`",
+        f"- **Impact:** `{impact}`",
         f"- **HEAD:** `{classification.get('head', 'unknown')}`",
         f"- **Base:** `{classification.get('base', 'unknown')}`",
         f"- **Event:** `{classification.get('event', 'unknown')}`",
@@ -178,35 +184,58 @@ def build_summary(classification: dict[str, Any], logs_dir: Path) -> str:
         lines.extend(["", "### Files that woke Sentinel", ""])
         lines.extend(f"- `{path}`" for path in wake[:80])
 
-    first_stage_failure: tuple[str, dict[str, Any] | None, Path] | None = None
-    stage_rows: list[tuple[str, str, dict[str, Any] | None]] = []
+    stage_rows: list[tuple[str, str, dict[str, Any] | None, Path | None]] = []
+    by_stage: dict[str, tuple[str, dict[str, Any] | None, Path | None]] = {}
     for stage in stage_names:
         log_path = logs_dir / f"{stage}.log"
         if not log_path.is_file():
-            stage_rows.append((stage, "NOT_RUN", None))
-            continue
-        payload = _stage_payload(log_path)
-        status = _stage_status(stage, log_path, payload)
-        upper = status.upper()
-        stage_rows.append((stage, status, payload))
-        if first_stage_failure is None and not (upper.startswith("PASS") or upper == "PASS"):
-            first_stage_failure = (stage, payload, log_path)
+            row = (stage, "NOT_RUN", None, None)
+        else:
+            payload = _stage_payload(log_path)
+            row = (stage, _stage_status(stage, log_path, payload), payload, log_path)
+        stage_rows.append(row)
+        by_stage[stage] = (row[1], row[2], row[3])
 
     lines.extend(["", "### Stage timeline", "", "| Stage | Result |", "|---|---|"])
-    for stage, status, _ in stage_rows:
-        lines.append(f"| `{stage}` | `{_sanitize(status)}` |")
+    for stage, status, _, _ in stage_rows:
+        label = "preliminary" if stage == "scan" and impact == "CERTIFY" else stage
+        lines.append(f"| `{label}` | `{_sanitize(status)}` |")
 
-    if first_stage_failure:
-        stage, payload, log_path = first_stage_failure
-        lines.extend(["", "### Causal failure localization", "", f"- **Failed stage:** `{stage}`"])
+    # In CERTIFY mode the raw scan is deliberately preliminary. The canonical
+    # certify command re-runs those probes and may reconcile only exact known
+    # baseline signatures after stronger real-code runtime proof. Therefore a
+    # preliminary red scan is never hidden, but it is not the final verdict if
+    # runtime-backed certify succeeds.
+    failure_stage: str | None = None
+    if impact == "CERTIFY":
+        for stage in ("self-test", "diagnose", "certify"):
+            status = by_stage[stage][0]
+            if status != "NOT_RUN" and not _passed(status):
+                failure_stage = stage
+                break
+        if failure_stage is None and by_stage["certify"][0] == "NOT_RUN":
+            failure_stage = "certify"
+    elif impact == "SCAN":
+        for stage in ("self-test", "scan"):
+            status = by_stage[stage][0]
+            if status != "NOT_RUN" and not _passed(status):
+                failure_stage = stage
+                break
+        if failure_stage is None and by_stage["scan"][0] == "NOT_RUN":
+            failure_stage = "scan"
+
+    if failure_stage:
+        status, payload, log_path = by_stage[failure_stage]
+        lines.extend(["", "### Causal failure localization", "", f"- **Failed stage:** `{failure_stage}`"])
         if payload:
             passed, failed, not_established = _first_failed_check(payload)
             if passed:
                 lines.append(f"- **Passed before failure:** `{', '.join(passed)}`")
             if failed:
                 lines.append(f"- **Fault zone/check:** `{_sanitize(str(failed.get('id') or 'UNKNOWN'))}`")
-                lines.append(f"- **Verdict:** `{_sanitize(str(failed.get('verdict') or 'UNKNOWN'))}`")
-                lines.append(f"- **Cause:** {_sanitize(str(failed.get('summary') or failed.get('message') or 'No structured cause'))}")
+                lines.append(f"- **Verdict:** `{_sanitize(str(failed.get('verdict') or status or 'UNKNOWN'))}`")
+                cause = failed.get("detail") or failed.get("summary") or failed.get("message") or "No structured cause"
+                lines.append(f"- **Cause:** {_sanitize(str(cause))}")
             if not_established:
                 lines.append(f"- **Not established after failure:** `{', '.join(not_established)}`")
             facts = payload.get("facts") if isinstance(payload.get("facts"), dict) else {}
@@ -216,10 +245,18 @@ def build_summary(classification: dict[str, Any], logs_dir: Path) -> str:
                     lines.append(f"- **{key}:** `{value}`")
             if payload.get("secretFindings") is not None:
                 lines.append(f"- **secretFindings:** `{payload.get('secretFindings')}`")
-        else:
+        elif log_path is not None:
             tail = "\n".join(log_path.read_text(encoding="utf-8", errors="replace").splitlines()[-20:])
             lines.extend(["- **Fault zone/check:** `UNSTRUCTURED_STAGE_FAILURE`", "", "```text", _sanitize(tail), "```"])
+        else:
+            lines.append("- **Cause:** required stage did not run; prerequisite outcome is retained in the workflow evidence.")
     else:
+        scan_status = by_stage["scan"][0]
+        if impact == "CERTIFY" and scan_status != "NOT_RUN" and not _passed(scan_status):
+            lines.extend([
+                "",
+                "Preliminary scan remained red in retained evidence. Final PASS is valid only because `certify` re-ran the probes and passed its strict runtime-backed exact-signature reconciliation.",
+            ])
         lines.extend(["", "PASS is intentionally quiet: evidence is retained without opening issues or posting automated PR noise."])
     return "\n".join(lines) + "\n"
 
