@@ -37,15 +37,19 @@ jobs:
       - name: Checkout governed branch
         uses: actions/checkout@v6
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           persist-credentials: false
 
       - name: Classify evidence phase and scope
         id: meta
         shell: bash
+        env:
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
-          head="$(git rev-parse HEAD)"
+          head="$PR_HEAD"
+          test "$(git rev-parse HEAD)" = "$head"
           test "$(git merge-base "$CERTIFIED_BASE" "$head")" = "$CERTIFIED_BASE"
           changed="$(git diff --name-only "$CERTIFIED_BASE..$head")"
           printf '%s\n' "$changed" > changed-files.txt
