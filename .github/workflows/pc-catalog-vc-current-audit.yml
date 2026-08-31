@@ -1,0 +1,135 @@
+name: PC Catalog Visual Control Current Audit
+
+on:
+  push:
+    branches:
+      - audit/pc-catalog-vc-20260831
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  visual-control-current:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install parser dependency in isolated temp prefix
+        shell: bash
+        run: |
+          set -euo pipefail
+          PARSER_ROOT="$RUNNER_TEMP/prisma-visual-parser"
+          mkdir -p "$PARSER_ROOT"
+          npm install --prefix "$PARSER_ROOT" --package-lock=false --ignore-scripts postcss@8
+          APP_ROOT="$GITHUB_WORKSPACE/apps/terminal-de-venta-system"
+          test ! -e "$APP_ROOT/node_modules"
+          ln -s "$PARSER_ROOT/node_modules" "$APP_ROOT/node_modules"
+          cd "$APP_ROOT"
+          node --input-type=module -e "import('postcss').then(m => console.log('POSTCSS_OK=' + !!m.default))"
+
+      - name: Build current PC-only Visual Control evidence
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pc-catalog-vc-current"
+          mkdir -p "$OUT"
+          node tools/quality/ui-visual-control.mjs visual-control:report --surface pc --output-root "$OUT"
+          echo "VISUAL_OUT=$OUT" >> "$GITHUB_ENV"
+
+      - name: Extract exact catalog workspace coordinates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, pathlib
+          out = pathlib.Path(os.environ['VISUAL_OUT'])
+          vc = out / 'visual-control'
+          def load(name):
+              return json.loads((vc / name).read_text(encoding='utf-8'))
+          layers = load('layers.json')
+          slots = load('editable-slots.json')
+          owners = load('owners.json')
+          components = load('components.json')
+          routes = load('routes.json')
+          risks = load('risks.json')
+          selector = '.workspace'
+          css = 'products/pc/app/components/catalog/product-media-workspace.module.css'
+          component_path = 'products/pc/app/components/catalog/product-media-workspace.tsx'
+          layer_rows = [x for x in [*layers.get('layerSamples', []), *layers.get('certifiedLayers', [])] if x.get('file') == css and x.get('selector') == selector]
+          all_layer_rows = []
+          # Compact output may sample raw layers; derive exact deterministic implementation ID and preserve evidence counts.
+          expected_impl = 'products.pc.app.components.catalog.product.media.workspace.module.css.workspace'
+          slot_rows = [x for x in slots.get('slotUnitSamples', []) if x.get('slot_unit_id') == 'pc.any.products.pc.app.components.catalog.product.media.workspace.module.css.workspace.layer']
+          component_rows = [x for x in components.get('components', []) if x.get('path') == component_path]
+          css_owner_rows = [x for x in owners.get('cssOwnerSamples', []) if x.get('file') == css]
+          region_rows = [x for x in owners.get('regionOwnerSamples', []) if x.get('region_id') in {'pc.catalog.route.main-content','pc.catalog'}]
+          route_rows = [x for x in routes.get('routes', []) if x.get('route_id') == 'pc.catalog.route']
+          summary = {
+              'status': risks.get('status'),
+              'repoHead': layers.get('repoHead') or routes.get('repoHead'),
+              'target': {
+                  'routeId': 'pc.catalog.route',
+                  'regionId': 'pc.catalog.route.main-content',
+                  'componentUiId': 'products.pc.app.components.catalog.product.media.workspace.tsx',
+                  'ownerId': 'products.pc.app.components.catalog.product.media.workspace.tsx',
+                  'ownerCssId': 'products.pc.app.components.catalog.product.media.workspace.module.css',
+                  'selector': selector,
+                  'implementationLayerId': expected_impl,
+                  'slotId': 'pc.any.products.pc.app.components.catalog.product.media.workspace.module.css.workspace.layer'
+              },
+              'matches': {
+                  'layerSampleOrCertified': layer_rows,
+                  'slot': slot_rows,
+                  'component': component_rows,
+                  'cssOwner': css_owner_rows,
+                  'region': region_rows,
+                  'route': route_rows
+              },
+              'counts': {
+                  'routeCount': routes.get('routeCount'),
+                  'componentCount': components.get('componentCount'),
+                  'cssOwnerCount': owners.get('cssOwnerCount'),
+                  'regionOwnerCount': owners.get('regionOwnerCount'),
+                  'editableSlotCount': slots.get('editableSlotCount'),
+                  'slotUnitCount': slots.get('slotUnitCount'),
+                  'layerCount': layers.get('layerCount'),
+                  'certifiedLayerCount': layers.get('certifiedLayerCount'),
+                  'layerCertificationErrorCount': layers.get('layerCertificationErrorCount'),
+                  'blockerCount': risks.get('blockerCount'),
+                  'warningCount': risks.get('warningCount'),
+                  'activeImportantCount': risks.get('activeImportantCount')
+              },
+              'hardTruth': 'Read-only current-head PC source evidence. Does not authorize runtime/product mutation.'
+          }
+          (out / 'PC_CATALOG_EXACT_COORDINATES.json').write_text(json.dumps(summary, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Prove repo product and authority were not mutated
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f node_modules
+          git status --short
+          test -z "$(git status --short -- products/pc .prisma-ui .governance)"
+
+      - name: Upload current PC catalog evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pc-catalog-vc-current-${{ github.sha }}
+          path: ${{ runner.temp }}/pc-catalog-vc-current/**
+          if-no-files-found: error
+          retention-days: 14
