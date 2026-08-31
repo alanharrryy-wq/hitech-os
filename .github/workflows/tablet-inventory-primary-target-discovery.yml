@@ -38,6 +38,15 @@ jobs:
             echo 'BLOCKED_PRODUCT_ALREADY_MUTATED_BEFORE_TARGET_DISCOVERY'; exit 1
           fi
 
+      - name: Install canonical Visual Control parser dependencies without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          corepack enable
+          corepack prepare pnpm@9.15.0 --activate
+          pnpm -C apps/terminal-de-venta-system install --frozen-lockfile --ignore-scripts
+          node -e "import('postcss').then(m=>{if(!m.default&&!m.parse)process.exit(1);console.log('PASS_POSTCSS_RESOLVED')})"
+
       - name: Inject selector into runner-only canonical preview and project it
         shell: bash
         run: |
@@ -45,7 +54,7 @@ jobs:
           cp "$CANONICAL_CSS" "$RUNNER_TEMP/canonical-before.css"
           python - "$CANONICAL_CSS" <<'PY'
           from pathlib import Path
-          import os,sys
+          import sys
           p=Path(sys.argv[1]); text=p.read_text(encoding='utf-8')
           marker='PRISMA_INVENTORY_PRIMARY_TARGET_DISCOVERY_ONLY'
           if marker in text: raise SystemExit('DISCOVERY_MARKER_ALREADY_PRESENT')
@@ -78,11 +87,12 @@ jobs:
           impl=matches[0]['layer_id']
           direct=[x for x in slots.get('slotUnitSamples',[]) if x.get('layer_id')==impl or x.get('implementation_layer_id')==impl or x.get('selector')==selector]
           if len(direct)!=1:
-              # Current generator names a layer slot from the implementation layer; prove by exact file/selector when compact samples expose it differently.
               direct=[x for x in slots.get('slotUnitSamples',[]) if x.get('file')==product and x.get('selector')==selector]
-          if len(direct)!=1: raise SystemExit(f'EXACT_SLOT_CARDINALITY:{len(direct)}')
+          if len(direct)!=1:
+              sample=[x for x in slots.get('slotUnitSamples',[]) if str(x).find(impl)>=0][:8]
+              raise SystemExit('EXACT_SLOT_CARDINALITY:'+str(len(direct))+':'+json.dumps(sample,ensure_ascii=False))
           slot=direct[0].get('slot_unit_id') or direct[0].get('slotId') or direct[0].get('id')
-          if not slot: raise SystemExit('EXACT_SLOT_ID_MISSING')
+          if not slot: raise SystemExit('EXACT_SLOT_ID_MISSING:'+json.dumps(direct[0]))
           owner_component='products.tablet.app.components.inventory.inventory.operations.workspace.tsx'
           region='tablet.inventory.route.main-content'
           owner_ok=any(x.get('component_id')==owner_component for x in owners.get('componentOwnerSamples',[]))
