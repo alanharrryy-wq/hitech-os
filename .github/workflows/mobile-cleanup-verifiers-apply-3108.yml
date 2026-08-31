@@ -295,11 +295,29 @@ jobs:
             pnpm -C "$mobile" build
             printf '%s\n' 'PASS_BUILD' > "$RUNNER_TEMP/BUILD_STATUS.txt"
           else
-            test "$candidate_rc" -ne 0
             test -s "$RUNNER_TEMP/BASELINE_TYPECHECK_DIAGNOSTICS.txt"
-            cmp -s "$RUNNER_TEMP/BASELINE_TYPECHECK_DIAGNOSTICS.txt" "$RUNNER_TEMP/CANDIDATE_TYPECHECK_DIAGNOSTICS.txt"
-            printf '%s\n' 'TYPECHECK_BLOCKED_BY_IDENTICAL_PREEXISTING_DIAGNOSTICS' > "$RUNNER_TEMP/TYPECHECK_STATUS.txt"
-            printf '%s\n' 'BUILD_SKIPPED_PREEXISTING_TYPECHECK_BLOCKER' > "$RUNNER_TEMP/BUILD_STATUS.txt"
+            python - "$RUNNER_TEMP/BASELINE_TYPECHECK_DIAGNOSTICS.txt" "$RUNNER_TEMP/CANDIDATE_TYPECHECK_DIAGNOSTICS.txt" <<'PY'
+          from pathlib import Path
+          import sys
+          baseline = set(Path(sys.argv[1]).read_text(encoding='utf-8').splitlines())
+          candidate = set(Path(sys.argv[2]).read_text(encoding='utf-8').splitlines())
+          new = sorted(candidate - baseline)
+          if new:
+              print('NEW_TYPESCRIPT_DIAGNOSTICS_INTRODUCED', file=sys.stderr)
+              print('\n'.join(new), file=sys.stderr)
+              raise SystemExit(1)
+          print(f'BASELINE_TS_DIAGNOSTICS={len(baseline)}')
+          print(f'CANDIDATE_TS_DIAGNOSTICS={len(candidate)}')
+          print(f'REMOVED_PREEXISTING_TS_DIAGNOSTICS={len(baseline - candidate)}')
+          PY
+            if [ "$candidate_rc" -eq 0 ]; then
+              printf '%s\n' 'PASS_TYPECHECK_AFTER_CLEANUP' > "$RUNNER_TEMP/TYPECHECK_STATUS.txt"
+              pnpm -C "$mobile" build
+              printf '%s\n' 'PASS_BUILD' > "$RUNNER_TEMP/BUILD_STATUS.txt"
+            else
+              printf '%s\n' 'TYPECHECK_BLOCKED_BY_PREEXISTING_DIAGNOSTICS_NO_NEW_ERRORS' > "$RUNNER_TEMP/TYPECHECK_STATUS.txt"
+              printf '%s\n' 'BUILD_SKIPPED_PREEXISTING_TYPECHECK_BLOCKER' > "$RUNNER_TEMP/BUILD_STATUS.txt"
+            fi
           fi
 
       - name: Final scope guard and self-remove carrier
