@@ -88,7 +88,7 @@ jobs:
             echo 'No runtime dependency islands were installed and no certify was launched.'
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Preserve classification for downstream evidence
+      - name: Preserve classification evidence
         if: steps.classify.outputs.impact != 'NONE'
         uses: actions/upload-artifact@v7
         with:
@@ -114,20 +114,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-          cache: 'pnpm'
-
-      - name: Activate canonical pnpm
-        shell: bash
-        run: |
-          set -euo pipefail
-          corepack enable
-          corepack prepare pnpm@9.15.0 --activate
-          pnpm --version
-
-      - name: Prepare evidence root
+      - id: evidence_root
+        name: Prepare evidence root and exact classification
         shell: bash
         run: |
           set -euo pipefail
@@ -136,10 +124,33 @@ jobs:
             --repo . --event "${{ github.event_name }}" \
             --base "${{ needs.classify.outputs.base }}" \
             --head "${{ needs.classify.outputs.head }}" \
-            --output "$RUNNER_TEMP/sync-sentinel-watch/classification.json"
+            --output "$RUNNER_TEMP/sync-sentinel-watch/classification.json" \
+            2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/classification.log"
+
+      - id: node_setup
+        name: Set up Node for Sentinel runtime
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - id: bootstrap
+        name: Activate canonical pnpm and verify toolchain
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            corepack enable
+            corepack prepare pnpm@9.15.0 --activate
+            python --version
+            node --version
+            pnpm --version
+            git --version
+          } 2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/bootstrap.log"
 
       - id: selftest
         name: Sentinel self-test
+        if: always() && steps.evidence_root.outcome == 'success' && steps.node_setup.outcome == 'success' && steps.bootstrap.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -149,6 +160,7 @@ jobs:
 
       - id: scan
         name: Sentinel scan
+        if: always() && steps.selftest.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -162,7 +174,7 @@ jobs:
 
       - id: diagnose
         name: Sentinel diagnose
-        if: always() && needs.classify.outputs.impact == 'CERTIFY'
+        if: always() && needs.classify.outputs.impact == 'CERTIFY' && steps.scan.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -175,7 +187,7 @@ jobs:
 
       - id: certify
         name: Sentinel full Tablet PC Mobile certification
-        if: always() && needs.classify.outputs.impact == 'CERTIFY' && steps.selftest.outcome == 'success' && steps.scan.outcome == 'success' && steps.diagnose.outcome == 'success'
+        if: always() && needs.classify.outputs.impact == 'CERTIFY' && steps.diagnose.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -188,7 +200,7 @@ jobs:
             2>&1 | tee "$RUNNER_TEMP/sync-sentinel-watch/logs/certify.log"
 
       - name: Write causal job summary
-        if: always()
+        if: always() && steps.evidence_root.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
@@ -197,7 +209,7 @@ jobs:
             --logs-dir "$RUNNER_TEMP/sync-sentinel-watch/logs"
 
       - name: Upload Sentinel evidence
-        if: always()
+        if: always() && steps.evidence_root.outcome == 'success'
         uses: actions/upload-artifact@v7
         with:
           name: prisma-sync-sentinel-${{ needs.classify.outputs.impact }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ needs.classify.outputs.head }}
@@ -210,6 +222,9 @@ jobs:
         shell: bash
         env:
           IMPACT: ${{ needs.classify.outputs.impact }}
+          EVIDENCE_ROOT: ${{ steps.evidence_root.outcome }}
+          NODE_SETUP: ${{ steps.node_setup.outcome }}
+          BOOTSTRAP: ${{ steps.bootstrap.outcome }}
           SELFTEST: ${{ steps.selftest.outcome }}
           SCAN: ${{ steps.scan.outcome }}
           DIAGNOSE: ${{ steps.diagnose.outcome }}
@@ -217,6 +232,9 @@ jobs:
         run: |
           set -euo pipefail
           fail=0
+          [[ "$EVIDENCE_ROOT" == "success" ]] || { echo "FAIL evidence/classification outcome=$EVIDENCE_ROOT"; fail=1; }
+          [[ "$NODE_SETUP" == "success" ]] || { echo "FAIL node setup outcome=$NODE_SETUP"; fail=1; }
+          [[ "$BOOTSTRAP" == "success" ]] || { echo "FAIL bootstrap outcome=$BOOTSTRAP"; fail=1; }
           [[ "$SELFTEST" == "success" ]] || { echo "FAIL self-test outcome=$SELFTEST"; fail=1; }
           [[ "$SCAN" == "success" ]] || { echo "FAIL scan outcome=$SCAN"; fail=1; }
           if [[ "$IMPACT" == "CERTIFY" ]]; then
