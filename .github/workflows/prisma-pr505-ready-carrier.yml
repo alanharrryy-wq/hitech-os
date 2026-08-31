@@ -1,0 +1,46 @@
+name: PRISMA PR505 Ready Carrier
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/prisma-pr505-ready-carrier.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  TARGET_PR: '505'
+  EXPECTED_HEAD: '56711a2970f7b90afb9f6e2f70338b205c2fee70'
+  EXPECTED_MAIN: '65f45505b66abf7d22ce6cd07a7396ea5a887ccf'
+
+jobs:
+  mark-ready:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Verify exact target and mark ready
+        shell: bash
+        run: |
+          set -euo pipefail
+          main_sha="$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
+          target_head="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$TARGET_PR" --jq '.head.sha')"
+          target_draft="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$TARGET_PR" --jq '.draft')"
+          test "$main_sha" = "$EXPECTED_MAIN"
+          test "$target_head" = "$EXPECTED_HEAD"
+          test "$target_draft" = "true"
+          node_id="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$TARGET_PR" --jq '.node_id')"
+          gh api graphql \
+            -f query='mutation($id:ID!){markPullRequestReadyForReview(input:{pullRequestId:$id}){pullRequest{number isDraft headRefOid}}}' \
+            -f id="$node_id" > "$RUNNER_TEMP/ready-result.json"
+          cat "$RUNNER_TEMP/ready-result.json"
+          python - "$RUNNER_TEMP/ready-result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))['data']['markPullRequestReadyForReview']['pullRequest']
+          assert d['number'] == 505, d
+          assert d['isDraft'] is False, d
+          assert d['headRefOid'] == '56711a2970f7b90afb9f6e2f70338b205c2fee70', d
+          print('PASS_PR505_READY_EXACT_HEAD')
+          PY
