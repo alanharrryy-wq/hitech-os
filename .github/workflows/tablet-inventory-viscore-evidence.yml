@@ -7,6 +7,7 @@ on:
       - '.github/workflows/tablet-inventory-viscore-evidence.yml'
       - '.github/evidence/tablet-inventory-viscore-capture.mjs'
       - 'prisma-html/authority/rifat/tablet/runtime-sources/modules/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css'
+      - 'apps/terminal-de-venta-system/products/tablet/app/app/inventory/page.tsx'
       - 'apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/catalog-stock-selling-assist-screen.tsx'
       - 'apps/terminal-de-venta-system/products/tablet/app/components/inventory/inventory-operations-workspace.tsx'
       - 'apps/terminal-de-venta-system/config/prisma-visual/identity-layer-certifications.registry.json'
@@ -53,7 +54,7 @@ jobs:
           test "$(git merge-base "$CERTIFIED_BASE" "$head")" = "$CERTIFIED_BASE"
           changed="$(git diff --name-only "$CERTIFIED_BASE..$head")"
           printf '%s\n' "$changed" > changed-files.txt
-          if printf '%s\n' "$changed" | grep -Eq '^(prisma-html/authority/rifat/|apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/|apps/terminal-de-venta-system/config/prisma-visual/)'; then
+          if printf '%s\n' "$changed" | grep -Eq '^(prisma-html/authority/rifat/|apps/terminal-de-venta-system/products/tablet/app/app/inventory/|apps/terminal-de-venta-system/products/tablet/app/components/catalog-stock-selling-assist/|apps/terminal-de-venta-system/config/prisma-visual/)'; then
             phase=AFTER
           else
             phase=BEFORE
@@ -74,6 +75,23 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
+
+      - name: Project canonical Tablet visual authority
+        shell: bash
+        env:
+          AUTHORITY_COMMIT: ${{ steps.meta.outputs.head }}
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit "$AUTHORITY_COMMIT" 2>&1 | tee "$EVIDENCE_DIR/rifat-projection.log"
+          python prisma-html/tools/generate_tablet_visual_runtime.py --authority-commit "$AUTHORITY_COMMIT" --check 2>&1 | tee "$EVIDENCE_DIR/rifat-projection-check.log"
+          grep -Fq '"status": "PASS"' "$EVIDENCE_DIR/rifat-projection.log"
+          grep -Fq '"status": "PASS"' "$EVIDENCE_DIR/rifat-projection-check.log"
+          grep -Fq '[data-prisma-route="/inventory"] .heroCard' "$APP_ROOT/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css"
+          if grep -Fq '!important' "$APP_ROOT/components/catalog-stock-selling-assist/catalog-stock-selling-assist.module.css"; then
+            echo 'BLOCKED_IMPORTANT_IN_PROJECTED_INVENTORY_CSS'
+            exit 1
+          fi
+          echo 'PASS_RIFAT_TABLET_INVENTORY_PROJECTED' > "$EVIDENCE_DIR/rifat-projection-result.txt"
 
       - name: Install Tablet without lifecycle scripts
         shell: bash
