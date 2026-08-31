@@ -63,7 +63,7 @@ jobs:
           test -z "$(git diff --name-only HEAD -- apps/terminal-de-venta-system/products/pc/app || true)"
           test -z "$(git diff --name-only HEAD -- apps/terminal-de-venta-system/products/tablet apps/terminal-de-venta-system/products/mobile apps/terminal-de-venta-system/products/chart-lab apps/terminal-de-venta-system/products/web || true)"
           git rm .github/workflows/pc-catalog-structural-binding-author.yml
-          git rm .github/scripts/pc_catalog_structural_binding_author.py
+          git rm -f .github/scripts/pc_catalog_structural_binding_author.py
           git add \
             apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs \
             apps/terminal-de-venta-system/config/prisma-visual/identity-layer-certifications.registry.json \
