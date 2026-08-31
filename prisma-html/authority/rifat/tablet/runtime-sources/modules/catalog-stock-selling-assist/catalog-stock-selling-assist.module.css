@@ -488,7 +488,15 @@
     transform: translateY(-1px);
     filter: brightness(1.04);
   }
-  [data-prisma-route="/inventory"] :where(button, a, summary):focus-visible {
+  [data-prisma-route="/inventory"] .primaryAction:focus-visible,
+  [data-prisma-route="/inventory"] .secondaryAction:focus-visible,
+  [data-prisma-route="/inventory"] .ghostAction:focus-visible,
+  [data-prisma-route="/inventory"] .rowAddButton:focus-visible,
+  [data-prisma-route="/inventory"] .productMainButton:focus-visible,
+  [data-prisma-route="/inventory"] .filterButton:focus-visible,
+  [data-prisma-route="/inventory"] .filterActive:focus-visible,
+  [data-prisma-route="/inventory"] .cartChip:focus-visible,
+  [data-prisma-route="/inventory"] .exportMenu summary:focus-visible {
     outline: 3px solid color-mix(in srgb, var(--prisma-cyan-300) 62%, transparent);
     outline-offset: 3px;
   }
