@@ -1,19 +1,36 @@
 {
   "adapterId": "prisma.adapter.pc.v1",
   "binding": {
-    "layerSource": null,
+    "certifiedLayerCount": 1,
+    "certifiedRegionOwnerCount": 1,
+    "certifiedSlotUnitCount": 1,
+    "componentCount": 130,
+    "componentSource": "authority/rifat/prisma-ui/visual-control/pc/components.json",
+    "editableSlotCount": 1800,
+    "layerCount": 906,
+    "layerSource": "authority/rifat/prisma-ui/visual-control/pc/layers.json",
     "missing": [
-      "surface-specific-route-owner-map",
-      "surface-specific-region-owner-map",
-      "surface-specific-editable-slot-map",
-      "surface-specific-layer-map"
+      "surface-wide-binding-coverage"
     ],
-    "ownerSource": null,
+    "ownerSource": "authority/rifat/prisma-ui/visual-control/pc/owners.json",
     "readiness": "BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS",
-    "routeCount": 61,
-    "routeSource": "authority/rifat/prisma-ui/routes.json",
+    "regionOwnerCount": 306,
+    "routeCount": 63,
+    "routeOwnerCount": 63,
+    "routeSource": "authority/rifat/prisma-ui/visual-control/pc/routes.json",
     "runtimeProjectionAllowed": false,
-    "slotSource": null,
+    "slotSource": "authority/rifat/prisma-ui/visual-control/pc/editable-slots.json",
+    "slotUnitCount": 304,
+    "sourceCertification": {
+      "auditRunId": 33371314103,
+      "authorityMeshRunId": 33370426993,
+      "generator": "apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs",
+      "productMutationAllowed": false,
+      "scope": "route-scoped-authority-enabled; surface-wide coverage remains incomplete",
+      "status": "CERTIFIED",
+      "surface": "pc"
+    },
+    "sourceEvidenceReadiness": "CERTIFIED_SOURCE_AVAILABLE",
     "surface": "pc"
   },
   "forbiddenMutations": [
