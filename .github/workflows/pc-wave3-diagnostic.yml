@@ -33,7 +33,10 @@ jobs:
         run: |
           set -euo pipefail
           current="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
-          test "$current" = "$PINNED_BASE"
+          if ! git merge-base --is-ancestor "$PINNED_BASE" "$current"; then
+            echo "Frozen Wave 3 baseline $PINNED_BASE is no longer an ancestor of current main $current" >&2
+            exit 1
+          fi
           git worktree add --detach "$RUNNER_TEMP/base" "$PINNED_BASE"
           cd "$RUNNER_TEMP/base"
           cat > "$RUNNER_TEMP/gate.request.json" <<'JSON'

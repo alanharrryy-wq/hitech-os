@@ -129,7 +129,7 @@ export function ProductMediaWorkspace({ initialWorkspace }: { initialWorkspace: 
 
       {notice ? <div className="alert-strip" role="status" aria-live="polite"><strong>Imagen</strong><span className="subtle">{notice}</span></div> : null}
 
-      <form className={styles.workspace} onSubmit={save} aria-label="Actualizar imagen de producto">
+      <form className={`${styles.workspace} ${styles.workspaceResponsive}`} onSubmit={save} aria-label="Actualizar imagen de producto">
         <section className={styles.productPicker}>
           <label className="field">
             <span>Buscar producto</span>

@@ -1,22 +1,23 @@
 {
   "schema": "prisma.identity.binding-coverage.v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "SOURCE_READY_PARTIAL_RESOLUTION",
-  "bindingDefinitionCount": 5,
-  "fullyResolvedCount": 1,
-  "partiallyGroundedCount": 2,
+  "bindingDefinitionCount": 6,
+  "fullyResolvedCount": 2,
+  "partiallyGroundedCount": 3,
   "blockedCount": 4,
   "surfaceCounts": {
+    "pc": 1,
     "shared-ui": 2,
     "tablet": 3
   },
   "statusCounts": {
-    "RESOLVED": 1,
+    "RESOLVED": 2,
     "BLOCKED_BY_AMBIGUOUS_ONE_TO_MANY": 1,
     "BLOCKED_BY_SCOPE_TOO_BROAD": 1,
     "BLOCKED_BY_MISSING_BINDING": 2
   },
-  "authoritySnapshotId": "6cd4f88bdd1e8c6fe12d585cef8a6613ba59177cc7d2f23d6ec05247daf798f5",
+  "authoritySnapshotId": "415d11872344b5d6bd74c56720b1cc25f430f31f2087640459a43d313a7437c6",
   "hardTruth": "No binding is RESOLVED until ownerId, routeId, regionId, slotId, componentUiId and layerId are all directly verified.",
   "runtimeMutationAllowed": false,
   "productApplicationAllowed": false

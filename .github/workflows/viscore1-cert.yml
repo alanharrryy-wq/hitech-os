@@ -58,6 +58,30 @@ jobs:
         working-directory: prisma-html
         run: python tools/validate_project.py --root . --report "$RUNNER_TEMP/source-validator-viscore1.json"
 
+      - name: Generate deterministic Identity Dictionary candidate
+        working-directory: prisma-html
+        run: python tools/compile_identity_dictionary.py --write
+
+      - name: Refresh deterministic file manifest after identity compilation
+        working-directory: prisma-html
+        run: python tools/refresh_files_manifest.py --write
+
+      - name: Upload deterministic Identity Dictionary candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: viscore1-identity-compiled-candidate
+          path: prisma-html/authority/rifat/identity/compiled/current
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Committed Identity Dictionary compilation must already match
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- authority/rifat/identity/compiled/current
+          python tools/compile_identity_dictionary.py --check
+
       - name: VISCORE architecture check
         working-directory: prisma-html
         run: python tools/visual_core.py check

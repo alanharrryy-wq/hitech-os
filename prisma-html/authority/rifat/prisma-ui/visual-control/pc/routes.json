@@ -1,0 +1,2118 @@
+{
+  "schema": "prisma.ui.visual-control.routes.v1",
+  "status": "CERTIFIED",
+  "routeCount": 63,
+  "routes": [
+    {
+      "route_id": "pc.root.route",
+      "human_id": "PRISMA PC Backoffice /",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/",
+      "routePath": "/",
+      "pageFile": "products/pc/app/app/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/globals.css",
+        "products/pc/app/app/layout.module.css",
+        "products/pc/app/app/prisma-liquid-glass.module.css",
+        "products/pc/app/app/suppliers-ux-v08.css"
+      ],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "pc.root.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.acciones.masivas.route",
+      "human_id": "PRISMA PC Backoffice /acciones-masivas",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/acciones-masivas",
+      "routePath": "/acciones-masivas",
+      "pageFile": "products/pc/app/app/acciones-masivas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/acciones-masivas/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/acciones-masivas",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_acciones_masivas.html",
+      "anchors": {
+        "data-prisma-panel": "pc.acciones.masivas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/acciones-masivas"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.ajustes.inventario.route",
+      "human_id": "PRISMA PC Backoffice /ajustes-inventario",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/ajustes-inventario",
+      "routePath": "/ajustes-inventario",
+      "pageFile": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/ajustes-inventario",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_ajustes_inventario.html",
+      "anchors": {
+        "data-prisma-panel": "pc.ajustes.inventario.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/ajustes-inventario"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.alertas.ejecutivas.route",
+      "human_id": "PRISMA PC Backoffice /alertas-ejecutivas",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/alertas-ejecutivas",
+      "routePath": "/alertas-ejecutivas",
+      "pageFile": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/alertas-ejecutivas",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_alertas_ejecutivas.html",
+      "anchors": {
+        "data-prisma-panel": "pc.alertas.ejecutivas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/alertas-ejecutivas"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.alertas.operativas.route",
+      "human_id": "PRISMA PC Backoffice /alertas-operativas",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/alertas-operativas",
+      "routePath": "/alertas-operativas",
+      "pageFile": "products/pc/app/app/alertas-operativas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/alertas-operativas/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/alertas-operativas",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_alertas_operativas.html",
+      "anchors": {
+        "data-prisma-panel": "pc.alertas.operativas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/alertas-operativas"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.audit.route",
+      "human_id": "PRISMA PC Backoffice /audit",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/audit",
+      "routePath": "/audit",
+      "pageFile": "products/pc/app/app/audit/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/audit/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/audit",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_audit.html",
+      "anchors": {
+        "data-prisma-panel": "pc.audit.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/audit"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.auditoria.inventario.route",
+      "human_id": "PRISMA PC Backoffice /auditoria-inventario",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/auditoria-inventario",
+      "routePath": "/auditoria-inventario",
+      "pageFile": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/auditoria-inventario",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_auditoria_inventario.html",
+      "anchors": {
+        "data-prisma-panel": "pc.auditoria.inventario.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/auditoria-inventario"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.cash.sessions.route",
+      "human_id": "PRISMA PC Backoffice /cash-sessions",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/cash-sessions",
+      "routePath": "/cash-sessions",
+      "pageFile": "products/pc/app/app/cash-sessions/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/cash-sessions/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/cash-sessions",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_cash_sessions.html",
+      "anchors": {
+        "data-prisma-panel": "pc.cash.sessions.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/cash-sessions"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.catalog.route",
+      "human_id": "PRISMA PC Backoffice /catalog",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/catalog",
+      "routePath": "/catalog",
+      "pageFile": "products/pc/app/app/catalog/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/catalog/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": [
+        "pc.catalog",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/catalog",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_catalog.html",
+      "anchors": {
+        "data-prisma-panel": "pc.catalog.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/catalog"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.catalogo.activo.route",
+      "human_id": "PRISMA PC Backoffice /catalogo-activo",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/catalogo-activo",
+      "routePath": "/catalogo-activo",
+      "pageFile": "products/pc/app/app/catalogo-activo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/catalogo-activo/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/catalogo-activo",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_catalogo_activo.html",
+      "anchors": {
+        "data-prisma-panel": "pc.catalogo.activo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/catalogo-activo"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.conteos.operativos.route",
+      "human_id": "PRISMA PC Backoffice /conteos-operativos",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/conteos-operativos",
+      "routePath": "/conteos-operativos",
+      "pageFile": "products/pc/app/app/conteos-operativos/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/conteos-operativos/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/conteos-operativos",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_conteos_operativos.html",
+      "anchors": {
+        "data-prisma-panel": "pc.conteos.operativos.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/conteos-operativos"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.contratos.reporte.route",
+      "human_id": "PRISMA PC Backoffice /contratos-reporte",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/contratos-reporte",
+      "routePath": "/contratos-reporte",
+      "pageFile": "products/pc/app/app/contratos-reporte/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/contratos-reporte/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/contratos-reporte",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_contratos_reporte.html",
+      "anchors": {
+        "data-prisma-panel": "pc.contratos.reporte.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/contratos-reporte"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.counts.route",
+      "human_id": "PRISMA PC Backoffice /counts",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/counts",
+      "routePath": "/counts",
+      "pageFile": "products/pc/app/app/counts/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/counts/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/counts",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_counts.html",
+      "anchors": {
+        "data-prisma-panel": "pc.counts.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/counts"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.dashboard.route",
+      "human_id": "PRISMA PC Backoffice /dashboard",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/dashboard",
+      "routePath": "/dashboard",
+      "pageFile": "products/pc/app/app/dashboard/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/dashboard/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": [
+        "pc.dashboard",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/dashboard",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_dashboard.html",
+      "anchors": {
+        "data-prisma-panel": "pc.dashboard.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/dashboard"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.data.quality.route",
+      "human_id": "PRISMA PC Backoffice /data-quality",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/data-quality",
+      "routePath": "/data-quality",
+      "pageFile": "products/pc/app/app/data-quality/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/data-quality/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/data-quality",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_data_quality.html",
+      "anchors": {
+        "data-prisma-panel": "pc.data.quality.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/data-quality"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.detalle.registros.route",
+      "human_id": "PRISMA PC Backoffice /detalle-registros",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/detalle-registros",
+      "routePath": "/detalle-registros",
+      "pageFile": "products/pc/app/app/detalle-registros/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/detalle-registros/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/detalle-registros",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_detalle_registros.html",
+      "anchors": {
+        "data-prisma-panel": "pc.detalle.registros.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/detalle-registros"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.devices.route",
+      "human_id": "PRISMA PC Backoffice /devices",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/devices",
+      "routePath": "/devices",
+      "pageFile": "products/pc/app/app/devices/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/devices/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/devices",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_devices.html",
+      "anchors": {
+        "data-prisma-panel": "pc.devices.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/devices"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.estados.operativos.route",
+      "human_id": "PRISMA PC Backoffice /estados-operativos",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/estados-operativos",
+      "routePath": "/estados-operativos",
+      "pageFile": "products/pc/app/app/estados-operativos/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/estados-operativos/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/estados-operativos",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_estados_operativos.html",
+      "anchors": {
+        "data-prisma-panel": "pc.estados.operativos.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/estados-operativos"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.existencias.criticas.route",
+      "human_id": "PRISMA PC Backoffice /existencias-criticas",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/existencias-criticas",
+      "routePath": "/existencias-criticas",
+      "pageFile": "products/pc/app/app/existencias-criticas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/existencias-criticas/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/existencias-criticas",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_existencias_criticas.html",
+      "anchors": {
+        "data-prisma-panel": "pc.existencias.criticas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/existencias-criticas"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.exportables.route",
+      "human_id": "PRISMA PC Backoffice /exportables",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/exportables",
+      "routePath": "/exportables",
+      "pageFile": "products/pc/app/app/exportables/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/exportables/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/exportables",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_exportables.html",
+      "anchors": {
+        "data-prisma-panel": "pc.exportables.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/exportables"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.filtros.avanzados.route",
+      "human_id": "PRISMA PC Backoffice /filtros-avanzados",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/filtros-avanzados",
+      "routePath": "/filtros-avanzados",
+      "pageFile": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/filtros-avanzados",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_filtros_avanzados.html",
+      "anchors": {
+        "data-prisma-panel": "pc.filtros.avanzados.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/filtros-avanzados"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.filtros.fecha.route",
+      "human_id": "PRISMA PC Backoffice /filtros-fecha",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/filtros-fecha",
+      "routePath": "/filtros-fecha",
+      "pageFile": "products/pc/app/app/filtros-fecha/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/filtros-fecha/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/filtros-fecha",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_filtros_fecha.html",
+      "anchors": {
+        "data-prisma-panel": "pc.filtros.fecha.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/filtros-fecha"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.forecast.basico.route",
+      "human_id": "PRISMA PC Backoffice /forecast-basico",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/forecast-basico",
+      "routePath": "/forecast-basico",
+      "pageFile": "products/pc/app/app/forecast-basico/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/forecast-basico/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/forecast-basico",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_forecast_basico.html",
+      "anchors": {
+        "data-prisma-panel": "pc.forecast.basico.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/forecast-basico"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.glosario.route",
+      "human_id": "PRISMA PC Backoffice /glosario",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/glosario",
+      "routePath": "/glosario",
+      "pageFile": "products/pc/app/app/glosario/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/glosario/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/glosario",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_glosario.html",
+      "anchors": {
+        "data-prisma-panel": "pc.glosario.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/glosario"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.gobierno.route",
+      "human_id": "PRISMA PC Backoffice /gobierno",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/gobierno",
+      "routePath": "/gobierno",
+      "pageFile": "products/pc/app/app/gobierno/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/gobierno/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/gobierno",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_gobierno.html",
+      "anchors": {
+        "data-prisma-panel": "pc.gobierno.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/gobierno"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.incidencias.recepcion.route",
+      "human_id": "PRISMA PC Backoffice /incidencias-recepcion",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/incidencias-recepcion",
+      "routePath": "/incidencias-recepcion",
+      "pageFile": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/incidencias-recepcion",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_incidencias_recepcion.html",
+      "anchors": {
+        "data-prisma-panel": "pc.incidencias.recepcion.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/incidencias-recepcion"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.integridad.barcodes.route",
+      "human_id": "PRISMA PC Backoffice /integridad-barcodes",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/integridad-barcodes",
+      "routePath": "/integridad-barcodes",
+      "pageFile": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/integridad-barcodes",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_integridad_barcodes.html",
+      "anchors": {
+        "data-prisma-panel": "pc.integridad.barcodes.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/integridad-barcodes"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.route",
+      "human_id": "PRISMA PC Backoffice /laboratorio-pc",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/laboratorio-pc",
+      "routePath": "/laboratorio-pc",
+      "pageFile": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_laboratorio_pc.html",
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.chart.lab.route",
+      "human_id": "PRISMA PC Backoffice /laboratorio-pc/chart-lab",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/laboratorio-pc/chart-lab",
+      "routePath": "/laboratorio-pc/chart-lab",
+      "pageFile": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/prisma-insights/prisma-pc-insights.module.css"
+      ],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/chart-lab",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_chart_lab.html",
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.chart.lab.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/chart-lab"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.dashboard.governor.route",
+      "human_id": "PRISMA PC Backoffice /laboratorio-pc/dashboard-governor",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor",
+      "routePath": "/laboratorio-pc/dashboard-governor",
+      "pageFile": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/laboratorio-pc/dashboard-governor/prisma-surface-dashboard.module.css"
+      ],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/dashboard-governor",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_dashboard_governor.html",
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.dashboard.governor.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/dashboard-governor"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.route",
+      "human_id": "PRISMA PC Backoffice /laboratorio-pc/referencia-visual",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual",
+      "routePath": "/laboratorio-pc/referencia-visual",
+      "pageFile": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_referencia_visual.html",
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.referencia.visual.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/referencia-visual"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+      "human_id": "PRISMA PC Backoffice /laboratorio-pc/referencia-visual/liquid-glass",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "routePath": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "pageFile": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/prisma-liquid-glass.module.css"
+      ],
+      "currentPanelContract": [
+        "pc.liquid-glass-reference",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_referencia_visual_liquid_glass.html",
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/referencia-visual/liquid-glass"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
+      "human_id": "PRISMA PC Backoffice /laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "routePath": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "pageFile": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/liquid-glass-capsules.module.css"
+      ],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_laboratorio_pc_referencia_visual_liquid_glass_capsules.html",
+      "anchors": {
+        "data-prisma-panel": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.license.runtime.route",
+      "human_id": "PRISMA PC Backoffice /license-runtime",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/license-runtime",
+      "routePath": "/license-runtime",
+      "pageFile": "products/pc/app/app/license-runtime/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/license-runtime/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/license-runtime",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_license_runtime.html",
+      "anchors": {
+        "data-prisma-panel": "pc.license.runtime.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/license-runtime"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.metricas.dia.route",
+      "human_id": "PRISMA PC Backoffice /metricas-dia",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/metricas-dia",
+      "routePath": "/metricas-dia",
+      "pageFile": "products/pc/app/app/metricas-dia/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/metricas-dia/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/metricas-dia/metricas-dia.module.css"
+      ],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/metricas-dia",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_metricas_dia.html",
+      "anchors": {
+        "data-prisma-panel": "pc.metricas.dia.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/metricas-dia"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.movements.route",
+      "human_id": "PRISMA PC Backoffice /movements",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/movements",
+      "routePath": "/movements",
+      "pageFile": "products/pc/app/app/movements/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/movements/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/movements",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_movements.html",
+      "anchors": {
+        "data-prisma-panel": "pc.movements.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/movements"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.ordenes.compra.route",
+      "human_id": "PRISMA PC Backoffice /ordenes-compra",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/ordenes-compra",
+      "routePath": "/ordenes-compra",
+      "pageFile": "products/pc/app/app/ordenes-compra/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/ordenes-compra/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/ordenes-compra",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_ordenes_compra.html",
+      "anchors": {
+        "data-prisma-panel": "pc.ordenes.compra.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/ordenes-compra"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.outbox.operativo.route",
+      "human_id": "PRISMA PC Backoffice /outbox-operativo",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/outbox-operativo",
+      "routePath": "/outbox-operativo",
+      "pageFile": "products/pc/app/app/outbox-operativo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/outbox-operativo/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/outbox-operativo",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_outbox_operativo.html",
+      "anchors": {
+        "data-prisma-panel": "pc.outbox.operativo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/outbox-operativo"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.politica.precios.route",
+      "human_id": "PRISMA PC Backoffice /politica-precios",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/politica-precios",
+      "routePath": "/politica-precios",
+      "pageFile": "products/pc/app/app/politica-precios/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/politica-precios/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/politica-precios",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_politica_precios.html",
+      "anchors": {
+        "data-prisma-panel": "pc.politica.precios.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/politica-precios"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.prisma.insights.route",
+      "human_id": "PRISMA PC Backoffice /prisma-insights",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/prisma-insights",
+      "routePath": "/prisma-insights",
+      "pageFile": "products/pc/app/app/prisma-insights/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/prisma-insights/page.tsx",
+      "ownerCss": [
+        "products/pc/app/app/prisma-insights/prisma-pc-insights.module.css"
+      ],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/prisma-insights",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_prisma_insights.html",
+      "anchors": {
+        "data-prisma-panel": "pc.prisma.insights.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/prisma-insights"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.prisma.insights.chart.lab.route",
+      "human_id": "PRISMA PC Backoffice /prisma-insights/chart-lab",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/prisma-insights/chart-lab",
+      "routePath": "/prisma-insights/chart-lab",
+      "pageFile": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "pc.prisma.insights.chart.lab.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/prisma-insights/chart-lab"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.proveedores.route",
+      "human_id": "PRISMA PC Backoffice /proveedores",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/proveedores",
+      "routePath": "/proveedores",
+      "pageFile": "products/pc/app/app/proveedores/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/proveedores/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/proveedores",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_proveedores.html",
+      "anchors": {
+        "data-prisma-panel": "pc.proveedores.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/proveedores"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.purchasing.route",
+      "human_id": "PRISMA PC Backoffice /purchasing",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/purchasing",
+      "routePath": "/purchasing",
+      "pageFile": "products/pc/app/app/purchasing/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/purchasing/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/purchasing",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_purchasing.html",
+      "anchors": {
+        "data-prisma-panel": "pc.purchasing.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/purchasing"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.receiving.route",
+      "human_id": "PRISMA PC Backoffice /receiving",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/receiving",
+      "routePath": "/receiving",
+      "pageFile": "products/pc/app/app/receiving/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/receiving/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/receiving",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_receiving.html",
+      "anchors": {
+        "data-prisma-panel": "pc.receiving.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/receiving"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.recepcion.proveedor.route",
+      "human_id": "PRISMA PC Backoffice /recepcion-proveedor",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/recepcion-proveedor",
+      "routePath": "/recepcion-proveedor",
+      "pageFile": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/recepcion-proveedor",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_recepcion_proveedor.html",
+      "anchors": {
+        "data-prisma-panel": "pc.recepcion.proveedor.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/recepcion-proveedor"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.referencia.visual.route",
+      "human_id": "PRISMA PC Backoffice /referencia-visual",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/referencia-visual",
+      "routePath": "/referencia-visual",
+      "pageFile": "products/pc/app/app/referencia-visual/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/referencia-visual/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "pc.referencia.visual.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/referencia-visual"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.referencia.visual.liquid.glass.route",
+      "human_id": "PRISMA PC Backoffice /referencia-visual/liquid-glass",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass",
+      "routePath": "/referencia-visual/liquid-glass",
+      "pageFile": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "pc.referencia.visual.liquid.glass.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/referencia-visual/liquid-glass"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.referencia.visual.liquid.glass.capsules.route",
+      "human_id": "PRISMA PC Backoffice /referencia-visual/liquid-glass-capsules",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "routePath": "/referencia-visual/liquid-glass-capsules",
+      "pageFile": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": null,
+      "runtimeMode": "source-only-redirect-route",
+      "runtimeCertificationStatus": "SOURCE_CERTIFIED",
+      "runtimeSourceCertification": "SOURCE_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/routes.json",
+      "anchors": {
+        "data-prisma-panel": "pc.referencia.visual.liquid.glass.capsules.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/referencia-visual/liquid-glass-capsules"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.replenishment.route",
+      "human_id": "PRISMA PC Backoffice /replenishment",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/replenishment",
+      "routePath": "/replenishment",
+      "pageFile": "products/pc/app/app/replenishment/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/replenishment/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/replenishment",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_replenishment.html",
+      "anchors": {
+        "data-prisma-panel": "pc.replenishment.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/replenishment"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.sales.control.route",
+      "human_id": "PRISMA PC Backoffice /sales-control",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/sales-control",
+      "routePath": "/sales-control",
+      "pageFile": "products/pc/app/app/sales-control/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/sales-control/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/sales-control",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_sales_control.html",
+      "anchors": {
+        "data-prisma-panel": "pc.sales.control.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/sales-control"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.salud.barcodes.route",
+      "human_id": "PRISMA PC Backoffice /salud-barcodes",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/salud-barcodes",
+      "routePath": "/salud-barcodes",
+      "pageFile": "products/pc/app/app/salud-barcodes/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/salud-barcodes/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/salud-barcodes",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_salud_barcodes.html",
+      "anchors": {
+        "data-prisma-panel": "pc.salud.barcodes.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/salud-barcodes"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.scorecards.negocio.route",
+      "human_id": "PRISMA PC Backoffice /scorecards-negocio",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/scorecards-negocio",
+      "routePath": "/scorecards-negocio",
+      "pageFile": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/scorecards-negocio",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_scorecards_negocio.html",
+      "anchors": {
+        "data-prisma-panel": "pc.scorecards.negocio.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/scorecards-negocio"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.senal.reabasto.route",
+      "human_id": "PRISMA PC Backoffice /senal-reabasto",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/senal-reabasto",
+      "routePath": "/senal-reabasto",
+      "pageFile": "products/pc/app/app/senal-reabasto/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/senal-reabasto/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/senal-reabasto",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_senal_reabasto.html",
+      "anchors": {
+        "data-prisma-panel": "pc.senal.reabasto.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/senal-reabasto"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.settings.route",
+      "human_id": "PRISMA PC Backoffice /settings",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/settings",
+      "routePath": "/settings",
+      "pageFile": "products/pc/app/app/settings/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/settings/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": [
+        "pc.settings",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/settings",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_settings.html",
+      "anchors": {
+        "data-prisma-panel": "pc.settings.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/settings"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.settings.license.route",
+      "human_id": "PRISMA PC Backoffice /settings/license",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/settings/license",
+      "routePath": "/settings/license",
+      "pageFile": "products/pc/app/app/settings/license/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/settings/license/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/settings/license",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_settings_license.html",
+      "anchors": {
+        "data-prisma-panel": "pc.settings.license.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/settings/license"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.stock.route",
+      "human_id": "PRISMA PC Backoffice /stock",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/stock",
+      "routePath": "/stock",
+      "pageFile": "products/pc/app/app/stock/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/stock/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": [
+        "pc.stock",
+        "pc.workspace"
+      ],
+      "runtimeUrl": "http://127.0.0.1:3130/stock",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_stock.html",
+      "anchors": {
+        "data-prisma-panel": "pc.stock.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/stock"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.sync.route",
+      "human_id": "PRISMA PC Backoffice /sync",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/sync",
+      "routePath": "/sync",
+      "pageFile": "products/pc/app/app/sync/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/sync/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/sync",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_sync.html",
+      "anchors": {
+        "data-prisma-panel": "pc.sync.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/sync"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.sync.operativo.route",
+      "human_id": "PRISMA PC Backoffice /sync-operativo",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/sync-operativo",
+      "routePath": "/sync-operativo",
+      "pageFile": "products/pc/app/app/sync-operativo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/sync-operativo/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/sync-operativo",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_sync_operativo.html",
+      "anchors": {
+        "data-prisma-panel": "pc.sync.operativo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/sync-operativo"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.tablas.operativas.route",
+      "human_id": "PRISMA PC Backoffice /tablas-operativas",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/tablas-operativas",
+      "routePath": "/tablas-operativas",
+      "pageFile": "products/pc/app/app/tablas-operativas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/tablas-operativas/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/tablas-operativas",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_tablas_operativas.html",
+      "anchors": {
+        "data-prisma-panel": "pc.tablas.operativas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/tablas-operativas"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.tablero.kpi.route",
+      "human_id": "PRISMA PC Backoffice /tablero-kpi",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/tablero-kpi",
+      "routePath": "/tablero-kpi",
+      "pageFile": "products/pc/app/app/tablero-kpi/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/tablero-kpi/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/tablero-kpi",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_tablero_kpi.html",
+      "anchors": {
+        "data-prisma-panel": "pc.tablero.kpi.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/tablero-kpi"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.tablet.communication.route",
+      "human_id": "PRISMA PC Backoffice /tablet-communication",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/tablet-communication",
+      "routePath": "/tablet-communication",
+      "pageFile": "products/pc/app/app/tablet-communication/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/tablet-communication/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/tablet-communication",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_tablet_communication.html",
+      "anchors": {
+        "data-prisma-panel": "pc.tablet.communication.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/tablet-communication"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.validacion.catalogo.route",
+      "human_id": "PRISMA PC Backoffice /validacion-catalogo",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/validacion-catalogo",
+      "routePath": "/validacion-catalogo",
+      "pageFile": "products/pc/app/app/validacion-catalogo/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/validacion-catalogo/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/validacion-catalogo",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_validacion_catalogo.html",
+      "anchors": {
+        "data-prisma-panel": "pc.validacion.catalogo.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/validacion-catalogo"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "route_id": "pc.vistas.ejecutivas.route",
+      "human_id": "PRISMA PC Backoffice /vistas-ejecutivas",
+      "app": "PRISMA PC Backoffice",
+      "surface": "pc",
+      "route": "/vistas-ejecutivas",
+      "routePath": "/vistas-ejecutivas",
+      "pageFile": "products/pc/app/app/vistas-ejecutivas/page.tsx",
+      "layoutFiles": [
+        "products/pc/app/app/layout.tsx"
+      ],
+      "ownerComponent": "products/pc/app/app/vistas-ejecutivas/page.tsx",
+      "ownerCss": [],
+      "currentPanelContract": "pc.workspace",
+      "runtimeUrl": "http://127.0.0.1:3130/vistas-ejecutivas",
+      "runtimeMode": "runtime",
+      "runtimeCertificationStatus": "RUNTIME_CERTIFIED",
+      "runtimeSourceCertification": "RUNTIME_CERTIFIED",
+      "certificationEvidence": ".prisma-ui/current/runtime-html/pc_vistas_ejecutivas.html",
+      "anchors": {
+        "data-prisma-panel": "pc.vistas.ejecutivas.route",
+        "data-prisma-surface": "pc",
+        "data-prisma-route": "/vistas-ejecutivas"
+      },
+      "excludedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "mobile",
+        "control-center"
+      ],
+      "safetyClassification": "visualWithFunctionalRisk"
+    }
+  ]
+}

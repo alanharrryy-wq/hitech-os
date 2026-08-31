@@ -1,0 +1,3556 @@
+{
+  "schema": "prisma.ui.visual-control.owners.v1",
+  "status": "CERTIFIED",
+  "detailPolicy": "repo contains compact indexes; full expanded detail belongs in external evidence/result.zip when needed",
+  "compactIndex": {
+    "kind": "owners",
+    "policy": "repo keeps counts, grouped indexes and bounded samples; expanded detail belongs in external evidence/result.zip when a run needs forensic payload",
+    "expandedCount": 453
+  },
+  "componentOwnerCount": 130,
+  "cssOwnerCount": 17,
+  "assetOwnerCount": 40,
+  "tokenThemeOwnerCount": 6,
+  "routeOwnerCount": 63,
+  "regionOwnerCount": 306,
+  "certifiedRegionOwnerCount": 1,
+  "certifiedRegionOwners": [
+    {
+      "region_id": "LYR.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.BASE.layer",
+      "surface": "pc",
+      "route": "/catalog",
+      "ownerComponent": "products/pc/app/components/catalog/product-media-workspace.tsx",
+      "ownerCssProfile": "ownerCss.003",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    }
+  ],
+  "countsBySurface": {
+    "pc": 306
+  },
+  "countsBySafetyClassification": {
+    "functionalControl": 66,
+    "safeVisualOnly": 70,
+    "visualWithFunctionalRisk": 170
+  },
+  "profileSummary": {
+    "ownerCss": {
+      "profileCount": 21,
+      "samples": [
+        {
+          "id": "ownerCss.001",
+          "values": [
+            "products/pc/app/components/layout/app-shell.module.css",
+            "products/pc/app/components/layout/nav-link.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.002",
+          "values": [
+            "products/pc/app/app/globals.css",
+            "products/pc/app/app/layout.module.css",
+            "products/pc/app/app/prisma-liquid-glass.module.css",
+            "products/pc/app/app/suppliers-ux-v08.css"
+          ]
+        },
+        {
+          "id": "ownerCss.003",
+          "values": [
+            "products/pc/app/components/catalog/product-media-workspace.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.004",
+          "values": [
+            "products/pc/app/components/uiux/smart-dropdown-dock.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.005",
+          "values": [
+            "products/pc/app/app/prisma-insights/prisma-pc-insights.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.006",
+          "values": [
+            "products/pc/app/app/laboratorio-pc/dashboard-governor/prisma-surface-dashboard.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.007",
+          "values": [
+            "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/liquid-glass-capsules.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.008",
+          "values": [
+            "products/pc/app/app/prisma-liquid-glass.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.009",
+          "values": [
+            "products/pc/app/app/metricas-dia/metricas-dia.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.010",
+          "values": [
+            "products/pc/app/app/globals.css"
+          ]
+        },
+        {
+          "id": "ownerCss.011",
+          "values": [
+            "products/pc/app/app/layout.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.012",
+          "values": [
+            "products/pc/app/app/suppliers-ux-v08.css"
+          ]
+        },
+        {
+          "id": "ownerCss.013",
+          "values": [
+            "products/pc/app/components/catalog/product-media-workspace.module.css",
+            "products/pc/app/components/inventory/pc-inventory-master-detail.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.014",
+          "values": [
+            "products/pc/app/components/control/cash-sessions-operational-view.module.css",
+            "products/pc/app/components/control/sales-control-branch-view.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.015",
+          "values": [
+            "products/pc/app/components/control/sales-control-branch-view.module.css"
+          ]
+        },
+        {
+          "id": "ownerCss.016",
+          "values": [
+            "products/pc/app/components/inventory/pc-inventory-master-detail.module.css"
+          ]
+        }
+      ]
+    },
+    "assetOwner": {
+      "profileCount": 3,
+      "samples": [
+        {
+          "id": "assetOwner.001",
+          "values": [
+            []
+          ]
+        },
+        {
+          "id": "assetOwner.002",
+          "values": [
+            [
+              "/visual-backgrounds/pc/assets/pc-graphite-cloudglass-base-3015a4e7.png"
+            ]
+          ]
+        },
+        {
+          "id": "assetOwner.003",
+          "values": [
+            "/visual-backgrounds/pc/assets/pc-graphite-cloudglass-base-3015a4e7.png"
+          ]
+        }
+      ]
+    },
+    "tokenOwner": {
+      "profileCount": 1,
+      "samples": [
+        {
+          "id": "tokenOwner.001",
+          "values": [
+            "config/prisma-visual-os/prisma-visual-controls.active.json",
+            "config/prisma-visual-system/tokens.registry.json",
+            "config/prisma-visual-system/viscurate-layer-budget.json",
+            "config/prisma-visual/authority-map.json",
+            "config/prisma-visual/layer-budget.json",
+            "config/prisma-visual/recipe-map.json"
+          ]
+        }
+      ]
+    },
+    "gates": {
+      "profileCount": 1,
+      "samples": [
+        {
+          "id": "gate.001",
+          "values": [
+            "node tools/quality/ui-certainty.mjs certify --surface pc --strict",
+            "node tools/quality/ui-certainty.mjs certify-all-surfaces --strict",
+            "node tools/quality/ui-certainty.mjs scope --all",
+            "node tools/quality/ui-certainty.mjs self-test --strict",
+            "node tools/quality/ui-certainty.mjs visual-control:certify --strict",
+            "node tools/quality/ui-certainty.mjs zero-important"
+          ]
+        }
+      ]
+    },
+    "rollbackScope": {
+      "profileCount": 144,
+      "samples": [
+        {
+          "id": "rollback.001",
+          "values": [
+            "products/pc/app/components/catalog/product-media-workspace.module.css",
+            "products/pc/app/components/catalog/product-media-workspace.tsx"
+          ]
+        },
+        {
+          "id": "rollback.002",
+          "values": [
+            "products/pc/app/app/acciones-masivas/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.003",
+          "values": [
+            "products/pc/app/app/ajustes-inventario/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.004",
+          "values": [
+            "products/pc/app/app/alertas-ejecutivas/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.005",
+          "values": [
+            "products/pc/app/app/alertas-operativas/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.006",
+          "values": [
+            "products/pc/app/app/audit/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.007",
+          "values": [
+            "products/pc/app/app/auditoria-inventario/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.008",
+          "values": [
+            "products/pc/app/app/cash-sessions/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.009",
+          "values": [
+            "products/pc/app/components/uiux/pc-module-shell.tsx",
+            "products/pc/app/components/uiux/smart-dropdown-dock.module.css"
+          ]
+        },
+        {
+          "id": "rollback.010",
+          "values": [
+            "products/pc/app/app/catalog/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.011",
+          "values": [
+            "products/pc/app/app/catalogo-activo/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.012",
+          "values": [
+            "products/pc/app/app/conteos-operativos/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.013",
+          "values": [
+            "products/pc/app/app/contratos-reporte/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.014",
+          "values": [
+            "products/pc/app/app/counts/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.015",
+          "values": [
+            "products/pc/app/app/dashboard/page.tsx"
+          ]
+        },
+        {
+          "id": "rollback.016",
+          "values": [
+            "products/pc/app/app/data-quality/page.tsx"
+          ]
+        }
+      ]
+    },
+    "excludedSurfaces": {
+      "profileCount": 1,
+      "samples": [
+        {
+          "id": "excludedSurface.001",
+          "values": [
+            "chart-lab",
+            "control-center",
+            "mobile",
+            "tablet",
+            "web"
+          ]
+        }
+      ]
+    },
+    "routes": {
+      "profileCount": 71,
+      "samples": [
+        {
+          "id": "route.001",
+          "values": [
+            "pc:*"
+          ]
+        },
+        {
+          "id": "route.002",
+          "values": [
+            "pc:/acciones-masivas"
+          ]
+        },
+        {
+          "id": "route.003",
+          "values": [
+            "pc:/ajustes-inventario"
+          ]
+        },
+        {
+          "id": "route.004",
+          "values": [
+            "pc:/alertas-ejecutivas"
+          ]
+        },
+        {
+          "id": "route.005",
+          "values": [
+            "pc:/alertas-operativas"
+          ]
+        },
+        {
+          "id": "route.006",
+          "values": [
+            "pc:/audit"
+          ]
+        },
+        {
+          "id": "route.007",
+          "values": [
+            "pc:/auditoria-inventario"
+          ]
+        },
+        {
+          "id": "route.008",
+          "values": [
+            "pc:/cash-sessions"
+          ]
+        },
+        {
+          "id": "route.009",
+          "values": [
+            "pc:/catalog"
+          ]
+        },
+        {
+          "id": "route.010",
+          "values": [
+            "pc:/catalogo-activo"
+          ]
+        },
+        {
+          "id": "route.011",
+          "values": [
+            "pc:/conteos-operativos"
+          ]
+        },
+        {
+          "id": "route.012",
+          "values": [
+            "pc:/contratos-reporte"
+          ]
+        },
+        {
+          "id": "route.013",
+          "values": [
+            "pc:/counts"
+          ]
+        },
+        {
+          "id": "route.014",
+          "values": [
+            "pc:/dashboard"
+          ]
+        },
+        {
+          "id": "route.015",
+          "values": [
+            "pc:/data-quality"
+          ]
+        },
+        {
+          "id": "route.016",
+          "values": [
+            "pc:/detalle-registros"
+          ]
+        }
+      ]
+    },
+    "panels": {
+      "profileCount": 3,
+      "samples": [
+        {
+          "id": "panel.001",
+          "values": [
+            "pc.liquid-glass-reference"
+          ]
+        },
+        {
+          "id": "panel.002",
+          "values": [
+            "pc.workspace"
+          ]
+        },
+        {
+          "id": "panel.003",
+          "values": [
+            "pc.catalog",
+            "pc.dashboard",
+            "pc.settings",
+            "pc.stock"
+          ]
+        }
+      ]
+    },
+    "components": {
+      "profileCount": 13,
+      "samples": [
+        {
+          "id": "component.001",
+          "values": [
+            "products/pc/app/app/error.tsx",
+            "products/pc/app/app/layout.tsx",
+            "products/pc/app/app/page.tsx"
+          ]
+        },
+        {
+          "id": "component.002",
+          "values": [
+            "products/pc/app/app/laboratorio-pc/dashboard-governor/error.tsx",
+            "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx"
+          ]
+        },
+        {
+          "id": "component.003",
+          "values": [
+            "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx"
+          ]
+        },
+        {
+          "id": "component.004",
+          "values": [
+            "products/pc/app/app/metricas-dia/error.tsx",
+            "products/pc/app/app/metricas-dia/page.tsx"
+          ]
+        },
+        {
+          "id": "component.005",
+          "values": [
+            "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+            "products/pc/app/app/prisma-insights/error.tsx",
+            "products/pc/app/app/prisma-insights/page.tsx",
+            "products/pc/app/app/prisma-insights/PrismaPcInsightsGrid.tsx"
+          ]
+        },
+        {
+          "id": "component.006",
+          "values": [
+            "products/pc/app/app/error.tsx",
+            "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+            "products/pc/app/app/layout.tsx",
+            "products/pc/app/app/page.tsx"
+          ]
+        },
+        {
+          "id": "component.007",
+          "values": [
+            "products/pc/app/components/catalog/catalog-dashboard.tsx",
+            "products/pc/app/components/catalog/product-media-workspace.tsx",
+            "products/pc/app/components/catalog/product-variant-workspace.tsx"
+          ]
+        },
+        {
+          "id": "component.008",
+          "values": [
+            "products/pc/app/components/control/pc-command-actions.tsx",
+            "products/pc/app/components/control/sales-control-branch-view.tsx"
+          ]
+        },
+        {
+          "id": "component.009",
+          "values": [
+            "products/pc/app/components/catalog/catalog-dashboard.tsx",
+            "products/pc/app/components/inventory/inventory-workspace.tsx"
+          ]
+        },
+        {
+          "id": "component.010",
+          "values": [
+            "products/pc/app/components/layout/app-shell.tsx"
+          ]
+        },
+        {
+          "id": "component.011",
+          "values": [
+            "products/pc/app/components/prisma-glass-capsule/prisma-glass-capsule.tsx"
+          ]
+        },
+        {
+          "id": "component.012",
+          "values": [
+            "products/pc/app/components/sync/pc-sync-chart-promotion-panel.tsx",
+            "products/pc/app/components/sync/tri-db-sync-action.tsx"
+          ]
+        },
+        {
+          "id": "component.013",
+          "values": [
+            "products/pc/app/components/uiux/confirm-real-action-dialog.tsx",
+            "products/pc/app/components/uiux/pc-module-shell.tsx",
+            "products/pc/app/components/uiux/smart-dropdown-dock.tsx"
+          ]
+        }
+      ]
+    }
+  },
+  "componentOwnerSamples": [
+    {
+      "component_id": "products.pc.app.app.acciones.masivas.error.tsx",
+      "path": "products/pc/app/app/acciones-masivas/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.acciones.masivas.page.tsx",
+      "path": "products/pc/app/app/acciones-masivas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.002",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.ajustes.inventario.page.tsx",
+      "path": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.003",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.alertas.ejecutivas.page.tsx",
+      "path": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.004",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.alertas.operativas.page.tsx",
+      "path": "products/pc/app/app/alertas-operativas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.005",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.audit.error.tsx",
+      "path": "products/pc/app/app/audit/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.audit.page.tsx",
+      "path": "products/pc/app/app/audit/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.006",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.auditoria.inventario.page.tsx",
+      "path": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.007",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.cash.sessions.error.tsx",
+      "path": "products/pc/app/app/cash-sessions/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.cash.sessions.page.tsx",
+      "path": "products/pc/app/app/cash-sessions/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.008",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.catalog.error.tsx",
+      "path": "products/pc/app/app/catalog/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.catalog.page.tsx",
+      "path": "products/pc/app/app/catalog/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.009",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.catalogo.activo.page.tsx",
+      "path": "products/pc/app/app/catalogo-activo/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.010",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.conteos.operativos.page.tsx",
+      "path": "products/pc/app/app/conteos-operativos/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.011",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.contratos.reporte.error.tsx",
+      "path": "products/pc/app/app/contratos-reporte/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.contratos.reporte.page.tsx",
+      "path": "products/pc/app/app/contratos-reporte/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.012",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.counts.error.tsx",
+      "path": "products/pc/app/app/counts/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.counts.page.tsx",
+      "path": "products/pc/app/app/counts/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.013",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.dashboard.error.tsx",
+      "path": "products/pc/app/app/dashboard/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.dashboard.page.tsx",
+      "path": "products/pc/app/app/dashboard/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.014",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.data.quality.error.tsx",
+      "path": "products/pc/app/app/data-quality/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.data.quality.page.tsx",
+      "path": "products/pc/app/app/data-quality/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.015",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.detalle.registros.error.tsx",
+      "path": "products/pc/app/app/detalle-registros/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.detalle.registros.page.tsx",
+      "path": "products/pc/app/app/detalle-registros/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.016",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.devices.error.tsx",
+      "path": "products/pc/app/app/devices/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.devices.page.tsx",
+      "path": "products/pc/app/app/devices/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.017",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.error.tsx",
+      "path": "products/pc/app/app/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "cssOwnersProfile": "ownerCss.002",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.estados.operativos.error.tsx",
+      "path": "products/pc/app/app/estados-operativos/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.estados.operativos.page.tsx",
+      "path": "products/pc/app/app/estados-operativos/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.018",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.existencias.criticas.page.tsx",
+      "path": "products/pc/app/app/existencias-criticas/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.019",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.exportables.error.tsx",
+      "path": "products/pc/app/app/exportables/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.exportables.page.tsx",
+      "path": "products/pc/app/app/exportables/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.020",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.avanzados.error.tsx",
+      "path": "products/pc/app/app/filtros-avanzados/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.avanzados.page.tsx",
+      "path": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.021",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.fecha.error.tsx",
+      "path": "products/pc/app/app/filtros-fecha/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.filtros.fecha.page.tsx",
+      "path": "products/pc/app/app/filtros-fecha/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.022",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.forecast.basico.error.tsx",
+      "path": "products/pc/app/app/forecast-basico/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.forecast.basico.page.tsx",
+      "path": "products/pc/app/app/forecast-basico/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.023",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.glosario.error.tsx",
+      "path": "products/pc/app/app/glosario/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.glosario.page.tsx",
+      "path": "products/pc/app/app/glosario/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.024",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.gobierno.error.tsx",
+      "path": "products/pc/app/app/gobierno/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.gobierno.page.tsx",
+      "path": "products/pc/app/app/gobierno/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.025",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.incidencias.recepcion.error.tsx",
+      "path": "products/pc/app/app/incidencias-recepcion/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.incidencias.recepcion.page.tsx",
+      "path": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.026",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.integridad.barcodes.page.tsx",
+      "path": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.027",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.chart.lab.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.028",
+      "cssOwnersProfile": "ownerCss.005",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.dashboard.governor.error.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/dashboard-governor/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "cssOwnersProfile": "ownerCss.006",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.dashboard.governor.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.029",
+      "cssOwnersProfile": "ownerCss.006",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.error.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.030",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.error.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.liquid.glass.capsules.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.031",
+      "cssOwnersProfile": "ownerCss.007",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.liquid.glass.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.032",
+      "panelsProfile": "panel.001",
+      "cssOwnersProfile": "ownerCss.008",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.laboratorio.pc.referencia.visual.page.tsx",
+      "path": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.033",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.layout.tsx",
+      "path": "products/pc/app/app/layout.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.034",
+      "cssOwnersProfile": "ownerCss.002",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.license.runtime.error.tsx",
+      "path": "products/pc/app/app/license-runtime/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.license.runtime.page.tsx",
+      "path": "products/pc/app/app/license-runtime/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.035",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.metricas.dia.error.tsx",
+      "path": "products/pc/app/app/metricas-dia/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "cssOwnersProfile": "ownerCss.009",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.metricas.dia.page.tsx",
+      "path": "products/pc/app/app/metricas-dia/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.036",
+      "cssOwnersProfile": "ownerCss.009",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.movements.error.tsx",
+      "path": "products/pc/app/app/movements/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.movements.page.tsx",
+      "path": "products/pc/app/app/movements/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.037",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.ordenes.compra.error.tsx",
+      "path": "products/pc/app/app/ordenes-compra/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.ordenes.compra.page.tsx",
+      "path": "products/pc/app/app/ordenes-compra/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.038",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.outbox.operativo.error.tsx",
+      "path": "products/pc/app/app/outbox-operativo/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.outbox.operativo.page.tsx",
+      "path": "products/pc/app/app/outbox-operativo/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.039",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.page.tsx",
+      "path": "products/pc/app/app/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.040",
+      "cssOwnersProfile": "ownerCss.002",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.politica.precios.page.tsx",
+      "path": "products/pc/app/app/politica-precios/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.041",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.chart.lab.page.tsx",
+      "path": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.042",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.error.tsx",
+      "path": "products/pc/app/app/prisma-insights/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "cssOwnersProfile": "ownerCss.005",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.page.tsx",
+      "path": "products/pc/app/app/prisma-insights/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.043",
+      "cssOwnersProfile": "ownerCss.005",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.prisma.insights.prismapcinsightsgrid.tsx",
+      "path": "products/pc/app/app/prisma-insights/PrismaPcInsightsGrid.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "cssOwnersProfile": "ownerCss.005",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.proveedores.error.tsx",
+      "path": "products/pc/app/app/proveedores/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.proveedores.page.tsx",
+      "path": "products/pc/app/app/proveedores/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.044",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.purchasing.error.tsx",
+      "path": "products/pc/app/app/purchasing/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.purchasing.page.tsx",
+      "path": "products/pc/app/app/purchasing/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.045",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.receiving.error.tsx",
+      "path": "products/pc/app/app/receiving/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.receiving.page.tsx",
+      "path": "products/pc/app/app/receiving/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.046",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.recepcion.proveedor.error.tsx",
+      "path": "products/pc/app/app/recepcion-proveedor/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.recepcion.proveedor.page.tsx",
+      "path": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.047",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.error.tsx",
+      "path": "products/pc/app/app/referencia-visual/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.liquid.glass.capsules.page.tsx",
+      "path": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.048",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.liquid.glass.page.tsx",
+      "path": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.049",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.referencia.visual.page.tsx",
+      "path": "products/pc/app/app/referencia-visual/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.050",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.replenishment.error.tsx",
+      "path": "products/pc/app/app/replenishment/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.replenishment.page.tsx",
+      "path": "products/pc/app/app/replenishment/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.051",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.sales.control.error.tsx",
+      "path": "products/pc/app/app/sales-control/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.sales.control.page.tsx",
+      "path": "products/pc/app/app/sales-control/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.052",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.salud.barcodes.page.tsx",
+      "path": "products/pc/app/app/salud-barcodes/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.053",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.scorecards.negocio.error.tsx",
+      "path": "products/pc/app/app/scorecards-negocio/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.scorecards.negocio.page.tsx",
+      "path": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.054",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.senal.reabasto.error.tsx",
+      "path": "products/pc/app/app/senal-reabasto/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.senal.reabasto.page.tsx",
+      "path": "products/pc/app/app/senal-reabasto/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.055",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.error.tsx",
+      "path": "products/pc/app/app/settings/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.license.error.tsx",
+      "path": "products/pc/app/app/settings/license/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.license.page.tsx",
+      "path": "products/pc/app/app/settings/license/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.056",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.settings.page.tsx",
+      "path": "products/pc/app/app/settings/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.057",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.stock.error.tsx",
+      "path": "products/pc/app/app/stock/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.stock.page.tsx",
+      "path": "products/pc/app/app/stock/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.058",
+      "riskClass": "safeVisualOnly"
+    },
+    {
+      "component_id": "products.pc.app.app.sync.operativo.error.tsx",
+      "path": "products/pc/app/app/sync-operativo/error.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "riskClass": "visualWithFunctionalRisk"
+    },
+    {
+      "component_id": "products.pc.app.app.sync.operativo.page.tsx",
+      "path": "products/pc/app/app/sync-operativo/page.tsx",
+      "fileClass": "activeRuntime",
+      "surface": "pc",
+      "routesProfile": "route.059",
+      "riskClass": "safeVisualOnly"
+    }
+  ],
+  "cssOwnerSamples": [
+    {
+      "owner_id": "products.pc.app.app.globals.css",
+      "file": "products/pc/app/app/globals.css",
+      "surface": "pc",
+      "routesProfile": "route.067",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.laboratorio.pc.dashboard.governor.prisma.surface.dashboard.module.css",
+      "file": "products/pc/app/app/laboratorio-pc/dashboard-governor/prisma-surface-dashboard.module.css",
+      "surface": "pc",
+      "routesProfile": "route.068",
+      "componentsProfile": "component.002",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.laboratorio.pc.referencia.visual.liquid.glass.capsules.liquid.glass.capsules.module.css",
+      "file": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/liquid-glass-capsules.module.css",
+      "surface": "pc",
+      "routesProfile": "route.031",
+      "componentsProfile": "component.003",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.layout.module.css",
+      "file": "products/pc/app/app/layout.module.css",
+      "surface": "pc",
+      "routesProfile": "route.067",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.metricas.dia.metricas.dia.module.css",
+      "file": "products/pc/app/app/metricas-dia/metricas-dia.module.css",
+      "surface": "pc",
+      "routesProfile": "route.069",
+      "componentsProfile": "component.004",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.prisma.insights.prisma.pc.insights.module.css",
+      "file": "products/pc/app/app/prisma-insights/prisma-pc-insights.module.css",
+      "surface": "pc",
+      "routesProfile": "route.070",
+      "componentsProfile": "component.005",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.prisma.liquid.glass.module.css",
+      "file": "products/pc/app/app/prisma-liquid-glass.module.css",
+      "surface": "pc",
+      "routesProfile": "route.067",
+      "panelsProfile": "panel.001",
+      "componentsProfile": "component.006",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.app.suppliers.ux.v08.css",
+      "file": "products/pc/app/app/suppliers-ux-v08.css",
+      "surface": "pc",
+      "routesProfile": "route.067",
+      "componentsProfile": "component.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.catalog.product.media.workspace.module.css",
+      "file": "products/pc/app/components/catalog/product-media-workspace.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "componentsProfile": "component.007",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.control.cash.sessions.operational.view.module.css",
+      "file": "products/pc/app/components/control/cash-sessions-operational-view.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "componentsProfile": "component.008",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.control.sales.control.branch.view.module.css",
+      "file": "products/pc/app/components/control/sales-control-branch-view.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "componentsProfile": "component.008",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.inventory.pc.inventory.master.detail.module.css",
+      "file": "products/pc/app/components/inventory/pc-inventory-master-detail.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "componentsProfile": "component.009",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.layout.app.shell.module.css",
+      "file": "products/pc/app/components/layout/app-shell.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.002",
+      "componentsProfile": "component.010",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.layout.nav.link.module.css",
+      "file": "products/pc/app/components/layout/nav-link.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "panelsProfile": "panel.002",
+      "componentsProfile": "component.010",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.prisma.glass.capsule.prisma.glass.capsule.module.css",
+      "file": "products/pc/app/components/prisma-glass-capsule/prisma-glass-capsule.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "componentsProfile": "component.011",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.sync.pc.sync.chart.promotion.panel.module.css",
+      "file": "products/pc/app/components/sync/pc-sync-chart-promotion-panel.module.css",
+      "surface": "pc",
+      "routesProfile": "route.001",
+      "componentsProfile": "component.012",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "owner_id": "products.pc.app.components.uiux.smart.dropdown.dock.module.css",
+      "file": "products/pc/app/components/uiux/smart-dropdown-dock.module.css",
+      "surface": "pc",
+      "routesProfile": "route.071",
+      "panelsProfile": "panel.003",
+      "componentsProfile": "component.013",
+      "safetyClassification": "safeVisualOnly"
+    }
+  ],
+  "assetOwnerSamples": [
+    {
+      "asset_id": "products.pc.app.public.backgrounds.prisma.01.prisma.base.graphite.cloudglass.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/backgrounds/prisma/01_prisma_base_graphite_cloudglass.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.backgrounds.prisma.02.prisma.fractures.light.overlay.alpha.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/backgrounds/prisma/02_prisma_fractures_light_overlay_alpha.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.backgrounds.prisma.03.prisma.mist.dust.overlay.alpha.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/backgrounds/prisma/03_prisma_mist_dust_overlay_alpha.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.backgrounds.prisma.command.center.simon.spring.zmmrlehsfqy.unsplash.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/backgrounds/prisma/command-center-simon-spring-zmMrlEHsFQY-unsplash.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.backgrounds.prisma.pc.client.snow.mountains.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/backgrounds/prisma/pc-client-snow-mountains.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.latest.atmosphere.assets.backgrounds.aurora.slate.veil.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/aurora-slate-veil.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.latest.atmosphere.assets.backgrounds.liquid.operations.smoke.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.latest.atmosphere.assets.backgrounds.liquid.operations.ui.reference.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.latest.atmosphere.assets.backgrounds.obsidian.cloud.motion.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.latest.atmosphere.assets.backgrounds.storm.cloud.operations.real.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.latest.atmosphere.assets.backgrounds.storm.glass.horizon.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/storm-glass-horizon.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.latest.atmosphere.assets.backgrounds.tablet.soft.gray.clouds.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/latest/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.pilot.04.atmosphere.assets.backgrounds.aurora.slate.veil.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/aurora-slate-veil.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.pilot.04.atmosphere.assets.backgrounds.liquid.operations.smoke.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-smoke.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.pilot.04.atmosphere.assets.backgrounds.liquid.operations.ui.reference.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.pilot.04.atmosphere.assets.backgrounds.obsidian.cloud.motion.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.pilot.04.atmosphere.assets.backgrounds.storm.cloud.operations.real.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.pilot.04.atmosphere.assets.backgrounds.storm.glass.horizon.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/storm-glass-horizon.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.dashboard.pilot.04.atmosphere.assets.backgrounds.tablet.soft.gray.clouds.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/dashboard/pilot-04/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.liquid.glass.families.alpine.crystal.alpine.crystal.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/liquid-glass/families/alpine-crystal/alpine-crystal.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.liquid.glass.families.aurora.night.aurora.night.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/liquid-glass/families/aurora-night/aurora-night.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.liquid.glass.families.fog.forest.fog.forest.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/liquid-glass/families/fog-forest/fog-forest.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.liquid.glass.families.ocean.vapor.ocean.vapor.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/liquid-glass/families/ocean-vapor/ocean-vapor.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.latest.atmosphere.assets.backgrounds.aurora.slate.veil.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/aurora-slate-veil.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.latest.atmosphere.assets.backgrounds.liquid.operations.smoke.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-smoke.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.latest.atmosphere.assets.backgrounds.liquid.operations.ui.reference.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.latest.atmosphere.assets.backgrounds.obsidian.cloud.motion.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.latest.atmosphere.assets.backgrounds.storm.cloud.operations.real.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.latest.atmosphere.assets.backgrounds.storm.glass.horizon.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/storm-glass-horizon.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.latest.atmosphere.assets.backgrounds.tablet.soft.gray.clouds.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/latest/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.pilot.03.atmosphere.assets.backgrounds.aurora.slate.veil.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/aurora-slate-veil.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.pilot.03.atmosphere.assets.backgrounds.liquid.operations.smoke.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-smoke.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.pilot.03.atmosphere.assets.backgrounds.liquid.operations.ui.reference.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/liquid-operations-ui-reference.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.pilot.03.atmosphere.assets.backgrounds.obsidian.cloud.motion.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/obsidian-cloud-motion.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.pilot.03.atmosphere.assets.backgrounds.storm.cloud.operations.real.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/storm-cloud-operations-real.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.pilot.03.atmosphere.assets.backgrounds.storm.glass.horizon.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/storm-glass-horizon.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.surface.visual.governor.reference.visual.pilot.03.atmosphere.assets.backgrounds.tablet.soft.gray.clouds.svg",
+      "surface": "pc",
+      "file": "products/pc/app/public/surface-visual-governor/reference-visual/pilot-03/atmosphere-assets/backgrounds/tablet-soft-gray-clouds.svg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.visual.backgrounds.pc.assets.pc.graphite.cloudglass.base.3015a4e7.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/visual-backgrounds/pc/assets/pc-graphite-cloudglass-base-3015a4e7.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.visual.backgrounds.pc.assets.tablet.cloudglass.default.jpg",
+      "surface": "pc",
+      "file": "products/pc/app/public/visual-backgrounds/pc/assets/tablet-cloudglass-default.jpg",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "asset_id": "products.pc.app.public.visual.backgrounds.pc.assets.tablet.cloudglass.default.png",
+      "surface": "pc",
+      "file": "products/pc/app/public/visual-backgrounds/pc/assets/tablet-cloudglass-default.png",
+      "ownerSurface": "pc",
+      "evidenceClass": "activeRuntime",
+      "layer": "background",
+      "safetyClassification": "visualWithFunctionalRisk"
+    }
+  ],
+  "tokenThemeOwnerSamples": [
+    {
+      "owner_id": "config.prisma.visual.recipe.map.json",
+      "file": "config/prisma-visual/recipe-map.json",
+      "surface": "shared-ui",
+      "safetyClassification": "sharedGlobalRisk",
+      "affectedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ]
+    },
+    {
+      "owner_id": "config.prisma.visual.layer.budget.json",
+      "file": "config/prisma-visual/layer-budget.json",
+      "surface": "shared-ui",
+      "safetyClassification": "sharedGlobalRisk",
+      "affectedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ]
+    },
+    {
+      "owner_id": "config.prisma.visual.authority.map.json",
+      "file": "config/prisma-visual/authority-map.json",
+      "surface": "shared-ui",
+      "safetyClassification": "sharedGlobalRisk",
+      "affectedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ]
+    },
+    {
+      "owner_id": "config.prisma.visual.system.tokens.registry.json",
+      "file": "config/prisma-visual-system/tokens.registry.json",
+      "surface": "shared-ui",
+      "safetyClassification": "sharedGlobalRisk",
+      "affectedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ]
+    },
+    {
+      "owner_id": "config.prisma.visual.system.viscurate.layer.budget.json",
+      "file": "config/prisma-visual-system/viscurate-layer-budget.json",
+      "surface": "shared-ui",
+      "safetyClassification": "sharedGlobalRisk",
+      "affectedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ]
+    },
+    {
+      "owner_id": "config.prisma.visual.os.prisma.visual.controls.active.json",
+      "file": "config/prisma-visual-os/prisma-visual-controls.active.json",
+      "surface": "shared-ui",
+      "safetyClassification": "sharedGlobalRisk",
+      "affectedSurfaces": [
+        "chart-lab",
+        "web",
+        "tablet",
+        "pc",
+        "mobile",
+        "control-center"
+      ]
+    }
+  ],
+  "routeOwnerSamples": [
+    {
+      "route_id": "pc.root.route",
+      "surface": "pc",
+      "route": "/",
+      "ownerComponent": "products/pc/app/app/page.tsx",
+      "ownerCssProfile": "ownerCss.002",
+      "certificationStatus": "SOURCE_CERTIFIED"
+    },
+    {
+      "route_id": "pc.acciones.masivas.route",
+      "surface": "pc",
+      "route": "/acciones-masivas",
+      "ownerComponent": "products/pc/app/app/acciones-masivas/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.ajustes.inventario.route",
+      "surface": "pc",
+      "route": "/ajustes-inventario",
+      "ownerComponent": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.alertas.ejecutivas.route",
+      "surface": "pc",
+      "route": "/alertas-ejecutivas",
+      "ownerComponent": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.alertas.operativas.route",
+      "surface": "pc",
+      "route": "/alertas-operativas",
+      "ownerComponent": "products/pc/app/app/alertas-operativas/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.audit.route",
+      "surface": "pc",
+      "route": "/audit",
+      "ownerComponent": "products/pc/app/app/audit/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.auditoria.inventario.route",
+      "surface": "pc",
+      "route": "/auditoria-inventario",
+      "ownerComponent": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.cash.sessions.route",
+      "surface": "pc",
+      "route": "/cash-sessions",
+      "ownerComponent": "products/pc/app/app/cash-sessions/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.catalog.route",
+      "surface": "pc",
+      "route": "/catalog",
+      "ownerComponent": "products/pc/app/app/catalog/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.catalogo.activo.route",
+      "surface": "pc",
+      "route": "/catalogo-activo",
+      "ownerComponent": "products/pc/app/app/catalogo-activo/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.conteos.operativos.route",
+      "surface": "pc",
+      "route": "/conteos-operativos",
+      "ownerComponent": "products/pc/app/app/conteos-operativos/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.contratos.reporte.route",
+      "surface": "pc",
+      "route": "/contratos-reporte",
+      "ownerComponent": "products/pc/app/app/contratos-reporte/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.counts.route",
+      "surface": "pc",
+      "route": "/counts",
+      "ownerComponent": "products/pc/app/app/counts/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.dashboard.route",
+      "surface": "pc",
+      "route": "/dashboard",
+      "ownerComponent": "products/pc/app/app/dashboard/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.data.quality.route",
+      "surface": "pc",
+      "route": "/data-quality",
+      "ownerComponent": "products/pc/app/app/data-quality/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.detalle.registros.route",
+      "surface": "pc",
+      "route": "/detalle-registros",
+      "ownerComponent": "products/pc/app/app/detalle-registros/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.devices.route",
+      "surface": "pc",
+      "route": "/devices",
+      "ownerComponent": "products/pc/app/app/devices/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.estados.operativos.route",
+      "surface": "pc",
+      "route": "/estados-operativos",
+      "ownerComponent": "products/pc/app/app/estados-operativos/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.existencias.criticas.route",
+      "surface": "pc",
+      "route": "/existencias-criticas",
+      "ownerComponent": "products/pc/app/app/existencias-criticas/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.exportables.route",
+      "surface": "pc",
+      "route": "/exportables",
+      "ownerComponent": "products/pc/app/app/exportables/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.filtros.avanzados.route",
+      "surface": "pc",
+      "route": "/filtros-avanzados",
+      "ownerComponent": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.filtros.fecha.route",
+      "surface": "pc",
+      "route": "/filtros-fecha",
+      "ownerComponent": "products/pc/app/app/filtros-fecha/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.forecast.basico.route",
+      "surface": "pc",
+      "route": "/forecast-basico",
+      "ownerComponent": "products/pc/app/app/forecast-basico/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.glosario.route",
+      "surface": "pc",
+      "route": "/glosario",
+      "ownerComponent": "products/pc/app/app/glosario/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.gobierno.route",
+      "surface": "pc",
+      "route": "/gobierno",
+      "ownerComponent": "products/pc/app/app/gobierno/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.incidencias.recepcion.route",
+      "surface": "pc",
+      "route": "/incidencias-recepcion",
+      "ownerComponent": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.integridad.barcodes.route",
+      "surface": "pc",
+      "route": "/integridad-barcodes",
+      "ownerComponent": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.route",
+      "surface": "pc",
+      "route": "/laboratorio-pc",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.chart.lab.route",
+      "surface": "pc",
+      "route": "/laboratorio-pc/chart-lab",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "ownerCssProfile": "ownerCss.005",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.dashboard.governor.route",
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "ownerCssProfile": "ownerCss.006",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.route",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.route",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "ownerCssProfile": "ownerCss.008",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "ownerCssProfile": "ownerCss.007",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.license.runtime.route",
+      "surface": "pc",
+      "route": "/license-runtime",
+      "ownerComponent": "products/pc/app/app/license-runtime/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.metricas.dia.route",
+      "surface": "pc",
+      "route": "/metricas-dia",
+      "ownerComponent": "products/pc/app/app/metricas-dia/page.tsx",
+      "ownerCssProfile": "ownerCss.009",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.movements.route",
+      "surface": "pc",
+      "route": "/movements",
+      "ownerComponent": "products/pc/app/app/movements/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.ordenes.compra.route",
+      "surface": "pc",
+      "route": "/ordenes-compra",
+      "ownerComponent": "products/pc/app/app/ordenes-compra/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.outbox.operativo.route",
+      "surface": "pc",
+      "route": "/outbox-operativo",
+      "ownerComponent": "products/pc/app/app/outbox-operativo/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.politica.precios.route",
+      "surface": "pc",
+      "route": "/politica-precios",
+      "ownerComponent": "products/pc/app/app/politica-precios/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.prisma.insights.route",
+      "surface": "pc",
+      "route": "/prisma-insights",
+      "ownerComponent": "products/pc/app/app/prisma-insights/page.tsx",
+      "ownerCssProfile": "ownerCss.005",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.prisma.insights.chart.lab.route",
+      "surface": "pc",
+      "route": "/prisma-insights/chart-lab",
+      "ownerComponent": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "certificationStatus": "SOURCE_CERTIFIED"
+    },
+    {
+      "route_id": "pc.proveedores.route",
+      "surface": "pc",
+      "route": "/proveedores",
+      "ownerComponent": "products/pc/app/app/proveedores/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.purchasing.route",
+      "surface": "pc",
+      "route": "/purchasing",
+      "ownerComponent": "products/pc/app/app/purchasing/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.receiving.route",
+      "surface": "pc",
+      "route": "/receiving",
+      "ownerComponent": "products/pc/app/app/receiving/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.recepcion.proveedor.route",
+      "surface": "pc",
+      "route": "/recepcion-proveedor",
+      "ownerComponent": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.referencia.visual.route",
+      "surface": "pc",
+      "route": "/referencia-visual",
+      "ownerComponent": "products/pc/app/app/referencia-visual/page.tsx",
+      "certificationStatus": "SOURCE_CERTIFIED"
+    },
+    {
+      "route_id": "pc.referencia.visual.liquid.glass.route",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "certificationStatus": "SOURCE_CERTIFIED"
+    },
+    {
+      "route_id": "pc.referencia.visual.liquid.glass.capsules.route",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "certificationStatus": "SOURCE_CERTIFIED"
+    },
+    {
+      "route_id": "pc.replenishment.route",
+      "surface": "pc",
+      "route": "/replenishment",
+      "ownerComponent": "products/pc/app/app/replenishment/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.sales.control.route",
+      "surface": "pc",
+      "route": "/sales-control",
+      "ownerComponent": "products/pc/app/app/sales-control/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.salud.barcodes.route",
+      "surface": "pc",
+      "route": "/salud-barcodes",
+      "ownerComponent": "products/pc/app/app/salud-barcodes/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.scorecards.negocio.route",
+      "surface": "pc",
+      "route": "/scorecards-negocio",
+      "ownerComponent": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.senal.reabasto.route",
+      "surface": "pc",
+      "route": "/senal-reabasto",
+      "ownerComponent": "products/pc/app/app/senal-reabasto/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.settings.route",
+      "surface": "pc",
+      "route": "/settings",
+      "ownerComponent": "products/pc/app/app/settings/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.settings.license.route",
+      "surface": "pc",
+      "route": "/settings/license",
+      "ownerComponent": "products/pc/app/app/settings/license/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.stock.route",
+      "surface": "pc",
+      "route": "/stock",
+      "ownerComponent": "products/pc/app/app/stock/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.sync.route",
+      "surface": "pc",
+      "route": "/sync",
+      "ownerComponent": "products/pc/app/app/sync/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.sync.operativo.route",
+      "surface": "pc",
+      "route": "/sync-operativo",
+      "ownerComponent": "products/pc/app/app/sync-operativo/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.tablas.operativas.route",
+      "surface": "pc",
+      "route": "/tablas-operativas",
+      "ownerComponent": "products/pc/app/app/tablas-operativas/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.tablero.kpi.route",
+      "surface": "pc",
+      "route": "/tablero-kpi",
+      "ownerComponent": "products/pc/app/app/tablero-kpi/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.tablet.communication.route",
+      "surface": "pc",
+      "route": "/tablet-communication",
+      "ownerComponent": "products/pc/app/app/tablet-communication/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.validacion.catalogo.route",
+      "surface": "pc",
+      "route": "/validacion-catalogo",
+      "ownerComponent": "products/pc/app/app/validacion-catalogo/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    },
+    {
+      "route_id": "pc.vistas.ejecutivas.route",
+      "surface": "pc",
+      "route": "/vistas-ejecutivas",
+      "ownerComponent": "products/pc/app/app/vistas-ejecutivas/page.tsx",
+      "certificationStatus": "RUNTIME_CERTIFIED"
+    }
+  ],
+  "regionOwnerSamples": [
+    {
+      "region_id": "pc.workspace",
+      "surface": "pc",
+      "route": "*",
+      "ownerComponent": "products/pc/app/components/layout/app-shell.tsx",
+      "ownerCssProfile": "ownerCss.001",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.root.route.main-content",
+      "surface": "pc",
+      "route": "/",
+      "ownerComponent": "products/pc/app/app/page.tsx",
+      "ownerCssProfile": "ownerCss.002",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.root.route.shell",
+      "surface": "pc",
+      "route": "/",
+      "ownerComponent": "products/pc/app/app/page.tsx",
+      "ownerCssProfile": "ownerCss.002",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.acciones.masivas.route.main-content",
+      "surface": "pc",
+      "route": "/acciones-masivas",
+      "ownerComponent": "products/pc/app/app/acciones-masivas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.acciones.masivas.route.shell",
+      "surface": "pc",
+      "route": "/acciones-masivas",
+      "ownerComponent": "products/pc/app/app/acciones-masivas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.ajustes.inventario.route.main-content",
+      "surface": "pc",
+      "route": "/ajustes-inventario",
+      "ownerComponent": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.ajustes.inventario.route.shell",
+      "surface": "pc",
+      "route": "/ajustes-inventario",
+      "ownerComponent": "products/pc/app/app/ajustes-inventario/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.alertas.ejecutivas.route.main-content",
+      "surface": "pc",
+      "route": "/alertas-ejecutivas",
+      "ownerComponent": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.alertas.ejecutivas.route.shell",
+      "surface": "pc",
+      "route": "/alertas-ejecutivas",
+      "ownerComponent": "products/pc/app/app/alertas-ejecutivas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.alertas.operativas.route.main-content",
+      "surface": "pc",
+      "route": "/alertas-operativas",
+      "ownerComponent": "products/pc/app/app/alertas-operativas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.alertas.operativas.route.shell",
+      "surface": "pc",
+      "route": "/alertas-operativas",
+      "ownerComponent": "products/pc/app/app/alertas-operativas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.audit.route.main-content",
+      "surface": "pc",
+      "route": "/audit",
+      "ownerComponent": "products/pc/app/app/audit/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.audit.route.shell",
+      "surface": "pc",
+      "route": "/audit",
+      "ownerComponent": "products/pc/app/app/audit/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.auditoria.inventario.route.main-content",
+      "surface": "pc",
+      "route": "/auditoria-inventario",
+      "ownerComponent": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.auditoria.inventario.route.shell",
+      "surface": "pc",
+      "route": "/auditoria-inventario",
+      "ownerComponent": "products/pc/app/app/auditoria-inventario/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.cash.sessions.route.main-content",
+      "surface": "pc",
+      "route": "/cash-sessions",
+      "ownerComponent": "products/pc/app/app/cash-sessions/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.cash.sessions.route.shell",
+      "surface": "pc",
+      "route": "/cash-sessions",
+      "ownerComponent": "products/pc/app/app/cash-sessions/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "LYR.VIS.SURFACE.CONTENT.PRIMARY.PC.CATALOG.WORKSPACE.BASE.layer",
+      "surface": "pc",
+      "route": "/catalog",
+      "ownerComponent": "products/pc/app/components/catalog/product-media-workspace.tsx",
+      "ownerCssProfile": "ownerCss.003",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.catalog",
+      "surface": "pc",
+      "route": "/catalog",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "ownerCssProfile": "ownerCss.004",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.catalog.route.main-content",
+      "surface": "pc",
+      "route": "/catalog",
+      "ownerComponent": "products/pc/app/app/catalog/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.catalog.route.shell",
+      "surface": "pc",
+      "route": "/catalog",
+      "ownerComponent": "products/pc/app/app/catalog/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.catalogo.activo.route.main-content",
+      "surface": "pc",
+      "route": "/catalogo-activo",
+      "ownerComponent": "products/pc/app/app/catalogo-activo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.catalogo.activo.route.shell",
+      "surface": "pc",
+      "route": "/catalogo-activo",
+      "ownerComponent": "products/pc/app/app/catalogo-activo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.conteos.operativos.route.main-content",
+      "surface": "pc",
+      "route": "/conteos-operativos",
+      "ownerComponent": "products/pc/app/app/conteos-operativos/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.conteos.operativos.route.shell",
+      "surface": "pc",
+      "route": "/conteos-operativos",
+      "ownerComponent": "products/pc/app/app/conteos-operativos/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.contratos.reporte.route.main-content",
+      "surface": "pc",
+      "route": "/contratos-reporte",
+      "ownerComponent": "products/pc/app/app/contratos-reporte/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.contratos.reporte.route.shell",
+      "surface": "pc",
+      "route": "/contratos-reporte",
+      "ownerComponent": "products/pc/app/app/contratos-reporte/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.counts.route.main-content",
+      "surface": "pc",
+      "route": "/counts",
+      "ownerComponent": "products/pc/app/app/counts/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.counts.route.shell",
+      "surface": "pc",
+      "route": "/counts",
+      "ownerComponent": "products/pc/app/app/counts/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.dashboard",
+      "surface": "pc",
+      "route": "/dashboard",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "ownerCssProfile": "ownerCss.004",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.dashboard.route.main-content",
+      "surface": "pc",
+      "route": "/dashboard",
+      "ownerComponent": "products/pc/app/app/dashboard/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.dashboard.route.shell",
+      "surface": "pc",
+      "route": "/dashboard",
+      "ownerComponent": "products/pc/app/app/dashboard/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.data.quality.route.main-content",
+      "surface": "pc",
+      "route": "/data-quality",
+      "ownerComponent": "products/pc/app/app/data-quality/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.data.quality.route.shell",
+      "surface": "pc",
+      "route": "/data-quality",
+      "ownerComponent": "products/pc/app/app/data-quality/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.detalle.registros.route.main-content",
+      "surface": "pc",
+      "route": "/detalle-registros",
+      "ownerComponent": "products/pc/app/app/detalle-registros/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.detalle.registros.route.shell",
+      "surface": "pc",
+      "route": "/detalle-registros",
+      "ownerComponent": "products/pc/app/app/detalle-registros/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.devices.route.main-content",
+      "surface": "pc",
+      "route": "/devices",
+      "ownerComponent": "products/pc/app/app/devices/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.devices.route.shell",
+      "surface": "pc",
+      "route": "/devices",
+      "ownerComponent": "products/pc/app/app/devices/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.estados.operativos.route.main-content",
+      "surface": "pc",
+      "route": "/estados-operativos",
+      "ownerComponent": "products/pc/app/app/estados-operativos/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.estados.operativos.route.shell",
+      "surface": "pc",
+      "route": "/estados-operativos",
+      "ownerComponent": "products/pc/app/app/estados-operativos/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.existencias.criticas.route.main-content",
+      "surface": "pc",
+      "route": "/existencias-criticas",
+      "ownerComponent": "products/pc/app/app/existencias-criticas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.existencias.criticas.route.shell",
+      "surface": "pc",
+      "route": "/existencias-criticas",
+      "ownerComponent": "products/pc/app/app/existencias-criticas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.exportables.route.main-content",
+      "surface": "pc",
+      "route": "/exportables",
+      "ownerComponent": "products/pc/app/app/exportables/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.exportables.route.shell",
+      "surface": "pc",
+      "route": "/exportables",
+      "ownerComponent": "products/pc/app/app/exportables/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.filtros.avanzados.route.main-content",
+      "surface": "pc",
+      "route": "/filtros-avanzados",
+      "ownerComponent": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.filtros.avanzados.route.shell",
+      "surface": "pc",
+      "route": "/filtros-avanzados",
+      "ownerComponent": "products/pc/app/app/filtros-avanzados/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.filtros.fecha.route.main-content",
+      "surface": "pc",
+      "route": "/filtros-fecha",
+      "ownerComponent": "products/pc/app/app/filtros-fecha/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.filtros.fecha.route.shell",
+      "surface": "pc",
+      "route": "/filtros-fecha",
+      "ownerComponent": "products/pc/app/app/filtros-fecha/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.forecast.basico.route.main-content",
+      "surface": "pc",
+      "route": "/forecast-basico",
+      "ownerComponent": "products/pc/app/app/forecast-basico/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.forecast.basico.route.shell",
+      "surface": "pc",
+      "route": "/forecast-basico",
+      "ownerComponent": "products/pc/app/app/forecast-basico/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.glosario.route.main-content",
+      "surface": "pc",
+      "route": "/glosario",
+      "ownerComponent": "products/pc/app/app/glosario/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.glosario.route.shell",
+      "surface": "pc",
+      "route": "/glosario",
+      "ownerComponent": "products/pc/app/app/glosario/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.gobierno.route.main-content",
+      "surface": "pc",
+      "route": "/gobierno",
+      "ownerComponent": "products/pc/app/app/gobierno/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.gobierno.route.shell",
+      "surface": "pc",
+      "route": "/gobierno",
+      "ownerComponent": "products/pc/app/app/gobierno/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.incidencias.recepcion.route.main-content",
+      "surface": "pc",
+      "route": "/incidencias-recepcion",
+      "ownerComponent": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.incidencias.recepcion.route.shell",
+      "surface": "pc",
+      "route": "/incidencias-recepcion",
+      "ownerComponent": "products/pc/app/app/incidencias-recepcion/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.integridad.barcodes.route.main-content",
+      "surface": "pc",
+      "route": "/integridad-barcodes",
+      "ownerComponent": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.integridad.barcodes.route.shell",
+      "surface": "pc",
+      "route": "/integridad-barcodes",
+      "ownerComponent": "products/pc/app/app/integridad-barcodes/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.route.main-content",
+      "surface": "pc",
+      "route": "/laboratorio-pc",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.route.shell",
+      "surface": "pc",
+      "route": "/laboratorio-pc",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.chart.lab.route.main-content",
+      "surface": "pc",
+      "route": "/laboratorio-pc/chart-lab",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "ownerCssProfile": "ownerCss.005",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.chart.lab.route.shell",
+      "surface": "pc",
+      "route": "/laboratorio-pc/chart-lab",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/chart-lab/page.tsx",
+      "ownerCssProfile": "ownerCss.005",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.dashboard.governor.route.main-content",
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "ownerCssProfile": "ownerCss.006",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.dashboard.governor.route.shell",
+      "surface": "pc",
+      "route": "/laboratorio-pc/dashboard-governor",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/dashboard-governor/page.tsx",
+      "ownerCssProfile": "ownerCss.006",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.referencia.visual.route.main-content",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.referencia.visual.route.shell",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route.main-content",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "ownerCssProfile": "ownerCss.007",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.capsules.route.shell",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass-capsules",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass-capsules/page.tsx",
+      "ownerCssProfile": "ownerCss.007",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.route.main-content",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "ownerCssProfile": "ownerCss.008",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.laboratorio.pc.referencia.visual.liquid.glass.route.shell",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "ownerCssProfile": "ownerCss.008",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.liquid-glass-reference",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "ownerCssProfile": "ownerCss.008",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "products.pc.app.app.laboratorio.pc.referencia.visual.liquid.glass.page.tsx.laboratorio.pc.referencia.visual.liquid.glass.buttons",
+      "surface": "pc",
+      "route": "/laboratorio-pc/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/laboratorio-pc/referencia-visual/liquid-glass/page.tsx",
+      "ownerCssProfile": "ownerCss.008",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl"
+    },
+    {
+      "region_id": "pc.license.runtime.route.main-content",
+      "surface": "pc",
+      "route": "/license-runtime",
+      "ownerComponent": "products/pc/app/app/license-runtime/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.license.runtime.route.shell",
+      "surface": "pc",
+      "route": "/license-runtime",
+      "ownerComponent": "products/pc/app/app/license-runtime/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.metricas.dia.route.main-content",
+      "surface": "pc",
+      "route": "/metricas-dia",
+      "ownerComponent": "products/pc/app/app/metricas-dia/page.tsx",
+      "ownerCssProfile": "ownerCss.009",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.metricas.dia.route.shell",
+      "surface": "pc",
+      "route": "/metricas-dia",
+      "ownerComponent": "products/pc/app/app/metricas-dia/page.tsx",
+      "ownerCssProfile": "ownerCss.009",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.movements.route.main-content",
+      "surface": "pc",
+      "route": "/movements",
+      "ownerComponent": "products/pc/app/app/movements/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.movements.route.shell",
+      "surface": "pc",
+      "route": "/movements",
+      "ownerComponent": "products/pc/app/app/movements/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.ordenes.compra.route.main-content",
+      "surface": "pc",
+      "route": "/ordenes-compra",
+      "ownerComponent": "products/pc/app/app/ordenes-compra/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.ordenes.compra.route.shell",
+      "surface": "pc",
+      "route": "/ordenes-compra",
+      "ownerComponent": "products/pc/app/app/ordenes-compra/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.outbox.operativo.route.main-content",
+      "surface": "pc",
+      "route": "/outbox-operativo",
+      "ownerComponent": "products/pc/app/app/outbox-operativo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.outbox.operativo.route.shell",
+      "surface": "pc",
+      "route": "/outbox-operativo",
+      "ownerComponent": "products/pc/app/app/outbox-operativo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.politica.precios.route.main-content",
+      "surface": "pc",
+      "route": "/politica-precios",
+      "ownerComponent": "products/pc/app/app/politica-precios/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.politica.precios.route.shell",
+      "surface": "pc",
+      "route": "/politica-precios",
+      "ownerComponent": "products/pc/app/app/politica-precios/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.prisma.insights.route.main-content",
+      "surface": "pc",
+      "route": "/prisma-insights",
+      "ownerComponent": "products/pc/app/app/prisma-insights/page.tsx",
+      "ownerCssProfile": "ownerCss.005",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.prisma.insights.route.shell",
+      "surface": "pc",
+      "route": "/prisma-insights",
+      "ownerComponent": "products/pc/app/app/prisma-insights/page.tsx",
+      "ownerCssProfile": "ownerCss.005",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.prisma.insights.chart.lab.route.main-content",
+      "surface": "pc",
+      "route": "/prisma-insights/chart-lab",
+      "ownerComponent": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.prisma.insights.chart.lab.route.shell",
+      "surface": "pc",
+      "route": "/prisma-insights/chart-lab",
+      "ownerComponent": "products/pc/app/app/prisma-insights/chart-lab/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.proveedores.route.main-content",
+      "surface": "pc",
+      "route": "/proveedores",
+      "ownerComponent": "products/pc/app/app/proveedores/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.proveedores.route.shell",
+      "surface": "pc",
+      "route": "/proveedores",
+      "ownerComponent": "products/pc/app/app/proveedores/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.purchasing.route.main-content",
+      "surface": "pc",
+      "route": "/purchasing",
+      "ownerComponent": "products/pc/app/app/purchasing/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.purchasing.route.shell",
+      "surface": "pc",
+      "route": "/purchasing",
+      "ownerComponent": "products/pc/app/app/purchasing/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.receiving.route.main-content",
+      "surface": "pc",
+      "route": "/receiving",
+      "ownerComponent": "products/pc/app/app/receiving/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.receiving.route.shell",
+      "surface": "pc",
+      "route": "/receiving",
+      "ownerComponent": "products/pc/app/app/receiving/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.recepcion.proveedor.route.main-content",
+      "surface": "pc",
+      "route": "/recepcion-proveedor",
+      "ownerComponent": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.recepcion.proveedor.route.shell",
+      "surface": "pc",
+      "route": "/recepcion-proveedor",
+      "ownerComponent": "products/pc/app/app/recepcion-proveedor/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.referencia.visual.route.main-content",
+      "surface": "pc",
+      "route": "/referencia-visual",
+      "ownerComponent": "products/pc/app/app/referencia-visual/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.referencia.visual.route.shell",
+      "surface": "pc",
+      "route": "/referencia-visual",
+      "ownerComponent": "products/pc/app/app/referencia-visual/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.referencia.visual.liquid.glass.capsules.route.main-content",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.referencia.visual.liquid.glass.capsules.route.shell",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass-capsules",
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass-capsules/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.referencia.visual.liquid.glass.route.main-content",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.referencia.visual.liquid.glass.route.shell",
+      "surface": "pc",
+      "route": "/referencia-visual/liquid-glass",
+      "ownerComponent": "products/pc/app/app/referencia-visual/liquid-glass/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.replenishment.route.main-content",
+      "surface": "pc",
+      "route": "/replenishment",
+      "ownerComponent": "products/pc/app/app/replenishment/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.replenishment.route.shell",
+      "surface": "pc",
+      "route": "/replenishment",
+      "ownerComponent": "products/pc/app/app/replenishment/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.sales.control.route.main-content",
+      "surface": "pc",
+      "route": "/sales-control",
+      "ownerComponent": "products/pc/app/app/sales-control/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.sales.control.route.shell",
+      "surface": "pc",
+      "route": "/sales-control",
+      "ownerComponent": "products/pc/app/app/sales-control/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.salud.barcodes.route.main-content",
+      "surface": "pc",
+      "route": "/salud-barcodes",
+      "ownerComponent": "products/pc/app/app/salud-barcodes/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.salud.barcodes.route.shell",
+      "surface": "pc",
+      "route": "/salud-barcodes",
+      "ownerComponent": "products/pc/app/app/salud-barcodes/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.scorecards.negocio.route.main-content",
+      "surface": "pc",
+      "route": "/scorecards-negocio",
+      "ownerComponent": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.scorecards.negocio.route.shell",
+      "surface": "pc",
+      "route": "/scorecards-negocio",
+      "ownerComponent": "products/pc/app/app/scorecards-negocio/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.senal.reabasto.route.main-content",
+      "surface": "pc",
+      "route": "/senal-reabasto",
+      "ownerComponent": "products/pc/app/app/senal-reabasto/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.senal.reabasto.route.shell",
+      "surface": "pc",
+      "route": "/senal-reabasto",
+      "ownerComponent": "products/pc/app/app/senal-reabasto/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.settings",
+      "surface": "pc",
+      "route": "/settings",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "ownerCssProfile": "ownerCss.004",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.settings.route.main-content",
+      "surface": "pc",
+      "route": "/settings",
+      "ownerComponent": "products/pc/app/app/settings/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.settings.route.shell",
+      "surface": "pc",
+      "route": "/settings",
+      "ownerComponent": "products/pc/app/app/settings/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.settings.license.route.main-content",
+      "surface": "pc",
+      "route": "/settings/license",
+      "ownerComponent": "products/pc/app/app/settings/license/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.settings.license.route.shell",
+      "surface": "pc",
+      "route": "/settings/license",
+      "ownerComponent": "products/pc/app/app/settings/license/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.stock",
+      "surface": "pc",
+      "route": "/stock",
+      "ownerComponent": "products/pc/app/components/uiux/pc-module-shell.tsx",
+      "ownerCssProfile": "ownerCss.004",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.stock.route.main-content",
+      "surface": "pc",
+      "route": "/stock",
+      "ownerComponent": "products/pc/app/app/stock/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.stock.route.shell",
+      "surface": "pc",
+      "route": "/stock",
+      "ownerComponent": "products/pc/app/app/stock/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.sync.operativo.route.main-content",
+      "surface": "pc",
+      "route": "/sync-operativo",
+      "ownerComponent": "products/pc/app/app/sync-operativo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.sync.operativo.route.shell",
+      "surface": "pc",
+      "route": "/sync-operativo",
+      "ownerComponent": "products/pc/app/app/sync-operativo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.sync.route.main-content",
+      "surface": "pc",
+      "route": "/sync",
+      "ownerComponent": "products/pc/app/app/sync/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.sync.route.shell",
+      "surface": "pc",
+      "route": "/sync",
+      "ownerComponent": "products/pc/app/app/sync/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.tablas.operativas.route.main-content",
+      "surface": "pc",
+      "route": "/tablas-operativas",
+      "ownerComponent": "products/pc/app/app/tablas-operativas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.tablas.operativas.route.shell",
+      "surface": "pc",
+      "route": "/tablas-operativas",
+      "ownerComponent": "products/pc/app/app/tablas-operativas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.tablero.kpi.route.main-content",
+      "surface": "pc",
+      "route": "/tablero-kpi",
+      "ownerComponent": "products/pc/app/app/tablero-kpi/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.tablero.kpi.route.shell",
+      "surface": "pc",
+      "route": "/tablero-kpi",
+      "ownerComponent": "products/pc/app/app/tablero-kpi/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.tablet.communication.route.main-content",
+      "surface": "pc",
+      "route": "/tablet-communication",
+      "ownerComponent": "products/pc/app/app/tablet-communication/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.tablet.communication.route.shell",
+      "surface": "pc",
+      "route": "/tablet-communication",
+      "ownerComponent": "products/pc/app/app/tablet-communication/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.validacion.catalogo.route.main-content",
+      "surface": "pc",
+      "route": "/validacion-catalogo",
+      "ownerComponent": "products/pc/app/app/validacion-catalogo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.validacion.catalogo.route.shell",
+      "surface": "pc",
+      "route": "/validacion-catalogo",
+      "ownerComponent": "products/pc/app/app/validacion-catalogo/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "pc.vistas.ejecutivas.route.main-content",
+      "surface": "pc",
+      "route": "/vistas-ejecutivas",
+      "ownerComponent": "products/pc/app/app/vistas-ejecutivas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "safeVisualOnly"
+    },
+    {
+      "region_id": "pc.vistas.ejecutivas.route.shell",
+      "surface": "pc",
+      "route": "/vistas-ejecutivas",
+      "ownerComponent": "products/pc/app/app/vistas-ejecutivas/page.tsx",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "visualWithFunctionalRisk"
+    },
+    {
+      "region_id": "products.pc.app.app.acciones.masivas.error.tsx.unknown.buttons",
+      "surface": "pc",
+      "ownerComponent": "products/pc/app/app/acciones-masivas/error.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl"
+    },
+    {
+      "region_id": "products.pc.app.app.audit.error.tsx.unknown.buttons",
+      "surface": "pc",
+      "ownerComponent": "products/pc/app/app/audit/error.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl"
+    },
+    {
+      "region_id": "products.pc.app.app.cash.sessions.error.tsx.unknown.buttons",
+      "surface": "pc",
+      "ownerComponent": "products/pc/app/app/cash-sessions/error.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl"
+    },
+    {
+      "region_id": "products.pc.app.app.catalog.error.tsx.unknown.buttons",
+      "surface": "pc",
+      "ownerComponent": "products/pc/app/app/catalog/error.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl"
+    },
+    {
+      "region_id": "products.pc.app.app.contratos.reporte.error.tsx.unknown.buttons",
+      "surface": "pc",
+      "ownerComponent": "products/pc/app/app/contratos-reporte/error.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl"
+    },
+    {
+      "region_id": "products.pc.app.app.counts.error.tsx.unknown.buttons",
+      "surface": "pc",
+      "ownerComponent": "products/pc/app/app/counts/error.tsx",
+      "assetOwnerProfile": "assetOwner.001",
+      "tokenOwnerProfile": "tokenOwner.001",
+      "safetyClassification": "functionalControl"
+    }
+  ]
+}
