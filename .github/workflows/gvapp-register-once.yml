@@ -18,13 +18,13 @@ jobs:
           fetch-depth: 0
           ref: gov/generic-visual-application-engine-v1-3108
 
-      - name: Fail closed unless canonical main is unchanged
+      - name: Fail closed unless rebound canonical main is unchanged
         shell: bash
         run: |
           set -euo pipefail
           git fetch origin main --quiet
           ACTUAL_MAIN="$(git rev-parse origin/main)"
-          EXPECTED_MAIN="0400c7cbc307d156a0c5cd0e10b253deac9bf318"
+          EXPECTED_MAIN="c17635fb69bb0208dc8237ee97cc82017f1d30a6"
           test "$ACTUAL_MAIN" = "$EXPECTED_MAIN"
 
       - name: Register canonical capability and evidence
@@ -37,7 +37,6 @@ jobs:
 
           ledger_path = Path('PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json')
           evidence_path = Path('PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json')
-
           ledger = json.loads(ledger_path.read_text(encoding='utf-8'))
           evidence = json.loads(evidence_path.read_text(encoding='utf-8'))
 
@@ -59,6 +58,7 @@ jobs:
               'evidence': [
                   'Governance preflight issue #513 and draft registration PR #514',
                   'PRISMA Remote AutoMesh run 33416410140 artifact 9767220861; PASS_COMPOSED_AUTHORITY_MESH at main 0400c7cbc307d156a0c5cd0e10b253deac9bf318; requestDigest efab1ba6c1276b4b8abea0290bde2ba2c57d3dcc8a52b50da634a7887be9d2fd; composed artifact sha256 33908c0bfc2e200483d0601f2302aea95f227c96b840b1954ea5eee0233f6a8d',
+                  'AutoMesh v2 revalidation run 33422482889 artifact 9769443280; PASS_NO_RELEVANT_DRIFT rebound to main c17635fb69bb0208dc8237ee97cc82017f1d30a6; revalidated artifact sha256 889ba892d992179ec49c8d068a3f3f99cbec5187b93721abe261cda5212d6d39; revalidationDigest 4c8d1e45ecbb616c0df757d574c6ab8478566ed251d9c3508a0f3b6f6803b578',
                   'Existing frozen visual foundations reused by design: Code Atlas UI Bridge read-only guard, visual.atlasfin.tablet_pos_cobrar golden transaction, NDC, RIFAT/prisma-ui, Identity Dictionary, Visual Source Manifest, Visual Core and Change Assurance'
               ],
               'doesNotProve': [
@@ -87,22 +87,22 @@ jobs:
                   'claim runtime visual certification from static/source evidence'
               ]
           }
-
           if not matches:
               ledger.setdefault('capabilities', []).append(capability)
           elif matches[0] != capability:
               raise SystemExit('BLOCKED_CONFLICTING_EXISTING_CAPABILITY')
-          ledger['updatedAt'] = '2026-08-31T17:00:00Z'
+          ledger['updatedAt'] = '2026-08-31T17:59:05Z'
 
-          artifact_name = 'PR #514 / PRISMA Remote AutoMesh 33416410140 artifact 9767220861'
+          artifact_name = 'PR #514 / GVAE registration authority and rebound revalidation'
           artifact = {
               'artifact': artifact_name,
               'type': 'generic_visual_application_engine_v1_capability_registration_authority',
               'scope': ['factory_ledger','governance','prisma-html','visual_application'],
               'status': 'PASS_REGISTRATION_AUTHORITY_ONLY',
               'proves': [
-                  'The missing Generic Visual Application Engine V1 capability was classified for canonical Factory Ledger registration on exact main 0400c7cbc307d156a0c5cd0e10b253deac9bf318',
-                  'Task-exact composed Authority Mesh passed with governance scope, mandatory Layer Map, 100% required authority coverage and zero blockers',
+                  'The missing Generic Visual Application Engine V1 capability was classified for canonical Factory Ledger registration',
+                  'Task-exact composed Authority Mesh passed at main 0400c7cbc307d156a0c5cd0e10b253deac9bf318 with required authority coverage and zero blockers',
+                  'AutoMesh v2 revalidation returned PASS_NO_RELEVANT_DRIFT and rebound the authority to main c17635fb69bb0208dc8237ee97cc82017f1d30a6',
                   'The registration preserves Code Atlas UI Bridge as read-only and preserves certified Cobrar evidence as a golden reference'
               ],
               'doesNotProve': [
@@ -124,11 +124,14 @@ jobs:
           entry = {
               'capabilityId': capability_id,
               'status': 'BUILD_NOT_STARTED',
-              'runId': '33416410140',
+              'runId': '33422482889',
               'evidence': [
-                  'artifact 9767220861',
+                  'base Authority run 33416410140 artifact 9767220861',
                   'requestDigest efab1ba6c1276b4b8abea0290bde2ba2c57d3dcc8a52b50da634a7887be9d2fd',
-                  'composed sha256 33908c0bfc2e200483d0601f2302aea95f227c96b840b1954ea5eee0233f6a8d',
+                  'base composed sha256 33908c0bfc2e200483d0601f2302aea95f227c96b840b1954ea5eee0233f6a8d',
+                  'revalidation run 33422482889 artifact 9769443280',
+                  'PASS_NO_RELEVANT_DRIFT rebound main c17635fb69bb0208dc8237ee97cc82017f1d30a6',
+                  'revalidated artifact sha256 889ba892d992179ec49c8d068a3f3f99cbec5187b93721abe261cda5212d6d39',
                   'issue #513',
                   'PR #514'
               ]
@@ -140,12 +143,11 @@ jobs:
               evidence.setdefault('entries', []).append(entry)
           elif entry_matches[0] != entry:
               raise SystemExit('BLOCKED_CONFLICTING_EVIDENCE_ENTRY')
-          evidence['updatedAt'] = '2026-08-31T17:00:00Z'
+          evidence['updatedAt'] = '2026-08-31T17:59:05Z'
 
           ledger_path.write_text(json.dumps(ledger, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
           evidence_path.write_text(json.dumps(evidence, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
 
-          # Native fail-closed checks for the registration transaction.
           ledger2 = json.loads(ledger_path.read_text(encoding='utf-8'))
           evidence2 = json.loads(evidence_path.read_text(encoding='utf-8'))
           resolved = [row for row in ledger2['capabilities'] if row.get('id') == capability_id]
