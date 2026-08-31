@@ -10,7 +10,7 @@ on:
       - '.github/workflows/viscore1-cert.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -62,6 +62,10 @@ jobs:
         working-directory: prisma-html
         run: python tools/compile_identity_dictionary.py --write
 
+      - name: Refresh deterministic file manifest after identity compilation
+        working-directory: prisma-html
+        run: python tools/refresh_files_manifest.py --write
+
       - name: Upload deterministic Identity Dictionary candidate
         uses: actions/upload-artifact@v4
         with:
@@ -69,6 +73,23 @@ jobs:
           path: prisma-html/authority/rifat/identity/compiled/current
           if-no-files-found: error
           retention-days: 7
+
+      - name: Repair deterministic compile drift on exact catalog branch
+        if: github.head_ref == 'feat/pc-catalog-viscore-fullscreen-20260830'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- \
+            prisma-html/authority/rifat/identity/compiled/current \
+            prisma-html/FILES_MANIFEST.json
+          if git diff --cached --quiet; then
+            echo 'No deterministic compile drift to repair.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(viscore): reconcile deterministic identity compilation'
+          git push origin HEAD:"${GITHUB_HEAD_REF}"
 
       - name: Committed Identity Dictionary compilation must already match
         working-directory: prisma-html
