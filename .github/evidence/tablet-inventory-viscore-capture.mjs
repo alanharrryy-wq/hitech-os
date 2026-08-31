@@ -167,6 +167,7 @@ await sleep(900);
 const meta = await evalv(`(() => {
   const b=document.body,e=document.documentElement;
   const root=document.querySelector('[data-prisma-screen="catalog-stock-selling-assist-stock"]');
+  const routeRoot=document.querySelector('[data-prisma-panel="tablet.inventory.route"][data-prisma-surface="tablet"][data-prisma-route="/inventory"]');
   const operations=[...document.querySelectorAll('section')].find(el => el.getAttribute('aria-label')==='Operaciones de inventario');
   const primary=[...document.querySelectorAll('button')].find(el => ['Confirmar ajuste','Cerrar conteo','Registrar recepción'].includes((el.textContent||'').trim()));
   return {
@@ -178,17 +179,19 @@ const meta = await evalv(`(() => {
     scrollWidth:Math.max(e?.scrollWidth||0,b?.scrollWidth||0),
     scrollHeight:Math.max(e?.scrollHeight||0,b?.scrollHeight||0),
     screenPresent:Boolean(root),
+    routeAnchorPresent:Boolean(routeRoot),
     operationsPresent:Boolean(operations),
     primaryOperationPresent:Boolean(primary),
     primaryOperationDisabled:Boolean(primary?.disabled),
-    routeAnchors:root ? { panel:root.getAttribute('data-prisma-panel'), surface:root.getAttribute('data-prisma-surface'), route:root.getAttribute('data-prisma-route') } : null,
+    routeAnchors:routeRoot ? { panel:routeRoot.getAttribute('data-prisma-panel'), surface:routeRoot.getAttribute('data-prisma-surface'), route:routeRoot.getAttribute('data-prisma-route') } : null,
     productRows:[...document.querySelectorAll('button')].filter(x => (x.textContent||'').includes('COCA600') || (x.textContent||'').includes('SABR45')).length
   };
 })()`);
 
 if ((meta.bodyLength || 0) < 200) throw new Error('INVENTORY_BODY_TOO_SMALL');
 if ((meta.scrollWidth || 0) > (meta.clientWidth || 0) + 4) throw new Error(`INVENTORY_HORIZONTAL_OVERFLOW:${meta.scrollWidth}>${meta.clientWidth}`);
-if (!meta.screenPresent || !meta.operationsPresent || !meta.primaryOperationPresent) throw new Error(`INVENTORY_REQUIRED_UI_MISSING:${JSON.stringify(meta)}`);
+if (!meta.screenPresent || !meta.routeAnchorPresent || !meta.operationsPresent || !meta.primaryOperationPresent) throw new Error(`INVENTORY_REQUIRED_UI_MISSING:${JSON.stringify(meta)}`);
+if (meta.routeAnchors?.panel !== 'tablet.inventory.route' || meta.routeAnchors?.surface !== 'tablet' || meta.routeAnchors?.route !== '/inventory') throw new Error(`INVENTORY_ROUTE_ANCHOR_DRIFT:${JSON.stringify(meta.routeAnchors)}`);
 if (runtimeErrors.length || consoleErrors.length || networkErrors.length) throw new Error(`INVENTORY_RUNTIME_ANOMALY:${JSON.stringify({runtimeErrors,consoleErrors,networkErrors})}`);
 
 const viewportShot = await cdp.send('Page.captureScreenshot', { format:'png', captureBeyondViewport:false, fromSurface:true });
@@ -203,7 +206,7 @@ fs.writeFileSync(path.join(shots, 'inventory-full.png'), Buffer.from(fullShot.da
 
 const report = {
   schemaVersion:'tablet.inventory.viscore.runtime-evidence.v1',
-  commit:process.env.GITHUB_SHA || null,
+  commit:process.env.PRISMA_EVIDENCE_SHA || null,
   route:'/inventory',
   viewport:{width:1365,height:1000},
   capture:{width,height},
