@@ -1,0 +1,266 @@
+name: Mobile Cleanup Verifiers Apply 3108
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mobile-cleanup-verifiers-apply-3108.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  TARGET_HEAD: 6f5b3df2ccd4b83a613648fef8e0874df3e1ac09
+  TARGET_BRANCH: fix/mobile-multicontext-verifiers-cleanup-3108-v2
+  AUTH_RUN_ID: '33368937461'
+  AUTH_ARTIFACT_ID: '9749299916'
+  AUTH_ARTIFACT_SHA256: e2e251f5d33824cc86abe9a3127e8d00c2819c71d635b11e591abb11f97c8140
+  MESH_REQUEST_DIGEST: 4b7d5afe229cdff106ad79654b44fc6ce7cbd2c251cfdd680ad58d30f332f624
+  MESH_COMPOSED_SHA256: bafb60010dfbb30edc9cab902120f53012960ad70588c99e3feb2680879fa849
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - name: Checkout mutation branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+          clean: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Guard exact governed base and clean carrier state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          remote_head="$(git rev-parse origin/main)"
+          test "$remote_head" = "$TARGET_HEAD"
+          test "$(git merge-base HEAD origin/main)" = "$TARGET_HEAD"
+          mapfile -t changed < <(git diff --name-only origin/main...HEAD)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = ".github/workflows/mobile-cleanup-verifiers-apply-3108.yml"
+
+      - name: Verify authority and consumer proof artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          auth="$RUNNER_TEMP/mobile-authority-proof.zip"
+          curl --fail --location --silent --show-error \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$AUTH_ARTIFACT_ID/zip" \
+            -o "$auth"
+          test "$(sha256sum "$auth" | awk '{print $1}')" = "$AUTH_ARTIFACT_SHA256"
+          python - "$auth" "$RUNNER_TEMP/AUTHORITY_BINDING.json" <<'PY'
+          import json, os, sys, zipfile
+          artifact, out = sys.argv[1:]
+          with zipfile.ZipFile(artifact) as z:
+              mesh = json.loads(z.read('mesh-verified.json'))
+              proof = json.loads(z.read('MULTICONTEXT_CONSUMER_PROOF.json'))
+              proposal = json.loads(z.read('proposal.decision.json'))
+              mutation = json.loads(z.read('mutation.decision.json'))
+          head = os.environ['TARGET_HEAD']
+          if mesh.get('status') != 'PASS_COMPOSED_AUTHORITY_MESH' or mesh.get('repoHead') != head:
+              raise SystemExit('MESH_AUTHORITY_NOT_CURRENT')
+          if mesh.get('requiredAuthorityCoveragePct') != 100 or mesh.get('blockers') != 0:
+              raise SystemExit('MESH_AUTHORITY_NOT_CLEAN')
+          if mesh.get('requestDigest') != os.environ['MESH_REQUEST_DIGEST']:
+              raise SystemExit('MESH_REQUEST_DIGEST_DRIFT')
+          if mesh.get('artifactDigest') != os.environ['MESH_COMPOSED_SHA256']:
+              raise SystemExit('MESH_ARTIFACT_DIGEST_DRIFT')
+          if mesh.get('layerMapPresent') is not True:
+              raise SystemExit('LAYER_MAP_REQUIRED')
+          if proof.get('repoHead') != head or proof.get('verdict') != 'PASS_NO_EXTERNAL_RUNTIME_CONSUMERS':
+              raise SystemExit('CONSUMER_PROOF_NOT_PASS')
+          if proof.get('unexpectedRuntimeConsumers') != []:
+              raise SystemExit('UNEXPECTED_RUNTIME_CONSUMER')
+          if proof.get('branchesApiExistsAndIsOutOfScope') is not True:
+              raise SystemExit('BRANCHES_API_BOUNDARY_NOT_PROVEN')
+          for decision, mode in ((proposal,'PROPOSAL'),(mutation,'MUTATION')):
+              if decision.get('result') != 'PASS_ANTI_REWORK_GATE' or decision.get('errors') != []:
+                  raise SystemExit(f'{mode}_ANTI_REWORK_NOT_PASS')
+              if decision.get('repoHead') != head or decision.get('mode') != mode:
+                  raise SystemExit(f'{mode}_ANTI_REWORK_HEAD_OR_MODE_DRIFT')
+              selected = decision.get('selected') or []
+              if len(selected) != 1 or selected[0].get('id') != 'mobile.interface_specification_canon':
+                  raise SystemExit(f'{mode}_CAPABILITY_BINDING_INVALID')
+              if selected[0].get('requestedAction') != 'ADVANCE' or selected[0].get('doNotRebuild') is not True:
+                  raise SystemExit(f'{mode}_ANTI_REWORK_ACTION_INVALID')
+          binding = {
+              'repoHead': head,
+              'authorityRunId': os.environ['AUTH_RUN_ID'],
+              'authorityArtifactId': os.environ['AUTH_ARTIFACT_ID'],
+              'meshRequestDigest': mesh['requestDigest'],
+              'meshArtifactDigest': mesh['artifactDigest'],
+              'consumerProof': proof['verdict'],
+              'proposalDecisionDigest': proposal['decisionDigest'],
+              'mutationDecisionDigest': mutation['decisionDigest'],
+          }
+          with open(out,'w',encoding='utf-8') as f:
+              json.dump(binding,f,indent=2); f.write('\n')
+          print(json.dumps(binding,indent=2))
+          PY
+
+      - name: Apply exact authorized cleanup in working tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - "$RUNNER_TEMP/MUTATION_REPORT.json" <<'PY'
+          import hashlib, json, pathlib, sys
+          out = pathlib.Path(sys.argv[1])
+          mobile = pathlib.Path('apps/terminal-de-venta-system/products/mobile/app')
+          component = mobile / 'src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx'
+          component_css = mobile / 'src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css'
+          index = mobile / 'src/components/prisma-app/index.ts'
+          dashboard_css = mobile / 'src/components/prisma-app/prisma-mobile-dashboard.module.css'
+          contract = mobile / 'docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json'
+          verifier = mobile / 'tools/verify_prisma_mobile_interface_canon.mjs'
+          branches = mobile / 'app/api/mobile/branches/route.ts'
+          def digest(path):
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+          required = [component, component_css, index, dashboard_css, contract, verifier, branches]
+          missing = [p.as_posix() for p in required if not p.is_file()]
+          if missing:
+              raise SystemExit('REQUIRED_FILE_MISSING:' + ','.join(missing))
+          branches_before = digest(branches)
+          index_text = index.read_text(encoding='utf-8')
+          export_line = 'export { PrismaMobileMultiContextSwitcher } from "./PrismaMobileMultiContextSwitcher";\n'
+          if index_text.count(export_line) != 1:
+              raise SystemExit('INDEX_EXPORT_EXPECTATION_FAILED')
+          index.write_text(index_text.replace(export_line, '', 1), encoding='utf-8')
+          dashboard_text = dashboard_css.read_text(encoding='utf-8')
+          old_block = '.crystalCommand,\n.multiContextRoot {\n  display: grid;\n  gap: 9px;\n}'
+          new_block = '.crystalCommand {\n  display: grid;\n  gap: 9px;\n}'
+          if dashboard_text.count(old_block) != 1:
+              raise SystemExit('DASHBOARD_SELECTOR_EXPECTATION_FAILED')
+          dashboard_css.write_text(dashboard_text.replace(old_block, new_block, 1), encoding='utf-8')
+          contract_text = contract.read_text(encoding='utf-8')
+          old_claim = '    "verifiersAligned": false'
+          new_claim = '    "verifiersAligned": true'
+          if contract_text.count(old_claim) != 1 or new_claim in contract_text:
+              raise SystemExit('VERIFIERS_ALIGNED_CLAIM_EXPECTATION_FAILED')
+          contract.write_text(contract_text.replace(old_claim, new_claim, 1), encoding='utf-8')
+          verifier_text = verifier.read_text(encoding='utf-8')
+          marker = 'const canonicalCommand = "node tools/verify_prisma_mobile_interface_canon.mjs";\n'
+          guard = 'if (contract.claims?.verifiersAligned !== true) fail("Canon claims.verifiersAligned must stay true after verifier reconciliation", { verifiersAligned: contract.claims?.verifiersAligned });\n\n'
+          if verifier_text.count(marker) != 1 or guard in verifier_text:
+              raise SystemExit('VERIFIER_GUARD_EXPECTATION_FAILED')
+          verifier.write_text(verifier_text.replace(marker, guard + marker, 1), encoding='utf-8')
+          component.unlink()
+          component_css.unlink()
+          if digest(branches) != branches_before:
+              raise SystemExit('BRANCHES_API_CHANGED')
+          report = {
+              'schemaVersion':'prisma.mobile.multicontext-cleanup-mutation.v1',
+              'baseHead':'6f5b3df2ccd4b83a613648fef8e0874df3e1ac09',
+              'deleted':[component.as_posix(),component_css.as_posix()],
+              'modified':[index.as_posix(),dashboard_css.as_posix(),contract.as_posix(),verifier.as_posix()],
+              'branchesApiSha256Before':branches_before,
+              'branchesApiSha256After':digest(branches),
+              'claimsChanged':{'verifiersAligned':[False,True]},
+              'claimsExplicitlyUnchanged':['runtimeCertified','visualCertified','hostedProductionCertified','offlineOperationalDataCertified'],
+          }
+          out.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Prove post-cleanup source state and exact scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mobile='apps/terminal-de-venta-system/products/mobile/app'
+          for pattern in \
+            PrismaMobileMultiContextSwitcher \
+            multiContextRoot \
+            mobile-multi-context-switcher \
+            PRISMA_APP_MOBILE_41_MULTI_CONTEXT_SWITCHER_RENDER_GRADE \
+            prisma-mobile-multi-context-switcher.module.css; do
+            if git grep -n -I -F "$pattern" -- "$mobile/src" "$mobile/app"; then
+              echo "UNEXPECTED_POST_CLEANUP_SOURCE_REFERENCE:$pattern" >&2
+              exit 1
+            fi
+          done
+          test -f "$mobile/app/api/mobile/branches/route.ts"
+          test ! -f "$mobile/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx"
+          test ! -f "$mobile/src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css"
+          ! grep -Fq 'PrismaMobileMultiContextSwitcher' "$mobile/src/components/prisma-app/index.ts"
+          ! grep -Fq '.multiContextRoot' "$mobile/src/components/prisma-app/prisma-mobile-dashboard.module.css"
+          node "$mobile/tools/verify_prisma_mobile_interface_canon.mjs"
+          node "$mobile/tools/verify_prisma_app_mobile_27_premium_navigation.mjs"
+          node "$mobile/tools/verify_prisma_app_mobile_28_data_readiness.mjs"
+          node "$mobile/tools/verify_prisma_app_mobile_32_source_states.mjs"
+          node tools/quality/verify-zero-important.mjs
+
+      - name: Install exact workspace dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          corepack enable
+          corepack prepare pnpm@9.15.0 --activate
+          pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Run complete Mobile gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C apps/terminal-de-venta-system/products/mobile/app check:all
+
+      - name: Final scope guard and self-remove carrier
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/mobile-cleanup-verifiers-apply-3108.yml
+          mapfile -t actual < <(git diff --name-only origin/main | sort)
+          mapfile -t expected < <(printf '%s\n' \
+            'apps/terminal-de-venta-system/products/mobile/app/docs/prisma-app/PRISMA_MOBILE_INTERFACE_CANON.contract.json' \
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/PrismaMobileMultiContextSwitcher.tsx' \
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/index.ts' \
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css' \
+            'apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css' \
+            'apps/terminal-de-venta-system/products/mobile/app/tools/verify_prisma_mobile_interface_canon.mjs' | sort)
+          test "${#actual[@]}" -eq "${#expected[@]}"
+          diff -u <(printf '%s\n' "${expected[@]}") <(printf '%s\n' "${actual[@]}")
+          test "$(git diff --numstat origin/main -- 'apps/terminal-de-venta-system/products/mobile/app/app/api/mobile/branches/route.ts' | wc -l)" -eq 0
+          git diff --check origin/main
+
+      - name: Stage mutation evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/mobile-cleanup-result"
+          mkdir -p "$out"
+          cp "$RUNNER_TEMP/AUTHORITY_BINDING.json" "$out/"
+          cp "$RUNNER_TEMP/MUTATION_REPORT.json" "$out/"
+          git diff --name-status origin/main > "$out/DIFF_NAME_STATUS.txt"
+          git diff --stat origin/main > "$out/DIFF_STAT.txt"
+          printf '%s\n' 'PASS_POST_CLEANUP_SOURCE_PROOF' 'PASS_MOBILE_CHECK_ALL' 'PASS_EXACT_SCOPE' > "$out/VALIDATION.txt"
+
+      - name: Commit and push governed product change
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'PRISMA governed cleanup'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A
+          git commit -m 'fix(mobile): remove retired MultiContext residue'
+          git push origin "HEAD:$TARGET_BRANCH"
+
+      - name: Upload mutation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-cleanup-verifiers-apply-3108
+          path: ${{ runner.temp }}/mobile-cleanup-result/**
+          if-no-files-found: warn
+          retention-days: 14
