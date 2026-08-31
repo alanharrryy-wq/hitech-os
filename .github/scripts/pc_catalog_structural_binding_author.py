@@ -41,6 +41,7 @@ def reset_output(path: Path) -> None:
 def patch_visual_control() -> None:
     path = APP / "tools/quality/ui-visual-control.mjs"
     text = path.read_text(encoding="utf-8")
+
     old_sig = "function buildVisualRegions(routes, panels, layers, components = []) {"
     new_sig = "function buildVisualRegions(routes, panels, layers, components = [], certifiedLayers = []) {"
     if old_sig in text:
@@ -85,6 +86,31 @@ def patch_visual_control() -> None:
         text = text.replace(old_call, new_call, 1)
     elif new_call not in text:
         raise SystemExit("BUILD_VISUAL_REGIONS_CALL_ANCHOR_MISSING")
+
+    write_anchor = "  const compact = compactModelForRepo(model);\n"
+    certified_index_block = """  const certifiedRegionIds = new Set(model.certifiedLayers.map((layer) => `${layer.layer_id}.layer`));
+  const certifiedRegionOwners = compact.owners.regionOwners.filter((owner) => certifiedRegionIds.has(owner.region_id));
+  const certifiedSlotUnits = compact.slotUnits.filter((slot) => certifiedRegionIds.has(slot.target));
+"""
+    if certified_index_block not in text:
+        if write_anchor not in text:
+            raise SystemExit("WRITE_ARTIFACTS_COMPACT_ANCHOR_MISSING")
+        text = text.replace(write_anchor, write_anchor + certified_index_block, 1)
+
+    slot_anchor = "    slotUnitCount: compact.slotUnits.length,\n    countsBySurface: countBy(compact.slotUnits, 'surface'),"
+    slot_replacement = "    slotUnitCount: compact.slotUnits.length,\n    certifiedSlotUnitCount: certifiedSlotUnits.length,\n    certifiedSlotUnits,\n    countsBySurface: countBy(compact.slotUnits, 'surface'),"
+    if slot_anchor in text:
+        text = text.replace(slot_anchor, slot_replacement, 1)
+    elif "certifiedSlotUnitCount: certifiedSlotUnits.length" not in text:
+        raise SystemExit("CERTIFIED_SLOT_INDEX_ANCHOR_MISSING")
+
+    region_anchor = "    regionOwnerCount: compact.owners.regionOwners.length,\n    countsBySurface: countBy(compact.owners.regionOwners, 'surface'),"
+    region_replacement = "    regionOwnerCount: compact.owners.regionOwners.length,\n    certifiedRegionOwnerCount: certifiedRegionOwners.length,\n    certifiedRegionOwners,\n    countsBySurface: countBy(compact.owners.regionOwners, 'surface'),"
+    if region_anchor in text:
+        text = text.replace(region_anchor, region_replacement, 1)
+    elif "certifiedRegionOwnerCount: certifiedRegionOwners.length" not in text:
+        raise SystemExit("CERTIFIED_REGION_INDEX_ANCHOR_MISSING")
+
     path.write_text(text, encoding="utf-8")
 
 
@@ -135,14 +161,14 @@ def discover_structural_slot(vc: Path) -> str:
     slots = load_vc(vc, "editable-slots.json")
     matches = [
         item
-        for item in slots.get("slotUnitSamples", [])
+        for item in slots.get("certifiedSlotUnits", [])
         if item.get("surface") == "pc"
         and item.get("route") == "/catalog"
         and item.get("target") == REGION_ID
     ]
     if len(matches) != 1:
-        print("STRUCTURAL_SLOT_MATCHES=" + json.dumps(matches, indent=2, ensure_ascii=False))
-        raise SystemExit(f"EXPECTED_ONE_STRUCTURAL_SLOT_ACTUAL={len(matches)}")
+        print("CERTIFIED_STRUCTURAL_SLOT_MATCHES=" + json.dumps(matches, indent=2, ensure_ascii=False))
+        raise SystemExit(f"EXPECTED_ONE_CERTIFIED_STRUCTURAL_SLOT_ACTUAL={len(matches)}")
     slot_id = matches[0].get("slot_unit_id")
     if not slot_id:
         raise SystemExit("STRUCTURAL_SLOT_ID_EMPTY")
@@ -167,8 +193,8 @@ def prove_and_promote(vc: Path, slot_id: str) -> None:
     route = next((x for x in routes.get("routes", []) if x.get("route_id") == "pc.catalog.route"), None)
     component = next((x for x in components.get("components", []) if x.get("component_id") == COMPONENT_ID), None)
     css_owner = next((x for x in owners.get("cssOwnerSamples", []) if x.get("owner_id") == CSS_ID), None)
-    region = next((x for x in owners.get("regionOwnerSamples", []) if x.get("region_id") == REGION_ID), None)
-    slot = next((x for x in slots.get("slotUnitSamples", []) if x.get("slot_unit_id") == slot_id), None)
+    region = next((x for x in owners.get("certifiedRegionOwners", []) if x.get("region_id") == REGION_ID), None)
+    slot = next((x for x in slots.get("certifiedSlotUnits", []) if x.get("slot_unit_id") == slot_id), None)
     certified = next((x for x in layers.get("certifiedLayers", []) if x.get("layer_id") == LAYER_ID), None)
     implementation = next((x for x in layers.get("layerSamples", []) if x.get("layer_id") == IMPLEMENTATION_LAYER_ID), None)
 
@@ -184,6 +210,8 @@ def prove_and_promote(vc: Path, slot_id: str) -> None:
     assert certified.get("routeId") == "pc.catalog.route", certified
     assert certified.get("regionId") == REGION_ID, certified
     assert implementation and implementation.get("selector") == ".workspace", implementation
+    assert slots.get("certifiedSlotUnitCount", 0) >= 1, slots
+    assert owners.get("certifiedRegionOwnerCount", 0) >= 1, owners
 
     pc_dst = RIFAT / "prisma-ui/visual-control/pc"
     pc_dst.mkdir(parents=True, exist_ok=True)
@@ -205,8 +233,10 @@ def prove_and_promote(vc: Path, slot_id: str) -> None:
             "routeCount": routes.get("routeCount"),
             "routeOwnerCount": owners.get("routeOwnerCount"),
             "regionOwnerCount": owners.get("regionOwnerCount"),
+            "certifiedRegionOwnerCount": owners.get("certifiedRegionOwnerCount"),
             "editableSlotCount": slots.get("editableSlotCount"),
             "slotUnitCount": slots.get("slotUnitCount"),
+            "certifiedSlotUnitCount": slots.get("certifiedSlotUnitCount"),
             "layerCount": layers.get("layerCount"),
             "componentCount": components.get("componentCount"),
             "certifiedLayerCount": layers.get("certifiedLayerCount"),
@@ -298,13 +328,13 @@ def patch_resolver() -> None:
             for item in owners_doc.get("cssOwnerSamples", []):
                 if same_surface(item, surface):
                     indexes["cssOwners"][item["owner_id"]] = item
-            for item in owners_doc.get("regionOwnerSamples", []):
+            for item in [*owners_doc.get("regionOwnerSamples", []), *owners_doc.get("certifiedRegionOwners", [])]:
                 if same_surface(item, surface):
                     indexes["regionOwners"][item["region_id"]] = item
 
         slots_doc = doc(binding_source.get("slotSource"))
         if slots_doc:
-            for item in slots_doc.get("slotUnitSamples", []):
+            for item in [*slots_doc.get("slotUnitSamples", []), *slots_doc.get("certifiedSlotUnits", [])]:
                 if same_surface(item, surface):
                     indexes["slots"][item["slot_unit_id"]] = item
 
