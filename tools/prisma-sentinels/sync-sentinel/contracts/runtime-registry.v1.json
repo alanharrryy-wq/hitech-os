@@ -1,10 +1,11 @@
 {
-  "schemaVersion": "prisma.sync-sentinel.runtime-registry.v1",
+  "schemaVersion": "prisma.sync-sentinel.runtime-registry.v2",
   "productionCertified": false,
   "runtimes": [
     {
       "runtimeId": "SURF.tb.pos",
       "role": "tablet",
+      "canonicalPort": 3120,
       "status": "ACTIVE_CERTIFICATION_TARGET",
       "appRoot": "apps/terminal-de-venta-system/products/tablet/app",
       "prismaSchema": "apps/terminal-de-venta-system/products/tablet/app/prisma/schema.prisma",
@@ -12,13 +13,19 @@
       "syncOwners": [
         "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/dispatcher.ts",
         "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/catalog-pull.ts",
-        "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/pc-origin.ts"
+        "apps/terminal-de-venta-system/products/tablet/app/src/server/sync/pc-origin.ts",
+        "apps/terminal-de-venta-system/products/tablet/app/src/server/pos-outbox/index.ts",
+        "apps/terminal-de-venta-system/products/tablet/app/src/server/pos-reports/index.ts"
       ],
-      "adapter": "tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/tablet_runner.mts"
+      "adapters": [
+        "tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/tablet_runner.mts",
+        "tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/tablet_mobile_bridge.mts"
+      ]
     },
     {
       "runtimeId": "SURF.pc.admin",
       "role": "pc",
+      "canonicalPort": 3130,
       "status": "ACTIVE_CERTIFICATION_TARGET",
       "appRoot": "apps/terminal-de-venta-system/products/pc/app",
       "prismaSchema": "apps/terminal-de-venta-system/prisma/schema.prisma",
@@ -26,14 +33,29 @@
       "syncOwners": [
         "apps/terminal-de-venta-system/products/pc/app/src/server/services/sync-ingest.service.ts",
         "apps/terminal-de-venta-system/products/pc/app/src/server/services/sync-projectors.service.ts",
-        "apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-delta-export.service.ts"
+        "apps/terminal-de-venta-system/products/pc/app/src/server/services/catalog-delta-export.service.ts",
+        "apps/terminal-de-venta-system/products/pc/app/app/api/backoffice/sales-control/route.ts"
       ],
       "adapter": "tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/pc_runtime.mts"
     },
     {
       "runtimeId": "SURF.mb.companion",
       "role": "mobile",
-      "status": "FUTURE_ADAPTER_NOT_CERTIFIED"
+      "canonicalPort": 3140,
+      "status": "ACTIVE_CERTIFICATION_TARGET",
+      "appRoot": "apps/terminal-de-venta-system/products/mobile/app",
+      "capabilityId": "mobile.secure_projection_gateway_phase1",
+      "phase": "read-only",
+      "runtimeOwners": [
+        "apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-data-plane/state-loader.ts",
+        "apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-security/context.ts",
+        "apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-security/route-guard.ts",
+        "apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-security/projection-route.ts",
+        "apps/terminal-de-venta-system/products/mobile/app/src/lib/prisma-app/mobile-security/projection-envelope.ts",
+        "apps/terminal-de-venta-system/products/mobile/app/app/api/mobile/v1/read-models/sync-source-health/route.ts"
+      ],
+      "adapter": "tools/prisma-sentinels/sync-sentinel/sync_sentinel/adapters/mobile_runner.mts",
+      "mutationJourney": "NOT_APPLICABLE_UNTIL_SEPARATE_GOVERNED_MUTATION_OWNER_EXISTS"
     },
     {
       "runtimeId": "SURF.cc.tenant_overview",
@@ -51,6 +73,8 @@
     "liveDatabaseAllowed": false,
     "generatedClientsMustRemainInsideCapsule": true,
     "ownedProcessesOnly": true,
-    "mandatoryUnknownMayPass": false
+    "loopbackOnly": true,
+    "mandatoryUnknownMayPass": false,
+    "productSourceMayBeMutatedToSatisfySentinel": false
   }
 }
