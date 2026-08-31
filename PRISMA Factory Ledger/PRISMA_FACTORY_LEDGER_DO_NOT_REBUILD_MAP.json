@@ -165,9 +165,15 @@
     },
     "tooling.sync_sentinel": {
       "value": true,
-      "reason": "PASS_SYNC_SENTINEL_V15_RUNTIME_VERIFIED",
-      "evidence": "PR #446 merge 7d2124db8eb56a861e401323e799a5ef546f1829 / V15 run 33314496417 artifact 9733024541 sha256:7e12f08c2d48302806017e80baa7fd6659d1efc43186e8d18a08a0b865ddcb12 / post-merge Authority run 33316409123 / MUTATION gate run 33316601408",
-      "updatedAt": "2026-08-30T14:28:15Z"
+      "reason": "PASS_SYNC_SENTINEL_MOBILE_3140_WATCH_POSTMERGE_RUNTIME_VERIFIED",
+      "evidence": "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf / post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6 / ledger-close Authority run 33345023406 / MUTATION gate run 33345210530",
+      "updatedAt": "2026-08-31T00:40:18Z"
+    },
+    "mobile.secure_projection_gateway_phase1": {
+      "value": true,
+      "reason": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME_VERIFIED; reuse the read-only signed-session runtime baseline instead of rebuilding.",
+      "evidence": "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf / post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6 / ledger-close Authority run 33345023406 / MUTATION gate run 33345210530",
+      "updatedAt": "2026-08-31T00:40:18Z"
     }
   },
   "verifyOrFix": {
@@ -175,11 +181,6 @@
       "value": true,
       "reason": "not certified by licsync6; do not mark DONE",
       "updatedAt": "2026-07-07T02:40:51-06:00"
-    },
-    "mobile.secure_projection_gateway_phase1": {
-      "value": true,
-      "reason": "Source boundary is locally verified; advance to runtime session E2E instead of rebuilding.",
-      "updatedAt": "2026-07-20T15:30:00-06:00"
     },
     "ci.human.external_measurement": {
       "value": true,
@@ -192,5 +193,5 @@
       "updatedAt": "2026-08-18T20:46:00-06:00"
     }
   },
-  "updatedAt": "2026-08-30T14:28:15Z"
+  "updatedAt": "2026-08-31T00:40:18Z"
 }

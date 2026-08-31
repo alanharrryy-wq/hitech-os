@@ -304,14 +304,19 @@
         "licensing"
       ],
       "classification": "VERIFY",
-      "status": "LOCAL_VERIFIED",
-      "stateLabel": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_LOCAL_VERIFIED",
-      "doNotRebuild": false,
-      "nextGate": "Runtime signed-session auth/context/license/device E2E and negative cross-context certification; do not enable mutations.",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "Reuse the runtime-verified Phase 1 read-only signed-session projection baseline. Future hosted/deployed session issuance, customer LAN/cloud reachability, production device/license entitlement ownership, offline commands, Mobile mutations and runtime zero-egress certification remain separate governed gates; do not enable mutations under Phase 1.",
       "evidence": [
         "apps/terminal-de-venta-system/docs/ops/mobile/PRISMA_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1.md",
         "verify:secure-projection-gateway",
-        "mobproj1 focused validation reports"
+        "mobproj1 focused validation reports",
+        "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+        "Post-merge Sync Sentinel Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+        "Mobile M1/M2 PASS; M3 NOT_APPLICABLE; 12 Mobile negative/recovery cases PASS on canonical runtime 3140",
+        "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17",
+        "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4"
       ],
       "doesNotProve": [
         "Hosted live session issuance",
@@ -319,19 +324,23 @@
         "Production device claim",
         "Offline read or queued commands",
         "Mobile mutations",
-        "Runtime zero-egress certification"
+        "Runtime zero-egress certification",
+        "Hosted/deployed customer session issuer and customer network topology"
       ],
       "allowedActions": [
         "runtime read-only auth E2E",
         "negative tenant/business/branch/terminal tests",
         "Customer Setup hosted session integration",
-        "Phase 1 read-model UI binding"
+        "Phase 1 read-model UI binding",
+        "reuse the runtime-verified Phase 1 read-only projection gateway without rebuilding",
+        "rerun isolated signed-session and cross-context read-side certification after relevant drift"
       ],
       "forbiddenActions": [
         "enable Mobile mutations",
         "trust query parameters or localStorage as authority",
         "claim offline support",
-        "claim live production auth from local verification"
+        "claim live production auth from local verification",
+        "claim Mobile mutation or offline support from Phase 1 read-side runtime evidence"
       ]
     },
     {
@@ -1485,19 +1494,20 @@
     },
     {
       "id": "tooling.sync_sentinel",
-      "displayName": "PRISMA Sync Sentinel Tablet ↔ PC verification and diagnostics tooling",
+      "displayName": "PRISMA Sync Sentinel Tablet ↔ PC + Mobile 3140 verification, diagnostics and Watch tooling",
       "domain": "tooling",
       "surfaces": [
         "tooling",
         "tablet",
         "pc",
-        "governance"
+        "governance",
+        "mobile"
       ],
       "classification": "DONE",
       "status": "RUNTIME_VERIFIED",
-      "stateLabel": "PASS_SYNC_SENTINEL_V15_RUNTIME_VERIFIED",
+      "stateLabel": "PASS_SYNC_SENTINEL_MOBILE_3140_WATCH_POSTMERGE_RUNTIME_VERIFIED",
       "doNotRebuild": true,
-      "nextGate": "Reuse the merged Sync Sentinel V15 runtime-verified baseline. Re-run isolated read-only/runtime recertification after relevant Sentinel, sync-contract, dependency, Prisma or source drift. Hosted/customer production, live/customer database use, distribution/release readiness and future-drift certification remain separate governed gates.",
+      "nextGate": "Reuse the merged multi-surface Sync Sentinel and permanent impact-aware Watch. Relevant PR/main drift is recertified automatically and the weekly safety net remains enabled. Any future demonstrated Sentinel/product drift requires fresh task-exact authority before repair. Hosted/customer production, live/customer database use, distribution/release readiness and deployed Mobile issuer/network certification remain separate governed gates.",
       "evidence": [
         "PRISMA Sync Sentinel registration preflight Remote AutoMesh run 33144935939",
         "Remote AutoMesh artifact 9675400060 sha256:2ed8a6b369d31e3ea84d884fb993c0a1e4ba18057f50d9090f2099db178939ef",
@@ -1510,7 +1520,12 @@
         "Final Sync Sentinel V15 run 33314496417 artifact 9733024541 sha256:7e12f08c2d48302806017e80baa7fd6659d1efc43186e8d18a08a0b865ddcb12",
         "V15 doctor, real Journey A/B, negative A-L and certification PASS; liveDbTouched=false; sourceDrift=false; cleanupPass=true; orphanProcesses=false; secretFindings=0; productionCertified=false",
         "Post-merge close Authority Mesh run 33316409123 artifact 9733593166 requestDigest 3b5e6733e27d8839675263d7deb111ecdf6dd4808fc3f874583f0cc133afe8a0 composed sha256:8f76446b1c2bebe2765b59ff03b483ad6c8b797abab9c8b405f25ebde396262c",
-        "Post-merge close MUTATION gate run 33316601408 artifact 9733633837 sha256:6220e6678d5e01bc8750dd600e47459e8bf11f40509aa280034b8a52cb9b3311 decision bf0d03389f40fe365809d7100db7927c8ac23cec60f412884a423473b474f52b"
+        "Post-merge close MUTATION gate run 33316601408 artifact 9733633837 sha256:6220e6678d5e01bc8750dd600e47459e8bf11f40509aa280034b8a52cb9b3311 decision bf0d03389f40fe365809d7100db7927c8ac23cec60f412884a423473b474f52b",
+        "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+        "Post-merge Sync Sentinel Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+        "Post-merge certify PASS: Tablet/PC Journey A/B and negatives A-L; Mobile M1/M2 PASS, M3 NOT_APPLICABLE, 12 Mobile negatives PASS; liveDbTouched=false; sourceDrift=false; cleanupPass=true; orphanProcesses=false; secretFindings=0; productionCertified=false",
+        "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17 requestDigest c4c68614772835a7a271aba7b128ff394bce9d16e9d2f8786ffda7a39d273f7c",
+        "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4 decision ade3d12d163ad9cba4ecab54bdc80a6674f828bb77dab6ff70e655813d1abca4"
       ],
       "doesNotProve": [
         "Hosted production or customer deployment readiness",
@@ -1518,13 +1533,16 @@
         "Deployed/customer network topology or hosted production PC transport end-to-end certification",
         "Distribution or release readiness",
         "Future correctness after relevant Sentinel, sync-contract, dependency, Prisma or source drift without recertification",
-        "productionCertified=true; V15 and this closure explicitly preserve productionCertified=false"
+        "productionCertified=true; V15 and this closure explicitly preserve productionCertified=false",
+        "Hosted/deployed Mobile session issuer, customer network topology, Mobile mutations, offline commands or runtime zero-egress certification"
       ],
       "allowedActions": [
         "reuse the merged runtime-verified Sync Sentinel without rebuilding it",
         "run scan, diagnose, doctor, e2e and certify in the Sentinel-owned isolated capsule",
         "run read-only or isolated recertification after relevant drift under fresh exact authority",
-        "fix demonstrated Sync Sentinel tooling drift only under fresh task-exact Authority Mesh and anti-rework MUTATION authority"
+        "fix demonstrated Sync Sentinel tooling drift only under fresh task-exact Authority Mesh and anti-rework MUTATION authority",
+        "reuse the permanent impact-aware Sync Sentinel Watch for PR, main and weekly recertification",
+        "run isolated Mobile 3140 signed-session read-side projection recertification through real Tablet/PC owners"
       ],
       "forbiddenActions": [
         "reimplement Tablet or PC sync business logic in Python",
@@ -1532,12 +1550,14 @@
         "modify CSS, visual components, layouts, pages, visual tokens, Shared UI, Chart Lab, Mobile or visual recipes under this capability",
         "touch customer/live databases or global user processes during isolated E2E",
         "claim PASS when any mandatory assertion is UNKNOWN or BLOCKED",
-        "claim productionCertified from isolated or local evidence"
+        "claim productionCertified from isolated or local evidence",
+        "modify Tablet, PC or Mobile product source merely to facilitate Sentinel tests"
       ],
       "forbiddenClaims": [
         "Do not claim hosted production or customer-live certification from V15 isolated evidence.",
         "Do not claim productionCertified=true; the certified evidence explicitly records productionCertified=false.",
-        "Do not claim future correctness after relevant source, dependency, contract or Prisma drift without fresh recertification."
+        "Do not claim future correctness after relevant source, dependency, contract or Prisma drift without fresh recertification.",
+        "Do not claim hosted/deployed Mobile issuer, Mobile mutation, offline-command or zero-egress certification from isolated Mobile 3140 evidence."
       ]
     },
     {
@@ -1628,5 +1648,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-08-30T14:28:15Z"
+  "updatedAt": "2026-08-31T00:40:18Z"
 }
