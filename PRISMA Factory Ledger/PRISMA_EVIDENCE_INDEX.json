@@ -756,9 +756,83 @@
         "Post-merge Authority Mesh run 33316409123 artifact 9733593166 composed sha256:8f76446b1c2bebe2765b59ff03b483ad6c8b797abab9c8b405f25ebde396262c",
         "MUTATION gate run 33316601408 artifact 9733633837 sha256:6220e6678d5e01bc8750dd600e47459e8bf11f40509aa280034b8a52cb9b3311 decision bf0d03389f40fe365809d7100db7927c8ac23cec60f412884a423473b474f52b"
       ]
+    },
+    {
+      "artifact": "PRISMA Sync Sentinel Mobile 3140 + Watch — PR #502 / post-merge run 33344270490 / artifact 9741492976",
+      "type": "prisma_sync_sentinel_multi_surface_watch_runtime_verification",
+      "scope": [
+        "tooling",
+        "sync",
+        "tablet",
+        "pc",
+        "mobile",
+        "governance",
+        "quality",
+        "github_actions"
+      ],
+      "status": "PASS_RUNTIME_VERIFIED",
+      "proves": [
+        "PR #502 merged the governed Sentinel extension and permanent Watch without Tablet, PC or Mobile product-source mutation",
+        "Tablet/PC Journey A/B and mandatory negatives A-L pass through real owner paths in isolated Sentinel persistence",
+        "Mobile M1 and M2 pass through canonical runtime 3140 and real Tablet/PC upstream owners; M3 is NOT_APPLICABLE because Phase 1 remains read-only",
+        "Twelve Mobile negative/recovery cases pass with fail-closed causal fault localization",
+        "Watch classifies NONE/SCAN/CERTIFY, runs on relevant PR and main events, retains distinct main-SHA evidence, and includes a weekly safety net",
+        "Post-merge evidence records liveDbTouched=false, sourceDrift=false, cleanupPass=true, orphanProcesses=false, secretFindings=0 and productionCertified=false",
+        "Fresh current-main closure Authority Mesh and MUTATION anti-rework gate authorize canonical evidence promotion without rebuilding the Sentinel"
+      ],
+      "doesNotProve": [
+        "Hosted production or customer deployment readiness",
+        "Mutation or certification of any live/customer database",
+        "Hosted/deployed Mobile session issuer or customer network topology",
+        "Mobile mutations or offline commands",
+        "Runtime zero-egress certification",
+        "Distribution or release readiness",
+        "Future correctness after relevant drift without recertification"
+      ],
+      "evidence": [
+        "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+        "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+        "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17 requestDigest c4c68614772835a7a271aba7b128ff394bce9d16e9d2f8786ffda7a39d273f7c",
+        "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4 decision ade3d12d163ad9cba4ecab54bdc80a6674f828bb77dab6ff70e655813d1abca4"
+      ]
+    },
+    {
+      "artifact": "PRISMA Mobile secure projection gateway phase 1 — PR #502 / post-merge run 33344270490 / artifact 9741492976",
+      "type": "mobile_secure_projection_gateway_phase1_runtime",
+      "scope": [
+        "mobile",
+        "auth_context",
+        "projection_gateway",
+        "tablet",
+        "pc",
+        "quality"
+      ],
+      "status": "PASS_RUNTIME_VERIFIED",
+      "proves": [
+        "Signed-session Mobile read-side projection runs through canonical Mobile runtime 3140 with tenant/business/branch/terminal/device/license/actor scope",
+        "M1 reads real Tablet/PC owner state through the Mobile Data Plane and governed secure projection gateway",
+        "M2 observes a real Sentinel-owned Tablet outbox change through Mobile runtime 3140",
+        "M3 is NOT_APPLICABLE because the governed Phase 1 gateway has commandPathsEnabled=false and no Mobile mutation owner",
+        "Twelve Mobile negative/recovery cases cover invalid/expired sessions, permissions, scope isolation, upstream failures, recovery, staleness and malformed upstream state",
+        "Evidence is isolated, read-only with respect to product/customer state, and productionCertified=false"
+      ],
+      "doesNotProve": [
+        "Hosted/deployed live session issuer",
+        "Customer LAN/cloud reachability",
+        "Production device or license entitlement owner lookup beyond signed-session trust boundary",
+        "Offline commands",
+        "Mobile mutations",
+        "Runtime zero-egress certification"
+      ],
+      "evidence": [
+        "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+        "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+        "Ledger-close Authority Mesh run 33345023406 artifact 9741718058 sha256:101d261de4c6e4327a68e526880657320ae2d720c0809eb3ca6221ab9a507d17",
+        "Ledger-close MUTATION gate run 33345210530 artifact 9741759165 sha256:876cc4f5bf93a00cbb95eac8a3c607ddb6efbfa18fbab243b17ca6caad2441e4"
+      ]
     }
   ],
-  "updatedAt": "2026-08-30T14:28:15Z",
+  "updatedAt": "2026-08-31T00:40:18Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -889,6 +963,29 @@
         "PR #424 merge 28b7d782906003e2ac399ae89d81e824d3268d53",
         "V4 run 33148746934 artifact 9676872731",
         "post-merge close run 33149246082 artifact 9677044001"
+      ]
+    },
+    {
+      "capabilityId": "tooling.sync_sentinel",
+      "status": "RUNTIME_VERIFIED",
+      "runId": "PR502_SYNC_SENTINEL_MOBILE_3140_WATCH_POSTMERGE_RUNTIME",
+      "evidence": [
+        "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+        "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+        "Ledger-close Authority run 33345023406 artifact 9741718058",
+        "Ledger-close MUTATION gate run 33345210530 artifact 9741759165"
+      ]
+    },
+    {
+      "capabilityId": "mobile.secure_projection_gateway_phase1",
+      "status": "RUNTIME_VERIFIED",
+      "runId": "PR502_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME",
+      "evidence": [
+        "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf",
+        "Post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6",
+        "Mobile M1/M2 PASS; M3 NOT_APPLICABLE; 12 Mobile negatives PASS",
+        "Ledger-close Authority run 33345023406 artifact 9741718058",
+        "Ledger-close MUTATION gate run 33345210530 artifact 9741759165"
       ]
     }
   ]
