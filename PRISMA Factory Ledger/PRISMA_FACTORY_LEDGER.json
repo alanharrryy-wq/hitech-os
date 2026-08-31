@@ -1646,7 +1646,60 @@
         "use !important as an override strategy",
         "claim VISUAL_CERTIFIED without runtime BEFORE/AFTER evidence"
       ]
+    },
+    {
+      "id": "visual.generic_application_engine_v1",
+      "displayName": "PRISMA Generic Visual Application Engine V1 and generated Visual Target Index",
+      "domain": "visual",
+      "surfaces": [
+        "prisma-html",
+        "tablet",
+        "pc",
+        "mobile",
+        "web",
+        "chart-lab",
+        "control-center",
+        "shared-ui",
+        "governance",
+        "quality"
+      ],
+      "classification": "BUILD",
+      "status": "NOT_STARTED",
+      "stateLabel": "GENERIC_VISUAL_APPLICATION_ENGINE_V1_REGISTERED_BUILD_NOT_STARTED",
+      "doNotRebuild": false,
+      "nextGate": "On exact current main, run the universal anti-rework PROPOSAL gate for visual.generic_application_engine_v1, obtain a fresh task-exact Authority Mesh with mandatory Layer Map covering only the authorized prisma-html engine/target-index/contracts/tests/CI/docs scope, then run the anti-rework MUTATION gate before any source or visual-authority write.",
+      "evidence": [
+        "Governance preflight issue #513 and draft registration PR #514",
+        "PRISMA Remote AutoMesh run 33416410140 artifact 9767220861; PASS_COMPOSED_AUTHORITY_MESH at main 0400c7cbc307d156a0c5cd0e10b253deac9bf318; requestDigest efab1ba6c1276b4b8abea0290bde2ba2c57d3dcc8a52b50da634a7887be9d2fd; composed artifact sha256 33908c0bfc2e200483d0601f2302aea95f227c96b840b1954ea5eee0233f6a8d",
+        "AutoMesh v2 revalidation run 33422482889 artifact 9769443280; PASS_NO_RELEVANT_DRIFT rebound to main c17635fb69bb0208dc8237ee97cc82017f1d30a6; revalidated artifact sha256 889ba892d992179ec49c8d068a3f3f99cbec5187b93721abe261cda5212d6d39; revalidationDigest 4c8d1e45ecbb616c0df757d574c6ab8478566ed251d9c3508a0f3b6f6803b578",
+        "Existing frozen visual foundations reused by design: Code Atlas UI Bridge read-only guard, visual.atlasfin.tablet_pos_cobrar golden transaction, NDC, RIFAT/prisma-ui, Identity Dictionary, Visual Source Manifest, Visual Core and Change Assurance"
+      ],
+      "doesNotProve": [
+        "Generic Visual Application Engine V1 source implementation exists or passes tests",
+        "Generated Visual Target Index exists, is complete or is deterministic",
+        "Any CSS, CSS Module, JSON token or projection writer is implemented",
+        "Cobrar parity, idempotency, rollback or negative-test certification",
+        "Any source application or product projection has occurred",
+        "Any runtime visual certification for Tablet, PC, Mobile, Web, Chart Lab, Control Center or Shared UI",
+        "Hosted production, distribution or customer deployment readiness"
+      ],
+      "allowedActions": [
+        "reuse all already-certified visual authority and census foundations",
+        "perform the next exact anti-rework and Authority Mesh gates for the bounded V1 build",
+        "build the generic engine only under prisma-html with declarative authority consumption",
+        "generate the target index from existing machine-readable census/authority evidence",
+        "add source/static CI and golden Cobrar parity without deleting the certified historical runner"
+      ],
+      "forbiddenActions": [
+        "mutate prisma-html or product visual source before the fresh exact MUTATION gate passes",
+        "turn Code Atlas UI Bridge into a generic writer",
+        "turn Atlasfin browser UI into a product writer",
+        "manually edit generated product projections",
+        "invent missing target, binding, layer, neutral meaning or projection authority",
+        "use !important as an application mechanism",
+        "claim runtime visual certification from static/source evidence"
+      ]
     }
   ],
-  "updatedAt": "2026-08-31T00:40:18Z"
+  "updatedAt": "2026-08-31T17:59:05Z"
 }
