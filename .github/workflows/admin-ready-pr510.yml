@@ -1,0 +1,28 @@
+name: Admin Ready PR510
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/admin-ready-pr510.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ready:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Mark PR 510 ready for review
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node_id="$(gh api "repos/$GITHUB_REPOSITORY/pulls/510" --jq '.node_id')"
+          test -n "$node_id"
+          gh api graphql \
+            -f query='mutation($id:ID!){markPullRequestReadyForReview(input:{pullRequestId:$id}){pullRequest{number isDraft}}}' \
+            -F id="$node_id" \
+            --jq '.data.markPullRequestReadyForReview.pullRequest | select(.number == 510 and .isDraft == false)'
+          echo 'PASS_PR510_READY_FOR_REVIEW'
