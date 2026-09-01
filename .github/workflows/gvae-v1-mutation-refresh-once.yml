@@ -1,0 +1,84 @@
+name: PRISMA GVAE V1 Mutation Gate Refresh Once
+
+on:
+  push:
+    branches:
+      - feat/gvae-v1-implementation-3108
+    paths:
+      - '.github/workflows/gvae-v1-mutation-refresh-once.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PINNED_BASE: 1dabf0604c21dec0115c53e766c22b11b415dd68
+
+jobs:
+  mutation-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout carrier branch
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run exact canonical mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          current="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$current" = "$PINNED_BASE"
+          git worktree add --detach "$RUNNER_TEMP/base" "$PINNED_BASE"
+          cd "$RUNNER_TEMP/base"
+          cat > "$RUNNER_TEMP/gate.request.json" <<'JSON'
+          {
+            "schemaVersion":"prisma.factory-ledger.anti-rework-gate.v1",
+            "mode":"MUTATION",
+            "expectedHead":"1dabf0604c21dec0115c53e766c22b11b415dd68",
+            "task":"Build canonical visual.generic_application_engine_v1 strictly inside the fresh current-main task-exact GVAE V1 Authority Mesh scope: prisma-html Generic Visual Application Engine, generated Visual Target Index, identity application contracts, Visual Core source/static readiness, deterministic tests including frozen Cobrar parity/idempotency/rollback and negative fail-closed cases, minimal source/static CI, and bounded Visual Change Master Map documentation. Preserve Code Atlas UI Bridge read-only and all excluded product/runtime surfaces. No direct generated-product writes, guessed authority, CSS priority overrides, arbitrary TSX/JSX/DOM/business/API/routing/DB/Prisma/licensing/sync mutation, surface expansion, stale hashes, or static-to-runtime fake green.",
+            "capabilities":[
+              {"id":"visual.generic_application_engine_v1","requestedAction":"BUILD"}
+            ],
+            "authorityMesh":{
+              "status":"PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead":"1dabf0604c21dec0115c53e766c22b11b415dd68",
+              "requiredAuthorityCoveragePct":100,
+              "blockers":0,
+              "requestDigest":"01b4e0c6a5a3da354b2867f50feac8b242ceefc3ba7f69abd1c488a02063f1d9",
+              "artifactDigest":"189efa8b4eb4e5e0b0765e05d1a312b40d8da20d89a4599387e4560f1001b2a2",
+              "layerMapPresent":true
+            },
+            "visualMutation":true
+          }
+          JSON
+          python "PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py" --request "$RUNNER_TEMP/gate.request.json" > "$RUNNER_TEMP/gate.result.json"
+          python - "$RUNNER_TEMP/gate.result.json" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1],encoding='utf-8'))
+          assert d.get('result')=='PASS_ANTI_REWORK_GATE',d
+          assert d.get('errors')==[],d
+          assert d.get('mode')=='MUTATION',d
+          assert d.get('repoHead')=='1dabf0604c21dec0115c53e766c22b11b415dd68',d
+          selected=d.get('selected') or []
+          assert len(selected)==1 and selected[0].get('id')=='visual.generic_application_engine_v1',d
+          assert selected[0].get('requestedAction')=='BUILD',d
+          print(json.dumps(d,indent=2,ensure_ascii=False))
+          PY
+          mkdir -p "$RUNNER_TEMP/evidence"
+          cp "$RUNNER_TEMP/gate.request.json" "$RUNNER_TEMP/evidence/ANTI_REWORK_MUTATION_REQUEST.json"
+          cp "$RUNNER_TEMP/gate.result.json" "$RUNNER_TEMP/evidence/ANTI_REWORK_MUTATION_RESULT.json"
+
+      - name: Upload mutation gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: gvae-v1-mutation-gate-refresh
+          path: ${{ runner.temp }}/evidence/**
+          if-no-files-found: error
+          retention-days: 14
