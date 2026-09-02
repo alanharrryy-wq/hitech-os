@@ -1,0 +1,78 @@
+name: PRISMA GVAE V1 Bundle Discover Once
+
+on:
+  push:
+    branches:
+      - feat/gvae-v1-implementation-3108
+    paths:
+      - '.github/workflows/gvae-v1-bundle-discover-once.yml'
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  EXPECTED_MAIN: 1dabf0604c21dec0115c53e766c22b11b415dd68
+
+jobs:
+  discover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Prove canonical main is unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          main_now="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$main_now" = "$EXPECTED_MAIN"
+
+      - name: Discover exact normalized source-tree digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, io, tarfile
+
+          parts = Path('.github/prisma-carriers/gvae-v1-source-parts')
+          encoded = ''.join(p.read_text(encoding='ascii').strip() for p in sorted(parts.glob('part*.txt')))
+          if not encoded:
+              raise SystemExit('GVAE_SOURCE_PARTS_MISSING')
+          raw = base64.b64decode(encoded, validate=True)
+          print('GVAE_ARCHIVE_SHA256=' + hashlib.sha256(raw).hexdigest())
+
+          rows = []
+          with tarfile.open(fileobj=io.BytesIO(raw), mode='r:gz') as archive:
+              for member in archive.getmembers():
+                  path = Path(member.name)
+                  if path.is_absolute() or '..' in path.parts or not path.parts or path.parts[0] != 'prisma-html':
+                      raise SystemExit(f'GVAE_BUNDLE_UNSAFE_MEMBER:{member.name}')
+                  if not member.isfile():
+                      raise SystemExit(f'GVAE_BUNDLE_NON_FILE_MEMBER:{member.name}')
+                  if '__pycache__' in path.parts or path.suffix == '.pyc':
+                      continue
+                  fh = archive.extractfile(member)
+                  if fh is None:
+                      raise SystemExit(f'GVAE_BUNDLE_UNREADABLE_MEMBER:{member.name}')
+                  data = fh.read()
+                  rows.append((path.as_posix(), len(data), hashlib.sha256(data).hexdigest()))
+
+          rows.sort()
+          h = hashlib.sha256()
+          for path, size, digest in rows:
+              h.update(path.encode('utf-8'))
+              h.update(b'\0')
+              h.update(str(size).encode('ascii'))
+              h.update(b'\0')
+              h.update(digest.encode('ascii'))
+              h.update(b'\n')
+          print('GVAE_NORMALIZED_FILE_COUNT=' + str(len(rows)))
+          print('GVAE_NORMALIZED_TREE_SHA256=' + h.hexdigest())
+          for path, size, digest in rows:
+              print(f'GVAE_FILE {path} {size} {digest}')
+          raise SystemExit('GVAE_DISCOVERY_COMPLETE_EXPECTED_FAILURE')
+          PY
