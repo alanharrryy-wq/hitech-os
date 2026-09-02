@@ -1,0 +1,112 @@
+name: CA Cloud P3 Mutation Gates
+
+on:
+  push:
+    branches:
+      - preflight/ca-cloud-p3-2508
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    env:
+      SOURCE_HEAD: 5c805bc2f448af0b2742b52e19055b05f1859bab
+    steps:
+      - name: Checkout exact governed main
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.SOURCE_HEAD }}
+          fetch-depth: 0
+
+      - name: Assert exact clean authority state
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE_HEAD"
+          test -z "$(git status --porcelain)"
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --validate
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --validate-map
+
+      - name: Record unrelated global ledger validation debt
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python 'PRISMA Factory Ledger/tools/verify_prisma_factory_ledger.py' > "$RUNNER_TEMP/global-ledger-baseline.txt" 2>&1
+          rc=$?
+          set -e
+          printf 'exitCode=%s\n' "$rc" >> "$RUNNER_TEMP/global-ledger-baseline.txt"
+          grep -q 'runtime.tablet.zero_idle_guard: invalid status LOCAL_SHADOW_VERIFIED' "$RUNNER_TEMP/global-ledger-baseline.txt"
+          grep -q 'visual.atlasfin.tablet_pos_cobrar: invalid status RUNTIME_VISUAL_CERTIFIED' "$RUNNER_TEMP/global-ledger-baseline.txt"
+          test "$rc" -ne 0
+
+      - name: Factory Ledger mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/factory-request.json" <<'JSON'
+          {
+            "schemaVersion": "prisma.factory-ledger.anti-rework-gate.v1",
+            "mode": "MUTATION",
+            "expectedHead": "5c805bc2f448af0b2742b52e19055b05f1859bab",
+            "task": "Advance the existing Change Assurance Cloud Center with a reference-only Authority Pack and Evidence Report projection while reusing protected owners.",
+            "capabilities": [
+              {"id": "code_atlas.change_intelligence.customer_wow_v1", "requestedAction": "ADVANCE"},
+              {"id": "cloud_center.customer_registration_runtime", "requestedAction": "REUSE"},
+              {"id": "commercial.billing.collections", "requestedAction": "REUSE"}
+            ],
+            "visualMutation": false,
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "5c805bc2f448af0b2742b52e19055b05f1859bab",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "f44799c15703155a4ed71dd958bbcf537f31cbd5ce854cca9fbb91c612bba995",
+              "artifactDigest": "sha256:18b2e66ab779b185582427371a24021657a877d3f87b609bb0d631da318969a4"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_prisma_anti_rework_gate.py' --request "$RUNNER_TEMP/factory-request.json" | tee "$RUNNER_TEMP/factory-result.json"
+          grep -q 'PASS_ANTI_REWORK_GATE' "$RUNNER_TEMP/factory-result.json"
+
+      - name: Change Assurance capability mutation gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ca-request.json" <<'JSON'
+          {
+            "mode": "MUTATION",
+            "capabilityIds": [
+              "ci.cloud.authority_evidence_projection",
+              "ci.change.authority_pack",
+              "ci.evidence.report_bundle"
+            ],
+            "task": "Advance the Cloud reference-only projection while reusing canonical Authority Pack and Evidence Report owners.",
+            "visualMutation": false,
+            "authorityMesh": {
+              "status": "PASS_COMPOSED_AUTHORITY_MESH",
+              "repoHead": "5c805bc2f448af0b2742b52e19055b05f1859bab",
+              "requiredAuthorityCoveragePct": 100,
+              "blockers": 0,
+              "requestDigest": "f44799c15703155a4ed71dd958bbcf537f31cbd5ce854cca9fbb91c612bba995",
+              "artifactDigest": "sha256:18b2e66ab779b185582427371a24021657a877d3f87b609bb0d631da318969a4"
+            }
+          }
+          JSON
+          python 'PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.py' --request "$RUNNER_TEMP/ca-request.json" | tee "$RUNNER_TEMP/ca-result.json"
+          grep -q 'PASS_CHANGE_ASSURANCE_CAPABILITY_GATE' "$RUNNER_TEMP/ca-result.json"
+
+      - name: Upload gate evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: ca-cloud-p3-mutation-gates
+          path: |
+            ${{ runner.temp }}/factory-request.json
+            ${{ runner.temp }}/factory-result.json
+            ${{ runner.temp }}/ca-request.json
+            ${{ runner.temp }}/ca-result.json
+            ${{ runner.temp }}/global-ledger-baseline.txt
+          if-no-files-found: error
+          retention-days: 14
