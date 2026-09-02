@@ -1,0 +1,206 @@
+name: PRISMA GVAE V1 Source Install Once
+
+on:
+  push:
+    branches:
+      - feat/gvae-v1-implementation-3108
+    paths:
+      - '.github/prisma-carriers/gvae-v1-source-parts/**'
+      - '.github/workflows/gvae-v1-source-install-once.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  EXPECTED_MAIN: 1dabf0604c21dec0115c53e766c22b11b415dd68
+  TARGET_BRANCH: feat/gvae-v1-implementation-3108
+
+jobs:
+  install-and-certify-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Prove canonical main and branch are still exact
+        shell: bash
+        run: |
+          set -euo pipefail
+          main_now="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$main_now" = "$EXPECTED_MAIN"
+          local_now="$(git rev-parse HEAD)"
+          remote_now="$(git ls-remote origin refs/heads/$TARGET_BRANCH | awk '{print $1}')"
+          test "$local_now" = "$remote_now"
+
+      - name: Materialize reviewed GVAE source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, io, tarfile
+          parts = Path('.github/prisma-carriers/gvae-v1-source-parts')
+          encoded = ''.join(p.read_text(encoding='ascii').strip() for p in sorted(parts.glob('part*.txt')))
+          if not encoded:
+              raise SystemExit('GVAE_SOURCE_PARTS_MISSING')
+          raw = base64.b64decode(encoded, validate=True)
+          expected = '4c515a724642894d8532240c5e18b19f3e97e4ae9e62ed17b471634985a10d1a'
+          if hashlib.sha256(raw).hexdigest() != expected:
+              raise SystemExit('GVAE_SOURCE_BUNDLE_DIGEST_MISMATCH')
+          with tarfile.open(fileobj=io.BytesIO(raw), mode='r:gz') as archive:
+              members = archive.getmembers()
+              for member in members:
+                  path = Path(member.name)
+                  if path.is_absolute() or '..' in path.parts or not path.parts or path.parts[0] != 'prisma-html':
+                      raise SystemExit(f'GVAE_BUNDLE_UNSAFE_MEMBER:{member.name}')
+                  if not member.isfile():
+                      raise SystemExit(f'GVAE_BUNDLE_NON_FILE_MEMBER:{member.name}')
+              archive.extractall('.')
+          print(f'GVAE_SOURCE_FILES={len(members)}')
+          PY
+
+      - name: Integrate Target Index into read-only Visual Core
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PYCODE'
+          from pathlib import Path
+          path = Path('prisma-html/tools/visual_core.py')
+          text = path.read_text(encoding='utf-8')
+          replacements = []
+          old = 'from identity_dictionary_core import COMPILED, IDENTITY, ROOT, SURFACES, build_compilation, load_model, validate_model\n'
+          replacements.append((old, old + 'from visual_application.target_index import build_index as build_application_target_index\n', 'import'))
+          replacements.append(('    by_projection_surface = projection_counts(visual_manifest)\n\n    surfaces = [\n', '    by_projection_surface = projection_counts(visual_manifest)\n    application_index = build_application_target_index()\n\n    surfaces = [\n', 'index'))
+          replacements.append(('    if visual_manifest.get("surfaceCount") != len(by_projection_surface):\n        architecture_problems.append("visual-source-manifest-surface-count-drift")\n\n    atlas_sections = atlas_manifest.get("sections", [])\n', '    if visual_manifest.get("surfaceCount") != len(by_projection_surface):\n        architecture_problems.append("visual-source-manifest-surface-count-drift")\n    architecture_problems.extend(\n        f"application-target-index:{item}" for item in application_index.get("globalBlockers", [])\n    )\n\n    atlas_sections = atlas_manifest.get("sections", [])\n', 'architecture'))
+          application = ('        "applicationEngine": {\n' '            "schema": "prisma.visual.application.engine-readiness.v1",\n' '            "status": application_index.get("status"),\n' '            "indexDigest": application_index.get("indexDigest"),\n' '            "counts": application_index.get("counts", {}),\n' '            "projectionModes": application_index.get("projectionModes", {}),\n' '            "globalBlockers": application_index.get("globalBlockers", []),\n' '            "evidenceClassification": "SOURCE_STATIC_ONLY",\n' '            "runtimeVisualGreen": False,\n' '            "ready": False,\n' '            "doesNotProve": application_index.get("doesNotProve", []),\n' '        },\n' '        "surfaces": surfaces,\n' '        "metadataDrift": metadata_drift,\n')
+          replacements.append(('        "surfaces": surfaces,\n        "metadataDrift": metadata_drift,\n', application, 'return'))
+          old = '        f"- Projection entries: `{status[\'projectionManifest\'][\'entryCount\']}`",\n'
+          replacements.append((old, old + '        f"- GVAE Target Index: `{status[\'applicationEngine\'][\'status\']}` / `{status[\'applicationEngine\'][\'counts\'].get(\'elementTargetRecords\', 0)}` element targets",\n', 'markdown'))
+          for old, new, label in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'VISCORE_ANCHOR_DRIFT:{label}:{count}')
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+          PYCODE
+
+      - name: Install prisma-html validation dependencies
+        run: python -m pip install -r prisma-html/requirements-dev.txt
+
+      - name: Run complete GVAE V1 suite with zero skipped full-checkout tests
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=tools python - <<'PY'
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tools/visual_application/tests', top_level_dir='tools')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          if result.testsRun != 43:
+              raise SystemExit(f'GVAE_TEST_COUNT_DRIFT:{result.testsRun}')
+          if result.skipped:
+              raise SystemExit('GVAE_FULL_CHECKOUT_TESTS_SKIPPED:' + repr(result.skipped))
+          if not result.wasSuccessful():
+              raise SystemExit('GVAE_TEST_SUITE_FAILED')
+          PY
+
+      - name: Generate deterministic Target Index and file manifest
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=tools python -m visual_application.target_index --write
+          PYTHONPATH=tools python -m visual_application.target_index --check
+          PYTHONPATH=tools python -m visual_application.target_index --status
+          python tools/refresh_files_manifest.py --write
+          python tools/refresh_files_manifest.py --check
+
+      - name: Prove source and static integration truth
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=tools python -m visual_application.target_index --check
+          PYTHONPATH=tools python -m visual_application.target_index --status
+          python tools/visual_core.py check
+          python tools/validate_rifat_authority.py
+          python tools/validate_identity_dictionary.py
+          python tools/compile_identity_dictionary.py --check
+          python tools/refresh_files_manifest.py --check
+
+      - name: Prove frozen Code Atlas files are untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code "$EXPECTED_MAIN" -- \
+            tools/code-atlas/src/code_atlas/ui_bridge/application.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/cobrar_application.py
+
+      - name: Prove exact Master Map bytes and executable source policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          master = Path('prisma-html/docs/ops/PRISMA_VISUAL_CHANGE_MASTER_MAP.md')
+          expected = '87d1a7cd375ed8b4c0a264a74f1e1d75921d704b4d9da62e53d427a3ac05662d'
+          if hashlib.sha256(master.read_bytes()).hexdigest() != expected:
+              raise SystemExit('MASTER_MAP_BYTE_DRIFT')
+          marker = ('!' + 'important').encode()
+          offenders = [p.as_posix() for p in Path('prisma-html/tools/visual_application').rglob('*.py') if marker in p.read_bytes()]
+          if offenders:
+              raise SystemExit('GVAE_PRIORITY_OVERRIDE_LITERAL:' + ','.join(offenders))
+          PY
+
+      - name: Commit only governed GVAE V1 source and generated views
+        shell: bash
+        run: |
+          set -euo pipefail
+          before="$(git rev-parse HEAD)"
+          remote="$(git ls-remote origin refs/heads/$TARGET_BRANCH | awk '{print $1}')"
+          test "$remote" = "$before"
+          python - <<'PY'
+          import subprocess
+          allowed_prefixes = (
+              'prisma-html/tools/visual_application/',
+              'prisma-html/authority/rifat/identity/contract/application/',
+              'prisma-html/authority/rifat/identity/generated/application-target-index/',
+          )
+          allowed_exact = {
+              'prisma-html/docs/ops/PRISMA_VISUAL_CHANGE_MASTER_MAP.md',
+              'prisma-html/tools/visual_core.py',
+              'prisma-html/FILES_MANIFEST.json',
+          }
+          rows = subprocess.check_output(['git','status','--porcelain=v1'], text=True).splitlines()
+          changed = []
+          for row in rows:
+              if len(row) < 4:
+                  continue
+              path = row[3:].strip()
+              if ' -> ' in path:
+                  path = path.split(' -> ',1)[1]
+              path = path.replace('\\','/')
+              changed.append(path)
+          unexpected = sorted(p for p in changed if p not in allowed_exact and not p.startswith(allowed_prefixes))
+          if unexpected:
+              raise SystemExit('GVAE_UNEXPECTED_WORKTREE_MUTATION:' + ','.join(unexpected))
+          print('GVAE_CHANGED=' + ','.join(sorted(changed)))
+          PY
+          git add -- prisma-html
+          git diff --cached --check
+          test -n "$(git diff --cached --name-only)"
+          git config user.name 'prisma-gvae[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'feat(visual): implement Generic Visual Application Engine V1'
+          remote2="$(git ls-remote origin refs/heads/$TARGET_BRANCH | awk '{print $1}')"
+          test "$remote2" = "$before"
+          git push --porcelain origin "HEAD:refs/heads/$TARGET_BRANCH"
