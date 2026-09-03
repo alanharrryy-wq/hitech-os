@@ -1,0 +1,67 @@
+{
+  "$id": "prisma.visual.application.result.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "details": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "doesNotProve": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "evidenceClassification": {
+      "const": "SOURCE_STATIC_ONLY"
+    },
+    "mode": {
+      "enum": [
+        "PREVIEW",
+        "APPLY",
+        "VERIFY",
+        "ROLLBACK"
+      ]
+    },
+    "ready": {
+      "const": false
+    },
+    "runtimeVisualGreen": {
+      "const": false
+    },
+    "schema": {
+      "const": "prisma.visual.application.result.v1"
+    },
+    "status": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "targetId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "transactionId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "mode",
+    "status",
+    "targetId",
+    "transactionId",
+    "evidenceClassification",
+    "runtimeVisualGreen",
+    "ready",
+    "doesNotProve",
+    "details"
+  ],
+  "type": "object"
+}

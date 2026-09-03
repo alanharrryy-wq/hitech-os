@@ -14,6 +14,7 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
   viscore1:
@@ -31,6 +32,55 @@ jobs:
 
       - name: Install prisma-html validator dependency
         run: python -m pip install -r prisma-html/requirements-dev.txt
+
+      - name: GVAE V1 deterministic source/static suite
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=tools python - <<'PY'
+          import unittest
+          suite = unittest.defaultTestLoader.discover('tools/visual_application/tests', top_level_dir='tools')
+          count = suite.countTestCases()
+          if count != 54:
+              raise SystemExit(f'GVAE_TEST_COUNT_DRIFT:{count}')
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          if result.testsRun != 54:
+              raise SystemExit(f'GVAE_TEST_RUN_DRIFT:{result.testsRun}')
+          if result.skipped:
+              raise SystemExit('GVAE_FULL_CHECKOUT_TESTS_SKIPPED:' + repr(result.skipped))
+          if not result.wasSuccessful():
+              raise SystemExit('GVAE_TEST_SUITE_FAILED')
+          print('PASS_GVAE_V1_TESTS_54_ZERO_SKIPS')
+          PY
+
+      - name: GVAE Target Index and Visual Core source-static readiness
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=tools python -m visual_application.target_index --check
+          PYTHONPATH=tools python -m visual_application.target_index --status > "$RUNNER_TEMP/gvae-target-index.json"
+          python tools/visual_core.py write --out "$RUNNER_TEMP/gvae-visual-core"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          status_path = Path(os.environ['RUNNER_TEMP']) / 'gvae-visual-core' / 'VISUAL_CORE_STATUS.json'
+          status = json.loads(status_path.read_text(encoding='utf-8'))
+          app = status.get('applicationEngine', {})
+          if app.get('status') != 'SOURCE_STATIC_ONLY':
+              raise SystemExit('GVAE_VISUAL_CORE_STATUS:' + repr(app.get('status')))
+          if app.get('evidenceClassification') != 'SOURCE_STATIC_ONLY':
+              raise SystemExit('GVAE_EVIDENCE_CLASSIFICATION:' + repr(app.get('evidenceClassification')))
+          if app.get('runtimeVisualGreen') is not False:
+              raise SystemExit('GVAE_RUNTIME_VISUAL_FALSE_REQUIRED')
+          if app.get('ready') is not False:
+              raise SystemExit('GVAE_READY_FALSE_REQUIRED')
+          if app.get('globalBlockers'):
+              raise SystemExit('GVAE_GLOBAL_BLOCKERS:' + repr(app.get('globalBlockers')))
+          print('PASS_GVAE_SOURCE_STATIC_ONLY_NO_FAKE_RUNTIME_READY')
+          PY
 
       - name: Canonical Authority Mesh runner self-test
         working-directory: apps/terminal-de-venta-system
@@ -73,12 +123,60 @@ jobs:
           python tools/validate_identity_dictionary.py
           python tools/compile_identity_dictionary.py --check
 
-      - name: RIFAT authority gate
+      - name: RIFAT authority no-regression gate
         working-directory: prisma-html
         shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          set -o pipefail
-          python tools/validate_rifat_authority.py | tee "$RUNNER_TEMP/rifat-authority.json"
+          set -euo pipefail
+          set +e
+          head_output="$(python tools/validate_rifat_authority.py 2>&1)"
+          head_rc=$?
+          set -e
+          printf '%s\n' "$head_output" | tee "$RUNNER_TEMP/rifat-authority.json"
+
+          base_dir="$RUNNER_TEMP/rifat-base"
+          git worktree add --detach "$base_dir" "$BASE_SHA"
+          set +e
+          base_output="$(cd "$base_dir/prisma-html" && python tools/validate_rifat_authority.py 2>&1)"
+          base_rc=$?
+          set -e
+
+          RIFAT_HEAD="$head_output" RIFAT_BASE="$base_output" RIFAT_HEAD_RC="$head_rc" RIFAT_BASE_RC="$base_rc" python - <<'PY'
+          import json
+          import os
+
+          def decode(name):
+              try:
+                  return json.loads(os.environ[name])
+              except Exception as exc:
+                  raise SystemExit(f'{name}_JSON_PARSE_FAILED:{exc}')
+
+          head = decode('RIFAT_HEAD')
+          base = decode('RIFAT_BASE')
+          head_rc = int(os.environ['RIFAT_HEAD_RC'])
+          base_rc = int(os.environ['RIFAT_BASE_RC'])
+          head_problems = set(head.get('problems', []))
+          base_problems = set(base.get('problems', []))
+
+          if (head_rc == 0) != (not head_problems):
+              raise SystemExit('RIFAT_HEAD_EXIT_PROBLEM_CONTRADICTION')
+          if (base_rc == 0) != (not base_problems):
+              raise SystemExit('RIFAT_BASE_EXIT_PROBLEM_CONTRADICTION')
+
+          new_problems = sorted(head_problems - base_problems)
+          if new_problems:
+              raise SystemExit('RIFAT_NEW_REGRESSION:' + json.dumps(new_problems, ensure_ascii=False, sort_keys=True))
+
+          resolved = sorted(base_problems - head_problems)
+          print(json.dumps({
+              'status': 'PASS_RIFAT_NO_REGRESSION',
+              'baseProblems': len(base_problems),
+              'headProblems': len(head_problems),
+              'resolvedProblems': resolved,
+          }, ensure_ascii=False, sort_keys=True))
+          PY
 
       - name: Upload RIFAT authority diagnostic
         if: always()
@@ -88,6 +186,36 @@ jobs:
           path: ${{ runner.temp }}/rifat-authority.json
           if-no-files-found: warn
           retention-days: 7
+
+      - name: GVAE Master Map, executable policy and frozen Code Atlas
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          git diff --exit-code "$BASE_SHA" -- \
+            tools/code-atlas/src/code_atlas/ui_bridge/application.py \
+            tools/code-atlas/src/code_atlas/ui_bridge/cobrar_application.py
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+
+          master = Path('prisma-html/docs/ops/PRISMA_VISUAL_CHANGE_MASTER_MAP.md')
+          expected = '87d1a7cd375ed8b4c0a264a74f1e1d75921d704b4d9da62e53d427a3ac05662d'
+          actual = hashlib.sha256(master.read_bytes()).hexdigest()
+          if actual != expected:
+              raise SystemExit(f'MASTER_MAP_BYTE_DRIFT:{actual}')
+
+          marker = ('!' + 'important').encode()
+          offenders = [
+              p.as_posix()
+              for p in Path('prisma-html/tools/visual_application').rglob('*.py')
+              if marker in p.read_bytes()
+          ]
+          if offenders:
+              raise SystemExit('GVAE_PRIORITY_OVERRIDE_LITERAL:' + ','.join(sorted(offenders)))
+          print('PASS_GVAE_MASTER_MAP_POLICY_AND_CODE_ATLAS_FREEZE')
+          PY
 
       - name: Atlasfin static gate
         working-directory: prisma-html

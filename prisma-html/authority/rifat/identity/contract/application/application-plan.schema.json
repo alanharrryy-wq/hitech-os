@@ -1,0 +1,53 @@
+{
+  "$id": "prisma.visual.application.plan.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "afterSha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "beforeSha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "evidenceClassification": {
+      "const": "SOURCE_STATIC_ONLY"
+    },
+    "projectionMode": {
+      "enum": [
+        "exact-byte-copy",
+        "existing-rifat-tablet-generator"
+      ]
+    },
+    "ready": {
+      "const": false
+    },
+    "runtimeVisualGreen": {
+      "const": false
+    },
+    "schema": {
+      "const": "prisma.visual.application.plan.v1"
+    },
+    "sourcePath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "targetId": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "targetId",
+    "sourcePath",
+    "projectionMode",
+    "beforeSha256",
+    "afterSha256",
+    "evidenceClassification",
+    "runtimeVisualGreen",
+    "ready"
+  ],
+  "type": "object"
+}

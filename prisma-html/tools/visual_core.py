@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from identity_dictionary_core import COMPILED, IDENTITY, ROOT, SURFACES, build_compilation, load_model, validate_model
+from visual_application.target_index import build_index as build_application_target_index
 
 PRISMA_UI = ROOT / "authority" / "rifat" / "prisma-ui"
 VISUAL_SOURCE_MANIFEST = ROOT / "authority" / "rifat" / "visual-source-manifest.json"
@@ -142,6 +143,7 @@ def build_status() -> dict[str, Any]:
     compiled_manifest, expected_projections = expected_compiled()
     by_route_surface = route_counts(routes)
     by_projection_surface = projection_counts(visual_manifest)
+    application_index = build_application_target_index(ROOT)
 
     surfaces = [
         surface_status(
@@ -176,6 +178,9 @@ def build_status() -> dict[str, Any]:
         architecture_problems.append("visual-source-manifest-projection-count-drift")
     if visual_manifest.get("surfaceCount") != len(by_projection_surface):
         architecture_problems.append("visual-source-manifest-surface-count-drift")
+    architecture_problems.extend(
+        f"application-target-index:{item}" for item in application_index.get("globalBlockers", [])
+    )
 
     atlas_sections = atlas_manifest.get("sections", [])
     atlas_items = atlas_manifest.get("items", [])
@@ -226,6 +231,20 @@ def build_status() -> dict[str, Any]:
             ),
             "countsBySurface": dict(sorted(by_projection_surface.items())),
         },
+        "applicationEngine": {
+            "schema": "prisma.visual.application.engine-readiness.v1",
+            "status": "SOURCE_STATIC_ONLY" if not application_index.get("globalBlockers") else "BLOCKED_STATIC",
+            "targetIndex": "authority/rifat/prisma-ui/visual-control/target-index/manifest.json",
+            "indexDigest": application_index.get("indexDigest"),
+            "recordCount": application_index.get("recordCount", 0),
+            "countsByStatus": application_index.get("countsByStatus", {}),
+            "supportedProjectionModes": application_index.get("supportedProjectionModes", []),
+            "globalBlockers": application_index.get("globalBlockers", []),
+            "evidenceClassification": "SOURCE_STATIC_ONLY",
+            "runtimeVisualGreen": False,
+            "ready": False,
+            "doesNotProve": ["browser-rendering", "runtime-visual-green", "production-readiness", "all-surfaces-application", "broader-mutation-authorization"],
+        },
         "surfaces": surfaces,
         "metadataDrift": metadata_drift,
         "architectureProblems": architecture_problems,
@@ -252,6 +271,7 @@ def render_markdown(status: dict[str, Any]) -> str:
         f"- Editable visual authorities: `{status['authority']['editableAuthorityCount']}`",
         f"- Identity profile: `{status['identity']['selectedProfileId']}`",
         f"- Projection entries: `{status['projectionManifest']['entryCount']}`",
+        f"- GVAE Target Index: `{status['applicationEngine']['status']}` / `{status['applicationEngine']['recordCount']}` records",
         f"- Atlasfin: `{status['atlasfin']['pages']} pages / {status['atlasfin']['sections']} sections / {status['atlasfin']['elements']} elements`",
         "",
         "| Surface | Stage | Routes effective | Declared | Projection entries | Runtime allowed | Blockers |",
