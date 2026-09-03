@@ -1663,43 +1663,42 @@
         "governance",
         "quality"
       ],
-      "classification": "BUILD",
-      "status": "NOT_STARTED",
-      "stateLabel": "GENERIC_VISUAL_APPLICATION_ENGINE_V1_REGISTERED_BUILD_NOT_STARTED",
-      "doNotRebuild": false,
-      "nextGate": "On exact current main, run the universal anti-rework PROPOSAL gate for visual.generic_application_engine_v1, obtain a fresh task-exact Authority Mesh with mandatory Layer Map covering only the authorized prisma-html engine/target-index/contracts/tests/CI/docs scope, then run the anti-rework MUTATION gate before any source or visual-authority write.",
+      "classification": "DONE",
+      "status": "SOURCE_READY",
+      "stateLabel": "PASS_GENERIC_VISUAL_APPLICATION_ENGINE_V1_SOURCE_STATIC_READY",
+      "doNotRebuild": true,
+      "nextGate": "Reuse the source/static-ready GVAE V1. Any real visual target application requires a fresh task-exact Authority Mesh with Layer Map, a fresh MUTATION anti-rework decision bound to current main, an exact APPLY_READY target, deterministic projection evidence, and target-specific runtime visual evidence before any runtime visual certification.",
       "evidence": [
-        "Governance preflight issue #513 and draft registration PR #514",
-        "PRISMA Remote AutoMesh run 33416410140 artifact 9767220861; PASS_COMPOSED_AUTHORITY_MESH at main 0400c7cbc307d156a0c5cd0e10b253deac9bf318; requestDigest efab1ba6c1276b4b8abea0290bde2ba2c57d3dcc8a52b50da634a7887be9d2fd; composed artifact sha256 33908c0bfc2e200483d0601f2302aea95f227c96b840b1954ea5eee0233f6a8d",
-        "AutoMesh v2 revalidation run 33422482889 artifact 9769443280; PASS_NO_RELEVANT_DRIFT rebound to main c17635fb69bb0208dc8237ee97cc82017f1d30a6; revalidated artifact sha256 889ba892d992179ec49c8d068a3f3f99cbec5187b93721abe261cda5212d6d39; revalidationDigest 4c8d1e45ecbb616c0df757d574c6ab8478566ed251d9c3508a0f3b6f6803b578",
-        "Existing frozen visual foundations reused by design: Code Atlas UI Bridge read-only guard, visual.atlasfin.tablet_pos_cobrar golden transaction, NDC, RIFAT/prisma-ui, Identity Dictionary, Visual Source Manifest, Visual Core and Change Assurance"
+        "Factory Ledger PROPOSAL run 33487938895 artifact 9792536582 on canonical main 1dabf0604c21dec0115c53e766c22b11b415dd68",
+        "Task-exact AutoMesh run 33488281872 artifact 9792713321 sha256:189efa8b4eb4e5e0b0765e05d1a312b40d8da20d89a4599387e4560f1001b2a2 requestDigest 01b4e0c6a5a3da354b2867f50feac8b242ceefc3ba7f69abd1c488a02063f1d9; PASS_COMPOSED_AUTHORITY_MESH; Layer Map present; blockers 0",
+        "Factory Ledger MUTATION run 33488816929 artifact 9792889680 sha256:cc520e533f11282baaec08bf939b7f3f0a85d3d89990e2a95203275a64952d6d; PASS_ANTI_REWORK_GATE; BUILD authorized from NOT_STARTED",
+        "GVAE V1 source implementation commit c36e28c8394d2119ec6045945436ec718e9aaa88; deterministic unittest suite 54/54 PASS with zero skips",
+        "Generated Target Index manifest digest 8b7441ed0902bd06ebdb39277ebd2c90ea2b97266950ef22e45794e46b4d6488; 4 discovered records, all fail-closed BLOCKED; Cobrar primary remains blocked on missing exact adapter instead of guessing",
+        "PRISMA_VISUAL_CHANGE_MASTER_MAP.md exact sha256:87d1a7cd375ed8b4c0a264a74f1e1d75921d704b4d9da62e53d427a3ac05662d",
+        "Source installer proved Code Atlas application bridge and historical Cobrar runner unchanged; RIFAT validation uses no-regression against canonical base so unrelated pre-existing Mobile projection debt is not silently mutated by GVAE"
       ],
       "doesNotProve": [
-        "Generic Visual Application Engine V1 source implementation exists or passes tests",
-        "Generated Visual Target Index exists, is complete or is deterministic",
-        "Any CSS, CSS Module, JSON token or projection writer is implemented",
-        "Cobrar parity, idempotency, rollback or negative-test certification",
-        "Any source application or product projection has occurred",
-        "Any runtime visual certification for Tablet, PC, Mobile, Web, Chart Lab, Control Center or Shared UI",
-        "Hosted production, distribution or customer deployment readiness"
+        "Browser-render equivalence or target-specific runtime visual correctness",
+        "Any product visual target is APPLY_READY; current generated Target Index records are fail-closed BLOCKED",
+        "Any Tablet, PC, Mobile, Web, Chart Lab, Control Center or Shared UI runtime visual certification",
+        "Any hosted production, distribution or customer deployment readiness",
+        "Authorization to mutate a future target without fresh task-exact Authority Mesh, Layer Map and MUTATION evidence"
       ],
       "allowedActions": [
-        "reuse all already-certified visual authority and census foundations",
-        "perform the next exact anti-rework and Authority Mesh gates for the bounded V1 build",
-        "build the generic engine only under prisma-html with declarative authority consumption",
-        "generate the target index from existing machine-readable census/authority evidence",
-        "add source/static CI and golden Cobrar parity without deleting the certified historical runner"
+        "reuse GVAE V1 source/static infrastructure without rebuilding it",
+        "run deterministic source/static CI and Target Index regeneration/checks",
+        "prepare a future exact target application only after fresh target-specific authority gates",
+        "collect target-specific runtime visual evidence after a governed application"
       ],
       "forbiddenActions": [
-        "mutate prisma-html or product visual source before the fresh exact MUTATION gate passes",
+        "rebuild the GVAE V1 source implementation while this SOURCE_READY evidence remains valid",
         "turn Code Atlas UI Bridge into a generic writer",
-        "turn Atlasfin browser UI into a product writer",
-        "manually edit generated product projections",
-        "invent missing target, binding, layer, neutral meaning or projection authority",
+        "edit generated product projections manually",
+        "guess a missing adapter, target, binding, layer, recipe, semantic meaning or projection authority",
         "use !important as an application mechanism",
-        "claim runtime visual certification from static/source evidence"
+        "claim runtime visual certification from source/static evidence"
       ]
     }
   ],
-  "updatedAt": "2026-08-31T17:59:05Z"
+  "updatedAt": "2026-09-03T23:01:32Z"
 }
