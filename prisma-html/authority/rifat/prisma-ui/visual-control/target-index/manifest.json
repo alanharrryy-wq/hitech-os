@@ -1,0 +1,111 @@
+{
+  "authority": "current-rifat-and-identity-source",
+  "countsByStatus": {
+    "BLOCKED": 4
+  },
+  "generated": true,
+  "globalBlockers": [],
+  "indexDigest": "8b7441ed0902bd06ebdb39277ebd2c90ea2b97266950ef22e45794e46b4d6488",
+  "manualEditsForbidden": true,
+  "recordCount": 4,
+  "records": [
+    {
+      "adapterId": null,
+      "bindingId": "BND.TOK.COLOR.ACCENT.TABLET.MULTI.V1",
+      "blockers": [
+        "adapter",
+        "binding",
+        "layer",
+        "projection",
+        "recipe"
+      ],
+      "canonicalSourcePath": null,
+      "generatedOutputPath": null,
+      "layerId": null,
+      "manualEditsForbidden": null,
+      "outputSha256": null,
+      "projectionMode": null,
+      "recipeId": "*",
+      "selector": ".cobrarReferenceButton",
+      "semanticMeaningId": "TOK.color.accent",
+      "sourceSha256": null,
+      "status": "BLOCKED",
+      "surface": "tablet",
+      "targetId": "TGT.TABLET.POS.COBRAR.ACCENT.BASE.V1"
+    },
+    {
+      "adapterId": null,
+      "bindingId": "BND.TOK.COLOR.ACCENT.TABLET.MULTI.V1",
+      "blockers": [
+        "adapter",
+        "binding",
+        "layer",
+        "projection",
+        "recipe"
+      ],
+      "canonicalSourcePath": null,
+      "generatedOutputPath": null,
+      "layerId": null,
+      "manualEditsForbidden": null,
+      "outputSha256": null,
+      "projectionMode": null,
+      "recipeId": "*",
+      "selector": ".cobrarReferenceButton::before",
+      "semanticMeaningId": "TOK.color.accent",
+      "sourceSha256": null,
+      "status": "BLOCKED",
+      "surface": "tablet",
+      "targetId": "TGT.TABLET.POS.COBRAR.ACCENT.BEFORE.V1"
+    },
+    {
+      "adapterId": null,
+      "bindingId": "BND.TOK.COLOR.ACCENT.TABLET.MULTI.V1",
+      "blockers": [
+        "adapter",
+        "binding",
+        "layer",
+        "projection",
+        "recipe"
+      ],
+      "canonicalSourcePath": null,
+      "generatedOutputPath": null,
+      "layerId": null,
+      "manualEditsForbidden": null,
+      "outputSha256": null,
+      "projectionMode": null,
+      "recipeId": "*",
+      "selector": ".cobrarIcon",
+      "semanticMeaningId": "TOK.color.accent",
+      "sourceSha256": null,
+      "status": "BLOCKED",
+      "surface": "tablet",
+      "targetId": "TGT.TABLET.POS.COBRAR.ACCENT.ICON.V1"
+    },
+    {
+      "adapterId": null,
+      "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+      "blockers": [
+        "adapter"
+      ],
+      "canonicalSourcePath": "prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css",
+      "generatedOutputPath": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css",
+      "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
+      "manualEditsForbidden": true,
+      "outputSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd",
+      "projectionMode": "existing-rifat-tablet-generator",
+      "recipeId": "REC.button.primary",
+      "selector": ".cobrarReferenceButton",
+      "semanticMeaningId": "ACT.primary",
+      "sourceSha256": "bae907948238073eba339e1be7532814b3498ec25c36104221b0ee84c0584be0",
+      "status": "BLOCKED",
+      "surface": "tablet",
+      "targetId": "TGT.TABLET.POS.COBRAR.PRIMARY.V1"
+    }
+  ],
+  "schema": "prisma.visual.application.target-index.v1",
+  "supportedProjectionModes": [
+    "exact-byte-copy",
+    "existing-rifat-tablet-generator"
+  ],
+  "version": "1.0.0"
+}

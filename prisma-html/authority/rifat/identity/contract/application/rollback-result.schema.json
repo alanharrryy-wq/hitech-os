@@ -1,0 +1,35 @@
+{
+  "$id": "prisma.visual.application.rollback-result.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "restored": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema": {
+      "const": "prisma.visual.application.rollback-result.v1"
+    },
+    "status": {
+      "enum": [
+        "ROLLED_BACK",
+        "ALREADY_ROLLED_BACK"
+      ]
+    },
+    "transactionId": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "transactionId",
+    "status",
+    "restored"
+  ],
+  "type": "object"
+}
