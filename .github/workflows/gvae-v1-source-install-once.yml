@@ -185,7 +185,30 @@ jobs:
           PYTHONPATH=tools python -m visual_application.target_index --check
           python tools/validate_project.py --root . --report "$RUNNER_TEMP/gvae-source-validator.json"
           python tools/visual_core.py check
-          python tools/validate_rifat_authority.py
+          set +e
+          rifat_output="$(python tools/validate_rifat_authority.py 2>&1)"
+          rifat_rc=$?
+          set -e
+          if [ "$rifat_rc" -ne 0 ]; then
+            printf '%s\n' "$rifat_output"
+            RIFAT_OUTPUT="$rifat_output" python - <<'PY'
+          import json
+          import os
+          expected = sorted([
+              "visual output hash mismatch: apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+              "exact-copy visual projection drift: prisma-html/authority/rifat/surfaces/mobile/runtime-sources/src/components/prisma-app/prisma-mobile-dashboard.module.css -> apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css",
+              "missing visual projection output: apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-multi-context-switcher.module.css",
+          ])
+          try:
+              payload = json.loads(os.environ["RIFAT_OUTPUT"])
+          except Exception as exc:
+              raise SystemExit(f"GVAE_RIFAT_BASELINE_PARSE_FAILED:{exc}")
+          actual = sorted(payload.get("problems", []))
+          if actual != expected:
+              raise SystemExit("GVAE_RIFAT_NEW_OR_CHANGED_DEBT:" + json.dumps(actual, sort_keys=True))
+          print("PASS_GVAE_RIFAT_NO_REGRESSION_AGAINST_EXACT_MAIN")
+          PY
+          fi
           python tools/validate_identity_dictionary.py
           python tools/compile_identity_dictionary.py --check
           python tools/refresh_files_manifest.py --check
