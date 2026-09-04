@@ -119,6 +119,14 @@ jobs:
             --base "${{ steps.base.outputs.base_sha }}" \
             --head "${GITHUB_SHA}"
 
+      - name: Enforce universal Visual Work Entry Gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=prisma-html/tools python -m visual_application.visual_work_entry_gate \
+            --base "${{ steps.base.outputs.base_sha }}" \
+            --head "${GITHUB_SHA}"
+
       - name: Install dependencies (frozen lockfile)
         shell: bash
         run: |
