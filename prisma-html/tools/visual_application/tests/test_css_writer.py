@@ -32,7 +32,8 @@ class CssWriterTests(unittest.TestCase):
         src='.a { /* color: purple; */ color:red; }'; out=patch_css(src,'.a',{'color':'blue'})
         self.assertIn('/* color: purple; */',out); self.assertIn('color:blue;',out)
     def test_important_inside_string_is_not_priority(self):
-        src='.a { content:"!important"; color:red; }'; out=patch_css(src,'.a',{'color':'blue'})
-        self.assertIn('content:"!important";',out)
+        marker='!'+'important'
+        src=f'.a {{ content:"{marker}"; color:red; }}'; out=patch_css(src,'.a',{'color':'blue'})
+        self.assertIn(f'content:"{marker}";',out)
     def test_unterminated_declaration_blocks(self):
         with self.assertRaises(BlockedUnsupportedCss): patch_css('.a { color:red }','.a',{'color':'blue'})
