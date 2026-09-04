@@ -1663,11 +1663,11 @@
         "governance",
         "quality"
       ],
-      "classification": "DONE",
-      "status": "SOURCE_READY",
-      "stateLabel": "PASS_GENERIC_VISUAL_APPLICATION_ENGINE_V1_SOURCE_STATIC_READY",
+      "classification": "FIX",
+      "status": "VERIFY_REQUIRED",
+      "stateLabel": "FIX_REQUIRED_GVAE_V1_POSTMERGE_ADVERSARIAL_AUDIT",
       "doNotRebuild": true,
-      "nextGate": "Reuse the source/static-ready GVAE V1. Any real visual target application requires a fresh task-exact Authority Mesh with Layer Map, a fresh MUTATION anti-rework decision bound to current main, an exact APPLY_READY target, deterministic projection evidence, and target-specific runtime visual evidence before any runtime visual certification.",
+      "nextGate": "Apply one bounded root-cause hardening correction to the existing GVAE V1 capability after a fresh current-head task-exact Authority Mesh with Layer Map and a fresh Factory Ledger MUTATION PASS for requestedAction FIX; add adversarial negative tests for exact-target scope, transaction/rollback integrity, path/symlink containment, idempotent projection repair, target-index authority compatibility, strict JSON/CSS writers and CLI fail-closed semantics; return to SOURCE_READY only after exact-head deterministic CI proves the corrected engine.",
       "evidence": [
         "Factory Ledger PROPOSAL run 33487938895 artifact 9792536582 on canonical main 1dabf0604c21dec0115c53e766c22b11b415dd68",
         "Task-exact AutoMesh run 33488281872 artifact 9792713321 sha256:189efa8b4eb4e5e0b0765e05d1a312b40d8da20d89a4599387e4560f1001b2a2 requestDigest 01b4e0c6a5a3da354b2867f50feac8b242ceefc3ba7f69abd1c488a02063f1d9; PASS_COMPOSED_AUTHORITY_MESH; Layer Map present; blockers 0",
@@ -1675,30 +1675,32 @@
         "GVAE V1 source implementation commit c36e28c8394d2119ec6045945436ec718e9aaa88; deterministic unittest suite 54/54 PASS with zero skips",
         "Generated Target Index manifest digest 8b7441ed0902bd06ebdb39277ebd2c90ea2b97266950ef22e45794e46b4d6488; 4 discovered records, all fail-closed BLOCKED; Cobrar primary remains blocked on missing exact adapter instead of guessing",
         "PRISMA_VISUAL_CHANGE_MASTER_MAP.md exact sha256:87d1a7cd375ed8b4c0a264a74f1e1d75921d704b4d9da62e53d427a3ac05662d",
-        "Source installer proved Code Atlas application bridge and historical Cobrar runner unchanged; RIFAT validation uses no-regression against canonical base so unrelated pre-existing Mobile projection debt is not silently mutated by GVAE"
+        "Source installer proved Code Atlas application bridge and historical Cobrar runner unchanged; RIFAT validation uses no-regression against canonical base so unrelated pre-existing Mobile projection debt is not silently mutated by GVAE",
+        "Post-merge adversarial audit on canonical main 1f73a677ffb076e4787099177f71470785f1f611 recorded in PRISMA Factory Ledger/evidence/GVAE_V1_POSTMERGE_AUDIT_20260903.md; fresh AutoMesh run 33836037189 artifact 9923318865 sha256:62eaaaeaf737d202fd6c7c71c05387f9175d614ba25f01abd639cb4c6315463e requestDigest 9569a92d7c4d58a18d2732b16a79d4db0daa73595353094b3141ece2d2cac382 passed with Layer Map and 100% required authority coverage; deeper review proved missing machine-verified mutation authority and reviewed UI Bridge plan binding plus exact-target, rollback, transaction, idempotency, index-authority, writer and CLI negative-path defects not covered by the original 54-test suite."
       ],
       "doesNotProve": [
+        "The post-merge audit has not yet corrected the proven defects",
         "Browser-render equivalence or target-specific runtime visual correctness",
-        "Any product visual target is APPLY_READY; current generated Target Index records are fail-closed BLOCKED",
+        "Any product visual target is APPLY_READY; current generated Target Index records remain fail-closed BLOCKED",
         "Any Tablet, PC, Mobile, Web, Chart Lab, Control Center or Shared UI runtime visual certification",
-        "Any hosted production, distribution or customer deployment readiness",
-        "Authorization to mutate a future target without fresh task-exact Authority Mesh, Layer Map and MUTATION evidence"
+        "Any hosted production, distribution or customer deployment readiness"
       ],
       "allowedActions": [
-        "reuse GVAE V1 source/static infrastructure without rebuilding it",
-        "run deterministic source/static CI and Target Index regeneration/checks",
-        "prepare a future exact target application only after fresh target-specific authority gates",
-        "collect target-specific runtime visual evidence after a governed application"
+        "reuse the existing GVAE V1 architecture and historical evidence without rebuilding it",
+        "perform the bounded root-cause FIX authorized by the recorded post-merge audit after fresh mutation authority",
+        "run deterministic source/static CI, adversarial negative tests and Target Index regeneration/checks",
+        "return the capability to SOURCE_READY only when exact-head evidence proves all corrected paths"
       ],
       "forbiddenActions": [
-        "rebuild the GVAE V1 source implementation while this SOURCE_READY evidence remains valid",
+        "rebuild or replace the GVAE V1 architecture instead of correcting the proven defects",
         "turn Code Atlas UI Bridge into a generic writer",
         "edit generated product projections manually",
         "guess a missing adapter, target, binding, layer, recipe, semantic meaning or projection authority",
         "use !important as an application mechanism",
-        "claim runtime visual certification from source/static evidence"
+        "claim runtime visual certification from source/static evidence",
+        "claim the original 54/54 suite covers the newly proven adversarial defects"
       ]
     }
   ],
-  "updatedAt": "2026-09-03T23:01:32Z"
+  "updatedAt": "2026-09-04T04:25:00Z"
 }
