@@ -17,6 +17,8 @@ class EngineTransactionTests(unittest.TestCase):
     def test_apply_projects_and_never_claims_runtime(self):
         r=apply(self.request('APPLY'),self.provider,self.root,self.tx,self.auth)
         self.assertEqual(r['status'],'APPLIED_SOURCE_STATIC'); self.assertFalse(r['runtimeVisualGreen']); self.assertEqual(self.output.read_bytes(),self.source.read_bytes())
+        receipt=self.root/r['details']['receiptPath']; self.assertTrue(receipt.is_file())
+        doc=json.loads(receipt.read_text()); self.assertEqual(doc['schema'],'prisma.visual.application.receipt.v1'); self.assertFalse(doc['ready'])
     def test_apply_idempotent_with_fresh_hash(self):
         apply(self.request('APPLY'),self.provider,self.root,self.tx,self.auth)
         r=apply(self.request('APPLY'),self.provider,self.root,self.tx,self.auth)
