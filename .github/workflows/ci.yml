@@ -111,6 +111,14 @@ jobs:
           fi
           echo "base_sha=${base_sha}" >> "$GITHUB_OUTPUT"
 
+      - name: Enforce GVAE for registered visual target mutations
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=prisma-html/tools python -m visual_application.mandatory_gate \
+            --base "${{ steps.base.outputs.base_sha }}" \
+            --head "${GITHUB_SHA}"
+
       - name: Install dependencies (frozen lockfile)
         shell: bash
         run: |

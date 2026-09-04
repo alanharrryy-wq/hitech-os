@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.visual.application.receipt.v1",
+  "title": "PRISMA GVAE V1 application receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "transactionId",
+    "targetId",
+    "surface",
+    "status",
+    "authorityCommit",
+    "requestDigest",
+    "sourcePath",
+    "generatedOutputPath",
+    "files",
+    "authorization",
+    "evidenceClassification",
+    "runtimeVisualGreen",
+    "ready",
+    "doesNotProve",
+    "receiptDigest"
+  ],
+  "properties": {
+    "schema": {"const": "prisma.visual.application.receipt.v1"},
+    "transactionId": {"type": "string", "pattern": "^gvae-[a-z0-9][a-z0-9_-]{0,63}$"},
+    "targetId": {"type": "string", "minLength": 1},
+    "surface": {"type": "string", "minLength": 1},
+    "status": {"enum": ["APPLIED_SOURCE_STATIC", "REPAIRED_PROJECTION_DRIFT"]},
+    "authorityCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "requestDigest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sourcePath": {"type": "string", "minLength": 1},
+    "generatedOutputPath": {"type": ["string", "null"]},
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "beforeSha256", "afterSha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "beforeSha256": {
+            "anyOf": [
+              {"type": "null"},
+              {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            ]
+          },
+          "afterSha256": {
+            "anyOf": [
+              {"type": "null"},
+              {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            ]
+          }
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "required": [
+        "authorityTaskId",
+        "authorityMeshArtifactSha256",
+        "authorityMeshRequestDigest",
+        "mesh",
+        "factoryLedgerDecisionDigest",
+        "uiBridge",
+        "uiBridgePlanSha256",
+        "uiBridgeSemanticDiffSha256"
+      ]
+    },
+    "evidenceClassification": {"const": "SOURCE_STATIC_ONLY"},
+    "runtimeVisualGreen": {"const": false},
+    "ready": {"const": false},
+    "doesNotProve": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "receiptDigest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

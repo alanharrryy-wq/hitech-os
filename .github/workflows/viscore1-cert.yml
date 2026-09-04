@@ -42,17 +42,26 @@ jobs:
           import unittest
           suite = unittest.defaultTestLoader.discover('tools/visual_application/tests', top_level_dir='tools')
           count = suite.countTestCases()
-          if count != 94:
+          if count != 101:
               raise SystemExit(f'GVAE_TEST_COUNT_DRIFT:{count}')
           result = unittest.TextTestRunner(verbosity=2).run(suite)
-          if result.testsRun != 94:
+          if result.testsRun != 101:
               raise SystemExit(f'GVAE_TEST_RUN_DRIFT:{result.testsRun}')
           if result.skipped:
               raise SystemExit('GVAE_FULL_CHECKOUT_TESTS_SKIPPED:' + repr(result.skipped))
           if not result.wasSuccessful():
               raise SystemExit('GVAE_TEST_SUITE_FAILED')
-          print('PASS_GVAE_V1_TESTS_94_ZERO_SKIPS')
+          print('PASS_GVAE_V1_TESTS_101_ZERO_SKIPS')
           PY
+
+      - name: GVAE mandatory registered-target mutation gate
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=tools python -m visual_application.mandatory_gate \
+            --base "${{ github.event.pull_request.base.sha }}" \
+            --head "${GITHUB_SHA}"
 
       - name: GVAE Target Index and Visual Core source-static readiness
         working-directory: prisma-html

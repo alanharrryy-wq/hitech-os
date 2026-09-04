@@ -1003,3 +1003,16 @@ Ejecutado desde el root del repo falló con `ERR_MODULE_NOT_FOUND`; la causa fue
 **Runbook canónico:** `apps/terminal-de-venta-system/docs/ops/PRISMA_AUTHORITY_MESH_AUTOMESH_V2_RUNBOOK.md`.
 
 **Límite:** AutoMesh v2, sus tests, CI y E2E no promueven `productionCertified=true` ni prueban seguridad hosted, cumplimiento legal/privacidad o correctness de superficies de producto no incluidas.
+
+
+## GVAE mandatory registered-target visual mutation rule
+
+Canonical status: `ENFORCED_SOURCE_STATIC`.
+
+For every visual target already represented by the generated GVAE Visual Target Index, GVAE is the mandatory mutation path. A canonical target source or its governed generated projection must not be edited directly and merged without a transaction-bound `prisma.visual.application.receipt.v1` whose hash chain connects the PR base state to the PR head state.
+
+The primary CI workflow and VISCORE1 must run the fail-closed GVAE mandatory gate. Missing, stale, tampered, fake-ready or non-chainable receipts block the change.
+
+This does not grant GVAE authority over unregistered visual files. Missing target identity is a governance gap to resolve first, not permission to bypass the engine.
+
+A whole-surface change is not equivalent to a wildcard APPLY. Until a surface has explicit complete Target Index coverage, surface work must remain a set of exact governed target waves. Any future Surface Batch Orchestrator must preserve target-level Authority Mesh + Layer Map, Factory Ledger MUTATION PASS, reviewed Code Atlas UI Bridge plan/diff, projection authority, receipts, rollback and separate runtime/browser visual certification.
