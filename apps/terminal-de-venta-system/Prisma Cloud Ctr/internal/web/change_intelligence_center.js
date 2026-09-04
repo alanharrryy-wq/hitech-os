@@ -6,7 +6,7 @@
 
   const VIEW_META = {
     overview: {
-      kicker: "CHANGE INTELLIGENCE",
+      kicker: "CHANGE ASSURANCE",
       title: "Know the system. Control the change. Prove the result.",
       summary: "A governed, read-only product console over the existing Code Atlas Engine and shared PRISMA Cloud Center owners. Nothing becomes green merely because a UI can render it."
     },
@@ -53,7 +53,7 @@
     entitlements: {
       kicker: "SHARED PLATFORM OWNER",
       title: "Entitlements",
-      summary: "Change Intelligence should reuse PRISMA licensing and commercial owners through explicit adapters. It does not create a second licensing universe."
+      summary: "Change Assurance should reuse PRISMA licensing and commercial owners through explicit adapters. It does not create a second licensing universe."
     }
   };
 
@@ -229,7 +229,7 @@
         ["Base HEAD", cfg.generatedFrom?.baseHead]
       ]), { span: 4, tag: cfg.generatedFrom?.authorityMesh?.result || "UNKNOWN" }),
       card("Discover · Guard · Control", "Commercial products over one internal engine, not three duplicated codebases.", `<div class="pci-kpi-grid">${(cfg.products || []).map((item) => `<div class="pci-kpi"><small>${esc(item.name)}</small><strong>${esc(item.question)}</strong><span>${esc(item.promise)}</span></div>`).join("")}</div>`, { span: 12, tag: "PRODUCTS" }),
-      card("Shared platform reuse", "Existing Cloud Center owners remain owners. Change Intelligence consumes contracts instead of rebuilding them.", table(
+      card("Shared platform reuse", "Existing Cloud Center owners remain owners. Change Assurance consumes contracts instead of rebuilding them.", table(
         ["Owner", "Maturity", "Reuse", "Boundary"],
         (cfg.sharedOwners || []).map((item) => ({ Owner: item.id, Maturity: item.maturity, Reuse: item.reuseMode, Boundary: item.boundary }))
       ), { span: 12, tag: "NO REBUILD" }),
@@ -245,7 +245,7 @@
         ["1", "Bind read-only repository registry adapter"],
         ["2", "Project real Code Atlas analysis manifests"],
         ["3", "Bind Authority Pack and Evidence references"],
-        ["4", "Map Change Intelligence entitlements to existing licensing owner"],
+        ["4", "Map Change Assurance entitlements to existing licensing owner"],
         ["5", "Measure ROI with customer inputs"],
         ["6", "Collect human and independent-agent usefulness evidence"]
       ]), { span: 6, tag: "NEXT" })

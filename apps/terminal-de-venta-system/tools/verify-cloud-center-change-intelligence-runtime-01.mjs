@@ -65,6 +65,10 @@ async function verifyProfile(name, viewport) {
   const config = await configResponse.json();
   if (config?.maturity?.engineStatus !== 'LOCAL_VERIFIED') throw new Error(`${name}: unexpected engineStatus ${config?.maturity?.engineStatus}`);
   if (config?.maturity?.productionCertified !== false || config?.maturity?.certifiable !== false) throw new Error(`${name}: maturity claim ceiling drift`);
+  if (config?.product?.commercialName !== 'PRISMA Change Assurance') throw new Error(`${name}: public product identity drift ${config?.product?.commercialName}`);
+  if (config?.product?.internalEngine !== 'Code Atlas') throw new Error(`${name}: engine identity drift ${config?.product?.internalEngine}`);
+  const pageTitle = await page.title();
+  if (pageTitle !== 'PRISMA Change Assurance · Cloud Center') throw new Error(`${name}: title identity drift ${pageTitle}`);
 
   const navViews = await page.locator('[data-pci-view]').evaluateAll(nodes => nodes.map(n => n.getAttribute('data-pci-view')));
   const missingViews = expectedViews.filter(view => !navViews.includes(view));
@@ -82,6 +86,7 @@ async function verifyProfile(name, viewport) {
 
   const semanticText = await page.locator('body').innerText();
   if (!/UNKNOWN|NOT_CONNECTED|BLOCKED/i.test(semanticText)) throw new Error(`${name}: fail-closed state vocabulary not rendered`);
+  if (/PRISMA Change Intelligence|\bChange Intelligence\b/i.test(semanticText)) throw new Error(`${name}: legacy public product identity rendered`);
 
   const hostChipText = (await page.locator('#pciRuntimeChip').innerText()).trim();
   if (!/Cloud Center host\s*·\s*UNKNOWN/i.test(hostChipText)) {

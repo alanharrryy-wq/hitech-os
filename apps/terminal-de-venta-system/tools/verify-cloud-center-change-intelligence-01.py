@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail-closed source verifier for PRISMA Change Intelligence Cloud Center V1."""
+"""Fail-closed source verifier for PRISMA Change Assurance Cloud Center V1."""
 from __future__ import annotations
 
 import json
@@ -92,7 +92,6 @@ ALLOWED_DIFF = {
     for key in ("main_html", "ci_html", "ci_style_js", "ci_js", "ci_config", "contract", "verifier", "runtime_verifier", "workflow")
 }
 CANONICAL_CLOUD_CENTER_READ_ONLY = {
-    REL["main_html"].as_posix(),
     REL["main_css"].as_posix(),
     REL["main_js"].as_posix(),
 }
@@ -234,6 +233,11 @@ def main() -> int:
     check("human_usefulness_not_measured", maturity.get("humanUsefulness") == "NOT_MEASURED", str(maturity.get("humanUsefulness")))
     check("read_only_default", safety.get("readOnlyDefault") is True, str(safety.get("readOnlyDefault")))
     check("no_fake_green", safety.get("noFakeGreen") is True, str(safety.get("noFakeGreen")))
+
+    product = cfg.get("product", {})
+    check("public_product_name", product.get("commercialName") == "PRISMA Change Assurance", str(product.get("commercialName")))
+    check("engine_name", product.get("internalEngine") == "Code Atlas", str(product.get("internalEngine")))
+    check("public_identity_rule", "PRISMA Change Assurance externally" in str(product.get("identityRule", "")) and "compatibility or historical evidence only" in str(product.get("identityRule", "")), str(product.get("identityRule")))
 
     owners = {x.get("id"): x for x in cfg.get("sharedOwners", [])}
     required = {
@@ -593,9 +597,13 @@ def main() -> int:
 
     links = re.findall(r'<a\b(?=[^>]*data-ci-entry=["\']v1["\'])(?=[^>]*href=["\']/internal/web/change_intelligence_center\.html["\'])[^>]*>', main_html, re.I)
     check("single_navigation_seam", len(links) == 1, f"found={len(links)}")
+    seam = links[0] if len(links) == 1 else ""
+    check("navigation_seam_public_identity", 'aria-label="Abrir PRISMA Change Assurance"' in seam and ">Change Assurance</a>" in seam, seam)
     check("main_js_uncoupled", "change_intelligence_center" not in main_js and "pci-" not in main_js)
     check("main_css_uncoupled", "change_intelligence_center" not in main_css and "pci-" not in main_css)
     check("ci_html_namespace", 'class="pci-surface"' in ci_html)
+    check("public_identity_ci_html", "PRISMA Change Assurance" in ci_html and "PRISMA Change Intelligence" not in ci_html, "active Cloud surface must use the permanent product name")
+    check("public_identity_ci_js", "Change Intelligence" not in ci_js, "active rendered copy must use Change Assurance")
     check("ci_html_style_module", "change_intelligence_center_style.js" in ci_html)
     check("ci_html_projection_module", "change_intelligence_center.js" in ci_html)
     check("ci_html_no_css_link", "change_intelligence_center.css" not in ci_html)
@@ -635,6 +643,17 @@ def main() -> int:
             check("git_diff_non_empty", bool(changed), f"base={diff_base} source={diff_base_source} changed={len(changed)}")
             check("git_diff_boundary", not (changed - ALLOWED_DIFF), f"base={diff_base} source={diff_base_source} changed={len(changed)} outside={sorted(changed - ALLOWED_DIFF)}")
             check("git_diff_canonical_cloud_center_read_only", not (changed & CANONICAL_CLOUD_CENTER_READ_ONLY), f"canonicalChanged={sorted(changed & CANONICAL_CLOUD_CENTER_READ_ONLY)}")
+            if REL["main_html"].as_posix() in changed:
+                seam_code, seam_diff = git(root, "diff", "--unified=0", f"{diff_base}...HEAD", "--", REL["main_html"].as_posix())
+                seam_lines = [
+                    line for line in seam_diff.splitlines()
+                    if (line.startswith("+") or line.startswith("-")) and not line.startswith("+++") and not line.startswith("---")
+                ]
+                check(
+                    "git_diff_main_html_navigation_seam_only",
+                    seam_code == 0 and bool(seam_lines) and all('data-ci-entry="v1"' in line for line in seam_lines),
+                    f"changedContentLines={len(seam_lines)}",
+                )
             check("git_diff_no_css", not any(x.lower().endswith(".css") for x in changed), "Commercial Billing Authority no-CSS boundary")
     else:
         check("git_diff_boundary", False, "CURRENT_PR_BASE_UNAVAILABLE")
