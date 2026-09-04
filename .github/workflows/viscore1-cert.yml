@@ -61,7 +61,7 @@ jobs:
           set -euo pipefail
           PYTHONPATH=tools python -m visual_application.mandatory_gate \
             --base "${{ github.event.pull_request.base.sha }}" \
-            --head "${GITHUB_SHA}"
+            --head HEAD
 
       - name: Universal Visual Work Entry Gate
         working-directory: prisma-html
@@ -70,7 +70,7 @@ jobs:
           set -euo pipefail
           PYTHONPATH=tools python -m visual_application.visual_work_entry_gate \
             --base "${{ github.event.pull_request.base.sha }}" \
-            --head "${GITHUB_SHA}"
+            --head HEAD
 
       - name: GVAE Target Index and Visual Core source-static readiness
         working-directory: prisma-html
