@@ -251,5 +251,13 @@
       "mergeSha": "0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30",
       "gate": "change-intelligence-cloud-authority:success"
     }
+  },
+  "ownershipBoundary": {
+    "schemaVersion": "prisma.change_assurance.ownership_boundary.reference.v1",
+    "authorityPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json",
+    "authorityKey": "ownershipBoundary",
+    "createsSecondRegistry": false,
+    "physicalRenameRequired": false,
+    "rule": "Resolve ownership from the canonical registry boundary, never from a physical filename, directory token or legacy compatibility identifier."
   }
 }
