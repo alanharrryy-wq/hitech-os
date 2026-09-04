@@ -1,0 +1,281 @@
+{
+  "schema": "prisma.visual-promotion.interoperability-vocabulary.v1",
+  "version": "1.0.0",
+  "status": "CANONICAL_PARALLEL_VOCABULARY",
+  "scope": {
+    "includedSurfaceKeys": [
+      "tablet",
+      "pc",
+      "mobile",
+      "shared-ui"
+    ],
+    "excludedSurfaceKeys": [
+      "web",
+      "chart-lab",
+      "control-center"
+    ],
+    "atlasfinRole": "PRIORITY_VISUAL_REFERENCE_AND_CANONICAL_HUMAN_COCKPIT",
+    "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY"
+  },
+  "authorityDomains": [
+    "ndc",
+    "atlasfin",
+    "identity",
+    "rifat",
+    "visual-control",
+    "target-index",
+    "projection-manifest",
+    "factory-ledger",
+    "code-atlas",
+    "work-entry-gate",
+    "gvae"
+  ],
+  "humanQualifiedRefFormat": "<authorityDomain>::<rawId>",
+  "machineQualifiedRefRequiredFields": [
+    "authorityDomain",
+    "id"
+  ],
+  "surfaceAliases": {
+    "tablet": [
+      "tablet"
+    ],
+    "pc": [
+      "pc"
+    ],
+    "mobile": [
+      "mobile"
+    ],
+    "shared-ui": [
+      "shared-ui",
+      "shared_ui"
+    ]
+  },
+  "canonicalSurfaceKeyRule": "WRITE_ONLY_CANONICAL_KEY; PRESERVE_RAW_DOMAIN_ID_SEPARATELY",
+  "idPolicies": {
+    "existingIdsImmutable": true,
+    "workerMayMintCanonicalNdcId": false,
+    "workerMayMintCanonicalVisualMeaningId": false,
+    "workerMayMintCanonicalBindingId": false,
+    "workerMayMintExactTargetId": false,
+    "workerMayMintCensusTargetId": false,
+    "workerMayMintApplicationLayerId": false,
+    "workerMayMintCanonicalIdentityRecipeId": false,
+    "canonicalComposerAssignsNewGlobalIds": true,
+    "censusTargetOwner": "target-index",
+    "newPureVisualMeaningPrefixReserved": "VIS."
+  },
+  "fieldNames": {
+    "forbiddenAmbiguous": [
+      "semanticId",
+      "status",
+      "layerId",
+      "recipeId",
+      "adapterId",
+      "surfaceId"
+    ],
+    "canonical": [
+      "baseHead",
+      "candidateOnly",
+      "surfaceKey",
+      "targetId",
+      "recordKind",
+      "enforcement",
+      "physicalStatus",
+      "routeId",
+      "regionId",
+      "slotId",
+      "componentId",
+      "componentUiId",
+      "ownerId",
+      "ownerFile",
+      "renderSourceFile",
+      "styleSourceFile",
+      "selector",
+      "implementationLayerId",
+      "applicationLayerId",
+      "canonicalSourcePath",
+      "generatedOutputPath",
+      "sourceSha256",
+      "outputSha256",
+      "projectionMode",
+      "projectionStatus",
+      "ndcPrimaryId",
+      "ndcRefs",
+      "ndcResolutionStatus",
+      "visualMeaningId",
+      "visualMeaningCandidate",
+      "visualMeaningStatus",
+      "atlasfinCatalogElementId",
+      "atlasfinUiId",
+      "atlasfinFamilyId",
+      "atlasfinPresetId",
+      "atlasfinRecipeId",
+      "atlasfinLegacyRecipeId",
+      "atlasfinAdapterId",
+      "atlasfinMatchStatus",
+      "identityProfileId",
+      "identityRecipeId",
+      "identityAdapterId",
+      "existingBindingId",
+      "bindingCandidateKey",
+      "bindingStatus",
+      "promotionStatus",
+      "workEntryDecision",
+      "evidenceRefs",
+      "confidence",
+      "blockers",
+      "notes"
+    ]
+  },
+  "enums": {
+    "physicalStatus": [
+      "CURRENT",
+      "STALE",
+      "DRIFT",
+      "MISSING",
+      "NOT_APPLICABLE"
+    ],
+    "atlasfinMatchStatus": [
+      "MATCHED_EXACT",
+      "MATCHED_FAMILY",
+      "MATCHED_PRESET",
+      "MATCHED_RECIPE",
+      "AMBIGUOUS",
+      "NO_MATCH",
+      "NOT_APPLICABLE"
+    ],
+    "ndcResolutionStatus": [
+      "RESOLVED_EXISTING",
+      "CANDIDATE_REVIEW_REQUIRED",
+      "UNRESOLVED",
+      "NOT_APPLICABLE"
+    ],
+    "visualMeaningStatus": [
+      "RESOLVED_EXISTING",
+      "CANDIDATE_REVIEW_REQUIRED",
+      "UNRESOLVED",
+      "NOT_APPLICABLE"
+    ],
+    "bindingStatus": [
+      "EXISTING_RESOLVED",
+      "CANDIDATE",
+      "BLOCKED",
+      "NOT_APPLICABLE"
+    ],
+    "projectionStatus": [
+      "CURRENT",
+      "DRIFT",
+      "MISSING",
+      "NOT_REQUIRED",
+      "UNRESOLVED"
+    ],
+    "promotionStatus": [
+      "ELIGIBLE_CANDIDATE",
+      "REGISTER_TARGET_FIRST",
+      "BLOCKED",
+      "NOT_APPLICABLE"
+    ],
+    "confidence": [
+      "low",
+      "medium",
+      "high",
+      "verified"
+    ],
+    "workEntryDecision": [
+      "GVAE_EXACT_APPLY",
+      "SURFACE_BATCH_PLAN",
+      "REGISTER_TARGET_FIRST",
+      "BLOCKED"
+    ]
+  },
+  "ndcEdgeTypes": [
+    "belongs_to",
+    "scoped_by",
+    "claims_slot",
+    "enables",
+    "requires",
+    "emits",
+    "writes",
+    "reads",
+    "updates",
+    "projects_to",
+    "represented_by",
+    "derived_from",
+    "evidenced_by",
+    "observed_by",
+    "validated_by",
+    "curated_by",
+    "conflicts_with",
+    "reconciles",
+    "monetized_by",
+    "owned_by",
+    "blocks",
+    "supersedes",
+    "aliases",
+    "implements",
+    "exports",
+    "imports"
+  ],
+  "atlasfinSources": [
+    "extras/atlasfin/assets/data/atlas.manifest.json",
+    "extras/atlasfin/assets/data/visual-property.registry.json",
+    "extras/atlasfin/assets/data/visual-family.registry.json",
+    "extras/atlasfin/assets/data/visual-preset.registry.json",
+    "extras/atlasfin/assets/data/visual-recipe.registry.json",
+    "extras/atlasfin/assets/data/visual-state.registry.json",
+    "extras/atlasfin/assets/data/visual-variant.registry.json",
+    "extras/atlasfin/assets/data/surface-adapter.registry.json",
+    "extras/atlasfin/assets/data/visual.recipe.registry.json"
+  ],
+  "materialityCatalog": {
+    "path": "apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/latest/materiality-catalog.registry.json",
+    "status": "STANDBY_USER_INVOKED_ONLY",
+    "automaticDiscoveryAllowed": false,
+    "automaticFallbackAllowed": false,
+    "automaticPromotionAllowed": false,
+    "useRequires": "EXPLICIT_REPOSITORY_OWNER_INVOCATION_FOR_NAMED_TASK"
+  },
+  "writeOwnership": {
+    "chat1": [
+      "prisma-html/governance/visual-promotion/candidates/tablet/**"
+    ],
+    "chat2": [
+      "prisma-html/governance/visual-promotion/candidates/pc/**"
+    ],
+    "chat3": [
+      "prisma-html/governance/visual-promotion/candidates/mobile/**"
+    ],
+    "chat4": [
+      "prisma-html/governance/visual-promotion/candidates/shared-ui/**"
+    ],
+    "chat5": [
+      "prisma-html/extras/atlasfin/bridge/**"
+    ],
+    "chat6": [
+      "prisma-html/tools/visual_promotion/**",
+      "prisma-html/governance/visual-promotion/contracts/**",
+      "prisma-html/tools/visual_application/visual_work_entry_gate.py",
+      "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py"
+    ]
+  },
+  "forbiddenParallelWorkerWrites": [
+    "prisma-html/authority/rifat/identity/registries/element-bindings.registry.json",
+    "prisma-html/authority/rifat/identity/registries/recipe.registry.json",
+    "prisma-html/authority/rifat/identity/compiled/**",
+    "prisma-html/authority/rifat/prisma-ui/visual-control/target-index/**",
+    "prisma-html/authority/rifat/visual-source-manifest.json",
+    "prisma-html/FILES_MANIFEST.json",
+    "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+    "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+  ],
+  "hardTruths": [
+    "DISCOVERY_ONLY_IS_NOT_UNDISCOVERED",
+    "CURRENT_CENSUS_IS_REUSED",
+    "ATLASFIN_IS_PRIORITY_REFERENCE_NOT_SECOND_EDITABLE_AUTHORITY",
+    "MATERIALITY_CATALOG_HAS_NO_AUTOMATIC_FALLBACK",
+    "WORKERS_PROPOSE_CANONICAL_COMPOSERS_ASSIGN",
+    "UNKNOWN_STAYS_UNKNOWN",
+    "CANDIDATE_IS_NOT_AUTHORITY",
+    "SOURCE_STATIC_IS_NOT_RUNTIME_VISUAL_GREEN"
+  ]
+}
