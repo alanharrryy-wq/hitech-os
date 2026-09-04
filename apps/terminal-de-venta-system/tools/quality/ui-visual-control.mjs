@@ -77,6 +77,19 @@ function writeJson(p, value) {
   writeText(p, JSON.stringify(value, null, 2) + '\n');
 }
 
+function stableValue(value) {
+  if (Array.isArray(value)) return value.map(stableValue);
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(
+    Object.keys(value).sort((a, b) => a.localeCompare(b)).map((key) => [key, stableValue(value[key])])
+  );
+}
+
+function writeJsonLines(p, rows) {
+  const body = rows.map((row) => JSON.stringify(stableValue(row))).join('\n');
+  writeText(p, body ? body + '\n' : '');
+}
+
 function toPosix(value) {
   return String(value || '').replace(/\\/g, '/');
 }
@@ -198,9 +211,15 @@ function parseArgs(raw = process.argv.slice(2)) {
 
 function loadState(flags = {}) {
   const uiRoot = path.join(appRoot, '.prisma-ui');
+  const requestedSurface = flags.surface && flags.surface !== 'all' ? String(flags.surface) : null;
+  if (requestedSurface && !SURFACE_IDS.includes(requestedSurface)) {
+    throw new Error(`Unknown visual-control surface: ${requestedSurface}`);
+  }
   const outputRoot = flags['output-root']
     ? path.resolve(String(flags['output-root']))
-    : uiRoot;
+    : requestedSurface
+      ? path.join(uiRoot, 'surface-runs', requestedSurface)
+      : uiRoot;
   const governanceRoot = path.join(appRoot, '.governance', 'current');
   const panelDir = path.join(uiRoot, 'panels');
   const panels = exists(panelDir)
@@ -214,6 +233,8 @@ function loadState(flags = {}) {
     : [];
   return {
     uiRoot,
+    requestedSurface,
+    outputRoot,
     currentRoot: path.join(outputRoot, 'current'),
     visualRoot: path.join(outputRoot, 'visual-control'),
     governanceRoot,
@@ -1393,6 +1414,9 @@ function writeArtifacts(model) {
     schema: 'prisma.ui.visual-control.registry.v1',
     createdAt: nowIso(),
     status: model.risks.status,
+    scopeMode: model.requestedSurface ? 'SURFACE_SCOPED' : 'ALL_SURFACES_CANONICAL',
+    canonicalGlobal: !model.requestedSurface,
+    sourceSurface: model.requestedSurface || null,
     detailPolicy: compact.detailPolicy,
     targetSurfaces: model.requestedSurface ? [model.requestedSurface] : targetSurfaceIds(model.state),
     authoritativeInputs: [
@@ -1411,6 +1435,8 @@ function writeArtifacts(model) {
       '.prisma-ui/visual-control/editable-slots.json',
       '.prisma-ui/visual-control/owners.json',
       '.prisma-ui/visual-control/layers.json',
+      '.prisma-ui/visual-control/expanded/manifest.json',
+      '.prisma-ui/visual-control/expanded/<surface>/*.jsonl',
       '.prisma-ui/visual-control/risks.json',
       '.prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json',
       '.prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json'
@@ -1488,6 +1514,56 @@ function writeArtifacts(model) {
   });
   writeJson(path.join(root, 'risks.json'), { schema: 'prisma.ui.visual-control.risks.v1', ...model.risks });
   writeJson(path.join(root, 'reuse-report.json'), model.reuseReport);
+
+  const expandedRoot = path.join(root, 'expanded');
+  const expandedCounts = {};
+  for (const surface of SURFACE_IDS) {
+    const surfaceRoutes = model.routes.filter((row) => row.surface === surface);
+    const surfaceComponents = model.components.filter((row) => row.surface === surface);
+    const surfaceSlots = model.slots.filter((row) => row.surface === surface);
+    const surfaceLayers = model.layers.filter((row) => row.surface === surface);
+    const surfaceAssets = model.assets.filter((row) => row.surface === surface);
+    const surfaceRegions = model.visualRegions.filter((row) => row.surface === surface);
+    const surfaceOwners = {
+      componentOwners: model.owners.componentOwners.filter((row) => row.surface === surface),
+      cssOwners: model.owners.cssOwners.filter((row) => row.surface === surface),
+      assetOwners: model.owners.assetOwners.filter((row) => row.surface === surface),
+      tokenThemeOwners: model.owners.tokenThemeOwners.filter((row) => row.surface === surface),
+      routeOwners: model.owners.routeOwners.filter((row) => row.surface === surface),
+      regionOwners: model.owners.regionOwners.filter((row) => row.surface === surface),
+    };
+    const dir = path.join(expandedRoot, surface);
+    writeJsonLines(path.join(dir, 'routes.jsonl'), surfaceRoutes);
+    writeJsonLines(path.join(dir, 'components.jsonl'), surfaceComponents);
+    writeJsonLines(path.join(dir, 'visual-regions.jsonl'), surfaceRegions);
+    writeJsonLines(path.join(dir, 'editable-slots.jsonl'), surfaceSlots);
+    writeJsonLines(path.join(dir, 'layers.jsonl'), surfaceLayers);
+    writeJsonLines(path.join(dir, 'assets.jsonl'), surfaceAssets);
+    for (const [kind, rows] of Object.entries(surfaceOwners)) {
+      writeJsonLines(path.join(dir, `owners-${kind}.jsonl`), rows);
+    }
+    expandedCounts[surface] = {
+      routes: surfaceRoutes.length,
+      components: surfaceComponents.length,
+      visualRegions: surfaceRegions.length,
+      editableSlots: surfaceSlots.length,
+      layers: surfaceLayers.length,
+      assets: surfaceAssets.length,
+      routeOwners: surfaceOwners.routeOwners.length,
+      regionOwners: surfaceOwners.regionOwners.length,
+      cssOwners: surfaceOwners.cssOwners.length,
+    };
+  }
+  writeJson(path.join(expandedRoot, 'manifest.json'), {
+    schema: 'prisma.ui.visual-control.expanded-manifest.v1',
+    status: model.risks.status,
+    scopeMode: model.requestedSurface ? 'SURFACE_SCOPED' : 'ALL_SURFACES_CANONICAL',
+    canonicalGlobal: !model.requestedSurface,
+    sourceSurface: model.requestedSurface || null,
+    surfaces: model.requestedSurface ? [model.requestedSurface] : [...SURFACE_IDS],
+    countsBySurface: expandedCounts,
+    detailPolicy: 'Full deterministic machine detail for governed promotion and exact-target derivation. Human reports remain compact.',
+  });
 
   const {
     surfaces: _surfaces,
