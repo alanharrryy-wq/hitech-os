@@ -99,11 +99,11 @@
     }
   },
   "product": {
-    "commercialName": "PRISMA Change Intelligence",
-    "internalEngine": "Code Atlas Engine",
-    "category": "Change Intelligence & Agent Assurance",
-    "masterPromise": "Know the system. Control the change. Prove the result.",
-    "identityRule": "Use PRISMA Change Intelligence externally. Keep Code Atlas Engine as the internal technology name."
+    "commercialName": "PRISMA Change Assurance",
+    "internalEngine": "Code Atlas",
+    "category": "Change Assurance & Agent Governance",
+    "masterPromise": "Know what can change. Control what does. Prove the result.",
+    "identityRule": "Use PRISMA Change Assurance externally. Keep Code Atlas as the engine name. Legacy product identifiers are compatibility or historical evidence only."
   },
   "maturity": {
     "engineStatus": "LOCAL_VERIFIED",
@@ -170,7 +170,7 @@
       "maturity": "RUNTIME_VERIFIED",
       "reuseMode": "REUSE_AS_IS",
       "doNotRebuild": true,
-      "boundary": "Change Intelligence may reference customer or tenant context through an adapter contract. It must not rebuild customer registration."
+      "boundary": "Change Assurance may reference customer or tenant context through an adapter contract. It must not rebuild customer registration."
     },
     {
       "id": "licensing-contract-alignment",
@@ -194,7 +194,7 @@
       "maturity": "LOCAL_VERIFIED",
       "reuseMode": "SHARED_OWNER",
       "doNotRebuild": true,
-      "boundary": "Pricing and product entitlements may reference the commercial contract. Change Intelligence does not rebuild collections or CFDI."
+      "boundary": "Pricing and product entitlements may reference the commercial contract. Change Assurance does not rebuild collections or CFDI."
     },
     {
       "id": "private-repository-rental",

@@ -1,10 +1,12 @@
-# PRISMA Change Intelligence — Cloud Center Vertical Contract V1
+# PRISMA Change Assurance — Cloud Center Vertical Contract V1
 
 Status: `SOURCE_IMPLEMENTED / RUNTIME_GATE_REQUIRED / PRODUCTION_NOT_CERTIFIED`
 
 ## Purpose
 
-PRISMA Change Intelligence is a new isolated PRISMA vertical surfaced through Prisma Cloud Center. It commercializes the governed Change Intelligence product model while preserving Code Atlas as the internal repository-intelligence engine.
+PRISMA Change Assurance is a new isolated PRISMA vertical surfaced through Prisma Cloud Center. It commercializes the governed Change Assurance product model while preserving Code Atlas as the internal repository-intelligence engine.
+
+Compatibility note: file paths, schemas and internal symbols containing `change_intelligence` remain `COMPAT_ALIAS_KEEP`. The previous public product name is retained only in immutable history or compatibility identifiers; it is not a current product identity.
 
 The vertical exists to expose customer-facing views for:
 
@@ -87,16 +89,16 @@ The Cloud projection preserves that engine result verbatim. It does not translat
 | Customer Setup | `SHARED_OWNER` | Setup codes are not repository authorization. |
 | Commercial Billing | `SHARED_OWNER` | Do not rebuild collections, CFDI or payment records. |
 | Private repository rental hardening | `ADAPT` | Reuse bounded ephemeral workspace and egress controls from PR #299. |
-| Change Intelligence / Code Atlas engine | `REUSE_AS_IS` | Internal engine remains authoritative and `doNotRebuild=true`. |
+| Change Assurance / Code Atlas engine | `REUSE_AS_IS` | Internal engine remains authoritative and `doNotRebuild=true`. |
 | Existing Cloud Center runtime and UI | `DO_NOT_TOUCH` | Only the single navigation seam is allowed in the existing surface. |
-| Change Intelligence web console | `NEW_OWNER` | Dedicated isolated document and projection modules. |
-| Change Intelligence browser authority gate | `NEW_OWNER` | Dedicated source + Chromium runtime verification and evidence artifact. |
+| Change Assurance web console | `NEW_OWNER` | Dedicated isolated document and projection modules. |
+| Change Assurance browser authority gate | `NEW_OWNER` | Dedicated source + Chromium runtime verification and evidence artifact. |
 
 P1, P2, P3 and P4 are projection adapters only. They do not become new repository, analysis, Authority Pack generation, verification, evidence generation, licensing, billing or registration engines.
 
 ## Layer Map
 
-The Change Intelligence surface owns a separate document and `pci-*` namespace.
+The Change Assurance surface owns a separate document and `pci-*` namespace.
 
 1. `pci-shell`: document/background/topbar/layout.
 2. `pci-navigation`: rail and view selection.
@@ -141,7 +143,7 @@ A projected Analysis Run is admissible only when all of these facts are present 
 
 Missing, stale, contradictory or tampered provenance is fail-closed. An Analysis Run reference cannot authorize repository mutation.
 
-P2 deliberately does not add a second runner, discovery engine, index, dashboard owner or mutation API. The existing Code Atlas neutral intelligence engine remains the source of the run evidence, and the existing Change Intelligence document renderer consumes the governed row.
+P2 deliberately does not add a second runner, discovery engine, index, dashboard owner or mutation API. The existing Code Atlas neutral intelligence engine remains the source of the run evidence, and the existing Change Assurance document renderer consumes the governed row.
 
 ## Authority Pack + Evidence P3 projection contract
 
@@ -207,7 +209,7 @@ Canonical source owner at capture:
 - protected capabilities: `licensing.source_contract_alignment`, `licensing.customer_setup.plan_based_onboarding`
 - both owners remain reuse-only / do-not-rebuild for this adapter.
 
-The captured catalog has four plans: `TABLET_SOLO`, `TABLET_PRO`, `TABLET_PC_MANAGED` and `TABLET_PC_MOBILE_MANAGED`. None contains a Change Assurance/Change Intelligence/Code Atlas entitlement feature. Therefore the only evidence-supported P4 state is `SOURCE_MAPPED_NOT_GRANTED` with `grantStatus=NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES`.
+The captured catalog has four plans: `TABLET_SOLO`, `TABLET_PRO`, `TABLET_PC_MANAGED` and `TABLET_PC_MOBILE_MANAGED`. None contains a PRISMA Change Assurance entitlement feature. Legacy compatibility identifiers (`Change Intelligence` / `Code Atlas`) are also absent from the captured plan-feature catalog. Therefore the only evidence-supported P4 state is `SOURCE_MAPPED_NOT_GRANTED` with `grantStatus=NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES`.
 
 This is deliberate fail-closed behavior. It does not prove or create an entitlement grant, live license enforcement, billing authorization or production readiness. A separately governed licensing and commercial decision must explicitly add the product feature before any live grant/enforcement claim is allowed.
 
@@ -247,11 +249,11 @@ It must:
 9. fail on page errors, console errors or same-origin HTTP failures;
 10. upload runtime report, screenshots and HTTP log as evidence.
 
-A successful browser gate raises only this isolated surface/projection to runtime-verified status. It does **not** make the Change Intelligence product production-certified or enterprise-certified.
+A successful browser gate raises only this isolated surface/projection to runtime-verified status. It does **not** make the Change Assurance product production-certified or enterprise-certified.
 
 ## No-fake-green ceiling
 
-Current underlying Change Intelligence evidence remains:
+Current underlying Change Assurance evidence remains:
 
 - engine: `LOCAL_VERIFIED`
 - `certifiable=false`

@@ -1,4 +1,4 @@
-name: Change Intelligence Cloud Authority
+name: PRISMA Change Assurance Cloud Authority
 
 on:
   pull_request:
@@ -77,7 +77,7 @@ jobs:
             kill "$(cat "$RUNNER_TEMP/pci-http.pid")" 2>/dev/null || true
           fi
 
-      - name: Upload Change Intelligence runtime evidence
+      - name: Upload Change Assurance runtime evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
