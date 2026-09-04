@@ -3,97 +3,30 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
-    "authorityCommit": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
+    "authorityCommit": {"type": ["string","null"]},
     "files": {
       "items": {
         "additionalProperties": false,
         "properties": {
-          "afterSha256": {
-            "anyOf": [
-              {
-                "pattern": "^[0-9a-f]{64}$",
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "backupPath": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "backupSha256": {
-            "anyOf": [
-              {
-                "pattern": "^[0-9a-f]{64}$",
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "beforeSha256": {
-            "anyOf": [
-              {
-                "pattern": "^[0-9a-f]{64}$",
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "existedBefore": {
-            "type": "boolean"
-          },
-          "path": {
-            "minLength": 1,
-            "type": "string"
-          }
+          "afterSha256": {"anyOf": [{"pattern": "^[0-9a-f]{64}$", "type": "string"},{"type": "null"}]},
+          "backupPath": {"type": ["string","null"]},
+          "backupSha256": {"anyOf": [{"pattern": "^[0-9a-f]{64}$", "type": "string"},{"type": "null"}]},
+          "beforeSha256": {"anyOf": [{"pattern": "^[0-9a-f]{64}$", "type": "string"},{"type": "null"}]},
+          "existedBefore": {"type": "boolean"},
+          "path": {"minLength": 1, "type": "string"}
         },
-        "required": [
-          "path",
-          "existedBefore",
-          "beforeSha256",
-          "backupPath",
-          "backupSha256",
-          "afterSha256"
-        ],
+        "required": ["path","existedBefore","beforeSha256","backupPath","backupSha256","afterSha256"],
         "type": "object"
       },
       "minItems": 1,
       "type": "array"
     },
-    "schema": {
-      "const": "prisma.visual.application.transaction.v1"
-    },
-    "state": {
-      "enum": [
-        "OPEN",
-        "APPLIED",
-        "ROLLED_BACK"
-      ]
-    },
-    "transactionId": {
-      "minLength": 1,
-      "type": "string"
-    }
+    "schema": {"const": "prisma.visual.application.transaction.v1"},
+    "state": {"enum": ["OPEN","APPLIED","ROLLED_BACK"]},
+    "targetId": {"minLength": 1, "type": "string"},
+    "transactionDigest": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+    "transactionId": {"pattern": "^gvae-[a-z0-9][a-z0-9_-]{0,63}$", "type": "string"}
   },
-  "required": [
-    "schema",
-    "transactionId",
-    "authorityCommit",
-    "state",
-    "files"
-  ],
+  "required": ["schema","transactionId","targetId","authorityCommit","state","files","transactionDigest"],
   "type": "object"
 }
