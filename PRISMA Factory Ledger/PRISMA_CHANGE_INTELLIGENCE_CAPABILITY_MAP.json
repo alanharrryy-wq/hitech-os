@@ -1218,5 +1218,182 @@
       "roi": "INPUT_REQUIRED_NO_ESTIMATE"
     },
     "allowedClaim": "The technical productization path and governed external-validation package are ready. COMMERCIALIZATION_READY is not certified."
+  },
+  "ownershipBoundary": {
+    "schemaVersion": "prisma.change_assurance.ownership_boundary.v1",
+    "authorityRole": "CANONICAL_OWNERSHIP_CLASSIFICATION",
+    "purpose": "Separate Change Assurance, PRISMA platform/product, adapters, shared infrastructure and compatibility identifiers without a repository-wide rename.",
+    "principle": "Physical name does not determine ownership; canonical ownership classification does.",
+    "classificationEnum": [
+      "ASSURANCE_CORE",
+      "ASSURANCE_PRODUCT",
+      "PRISMA_PLATFORM",
+      "PRISMA_PRODUCT",
+      "ASSURANCE_PRISMA_ADAPTER",
+      "SHARED_INFRASTRUCTURE",
+      "LEGACY_COMPAT"
+    ],
+    "rules": {
+      "physicalNameDeterminesOwnership": false,
+      "massRenameRequired": false,
+      "secondRegistryAllowed": false,
+      "assuranceMayConsumePrismaTruthWithoutOwningProducer": true,
+      "prismaMayBeInternalAssuranceCustomer": true,
+      "legacyPhysicalIdentifiersMayRemainWhenCompatibilitySensitive": true,
+      "newPublicLegacyProductIdentityAllowed": false,
+      "newImplementationMustResolveOwnershipExplicitly": true
+    },
+    "resolutionOrder": [
+      "canonicalOwnershipClass",
+      "declaredAdapterBoundary",
+      "physicalImplementationPath",
+      "legacyIdentifierToken"
+    ],
+    "classes": {
+      "ASSURANCE_CORE": {
+        "definition": "Reusable repository-neutral change understanding, resolution, verification and proof semantics that remain meaningful without PRISMA product runtime.",
+        "includes": [
+          "Code Atlas reusable neutral core"
+        ],
+        "excludes": [
+          "PRISMA-specific governance producers",
+          "PRISMA product runtimes",
+          "PRISMA licensing/billing"
+        ]
+      },
+      "ASSURANCE_PRODUCT": {
+        "definition": "Product-facing PRISMA Change Assurance identity, contracts, decisions, packet and user-facing product experience.",
+        "includes": [
+          "PRISMA Change Assurance product contract",
+          "Change Assurance Packet V1",
+          "PASS/BLOCKED/UNKNOWN product decision boundary",
+          "Change Assurance product-facing Cloud experience"
+        ],
+        "excludes": [
+          "Upstream PRISMA governance producers consumed as evidence"
+        ]
+      },
+      "PRISMA_PLATFORM": {
+        "definition": "PRISMA-owned platform and governance systems that may provide truth or services to Change Assurance but are not owned by Change Assurance.",
+        "includes": [
+          "PRISMA Authority Mesh / AutoMesh v2",
+          "PRISMA Factory Ledger",
+          "PRISMA licensing and billing platform"
+        ],
+        "excludes": [
+          "Change Assurance adapters that consume these systems"
+        ]
+      },
+      "PRISMA_PRODUCT": {
+        "definition": "PRISMA operational products and surfaces that may be analyzed by Change Assurance and can act as internal dogfood customers.",
+        "includes": [
+          "Tablet",
+          "PC",
+          "Mobile",
+          "Chart Lab"
+        ],
+        "excludes": [
+          "Change Assurance core and product contracts"
+        ]
+      },
+      "ASSURANCE_PRISMA_ADAPTER": {
+        "definition": "Thin integration owned by Change Assurance that translates PRISMA-specific evidence, authority, entitlement or projection data into Change Assurance contracts without taking ownership of the upstream producer.",
+        "includes": [
+          "Change Assurance Cloud P1-P5 PRISMA projection/adapters",
+          "PRISMA authority/evidence reader boundary"
+        ],
+        "excludes": [
+          "Authority Mesh itself",
+          "Factory Ledger itself",
+          "PRISMA product runtime itself"
+        ]
+      },
+      "SHARED_INFRASTRUCTURE": {
+        "definition": "Generic repository, CI, evidence or quality utilities intentionally shared across more than one Hitech product line and not made Change Assurance core merely because Change Assurance consumes them.",
+        "includes": [
+          "Generic CI utilities",
+          "Generic evidence utilities",
+          "Shared quality infrastructure"
+        ],
+        "excludes": [
+          "Product-specific ownership by implication"
+        ]
+      },
+      "LEGACY_COMPAT": {
+        "definition": "Compatibility or historical technical identifiers whose physical names may remain stable even when their canonical product ownership is resolved elsewhere.",
+        "includes": [
+          "change_intelligence_* compatibility filenames",
+          "legacy workflow identifiers",
+          "stable compatibility symbols and historical evidence references"
+        ],
+        "excludes": [
+          "New public use of the deprecated product identity"
+        ]
+      }
+    },
+    "canonicalExamples": [
+      {
+        "subject": "Code Atlas reusable neutral core",
+        "classification": "ASSURANCE_CORE",
+        "rationale": "Portable repository/change intelligence is not conceptually dependent on PRISMA product runtime."
+      },
+      {
+        "subject": "PRISMA Change Assurance contract and Change Assurance Packet V1",
+        "classification": "ASSURANCE_PRODUCT",
+        "rationale": "These define the product-facing assurance boundary and proof handoff."
+      },
+      {
+        "subject": "PRISMA Authority Mesh / AutoMesh v2",
+        "classification": "PRISMA_PLATFORM",
+        "rationale": "Change Assurance consumes task-exact authority evidence but does not own the authority producer."
+      },
+      {
+        "subject": "PRISMA Factory Ledger",
+        "classification": "PRISMA_PLATFORM",
+        "rationale": "Change Assurance consumes anti-rework truth but does not own the canonical PRISMA capability ledger."
+      },
+      {
+        "subject": "Tablet / PC / Mobile / Chart Lab",
+        "classification": "PRISMA_PRODUCT",
+        "rationale": "They are PRISMA products/surfaces that Change Assurance may analyze, not Change Assurance internals."
+      },
+      {
+        "subject": "Change Assurance Cloud P1-P5 PRISMA projections/adapters",
+        "classification": "ASSURANCE_PRISMA_ADAPTER",
+        "rationale": "The adapter belongs to Change Assurance; the PRISMA systems it reads remain independently owned."
+      },
+      {
+        "subject": "Generic CI, evidence and quality utilities shared across product lines",
+        "classification": "SHARED_INFRASTRUCTURE",
+        "rationale": "Consumption does not transfer ownership."
+      },
+      {
+        "subject": "change_intelligence_* compatibility identifiers",
+        "classification": "LEGACY_COMPAT",
+        "rationale": "Stable technical names may remain for compatibility; token spelling does not determine canonical ownership."
+      }
+    ],
+    "migrationPolicy": {
+      "strategy": "SEMANTIC_FIRST_PHYSICAL_LATER_IF_JUSTIFIED",
+      "repositoryWideRenameForbiddenByDefault": true,
+      "renameOnlyWithIndependentTechnicalReason": true,
+      "preserveImportsRoutesPersistedSchemasWorkflowNamesAndHistoricalEvidenceByDefault": true,
+      "newCodeShouldUseCanonicalProductLanguageWhenCompatibilityDoesNotRequireLegacyIdentifiers": true
+    },
+    "mutationAuthority": {
+      "runId": 33888532654,
+      "artifactId": 9942902432,
+      "requestDigest": "08c476fafcaedcbb14b646063acb9d5e670da3bb9a3422800f5c2d34c3ae839e",
+      "uploadedArtifactSha256": "8dadfbe8f71dc6c8b858f80727f0e001d5fef85fe5b879c1eda550c4e5169e88",
+      "composedArtifactSha256": "48531ff93f0cf8a0b190771bc31f3c80c852a7a57312554b3bd5084402c7b04c",
+      "repoHead": "75953039d4ed1a844a5d9919e2aba1529a8417c6",
+      "repoTree": "69c6caf7f87856580785df5c0e3b9ce1fde99594",
+      "status": "PASS_COMPOSED_AUTHORITY_MESH",
+      "requiredAuthorityCoveragePct": 100,
+      "blockers": 0,
+      "readOnly": true,
+      "productionCertified": false,
+      "doesNotProve": "Post-merge correctness, runtime product behavior, production certification, paid-pilot readiness, human usefulness or independent-agent verification."
+    }
   }
 }
