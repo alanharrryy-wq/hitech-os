@@ -12,6 +12,7 @@ from .transaction import atomic_write, create_transaction, mark_after, rollback,
 from .evidence import evidence
 from .errors import ContractError, ProjectionFailure, TamperedTransaction
 from .security import contained_path, ensure_path_object_contained
+from .receipts import build_apply_receipt, receipt_path
 
 IndexProvider=Callable[[],dict[str,Any]]
 
@@ -75,18 +76,29 @@ def apply(request_value:dict[str,Any]|str|Path,index_provider:IndexProvider,repo
                             details={"sourceSha256":sha256_file(source),"projectionVerified":True,
                                      "authorization":target.get("_authorization",{})})
     tx_id=request.get("transactionId") or ("gvae-"+uuid.uuid4().hex[:16])
-    tx=create_transaction(repo_root,tx_root,tx_id,target["targetId"],[source,manifest,*outputs],authority_commit)
+    receipt=receipt_path(repo_root,tx_id)
+    tx=create_transaction(repo_root,tx_root,tx_id,target["targetId"],[source,manifest,*outputs,receipt],authority_commit)
+    status="APPLIED_SOURCE_STATIC" if source_change else "REPAIRED_PROJECTION_DRIFT"
     try:
         if source_change: atomic_write(source,desired)
         project(target,repo_root,authority_commit,check=False)
         atomic_write(manifest,_manifest_bytes(repo_root,target))
+        receipt_doc=build_apply_receipt(
+            repo_root=repo_root,
+            request=request,
+            target=target,
+            transaction=tx,
+            receipt_file=receipt,
+            status=status,
+        )
+        atomic_write(receipt,pretty_json_bytes(receipt_doc))
         mark_after(repo_root,tx_root,tx)
     except Exception:
         _finalize_failure(repo_root,tx_root,tx); raise
-    status="APPLIED_SOURCE_STATIC" if source_change else "REPAIRED_PROJECTION_DRIFT"
     return evidence("APPLY",status,target_id=target["targetId"],transaction_id=tx_id,
                     details={"sourceSha256":sha256_file(source),"projectionVerified":True,
-                             "manifestVerified":True,"authorization":target.get("_authorization",{})})
+                             "manifestVerified":True,"receiptPath":receipt.relative_to(repo_root).as_posix(),
+                             "authorization":target.get("_authorization",{})})
 
 def verify(request_value:dict[str,Any]|str|Path,index_provider:IndexProvider,repo_root:Path)->dict[str,Any]:
     request=load_request(request_value); target=preflight(request,index_provider(),repo_root)
