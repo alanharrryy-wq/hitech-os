@@ -86,7 +86,8 @@ async function verifyProfile(name, viewport) {
 
   const semanticText = await page.locator('body').innerText();
   if (!/UNKNOWN|NOT_CONNECTED|BLOCKED/i.test(semanticText)) throw new Error(`${name}: fail-closed state vocabulary not rendered`);
-  const legacyPublicName = ['PRISMA Change', 'Intelligence'].join(' ');\n  if (semanticText.includes(legacyPublicName) || /\bChange Intelligence\b/i.test(semanticText)) throw new Error(`${name}: legacy public product identity rendered`);
+  const legacyPublicName = ['PRISMA Change', 'Intelligence'].join(' ');
+  if (semanticText.includes(legacyPublicName) || /\bChange Intelligence\b/i.test(semanticText)) throw new Error(`${name}: legacy public product identity rendered`);
 
   const hostChipText = (await page.locator('#pciRuntimeChip').innerText()).trim();
   if (!/Cloud Center host\s*·\s*UNKNOWN/i.test(hostChipText)) {
