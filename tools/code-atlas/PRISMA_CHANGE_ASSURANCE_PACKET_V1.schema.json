@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "PRISMA_CHANGE_ASSURANCE_PACKET_V1.schema.json",
+  "title": "PRISMA Change Assurance Packet V1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "product",
+    "decision",
+    "readiness",
+    "analyzedChange",
+    "impactRadius",
+    "authorizedSnapshot",
+    "currentSnapshot",
+    "driftClassification",
+    "affectedAuthority",
+    "protectedScope",
+    "provenance",
+    "evidence",
+    "unknowns",
+    "verification",
+    "integrationChain",
+    "claimEvidence",
+    "exactPrSha",
+    "mergeSha",
+    "postMergeProof",
+    "externalValidation",
+    "externalValidationPending",
+    "productionCertified",
+    "generatedAt",
+    "packetDigest"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "prisma.change_assurance.packet.v1"
+    },
+    "decision": {
+      "enum": [
+        "PASS",
+        "BLOCKED",
+        "UNKNOWN"
+      ]
+    },
+    "readiness": {
+      "enum": [
+        "TECHNICAL_COMMERCIALIZATION_CANDIDATE",
+        "TECHNICAL_COMMERCIALIZATION_READY",
+        "COMMERCIALIZATION_READY",
+        "BLOCKED",
+        "UNKNOWN"
+      ]
+    },
+    "driftClassification": {
+      "enum": [
+        "PASS_ALREADY_CURRENT",
+        "PASS_NO_RELEVANT_DRIFT",
+        "BLOCKED_RELEVANT_DRIFT",
+        "BLOCKED_NON_ANCESTOR_DRIFT"
+      ]
+    },
+    "exactPrSha": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "mergeSha": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "postMergeProof": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "productionCertified": {
+      "const": false
+    },
+    "packetDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "integrationChain": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "externalValidation": {
+      "type": "object",
+      "required": [
+        "G",
+        "J"
+      ]
+    },
+    "product": {
+      "type": "object",
+      "required": [
+        "productName",
+        "engineName",
+        "principle",
+        "stages"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

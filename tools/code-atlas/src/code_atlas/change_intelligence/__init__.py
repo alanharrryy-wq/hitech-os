@@ -5,6 +5,7 @@ repository discovery, authority resolution, graphs, snapshots, indexing or drift
 """
 
 from .architecture_delta import compare_observed_states, normalize_architecture_delta
+from .assurance_packet import build_change_assurance_packet, render_change_assurance_packet_markdown
 from .artifact_hygiene import cleanup_published_artifacts, sanitize_artifact_bytes, sanitize_artifacts_for_egress
 from .authority_pack import build_authority_pack, validate_authority_pack
 from .bundle import build_hardened_portable_bundle_manifest, build_portable_bundle_manifest
@@ -29,6 +30,8 @@ from .universal_binding import prepare_change, verify_prepared_change
 from .verification import verify_change
 
 __all__ = [
+    "build_change_assurance_packet",
+    "render_change_assurance_packet_markdown",
     "build_authority_pack",
     "validate_authority_pack",
     "build_connector_envelope",
