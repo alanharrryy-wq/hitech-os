@@ -1,142 +1,89 @@
 {
   "$id": "prisma.visual.application.request.v1",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "additionalProperties": false,
-  "properties": {
-    "adapterId": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "authorityCommit": {
-      "pattern": "^[0-9a-f]{40}$",
-      "type": "string"
-    },
-    "bindingId": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "excludeSurfaces": {
-      "items": {
-        "minLength": 1,
-        "type": "string"
-      },
-      "type": "array",
-      "uniqueItems": true
-    },
-    "expectedSourceSha256": {
-      "pattern": "^[0-9a-f]{64}$",
-      "type": "string"
-    },
-    "includeSurfaces": {
-      "items": {
-        "minLength": 1,
-        "type": "string"
-      },
-      "minItems": 1,
-      "type": "array",
-      "uniqueItems": true
-    },
-    "layerId": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "mode": {
-      "enum": [
-        "PREVIEW",
-        "APPLY",
-        "VERIFY",
-        "ROLLBACK"
-      ]
-    },
-    "operations": {
-      "items": {
-        "$id": "#operation",
-        "additionalProperties": false,
-        "properties": {
-          "expectedCurrent": {
-            "additionalProperties": {
-              "type": [
-                "string",
-                "number",
-                "integer",
-                "boolean",
-                "null"
-              ]
-            },
-            "type": "object"
+  "oneOf": [
+    {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"mode": {"const": "APPLY"}}},
+          "then": {"required": ["authorityCommit", "authorization"]}
+        }
+      ],
+      "properties": {
+        "adapterId": {"minLength": 1, "type": "string"},
+        "authorityCommit": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "authorization": {
+          "additionalProperties": false,
+          "properties": {
+            "authorityMeshArtifact": {"minLength": 1, "type": "string"},
+            "authorityMeshArtifactSha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+            "authorityMeshRequestDigest": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+            "authorityTaskId": {"pattern": "^[a-z0-9][a-z0-9-]{0,62}$", "type": "string"},
+            "task": {"maxLength": 6000, "minLength": 10, "type": "string"},
+            "uiBridgePlanPath": {"minLength": 1, "type": "string"},
+            "uiBridgePlanSha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+            "uiBridgeSemanticDiffPath": {"minLength": 1, "type": "string"},
+            "uiBridgeSemanticDiffSha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"}
           },
-          "path": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "type": {
-            "enum": [
-              "cssDeclarations",
-              "jsonValues"
-            ]
-          },
-          "values": {
-            "additionalProperties": {
-              "type": [
-                "string",
-                "number",
-                "integer",
-                "boolean",
-                "null"
-              ]
-            },
-            "minProperties": 1,
-            "type": "object"
-          }
+          "required": [
+            "task","authorityTaskId","authorityMeshArtifact","authorityMeshArtifactSha256",
+            "authorityMeshRequestDigest","uiBridgePlanPath","uiBridgePlanSha256",
+            "uiBridgeSemanticDiffPath","uiBridgeSemanticDiffSha256"
+          ],
+          "type": "object"
         },
-        "required": [
-          "type",
-          "path",
-          "values"
-        ],
-        "type": "object"
+        "bindingId": {"minLength": 1, "type": "string"},
+        "excludeSurfaces": {"items": {"minLength": 1, "type": "string"}, "type": "array", "uniqueItems": true},
+        "expectedSourceSha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+        "includeSurfaces": {"items": {"minLength": 1, "type": "string"}, "minItems": 1, "type": "array", "uniqueItems": true},
+        "layerId": {"minLength": 1, "type": "string"},
+        "mode": {"enum": ["PREVIEW", "APPLY", "VERIFY"]},
+        "operations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "expectedCurrent": {
+                "additionalProperties": {"type": ["string","number","integer","boolean","null"]},
+                "type": "object"
+              },
+              "path": {"minLength": 1, "type": "string"},
+              "type": {"enum": ["cssDeclarations", "jsonValues"]},
+              "values": {
+                "additionalProperties": {"type": ["string","number","integer","boolean","null"]},
+                "minProperties": 1,
+                "type": "object"
+              }
+            },
+            "required": ["type","path","values"],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "recipeId": {"minLength": 1, "type": "string"},
+        "schema": {"const": "prisma.visual.application.request.v1"},
+        "semanticMeaningId": {"minLength": 1, "type": "string"},
+        "surface": {"minLength": 1, "type": "string"},
+        "targetId": {"minLength": 1, "type": "string"},
+        "transactionId": {"pattern": "^gvae-[a-z0-9][a-z0-9_-]{0,63}$", "type": "string"}
       },
-      "minItems": 1,
-      "type": "array"
+      "required": [
+        "schema","mode","targetId","expectedSourceSha256","surface","includeSurfaces","excludeSurfaces",
+        "semanticMeaningId","bindingId","layerId","adapterId","recipeId","operations"
+      ],
+      "type": "object"
     },
-    "recipeId": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "schema": {
-      "const": "prisma.visual.application.request.v1"
-    },
-    "semanticMeaningId": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "surface": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "targetId": {
-      "minLength": 1,
-      "type": "string"
-    },
-    "transactionId": {
-      "minLength": 1,
-      "type": "string"
+    {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"const": "ROLLBACK"},
+        "schema": {"const": "prisma.visual.application.request.v1"},
+        "targetId": {"minLength": 1, "type": "string"},
+        "transactionId": {"pattern": "^gvae-[a-z0-9][a-z0-9_-]{0,63}$", "type": "string"}
+      },
+      "required": ["schema","mode","transactionId","targetId"],
+      "type": "object"
     }
-  },
-  "required": [
-    "schema",
-    "mode",
-    "targetId",
-    "expectedSourceSha256",
-    "surface",
-    "includeSurfaces",
-    "excludeSurfaces",
-    "semanticMeaningId",
-    "bindingId",
-    "layerId",
-    "adapterId",
-    "recipeId",
-    "operations"
-  ],
-  "type": "object"
+  ]
 }

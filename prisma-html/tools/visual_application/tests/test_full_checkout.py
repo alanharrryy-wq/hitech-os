@@ -16,5 +16,10 @@ class FullCheckoutTests(unittest.TestCase):
         a=build_index(); b=build_index(); self.assertEqual(a,b); self.assertFalse(a['globalBlockers']); self.assertGreaterEqual(a['recordCount'],1); self.assertEqual([r for r in a['records'] if r['targetId']=='TGT.TABLET.POS.COBRAR.PRIMARY.V1'][0]['status'],'BLOCKED')
     def test_target_index_does_not_infer_cobrar_adapter(self):
         row=[r for r in build_index()['records'] if r['targetId']=='TGT.TABLET.POS.COBRAR.PRIMARY.V1'][0]; self.assertIsNone(row['adapterId']); self.assertIn('adapter',row['blockers'])
+    def test_target_index_respects_layer_application_policy(self):
+        row=[r for r in build_index()['records'] if r['targetId']=='TGT.TABLET.POS.COBRAR.PRIMARY.V1'][0]; self.assertIn('layer-application-policy',row['blockers'])
+    def test_factory_ledger_mutation_gate_is_bound_into_engine(self):
+        p=ROOT/'tools/visual_application/authority.py'; text=p.read_text(encoding='utf-8')
+        self.assertIn('PASS_ANTI_REWORK_GATE',text); self.assertIn('verify_prisma_anti_rework_gate.py',text); self.assertIn('PASS_COMPOSED_AUTHORITY_MESH',text)
     def test_master_map_is_exact_original(self):
         p=ROOT/'docs/ops/PRISMA_VISUAL_CHANGE_MASTER_MAP.md'; self.assertEqual(hashlib.sha256(p.read_bytes()).hexdigest(),'87d1a7cd375ed8b4c0a264a74f1e1d75921d704b4d9da62e53d427a3ac05662d')

@@ -25,3 +25,15 @@ class CssWriterTests(unittest.TestCase):
         with self.assertRaises(BlockedUnsupportedCss): patch_css('.a { color:red;','.a',{'color':'blue'})
     def test_comments_and_strings_do_not_break_scanner(self):
         out=patch_css('/* { } */ .a { content:"}"; color:red; }','.a',{'color':'blue'}); self.assertIn('color:blue;',out)
+    def test_semicolon_inside_string_is_not_declaration_boundary(self):
+        src='.a { content:"x;y:z"; color:red; }'; out=patch_css(src,'.a',{'color':'blue'})
+        self.assertIn('content:"x;y:z";',out); self.assertIn('color:blue;',out)
+    def test_fake_declaration_in_comment_is_ignored(self):
+        src='.a { /* color: purple; */ color:red; }'; out=patch_css(src,'.a',{'color':'blue'})
+        self.assertIn('/* color: purple; */',out); self.assertIn('color:blue;',out)
+    def test_important_inside_string_is_not_priority(self):
+        marker='!'+'important'
+        src=f'.a {{ content:"{marker}"; color:red; }}'; out=patch_css(src,'.a',{'color':'blue'})
+        self.assertIn(f'content:"{marker}";',out)
+    def test_unterminated_declaration_blocks(self):
+        with self.assertRaises(BlockedUnsupportedCss): patch_css('.a { color:red }','.a',{'color':'blue'})

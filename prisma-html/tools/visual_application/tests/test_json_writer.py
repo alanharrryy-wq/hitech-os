@@ -18,3 +18,15 @@ class JsonWriterTests(unittest.TestCase):
     def test_expected_current_blocks_drift(self):
         with self.assertRaises(ContractError): patch_json_bytes(self.data(),{'/a/b':2},{'/a/b':9})
     def test_output_is_deterministic(self): self.assertEqual(patch_json_bytes(self.data(),{'/a/b':2}),patch_json_bytes(self.data(),{'/a/b':2}))
+    def test_negative_array_index_blocks(self):
+        with self.assertRaises(TargetNotFound): patch_json_bytes(self.data(),{'/arr/-1':3})
+    def test_leading_zero_array_index_blocks(self):
+        with self.assertRaises(TargetNotFound): patch_json_bytes(self.data(),{'/arr/01':3})
+    def test_pointer_must_stay_under_governed_root(self):
+        with self.assertRaises(ContractError): patch_json_bytes(self.data(),{'/arr/1':3},root='/a')
+    def test_expected_current_must_cover_all_mutations(self):
+        with self.assertRaises(ContractError): patch_json_bytes(self.data(),{'/a/b':2},{})
+    def test_nonfinite_input_json_blocks(self):
+        with self.assertRaises(ContractError): patch_json_bytes(b'{"a":NaN}\n',{'/a':1})
+    def test_nonfinite_desired_blocks(self):
+        with self.assertRaises(ContractError): patch_json_bytes(self.data(),{'/a/b':float('nan')})
