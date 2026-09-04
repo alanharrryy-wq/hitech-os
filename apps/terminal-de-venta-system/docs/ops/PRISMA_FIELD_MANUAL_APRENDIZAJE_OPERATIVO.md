@@ -1073,3 +1073,15 @@ python tools/refresh_files_manifest.py --check
 
 
 **Materialización final de autoridad:** el workflow all-surface dejó la autoridad fresca materializada en la rama y el último commit automático `b7c1ae1965d14237aa1c975e4be85c72a18a17bf` sólo refrescó `prisma-html/FILES_MANIFEST.json` por el cambio previo de imports lazy de GVAE. No hubo nueva mutación de producto ni nuevo drift de mapeo. El siguiente run debe ser idempotente y reportar autoridad ya materializada; cualquier nueva mutación generada después de este punto se considera drift y debe investigarse antes de merge.
+
+
+<!-- GVAE_ALL_SURFACE_FINAL_VALIDATOR_20260904 -->
+### 2026-09-04 - GVAE all-surface: validator RIFAT adaptado y manifest estabilizado
+
+**Resultado:** el validator RIFAT dejó de asumir que la autoridad Visual Control canónica debía ser Tablet-only. Conserva las validaciones Tablet contra sus 23 rutas/route owners, pero las evalúa dentro del shard `expanded/tablet/owners-routeOwners.jsonl`. La autoridad global exige ahora 7 governed surfaces, 6 runtime surfaces, `ALL_SURFACES_CANONICAL`, `canonicalGlobal=true` y expanded authority certificada.
+
+**Evidencia:** VISCORE run `33867371311` pasó GVAE suite, mandatory gate, Target Index, Visual Core, Mesh, source validator, generated report smoke, Identity Dictionary, RIFAT no-regression, Master Map, Atlasfin static gate y no-fake-READY. Su único fallo fue `Committed file manifest must already match`, causado por el cambio recién hecho al validator. El workflow all-surface refrescó únicamente `prisma-html/FILES_MANIFEST.json` en commit `8eeedecebe2e1943544aecbfae83647267dbae87`.
+
+**Regla:** adaptar validators cuando cambia legítimamente el modelo de autoridad; no preservar invariantes obsoletos por nostalgia. Una regresión gateada debe distinguir entre deuda preexistente y regresión nueva.
+
+**Límite:** sigue siendo cierre source/static; no certifica runtime/browser ni producción.
