@@ -46,6 +46,59 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Factory Ledger MUTATION anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util
+          import json
+          from pathlib import Path
+
+          repo = Path.cwd()
+          gate_path = repo / "PRISMA Factory Ledger" / "tools" / "verify_prisma_anti_rework_gate.py"
+          spec = importlib.util.spec_from_file_location("prisma_factory_gate", gate_path)
+          module = importlib.util.module_from_spec(spec)
+          assert spec and spec.loader
+          spec.loader.exec_module(module)
+
+          authority = module.read_authority(repo)
+          base_head = "18ebd200186177f27b7a460b6d79f055cd665dad"
+          request = {
+              "schemaVersion": module.SCHEMA,
+              "mode": "MUTATION",
+              "expectedHead": base_head,
+              "task": "Advance existing GVAE V1 by restoring the already-existing certified all-surface Visual Control promotion path into canonical RIFAT, Identity and generated Target Index. Preserve existing mappings, fail closed, no product runtime mutation.",
+              "capabilities": [
+                  {
+                      "id": "visual.generic_application_engine_v1",
+                      "requestedAction": "ADVANCE",
+                  }
+              ],
+              "authorityMesh": {
+                  "status": "PASS_COMPOSED_AUTHORITY_MESH",
+                  "repoHead": base_head,
+                  "requiredAuthorityCoveragePct": 100,
+                  "blockers": 0,
+                  "requestDigest": "2288939c44d8bde0edc2e622fba1995a3afafe9ea67ec0bc83097483661d49be",
+                  "artifactDigest": "b36e4d9140082b3c70e8b3c34ad75198f3ce196d4e1bd43089a126fbdfac8b18",
+                  "layerMapPresent": True,
+              },
+              "visualMutation": True,
+          }
+          result = module.decide(
+              repo,
+              authority,
+              request,
+              current_head=base_head,
+              dirty=[],
+          )
+          print(json.dumps(result, indent=2, ensure_ascii=False, sort_keys=True))
+          if result.get("result") != "PASS_ANTI_REWORK_GATE":
+              raise SystemExit(2)
+          print("PASS_GVAE_ALL_SURFACE_ANTI_REWORK")
+          PY
+
       - name: Install workspace dependencies
         shell: bash
         run: |
