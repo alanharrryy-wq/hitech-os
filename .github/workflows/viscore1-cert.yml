@@ -42,10 +42,10 @@ jobs:
           import unittest
           suite = unittest.defaultTestLoader.discover('tools/visual_application/tests', top_level_dir='tools')
           count = suite.countTestCases()
-          if count != 54:
+          if count != 94:
               raise SystemExit(f'GVAE_TEST_COUNT_DRIFT:{count}')
           result = unittest.TextTestRunner(verbosity=2).run(suite)
-          if result.testsRun != 54:
+          if result.testsRun != 94:
               raise SystemExit(f'GVAE_TEST_RUN_DRIFT:{result.testsRun}')
           if result.skipped:
               raise SystemExit('GVAE_FULL_CHECKOUT_TESTS_SKIPPED:' + repr(result.skipped))
