@@ -296,6 +296,23 @@ def expected_files(source: Path) -> dict[Path, bytes]:
     bindings = build_bindings(validated)
     result[BINDINGS_PATH] = canonical_bytes(bindings)
 
+    deterministic_source_parts: list[tuple[str, bytes]] = [
+        ("registry.json", canonical_bytes(validated["registry"])),
+        ("surfaces.json", (source / "surfaces.json").read_bytes()),
+        ("routes.json", (source / "routes.json").read_bytes()),
+        ("components.json", (source / "components.json").read_bytes()),
+        ("editable-slots.json", (source / "editable-slots.json").read_bytes()),
+        ("owners.json", (source / "owners.json").read_bytes()),
+        ("layers.json", (source / "layers.json").read_bytes()),
+        ("risks.json", (source / "risks.json").read_bytes()),
+        ("reuse-report.json", (source / "reuse-report.json").read_bytes()),
+        ("expanded/manifest.json", canonical_bytes(expanded_manifest)),
+    ]
+    for surface in SURFACES:
+        for name in EXPANDED_FILES:
+            rel = f"expanded/{surface}/{name}"
+            deterministic_source_parts.append((rel, (source / rel).read_bytes()))
+
     provenance = {
         "schema": "prisma.ui.visual-control.promotion.v1",
         "status": "SOURCE_STATIC_ONLY",
@@ -304,11 +321,10 @@ def expected_files(source: Path) -> dict[Path, bytes]:
         "surfaceCount": len(SURFACES),
         "surfaces": list(SURFACES),
         "expandedCountsBySurface": validated["verifiedCounts"],
-        "sourceTreeDigest": sha256_bytes(
+        "sourceAuthorityDigest": sha256_bytes(
             b"".join(
-                path.relative_to(source).as_posix().encode("utf-8") + b"\0" + path.read_bytes()
-                for path in sorted(source.rglob("*"))
-                if path.is_file()
+                rel.encode("utf-8") + b"\\0" + data
+                for rel, data in sorted(deterministic_source_parts)
             )
         ),
         "runtimeMutationAllowed": False,
