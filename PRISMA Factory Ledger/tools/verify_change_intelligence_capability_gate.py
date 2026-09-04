@@ -9,6 +9,9 @@ IDENT={"productName":"PRISMA Change Assurance","engineName":"Code Atlas","princi
 STAGES=("UNDERSTAND","RESOLVE","AUTHORIZE","OBSERVE","VERIFY","PROVE"); IDS="ABCDEFGHIJ"
 CLASS={"DONE","VERIFY","FIX","BUILD","EXTERNAL"}; V1={"DONE","PARTIAL","MISSING","BLOCKED","NOT_REQUIRED_V1","EXPERIMENTAL"}
 REN=("PUBLIC_IDENTITY_RENAME","CANONICAL_DOC_RENAME","MACHINE_CONTRACT_RENAME","INTERNAL_SYMBOL_MIGRATE","COMPAT_ALIAS_KEEP","HISTORICAL_EVIDENCE_KEEP","FALSE_POSITIVE")
+OWNERSHIP_SCHEMA="prisma.change_assurance.ownership_boundary.v1"
+OWNERSHIP=("ASSURANCE_CORE","ASSURANCE_PRODUCT","PRISMA_PLATFORM","PRISMA_PRODUCT","ASSURANCE_PRISMA_ADAPTER","SHARED_INFRASTRUCTURE","LEGACY_COMPAT")
+OWNERSHIP_RULES={"physicalNameDeterminesOwnership":False,"massRenameRequired":False,"secondRegistryAllowed":False,"assuranceMayConsumePrismaTruthWithoutOwningProducer":True,"prismaMayBeInternalAssuranceCustomer":True,"legacyPhysicalIdentifiersMayRemainWhenCompatibilitySensitive":True,"newPublicLegacyProductIdentityAllowed":False,"newImplementationMustResolveOwnershipExplicitly":True}
 INV=("Candidate != Authority","Impact Radius != Authorization","Retrieval != proof","UNKNOWN != PASS_WITH_WARNING","Snapshot/provenance lock is required for proof-bearing claims","Verification must be agent-neutral; same-agent assertion is not independent verification")
 ROW=("id","name","group","owner","surface","classification","status","doNotRebuild","evidence","nextGate","proposalRule","protectedExistingOwners")
 BASE=(('A','UNDERSTAND','Universal bounded repository understanding','PARTIAL','code_atlas.intelligence',1),('B','RESOLVE','Useful Impact Radius','PARTIAL','code_atlas.intelligence',1),('C','UNDERSTAND','Edge provenance','PARTIAL','code_atlas.intelligence',1),('D','RESOLVE','Better UNKNOWN','PARTIAL','code_atlas.change_intelligence',1),('E','AUTHORIZE','Conflict-first authority','PARTIAL','code_atlas.change_intelligence',1),('F','OBSERVE','Change comparison','MISSING','UNRESOLVED_V1_OWNER',0),('G','VERIFY','Agent-neutral independent verification','PARTIAL','code_atlas.change_intelligence / external evaluator',1),('H','PROVE','Portable reproducible runner','PARTIAL','code_atlas.change_intelligence',1),('I','PROVE','Evidence Bundle','PARTIAL','code_atlas.change_intelligence',1),('J','PROVE','Utility evidence','BLOCKED','external human reviewer / independent evaluator',1))
@@ -63,6 +66,17 @@ def validate(d,c):
  if set(d.get("classificationEnum") or [])!=CLASS:e.append("CLASSIFICATION_ENUM_MISMATCH")
  if set(d.get("v1ChecklistStatusEnum") or [])!=V1:e.append("V1_STATUS_ENUM_MISMATCH")
  if tuple(d.get("renameClassificationEnum") or [])!=REN:e.append("RENAME_ENUM_MISMATCH")
+ ob=d.get("ownershipBoundary") or {}
+ if ob.get("schemaVersion")!=OWNERSHIP_SCHEMA:e.append("OWNERSHIP_SCHEMA_MISMATCH")
+ if tuple(ob.get("classificationEnum") or [])!=OWNERSHIP:e.append("OWNERSHIP_ENUM_MISMATCH")
+ orules=ob.get("rules") or {}
+ for k,v in OWNERSHIP_RULES.items():
+  if orules.get(k)!=v:e.append("OWNERSHIP_RULE_MISMATCH:"+k)
+ classes=ob.get("classes") or {}
+ if set(classes)!=set(OWNERSHIP):e.append("OWNERSHIP_CLASSES_MISMATCH")
+ for k in OWNERSHIP:
+  row=classes.get(k)
+  if not isinstance(row,dict) or not row.get("definition"):e.append("OWNERSHIP_CLASS_DEFINITION_REQUIRED:"+k)
  for k in POL:
   if (d.get("gatePolicy") or {}).get(k) is not True:e.append("POLICY_REQUIRED_TRUE:"+k)
  if tuple(d.get("invariants") or [])!=INV:e.append("INVARIANTS_MISMATCH")
@@ -104,6 +118,10 @@ def validate(d,c):
   if [x.get("id") for x in c.get("definitionOfDone",[]) if isinstance(x,dict)]!=list(IDS):e.append("CONTRACT_DOD_MISMATCH")
   rg=c.get("registry") or {}
   if rg.get("singleAuthorityPath")!=MAP.as_posix() or rg.get("createsSecondRegistry") is not False:e.append("CONTRACT_SECOND_REGISTRY_FORBIDDEN")
+  obref=c.get("ownershipBoundary") or {}
+  if obref.get("authorityPath")!=MAP.as_posix() or obref.get("authorityKey")!="ownershipBoundary":e.append("CONTRACT_OWNERSHIP_AUTHORITY_MISMATCH")
+  if obref.get("createsSecondRegistry") is not False:e.append("CONTRACT_OWNERSHIP_SECOND_REGISTRY_FORBIDDEN")
+  if obref.get("physicalRenameRequired") is not False:e.append("CONTRACT_OWNERSHIP_PHYSICAL_RENAME_FORBIDDEN")
  return sorted(set(e))
 def decide(r,d,q):
  e=validate(d,load(r/CONTRACT) if (r/CONTRACT).exists() else None); mode=str(q.get("mode") or "").upper(); ids=q.get("capabilityIds") if isinstance(q.get("capabilityIds"),list) else []
@@ -137,6 +155,8 @@ def selftest(r,d,c):
  b=copy.deepcopy(d);b["v1DefinitionOfDone"].pop();assert "V1_DOD_IDS_ORDER_MISMATCH" in validate(b,c)
  b=copy.deepcopy(d);b["v1DefinitionOfDone"][0].update(status="DONE",evidence=[]);assert "V1_DONE_WITHOUT_EVIDENCE:A" in validate(b,c)
  cc=copy.deepcopy(c);cc["registry"]["createsSecondRegistry"]=True;assert "CONTRACT_SECOND_REGISTRY_FORBIDDEN" in validate(d,cc)
+ b=copy.deepcopy(d);b["ownershipBoundary"]["rules"]["massRenameRequired"]=True;assert "OWNERSHIP_RULE_MISMATCH:massRenameRequired" in validate(b,c)
+ cc=copy.deepcopy(c);cc["ownershipBoundary"]["createsSecondRegistry"]=True;assert "CONTRACT_OWNERSHIP_SECOND_REGISTRY_FORBIDDEN" in validate(d,cc)
  b=copy.deepcopy(d);b["rows"].append(copy.deepcopy(b["rows"][0]));assert "DUPLICATE_CAPABILITY_ID" in validate(b,c)
  done=next(x["id"] for x in rec(d) if x["classification"]=="DONE" and x["doNotRebuild"]);assert decide(r,d,{"mode":"PROPOSAL","capabilityIds":[done],"task":"build again"})["result"]=="BLOCKED_ANTI_REWORK"
  assert decide(r,d,{"mode":"PROPOSAL","capabilityIds":["missing"],"task":"verify"})["result"]=="BLOCKED_ANTI_REWORK"
