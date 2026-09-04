@@ -21,6 +21,7 @@ APP_ROOT = REPO_ROOT / "apps" / "terminal-de-venta-system"
 DEFAULT_SOURCE = APP_ROOT / ".prisma-ui" / "visual-control"
 DEST = ROOT / "authority" / "rifat" / "prisma-ui" / "visual-control"
 BINDINGS_PATH = ROOT / "authority" / "rifat" / "identity" / "registries" / "bindings.registry.json"
+ADAPTERS_PATH = ROOT / "authority" / "rifat" / "identity" / "registries" / "surface-adapters.registry.json"
 
 SURFACES = ("shared-ui", "tablet", "pc", "mobile", "web", "chart-lab", "control-center")
 END_SURFACES = ("tablet", "pc", "mobile", "web", "chart-lab", "control-center")
@@ -264,6 +265,29 @@ def build_bindings(validated: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def build_adapters() -> dict[str, Any]:
+    current = load_json(ADAPTERS_PATH)
+    rows: list[dict[str, Any]] = []
+    for row in current.get("adapters", []):
+        if not isinstance(row, dict):
+            continue
+        item = dict(row)
+        surface = item.get("surface")
+        if surface == "shared-ui":
+            item["readiness"] = "NEUTRAL_SOURCE_READY"
+        elif surface in END_SURFACES:
+            item["readiness"] = "BINDING_READY_SOURCE_ONLY"
+        rows.append(item)
+    if set(item.get("surface") for item in rows) != set(SURFACES):
+        raise PromotionError("surface adapter registry does not contain the seven canonical surfaces")
+    return {
+        "schema": "prisma.identity.surface-adapters.registry.v1",
+        "version": "1.1.0",
+        "adapterCount": len(rows),
+        "adapters": rows,
+    }
+
+
 def expected_files(source: Path) -> dict[Path, bytes]:
     validated = validate_source(source)
     result: dict[Path, bytes] = {}
@@ -295,6 +319,7 @@ def expected_files(source: Path) -> dict[Path, bytes]:
 
     bindings = build_bindings(validated)
     result[BINDINGS_PATH] = canonical_bytes(bindings)
+    result[ADAPTERS_PATH] = canonical_bytes(build_adapters())
 
     deterministic_source_parts: list[tuple[str, bytes]] = [
         ("registry.json", canonical_bytes(validated["registry"])),
