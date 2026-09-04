@@ -407,7 +407,22 @@ def build_index(root: Path = ROOT) -> dict[str, Any]:
 
 
 def render_files(index: dict[str, Any]) -> dict[Path, bytes]:
-    files = {OUT / "manifest.json": pretty_json_bytes(index)}
+    enforced_records = [
+        row for row in index["records"]
+        if row.get("enforcement") != DISCOVERY_ONLY
+    ]
+    manifest = {
+        key: value for key, value in index.items()
+        if key != "records"
+    }
+    manifest["records"] = enforced_records
+    manifest["recordStorage"] = {
+        "totalRecordCount": index["recordCount"],
+        "manifestEnforcedRecordCount": len(enforced_records),
+        "censusStorage": "per-surface-files",
+        "censusDuplicatedInManifest": False,
+    }
+    files = {OUT / "manifest.json": pretty_json_bytes(manifest)}
     for surface in SURFACES:
         view = {
             "schema": "prisma.visual.application.target-index.surface.v1",
