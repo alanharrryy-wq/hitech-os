@@ -35,6 +35,27 @@ Important operating rule: if RIFAT and a product runtime disagree, do not overwr
 
 Atlasfin currently contains **27 public pages, 26 A–Z sections and 418 catalogued elements**. Current structural truth comes from its manifest and validators, not from historical prose.
 
+## Parallel semantic/application promotion
+
+For the bounded parallel promotion cohort covering Tablet, PC, Mobile and Shared UI, with Atlasfin as the priority visual reference, use:
+
+`docs/ops/visual-promotion-parallel/`
+
+That folder contains the canonical interoperability contract, machine-readable vocabulary and six parallel-chat prompts. Its core rule is that current census is reused: `DISCOVERY_ONLY` is physically discovered but not yet exact application authority.
+
+### Surface Visual Governor Materiality Catalog
+
+The Surface Visual Governor Materiality Catalog is an existing, rich and highly developed machine-readable visual reference. It is intentionally **STANDBY / USER-INVOKED-ONLY**.
+
+Its presence in the repository is not permission to consume, promote, reconcile or use it automatically. Atlasfin, Identity, RIFAT, semantic-promotion tooling, GVAE and coding agents must ignore it unless the repository owner explicitly invokes it for a named task.
+
+There is **no automatic fallback from Atlasfin to the Materiality Catalog**. An Atlasfin miss remains unresolved until separately authorized.
+
+Canonical known location:
+
+`apps/terminal-de-venta-system/products/pc/app/public/surface-visual-governor/reference-visual/latest/materiality-catalog.registry.json`
+
+
 ## One-command status
 
 From `prisma-html/`:

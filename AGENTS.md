@@ -47,6 +47,21 @@ Canonical visual authority references:
 
 The repository gate and CI are the authority even when conversational context is missing.
 
+### Parallel visual-promotion interoperability
+
+For semantic/binding promotion work involving Tablet, PC, Mobile, Shared UI or Atlasfin, also read:
+
+- `prisma-html/docs/ops/visual-promotion-parallel/README.md`
+- `prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_INTEROPERABILITY_CONTRACT.md`
+- `prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_VOCABULARY.registry.json`
+
+The contract governs cross-authority terminology, ID qualification, lane write ownership and candidate exchange. A context-free agent must not reinterpret `DISCOVERY_ONLY` as undiscovered or start broad recensus when current Visual Control/Target Index evidence already exists.
+
+Atlasfin (`prisma-html/extras/atlasfin`) is the priority visual reference/cockpit for this cohort. It remains a consumer/operator of authority, not a competing editable authority.
+
+The Surface Visual Governor Materiality Catalog is `STANDBY_USER_INVOKED_ONLY`. Do not inspect, consume, promote or use it as an Atlasfin fallback unless the repository owner explicitly invokes it for a named task.
+
+
 ## 200 Operating Directives
 
 
