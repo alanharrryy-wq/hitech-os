@@ -122,13 +122,13 @@ def build_compilation(model: dict[str, Any] | None = None) -> dict[str, bytes]:
     manifest = {
         "schema": "prisma.identity.compilation-manifest.v1",
         "version": "1.0.0",
-        "status": "SOURCE_READY_PARTIAL_BINDINGS",
+        "status": "SOURCE_READY_MULTI_SURFACE_BINDINGS" if blocked == 0 else "SOURCE_READY_PARTIAL_BINDINGS",
         "selectedProfileId": profile_id,
         "selectedProfileName": profile["name"],
         "selectedAt": activation["selectedAt"],
         "surfaceCount": len(SURFACES),
         "bindingReadyCount": binding_ready,
-        "neutralSourceReadyCount": 1,
+        "neutralSourceReadyCount": sum(1 for surface in SURFACES if model["bindings"][surface]["readiness"] == "NEUTRAL_SOURCE_READY"),
         "blockedSurfaceCount": blocked,
         "runtimeMutationCount": 0,
         "runtimeProjectionAllowed": False,
@@ -256,40 +256,70 @@ def validate_model(check_compiled: bool = True) -> tuple[list[str], list[str]]:
         if "priority-override" not in adapter.get("forbiddenMutations", []):
             problems.append(f"adapter {surface} does not forbid priority overrides")
 
-    # Grounded binding truth.
-    tablet_binding = model["bindings"]["tablet"]
-    tablet_sources = {
-        "routes": ROOT / tablet_binding["routeSource"],
-        "owners": ROOT / tablet_binding["ownerSource"],
-        "slots": ROOT / tablet_binding["slotSource"],
-        "layers": ROOT / tablet_binding["layerSource"],
-    }
-    for label, path in tablet_sources.items():
-        if not path.is_file():
-            problems.append(f"missing Tablet {label} binding source: {path.relative_to(ROOT).as_posix()}")
-    if not problems:
-        visual_registry = load_json(ROOT / "authority/rifat/prisma-ui/visual-control/registry.json")
-        visual_surfaces = load_json(ROOT / "authority/rifat/prisma-ui/visual-control/surfaces.json")
-        owners = load_json(tablet_sources["owners"])
-        slots = load_json(tablet_sources["slots"])
-        layers = load_json(tablet_sources["layers"])
-        routes = load_json(tablet_sources["routes"])
-        if visual_registry.get("status") != "CERTIFIED" or visual_registry.get("targetSurfaces") != ["tablet"]:
-            problems.append("Tablet detailed Visual Control source is not certified and exclusive")
-        if [item.get("surface") for item in visual_surfaces.get("surfaces", [])] != ["tablet"]:
-            problems.append("detailed Visual Control surfaces are not Tablet-only")
-        if owners.get("status") != "CERTIFIED" or owners.get("routeOwnerCount", 0) <= 0 or owners.get("regionOwnerCount", 0) <= 0:
-            problems.append("Tablet owner evidence is incomplete")
-        if slots.get("status") != "CERTIFIED" or slots.get("editableSlotCount", 0) <= 0:
-            problems.append("Tablet editable-slot evidence is incomplete")
-        if layers.get("status") != "CERTIFIED" or layers.get("layerCount", 0) <= 0:
-            problems.append("Tablet layer evidence is incomplete")
-        if routes.get("status") != "CERTIFIED" or routes.get("routeCount", 0) <= 0:
-            problems.append("Tablet route evidence is incomplete")
+    # Grounded all-surface binding truth.
+    visual_root = ROOT / "authority/rifat/prisma-ui/visual-control"
+    visual_registry = load_json(visual_root / "registry.json")
+    visual_surfaces = load_json(visual_root / "surfaces.json")
+    owners = load_json(visual_root / "owners.json")
+    slots = load_json(visual_root / "editable-slots.json")
+    layers = load_json(visual_root / "layers.json")
+    routes = load_json(visual_root / "routes.json")
+    expanded = load_json(visual_root / "expanded/manifest.json")
 
-    for surface in ("pc", "mobile", "web", "chart-lab", "control-center"):
-        if model["bindings"][surface]["readiness"] != "BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS":
-            problems.append(f"{surface} must remain blocked until detailed bindings exist")
+    expected_surface_set = set(SURFACES)
+    end_surfaces = {"tablet", "pc", "mobile", "web", "chart-lab", "control-center"}
+    if visual_registry.get("status") != "CERTIFIED":
+        problems.append("all-surface Visual Control source is not CERTIFIED")
+    if visual_registry.get("scopeMode") != "ALL_SURFACES_CANONICAL" or visual_registry.get("canonicalGlobal") is not True:
+        problems.append("Visual Control authority is not an all-surface canonical promotion")
+    if set(visual_registry.get("targetSurfaces") or []) != expected_surface_set:
+        problems.append("Visual Control target surface set is incomplete")
+    if set(visual_registry.get("runtimeTargetSurfaces") or []) != end_surfaces:
+        problems.append("Visual Control runtime target surface set is incomplete")
+    if set(item.get("surface") for item in visual_surfaces.get("surfaces", [])) != expected_surface_set:
+        problems.append("Visual Control surface registry is incomplete")
+    if expanded.get("schema") != "prisma.ui.visual-control.expanded-manifest.v1":
+        problems.append("expanded Visual Control manifest schema mismatch")
+    if expanded.get("scopeMode") != "ALL_SURFACES_CANONICAL" or expanded.get("canonicalGlobal") is not True:
+        problems.append("expanded Visual Control authority is not all-surface canonical")
+
+    if owners.get("status") != "CERTIFIED" or slots.get("status") != "CERTIFIED" or layers.get("status") != "CERTIFIED" or routes.get("status") != "CERTIFIED":
+        problems.append("all-surface Visual Control compact authority is not fully certified")
+
+    expanded_counts = expanded.get("countsBySurface") if isinstance(expanded.get("countsBySurface"), dict) else {}
+    for surface in SURFACES:
+        binding = model["bindings"][surface]
+        expected_readiness = "NEUTRAL_SOURCE_READY" if surface == "shared-ui" else "CERTIFIED_BINDING_SOURCE"
+        if binding.get("readiness") != expected_readiness:
+            problems.append(f"{surface} binding readiness mismatch: {binding.get('readiness')}")
+        for field in ("routeSource", "ownerSource", "slotSource", "layerSource", "expandedSource"):
+            raw = binding.get(field)
+            if not raw:
+                problems.append(f"{surface} missing binding source field: {field}")
+                continue
+            source_path = ROOT / raw
+            if field == "expandedSource":
+                if not source_path.is_dir():
+                    problems.append(f"{surface} expanded binding source missing: {raw}")
+            elif not source_path.is_file():
+                problems.append(f"{surface} binding source missing: {raw}")
+        counts = expanded_counts.get(surface)
+        if not isinstance(counts, dict):
+            problems.append(f"{surface} expanded counts missing")
+            continue
+        for field in ("layers", "editableSlots", "regionOwners"):
+            if not isinstance(counts.get(field), int) or counts[field] <= 0:
+                problems.append(f"{surface} expanded {field} evidence is empty")
+        if surface in end_surfaces and (not isinstance(counts.get("routes"), int) or counts["routes"] <= 0):
+            problems.append(f"{surface} expanded route evidence is empty")
+        if binding.get("layerCount") != counts.get("layers"):
+            problems.append(f"{surface} binding layerCount drift")
+        if binding.get("editableSlotCount") != counts.get("editableSlots"):
+            problems.append(f"{surface} binding editableSlotCount drift")
+        if binding.get("regionOwnerCount") != counts.get("regionOwners"):
+            problems.append(f"{surface} binding regionOwnerCount drift")
+        if binding.get("routeCount") != counts.get("routes"):
+            problems.append(f"{surface} binding routeCount drift")
 
     for path in IDENTITY.rglob("*"):
         if not path.is_file() or "compiled/current" in path.as_posix():
