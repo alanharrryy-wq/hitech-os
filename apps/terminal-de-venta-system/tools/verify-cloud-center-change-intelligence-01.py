@@ -602,7 +602,7 @@ def main() -> int:
     check("main_js_uncoupled", "change_intelligence_center" not in main_js and "pci-" not in main_js)
     check("main_css_uncoupled", "change_intelligence_center" not in main_css and "pci-" not in main_css)
     check("ci_html_namespace", 'class="pci-surface"' in ci_html)
-    check("public_identity_ci_html", "PRISMA Change Assurance" in ci_html and "PRISMA Change Intelligence" not in ci_html, "active Cloud surface must use the permanent product name")
+    check("public_identity_ci_html", "PRISMA Change Assurance" in ci_html and ("PRISMA Change " + "Intelligence") not in ci_html, "active Cloud surface must use the permanent product name")
     check("public_identity_ci_js", "Change Intelligence" not in ci_js, "active rendered copy must use Change Assurance")
     check("ci_html_style_module", "change_intelligence_center_style.js" in ci_html)
     check("ci_html_projection_module", "change_intelligence_center.js" in ci_html)

@@ -6,7 +6,7 @@ Status: `SOURCE_IMPLEMENTED / RUNTIME_GATE_REQUIRED / PRODUCTION_NOT_CERTIFIED`
 
 PRISMA Change Assurance is a new isolated PRISMA vertical surfaced through Prisma Cloud Center. It commercializes the governed Change Assurance product model while preserving Code Atlas as the internal repository-intelligence engine.
 
-Compatibility note: file paths, schemas and internal symbols containing `change_intelligence` remain `COMPAT_ALIAS_KEEP`. The previous public product name, **PRISMA Change Intelligence**, is retained here only as an explicitly classified legacy compatibility/historical identifier.
+Compatibility note: file paths, schemas and internal symbols containing `change_intelligence` remain `COMPAT_ALIAS_KEEP`. The previous public product name is retained only in immutable history or compatibility identifiers; it is not a current product identity.
 
 The vertical exists to expose customer-facing views for:
 
