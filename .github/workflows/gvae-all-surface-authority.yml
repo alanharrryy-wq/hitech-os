@@ -92,10 +92,13 @@ jobs:
           const registry=JSON.parse(fs.readFileSync(registryPath,'utf8'));
           const expanded=JSON.parse(fs.readFileSync(expandedPath,'utf8'));
           const expected=['chart-lab','web','tablet','pc','mobile','control-center','shared-ui'].sort();
+          const runtimeExpected=['chart-lab','web','tablet','pc','mobile','control-center'].sort();
           const actual=[...(registry.targetSurfaces||[])].sort();
+          const runtimeActual=[...(registry.runtimeTargetSurfaces||[])].sort();
           if(registry.status!=='CERTIFIED') throw new Error('GLOBAL_VISUAL_CONTROL_NOT_CERTIFIED');
           if(registry.scopeMode!=='ALL_SURFACES_CANONICAL'||registry.canonicalGlobal!==true) throw new Error('GLOBAL_SCOPE_MODE_INVALID');
           if(JSON.stringify(actual)!==JSON.stringify(expected)) throw new Error('GLOBAL_SURFACE_SET_INVALID:'+JSON.stringify(actual));
+          if(JSON.stringify(runtimeActual)!==JSON.stringify(runtimeExpected)) throw new Error('GLOBAL_RUNTIME_SURFACE_SET_INVALID:'+JSON.stringify(runtimeActual));
           for(const surface of expected){
             const row=expanded.countsBySurface?.[surface];
             if(!row||!(row.layers>0)||!(row.editableSlots>0)||!(row.regionOwners>0)) {
