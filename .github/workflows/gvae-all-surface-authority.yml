@@ -15,7 +15,7 @@ on:
       - '.github/workflows/gvae-all-surface-authority.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - uses: pnpm/action-setup@v4
         with:
@@ -123,6 +124,44 @@ jobs:
             prisma-html/authority/rifat/prisma-ui/visual-control \
             prisma-html/authority/rifat/identity/registries/bindings.registry.json \
             > "$RUNNER_TEMP/all-surface-authority.patch"
+
+      - name: Recompile Identity and GVAE from promoted authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/compile_identity_dictionary.py --write
+          (
+            cd prisma-html
+            PYTHONPATH=tools python -m visual_application.target_index --write
+            PYTHONPATH=tools python -m visual_application.target_index --check
+            python tools/validate_identity_dictionary.py
+            python tools/visual_core.py check
+            python tools/refresh_files_manifest.py --write
+            python tools/refresh_files_manifest.py --check
+          )
+
+      - name: Materialize fresh all-surface authority on PR branch
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          git add -- \
+            prisma-html/authority/rifat/prisma-ui/visual-control \
+            prisma-html/authority/rifat/identity/registries/bindings.registry.json \
+            prisma-html/authority/rifat/identity/registries/surface-adapters.registry.json \
+            prisma-html/authority/rifat/identity/compiled/current \
+            prisma-html/FILES_MANIFEST.json
+          if git diff --cached --quiet; then
+            echo "PASS_ALL_SURFACE_AUTHORITY_ALREADY_MATERIALIZED"
+            exit 0
+          fi
+          git config user.name "prisma-gvae-bot"
+          git config user.email "prisma-gvae-bot@users.noreply.github.com"
+          git commit -m "chore(visual): materialize fresh all-surface authority"
+          git push origin "HEAD:$HEAD_REF"
+          echo "PASS_ALL_SURFACE_AUTHORITY_MATERIALIZED"
 
       - name: Stage deterministic candidate bundle
         if: always()
