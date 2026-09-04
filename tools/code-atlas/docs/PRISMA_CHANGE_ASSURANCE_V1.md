@@ -128,3 +128,38 @@ Universal Intelligence and Customer Wow foundations already recorded as mature o
 This contract was authorized read-only against repository head `45762d1a6251195dae0e229dfe6fa1aed74645fa` and tree `ce37544fb6f431586bc5f472124c0d6a3bc1c2a8` by PRISMA Remote AutoMesh run `32332472480`, artifact `9393519072`, request digest `81bf9492592090b52cc2a07b0138aa09454a423b7eca07abac9f65b1ab2798e7`, with 100% required-authority coverage and zero blockers.
 
 This provenance authorizes the bounded governance files in that exact task. It does not certify production, runtime, paid-pilot, Cloud Center, Tablet, PC, Mobile, Chart Lab, Shared UI, database or Prisma behavior.
+
+## Change Assurance Packet V1
+
+The portable commercial output is the **Change Assurance Packet V1**. It is an additive projection over existing Code Atlas, Authority Mesh, Verify and Evidence Bundle owners. It does not create a second authority engine, verification engine, evidence-bundle engine or Factory Ledger.
+
+Canonical machine schema:
+
+- `tools/code-atlas/PRISMA_CHANGE_ASSURANCE_PACKET_V1.schema.json`
+- builder: `code_atlas.change_intelligence.build_change_assurance_packet`
+- human renderer: `code_atlas.change_intelligence.render_change_assurance_packet_markdown`
+
+The packet carries the analyzed change, bounded impact radius, `authorizedSnapshot`, `currentSnapshot`, `driftClassification`, affected authority, protected scope, provenance, evidence, UNKNOWNs, verification result, exact PR SHA, merge SHA, post-merge proof, commercial claim evidence and G/J external-validation state.
+
+Its canonical integration chain is fixed and proof-bearing:
+
+`Code Atlas -> PRISMA Change Assurance -> Authority Mesh -> gates -> Evidence Bundle -> Factory Ledger`
+
+Every hop must declare a producer, consumer, contract, SHA/snapshot binding and evidence references. A missing or reordered hop is invalid.
+
+AutoMesh v2 relevant-drift semantics are commercial evidence, not an internal nuisance:
+
+- `PASS_ALREADY_CURRENT`: the authorized and current snapshots are identical.
+- `PASS_NO_RELEVANT_DRIFT`: HEAD moved but the authority relevant to the change did not.
+- `BLOCKED_RELEVANT_DRIFT`: authority relevant to the change moved; the packet blocks.
+- `BLOCKED_NON_ANCESTOR_DRIFT`: lineage is not safely re-anchorable; the packet blocks.
+
+Readiness is derived, never caller-promoted:
+
+- before exact merge + post-merge PASS: `TECHNICAL_COMMERCIALIZATION_CANDIDATE`;
+- after exact merge + post-merge PASS while G/J are still external: `TECHNICAL_COMMERCIALIZATION_READY`;
+- only after G and J both carry real external evidence: `COMMERCIALIZATION_READY`;
+- relevant drift, failed verification or unresolved UNKNOWN remains `BLOCKED` / `UNKNOWN`.
+
+A `SUPPORTED` commercial claim without evidence is contract-invalid. Packaging cannot turn UNKNOWN into PASS and never sets `productionCertified=true`.
+
