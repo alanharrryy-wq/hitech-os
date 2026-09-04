@@ -1421,7 +1421,10 @@ function writeArtifacts(model) {
     canonicalGlobal: !model.requestedSurface,
     sourceSurface: model.requestedSurface || null,
     detailPolicy: compact.detailPolicy,
-    targetSurfaces: model.requestedSurface ? [model.requestedSurface] : targetSurfaceIds(model.state),
+    targetSurfaces: model.requestedSurface ? [model.requestedSurface] : [...SURFACE_IDS],
+    runtimeTargetSurfaces: model.requestedSurface
+      ? (targetSurfaceIds(model.state).includes(model.requestedSurface) ? [model.requestedSurface] : [])
+      : targetSurfaceIds(model.state),
     authoritativeInputs: [
       '.prisma-ui/registry.json',
       '.prisma-ui/surfaces.json',
