@@ -1,56 +1,56 @@
 {
-  "schema": "prisma.identity.surface-adapters.registry.v1",
-  "version": "1.0.0",
   "adapterCount": 7,
   "adapters": [
     {
       "id": "prisma.adapter.shared-ui.v1",
-      "surface": "shared-ui",
-      "role": "NEUTRAL_SOURCE",
+      "path": "adapters/shared-ui.adapter.json",
       "readiness": "NEUTRAL_SOURCE_READY",
-      "path": "adapters/shared-ui.adapter.json"
+      "role": "NEUTRAL_SOURCE",
+      "surface": "shared-ui"
     },
     {
       "id": "prisma.adapter.tablet.v1",
-      "surface": "tablet",
-      "role": "END_SURFACE",
+      "path": "adapters/tablet.adapter.json",
       "readiness": "BINDING_READY_SOURCE_ONLY",
-      "path": "adapters/tablet.adapter.json"
+      "role": "END_SURFACE",
+      "surface": "tablet"
     },
     {
       "id": "prisma.adapter.pc.v1",
-      "surface": "pc",
+      "path": "adapters/pc.adapter.json",
+      "readiness": "BINDING_READY_SOURCE_ONLY",
       "role": "END_SURFACE",
-      "readiness": "DISCOVERY_REQUIRED",
-      "path": "adapters/pc.adapter.json"
+      "surface": "pc"
     },
     {
       "id": "prisma.adapter.mobile.v1",
-      "surface": "mobile",
+      "path": "adapters/mobile.adapter.json",
+      "readiness": "BINDING_READY_SOURCE_ONLY",
       "role": "END_SURFACE",
-      "readiness": "DISCOVERY_REQUIRED",
-      "path": "adapters/mobile.adapter.json"
+      "surface": "mobile"
     },
     {
       "id": "prisma.adapter.web.v1",
-      "surface": "web",
+      "path": "adapters/web.adapter.json",
+      "readiness": "BINDING_READY_SOURCE_ONLY",
       "role": "END_SURFACE",
-      "readiness": "DISCOVERY_REQUIRED",
-      "path": "adapters/web.adapter.json"
+      "surface": "web"
     },
     {
       "id": "prisma.adapter.chart-lab.v1",
-      "surface": "chart-lab",
+      "path": "adapters/chart-lab.adapter.json",
+      "readiness": "BINDING_READY_SOURCE_ONLY",
       "role": "END_SURFACE",
-      "readiness": "DISCOVERY_REQUIRED",
-      "path": "adapters/chart-lab.adapter.json"
+      "surface": "chart-lab"
     },
     {
       "id": "prisma.adapter.control-center.v1",
-      "surface": "control-center",
+      "path": "adapters/control-center.adapter.json",
+      "readiness": "BINDING_READY_SOURCE_ONLY",
       "role": "END_SURFACE",
-      "readiness": "DISCOVERY_REQUIRED",
-      "path": "adapters/control-center.adapter.json"
+      "surface": "control-center"
     }
-  ]
+  ],
+  "schema": "prisma.identity.surface-adapters.registry.v1",
+  "version": "1.1.0"
 }

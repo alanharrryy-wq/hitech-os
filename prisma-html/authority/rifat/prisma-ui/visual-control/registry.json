@@ -1,30 +1,15 @@
 {
-  "schema": "prisma.ui.visual-control.registry.v1",
-  "createdAt": "2026-07-24T04:57:54.654Z",
-  "status": "CERTIFIED",
-  "detailPolicy": "repo contains compact indexes; full expanded detail belongs in external evidence/result.zip when needed",
-  "targetSurfaces": [
-    "tablet"
-  ],
   "authoritativeInputs": [
     ".prisma-ui/registry.json",
     ".prisma-ui/surfaces.json",
     ".prisma-ui/routes.json",
     ".prisma-ui/panels/*.json",
     ".governance/current/AUTHORITY_READSET.lock.json",
-    "docs/visual-layer-map/layer-map.json"
+    "docs/visual-layer-map/layer-map.json",
+    "config/prisma-visual/identity-layer-certifications.registry.json"
   ],
-  "outputs": [
-    ".prisma-ui/visual-control/surfaces.json",
-    ".prisma-ui/visual-control/routes.json",
-    ".prisma-ui/visual-control/components.json",
-    ".prisma-ui/visual-control/editable-slots.json",
-    ".prisma-ui/visual-control/owners.json",
-    ".prisma-ui/visual-control/layers.json",
-    ".prisma-ui/visual-control/risks.json",
-    ".prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json",
-    ".prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json"
-  ],
+  "canonicalGlobal": true,
+  "detailPolicy": "repo contains compact indexes; full expanded detail belongs in external evidence/result.zip when needed",
   "gates": [
     "ui:visual-control:inventory",
     "ui:visual-control:owners",
@@ -33,9 +18,50 @@
     "ui:visual-control:report",
     "ui:visual-control:certify"
   ],
+  "generatedBy": "tools/quality/ui-visual-control.mjs",
   "nonGoals": [
     "No visual redesign",
     "No CSS hotfix",
     "No route, auth, Prisma, DB, sync or POS behavior change"
+  ],
+  "outputs": [
+    ".prisma-ui/visual-control/surfaces.json",
+    ".prisma-ui/visual-control/routes.json",
+    ".prisma-ui/visual-control/components.json",
+    ".prisma-ui/visual-control/editable-slots.json",
+    ".prisma-ui/visual-control/owners.json",
+    ".prisma-ui/visual-control/layers.json",
+    ".prisma-ui/visual-control/expanded/manifest.json",
+    ".prisma-ui/visual-control/expanded/<surface>/*.jsonl",
+    ".prisma-ui/visual-control/risks.json",
+    ".prisma-ui/current/UI_VISUAL_CONTROL_REPORT.json",
+    ".prisma-ui/current/UI_EDITABLE_SLOTS_REPORT.json"
+  ],
+  "promotionPolicy": {
+    "allSurfaceOnly": true,
+    "expandedMachineDetailRequired": true,
+    "productSourceMutation": false,
+    "surfaceScopedRunsMayNotPromoteGlobal": true
+  },
+  "runtimeTargetSurfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center"
+  ],
+  "schema": "prisma.ui.visual-control.registry.v1",
+  "scopeMode": "ALL_SURFACES_CANONICAL",
+  "sourceSurface": null,
+  "status": "CERTIFIED",
+  "targetSurfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center",
+    "shared-ui"
   ]
 }

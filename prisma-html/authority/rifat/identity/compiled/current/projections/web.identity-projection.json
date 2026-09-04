@@ -1,19 +1,19 @@
 {
   "adapterId": "prisma.adapter.web.v1",
   "binding": {
-    "layerSource": null,
-    "missing": [
-      "surface-specific-route-owner-map",
-      "surface-specific-region-owner-map",
-      "surface-specific-editable-slot-map",
-      "surface-specific-layer-map"
-    ],
-    "ownerSource": null,
-    "readiness": "BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS",
+    "editableSlotCount": 226,
+    "expandedSource": "authority/rifat/prisma-ui/visual-control/expanded/web/",
+    "layerCount": 92,
+    "layerSource": "authority/rifat/prisma-ui/visual-control/layers.json",
+    "missing": [],
+    "ownerSource": "authority/rifat/prisma-ui/visual-control/owners.json",
+    "readiness": "CERTIFIED_BINDING_SOURCE",
+    "regionOwnerCount": 42,
     "routeCount": 2,
-    "routeSource": "authority/rifat/prisma-ui/routes.json",
+    "routeOwnerCount": 2,
+    "routeSource": "authority/rifat/prisma-ui/visual-control/routes.json",
     "runtimeProjectionAllowed": false,
-    "slotSource": null,
+    "slotSource": "authority/rifat/prisma-ui/visual-control/editable-slots.json",
     "surface": "web"
   },
   "forbiddenMutations": [
@@ -44,7 +44,7 @@
   },
   "runtimeProjectionAllowed": false,
   "schema": "prisma.identity.compiled-projection.v1",
-  "status": "BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS",
+  "status": "BINDING_READY_SOURCE_ONLY",
   "surface": "web",
   "tokens": {
     "asset.iconStyle": "line-soft",
