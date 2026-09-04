@@ -110,6 +110,10 @@ def normalized_registry(source: Path) -> dict[str, Any]:
         raise PromotionError(
             f"target surface set mismatch: {sorted(registry.get('targetSurfaces') or [])}"
         )
+    if set(registry.get("runtimeTargetSurfaces") or []) != set(END_SURFACES):
+        raise PromotionError(
+            f"runtime target surface set mismatch: {sorted(registry.get('runtimeTargetSurfaces') or [])}"
+        )
     # createdAt/branch/repoHead are execution evidence, not canonical authority bytes.
     registry = dict(registry)
     registry.pop("createdAt", None)
