@@ -956,9 +956,46 @@
         "Target Index digest 3ee00a94b02f35dfbdfd4891c2c951dacc05932bd5e9766fb8c6bc936d87e73a",
         "Post-merge AutoMesh 33859553238 / artifact 9931589665 sha256:ac90a3fc694bc7dea7728666827e3570b63556a65ce064f4dca1c5b1ee43ca8a / composed sha256:4694d89f933f59129b89097bd77419192d6059dc5aca5f1384eb90a2a0d2869d / requestDigest 4c96c7799fc2211b12b711585d95eda48f755a5863523145896c3cea911db9b6"
       ]
+    },
+    {
+      "artifact": "PR #527 / GVAE V1 mandatory registered-target mutation enforcement",
+      "type": "generic_visual_application_engine_v1_mandatory_target_gate",
+      "scope": [
+        "factory_ledger",
+        "governance",
+        "prisma-html",
+        "visual_application",
+        "rifat",
+        "identity",
+        "visual_core",
+        "quality"
+      ],
+      "status": "PASS_GVAE_V1_MANDATORY_REGISTERED_TARGET_GATE",
+      "proves": [
+        "For generated Target Index targets, canonical source/projection mutation now requires GVAE transaction-bound application receipt evidence",
+        "Primary CI and VISCORE1 both fail closed on registered target mutations without a valid base-to-head receipt hash chain",
+        "GVAE APPLY receipt creation is included in transaction rollback coverage and remains SOURCE_STATIC_ONLY",
+        "PR #527 passed the 101/101 zero-skip deterministic/adversarial suite and all five final PR workflows",
+        "Fresh post-merge Authority Mesh passed on exact canonical main with two lanes at 100% required authority coverage and zero missing authority"
+      ],
+      "doesNotProve": [
+        "Complete whole-surface target coverage",
+        "Wildcard whole-surface APPLY",
+        "Browser/runtime visual certification",
+        "Any current target is APPLY_READY",
+        "Production or distribution readiness"
+      ],
+      "evidence": [
+        "PRISMA Factory Ledger/evidence/GVAE_V1_MANDATORY_TARGET_GATE_CLOSURE_20260904.md",
+        "PR #527 merge 292565cb23ceb22afb6a52bacaeffc4cdcd881d8",
+        "CI 33862113990; VISCORE1 33862114141; ForgeOS 33862114007; Sync Sentinel 33862114070; repo-navigation-guard 33862114010",
+        "101/101 deterministic/adversarial GVAE tests PASS; zero skips",
+        "Pre-merge Authority Mesh 33861041711 / artifact 9932158016 / requestDigest 4b0087f0249b17528a32b67cc7550f1b5ec44c715ab9ca04ae251a244c399d0d",
+        "Post-merge Authority Mesh 33862352306 / artifact 9932638245 / requestDigest 4ed037acf0b4800b682d3f3ba323e40f18921ae6f39cd8aced926cdb1bfbff8b"
+      ]
     }
   ],
-  "updatedAt": "2026-09-04T09:43:00Z",
+  "updatedAt": "2026-09-04T10:18:00Z",
   "entries": [
     {
       "capabilityId": "runtime.tablet.zero_idle_guard",
@@ -1136,6 +1173,18 @@
         "VISCORE1 33859247028 and CI 33859246919 PASS",
         "Target Index digest 3ee00a94b02f35dfbdfd4891c2c951dacc05932bd5e9766fb8c6bc936d87e73a",
         "Post-merge Authority Mesh 33859553238 / artifact 9931589665 / requestDigest 4c96c7799fc2211b12b711585d95eda48f755a5863523145896c3cea911db9b6"
+      ]
+    },
+    {
+      "capabilityId": "visual.generic_application_engine_v1",
+      "status": "SOURCE_READY",
+      "runId": "PR527_GVAE_V1_MANDATORY_REGISTERED_TARGET_GATE",
+      "evidence": [
+        "PR #527 merge 292565cb23ceb22afb6a52bacaeffc4cdcd881d8",
+        "101/101 deterministic/adversarial GVAE tests PASS; zero skips",
+        "CI 33862113990 and VISCORE1 33862114141 enforce mandatory registered-target receipt gate",
+        "Post-merge Authority Mesh 33862352306 / artifact 9932638245 / requestDigest 4ed037acf0b4800b682d3f3ba323e40f18921ae6f39cd8aced926cdb1bfbff8b",
+        "Whole-surface wildcard APPLY remains blocked pending complete explicit Target Index coverage"
       ]
     }
   ]
