@@ -1,0 +1,249 @@
+name: Tablet Final ScreensQA Runtime Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/tablet-final-screensqa-evidence.yml'
+      - '.github/evidence/tablet-final-screensqa-capture.mjs'
+      - '.github/evidence/tablet-final-screensqa-pilot.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tablet-final-screensqa-runtime-evidence
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PRODUCT_TARGET: 01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb
+  EVIDENCE_BASE: 630f025e3b41ac932a10ffab2f5992817c3037e5
+  APP_ROOT: apps/terminal-de-venta-system/products/tablet/app
+  EVIDENCE_DIR: evidence/tablet-final-screensqa
+  RUNTIME_PORT: '3120'
+  CHROME_DEBUG_PORT: '9224'
+
+jobs:
+  tablet-final-screensqa-runtime:
+    if: github.head_ref == 'evidence/tablet-final-screensqa-2608'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout disposable evidence carrier
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Pin exact product target and preserve POS harness
+        shell: bash
+        env:
+          EVIDENCE_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          python - "$EVIDENCE_BASE" "$EVIDENCE_HEAD" <<'PY'
+          import subprocess, sys
+          base, head = sys.argv[1:3]
+          allowed={
+            '.github/workflows/tablet-final-screensqa-evidence.yml',
+            '.github/evidence/tablet-final-screensqa-capture.mjs',
+            '.github/evidence/tablet-final-screensqa-pilot.mjs',
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only',base+'..'+head],text=True).splitlines())
+          if changed != allowed:
+              raise SystemExit(f'EVIDENCE_CARRIER_SCOPE_DRIFT:{sorted(changed)}')
+          PY
+          mkdir -p "$RUNNER_TEMP/screensqa-harness"
+          git show "$EVIDENCE_HEAD:.github/evidence/tablet-final-screensqa-pilot.mjs" > "$RUNNER_TEMP/screensqa-harness/pilot.mjs"
+          git checkout --detach "$PRODUCT_TARGET"
+          test "$(git rev-parse HEAD)" = "$PRODUCT_TARGET"
+          test -z "$(git status --porcelain)"
+          mkdir -p "$EVIDENCE_DIR"
+          cat > "$EVIDENCE_DIR/scope.json" <<JSON
+          {"schemaVersion":"tablet.final.screensqa.pos.pilot.scope.v2","productTarget":"$PRODUCT_TARGET","evidenceBase":"$EVIDENCE_BASE","evidenceCarrierHead":"$EVIDENCE_HEAD","authorityRun":32963408883,"authorityArtifact":9604786000,"pilotRoute":"/pos","productMutation":false,"productionDbMutation":false,"runnerEphemeralFixtureDb":true,"runnerEphemeralDevLicense":true,"dbPush":false,"migration":false,"seed":false,"prismaGenerate":"runner-ephemeral-generate-only","screenshotsRequired":1}
+          JSON
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install Tablet without lifecycle scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" install --frozen-lockfile --ignore-scripts 2>&1 | tee "$EVIDENCE_DIR/tablet-install.log"
+          test -x "$APP_ROOT/node_modules/.bin/next"
+          test -x "$APP_ROOT/node_modules/.bin/prisma"
+
+      - name: Re-run focused safety gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C "$APP_ROOT" run verify:zero-important 2>&1 | tee "$EVIDENCE_DIR/verify-zero-important.log"
+          pnpm -C "$APP_ROOT" run verify:tablet-license-missing-fallback 2>&1 | tee "$EVIDENCE_DIR/verify-license.log"
+
+      - name: Generate Prisma client only
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DATABASE_URL='file:/dev/null'
+          pnpm -C "$APP_ROOT" run prisma:generate 2>&1 | tee "$EVIDENCE_DIR/prisma-generate.log"
+          test -f "$APP_ROOT/.generated/prisma-client/index.js"
+          if grep -Eiq '(migrate|db push|seed)' "$EVIDENCE_DIR/prisma-generate.log"; then
+            echo 'BLOCKED unexpected database lifecycle operation in generate-only log'
+            exit 1
+          fi
+          echo 'PASS_PRISMA_GENERATE_ONLY_RUNNER_EPHEMERAL' > "$EVIDENCE_DIR/prisma-generate-result.txt"
+
+      - name: Prepare runner-local operational fixtures
+        shell: bash
+        env:
+          PILOT_DB: ${{ runner.temp }}/tablet-pos-pilot.db
+          PILOT_LICENSE: ${{ runner.temp }}/tablet-pos-license.json
+        run: |
+          set -euo pipefail
+          rm -f "$PILOT_DB" "$PILOT_LICENSE"
+          python - <<'PY'
+          import os, sqlite3, json
+          db=os.environ['PILOT_DB']
+          c=sqlite3.connect(db)
+          c.executescript('''
+          CREATE TABLE "Business" ("id" TEXT PRIMARY KEY, "name" TEXT NOT NULL, "taxId" TEXT, "currency" TEXT NOT NULL DEFAULT 'MXN', "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Store" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "code" TEXT NOT NULL, "name" TEXT NOT NULL, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Terminal" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "storeId" TEXT NOT NULL, "code" TEXT NOT NULL, "name" TEXT NOT NULL, "isActive" INTEGER NOT NULL DEFAULT 1, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "CashSession" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "storeId" TEXT NOT NULL, "terminalId" TEXT NOT NULL, "cashierId" TEXT NOT NULL, "cashier" TEXT NOT NULL, "status" TEXT NOT NULL, "openedAt" DATETIME NOT NULL, "openingFloatCents" INTEGER NOT NULL DEFAULT 0, "createdAt" DATETIME NOT NULL, "updatedAt" DATETIME NOT NULL);
+          CREATE TABLE "Product" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "isActive" INTEGER NOT NULL DEFAULT 1, "stockOnHand" INTEGER NOT NULL DEFAULT 0);
+          CREATE TABLE "StockMovement" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "createdAt" DATETIME NOT NULL);
+          CREATE TABLE "OutboxEvent" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL);
+          CREATE TABLE "Sale" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL, "createdAt" DATETIME NOT NULL, "terminalId" TEXT);
+          CREATE TABLE "SaleReturn" ("id" TEXT PRIMARY KEY, "businessId" TEXT NOT NULL, "status" TEXT NOT NULL, "createdAt" DATETIME NOT NULL);
+          ''')
+          now='2026-08-26T10:00:00.000Z'; business='biz_78b3c840796a4a4dad'; store='store_00728649f3804a9e82'; terminal='term_49103c7382d84663a3'
+          c.execute('INSERT INTO Business VALUES(?,?,?,?,?,?)',(business,'Prisma Original Customer',None,'MXN',now,now))
+          c.execute('INSERT INTO Store VALUES(?,?,?,?,?,?)',(store,business,'CENTRO','Sucursal principal',now,now))
+          c.execute('INSERT INTO Terminal VALUES(?,?,?,?,?,?,?,?)',(terminal,business,store,'TB-01','Tablet Caja 1',1,now,now))
+          c.execute('INSERT INTO CashSession VALUES(?,?,?,?,?,?,?,?,?,?,?)',('shift-pos-pilot',business,store,terminal,'tablet-cashier','Ana Caja','OPEN',now,150000,now,now))
+          for i,stock in enumerate((24,18,13,9,32,7),1): c.execute('INSERT INTO Product VALUES(?,?,1,?)',(f'prod-{i}',business,stock))
+          c.commit(); c.close()
+          license_doc={
+            'schemaVersion':'1.0.0','licenseId':'lic_tablet_pos_pilot','customerId':'cust_prisma_original_customer','businessId':business,
+            'storeId':store,'terminalId':terminal,'plan':'DEVELOPMENT','state':'development','assignmentState':'assigned',
+            'validFrom':'2026-01-01T00:00:00.000Z','validUntil':'2027-12-31T23:59:59.000Z','offlineGraceDays':30,
+            'notes':['Runner-local deterministic ScreensQA fixture; not customer licensing evidence.']
+          }
+          with open(os.environ['PILOT_LICENSE'],'w',encoding='utf-8') as f: json.dump(license_doc,f,ensure_ascii=False,indent=2)
+          with open('evidence/tablet-final-screensqa/fixture-summary.json','w',encoding='utf-8') as f: json.dump({'db':'runner-local','license':'unsigned-dev-runner-local','shift':'OPEN','products':6},f,indent=2)
+          PY
+          test -s "$PILOT_DB"
+          test -s "$PILOT_LICENSE"
+          echo 'PASS_RUNNER_LOCAL_POS_DB_AND_DEV_LICENSE_FIXTURES'
+
+      - name: Resolve Chrome
+        id: chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          chrome=''
+          for c in google-chrome google-chrome-stable chromium chromium-browser; do
+            command -v "$c" >/dev/null 2>&1 && chrome="$(command -v "$c")" && break
+          done
+          test -n "$chrome"
+          "$chrome" --version | tee "$EVIDENCE_DIR/chrome-version.log"
+          echo "bin=$chrome" >> "$GITHUB_OUTPUT"
+
+      - name: Start isolated Tablet POS runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          db="$RUNNER_TEMP/tablet-pos-pilot.db"
+          license="$RUNNER_TEMP/tablet-pos-license.json"
+          if curl -sf --max-time 1 "http://127.0.0.1:$RUNTIME_PORT/pos" >/dev/null 2>&1; then
+            echo "BLOCKED occupied runner port $RUNTIME_PORT; refusing cleanup"
+            exit 1
+          fi
+          setsid bash -lc "cd '$APP_ROOT' && export TABLET_DATABASE_URL='file:$db' TABLET_OPERATOR_NAME='Ana Caja' PRISMA_LICENSE_FILE='$license' PRISMA_LICENSE_ALLOW_UNSIGNED='1' PRISMA_RUNTIME_MODE='dev' && exec pnpm exec next dev --webpack -p '$RUNTIME_PORT'" > "$EVIDENCE_DIR/server.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/server.pid"
+          for _ in $(seq 1 120); do
+            curl -sf --max-time 2 "http://127.0.0.1:$RUNTIME_PORT/pos" >/dev/null 2>&1 && exit 0
+            kill -0 "$(cat "$EVIDENCE_DIR/server.pid")" >/dev/null 2>&1 || break
+            sleep 1
+          done
+          tail -n 200 "$EVIDENCE_DIR/server.log" || true
+          exit 1
+
+      - name: Start isolated headless Chrome
+        shell: bash
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.bin }}
+        run: |
+          set -euo pipefail
+          "$CHROME_BIN" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-address=127.0.0.1 --remote-debugging-port="$CHROME_DEBUG_PORT" --user-data-dir="$RUNNER_TEMP/pos-pilot-chrome" about:blank > "$EVIDENCE_DIR/chrome-runtime.log" 2>&1 &
+          echo $! > "$EVIDENCE_DIR/chrome.pid"
+          for _ in $(seq 1 80); do
+            curl -sf --max-time 1 "http://127.0.0.1:$CHROME_DEBUG_PORT/json/version" > "$EVIDENCE_DIR/chrome-debug.json" 2>/dev/null && exit 0
+            sleep 0.25
+          done
+          exit 1
+
+      - name: Capture Tablet POS PNG
+        shell: bash
+        env:
+          RUNTIME_URL: http://127.0.0.1:3120
+        run: |
+          set -euo pipefail
+          node "$RUNNER_TEMP/screensqa-harness/pilot.mjs" 2>&1 | tee "$EVIDENCE_DIR/browser-capture.log"
+          grep -Fxq 'PASS_TABLET_FINAL_SCREENSQA_PILOT_POS_1_1' "$EVIDENCE_DIR/browser-capture.log"
+          test -s "$EVIDENCE_DIR/screenshots/01-pos-pilot.png"
+
+      - name: Validate POS pilot fail-closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -E '(^|[^A-Za-z])(TypeError|ReferenceError|SyntaxError|Unhandled Runtime Error|Internal Server Error)([^A-Za-z]|$)|^[[:space:]]*⨯' "$EVIDENCE_DIR/server.log" > "$EVIDENCE_DIR/server-anomalies.log"; then
+            cat "$EVIDENCE_DIR/server-anomalies.log"
+            exit 1
+          fi
+          node -e 'const fs=require("fs");const x=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));if(x.route!=="/pos"||x.runtimeErrors.length||x.consoleErrors.length||x.networkErrors.length||!x.meta?.cobrarPresent||x.meta?.cobrarDisabled)process.exit(1)' "$EVIDENCE_DIR/pilot-results.json"
+          printf 'PASS_TABLET_FINAL_SCREENSQA_POS_PILOT_NO_FAKE_GREEN\n' | tee "$EVIDENCE_DIR/FINAL_RESULT.txt"
+
+      - name: Build evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('evidence/tablet-final-screensqa'); shots=sorted((root/'screenshots').glob('*.png')) if (root/'screenshots').exists() else []
+          rows=[{'name':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in shots]
+          marker=(root/'FINAL_RESULT.txt').read_text().strip() if (root/'FINAL_RESULT.txt').exists() else 'NOT_REACHED'
+          (root/'PILOT_EVIDENCE.json').write_text(json.dumps({'productTarget':'01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb','route':'/pos','screenshots':rows,'finalMarker':marker,'productionDbMutation':False,'runnerEphemeralFixtureDb':True,'runnerEphemeralDevLicense':True},indent=2)+'\n')
+          PY
+
+      - name: Stop runner-owned processes
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          for pidfile in "$EVIDENCE_DIR/chrome.pid" "$EVIDENCE_DIR/server.pid"; do [ ! -f "$pidfile" ] || kill "$(cat "$pidfile")" >/dev/null 2>&1 || true; done
+
+      - name: Upload Tablet POS pilot
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: tablet-final-screensqa-pos-pilot
+          path: ${{ env.EVIDENCE_DIR }}/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Final POS pilot gate
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fxq 'PASS_TABLET_FINAL_SCREENSQA_POS_PILOT_NO_FAKE_GREEN' "$EVIDENCE_DIR/FINAL_RESULT.txt"
+          test -s "$EVIDENCE_DIR/screenshots/01-pos-pilot.png"
