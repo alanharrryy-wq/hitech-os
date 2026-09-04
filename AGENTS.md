@@ -21,6 +21,32 @@ The goal is to make Codex more autonomous, safer, and more useful without chaini
 - For visual QA, use VS Code Browser Device Emulation evidence when helpful.
 - If unsure, make the safest minimal change or ask one precise question.
 
+## Universal Visual Work Entry Gate
+
+Before **any visual change** on Tablet, PC, Mobile, Web, Chart Lab, Control Center, or Shared UI:
+
+1. Read `apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md`.
+2. Read `PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md` and classify the requested capability/action. Do not rebuild a `doNotRebuild=true` capability.
+3. Obtain a current, task-exact Authority Mesh and Layer Map when mutation is intended.
+4. Run the canonical entry gate before editing:
+   `PYTHONPATH=prisma-html/tools python -m visual_application.visual_work_entry_gate --request <request.json>`
+5. Follow exactly one gate decision:
+   - `GVAE_EXACT_APPLY`: continue only through normal GVAE PREVIEW/APPLY/receipt/VERIFY with Factory Ledger MUTATION PASS, current Mesh + Layer Map, and reviewed hash-pinned Code Atlas UI Bridge planning evidence.
+   - `SURFACE_BATCH_PLAN`: use `visual_application.surface_batch` for read-only bounded wave planning. It is never wildcard APPLY.
+   - `REGISTER_TARGET_FIRST`: establish the missing semantic meaning, recipe, exact binding, layer application policy, adapter/projection authority and exact target identity before mutation.
+   - `BLOCKED`: stop. Do not guess or edit around the gate.
+
+Do **not** directly edit governed CSS/SCSS, TSX/JSX visual owners, tokens, themes, materials, recipes, layers, assets, surface adapters, generated product projections, visual manifests, or Shared UI visual ownership. Do not use `DIRECT_EDIT`, wildcard mutation, untracked visual mutation, guessed authority, or CSS priority overrides.
+
+Canonical visual authority references:
+- `prisma-html/docs/ops/PRISMA_VISUAL_CHANGE_MASTER_MAP.md`
+- `prisma-html/tools/visual_application/README.md`
+- `prisma-html/authority/rifat/`
+- `prisma-html/authority/rifat/prisma-ui/visual-control/target-index/`
+- `prisma-html/tools/visual_application/visual_work_entry_gate.py`
+
+The repository gate and CI are the authority even when conversational context is missing.
+
 ## 200 Operating Directives
 
 
