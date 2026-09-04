@@ -32,6 +32,15 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
 
+      - name: Universal Visual Work Entry Gate
+        working-directory: prisma-html
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=tools python -m visual_application.visual_work_entry_gate \
+            --base "${{ github.event.pull_request.base.sha }}" \
+            --head HEAD
+
       - uses: pnpm/action-setup@v4
         with:
           version: 9.15.0

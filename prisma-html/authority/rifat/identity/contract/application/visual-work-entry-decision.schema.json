@@ -1,0 +1,18 @@
+{
+  "$id": "prisma.visual.work-entry.decision.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "prisma.visual.work-entry.decision.v1"},
+    "decision": {"enum": ["GVAE_EXACT_APPLY","SURFACE_BATCH_PLAN","REGISTER_TARGET_FIRST","BLOCKED"]},
+    "reasons": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "missingAuthority": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "details": {"type": "object", "additionalProperties": true},
+    "runtimeVisualGreen": {"const": false},
+    "wholeSurfaceApplyReady": {"const": false},
+    "productionReady": {"const": false},
+    "doesNotProve": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 3, "uniqueItems": true}
+  },
+  "required": ["schema","decision","reasons","missingAuthority","details","runtimeVisualGreen","wholeSurfaceApplyReady","productionReady","doesNotProve"],
+  "type": "object"
+}

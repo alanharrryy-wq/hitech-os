@@ -31,3 +31,12 @@ The generated Visual Target Index now distinguishes exact application authority 
 A census record may carry surface, canonical source/projection, selector, layer coordinate, region and safety classification, but it deliberately leaves semantic meaning, recipe and exact binding unresolved until those authorities are proven.
 
 Whole-surface orchestration is read-only at the planning layer. `visual_application.surface_batch` remains blocked while any discovery-only gap or blocked exact target exists. No wildcard request can weaken exact-target contracts.
+
+
+## Visual Work Entry contracts
+
+`visual-work-entry-request.schema.json` and `visual-work-entry-decision.schema.json` define the universal pre-edit visual work boundary. The request can identify surfaces, routes, files, selectors or target IDs and may carry a current task-exact Authority Mesh summary when execution is requested.
+
+The decision contract is deliberately closed to four values: `GVAE_EXACT_APPLY`, `SURFACE_BATCH_PLAN`, `REGISTER_TARGET_FIRST`, or `BLOCKED`. No contract value exists for direct edit, wildcard edit, untracked visual mutation or guessed authority.
+
+These contracts do not create semantic meaning, recipes, bindings, layers, adapters, projection authority or readiness. Missing authority remains missing and must be registered or blocked.

@@ -1,0 +1,43 @@
+{
+  "$id": "prisma.visual.work-entry.request.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "prisma.visual.work-entry.request.v1"},
+    "task": {"type": "string", "minLength": 3, "maxLength": 6000},
+    "surface": {"type": "string", "enum": ["tablet","pc","mobile","web","chart-lab","control-center","shared-ui"]},
+    "surfaces": {"type": "array", "items": {"type": "string", "enum": ["tablet","pc","mobile","web","chart-lab","control-center","shared-ui"]}, "uniqueItems": true},
+    "routes": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "files": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "selectors": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "targetIds": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "mode": {"type": "string", "minLength": 1},
+    "intent": {"type": "string", "minLength": 1},
+    "intention": {"type": "string", "minLength": 1},
+    "expectedHead": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "authorityMesh": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {"const": "PASS_COMPOSED_AUTHORITY_MESH"},
+        "repoHead": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "requiredAuthorityCoveragePct": {"const": 100},
+        "blockers": {"const": 0},
+        "requestDigest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "artifactDigest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "layerMapPresent": {"const": true}
+      },
+      "required": ["status","repoHead","requiredAuthorityCoveragePct","blockers","requestDigest","artifactDigest","layerMapPresent"]
+    }
+  },
+  "required": ["schema","task"],
+  "anyOf": [
+    {"required": ["surface"]},
+    {"required": ["surfaces"]},
+    {"required": ["routes"]},
+    {"required": ["files"]},
+    {"required": ["selectors"]},
+    {"required": ["targetIds"]}
+  ],
+  "type": "object"
+}
