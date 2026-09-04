@@ -1070,3 +1070,6 @@ python tools/refresh_files_manifest.py --check
 **Regla nueva:** **un run por surface nunca escribe autoridad global. All-surface se promueve sólo desde un censo fresco completo. Censo físico prueba ubicación, no semántica ni permiso de APPLY.**
 
 **Límite:** este cierre es source/static. No prueba equivalencia browser, visual runtime, producción ni que una surface completa sea APPLY_READY.
+
+
+**Materialización final de autoridad:** el workflow all-surface dejó la autoridad fresca materializada en la rama y el último commit automático `b7c1ae1965d14237aa1c975e4be85c72a18a17bf` sólo refrescó `prisma-html/FILES_MANIFEST.json` por el cambio previo de imports lazy de GVAE. No hubo nueva mutación de producto ni nuevo drift de mapeo. El siguiente run debe ser idempotente y reportar autoridad ya materializada; cualquier nueva mutación generada después de este punto se considera drift y debe investigarse antes de merge.
