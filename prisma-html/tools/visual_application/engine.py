@@ -11,7 +11,7 @@ from .projection import governed_outputs, project
 from .transaction import atomic_write, create_transaction, mark_after, rollback, load_transaction, save_transaction
 from .evidence import evidence
 from .errors import ContractError, ProjectionFailure, TamperedTransaction
-from .security import contained_path
+from .security import contained_path, ensure_path_object_contained
 
 IndexProvider=Callable[[],dict[str,Any]]
 
@@ -96,6 +96,7 @@ def verify(request_value:dict[str,Any]|str|Path,index_provider:IndexProvider,rep
     return evidence("VERIFY","STATIC_GREEN",target_id=target["targetId"],details={"runtimeVisualGreen":False,"manifestVerified":True})
 
 def rollback_transaction(tx_id:str,target_id:str,repo_root:Path,tx_root:Path)->dict[str,Any]:
+    tx_root=ensure_path_object_contained(repo_root,tx_root,field="transactions root")
     tx=load_transaction(tx_root,tx_id)
     if tx.get("targetId")!=target_id:
         raise TamperedTransaction("rollback targetId does not match transaction-bound target")
