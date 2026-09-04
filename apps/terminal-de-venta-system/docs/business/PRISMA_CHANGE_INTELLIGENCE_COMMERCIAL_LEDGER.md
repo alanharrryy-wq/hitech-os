@@ -15,7 +15,7 @@
 ## 0. Identity
 
 ### Category
-**Change Intelligence & Agent Assurance**
+**Change Assurance & Agent Assurance**
 
 ### Master promise
 > **Know the system. Control the change. Prove the result.**
@@ -431,7 +431,7 @@ Qualification questions:
 
 # 8. Commercial Narrative & Pitch ✅
 
-Category: **Change Intelligence & Agent Assurance**.
+Category: **Change Assurance & Agent Assurance**.
 
 Differentiation: **Verified Change Authority**.
 
@@ -532,7 +532,7 @@ Fastest value-creation path:
 
 ---
 
-# 11. Economic Separation: Change Intelligence / Operations OS ✅
+# 11. Economic Separation: Change Assurance / Operations OS ✅
 
 Never value the same capability twice.
 
@@ -551,8 +551,8 @@ Shared assets count once at group level.
 
 Economic ownership test:
 
-1. If Operations OS vanished, could the capability still sell to unrelated software companies? → leans Change Intelligence.
-2. If Change Intelligence vanished, would it still create direct merchant value? → leans Operations OS.
+1. If Operations OS vanished, could the capability still sell to unrelated software companies? → leans Change Assurance.
+2. If Change Assurance vanished, would it still create direct merchant value? → leans Operations OS.
 3. If both need it and neither owns the economic reason → Shared.
 
 Track revenue and costs separately from the first peso:
@@ -569,7 +569,7 @@ No legal spin-out needed yet unless investors, buyers, recurring revenue, liabil
 Working standalone bands before overlap:
 
 - Operations OS: ~MXN **0.5M–1.5M**
-- Change Intelligence strategic fit: ~MXN **0.8M–1.8M**
+- Change Assurance strategic fit: ~MXN **0.8M–1.8M**
 
 Do not simply add the top ends because shared IP/infrastructure and founder/productization uncertainty overlap.
 
@@ -583,13 +583,13 @@ Combined working ranges:
 Milestone combined ladder:
 
 - current: ~MXN 1.2M–2.8M
-- Operations renewal and/or 3 paid Change Intelligence pilots: ~MXN 2M–4M can become more defensible
+- Operations renewal and/or 3 paid Change Assurance pilots: ~MXN 2M–4M can become more defensible
 - ~3 Operations OS customers + 1–2 recurring Guard customers: ~MXN 3M–6M depending on retention/margins/founder dependency
-- meaningful renewals on both lines + ~5+ recurring Change Intelligence customers: MXN 5M–10M+ becomes plausible, but real SaaS metrics should then replace handcrafted ranges
+- meaningful renewals on both lines + ~5+ recurring Change Assurance customers: MXN 5M–10M+ becomes plausible, but real SaaS metrics should then replace handcrafted ranges
 
 Anti-double-count formula:
 
-`PRISMA GROUP VALUE = Operations OS standalone economic value + Change Intelligence standalone economic value + evidenced synergy premium − shared-IP/uncertainty overlap`
+`PRISMA GROUP VALUE = Operations OS standalone economic value + Change Assurance standalone economic value + evidenced synergy premium − shared-IP/uncertainty overlap`
 
 Never:
 
