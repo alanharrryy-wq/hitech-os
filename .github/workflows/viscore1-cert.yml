@@ -42,16 +42,16 @@ jobs:
           import unittest
           suite = unittest.defaultTestLoader.discover('tools/visual_application/tests', top_level_dir='tools')
           count = suite.countTestCases()
-          if count != 105:
+          if count != 107:
               raise SystemExit(f'GVAE_TEST_COUNT_DRIFT:{count}')
           result = unittest.TextTestRunner(verbosity=2).run(suite)
-          if result.testsRun != 105:
+          if result.testsRun != 107:
               raise SystemExit(f'GVAE_TEST_RUN_DRIFT:{result.testsRun}')
           if result.skipped:
               raise SystemExit('GVAE_FULL_CHECKOUT_TESTS_SKIPPED:' + repr(result.skipped))
           if not result.wasSuccessful():
               raise SystemExit('GVAE_TEST_SUITE_FAILED')
-          print('PASS_GVAE_V1_TESTS_105_ZERO_SKIPS')
+          print('PASS_GVAE_V1_TESTS_107_ZERO_SKIPS')
           PY
 
       - name: GVAE mandatory registered-target mutation gate
