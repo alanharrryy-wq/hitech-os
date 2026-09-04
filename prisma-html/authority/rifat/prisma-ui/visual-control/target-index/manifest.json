@@ -1,13 +1,98 @@
 {
   "authority": "current-rifat-and-identity-source",
+  "countsByEnforcement": {
+    "DISCOVERY_ONLY": 3911,
+    "GVAE_ENFORCED": 4
+  },
+  "countsByKind": {
+    "EXACT_APPLICATION_TARGET": 4,
+    "VISUAL_CONTROL_CENSUS_TARGET": 3911
+  },
   "countsByStatus": {
-    "BLOCKED": 4
+    "BLOCKED": 3915
+  },
+  "coverage": {
+    "allSurfacesRepresented": true,
+    "bySurface": {
+      "chart-lab": {
+        "applyReadyCount": 0,
+        "blockedExactCount": 0,
+        "censusTargetCount": 613,
+        "discoveryOnlyCount": 613,
+        "exactApplicationTargetCount": 0,
+        "recordCount": 613,
+        "wholeSurfaceApplyReady": false
+      },
+      "control-center": {
+        "applyReadyCount": 0,
+        "blockedExactCount": 0,
+        "censusTargetCount": 1123,
+        "discoveryOnlyCount": 1123,
+        "exactApplicationTargetCount": 0,
+        "recordCount": 1123,
+        "wholeSurfaceApplyReady": false
+      },
+      "mobile": {
+        "applyReadyCount": 0,
+        "blockedExactCount": 0,
+        "censusTargetCount": 271,
+        "discoveryOnlyCount": 271,
+        "exactApplicationTargetCount": 0,
+        "recordCount": 271,
+        "wholeSurfaceApplyReady": false
+      },
+      "pc": {
+        "applyReadyCount": 0,
+        "blockedExactCount": 0,
+        "censusTargetCount": 827,
+        "discoveryOnlyCount": 827,
+        "exactApplicationTargetCount": 0,
+        "recordCount": 827,
+        "wholeSurfaceApplyReady": false
+      },
+      "shared-ui": {
+        "applyReadyCount": 0,
+        "blockedExactCount": 0,
+        "censusTargetCount": 70,
+        "discoveryOnlyCount": 70,
+        "exactApplicationTargetCount": 0,
+        "recordCount": 70,
+        "wholeSurfaceApplyReady": false
+      },
+      "tablet": {
+        "applyReadyCount": 0,
+        "blockedExactCount": 4,
+        "censusTargetCount": 929,
+        "discoveryOnlyCount": 929,
+        "exactApplicationTargetCount": 4,
+        "recordCount": 933,
+        "wholeSurfaceApplyReady": false
+      },
+      "web": {
+        "applyReadyCount": 0,
+        "blockedExactCount": 0,
+        "censusTargetCount": 78,
+        "discoveryOnlyCount": 78,
+        "exactApplicationTargetCount": 0,
+        "recordCount": 78,
+        "wholeSurfaceApplyReady": false
+      }
+    },
+    "surfaceCount": 7,
+    "wholeSurfaceApplyReadyCount": 0
   },
   "generated": true,
   "globalBlockers": [],
-  "indexDigest": "3ee00a94b02f35dfbdfd4891c2c951dacc05932bd5e9766fb8c6bc936d87e73a",
+  "hardTruth": "Census records prove physical visual coordinates only. DISCOVERY_ONLY records are never APPLY_READY and do not authorize product mutation.",
+  "indexDigest": "d41c0b2f0f9a8f5d691f9f1dfcb2fa0dfa3e6b8bef9372d8b267b7d7b65e563e",
   "manualEditsForbidden": true,
-  "recordCount": 4,
+  "recordCount": 3915,
+  "recordStorage": {
+    "censusDuplicatedInManifest": false,
+    "censusStorage": "per-surface-files",
+    "manifestEnforcedRecordCount": 4,
+    "totalRecordCount": 3915
+  },
   "records": [
     {
       "adapterId": null,
@@ -20,6 +105,7 @@
         "recipe"
       ],
       "canonicalSourcePath": null,
+      "enforcement": "GVAE_ENFORCED",
       "generatedOutputPath": null,
       "implementationLayerId": null,
       "jsonRoot": null,
@@ -28,6 +114,7 @@
       "outputSha256": null,
       "projectionMode": null,
       "recipeId": "*",
+      "recordKind": "EXACT_APPLICATION_TARGET",
       "selector": ".cobrarReferenceButton",
       "semanticMeaningId": "TOK.color.accent",
       "sourceSha256": null,
@@ -46,6 +133,7 @@
         "recipe"
       ],
       "canonicalSourcePath": null,
+      "enforcement": "GVAE_ENFORCED",
       "generatedOutputPath": null,
       "implementationLayerId": null,
       "jsonRoot": null,
@@ -54,6 +142,7 @@
       "outputSha256": null,
       "projectionMode": null,
       "recipeId": "*",
+      "recordKind": "EXACT_APPLICATION_TARGET",
       "selector": ".cobrarReferenceButton::before",
       "semanticMeaningId": "TOK.color.accent",
       "sourceSha256": null,
@@ -72,6 +161,7 @@
         "recipe"
       ],
       "canonicalSourcePath": null,
+      "enforcement": "GVAE_ENFORCED",
       "generatedOutputPath": null,
       "implementationLayerId": null,
       "jsonRoot": null,
@@ -80,6 +170,7 @@
       "outputSha256": null,
       "projectionMode": null,
       "recipeId": "*",
+      "recordKind": "EXACT_APPLICATION_TARGET",
       "selector": ".cobrarIcon",
       "semanticMeaningId": "TOK.color.accent",
       "sourceSha256": null,
@@ -95,6 +186,7 @@
         "layer-application-policy"
       ],
       "canonicalSourcePath": "prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css",
+      "enforcement": "GVAE_ENFORCED",
       "generatedOutputPath": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css",
       "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
       "jsonRoot": null,
@@ -103,6 +195,7 @@
       "outputSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd",
       "projectionMode": "existing-rifat-tablet-generator",
       "recipeId": "REC.button.primary",
+      "recordKind": "EXACT_APPLICATION_TARGET",
       "selector": ".cobrarReferenceButton",
       "semanticMeaningId": "ACT.primary",
       "sourceSha256": "bae907948238073eba339e1be7532814b3498ec25c36104221b0ee84c0584be0",
@@ -116,5 +209,5 @@
     "exact-byte-copy",
     "existing-rifat-tablet-generator"
   ],
-  "version": "1.1.0"
+  "version": "2.0.0"
 }

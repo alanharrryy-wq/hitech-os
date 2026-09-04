@@ -46,8 +46,15 @@ The receipt preserves the exact target, source/projection paths, transaction ide
 
 This rule does not pretend GVAE owns visual code that is not yet registered in the Target Index. Unregistered visual scope must first obtain governed target identity, binding/layer/recipe/adapter/projection authority and Target Index coverage before GVAE can become its mutation path.
 
-## Whole-surface changes
+## All-surface census and whole-surface changes
 
-GVAE V1 does not authorize wildcard or broad surface mutation. A whole-surface claim is valid only when the surface has complete governed target coverage and every included target is exact, current and `APPLY_READY`.
+GVAE now consumes the canonical seven-surface Visual Control promotion. The generated Target Index contains two deliberately different record classes:
 
-Until a complete surface coverage contract exists, a surface redesign must be executed as bounded exact-target waves. A future Surface Batch Orchestrator may coordinate those exact targets, but it must not weaken per-target authority, receipt chains, rollback, projections, manifests, Code Atlas plan/diff binding or post-application runtime visual certification.
+- `EXACT_APPLICATION_TARGET / GVAE_ENFORCED`: semantic exact targets eligible for the normal GVAE authorization pipeline;
+- `VISUAL_CONTROL_CENSUS_TARGET / DISCOVERY_ONLY`: exact physical coordinates discovered from certified all-surface Visual Control authority, always `BLOCKED` until semantic meaning, recipe, exact binding and application policy are proven.
+
+The global committed Target Index manifest stores enforced records and coverage metadata. High-volume discovery records are stored in deterministic per-surface Target Index files to avoid duplicating thousands of records in Git. `build_index()` still returns the complete combined view.
+
+`visual_application.surface_batch` is the read-only whole-surface planner. It does not perform wildcard writes. It returns `SURFACE_BATCH_READY` only when a surface contains explicit exact GVAE-enforced targets, has zero discovery-only gaps, and every included exact target is `APPLY_READY`. Otherwise the whole surface remains fail-closed with blocker counts.
+
+A whole-surface application, when eventually ready, is therefore a bounded orchestration of exact targets. It must preserve target-level Authority Mesh + Layer Map, Factory Ledger MUTATION PASS, Code Atlas plan/diff binding, receipts, rollback, projection integrity and separate browser/runtime visual certification.

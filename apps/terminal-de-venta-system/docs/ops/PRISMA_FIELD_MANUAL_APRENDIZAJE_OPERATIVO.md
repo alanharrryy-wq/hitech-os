@@ -1016,3 +1016,72 @@ The primary CI workflow and VISCORE1 must run the fail-closed GVAE mandatory gat
 This does not grant GVAE authority over unregistered visual files. Missing target identity is a governance gap to resolve first, not permission to bypass the engine.
 
 A whole-surface change is not equivalent to a wildcard APPLY. Until a surface has explicit complete Target Index coverage, surface work must remain a set of exact governed target waves. Any future Surface Batch Orchestrator must preserve target-level Authority Mesh + Layer Map, Factory Ledger MUTATION PASS, reviewed Code Atlas UI Bridge plan/diff, projection authority, receipts, rollback and separate runtime/browser visual certification.
+
+
+---
+
+<!-- GVAE_ALL_SURFACE_PROMOTION_20260904 -->
+### 2026-09-04 - GVAE / Visual Control: restauración canónica all-surface
+
+**Tipo:** ROOT_CAUSE_FIX / GOVERNANCE_LEARNING / VISUAL_AUTHORITY / ANTI_REWORK
+**Superficie:** Tablet / PC / Mobile / Web / Chart Lab / Control Center / Shared UI / Tooling
+
+**Contexto:** GVAE V1 estaba endurecido y correctamente fail-closed, pero su Target Index sólo exponía cuatro targets exactos Tablet/Cobrar. El repo ya contenía un censo Visual Control multi-surface mucho más amplio; el problema real era una ruptura de promoción, no ausencia de mapeo.
+
+**Causa real:** `tools/quality/ui-visual-control.mjs` sabía escanear las siete surfaces, pero un run con `--surface tablet` escribía por defecto en los mismos archivos globales `.prisma-ui/visual-control/**`. Un run Tablet-only posterior sustituyó la autoridad detallada global por una vista Tablet-only. Identity Dictionary consumió/promovió esa vista recortada y marcó PC/Mobile/Web/Chart Lab/Control Center como `BLOCKED_BY_MISSING_VISUAL_CONTROL_BINDINGS`; GVAE heredó el recorte.
+
+**Corrección canónica:**
+- los runs con `--surface <surface>` escriben por defecto en `.prisma-ui/surface-runs/<surface>/` y no pueden reemplazar autoridad global;
+- un run sin `--surface` es la única fuente de censo all-surface canónico;
+- el generador produce shards JSONL completos por surface para routes/components/regions/slots/layers/assets/owners;
+- `prisma-html/tools/promote_visual_control_all_surfaces.py` acepta únicamente input `CERTIFIED / ALL_SURFACES_CANONICAL`, valida las siete surfaces y promueve RIFAT + bindings/adapters;
+- Identity Dictionary compila seis end-surfaces como `CERTIFIED_BINDING_SOURCE / BINDING_READY_SOURCE_ONLY` y Shared UI como `NEUTRAL_SOURCE_READY`, sin habilitar runtime projection;
+- GVAE Target Index integra el censo físico como `VISUAL_CONTROL_CENSUS_TARGET / DISCOVERY_ONLY / BLOCKED`, separado de `EXACT_APPLICATION_TARGET / GVAE_ENFORCED`;
+- el mandatory receipt gate ignora registros `DISCOVERY_ONLY`; sólo targets gobernados/enforced disparan obligación de receipt;
+- `visual_application.surface_batch` es planner read-only y sólo puede declarar una surface batch-ready cuando no quedan gaps discovery-only y todos los exact targets están `APPLY_READY`.
+
+**Evidencia fresca del source actual:** run all-surface certificado con 7 surfaces, 96 routes, 1,978 visual regions, 10,575 editable slots, 215 component owners, 89 CSS owners y 4,453 layers; blockers=0, warnings=0, active `!important`=0 y ambiguous active layer owners=0. La promoción produjo 97 archivos de autoridad y pasó `PASS_ALL_SURFACE_VISUAL_AUTHORITY`.
+
+**GVAE generado:** 3,915 records totales: 4 `EXACT_APPLICATION_TARGET` y 3,911 `VISUAL_CONTROL_CENSUS_TARGET`. Cobertura física representada en las siete surfaces; `wholeSurfaceApplyReadyCount=0` por diseño. No convertir census en permiso de mutación.
+
+**Comandos que funcionaron en CI:**
+
+```bash
+node tools/quality/ui-visual-control.mjs visual-control:certify --surface tablet --strict
+node tools/quality/ui-visual-control.mjs visual-control:certify --output-root "$RUNNER_TEMP/all-surface" --strict
+python prisma-html/tools/promote_visual_control_all_surfaces.py --source "$RUNNER_TEMP/all-surface/visual-control" --write
+python prisma-html/tools/promote_visual_control_all_surfaces.py --source "$RUNNER_TEMP/all-surface/visual-control" --check
+python prisma-html/tools/compile_identity_dictionary.py --write
+cd prisma-html
+PYTHONPATH=tools python -m visual_application.target_index --write
+PYTHONPATH=tools python -m visual_application.target_index --check
+python tools/validate_identity_dictionary.py
+python tools/visual_core.py check
+python tools/refresh_files_manifest.py --write
+python tools/refresh_files_manifest.py --check
+```
+
+**Comando/fallo diagnóstico:** la primera validación all-surface trató `targetSurfaces` como sinónimo de runtimes y falló porque Shared UI no tiene puerto/runtime. Se corrigió separando siete `targetSurfaces` gobernadas de seis `runtimeTargetSurfaces`.
+
+**Authority Mesh:** run `33862863346`, artifact `9932829117`, uploaded sha256 `b36e4d9140082b3c70e8b3c34ad75198f3ce196d4e1bd43089a126fbdfac8b18`, composed sha256 `3842166c51a9aa20441873d4b9a11abb9596914dfeb860da36bdaee5c74990dc`, requestDigest `2288939c44d8bde0edc2e622fba1995a3afafe9ea67ec0bc83097483661d49be`, Layer Map presente.
+
+**Rollback probado:** no se mutó producto/runtime. La materialización de autoridad está versionada por Git; cualquier regresión se revierte por commit/PR. GVAE runtime rollback sigue siendo independiente para futuros APPLY exactos.
+
+**Regla nueva:** **un run por surface nunca escribe autoridad global. All-surface se promueve sólo desde un censo fresco completo. Censo físico prueba ubicación, no semántica ni permiso de APPLY.**
+
+**Límite:** este cierre es source/static. No prueba equivalencia browser, visual runtime, producción ni que una surface completa sea APPLY_READY.
+
+
+**Materialización final de autoridad:** el workflow all-surface dejó la autoridad fresca materializada en la rama y el último commit automático `b7c1ae1965d14237aa1c975e4be85c72a18a17bf` sólo refrescó `prisma-html/FILES_MANIFEST.json` por el cambio previo de imports lazy de GVAE. No hubo nueva mutación de producto ni nuevo drift de mapeo. El siguiente run debe ser idempotente y reportar autoridad ya materializada; cualquier nueva mutación generada después de este punto se considera drift y debe investigarse antes de merge.
+
+
+<!-- GVAE_ALL_SURFACE_FINAL_VALIDATOR_20260904 -->
+### 2026-09-04 - GVAE all-surface: validator RIFAT adaptado y manifest estabilizado
+
+**Resultado:** el validator RIFAT dejó de asumir que la autoridad Visual Control canónica debía ser Tablet-only. Conserva las validaciones Tablet contra sus 23 rutas/route owners, pero las evalúa dentro del shard `expanded/tablet/owners-routeOwners.jsonl`. La autoridad global exige ahora 7 governed surfaces, 6 runtime surfaces, `ALL_SURFACES_CANONICAL`, `canonicalGlobal=true` y expanded authority certificada.
+
+**Evidencia:** VISCORE run `33867371311` pasó GVAE suite, mandatory gate, Target Index, Visual Core, Mesh, source validator, generated report smoke, Identity Dictionary, RIFAT no-regression, Master Map, Atlasfin static gate y no-fake-READY. Su único fallo fue `Committed file manifest must already match`, causado por el cambio recién hecho al validator. El workflow all-surface refrescó únicamente `prisma-html/FILES_MANIFEST.json` en commit `8eeedecebe2e1943544aecbfae83647267dbae87`.
+
+**Regla:** adaptar validators cuando cambia legítimamente el modelo de autoridad; no preservar invariantes obsoletos por nostalgia. Una regresión gateada debe distinguir entre deuda preexistente y regresión nueva.
+
+**Límite:** sigue siendo cierre source/static; no certifica runtime/browser ni producción.

@@ -92,6 +92,8 @@ def protected_targets(index: dict[str, Any]) -> tuple[dict[str, dict[str, Any]],
         if target_id in by_target:
             raise MandatoryGateError(f"duplicate targetId: {target_id}")
         by_target[target_id] = row
+        if row.get("enforcement") == "DISCOVERY_ONLY":
+            continue
         for field in ("canonicalSourcePath", "generatedOutputPath"):
             path = row.get(field)
             if isinstance(path, str) and path:

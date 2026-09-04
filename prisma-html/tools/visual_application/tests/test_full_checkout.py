@@ -1,6 +1,6 @@
 import hashlib,json,unittest
 from pathlib import Path
-from visual_application.target_index import ROOT,build_index,SUPPORTED_PROJECTION_MODES
+from visual_application.target_index import ROOT,OUT,build_index,render_files,SUPPORTED_PROJECTION_MODES,CENSUS_KIND,DISCOVERY_ONLY,SURFACES
 
 REPO_ROOT=ROOT.parent
 class FullCheckoutTests(unittest.TestCase):
@@ -18,6 +18,32 @@ class FullCheckoutTests(unittest.TestCase):
         row=[r for r in build_index()['records'] if r['targetId']=='TGT.TABLET.POS.COBRAR.PRIMARY.V1'][0]; self.assertIsNone(row['adapterId']); self.assertIn('adapter',row['blockers'])
     def test_target_index_respects_layer_application_policy(self):
         row=[r for r in build_index()['records'] if r['targetId']=='TGT.TABLET.POS.COBRAR.PRIMARY.V1'][0]; self.assertIn('layer-application-policy',row['blockers'])
+    def test_target_index_represents_all_surfaces_without_fake_ready(self):
+        index=build_index()
+        self.assertTrue(index['coverage']['allSurfacesRepresented'])
+        self.assertEqual(set(index['coverage']['bySurface']),set(SURFACES))
+        self.assertGreater(index['countsByKind'].get(CENSUS_KIND,0),0)
+        self.assertEqual(index['coverage']['wholeSurfaceApplyReadyCount'],0)
+        census=[row for row in index['records'] if row['recordKind']==CENSUS_KIND]
+        self.assertTrue(census)
+        self.assertTrue(all(row['enforcement']==DISCOVERY_ONLY and row['status']=='BLOCKED' for row in census))
+
+    def test_committed_manifest_stores_enforced_records_without_census_duplication(self):
+        index=build_index()
+        files=render_files(index)
+        manifest=json.loads(files[OUT/'manifest.json'].decode('utf-8'))
+        self.assertFalse(manifest['recordStorage']['censusDuplicatedInManifest'])
+        self.assertEqual(manifest['recordStorage']['totalRecordCount'],index['recordCount'])
+        self.assertTrue(all(row.get('enforcement')!=DISCOVERY_ONLY for row in manifest['records']))
+        surface_views=[
+            json.loads(files[OUT/f'{surface}.json'].decode('utf-8'))
+            for surface in SURFACES
+        ]
+        self.assertTrue(any(
+            row.get('recordKind')==CENSUS_KIND
+            for view in surface_views for row in view['records']
+        ))
+
     def test_factory_ledger_mutation_gate_is_bound_into_engine(self):
         p=ROOT/'tools/visual_application/authority.py'; text=p.read_text(encoding='utf-8')
         self.assertIn('PASS_ANTI_REWORK_GATE',text); self.assertIn('verify_prisma_anti_rework_gate.py',text); self.assertIn('PASS_COMPOSED_AUTHORITY_MESH',text)

@@ -15,10 +15,24 @@ AUTHORITY_ROOT = PRISMA_HTML_ROOT / "authority" / "rifat"
 TABLET_ROOT = AUTHORITY_ROOT / "tablet"
 VISUAL_SOURCE_MANIFEST = AUTHORITY_ROOT / "visual-source-manifest.json"
 WINDOWS_PATH = re.compile(r"[A-Za-z]:\\\\")
+GOVERNED_SURFACES = {"chart-lab", "web", "tablet", "pc", "mobile", "control-center", "shared-ui"}
+RUNTIME_SURFACES = {"chart-lab", "web", "tablet", "pc", "mobile", "control-center"}
 
 
 def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_jsonl(path: Path) -> list[dict]:
+    rows: list[dict] = []
+    for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if not line.strip():
+            continue
+        value = json.loads(line)
+        if not isinstance(value, dict):
+            raise ValueError(f"JSONL object required: {path}:{number}")
+        rows.append(value)
+    return rows
 
 
 def sha256(path: Path) -> str:
@@ -151,8 +165,16 @@ def main() -> int:
     if visual_tablet_routes != route_ids:
         problems.append("canonical Visual Control Tablet routes do not match RIFAT route bindings")
     visual_registry = load(prisma_ui / "visual-control" / "registry.json")
-    if visual_registry.get("targetSurfaces") != ["tablet"]:
-        problems.append("canonical Visual Control must target only the Tablet surface")
+    if visual_registry.get("status") != "CERTIFIED":
+        problems.append("canonical Visual Control registry is not CERTIFIED")
+    if visual_registry.get("scopeMode") != "ALL_SURFACES_CANONICAL" or visual_registry.get("canonicalGlobal") is not True:
+        problems.append("canonical Visual Control is not the all-surface promoted authority")
+    if set(visual_registry.get("targetSurfaces") or []) != GOVERNED_SURFACES:
+        problems.append("canonical Visual Control governed surface set is incomplete")
+    if set(visual_registry.get("runtimeTargetSurfaces") or []) != RUNTIME_SURFACES:
+        problems.append("canonical Visual Control runtime surface set is incomplete")
+    if visual_registry.get("sourceSurface") is not None:
+        problems.append("canonical Visual Control must not be surface-scoped")
     visual_risks = load(prisma_ui / "visual-control" / "risks.json")
     required_zero_risks = (
         "blockerCount",
@@ -168,8 +190,33 @@ def main() -> int:
     ):
         problems.append("canonical Tablet Visual Control risks are not zero-certified")
     visual_owners = load(prisma_ui / "visual-control" / "owners.json")
-    if visual_owners.get("status") != "CERTIFIED" or visual_owners.get("routeOwnerCount") != len(route_ids):
-        problems.append("canonical Tablet Visual Control route owners are incomplete")
+    if visual_owners.get("status") != "CERTIFIED":
+        problems.append("canonical Visual Control owners are not CERTIFIED")
+    if visual_owners.get("routeOwnerCount") != len(visual_routes.get("routes", [])):
+        problems.append("canonical Visual Control global route owner count is incomplete")
+
+    tablet_route_owner_path = prisma_ui / "visual-control" / "expanded" / "tablet" / "owners-routeOwners.jsonl"
+    if not tablet_route_owner_path.is_file():
+        problems.append("canonical Tablet Visual Control route-owner shard is missing")
+    else:
+        tablet_route_owners = load_jsonl(tablet_route_owner_path)
+        tablet_owner_routes = [row.get("route") for row in tablet_route_owners]
+        if len(tablet_route_owners) != len(route_ids) or tablet_owner_routes != route_ids:
+            problems.append("canonical Tablet Visual Control route owners are incomplete")
+        if any(row.get("surface") != "tablet" for row in tablet_route_owners):
+            problems.append("canonical Tablet Visual Control route-owner shard contains foreign surfaces")
+
+    expanded_manifest = load(prisma_ui / "visual-control" / "expanded" / "manifest.json")
+    if expanded_manifest.get("status") != "CERTIFIED":
+        problems.append("canonical Visual Control expanded authority is not CERTIFIED")
+    if expanded_manifest.get("scopeMode") != "ALL_SURFACES_CANONICAL" or expanded_manifest.get("canonicalGlobal") is not True:
+        problems.append("canonical Visual Control expanded authority is not all-surface canonical")
+    if set(expanded_manifest.get("surfaces") or []) != GOVERNED_SURFACES:
+        problems.append("canonical Visual Control expanded surface set is incomplete")
+    expanded_counts = expanded_manifest.get("countsBySurface") if isinstance(expanded_manifest.get("countsBySurface"), dict) else {}
+    tablet_counts = expanded_counts.get("tablet") if isinstance(expanded_counts.get("tablet"), dict) else {}
+    if tablet_counts.get("routeOwners") != len(route_ids):
+        problems.append("canonical Tablet expanded route-owner count does not match RIFAT routes")
 
     governance = AUTHORITY_ROOT / "governance" / "current"
     required_governance = (

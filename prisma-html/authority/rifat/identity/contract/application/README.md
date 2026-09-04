@@ -19,3 +19,15 @@ For any path already represented by the generated Visual Target Index, direct mu
 Receipt evidence is source/static only. It proves a governed GVAE application transition and does not prove browser rendering, runtime visual correctness, all-surface coverage or production readiness.
 
 Whole-surface mutation is not a V1 wildcard capability. Surface-wide orchestration requires complete explicit Target Index coverage and exact target-level authorization for every included target.
+
+
+## All-surface census records
+
+The generated Visual Target Index now distinguishes exact application authority from physical census coverage.
+
+- `EXACT_APPLICATION_TARGET / GVAE_ENFORCED` records participate in GVAE PREVIEW/APPLY/VERIFY and the mandatory receipt gate.
+- `VISUAL_CONTROL_CENSUS_TARGET / DISCOVERY_ONLY` records prove a current physical CSS coordinate from the certified seven-surface Visual Control authority. They remain `BLOCKED` and cannot authorize APPLY.
+
+A census record may carry surface, canonical source/projection, selector, layer coordinate, region and safety classification, but it deliberately leaves semantic meaning, recipe and exact binding unresolved until those authorities are proven.
+
+Whole-surface orchestration is read-only at the planning layer. `visual_application.surface_batch` remains blocked while any discovery-only gap or blocked exact target exists. No wildcard request can weaken exact-target contracts.

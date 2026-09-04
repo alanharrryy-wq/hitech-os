@@ -80,6 +80,18 @@ class MandatoryGateTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "PASS_GVAE_MANDATORY_GATE")
 
+    def test_discovery_only_target_does_not_require_receipt(self):
+        doc = index()
+        doc["records"][0]["enforcement"] = "DISCOVERY_ONLY"
+        result = evaluate(
+            index=doc,
+            changed={SOURCE},
+            receipts=[],
+            before_hash=lambda path: "1"*64,
+            after_hash=lambda path: "2"*64,
+        )
+        self.assertEqual(result["status"], "PASS_GVAE_MANDATORY_GATE")
+
     def test_registered_source_change_without_receipt_blocks(self):
         result = evaluate(
             index=index(),

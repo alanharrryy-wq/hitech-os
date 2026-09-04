@@ -1,0 +1,240 @@
+name: PRISMA GVAE All-Surface Authority
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/terminal-de-venta-system/tools/quality/ui-visual-control.mjs'
+      - 'apps/terminal-de-venta-system/.prisma-ui/**'
+      - 'apps/terminal-de-venta-system/tools/quality/ui-certainty.mjs'
+      - 'prisma-html/tools/promote_visual_control_all_surfaces.py'
+      - 'prisma-html/tools/identity_dictionary_core.py'
+      - 'prisma-html/tools/visual_application/**'
+      - 'prisma-html/authority/rifat/prisma-ui/visual-control/**'
+      - 'prisma-html/authority/rifat/identity/**'
+      - '.github/workflows/gvae-all-surface-authority.yml'
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  PYTHONDONTWRITEBYTECODE: '1'
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  all-surface-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+          run_install: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Factory Ledger MUTATION anti-rework gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util
+          import json
+          from pathlib import Path
+
+          repo = Path.cwd()
+          gate_path = repo / "PRISMA Factory Ledger" / "tools" / "verify_prisma_anti_rework_gate.py"
+          spec = importlib.util.spec_from_file_location("prisma_factory_gate", gate_path)
+          module = importlib.util.module_from_spec(spec)
+          assert spec and spec.loader
+          spec.loader.exec_module(module)
+
+          authority = module.read_authority(repo)
+          base_head = "18ebd200186177f27b7a460b6d79f055cd665dad"
+          request = {
+              "schemaVersion": module.SCHEMA,
+              "mode": "MUTATION",
+              "expectedHead": base_head,
+              "task": "Advance existing GVAE V1 by restoring the already-existing certified all-surface Visual Control promotion path into canonical RIFAT, Identity and generated Target Index. Preserve existing mappings, fail closed, no product runtime mutation.",
+              "capabilities": [
+                  {
+                      "id": "visual.generic_application_engine_v1",
+                      "requestedAction": "ADVANCE",
+                  }
+              ],
+              "authorityMesh": {
+                  "status": "PASS_COMPOSED_AUTHORITY_MESH",
+                  "repoHead": base_head,
+                  "requiredAuthorityCoveragePct": 100,
+                  "blockers": 0,
+                  "requestDigest": "2288939c44d8bde0edc2e622fba1995a3afafe9ea67ec0bc83097483661d49be",
+                  "artifactDigest": "b36e4d9140082b3c70e8b3c34ad75198f3ce196d4e1bd43089a126fbdfac8b18",
+                  "layerMapPresent": True,
+              },
+              "visualMutation": True,
+          }
+          result = module.decide(
+              repo,
+              authority,
+              request,
+              current_head=base_head,
+              dirty=[],
+          )
+          print(json.dumps(result, indent=2, ensure_ascii=False, sort_keys=True))
+          if result.get("result") != "PASS_ANTI_REWORK_GATE":
+              raise SystemExit(2)
+          print("PASS_GVAE_ALL_SURFACE_ANTI_REWORK")
+          PY
+
+      - name: Install workspace dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Prove surface-scoped run cannot overwrite global Visual Control
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          before="$RUNNER_TEMP/global-before.sha256"
+          after="$RUNNER_TEMP/global-after.sha256"
+          find .prisma-ui/visual-control -type f -print0 2>/dev/null \
+            | sort -z \
+            | xargs -0 sha256sum > "$before" || true
+          node tools/quality/ui-visual-control.mjs visual-control:certify --surface tablet --strict
+          find .prisma-ui/visual-control -type f -print0 2>/dev/null \
+            | sort -z \
+            | xargs -0 sha256sum > "$after" || true
+          diff -u "$before" "$after"
+          test -s .prisma-ui/surface-runs/tablet/visual-control/registry.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const p='.prisma-ui/surface-runs/tablet/visual-control/registry.json';
+          const j=JSON.parse(fs.readFileSync(p,'utf8'));
+          if(j.scopeMode!=='SURFACE_SCOPED'||j.canonicalGlobal!==false||j.sourceSurface!=='tablet'){
+            throw new Error('SCOPED_VISUAL_CONTROL_ISOLATION_FAILED');
+          }
+          console.log('PASS_SCOPED_VISUAL_CONTROL_ISOLATION');
+          NODE
+
+      - name: Generate fresh all-surface Visual Control candidate
+        working-directory: apps/terminal-de-venta-system
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$RUNNER_TEMP/all-surface"
+          node tools/quality/ui-visual-control.mjs visual-control:certify \
+            --output-root "$RUNNER_TEMP/all-surface" \
+            --strict
+          node - "$RUNNER_TEMP/all-surface/visual-control/registry.json" "$RUNNER_TEMP/all-surface/visual-control/expanded/manifest.json" <<'NODE'
+          const fs=require('fs');
+          const [registryPath, expandedPath]=process.argv.slice(2);
+          const registry=JSON.parse(fs.readFileSync(registryPath,'utf8'));
+          const expanded=JSON.parse(fs.readFileSync(expandedPath,'utf8'));
+          const expected=['chart-lab','web','tablet','pc','mobile','control-center','shared-ui'].sort();
+          const runtimeExpected=['chart-lab','web','tablet','pc','mobile','control-center'].sort();
+          const actual=[...(registry.targetSurfaces||[])].sort();
+          const runtimeActual=[...(registry.runtimeTargetSurfaces||[])].sort();
+          if(registry.status!=='CERTIFIED') throw new Error('GLOBAL_VISUAL_CONTROL_NOT_CERTIFIED');
+          if(registry.scopeMode!=='ALL_SURFACES_CANONICAL'||registry.canonicalGlobal!==true) throw new Error('GLOBAL_SCOPE_MODE_INVALID');
+          if(JSON.stringify(actual)!==JSON.stringify(expected)) throw new Error('GLOBAL_SURFACE_SET_INVALID:'+JSON.stringify(actual));
+          if(JSON.stringify(runtimeActual)!==JSON.stringify(runtimeExpected)) throw new Error('GLOBAL_RUNTIME_SURFACE_SET_INVALID:'+JSON.stringify(runtimeActual));
+          for(const surface of expected){
+            const row=expanded.countsBySurface?.[surface];
+            if(!row||!(row.layers>0)||!(row.editableSlots>0)||!(row.regionOwners>0)) {
+              throw new Error('GLOBAL_SURFACE_DETAIL_MISSING:'+surface+':'+JSON.stringify(row));
+            }
+            if(surface!=='shared-ui'&&!(row.routes>0)) throw new Error('GLOBAL_SURFACE_ROUTES_MISSING:'+surface);
+          }
+          console.log('PASS_FRESH_ALL_SURFACE_VISUAL_CONTROL');
+          NODE
+
+      - name: Promote candidate into canonical RIFAT in ephemeral checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/promote_visual_control_all_surfaces.py \
+            --source "$RUNNER_TEMP/all-surface/visual-control" \
+            --write
+          python prisma-html/tools/promote_visual_control_all_surfaces.py \
+            --source "$RUNNER_TEMP/all-surface/visual-control" \
+            --check
+          git diff -- \
+            prisma-html/authority/rifat/prisma-ui/visual-control \
+            prisma-html/authority/rifat/identity/registries/bindings.registry.json \
+            > "$RUNNER_TEMP/all-surface-authority.patch"
+
+      - name: Recompile Identity and GVAE from promoted authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python prisma-html/tools/compile_identity_dictionary.py --write
+          (
+            cd prisma-html
+            PYTHONPATH=tools python -m visual_application.target_index --write
+            PYTHONPATH=tools python -m visual_application.target_index --check
+            python tools/validate_identity_dictionary.py
+            python tools/visual_core.py check
+            python tools/refresh_files_manifest.py --write
+            python tools/refresh_files_manifest.py --check
+          )
+
+      - name: Materialize fresh all-surface authority on PR branch
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          git add -- \
+            prisma-html/authority/rifat/prisma-ui/visual-control \
+            prisma-html/authority/rifat/identity/registries/bindings.registry.json \
+            prisma-html/authority/rifat/identity/registries/surface-adapters.registry.json \
+            prisma-html/authority/rifat/identity/compiled/current \
+            prisma-html/FILES_MANIFEST.json
+          if git diff --cached --quiet; then
+            echo "PASS_ALL_SURFACE_AUTHORITY_ALREADY_MATERIALIZED"
+            exit 0
+          fi
+          git config user.name "prisma-gvae-bot"
+          git config user.email "prisma-gvae-bot@users.noreply.github.com"
+          git commit -m "chore(visual): materialize fresh all-surface authority"
+          git push origin "HEAD:$HEAD_REF"
+          echo "PASS_ALL_SURFACE_AUTHORITY_MATERIALIZED"
+
+      - name: Stage deterministic candidate bundle
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gvae-all-surface-candidate/app"
+          mkdir -p "$RUNNER_TEMP/gvae-all-surface-candidate/prisma-html"
+          cp -R "$RUNNER_TEMP/all-surface/visual-control" "$RUNNER_TEMP/gvae-all-surface-candidate/app/" 2>/dev/null || true
+          cp -R prisma-html/authority/rifat/prisma-ui/visual-control "$RUNNER_TEMP/gvae-all-surface-candidate/prisma-html/"
+          mkdir -p "$RUNNER_TEMP/gvae-all-surface-candidate/prisma-html/identity"
+          cp prisma-html/authority/rifat/identity/registries/bindings.registry.json \
+             "$RUNNER_TEMP/gvae-all-surface-candidate/prisma-html/identity/bindings.registry.json"
+          cp "$RUNNER_TEMP/all-surface-authority.patch" "$RUNNER_TEMP/gvae-all-surface-candidate/" 2>/dev/null || true
+
+      - name: Upload all-surface authority candidate
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: gvae-all-surface-authority-candidate
+          path: ${{ runner.temp }}/gvae-all-surface-candidate
+          if-no-files-found: error
+          retention-days: 7

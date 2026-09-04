@@ -50,15 +50,28 @@ Generated report outputs live under `.prisma-ui/current/`:
 - `UI_VISUAL_CONTROL_REUSE_REPORT.json`
 - `UI_VISUAL_CONTROL_CERT_REPORT.json`
 
-High-volume ownership output is compacted in Git. The repo keeps counts,
-profiles, samples, and lookup indexes needed to plan future visual edits.
-Fully expanded slot/layer detail belongs in the external result evidence zip
-when a certification run needs that forensic payload.
+Human-facing Visual Control summaries remain compact, but the governed machine layer now preserves full deterministic detail needed for exact-target compilation.
 
-The compact repo indexes intentionally cap expanded slot, owner, layer and
-asset detail. If a future certification needs full forensic payloads, generate
-that payload into the task evidence folder under `F:\descargasf\...result.zip`
-instead of committing multi-megabyte JSON dumps.
+- Surface-scoped runs are isolated under `.prisma-ui/surface-runs/<surface>/` by default and **must not** overwrite the all-surface registry.
+- A no-`--surface` run is the only canonical all-surface census source.
+- Full machine detail is emitted as deterministic JSONL shards under `visual-control/expanded/<surface>/`.
+- Canonical promoted shards live under `prisma-html/authority/rifat/prisma-ui/visual-control/expanded/`.
+- Human reports may still use bounded samples; GVAE and Identity consume promoted machine detail instead of inferring from samples.
+- External result ZIPs remain useful forensic evidence, but they are no longer the only place where exact machine coordinates can exist.
+
+The distinction is deliberate: compact summaries are for people; expanded governed shards are for deterministic compilers and target resolution.
+
+## Canonical all-surface promotion
+
+The canonical chain is:
+
+`fresh all-surface census -> fail-closed promotion -> RIFAT visual-control authority -> Identity bindings/adapters -> compiled Identity -> GVAE Visual Target Index`
+
+Promotion is performed by `prisma-html/tools/promote_visual_control_all_surfaces.py`. It accepts only `CERTIFIED`, `ALL_SURFACES_CANONICAL` input containing all seven governed surfaces and complete expanded shards. A surface-scoped run is rejected for global promotion.
+
+The PR workflow `.github/workflows/gvae-all-surface-authority.yml` proves scoped-run isolation, generates a fresh all-surface candidate, promotes it in an ephemeral checkout, recompiles Identity and GVAE, checks deterministic files and materializes changed canonical authority on the PR branch.
+
+A physical census coordinate is not semantic application permission. GVAE publishes census coordinates as `VISUAL_CONTROL_CENSUS_TARGET / DISCOVERY_ONLY / BLOCKED` until exact semantic meaning, recipe, binding, layer application policy and target-specific authority are proven.
 
 ## Commands
 

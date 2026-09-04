@@ -1,0 +1,102 @@
+{
+  "canonicalGlobal": true,
+  "countsBySurface": {
+    "chart-lab": {
+      "assets": 9,
+      "components": 8,
+      "cssOwners": 2,
+      "editableSlots": 2160,
+      "layers": 756,
+      "regionOwners": 414,
+      "routeOwners": 2,
+      "routes": 2,
+      "visualRegions": 414
+    },
+    "control-center": {
+      "assets": 0,
+      "components": 1,
+      "cssOwners": 43,
+      "editableSlots": 2676,
+      "layers": 1244,
+      "regionOwners": 519,
+      "routeOwners": 1,
+      "routes": 1,
+      "visualRegions": 519
+    },
+    "mobile": {
+      "assets": 17,
+      "components": 17,
+      "cssOwners": 7,
+      "editableSlots": 835,
+      "layers": 325,
+      "regionOwners": 153,
+      "routeOwners": 5,
+      "routes": 5,
+      "visualRegions": 153
+    },
+    "pc": {
+      "assets": 40,
+      "components": 130,
+      "cssOwners": 17,
+      "editableSlots": 1789,
+      "layers": 906,
+      "regionOwners": 305,
+      "routeOwners": 63,
+      "routes": 63,
+      "visualRegions": 305
+    },
+    "shared-ui": {
+      "assets": 0,
+      "components": 1,
+      "cssOwners": 2,
+      "editableSlots": 362,
+      "layers": 101,
+      "regionOwners": 72,
+      "routeOwners": 0,
+      "routes": 0,
+      "visualRegions": 72
+    },
+    "tablet": {
+      "assets": 54,
+      "components": 54,
+      "cssOwners": 16,
+      "editableSlots": 2527,
+      "layers": 1029,
+      "regionOwners": 473,
+      "routeOwners": 23,
+      "routes": 23,
+      "visualRegions": 473
+    },
+    "web": {
+      "assets": 2,
+      "components": 4,
+      "cssOwners": 2,
+      "editableSlots": 226,
+      "layers": 92,
+      "regionOwners": 42,
+      "routeOwners": 2,
+      "routes": 2,
+      "visualRegions": 42
+    }
+  },
+  "detailPolicy": "Full deterministic machine detail for governed promotion and exact-target derivation. Human reports remain compact.",
+  "generatedBy": "tools/quality/ui-visual-control.mjs",
+  "promotionPolicy": {
+    "allSurfaceOnly": true,
+    "fullMachineDetail": true,
+    "surfaceScopedRunsMayNotPromoteGlobal": true
+  },
+  "schema": "prisma.ui.visual-control.expanded-manifest.v1",
+  "scopeMode": "ALL_SURFACES_CANONICAL",
+  "sourceSurface": null,
+  "status": "CERTIFIED",
+  "surfaces": [
+    "chart-lab",
+    "web",
+    "tablet",
+    "pc",
+    "mobile",
+    "control-center",
+    "shared-ui"
+  ]
+}
