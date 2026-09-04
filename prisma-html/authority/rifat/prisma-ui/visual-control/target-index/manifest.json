@@ -1,26 +1,20 @@
 {
   "authority": "current-rifat-and-identity-source",
-  "countsByStatus": {
-    "BLOCKED": 4
-  },
+  "countsByStatus": {"BLOCKED": 4},
   "generated": true,
   "globalBlockers": [],
-  "indexDigest": "8b7441ed0902bd06ebdb39277ebd2c90ea2b97266950ef22e45794e46b4d6488",
+  "indexDigest": "3ee00a94b02f35dfbdfd4891c2c951dacc05932bd5e9766fb8c6bc936d87e73a",
   "manualEditsForbidden": true,
   "recordCount": 4,
   "records": [
     {
       "adapterId": null,
       "bindingId": "BND.TOK.COLOR.ACCENT.TABLET.MULTI.V1",
-      "blockers": [
-        "adapter",
-        "binding",
-        "layer",
-        "projection",
-        "recipe"
-      ],
+      "blockers": ["adapter", "binding", "layer", "projection", "recipe"],
       "canonicalSourcePath": null,
       "generatedOutputPath": null,
+      "implementationLayerId": null,
+      "jsonRoot": null,
       "layerId": null,
       "manualEditsForbidden": null,
       "outputSha256": null,
@@ -36,15 +30,11 @@
     {
       "adapterId": null,
       "bindingId": "BND.TOK.COLOR.ACCENT.TABLET.MULTI.V1",
-      "blockers": [
-        "adapter",
-        "binding",
-        "layer",
-        "projection",
-        "recipe"
-      ],
+      "blockers": ["adapter", "binding", "layer", "projection", "recipe"],
       "canonicalSourcePath": null,
       "generatedOutputPath": null,
+      "implementationLayerId": null,
+      "jsonRoot": null,
       "layerId": null,
       "manualEditsForbidden": null,
       "outputSha256": null,
@@ -60,15 +50,11 @@
     {
       "adapterId": null,
       "bindingId": "BND.TOK.COLOR.ACCENT.TABLET.MULTI.V1",
-      "blockers": [
-        "adapter",
-        "binding",
-        "layer",
-        "projection",
-        "recipe"
-      ],
+      "blockers": ["adapter", "binding", "layer", "projection", "recipe"],
       "canonicalSourcePath": null,
       "generatedOutputPath": null,
+      "implementationLayerId": null,
+      "jsonRoot": null,
       "layerId": null,
       "manualEditsForbidden": null,
       "outputSha256": null,
@@ -84,11 +70,11 @@
     {
       "adapterId": null,
       "bindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
-      "blockers": [
-        "adapter"
-      ],
+      "blockers": ["adapter", "layer-application-policy"],
       "canonicalSourcePath": "prisma-html/authority/rifat/tablet/runtime-sources/modules/pos/pos.module.css",
       "generatedOutputPath": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos.module.css",
+      "implementationLayerId": "products.tablet.app.components.pos.pos.module.css.cobrarreferencebutton",
+      "jsonRoot": null,
       "layerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE",
       "manualEditsForbidden": true,
       "outputSha256": "a77f160e1c66227812cdbf3f080bfecc7abbf08afcc4c1d7c3526ec932cbb8bd",
@@ -103,9 +89,6 @@
     }
   ],
   "schema": "prisma.visual.application.target-index.v1",
-  "supportedProjectionModes": [
-    "exact-byte-copy",
-    "existing-rifat-tablet-generator"
-  ],
-  "version": "1.0.0"
+  "supportedProjectionModes": ["exact-byte-copy", "existing-rifat-tablet-generator"],
+  "version": "1.1.0"
 }
