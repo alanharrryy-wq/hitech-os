@@ -27,7 +27,7 @@ PR #521 correctly established a fail-closed SOURCE_STATIC_ONLY boundary and pass
 11. **Python request validation is weaker than the published JSON Schema.** Several field formats/types/uniqueness constraints are not enforced consistently by the runtime loader.
 12. **CLI error semantics are not fully fail-closed.** Invalid JSON, missing files and some unsupported-mode paths can escape the structured GVAE error result; ROLLBACK bypasses the normal request contract path.
 13. **Rollback evidence can be misattributed.** Target identity is supplied again by the rollback caller rather than being bound into the transaction record.
-14. **The exact 54-test CI count omits these adversarial cases.** Existing green therefore proves the declared suite, not these uncovered negative paths.
+14. **The exact 54-test CI count omits these adversarial cases.** Existing green therefore proves the declared suite, not these uncovered negative paths.\n15. **APPLY does not consume or validate the mandatory mutation-authority evidence.** The engine can enter its write path without machine-verifying a current Factory Ledger MUTATION PASS, PASS_COMPOSED_AUTHORITY_MESH binding, zero blockers, artifact/request digests or Layer Map presence.\n16. **The engine does not consume a reviewed UI Bridge plan/diff identity.** The Master Map Definition of Done requires current validated UI Bridge plans, but the current request/preflight path has no planId/plan checksum binding and cannot prove that executed operations are the reviewed plan.
 
 ## Required corrective gate
 
