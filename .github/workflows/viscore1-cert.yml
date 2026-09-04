@@ -51,7 +51,7 @@ jobs:
               raise SystemExit('GVAE_FULL_CHECKOUT_TESTS_SKIPPED:' + repr(result.skipped))
           if not result.wasSuccessful():
               raise SystemExit('GVAE_TEST_SUITE_FAILED')
-          print('PASS_GVAE_V1_TESTS_54_ZERO_SKIPS')
+          print('PASS_GVAE_V1_TESTS_94_ZERO_SKIPS')
           PY
 
       - name: GVAE Target Index and Visual Core source-static readiness
@@ -59,8 +59,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          PYTHONPATH=tools python -m visual_application.target_index --write
           PYTHONPATH=tools python -m visual_application.target_index --check
           PYTHONPATH=tools python -m visual_application.target_index --status > "$RUNNER_TEMP/gvae-target-index.json"
+          git diff --exit-code -- authority/rifat/prisma-ui/visual-control/target-index
           python tools/visual_core.py write --out "$RUNNER_TEMP/gvae-visual-core"
           python - <<'PY'
           import json
@@ -81,6 +83,15 @@ jobs:
               raise SystemExit('GVAE_GLOBAL_BLOCKERS:' + repr(app.get('globalBlockers')))
           print('PASS_GVAE_SOURCE_STATIC_ONLY_NO_FAKE_RUNTIME_READY')
           PY
+
+      - name: Upload deterministic GVAE Target Index candidate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gvae-target-index-candidate
+          path: prisma-html/authority/rifat/prisma-ui/visual-control/target-index
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Canonical Authority Mesh runner self-test
         working-directory: apps/terminal-de-venta-system
