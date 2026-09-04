@@ -68,6 +68,8 @@ def save_transaction(tx_root:Path, tx:dict[str,Any])->None:
     validate_tx_id(tx["transactionId"])
     tx["transactionDigest"]=_digest(tx)
     tx_dir=tx_root/tx["transactionId"]
+    if tx_dir.is_symlink():
+        raise TamperedTransaction("transaction directory is symlinked")
     atomic_write(tx_dir/"transaction.json",pretty_json_bytes(tx))
 
 def create_transaction(repo_root:Path,tx_root:Path,tx_id:str,target_id:str,paths:list[Path],authority_commit:str|None)->dict[str,Any]:
@@ -76,6 +78,8 @@ def create_transaction(repo_root:Path,tx_root:Path,tx_id:str,target_id:str,paths
     tx_root=ensure_path_object_contained(repo_root,tx_root,field="transactions root")
     tx_root.mkdir(parents=True,exist_ok=True)
     tx_dir=tx_root/tx_id
+    if tx_dir.exists() or tx_dir.is_symlink():
+        raise TamperedTransaction("transaction directory already exists or is symlinked")
     backup=tx_dir/"backup"
     backup.mkdir(parents=True,exist_ok=False)
     records=[]
@@ -106,7 +110,10 @@ def create_transaction(repo_root:Path,tx_root:Path,tx_id:str,target_id:str,paths
 
 def load_transaction(tx_root:Path,tx_id:str)->dict[str,Any]:
     validate_tx_id(tx_id)
-    path=tx_root/tx_id/"transaction.json"
+    tx_dir=tx_root/tx_id
+    path=tx_dir/"transaction.json"
+    if tx_dir.is_symlink() or path.is_symlink():
+        raise TamperedTransaction("transaction metadata path is symlinked")
     try:
         tx=json.loads(path.read_text(encoding="utf-8"))
     except (OSError,json.JSONDecodeError) as exc:
