@@ -1665,9 +1665,9 @@
       ],
       "classification": "DONE",
       "status": "SOURCE_READY",
-      "stateLabel": "PASS_GVAE_V1_SOURCE_STATIC_HARDENED",
+      "stateLabel": "PASS_GVAE_V1_MANDATORY_REGISTERED_TARGET_GATE",
       "doNotRebuild": true,
-      "nextGate": "For any exact visual target application, require a fresh current-head task-exact Authority Mesh with Layer Map, a current Factory Ledger MUTATION PASS, a reviewed hash-pinned read-only Code Atlas UI Bridge plan/diff, an APPLY_READY exact Target Index record, and target-specific source/projection authority. Browser/runtime visual certification remains a separate post-application gate.",
+      "nextGate": "Registered GVAE targets must continue through the mandatory receipt-enforced GVAE path. Unregistered visual scope must first obtain exact target identity, binding, layer, recipe, adapter and projection authority before GVAE can govern it. Whole-surface application remains blocked until complete explicit Target Index coverage exists and a governed Surface Batch Orchestrator preserves per-target authority, receipts, rollback and separate runtime/browser certification.",
       "evidence": [
         "Factory Ledger PROPOSAL run 33487938895 artifact 9792536582 on canonical main 1dabf0604c21dec0115c53e766c22b11b415dd68",
         "Task-exact AutoMesh run 33488281872 artifact 9792713321 sha256:189efa8b4eb4e5e0b0765e05d1a312b40d8da20d89a4599387e4560f1001b2a2 requestDigest 01b4e0c6a5a3da354b2867f50feac8b242ceefc3ba7f69abd1c488a02063f1d9; PASS_COMPOSED_AUTHORITY_MESH; Layer Map present; blockers 0",
@@ -1678,22 +1678,30 @@
         "Source installer proved Code Atlas application bridge and historical Cobrar runner unchanged; RIFAT validation uses no-regression against canonical base so unrelated pre-existing Mobile projection debt is not silently mutated by GVAE",
         "Post-merge adversarial audit on canonical main 1f73a677ffb076e4787099177f71470785f1f611 recorded in PRISMA Factory Ledger/evidence/GVAE_V1_POSTMERGE_AUDIT_20260903.md; fresh AutoMesh run 33836037189 artifact 9923318865 sha256:62eaaaeaf737d202fd6c7c71c05387f9175d614ba25f01abd639cb4c6315463e requestDigest 9569a92d7c4d58a18d2732b16a79d4db0daa73595353094b3141ece2d2cac382 passed with Layer Map and 100% required authority coverage; deeper review proved missing machine-verified mutation authority and reviewed UI Bridge plan binding plus exact-target, rollback, transaction, idempotency, index-authority, writer and CLI negative-path defects not covered by the original 54-test suite.",
         "PR #525 bounded GVAE V1 hardening merged to canonical main 54c8f6ffc882a07172437306e7ed44b0bd9e8ace after final head 02e617508f7e36710c28e777cbc1ca0b7f3d3dca passed CI 33859246919, ForgeOS 33859247037, VISCORE1 33859247028, repo-navigation-guard 33859246925 and Sync Sentinel 33859246991; deterministic GVAE suite 94/94 PASS with zero skips; Target Index digest 3ee00a94b02f35dfbdfd4891c2c951dacc05932bd5e9766fb8c6bc936d87e73a; FILES_MANIFEST count 678.",
-        "Fresh exact-main post-merge Authority Mesh run 33859553238 artifact 9931589665 sha256:ac90a3fc694bc7dea7728666827e3570b63556a65ce064f4dca1c5b1ee43ca8a; composed sha256:4694d89f933f59129b89097bd77419192d6059dc5aca5f1384eb90a2a0d2869d; requestDigest 4c96c7799fc2211b12b711585d95eda48f755a5863523145896c3cea911db9b6; PASS_COMPOSED_AUTHORITY_MESH on 54c8f6ffc882a07172437306e7ed44b0bd9e8ace; two lanes at 100% required authority coverage with zero missing authorities and governed Layer Map."
+        "Fresh exact-main post-merge Authority Mesh run 33859553238 artifact 9931589665 sha256:ac90a3fc694bc7dea7728666827e3570b63556a65ce064f4dca1c5b1ee43ca8a; composed sha256:4694d89f933f59129b89097bd77419192d6059dc5aca5f1384eb90a2a0d2869d; requestDigest 4c96c7799fc2211b12b711585d95eda48f755a5863523145896c3cea911db9b6; PASS_COMPOSED_AUTHORITY_MESH on 54c8f6ffc882a07172437306e7ed44b0bd9e8ace; two lanes at 100% required authority coverage with zero missing authorities and governed Layer Map.",
+        "PR #527 mandatory registered-target enforcement merged to canonical main 292565cb23ceb22afb6a52bacaeffc4cdcd881d8 after final head c96ebd33ae857734b07f66904cc639b8a36a67a8 passed CI 33862113990, VISCORE1 33862114141, ForgeOS 33862114007, Sync Sentinel 33862114070 and repo-navigation-guard 33862114010; deterministic/adversarial GVAE suite 101/101 PASS with zero skips; FILES_MANIFEST count 683.",
+        "GVAE APPLY now emits transaction-bound prisma.visual.application.receipt.v1 evidence and both primary CI and VISCORE1 fail closed when a registered Target Index source/projection changes without a same-change receipt hash chain from base to head.",
+        "Fresh exact-main post-merge Authority Mesh run 33862352306 artifact 9932638245 sha256:89b53c2a5cca2b8b05f1d6c4c1975fc9ef7bdfd3b9f03abfdc70c4444310c100; composed sha256:c3c89d10218ae034e4348e1dad3966636ae504cb60a10229a5f0adb749483b6d; requestDigest 4ed037acf0b4800b682d3f3ba323e40f18921ae6f39cd8aced926cdb1bfbff8b; PASS_COMPOSED_AUTHORITY_MESH on 292565cb23ceb22afb6a52bacaeffc4cdcd881d8; two lanes at 100% required authority coverage with zero missing authorities."
       ],
       "doesNotProve": [
         "Browser-render equivalence or target-specific runtime visual correctness",
         "Any current product visual target is APPLY_READY; generated targets remain fail-closed BLOCKED unless exact target authority is explicitly resolved",
+        "Complete whole-surface Target Index coverage or wildcard surface APPLY",
         "Any Tablet, PC, Mobile, Web, Chart Lab, Control Center or Shared UI runtime visual certification",
         "Any hosted production, distribution or customer deployment readiness"
       ],
       "allowedActions": [
-        "reuse the hardened GVAE V1 architecture and evidence without rebuilding it",
+        "reuse the hardened mandatory GVAE V1 architecture and evidence without rebuilding it",
         "run PREVIEW and VERIFY inside SOURCE_STATIC_ONLY boundaries",
-        "perform an exact target APPLY only after the current engine machine-verifies the required Authority Mesh, Factory Ledger MUTATION gate, reviewed Code Atlas UI Bridge plan/diff and APPLY_READY target authority",
-        "run deterministic source/static CI, adversarial tests, Target Index regeneration/checks and governed rollback"
+        "perform exact-target APPLY only after machine-verified Authority Mesh, Factory Ledger MUTATION PASS, reviewed Code Atlas UI Bridge plan/diff and APPLY_READY target authority",
+        "apply multiple exact targets as governed waves while preserving an independent receipt and rollback chain per target",
+        "expand Target Index coverage through governed discovery/registration before attempting broader surface orchestration"
       ],
       "forbiddenActions": [
         "rebuild or replace the hardened GVAE V1 architecture",
+        "directly mutate a registered GVAE target source or generated projection without a valid GVAE application receipt chain",
+        "treat unregistered visual files as implicitly governed or editable by GVAE",
+        "claim wildcard whole-surface APPLY before complete explicit Target Index coverage and governed batch orchestration exist",
         "turn Code Atlas UI Bridge into a generic writer or enable its application bridge",
         "edit generated product projections manually",
         "guess a missing adapter, target, binding, layer, recipe, semantic meaning or projection authority",
@@ -1703,5 +1711,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-09-04T09:43:00Z"
+  "updatedAt": "2026-09-04T10:18:00Z"
 }
