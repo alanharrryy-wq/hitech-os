@@ -1,13 +1,16 @@
-# PRISMA Change Intelligence — Commercial Ledger V1.1
+# PRISMA Change Assurance — Commercial Ledger V1.1
 
-**Status:** 12/12 CLOSED V1 + FOUNDING CUSTOMER PRICING AMENDMENT V1.1  
+**Status:** COMMERCIAL PACKAGING CLOSED · TECHNICAL_COMMERCIALIZATION_READY · EXTERNAL_VALIDATION_PENDING_G_J  
 **Date:** 2026-08-14  
+**Last governed reconciliation:** 2026-09-04  
 **Internal engine:** Code Atlas Engine  
-**Commercial identity:** PRISMA Change Intelligence  
+**Commercial identity:** PRISMA Change Assurance  
 **Canonical source intent:** repository commercial continuity  
-**Living-source provenance:** GitHub Issue #250 + 2026-08-14 V1.1 Founding Customer amendment
+**Living-source provenance:** GitHub Issue #250 + 2026-08-14 V1.1 Founding Customer amendment + 2026-09-04 canonical Change Assurance reconciliation
 
-> V1.1 changes the **first external validation cohort pricing**, not the product identity, readiness gates, technical claims or mature/reference pricing hypotheses. Historical V1 prices remain documented as hypotheses and are not treated as proven willingness-to-pay.
+> V1.1 changes the **first external validation cohort pricing**, not the readiness gates, technical claims or mature/reference pricing hypotheses. Historical V1 prices remain documented as hypotheses and are not treated as proven willingness-to-pay.
+>
+> `TECHNICAL_COMMERCIALIZATION_READY` means the governed technical productization/external-validation path is assembled. It does **not** mean `COMMERCIALIZATION_READY`, `PAID_PILOT_READY`, production-certified or enterprise-ready. Current external blockers are G independent verification and J human utility evidence; entitlement remains NOT_GRANTED and ROI remains INPUT_REQUIRED_NO_ESTIMATE.
 
 ## 0. Identity
 
@@ -75,7 +78,7 @@ Historical business inference from the earlier audit:
 
 # 2. Commercial Products ✅
 
-## PRISMA Change Intelligence Discover
+## PRISMA Change Assurance Discover
 **Repository Intelligence & Technical Forensics**
 
 Question: **What is actually here?**  
@@ -85,7 +88,7 @@ Outputs: architecture, dependencies, DB reality, APIs, ownership, critical files
 
 **Commercial job:** Discover gets us in.
 
-## PRISMA Change Intelligence Guard
+## PRISMA Change Assurance Guard
 **Change Readiness & Release Assurance**
 
 Question: **What happens if we change it?**  
@@ -97,7 +100,7 @@ Principle: **No evidence. No green.**
 
 **Commercial job:** Guard creates recurring need.
 
-## PRISMA Change Intelligence Control
+## PRISMA Change Assurance Control
 **AI Agent Change Control**
 
 Question: **What is this agent allowed to change, and how must it prove success?**  
@@ -109,9 +112,9 @@ Flow:
 
 Key message:
 
-> **Your AI can write the code. PRISMA Change Intelligence controls the change.**
+> **Your AI can write the code. PRISMA Change Assurance controls the change.**
 
-**Commercial job:** Control can make Change Intelligence infrastructure rather than a one-time tool.
+**Commercial job:** Control can make Change Assurance infrastructure rather than a one-time tool.
 
 Platform narrative:
 
@@ -125,7 +128,7 @@ Platform narrative:
 
 Governing principle:
 
-> **PRISMA Change Intelligence must be able to justify its price using engineering time alone. Risk reduction is upside, not the sales gimmick.**
+> **PRISMA Change Assurance must be able to justify its price using engineering time alone. Risk reduction is upside, not the sales gimmick.**
 
 Hard ROI:
 
@@ -160,7 +163,7 @@ Before/after pilot metrics:
 
 # 4. First Paid Pilot ✅
 
-## PRISMA Change Intelligence — Repository Intelligence Pilot
+## PRISMA Change Assurance — Repository Intelligence Pilot
 
 Commercial promise:
 
@@ -208,7 +211,7 @@ Never require production credentials/write access as normal pilot prerequisite.
 
 ### Deliverables
 
-1. Executive Change Intelligence Brief
+1. Executive Change Assurance Brief
 2. Repository Reality Atlas
 3. Risk & Unknowns Register
 4. Up to 3 Change Readiness analyses
@@ -355,13 +358,13 @@ No change to Control pricing in V1.1.
 - 2 Pilot → Guard conversions × MXN $6,900 = **MXN $13,800 MRR** during the founding period
 - if both later validate standard Guard pricing: **MXN $25,000 MRR / MXN $300,000 ARR run-rate**
 
-The strategically valuable event is not merely selling the first pilot. It is proving that unrelated external organizations pay recurrently for Change Intelligence and renew because measured value exceeds price.
+The strategically valuable event is not merely selling the first pilot. It is proving that unrelated external organizations pay recurrently for Change Assurance and renew because measured value exceeds price.
 
 ## Future pricing after evidence, NOT launch pricing
 After ≥5 external customers, renewal and measured ROI:
 
 - Team/Guard: ~MXN $15k–$25k/month
-- Enterprise Change Intelligence: ~MXN $300k–$600k+/year
+- Enterprise Change Assurance: ~MXN $300k–$600k+/year
 
 Do not publish these as current offers without evidence.
 
@@ -434,17 +437,17 @@ Differentiation: **Verified Change Authority**.
 
 10-second pitch:
 
-> **PRISMA Change Intelligence tells engineering teams and coding agents what may change, what must not change, what could be affected, and what must be proven before the work is called done.**
+> **PRISMA Change Assurance tells engineering teams and coding agents what may change, what must not change, what could be affected, and what must be proven before the work is called done.**
 
 30-second CTO pitch:
 
-> **Your coding agents can already write code fast. The dangerous part is whether they understand the right system, stay inside the right scope and prove the change actually worked. PRISMA Change Intelligence maps repository reality, calculates change boundaries and blast radius, and produces evidence-backed authority packages for humans and AI agents before they modify complex software.**
+> **Your coding agents can already write code fast. The dangerous part is whether they understand the right system, stay inside the right scope and prove the change actually worked. PRISMA Change Assurance maps repository reality, calculates change boundaries and blast radius, and produces evidence-backed authority packages for humans and AI agents before they modify complex software.**
 
 Homepage hero:
 
 # **Know the system. Control the change. Prove the result.**
 
-**Your developers and AI agents are moving faster than your codebase knowledge. PRISMA Change Intelligence turns repository reality into verified change authority, giving every change explicit targets, boundaries, blast radius and evidence requirements before the work is called done.**
+**Your developers and AI agents are moving faster than your codebase knowledge. PRISMA Change Assurance turns repository reality into verified change authority, giving every change explicit targets, boundaries, blast radius and evidence requirements before the work is called done.**
 
 Primary CTA: **Run a Repository Intelligence Pilot**  
 Secondary CTA: **See a Change Readiness Example**
@@ -453,7 +456,7 @@ Competitive positioning:
 
 > **We are not trying to replace your coding agent, code search, developer portal or security scanner. We give the change itself an evidence-backed authority envelope.**
 
-Naming rule: use full **PRISMA Change Intelligence**. Avoid `PCI` and standalone `CI` abbreviations.
+Naming rule: use full **PRISMA Change Assurance**. Avoid `PCI` and standalone `CI` abbreviations.
 
 ---
 

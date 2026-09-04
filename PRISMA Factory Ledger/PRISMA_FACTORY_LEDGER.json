@@ -751,47 +751,49 @@
     },
     {
       "id": "ci.cloud.repository_projection",
-      "displayName": "PRISMA Change Intelligence read-only repository projection",
-      "domain": "change_intelligence",
+      "displayName": "Change Assurance Cloud repository inventory projection adapter",
+      "domain": "change_assurance",
       "surfaces": [
         "cloud_center",
-        "change_intelligence",
+        "change_assurance",
         "governance",
         "quality"
       ],
-      "classification": "BUILD",
-      "status": "NOT_STARTED",
-      "stateLabel": "P1_CANONICAL_REGISTERED_PRE_MERGE_NOT_STARTED",
-      "doNotRebuild": false,
-      "nextGate": "Reconcile open PR #314 against the current main branch under the universal Factory Ledger anti-rework gate, a fresh exact-task Authority Mesh, Change Intelligence source/runtime authority, and all normal repository checks before merge. Merge remains separately operator-authorized.",
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_CA_P1_REPOSITORY_PROJECTION_RUNTIME_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "Reuse the snapshot-bound read-only P1 projection. Dynamic live repository runtime is NOT_REQUIRED_V1; re-check provider authority/current HEAD before private-repository execution.",
       "evidence": [
-        "PR #314 candidate implementation remains unmerged",
-        "P1 implementation Authority Mesh run 32233951337 artifact 9358279345",
-        "P1 verifier Authority Mesh run 32236858006 artifact 9359312907",
-        "P1 candidate exact-head runtime run 32237265140 artifact 9359494563",
-        "Canonical registration Authority Mesh profile ci-p1-canonical-registration-v1b run 32239843175 artifact 9360384594 sha256:1210d9969c3bd656c0898bc13b1c9d5a91ab7832af6142d7a85eafde71c21324"
+        "pr:314",
+        "merge:17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
+        "implementation:6100f3ad10c3d08b39ae7904b893bff01a4c0ba9",
+        "cloudAuthority:run:32243339443",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py",
+        "finalAuthorityRevalidation:run:33872946950",
+        "finalAuthorityArtifact:9936690941",
+        "finalAuthorityHead:0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30"
       ],
       "doesNotProve": [
-        "PR #314 source merged into main",
-        "Repository permission persists after the captured authorization snapshot",
-        "Authorization for repositories other than the explicitly evidenced repository",
-        "Hosted multi-tenant repository execution",
+        "Future permission persistence",
+        "Authorization for other repositories",
         "Private-repository production readiness",
-        "Paid-pilot readiness",
         "Production or enterprise certification",
+        "Paid-pilot readiness",
+        "Hosted multi-tenant execution",
         "Human usefulness measurement",
         "Successful independent-agent replication"
       ],
       "allowedActions": [
-        "verify the canonical registration",
-        "reconcile PR #314 against current main under fresh exact authority",
-        "build only the bounded repository projection authorized by the next gate"
+        "reuse the merged bounded adapter",
+        "read-only recertification after relevant drift",
+        "advance only through the recorded next gate"
       ],
       "forbiddenActions": [
-        "promote this capability to DONE before merged source and post-merge evidence exist",
-        "rebuild Code Atlas repository discovery or private-repository rental owners",
-        "store repository credentials, tokens, clone URLs, SSH URLs, local checkout paths or source content in the browser projection",
-        "claim hosted, enterprise, production, paid-pilot, human-usefulness or independent-agent readiness from this registration"
+        "rebuild the protected underlying engine or shared owner",
+        "promote snapshot/reference evidence into broader authority",
+        "claim production, enterprise, paid-pilot, human-usefulness or independent-agent readiness from this adapter"
       ]
     },
     {
@@ -1734,7 +1736,190 @@
         "bypass the Visual Work Entry Gate for census-only or unregistered-but-governed visual scope",
         "interpret physical Visual Control census presence as semantic or mutation authority"
       ]
+    },
+    {
+      "id": "ci.cloud.analysis_run_projection",
+      "displayName": "Change Assurance Cloud analysis-run projection adapter",
+      "domain": "change_assurance",
+      "surfaces": [
+        "cloud_center",
+        "change_assurance",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_CA_P2_ANALYSIS_RUN_PROJECTION_RUNTIME_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "REUSE_IMMUTABLE_ANALYSIS_RUN_PROJECTION; REQUIRE_FRESH_SNAPSHOT_BOUND_EVIDENCE_FOR_NEW_RUNS",
+      "evidence": [
+        "pr:386",
+        "merge:5c805bc2f448af0b2742b52e19055b05f1859bab",
+        "cloudAuthority:run:32866430445",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py",
+        "finalAuthorityRevalidation:run:33872946950",
+        "finalAuthorityArtifact:9936690941",
+        "finalAuthorityHead:0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30"
+      ],
+      "doesNotProve": [
+        "Production or enterprise certification",
+        "Paid-pilot readiness",
+        "Hosted multi-tenant execution",
+        "Human usefulness measurement",
+        "Successful independent-agent replication"
+      ],
+      "allowedActions": [
+        "reuse the merged bounded adapter",
+        "read-only recertification after relevant drift",
+        "advance only through the recorded next gate"
+      ],
+      "forbiddenActions": [
+        "rebuild the protected underlying engine or shared owner",
+        "promote snapshot/reference evidence into broader authority",
+        "claim production, enterprise, paid-pilot, human-usefulness or independent-agent readiness from this adapter"
+      ]
+    },
+    {
+      "id": "ci.cloud.authority_evidence_projection",
+      "displayName": "Change Assurance Cloud Authority Pack + Evidence projection adapter",
+      "domain": "change_assurance",
+      "surfaces": [
+        "cloud_center",
+        "change_assurance",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_CA_P3_AUTHORITY_EVIDENCE_PROJECTION_RUNTIME_VERIFIED",
+      "doNotRebuild": true,
+      "nextGate": "REUSE_REFERENCE_ONLY_AUTHORITY_AND_EVIDENCE_PROJECTION; FRESH_PACK_AND_EVIDENCE_REQUIRED_FOR_NEW_CHANGE",
+      "evidence": [
+        "pr:396",
+        "merge:22c6fbc74774a1083721ccf225a537f87f38edc4",
+        "implementation:42dcbaa4621d1eb7b6bd36e8599fbb76ebcb90e1",
+        "cloudAuthority:run:32879309133",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py",
+        "finalAuthorityRevalidation:run:33872946950",
+        "finalAuthorityArtifact:9936690941",
+        "finalAuthorityHead:0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30"
+      ],
+      "doesNotProve": [
+        "Authorization for a new repository mutation",
+        "Future snapshot validity",
+        "Production or enterprise certification",
+        "Paid-pilot readiness",
+        "Hosted multi-tenant execution",
+        "Human usefulness measurement",
+        "Successful independent-agent replication"
+      ],
+      "allowedActions": [
+        "reuse the merged bounded adapter",
+        "read-only recertification after relevant drift",
+        "advance only through the recorded next gate"
+      ],
+      "forbiddenActions": [
+        "rebuild the protected underlying engine or shared owner",
+        "promote snapshot/reference evidence into broader authority",
+        "claim production, enterprise, paid-pilot, human-usefulness or independent-agent readiness from this adapter"
+      ]
+    },
+    {
+      "id": "ci.cloud.entitlements_adapter",
+      "displayName": "Change Assurance Cloud entitlements mapping adapter",
+      "domain": "change_assurance",
+      "surfaces": [
+        "cloud_center",
+        "change_assurance",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_CA_P4_ENTITLEMENT_ADAPTER_RUNTIME_VERIFIED_NOT_GRANTED",
+      "doNotRebuild": true,
+      "nextGate": "SEPARATE_LICENSING_AND_COMMERCIAL_DECISION_REQUIRED_BEFORE_ANY_CHANGE_ASSURANCE_ENTITLEMENT_GRANT",
+      "evidence": [
+        "pr:400",
+        "merge:a408c2c0be932f5962c4d2b3c36a3f56cdfb9664",
+        "implementation:cf6784591b3cf3263fd6017af88fa2de5100dbd9",
+        "cloudAuthority:run:32923641680",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py",
+        "finalAuthorityRevalidation:run:33872946950",
+        "finalAuthorityArtifact:9936690941",
+        "finalAuthorityHead:0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30"
+      ],
+      "doesNotProve": [
+        "Entitlement grant",
+        "Live license enforcement",
+        "Billing authorization",
+        "Production or enterprise certification",
+        "Paid-pilot readiness",
+        "Hosted multi-tenant execution",
+        "Human usefulness measurement",
+        "Successful independent-agent replication"
+      ],
+      "allowedActions": [
+        "reuse the merged bounded adapter",
+        "read-only recertification after relevant drift",
+        "advance only through the recorded next gate"
+      ],
+      "forbiddenActions": [
+        "rebuild the protected underlying engine or shared owner",
+        "promote snapshot/reference evidence into broader authority",
+        "claim production, enterprise, paid-pilot, human-usefulness or independent-agent readiness from this adapter"
+      ]
+    },
+    {
+      "id": "ci.cloud.roi_projection",
+      "displayName": "Change Assurance Cloud ROI/customer-input projection",
+      "domain": "change_assurance",
+      "surfaces": [
+        "cloud_center",
+        "change_assurance",
+        "governance",
+        "quality"
+      ],
+      "classification": "DONE",
+      "status": "RUNTIME_VERIFIED",
+      "stateLabel": "PASS_CA_P5_ROI_PROJECTION_RUNTIME_VERIFIED_INPUT_REQUIRED",
+      "doNotRebuild": true,
+      "nextGate": "CUSTOMER_BASELINE_INPUT_AND_MEASURED_PROJECTION",
+      "evidence": [
+        "pr:417",
+        "merge:01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb",
+        "implementation:3cd0fcc717c65365d2085ad4c010ea9a7c6d0ace",
+        "cloudAuthority:run:32941404647",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py",
+        "finalAuthorityRevalidation:run:33872946950",
+        "finalAuthorityArtifact:9936690941",
+        "finalAuthorityHead:0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30"
+      ],
+      "doesNotProve": [
+        "Realized cash savings",
+        "Profit",
+        "Customer willingness to pay",
+        "Production or enterprise certification",
+        "Paid-pilot readiness",
+        "Hosted multi-tenant execution",
+        "Human usefulness measurement",
+        "Successful independent-agent replication"
+      ],
+      "allowedActions": [
+        "reuse the merged bounded adapter",
+        "read-only recertification after relevant drift",
+        "advance only through the recorded next gate"
+      ],
+      "forbiddenActions": [
+        "rebuild the protected underlying engine or shared owner",
+        "promote snapshot/reference evidence into broader authority",
+        "claim production, enterprise, paid-pilot, human-usefulness or independent-agent readiness from this adapter"
+      ]
     }
   ],
-  "updatedAt": "2026-09-04T12:10:01Z"
+  "updatedAt": "2026-09-04T12:29:49Z"
 }

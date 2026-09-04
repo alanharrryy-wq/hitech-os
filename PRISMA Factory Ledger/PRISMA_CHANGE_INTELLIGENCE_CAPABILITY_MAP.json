@@ -412,7 +412,7 @@
     ],
     [
       "ci.cloud.vertical_surface",
-      "Change Intelligence Cloud Center isolated surface",
+      "Change Assurance Cloud Center isolated surface",
       "cloud",
       "Prisma Cloud Ctr",
       "cloud_center",
@@ -429,19 +429,23 @@
     ],
     [
       "ci.cloud.repository_projection",
-      "Cloud repository inventory projection adapter",
+      "Change Assurance Cloud repository inventory projection adapter",
       "cloud",
       "Prisma Cloud Ctr / adapter",
       "cloud_center",
-      "BUILD",
-      "NOT_CONNECTED",
-      false,
+      "DONE",
+      "RUNTIME_VERIFIED_SLICE",
+      true,
       [
-        "pr:303",
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "pr:314",
+        "merge:17e03873b23e205315d92b1d3f2f66c8f98cbeaa",
+        "implementation:6100f3ad10c3d08b39ae7904b893bff01a4c0ba9",
+        "cloudAuthority:run:32243339443",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py"
       ],
-      "VERIFY_READ_ONLY_PROJECTION_AGAINST_CANONICAL_REPOSITORY_INVENTORY",
-      "Build adapter/projection only. Forbidden: second repository registry or inventory engine.",
+      "REUSE_SNAPSHOT_BOUND_READ_ONLY_PROJECTION; RECHECK_PROVIDER_AUTHORITY_AND_CURRENT_HEAD_BEFORE_PRIVATE_REPOSITORY_EXECUTION",
+      "Reuse the merged snapshot-bound read-only repository projection. Dynamic live repository runtime is NOT_REQUIRED_V1. Do not build a second repository registry, credential flow or inventory engine. Permission snapshots expire and never prove hosted multi-tenant or private-repository production readiness.",
       [
         "code_atlas.change_intelligence.customer_wow_v1",
         "cloud_center.customer_registration_runtime",
@@ -450,19 +454,22 @@
     ],
     [
       "ci.cloud.analysis_run_projection",
-      "Cloud analysis-run projection adapter",
+      "Change Assurance Cloud analysis-run projection adapter",
       "cloud",
       "Prisma Cloud Ctr / adapter",
       "cloud_center",
-      "BUILD",
-      "NOT_CONNECTED",
-      false,
+      "DONE",
+      "RUNTIME_VERIFIED_SLICE",
+      true,
       [
-        "pr:303",
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "pr:386",
+        "merge:5c805bc2f448af0b2742b52e19055b05f1859bab",
+        "cloudAuthority:run:32866430445",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py"
       ],
-      "VERIFY_READ_ONLY_PROJECTION_AGAINST_CANONICAL_PREPARE_VERIFY_OUTPUTS",
-      "Build projection over existing prepare/verify outputs only. No new run truth engine.",
+      "REUSE_IMMUTABLE_ANALYSIS_RUN_PROJECTION; REQUIRE_FRESH_SNAPSHOT_BOUND_EVIDENCE_FOR_NEW_RUNS",
+      "Reuse the merged immutable read-only Analysis Run projection. Do not build a second run/discovery engine or promote engine results into mutation authority, production readiness or human usefulness.",
       [
         "code_atlas.change_intelligence.customer_wow_v1",
         "cloud_center.customer_registration_runtime",
@@ -471,19 +478,23 @@
     ],
     [
       "ci.cloud.authority_evidence_projection",
-      "Cloud Authority Pack + Evidence projection adapter",
+      "Change Assurance Cloud Authority Pack + Evidence projection adapter",
       "cloud",
       "Prisma Cloud Ctr / adapter",
       "cloud_center",
-      "BUILD",
-      "NOT_CONNECTED",
-      false,
+      "DONE",
+      "RUNTIME_VERIFIED_SLICE",
+      true,
       [
-        "pr:303",
-        "path:tools/code-atlas/docs/CODE_ATLAS_CUSTOMER_WOW_V1.contract.json"
+        "pr:396",
+        "merge:22c6fbc74774a1083721ccf225a537f87f38edc4",
+        "implementation:42dcbaa4621d1eb7b6bd36e8599fbb76ebcb90e1",
+        "cloudAuthority:run:32879309133",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py"
       ],
-      "VERIFY_REFERENCE_ONLY_AUTHORITY_EVIDENCE_PROJECTION",
-      "Reference canonical packs/reports; do not duplicate generation or verification.",
+      "REUSE_REFERENCE_ONLY_AUTHORITY_AND_EVIDENCE_PROJECTION; FRESH_PACK_AND_EVIDENCE_REQUIRED_FOR_NEW_CHANGE",
+      "Reuse canonical Authority Pack, Verify and Evidence Bundle outputs by reference. Do not duplicate generation or treat a historical PASS as authority for a new snapshot or mutation.",
       [
         "code_atlas.change_intelligence.customer_wow_v1",
         "cloud_center.customer_registration_runtime",
@@ -492,19 +503,23 @@
     ],
     [
       "ci.cloud.entitlements_adapter",
-      "Change Intelligence entitlements mapping",
+      "Change Assurance Cloud entitlements mapping adapter",
       "cloud",
       "Prisma Cloud Ctr / licensing shared owner",
       "cloud_center",
-      "BUILD",
-      "NOT_CONNECTED",
-      false,
+      "DONE",
+      "RUNTIME_VERIFIED_SLICE_NOT_GRANTED",
+      true,
       [
-        "pr:303",
-        "path:PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_DO_NOT_REBUILD_MAP.json"
+        "pr:400",
+        "merge:a408c2c0be932f5962c4d2b3c36a3f56cdfb9664",
+        "implementation:cf6784591b3cf3263fd6017af88fa2de5100dbd9",
+        "cloudAuthority:run:32923641680",
+        "path:apps/terminal-de-venta-system/Prisma Cloud Ctr/internal/config/change_intelligence_cloud.json",
+        "path:apps/terminal-de-venta-system/tools/verify-cloud-center-change-intelligence-01.py"
       ],
-      "VERIFY_SHARED_OWNER_ENTITLEMENT_MAPPING_WITHOUT_LICENSING_REBUILD",
-      "Adapter only onto existing licensing owner; do not rebuild licensing.",
+      "SEPARATE_LICENSING_AND_COMMERCIAL_DECISION_REQUIRED_BEFORE_ANY_CHANGE_ASSURANCE_ENTITLEMENT_GRANT",
+      "Reuse the merged fail-closed read-only adapter onto the canonical licensing owner. The adapter is implemented; the product entitlement remains NOT_PRESENT_IN_CANONICAL_PLAN_FEATURES / NOT_GRANTED. Do not rebuild licensing or infer a grant.",
       [
         "code_atlas.change_intelligence.customer_wow_v1",
         "cloud_center.customer_registration_runtime",
@@ -513,7 +528,7 @@
     ],
     [
       "ci.cloud.roi_projection",
-      "Cloud ROI/customer-input projection",
+      "Change Assurance Cloud ROI/customer-input projection",
       "cloud",
       "Prisma Cloud Ctr / adapter",
       "cloud_center",
@@ -1168,16 +1183,40 @@
     "singleRegistryPath": "PRISMA Factory Ledger/PRISMA_CHANGE_INTELLIGENCE_CAPABILITY_MAP.json"
   },
   "lastGovernanceMutation": {
-    "kind": "RESOLVE_B_USEFUL_IMPACT_RADIUS_LOCAL_VERIFICATION_PROMOTION",
-    "sourceHead": "124e76b4f107d0d74ab5ede7c7b0d8c0407a276a",
-    "technicalEvidenceRunId": 32807231102,
-    "authorityRunId": 32843157359,
-    "authorityArtifactId": 9561305782,
-    "authorityArtifactSha256": "17a1e3e11a2e940a3af5f0e527b31f1f28e676085d1453cb861dd182cadb7d1f",
-    "composedAuthoritySha256": "df695d287c368632937235ab6d5ce18b212e2c7191a504ecd33b5a3d70a15d2e",
-    "requestDigest": "7db6c183aa533219ecbf908599a8233540abe13b66033a4cf451eb8b63cf0c02",
-    "factoryGateDecisionDigest": "e9c0a14b9dd7748ba6a7b0d217652623eb4a79ff0ff5ecfb6b0ae962345be80b",
-    "status": "LOCAL_VERIFIED",
-    "productionCertified": false
+    "kind": "FINAL_CHANGE_ASSURANCE_COMMERCIALIZATION_REBASELINE",
+    "sourceHead": "0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30",
+    "sourceTree": "b658f2294a60ea99cf6d6f84db23e3197e3e2252",
+    "authorityRevalidationRunId": 33872946950,
+    "authorityArtifactId": 9936690941,
+    "authorityRequestDigest": "9305bf74745a3582a4b2a921509162340f2a63cbb7e2207d5fc4c16b244aaefc",
+    "authorityComposedArtifactSha256": "73eb457fd6fec2d1b58cbe443135c539caf4a5bae30ef28b9938e905ea2983b3",
+    "authorityUploadedArtifactSha256": "b34320ebdd813e44d594850b3ca1ca920f8adc499599a0109707c4b6e92340fa",
+    "authorityRevalidationResult": "PASS_FULL_MESH_REFRESH_AFTER_RELEVANT_DRIFT",
+    "publicIdentityPr": 531,
+    "publicIdentityPrHead": "08fded34ad64a4b5dc0fc02ffaa6826c1fa075da",
+    "publicIdentityMergeSha": "0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30",
+    "publicIdentityGate": "change-intelligence-cloud-authority:success",
+    "status": "TECHNICAL_COMMERCIALIZATION_READY",
+    "externalValidationState": "EXTERNAL_VALIDATION_PENDING_G_J",
+    "productionCertified": false,
+    "paidPilotReady": false
+  },
+  "commercializationReadiness": {
+    "status": "TECHNICAL_COMMERCIALIZATION_READY",
+    "commercializationReady": false,
+    "externalValidationState": "EXTERNAL_VALIDATION_PENDING_G_J",
+    "v1Complete": false,
+    "primaryExternalBlockers": [
+      "G: independent verification remains PARTIAL until an actually independent external evaluator completes the governed replication.",
+      "J: utility evidence remains BLOCKED until real external human usefulness evidence exists."
+    ],
+    "claimCeilings": {
+      "productionCertified": false,
+      "paidPilotReady": false,
+      "enterpriseReady": false,
+      "entitlementGrant": "NOT_GRANTED",
+      "roi": "INPUT_REQUIRED_NO_ESTIMATE"
+    },
+    "allowedClaim": "The technical productization path and governed external-validation package are ready. COMMERCIALIZATION_READY is not certified."
   }
 }

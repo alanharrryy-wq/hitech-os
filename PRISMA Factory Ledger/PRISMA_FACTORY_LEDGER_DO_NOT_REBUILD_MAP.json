@@ -69,7 +69,7 @@
     },
     "ci.cloud.vertical_surface": {
       "value": true,
-      "reason": "Change Intelligence Cloud Center isolated runtime slice merged in PR #303. Build only declared adapters/projections; do not rebuild the surface.",
+      "reason": "Change Assurance Cloud Center isolated runtime slice is merged and must be reused; only governed adapter/public-identity evolution is allowed.",
       "evidence": "PR #303",
       "updatedAt": "2026-08-18T20:46:00-06:00"
     },
@@ -174,6 +174,36 @@
       "reason": "PASS_MOBILE_SECURE_PROJECTION_GATEWAY_PHASE1_RUNTIME_VERIFIED; reuse the read-only signed-session runtime baseline instead of rebuilding.",
       "evidence": "PR #502 merge 65f45505b66abf7d22ce6cd07a7396ea5a887ccf / post-merge Watch run 33344270490 artifact 9741492976 sha256:e97fd22dd0eb5454182fd9e017e6a732757b52bbe36e6e1c6553b09f984810e6 / ledger-close Authority run 33345023406 / MUTATION gate run 33345210530",
       "updatedAt": "2026-08-31T00:40:18Z"
+    },
+    "ci.cloud.repository_projection": {
+      "value": true,
+      "reason": "PASS_CA_P1_REPOSITORY_PROJECTION_RUNTIME_VERIFIED; snapshot-bound P1 is merged and reuse-only.",
+      "evidence": "PR #314 merge 17e03873b23e205315d92b1d3f2f66c8f98cbeaa / Cloud Authority run 32243339443 / final Authority refresh run 33872946950",
+      "updatedAt": "2026-09-04T12:29:49Z"
+    },
+    "ci.cloud.analysis_run_projection": {
+      "value": true,
+      "reason": "PASS_CA_P2_ANALYSIS_RUN_PROJECTION_RUNTIME_VERIFIED; immutable P2 adapter is merged and reuse-only.",
+      "evidence": "PR #386 merge 5c805bc2f448af0b2742b52e19055b05f1859bab / Cloud Authority run 32866430445 / final Authority refresh run 33872946950",
+      "updatedAt": "2026-09-04T12:29:49Z"
+    },
+    "ci.cloud.authority_evidence_projection": {
+      "value": true,
+      "reason": "PASS_CA_P3_AUTHORITY_EVIDENCE_PROJECTION_RUNTIME_VERIFIED; reference-only P3 adapter is merged and reuse-only.",
+      "evidence": "PR #396 merge 22c6fbc74774a1083721ccf225a537f87f38edc4 / Cloud Authority run 32879309133 / final Authority refresh run 33872946950",
+      "updatedAt": "2026-09-04T12:29:49Z"
+    },
+    "ci.cloud.entitlements_adapter": {
+      "value": true,
+      "reason": "PASS_CA_P4_ENTITLEMENT_ADAPTER_RUNTIME_VERIFIED_NOT_GRANTED; adapter is done, entitlement remains NOT_GRANTED.",
+      "evidence": "PR #400 merge a408c2c0be932f5962c4d2b3c36a3f56cdfb9664 / Cloud Authority run 32923641680 / final Authority refresh run 33872946950",
+      "updatedAt": "2026-09-04T12:29:49Z"
+    },
+    "ci.cloud.roi_projection": {
+      "value": true,
+      "reason": "PASS_CA_P5_ROI_PROJECTION_RUNTIME_VERIFIED_INPUT_REQUIRED; adapter is done, ROI remains INPUT_REQUIRED_NO_ESTIMATE.",
+      "evidence": "PR #417 merge 01b1d2f6c3f654fbe51d2336bb2d7fc4741563eb / Cloud Authority run 32941404647 / final Authority refresh run 33872946950",
+      "updatedAt": "2026-09-04T12:29:49Z"
     }
   },
   "verifyOrFix": {
@@ -193,5 +223,5 @@
       "updatedAt": "2026-08-18T20:46:00-06:00"
     }
   },
-  "updatedAt": "2026-08-31T00:40:18Z"
+  "updatedAt": "2026-09-04T12:29:49Z"
 }

@@ -133,3 +133,11 @@ python "PRISMA Factory Ledger/tools/verify_change_intelligence_capability_gate.p
 ```
 
 For `MUTATION`, the request must carry a fresh task-exact `PASS_COMPOSED_AUTHORITY_MESH`, 100% required authority coverage, zero blockers, exact current repo HEAD, and `layerMapPresent=true` for visual work. The universal Factory Ledger anti-rework gate still runs first and remains the canonical capability authority.
+
+## Final commercialization rebaseline — 2026-09-04
+
+Cloud projection truth is reconciled with merged source/runtime evidence: P1 repository projection (PR #314), P2 Analysis Runs (PR #386), P3 Authority Pack + Evidence references (PR #396), P4 fail-closed entitlements mapping (PR #400), and P5 ROI projection (PR #417) are implemented adapter slices and therefore reuse-only. P4 still means `NOT_GRANTED`; P5 still means `INPUT_REQUIRED_NO_ESTIMATE`.
+
+The product-level state is `TECHNICAL_COMMERCIALIZATION_READY` with `EXTERNAL_VALIDATION_PENDING_G_J`. It is not `COMMERCIALIZATION_READY`: G independent verification remains PARTIAL and J external human utility evidence remains BLOCKED. Production, enterprise and paid-pilot readiness remain false. PR #531 is merged at `0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30`; relevant drift was then revalidated and forced a full fresh Mesh. Final governance refresh run `33872946950`, artifact `9936690941`, request `9305bf74745a3582a4b2a921509162340f2a63cbb7e2207d5fc4c16b244aaefc` passed `PASS_FULL_MESH_REFRESH_AFTER_RELEVANT_DRIFT` on that exact main.
+
+The portable external handoff contract is `prisma.change_assurance.packet.v1` inside `tools/code-atlas/CODE_ATLAS_CHANGE_ASSURANCE_CONTRACT.json`; it binds authorized/current snapshots, drift classification, affected authority, protected scope, provenance, unknowns, exact PR/merge identity when available, post-merge proof and claim ceilings without creating a second engine.

@@ -147,5 +147,109 @@
     "requiredAuthorityCoveragePct": 100,
     "blockers": 0,
     "productionCertified": false
+  },
+  "changeAssurancePacketV1": {
+    "schemaVersion": "prisma.change_assurance.packet.v1",
+    "purpose": "Portable proof-bearing handoff for a bounded change decision. It composes existing Code Atlas, Authority Mesh, verification and Evidence Bundle truth; it is not a new analysis or authority engine.",
+    "producer": "PRISMA Change Assurance using existing Code Atlas and PRISMA governance evidence",
+    "consumers": [
+      "human reviewer",
+      "coding agent",
+      "external evaluator",
+      "customer handoff"
+    ],
+    "decisionEnum": [
+      "PASS",
+      "BLOCKED",
+      "UNKNOWN"
+    ],
+    "requiredFields": [
+      "productIdentity",
+      "repositoryIdentity",
+      "authorizedSnapshot",
+      "currentSnapshot",
+      "driftClassification",
+      "affectedAuthority",
+      "protectedScope",
+      "provenance",
+      "unknowns",
+      "decision",
+      "pullRequest",
+      "postMergeProof",
+      "claimBoundary"
+    ],
+    "fieldContracts": {
+      "authorizedSnapshot": "Exact authority-bound commit/tree plus request and authority artifact digests.",
+      "currentSnapshot": "Exact current commit/tree observed for the handoff.",
+      "driftClassification": "PASS_ALREADY_CURRENT | PASS_NO_RELEVANT_DRIFT | BLOCKED_RELEVANT_DRIFT | BLOCKED_NON_ANCESTOR_DRIFT | BLOCKED_INVALID_PRIOR_AUTHORITY | FRESH_TASK_EXACT_AUTHORITY",
+      "affectedAuthority": "Explicit changed authority/protected paths; empty only when evidence proves no relevant drift.",
+      "protectedScope": "Explicit do-not-touch/authority boundaries from the governing pack/readset.",
+      "provenance": "Must link producer, consumer, contract, repository snapshot, Authority Mesh/revalidation, verification gates, Evidence Bundle and Factory Ledger evidence by immutable IDs/digests where available.",
+      "unknowns": "Missing, stale, contradictory or unsupported evidence remains explicit and can force UNKNOWN/BLOCKED.",
+      "pullRequest": "PR number plus exact head SHA. mergeSha is null until GitHub reports the merge.",
+      "postMergeProof": "Required for any merged-change completion claim and must bind the exact merge SHA/current canonical HEAD to post-merge evidence.",
+      "claimBoundary": "Must state what the packet proves and does not prove. Packaging cannot create production, enterprise, paid-pilot, human-usefulness or independent-verification claims."
+    },
+    "evidenceChain": [
+      {
+        "stage": "Code Atlas",
+        "role": "bounded repository/change evidence producer"
+      },
+      {
+        "stage": "PRISMA Change Assurance",
+        "role": "product contract and PASS/BLOCKED/UNKNOWN decision boundary"
+      },
+      {
+        "stage": "Authority Mesh / AutoMesh v2",
+        "role": "task-exact authority and relevant-drift classification"
+      },
+      {
+        "stage": "domain gates",
+        "role": "source/runtime/negative-test verification"
+      },
+      {
+        "stage": "Evidence Bundle",
+        "role": "portable sanitized evidence and replay/handoff binding"
+      },
+      {
+        "stage": "Factory Ledger",
+        "role": "canonical anti-rework status, next gate and do-not-rebuild truth"
+      }
+    ],
+    "hardRules": [
+      "Candidate != Authority",
+      "Impact Radius != Authorization",
+      "Retrieval != proof",
+      "UNKNOWN != PASS_WITH_WARNING",
+      "No merge SHA may be invented before merge.",
+      "No post-merge completion claim without exact merge-SHA evidence.",
+      "No production or COMMERCIALIZATION_READY claim from this packet alone."
+    ]
+  },
+  "currentCommercializationBoundary": {
+    "status": "TECHNICAL_COMMERCIALIZATION_READY",
+    "commercializationReady": false,
+    "externalValidationState": "EXTERNAL_VALIDATION_PENDING_G_J",
+    "productionCertified": false,
+    "paidPilotReady": false,
+    "entitlementGrant": "NOT_GRANTED",
+    "roiState": "INPUT_REQUIRED_NO_ESTIMATE",
+    "authority": {
+      "revalidationRunId": 33872946950,
+      "artifactId": 9936690941,
+      "requestDigest": "9305bf74745a3582a4b2a921509162340f2a63cbb7e2207d5fc4c16b244aaefc",
+      "composedArtifactSha256": "73eb457fd6fec2d1b58cbe443135c539caf4a5bae30ef28b9938e905ea2983b3",
+      "uploadedArtifactSha256": "b34320ebdd813e44d594850b3ca1ca920f8adc499599a0109707c4b6e92340fa",
+      "revalidationResult": "PASS_FULL_MESH_REFRESH_AFTER_RELEVANT_DRIFT",
+      "status": "PASS_COMPOSED_AUTHORITY_MESH",
+      "repoHead": "0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30",
+      "repoTree": "b658f2294a60ea99cf6d6f84db23e3197e3e2252"
+    },
+    "publicIdentity": {
+      "pr": 531,
+      "prHead": "08fded34ad64a4b5dc0fc02ffaa6826c1fa075da",
+      "mergeSha": "0f8aa308326cb4718c3f7c9b74ce0505cfaa9c30",
+      "gate": "change-intelligence-cloud-authority:success"
+    }
   }
 }
