@@ -58,3 +58,33 @@ The global committed Target Index manifest stores enforced records and coverage 
 `visual_application.surface_batch` is the read-only whole-surface planner. It does not perform wildcard writes. It returns `SURFACE_BATCH_READY` only when a surface contains explicit exact GVAE-enforced targets, has zero discovery-only gaps, and every included exact target is `APPLY_READY`. Otherwise the whole surface remains fail-closed with blocker counts.
 
 A whole-surface application, when eventually ready, is therefore a bounded orchestration of exact targets. It must preserve target-level Authority Mesh + Layer Map, Factory Ledger MUTATION PASS, Code Atlas plan/diff binding, receipts, rollback, projection integrity and separate browser/runtime visual certification.
+
+
+## Universal Visual Work Entry Gate
+
+All governed visual work now enters through `visual_application.visual_work_entry_gate` before any edit. The gate reuses Factory Ledger truth, current RIFAT/Identity authority, the seven-surface Visual Control census, the generated Target Index, the visual-source manifest and the existing read-only `surface_batch` planner.
+
+Request mode:
+
+```bash
+PYTHONPATH=prisma-html/tools python -m visual_application.visual_work_entry_gate --request path/to/visual-work-entry-request.json
+```
+
+PR diff enforcement:
+
+```bash
+PYTHONPATH=prisma-html/tools python -m visual_application.visual_work_entry_gate --base <base-sha> --head <head-sha>
+```
+
+The only request decisions are `GVAE_EXACT_APPLY`, `SURFACE_BATCH_PLAN`, `REGISTER_TARGET_FIRST`, and `BLOCKED`.
+
+- `GVAE_EXACT_APPLY` is a route classification for explicit `EXACT_APPLICATION_TARGET / GVAE_ENFORCED / APPLY_READY` targets. Actual APPLY still requires the existing Factory Ledger MUTATION PASS, current task-exact Authority Mesh + Layer Map, reviewed hash-pinned Code Atlas UI Bridge plan/diff, GVAE PREVIEW, transaction-bound receipt, VERIFY and separate browser/runtime certification.
+- `SURFACE_BATCH_PLAN` delegates to the existing read-only planner. A whole surface is a composition of exact targets, never wildcard mutation.
+- `REGISTER_TARGET_FIRST` is returned for physical `VISUAL_CONTROL_CENSUS_TARGET / DISCOVERY_ONLY` coordinates whose semantic/application authority is incomplete.
+- `BLOCKED` is fail-closed for unknown/out-of-governance scope, contradictory or stale authority, ambiguous ownership, missing census, direct-edit intent, wildcard scope, stale hashes, manual generated-projection edits, priority overrides, or other safety failures.
+
+CI and VISCORE run the diff gate in addition to `mandatory_gate`. Existing exact-target receipt enforcement remains intact, while census-only and unregistered-but-governed visual mutations can no longer pass merely because they were outside the old exact-target receipt map.
+
+The gate explains why a file is visual from repository authority. Style suffixes are only supporting evidence inside a governed surface scope; TSX/JSX and assets require Visual Control/manifest/Target Index ownership rather than a repo-wide extension heuristic.
+
+This gate remains source/static governance. It does not prove browser/runtime visual certification, whole-surface APPLY readiness, or production readiness.

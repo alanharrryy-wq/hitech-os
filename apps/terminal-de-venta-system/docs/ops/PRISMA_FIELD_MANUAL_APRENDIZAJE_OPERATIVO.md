@@ -1085,3 +1085,29 @@ python tools/refresh_files_manifest.py --check
 **Regla:** adaptar validators cuando cambia legítimamente el modelo de autoridad; no preservar invariantes obsoletos por nostalgia. Una regresión gateada debe distinguir entre deuda preexistente y regresión nueva.
 
 **Límite:** sigue siendo cierre source/static; no certifica runtime/browser ni producción.
+
+
+## Visual Work Entry Gate universal (GVAE advance)
+
+Visual work on any governed surface must enter through the canonical gate at `prisma-html/tools/visual_application/visual_work_entry_gate.py` before source mutation.
+
+Canonical entry command:
+
+```bash
+PYTHONPATH=prisma-html/tools python -m visual_application.visual_work_entry_gate --request <visual-work-entry-request.json>
+```
+
+The only legal decisions are `GVAE_EXACT_APPLY`, `SURFACE_BATCH_PLAN`, `REGISTER_TARGET_FIRST`, or `BLOCKED`. There is no direct-edit or wildcard-mutation decision.
+
+Operational rules:
+- preserve `visual.generic_application_engine_v1` as DONE / SOURCE_READY / doNotRebuild; this gate advances GVAE and does not rebuild it;
+- physical Visual Control census remains discovery evidence only; `VISUAL_CONTROL_CENSUS_TARGET / DISCOVERY_ONLY` never becomes APPLY_READY merely because the coordinate exists;
+- `GVAE_EXACT_APPLY` is restricted to explicit `EXACT_APPLICATION_TARGET / GVAE_ENFORCED / APPLY_READY` targets and actual execution still requires Factory Ledger MUTATION PASS, current task-exact Authority Mesh + Layer Map, reviewed hash-pinned Code Atlas UI Bridge plan/diff, GVAE receipt and VERIFY;
+- whole-surface work delegates to the existing read-only `visual_application.surface_batch`; a whole surface is a bounded composition of exact targets, never wildcard mutation;
+- governed visual files that are census-only or visually owned but not exact targets fail closed instead of being edited directly;
+- generated product projections remain manual-edit-forbidden;
+- CSS priority overrides remain forbidden;
+- Shared UI remains a governed surface even though it is not a runtime product application;
+- CI and VISCORE must run the universal PR diff gate in addition to the existing exact-target receipt gate.
+
+This source/static governance gate does not prove browser/runtime visual certification, whole-surface APPLY readiness, production readiness, distribution readiness, or customer deployment readiness.

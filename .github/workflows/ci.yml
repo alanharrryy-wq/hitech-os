@@ -117,7 +117,15 @@ jobs:
           set -euo pipefail
           PYTHONPATH=prisma-html/tools python -m visual_application.mandatory_gate \
             --base "${{ steps.base.outputs.base_sha }}" \
-            --head "${GITHUB_SHA}"
+            --head HEAD
+
+      - name: Enforce universal Visual Work Entry Gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=prisma-html/tools python -m visual_application.visual_work_entry_gate \
+            --base "${{ steps.base.outputs.base_sha }}" \
+            --head HEAD
 
       - name: Install dependencies (frozen lockfile)
         shell: bash
@@ -156,7 +164,7 @@ jobs:
 
           node tools/scripts/compute_affected_projects.mjs \
             --base "${{ steps.base.outputs.base_sha }}" \
-            --head "${GITHUB_SHA}" \
+            --head HEAD \
             --output "${REPORT_DIR}/affected_projects.json"
 
           node tools/scripts/report_codeowners_coverage.mjs \
@@ -168,12 +176,12 @@ jobs:
 
           node tools/scripts/check_release_discipline.mjs \
             --base "${{ steps.base.outputs.base_sha }}" \
-            --head "${GITHUB_SHA}" \
+            --head HEAD \
             --output "${REPORT_DIR}/release_discipline.json"
 
           node tools/scripts/report_sensitive_paths.mjs \
             --base "${{ steps.base.outputs.base_sha }}" \
-            --head "${GITHUB_SHA}" \
+            --head HEAD \
             --output "${REPORT_DIR}/sensitive_paths.json"
 
           node tools/scripts/report_repo_hygiene.mjs \
@@ -191,7 +199,7 @@ jobs:
           set -euo pipefail
           node tools/scripts/check_release_discipline.mjs \
             --base "${{ steps.base.outputs.base_sha }}" \
-            --head "${GITHUB_SHA}" \
+            --head HEAD \
             --output "${REPORT_DIR}/release_discipline.main_lane.json"
 
       - name: Normalize optional report artifacts
