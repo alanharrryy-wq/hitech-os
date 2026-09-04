@@ -123,6 +123,18 @@ The V1 gate must treat failure paths as product behavior, not decorative QA. Rep
 
 Universal Intelligence and Customer Wow foundations already recorded as mature or verify-only remain reuse/advance work. `doNotRebuild=true` is binding. This V1 contract adds identity, evidence boundaries and a governed completion checklist; it does not authorize a parallel repository engine, graph engine, authority engine, verification engine, evidence engine, runner, or Cloud Center surface.
 
+## 8A. Portable Change Assurance Packet V1
+
+The bounded external handoff is `prisma.change_assurance.packet.v1`. It is a composition contract over existing owners, not a second analysis, authority, verification or evidence engine.
+
+Every packet must expose product/repository identity, `authorizedSnapshot`, `currentSnapshot`, drift classification, affected authority, protected scope, provenance, explicit unknowns, a `PASS | BLOCKED | UNKNOWN` decision, exact PR head SHA, merge SHA only after GitHub reports a merge, post-merge proof, and explicit claim boundaries.
+
+The proof chain is `Code Atlas -> PRISMA Change Assurance -> Authority Mesh / AutoMesh v2 -> domain gates -> Evidence Bundle -> Factory Ledger`. Each transition identifies producer, consumer, contract and immutable snapshot/digest evidence where available. Packaging never promotes UNKNOWN, never turns Impact Radius into authorization, and never invents a merge SHA or post-merge PASS.
+
+## 8B. Commercialization boundary
+
+Current governed state is `TECHNICAL_COMMERCIALIZATION_READY` with `EXTERNAL_VALIDATION_PENDING_G_J`. This is **not** `COMMERCIALIZATION_READY`, paid-pilot certification, production certification or enterprise readiness. G remains `PARTIAL` until an actually independent external evaluator completes the governed verification gate. J remains `BLOCKED` until real external human utility evidence exists. The Cloud entitlement adapter is implemented but the product entitlement remains `NOT_GRANTED`; ROI remains `INPUT_REQUIRED_NO_ESTIMATE` without real customer baselines and observed events.
+
 ## 9. Authority provenance for this migration
 
 This contract was authorized read-only against repository head `45762d1a6251195dae0e229dfe6fa1aed74645fa` and tree `ce37544fb6f431586bc5f472124c0d6a3bc1c2a8` by PRISMA Remote AutoMesh run `32332472480`, artifact `9393519072`, request digest `81bf9492592090b52cc2a07b0138aa09454a423b7eca07abac9f65b1ab2798e7`, with 100% required-authority coverage and zero blockers.
