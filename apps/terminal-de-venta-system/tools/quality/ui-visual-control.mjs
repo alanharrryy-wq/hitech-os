@@ -1523,7 +1523,7 @@ function writeArtifacts(model) {
     const surfaceSlots = model.slots.filter((row) => row.surface === surface);
     const surfaceLayers = model.layers.filter((row) => row.surface === surface);
     const surfaceAssets = model.assets.filter((row) => row.surface === surface);
-    const surfaceRegions = model.visualRegions.filter((row) => row.surface === surface);
+    const surfaceRegions = model.regions.filter((row) => row.surface === surface);
     const surfaceOwners = {
       componentOwners: model.owners.componentOwners.filter((row) => row.surface === surface),
       cssOwners: model.owners.cssOwners.filter((row) => row.surface === surface),
