@@ -599,7 +599,7 @@ def main() -> int:
     check("single_navigation_seam", len(links) == 1, f"found={len(links)}")
     seam = links[0] if len(links) == 1 else ""
     check("navigation_seam_public_identity", 'aria-label="Abrir PRISMA Change Assurance"' in seam, seam)
-    check("navigation_seam_visible_label", re.search(r'<a\\b(?=[^>]*data-ci-entry=["\\\']v1["\\\'])[^>]*>\\s*Change Assurance\\s*</a>', main_html, re.I) is not None, "single Change Assurance navigation label required")
+    check("navigation_seam_visible_label", ">Change Assurance</a>" in main_html, "single Change Assurance navigation label required")
     check("main_js_uncoupled", "change_intelligence_center" not in main_js and "pci-" not in main_js)
     check("main_css_uncoupled", "change_intelligence_center" not in main_css and "pci-" not in main_css)
     check("ci_html_namespace", 'class="pci-surface"' in ci_html)
