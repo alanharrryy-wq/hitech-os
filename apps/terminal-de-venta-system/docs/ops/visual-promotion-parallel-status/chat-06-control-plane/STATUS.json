@@ -4,38 +4,43 @@
   "lane": "VISUAL_PROMOTION_CONTROL_PLANE",
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
-  "state": "BLOCKED",
-  "updatedAt": "2026-09-05T01:50:08Z",
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-05T01:52:03Z",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat6/visual-promotion-control-plane-20260904",
-  "workHead": "0a78a72f420def2cd9c843e2de08d9ae6b124f48",
-  "summary": "Chat 6 Control Plane is implemented on its dedicated work branch. Deterministic candidate/control-plane contracts and tooling exist, bounded Work Entry anti-rediscovery hardening is in place, and no surface candidate shard or product visual was authored. Completion is currently blocked by the PR workflow bot repeatedly materializing prisma-html/FILES_MANIFEST.json on the work branch, a global integration output outside Chat 6 write ownership.",
-  "blockers": [
-    {
-      "id": "AUTO_GLOBAL_MANIFEST_WRITE",
-      "status": "ACTIVE",
-      "path": "prisma-html/FILES_MANIFEST.json",
-      "detail": "PRISMA GVAE All-Surface Authority auto-commits a fresh global FILES_MANIFEST.json to the Chat 6 work branch while PR #541 is open. Chat 6 is not authorized to retain that global integration output in its lane diff."
-    }
-  ],
+  "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+  "summary": "Initial Chat 6 scope is complete and ready for deterministic cohort integration. The Control Plane provides candidate/schema/vocabulary/reference/write-ownership/hash/zero-loss/collision/Atlasfin/NDC reconciliation validation, proposal-only composer planning, Visual Current Truth, Surface Readiness, and bounded Work Entry anti-rediscovery hardening. The temporary workflow-authored global FILES_MANIFEST.json contamination was removed and no forbidden global file remains in the final lane diff.",
+  "blockers": [],
   "findings": [
-    "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true, so Chat 6 advanced it without rebuilding GVAE.",
-    "The existing Visual Control census and Target Index are current physical truth for the promotion cohort; DISCOVERY_ONLY is not UNDISCOVERED.",
-    "Atlasfin structured registries are sufficient as the priority visual reference for Control Plane validation. Materiality Catalog was not inspected and remains STANDBY_USER_INVOKED_ONLY.",
-    "The all-surface authority workflow can mutate FILES_MANIFEST.json on the lane branch even when the lane itself never writes that path."
+    "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
+    "Current Visual Control census and Target Index are reusable physical truth. DISCOVERY_ONLY is not UNDISCOVERED and broad recensus is not a legal shortcut.",
+    "Atlasfin structured registries are the priority visual reference for this cohort. Materiality Catalog was never inspected or used as fallback and remains STANDBY_USER_INVOKED_ONLY.",
+    "PRISMA GVAE All-Surface Authority auto-materialized prisma-html/FILES_MANIFEST.json while PR #541 was open. Closing that PR stopped the lane-branch mutation loop.",
+    "Final work tree is byte-equivalent to the CI-validated code head cb21ca01ecf8ec755fe34820d3d5b34673f70581: compare cb21..7cc48f reports zero changed files."
   ],
   "decisions": [
-    "Preserve exactly the four Work Entry decisions: GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST, BLOCKED.",
-    "Use REUSE_EXISTING_CENSUS_SEMANTIC_PROMOTION_REQUIRED for current census promotion and BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS for forbidden recensus attempts.",
-    "Keep the canonical composer proposal-only: no canonical ID assignment and no direct registry/product mutation.",
-    "Treat the workflow-authored FILES_MANIFEST.json change as out-of-scope contamination to remove before handoff, not as lane output."
+    "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
+    "Use REUSE_EXISTING_CENSUS_SEMANTIC_PROMOTION_REQUIRED and BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS as machine-readable reasons, never as new decisions.",
+    "Canonical composer remains proposal-only: no canonical IDs assigned, no canonical registry mutation and no product/runtime mutation.",
+    "Candidate data remains candidate-only and authority-qualified; candidate is not authority and resolved binding is not mutation authorization.",
+    "Close PR #541 rather than keep allowing PR automation to write a forbidden global integration output onto the lane branch.",
+    "Leave FILES_MANIFEST.json unchanged from base on the Chat 6 lane. The interoperability contract assigns its one-time refresh to the later integration stage."
   ],
   "changedPaths": [
-    "prisma-html/tools/visual_promotion/**",
-    "prisma-html/governance/visual-promotion/contracts/**",
-    "prisma-html/tools/visual_application/visual_work_entry_gate.py",
+    "prisma-html/governance/visual-promotion/contracts/README.md",
+    "prisma-html/governance/visual-promotion/contracts/candidate-shard-manifest.schema.json",
+    "prisma-html/governance/visual-promotion/contracts/candidate.schema.json",
+    "prisma-html/governance/visual-promotion/contracts/control-plane.contract.json",
     "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py",
-    "prisma-html/FILES_MANIFEST.json [workflow-bot write; out-of-scope blocker, must not remain in final lane diff]"
+    "prisma-html/tools/visual_application/visual_work_entry_gate.py",
+    "prisma-html/tools/visual_promotion/README.md",
+    "prisma-html/tools/visual_promotion/__init__.py",
+    "prisma-html/tools/visual_promotion/cli.py",
+    "prisma-html/tools/visual_promotion/control_plane.py",
+    "prisma-html/tools/visual_promotion/tests/__init__.py",
+    "prisma-html/tools/visual_promotion/tests/fixtures/candidate.tablet.json",
+    "prisma-html/tools/visual_promotion/tests/fixtures/shard-manifest.tablet.json",
+    "prisma-html/tools/visual_promotion/tests/test_control_plane.py"
   ],
   "validations": [
     {
@@ -45,53 +50,71 @@
       "details": "requiredAuthorityCoveragePct=100; blockers=0; layerMapPresent=true; base head 57b01ad8bda043ec25763203354b686341bace09"
     },
     {
-      "name": "GVAE V1 deterministic source/static suite",
+      "name": "CI guardrails on validated code tree",
       "result": "PASS",
-      "evidence": "PRISMA VISCORE1 Certification run 33936530294",
-      "details": "134-test historical suite passed after avoiding test-count drift."
+      "evidence": "workflow run 33936657370 at cb21ca01ecf8ec755fe34820d3d5b34673f70581",
+      "details": "Includes mandatory GVAE and Universal Visual Work Entry diff enforcement before broader guardrails."
     },
     {
-      "name": "Universal Visual Work Entry Gate",
+      "name": "ForgeOS Quality Gate",
       "result": "PASS",
-      "evidence": "PRISMA VISCORE1 Certification run 33936530294"
+      "evidence": "workflow run 33936657565 at cb21ca01ecf8ec755fe34820d3d5b34673f70581"
     },
     {
-      "name": "Target Index / Visual Core / RIFAT / Identity / Atlasfin source-static gates",
+      "name": "Sync Sentinel classification",
       "result": "PASS",
-      "evidence": "PRISMA VISCORE1 Certification run 33936530294",
-      "details": "All reached PASS before the final committed-manifest comparison."
-    },
-    {
-      "name": "Committed FILES_MANIFEST comparison",
-      "result": "FAIL",
-      "evidence": "PRISMA VISCORE1 Certification run 33936530294",
-      "details": "Failure is the known global manifest mismatch caused by lane-owned additions while the global manifest is integration-owned; the separate all-surface authority workflow then auto-committed that global file, creating the current blocker."
+      "evidence": "workflow run 33936657351 at cb21ca01ecf8ec755fe34820d3d5b34673f70581"
     },
     {
       "name": "PRISMA GVAE All-Surface Authority",
-      "result": "PASS_WITH_BRANCH_MUTATION",
-      "evidence": "runs 33936530292 and subsequent bot commit 0a78a72f420def2cd9c843e2de08d9ae6b124f48",
-      "details": "Authority workflow passed but wrote prisma-html/FILES_MANIFEST.json, which is outside Chat 6 write ownership."
+      "result": "PASS",
+      "evidence": "workflow run 33936657401 at cb21ca01ecf8ec755fe34820d3d5b34673f70581",
+      "details": "Workflow subsequently auto-committed FILES_MANIFEST.json while the PR was open; that bot-authored file was removed from the lane diff before handoff."
+    },
+    {
+      "name": "VISCORE source/static validation stack",
+      "result": "PASS_EXCEPT_INTEGRATION_MANIFEST_CHECK",
+      "evidence": "workflow run 33936657471 at cb21ca01ecf8ec755fe34820d3d5b34673f70581",
+      "details": "GVAE 134-test suite, mandatory gate, Work Entry Gate, Target Index/Visual Core, Authority Mesh self-test/fresh mesh, source validator, architecture/report smoke, Identity, RIFAT, Master Map/Code Atlas, Atlasfin and no-fake-READY all passed. Only the committed FILES_MANIFEST comparison failed because that global file is integration-owned and intentionally not regenerated by Chat 6."
+    },
+    {
+      "name": "Final lane diff boundary",
+      "result": "PASS",
+      "evidence": "compare 57b01ad8bda043ec25763203354b686341bace09..7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+      "details": "14 changed paths, all confined to Chat 6 primary ownership plus the two explicitly permitted Work Entry files. prisma-html/FILES_MANIFEST.json is absent from the final diff."
+    },
+    {
+      "name": "Final tree equivalence to validated code head",
+      "result": "PASS",
+      "evidence": "compare cb21ca01ecf8ec755fe34820d3d5b34673f70581..7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+      "details": "Two commits ahead but zero file differences, proving the final handoff tree equals the code tree that received successful CI/ForgeOS/Sync/GVAE validations."
     }
   ],
   "unresolved": [
-    "Stop the open-PR workflow from re-materializing FILES_MANIFEST.json on every lane update.",
-    "Restore FILES_MANIFEST.json to the base-head bytes after the workflow can no longer re-add it.",
-    "Re-check final diff so only Chat 6-owned paths plus the two explicitly permitted Work Entry files remain.",
-    "Run final narrow source/static validation on the clean lane head and publish exact handoff commit."
+    "Later cohort integration must deterministically refresh prisma-html/FILES_MANIFEST.json once after accepted prisma-html bytes from all lanes are assembled. This is an integration responsibility, not a Chat 6 lane blocker.",
+    "Later integration/reconciliation with actual worker candidate shards requires explicit worker branch/commit refs; initial Control Plane completion does not wait for them."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Close PR #541 to stop pull-request automation on the lane branch, restore FILES_MANIFEST.json to base bytes, validate the resulting exact Chat 6 diff, then publish a fresh status update.",
+  "nextAction": "Remain stable for handoff. When the user explicitly supplies/authorizes worker branch or commit refs, use this Control Plane for deterministic integration/reconciliation without broad rediscovery.",
   "handoff": {
-    "ready": false,
-    "pullRequest": 541,
-    "taskBranch": "chat6/visual-promotion-control-plane-20260904",
-    "currentHead": "0a78a72f420def2cd9c843e2de08d9ae6b124f48",
-    "integrationRule": "Do not integrate until the workflow-authored global FILES_MANIFEST.json is absent from the lane diff.",
+    "ready": true,
+    "workBranch": "chat6/visual-promotion-control-plane-20260904",
+    "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "closedPullRequest": 541,
+    "validatedEquivalentCodeHead": "cb21ca01ecf8ec755fe34820d3d5b34673f70581",
+    "finalChangedPathCount": 14,
     "candidateShardsWritten": false,
     "productVisualMutation": false,
     "globalCanonicalPromotion": false,
-    "materialityFallbackUsed": false
+    "materialityFallbackUsed": false,
+    "filesManifestChangedInFinalDiff": false,
+    "integrationNotes": [
+      "Consume candidate shards from Chats 1-4 only by explicit branch/commit refs and validate baseHead/source hashes.",
+      "Use Atlasfin Bridge/registries as priority visual reference without converting Atlasfin into Identity authority.",
+      "Keep Materiality Catalog standby unless repository owner explicitly invokes it for a named task.",
+      "Refresh FILES_MANIFEST.json only once at the integration stage after accepted prisma-html bytes are assembled."
+    ]
   }
 }
