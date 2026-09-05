@@ -85,3 +85,39 @@ Across all 2,097 outcome rows, exact Control Plane collision logic reports zero 
 ## 2026-09-05T02:29:00Z — DECISION
 
 Preserve all worker heads exactly. Planning will describe bounded compatibility corrections separately and will not mutate candidate shards, canonical authority, runtime or global manifests.
+
+## 2026-09-05T02:46:00Z — FINDING
+
+The strict `candidate-shard-manifest.schema.json` uses `additionalProperties:false`, while runtime `validate_shard()` tolerates extra worker metadata. Therefore all four current rich worker manifests are non-conformant to the strict JSON Schema even when the runtime validator can partially consume them. This is a Control Plane contract/runtime divergence, not worker semantic drift.
+
+## 2026-09-05T02:46:00Z — VALIDATION
+
+Recorded authority snapshots were revalidated against current `main`: 33/33 Tablet/PC Git blob SHAs for Target Index, expanded Visual Control, Identity, projection manifest and Atlasfin registries match byte-for-byte. Base-to-main movement does not touch worker physical source/output authority.
+
+## 2026-09-05T02:46:00Z — FINDING
+
+Atlasfin Bridge worker intake is intentionally shallow: it checks only `candidateOnly`, valid `baseHead`, matching `surfaceKey`, and non-empty `targetId`. With all four exact shards present it can surface them as `PRESENT`, but that state is cockpit availability only and must not be interpreted as strict Control Plane candidate acceptance.
+
+## 2026-09-05T02:46:00Z — VALIDATION
+
+Exact net lane composition is 39 unique `prisma-html` paths: 37 additions and 2 modifications, with zero overlaps across Chats 1–6. This is the deterministic input path-set for the eventual one-time `FILES_MANIFEST.json` refresh; exact manifest bytes remain intentionally unknown until bounded compatibility corrections and owner acceptance are complete.
+
+## 2026-09-05T02:46:00Z — FINDING
+
+Aggregate candidate accounting is `2097 = 365 candidate + 1580 unresolved + 152 conflict`. Aggregate Work Entry is `2065 REGISTER_TARGET_FIRST + 32 BLOCKED`; there are zero `GVAE_EXACT_APPLY` and zero `SURFACE_BATCH_PLAN` decisions. Tablet alone has 139 `ELIGIBLE_CANDIDATE` promotion-status rows, but all 139 still have Work Entry `REGISTER_TARGET_FIRST`; authorized canonical promotions remain zero.
+
+## 2026-09-05T02:46:00Z — FINDING
+
+Strong cross-surface semantic/NDC reconciliation groups proven by current canonical IDs: zero. Review-only Atlasfin recipe convergence exists for Tablet+PC: `REC.table.governed.v2` 171 rows (66+105), `REC.card.governed.v2` 95 (41+54), and `REC.panel.governed.v2` 47 (20+27). Recipe equality is visual-recipe evidence only, not proof of shared neutral meaning. All-null/no-match groups are excluded from reconciliation.
+
+## 2026-09-05T02:46:00Z — DECISION
+
+Recommended anti-rework path is a future bounded Chat 6 intake normalizer pinned to exact worker head/file hashes. It must transform only known syntactic envelope differences into the strict canonical in-memory schema, preserve original worker bytes and provenance, fail closed on unknown heads/hashes, and never upgrade semantics. A separate reconciliation review key must be added without weakening duplicate/collision fingerprints.
+
+## 2026-09-05T02:46:00Z — HANDOFF
+
+Deterministic `INTEGRATION PLAN` completed and embedded in the Chat 6 `STATUS.json` handoff. Exact assembly order is head-tree byte extraction (not history replay): Chat 6 Control Plane, Chat 5 read-only Bridge, then Tablet, PC, Mobile, Shared UI provenance in canonical surface order; normalized validation; Bridge rebuild; Current Truth/Surface Readiness; one `FILES_MANIFEST.json` refresh; full gates; then STOP before canonical mutation/merge.
+
+## 2026-09-05T02:46:00Z — COMPLETE
+
+Chat 6 continuation planning/validation phase is complete. State changed to `WAITING_EXTERNAL` because the canonical prompt explicitly requires stopping after the deterministic integration plan and waiting for repository-owner authorization. No product/runtime mutation, no candidate promotion, no global authority write, no PR #539/#540 merge, no Materiality read, no broad rediscovery, and no `FILES_MANIFEST.json` refresh occurred.

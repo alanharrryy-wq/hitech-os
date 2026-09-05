@@ -4,30 +4,32 @@
   "lane": "VISUAL_PROMOTION_CONTROL_PLANE",
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
-  "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T02:29:00Z",
+  "state": "WAITING_EXTERNAL",
+  "updatedAt": "2026-09-05T02:46:00Z",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat6/visual-promotion-control-plane-20260904",
   "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
-  "summary": "Chat 6 deterministic integration planning is active. Current-main source/hash drift is non-relevant to worker physical authority, but direct Control Plane validation exposed interoperability blockers: Chat 3 candidate records are not schema-compatible with the current Control Plane envelope, Chats 1/2/4 have manifest-envelope mismatches, and the current reconciliation fingerprint cannot group different targets/surfaces because it includes surfaceKey and targetId.",
+  "summary": "Deterministic Chat 6 INTEGRATION PLAN is complete. All six exact handoff heads were consumed as provenance; current-main drift is non-relevant to worker physical/source authority. Net lane bytes are disjoint (39 paths: 37 added, 2 modified). Strict canonical composition is not yet authorized and is blocked by known intake-envelope incompatibilities plus an identity-bound reconciliation fingerprint. No canonical promotion, merge, product/runtime mutation, global authority write or FILES_MANIFEST refresh was performed.",
   "blockers": [
     {
       "id": "CHAT3_CONTROL_PLANE_SCHEMA_INCOMPATIBILITY",
-      "status": "ACTIVE_PLANNING_BLOCKER",
-      "scope": "chat3 mobile handoff 7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
-      "detail": "All 271 Mobile outcome rows fail current Control Plane candidate validation: top-level projection object is an unknown field; ndcRefs contains qualified 'ndc::SURF.mb.owner_home' instead of a raw NDC ID; evidenceRefs contain unqualified repo/path strings; Atlasfin adapter is stored as 'atlasfin::ADP.MB.TOUCH.V2' instead of the registry raw ID expected by Atlasfin normalization. This does not authorize silent rewriting."
+      "status": "ACTIVE_PRE_INTEGRATION",
+      "detail": "Mobile 271/271 records fail strict Control Plane intake as-is: nested top-level projection object, qualified ndcRefs value, unqualified repo/path evidenceRefs, and qualified Atlasfin adapter in a raw-ID field. Physical/projection semantics remain preserved and source hashes are current."
     },
     {
-      "id": "SHARD_MANIFEST_ENVELOPE_MISMATCH",
-      "status": "ACTIVE_PLANNING_BLOCKER",
-      "scope": "Chats 1, 2 and 4 manifests",
-      "detail": "Direct validate_shard semantics reject Chat 1 and Chat 4 because top-level inputCensusCount/inputTargetCount is absent; Chat 2 additionally uses schema prisma.visual-promotion.surface-candidate-manifest.v1 rather than prisma.visual-promotion.candidate-shard.v1. Row-level candidate content otherwise preserves zero-loss/unique target accounting."
+      "id": "SHARD_MANIFEST_CONTRACT_DIVERGENCE",
+      "status": "ACTIVE_PRE_INTEGRATION",
+      "detail": "All four surface manifests are rich worker envelopes that do not satisfy the strict candidate-shard-manifest JSON Schema (additionalProperties=false). Runtime validate_shard is looser than the JSON Schema. Chat 1/4 also lack a top-level input count; Chat 2 additionally uses legacy manifest schema prisma.visual-promotion.surface-candidate-manifest.v1."
+    },
+    {
+      "id": "ATLASFIN_FIELD_QUALIFICATION_MISMATCH",
+      "status": "ACTIVE_PRE_INTEGRATION",
+      "detail": "Chat 3 uses atlasfin::ADP.MB.TOUCH.V2 and Chat 4 uses atlasfin::ADP.SHARED.NEUTRAL.V2 in atlasfinAdapterId. Current Control Plane registry normalization expects raw IDs ADP.MB.TOUCH.V2 and ADP.SHARED.NEUTRAL.V2; qualified refs belong in evidence/reference form."
     },
     {
       "id": "RECONCILIATION_FINGERPRINT_IDENTITY_BOUND",
-      "status": "ACTIVE_BEFORE_CANONICAL_COMPOSER",
-      "scope": "Chat 6 Control Plane",
-      "detail": "Current candidate_fingerprint includes surfaceKey and targetId. Across 2,097 worker outcome rows it yields 2,097 singleton groups and therefore no cross-surface reconciliation group. Canonical promotion must not rely on this key for semantic coalescing without a separately authorized bounded correction/review key."
+      "status": "ACTIVE_PRE_CANONICAL_COMPOSER",
+      "detail": "candidate_fingerprint includes surfaceKey and targetId, yielding 2,097 singleton groups. It can detect duplicates/collisions but cannot provide cross-surface semantic coalescing. A separately authorized bounded reconciliation-key correction is required before canonical composer use."
     }
   ],
   "findings": [
@@ -42,7 +44,15 @@
     "Source/hash revalidation by byte-equivalence passed for Tablet (40 unique recorded source/output paths), Mobile (14) and Shared UI (6); none intersects base..current-main changed paths. PC candidate rows do not carry per-row source/output hashes, so its manifest-level authority snapshots remain the relevant hash evidence.",
     "Row-level structural/vocabulary validation passed 929/929 Tablet, 827/827 PC and 70/70 Shared UI before Atlasfin registry-existence checks. Mobile failed 271/271 for the schema/reference-envelope reasons recorded as a blocker.",
     "Atlasfin current registries prove Tablet/PC recipe and adapter IDs. Mobile and Shared UI store qualified adapter strings in atlasfinAdapterId, which current Control Plane normalization expects as raw Atlasfin IDs.",
-    "Exact Control Plane collision logic found zero duplicate target IDs, zero bindingCandidateKey collisions and zero cross-surface fingerprint collisions across 2,097 outcome rows."
+    "Exact Control Plane collision logic found zero duplicate target IDs, zero bindingCandidateKey collisions and zero cross-surface fingerprint collisions across 2,097 outcome rows.",
+    "Current candidate-shard-manifest JSON Schema is stricter than validate_shard: additionalProperties=false makes every current rich worker manifest non-conformant even where validate_shard can consume it.",
+    "Chat 5 Atlasfin Bridge is deliberately permissive at worker intake: _candidate_conformance checks only candidateOnly, baseHead, surfaceKey and targetId. With the four exact worker shards present it would classify their data as PRESENT, so Bridge PRESENT must never be treated as a Control Plane schema pass.",
+    "33/33 exact Git blob snapshots recorded by Tablet/PC for Target Index, expanded Visual Control, Identity, projection manifest and Atlasfin registries match current main byte-for-byte.",
+    "Across all four shards zero-loss remains 2,097 = 365 candidate records + 1,580 unresolved records + 152 conflict records.",
+    "Work Entry aggregate is 2,065 REGISTER_TARGET_FIRST + 32 BLOCKED; there are zero GVAE_EXACT_APPLY and zero SURFACE_BATCH_PLAN decisions.",
+    "Candidate-level promotionStatus has 139 ELIGIBLE_CANDIDATE records, all Tablet, but every one still has Work Entry REGISTER_TARGET_FIRST. Therefore currently authorized canonical promotions = 0.",
+    "Cross-surface strong semantic/NDC reconciliation candidates = 0 from current proven IDs. Recipe-level review candidates exist across Tablet+PC for REC.table.governed.v2 (171 rows), REC.card.governed.v2 (95), and REC.panel.governed.v2 (47); recipe equality is not semantic identity.",
+    "The only existing resolved binding reuse is Tablet target TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1 -> BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 / ACT.primary / LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE, still REGISTER_TARGET_FIRST."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -54,23 +64,17 @@
     "Treat current main movement as evidence to classify, not automatic semantic drift. Revalidate only recorded/relevant source and authority inputs.",
     "Consume the exact worker heads named by the canonical continuation prompt; do not silently substitute newer lane commits.",
     "Do not normalize Chat 3 or manifest envelopes in-place during planning. Preserve worker commits and represent required bounded corrections explicitly in the integration plan.",
-    "Treat zero current fingerprint collisions as an implementation property, not proof that no semantic cross-surface reconciliation exists."
+    "Treat zero current fingerprint collisions as an implementation property, not proof that no semantic cross-surface reconciliation exists.",
+    "Recommended anti-rework correction strategy: preserve exact worker bytes/heads and add a future fail-closed, exact-head/hash-pinned Control Plane intake normalization profile rather than asking four workers to recensus or semantically recompute their shards.",
+    "Any normalization must be syntactic/provenance-preserving only: no status upgrade, no conflict resolution, no new ID, no semantic inference. Normalized output must pass the strict canonical candidate/manifest schemas.",
+    "Add a separate future reconciliation review key that excludes surfaceKey/targetId and refuses all-null evidence groups. Keep duplicate/collision fingerprint behavior separate from semantic reconciliation behavior.",
+    "For later assembly, consume exact owned file bytes from head trees, not branch-history replay/cherry-pick chains. This avoids transient historical global-manifest bot commits and preserves disjoint ownership.",
+    "Do not merge PR #539 or #540 and do not refresh FILES_MANIFEST until a later owner-authorized assembly has fixed the pre-integration compatibility blockers."
   ],
   "changedPaths": [
-    "prisma-html/governance/visual-promotion/contracts/README.md",
-    "prisma-html/governance/visual-promotion/contracts/candidate-shard-manifest.schema.json",
-    "prisma-html/governance/visual-promotion/contracts/candidate.schema.json",
-    "prisma-html/governance/visual-promotion/contracts/control-plane.contract.json",
-    "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py",
-    "prisma-html/tools/visual_application/visual_work_entry_gate.py",
-    "prisma-html/tools/visual_promotion/README.md",
-    "prisma-html/tools/visual_promotion/__init__.py",
-    "prisma-html/tools/visual_promotion/cli.py",
-    "prisma-html/tools/visual_promotion/control_plane.py",
-    "prisma-html/tools/visual_promotion/tests/__init__.py",
-    "prisma-html/tools/visual_promotion/tests/fixtures/candidate.tablet.json",
-    "prisma-html/tools/visual_promotion/tests/fixtures/shard-manifest.tablet.json",
-    "prisma-html/tools/visual_promotion/tests/test_control_plane.py"
+    "No work-branch source changes in continuation phase.",
+    "Status-only updates: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/STATUS.json",
+    "Status-only updates: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/LOG.md"
   ],
   "validations": [
     {
@@ -138,17 +142,47 @@
       "name": "Cross-shard collision detection",
       "result": "PASS_ZERO_COLLISIONS_WITH_LIMITATION",
       "details": "0 duplicate target IDs; 0 bindingCandidateKey collisions; 0 cross-surface fingerprint reviews across 2,097 rows. Fingerprint includes surfaceKey+targetId, so this is not semantic-dedupe proof."
+    },
+    {
+      "name": "Recorded authority blob revalidation against current main",
+      "result": "PASS",
+      "details": "33/33 Tablet/PC recorded Git blob SHAs match current main exactly."
+    },
+    {
+      "name": "Net lane write ownership and overlap audit",
+      "result": "PASS",
+      "details": "39 net paths across Chats 1-6; 37 added, 2 modified, 0 duplicate/overlapping paths. All remain within assigned lane ownership; no final worker diff contains FILES_MANIFEST.json."
+    },
+    {
+      "name": "Atlasfin Bridge source/static evidence",
+      "result": "PASS_SOURCE_STATIC_WITH_MANIFEST_PARITY_ONLY_FAILURE",
+      "details": "Chat 5 head checks passed bridge/source/static stack; VISCORE run 33936224670 failed only at committed FILES_MANIFEST comparison. Bridge reuses 418-element catalog and blocks Materiality access."
+    },
+    {
+      "name": "Bridge vs Control Plane worker-intake semantics",
+      "result": "PASS_CLASSIFICATION_WITH_LIMITATION",
+      "details": "Bridge is read-only and can surface all four worker lanes as PRESENT based on its intentionally minimal conformance check; strict acceptance remains governed by Control Plane, not Bridge."
+    },
+    {
+      "name": "Aggregate zero-loss accounting",
+      "result": "PASS",
+      "details": "2,097 outcomes = 365 CANDIDATES + 1,580 UNRESOLVED + 152 CONFLICTS; zero duplicate target IDs across surfaces."
+    },
+    {
+      "name": "Exact current Control Plane collision check",
+      "result": "PASS_ZERO_COLLISIONS_WITH_KNOWN_LIMITATION",
+      "details": "0 duplicate target IDs, 0 bindingCandidateKey collisions, 0 cross-surface fingerprint collisions; current fingerprint cannot semantically group different targets because it includes surfaceKey and targetId."
     }
   ],
   "unresolved": [
-    "Validate Chat 5 Atlasfin Bridge current-input equivalence and bridge contract/read-only behavior against current main.",
-    "Resolve exact manifest/record compatibility strategy in the INTEGRATION PLAN without mutating worker shards during planning.",
-    "Compute expected one-time FILES_MANIFEST.json delta and exact deterministic assembly order.",
-    "List eligible promotions vs blocked items and gates required before any canonical mutation."
+    "Owner authorization is required before any bounded Control Plane compatibility/reconciliation-key implementation or integration assembly.",
+    "Strict all-worker canonical intake must remain blocked until the manifest/record normalization issue is resolved by an explicitly authorized bounded correction.",
+    "Final generated FILES_MANIFEST.json bytes/hash remain intentionally unknown until accepted/corrected prisma-html bytes are assembled and the one authorized deterministic refresh runs.",
+    "No canonical Identity/RIFAT/NDC/Target Index promotion proposal may be executed until normalized candidates pass the Control Plane and subsequent authority gates."
   ],
-  "needsUserAction": false,
-  "userActionRequested": null,
-  "nextAction": "Validate the Atlasfin Bridge and remaining authority snapshot equivalence, then produce the deterministic integration plan with bounded correction requirements and hard-stop boundaries.",
+  "needsUserAction": true,
+  "userActionRequested": "Explicitly authorize the next bounded integration step. Recommended authorization: allow Chat 6 to implement a fail-closed exact-head/hash-pinned intake normalizer plus a separate semantic reconciliation review key, then assemble the six lane head trees non-canonically for validation. This does not authorize canonical ID minting, product/runtime mutation, PR #539/#540 merge, or global authority promotion.",
+  "nextAction": "WAIT for explicit repository-owner authorization. If authorized, implement only the bounded Control Plane intake/reconciliation correction, revalidate all 2,097 normalized outcomes, then perform non-canonical deterministic assembly in the planned order. Do not proceed to canonical promotion without separate authorization.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/visual-promotion-control-plane-20260904",
@@ -173,6 +207,270 @@
     "explicitWorkerRefsReceived": true,
     "integrationPlanReady": false,
     "workerOutcomeRowsValidated": 2097,
-    "controlPlaneCollisionCount": 0
+    "controlPlaneCollisionCount": 0,
+    "phase": "INTEGRATION_HANDOFF_AND_PLANNING",
+    "planStatus": "PLAN_COMPLETE_WAITING_OWNER_AUTHORIZATION",
+    "commonWorkerBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "exactAcceptanceInputs": [
+      {
+        "chatId": 1,
+        "lane": "tablet",
+        "head": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+        "disposition": "CONDITIONAL_PROVENANCE_ACCEPTANCE",
+        "blocker": "manifest requires canonical intake normalization before strict composer consumption",
+        "files": [
+          "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/tablet/CONFLICTS.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json",
+          "prisma-html/governance/visual-promotion/candidates/tablet/SUMMARY.md",
+          "prisma-html/governance/visual-promotion/candidates/tablet/UNRESOLVED.jsonl"
+        ]
+      },
+      {
+        "chatId": 2,
+        "lane": "pc",
+        "head": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+        "disposition": "CONDITIONAL_PROVENANCE_ACCEPTANCE",
+        "blocker": "legacy manifest schema/count envelope requires canonical intake normalization before strict composer consumption",
+        "files": [
+          "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/pc/CONFLICTS.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/pc/MANIFEST.json",
+          "prisma-html/governance/visual-promotion/candidates/pc/SUMMARY.md",
+          "prisma-html/governance/visual-promotion/candidates/pc/UNRESOLVED.jsonl"
+        ]
+      },
+      {
+        "chatId": 3,
+        "lane": "mobile",
+        "head": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+        "disposition": "BLOCKED_FROM_STRICT_COMPOSER_AS_IS",
+        "blocker": "271/271 records require syntactic/reference normalization; preserve all 133 CURRENT and 138 DRIFT semantics unchanged",
+        "files": [
+          "prisma-html/governance/visual-promotion/candidates/mobile/CANDIDATES.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/mobile/CONFLICTS.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/mobile/MANIFEST.json",
+          "prisma-html/governance/visual-promotion/candidates/mobile/SUMMARY.md",
+          "prisma-html/governance/visual-promotion/candidates/mobile/UNRESOLVED.jsonl"
+        ]
+      },
+      {
+        "chatId": 4,
+        "lane": "shared-ui",
+        "head": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+        "disposition": "CONDITIONAL_PROVENANCE_ACCEPTANCE",
+        "blocker": "manifest intake envelope plus qualified Atlasfin adapter field require normalization before strict Atlasfin-index validation",
+        "files": [
+          "prisma-html/governance/visual-promotion/candidates/shared-ui/CANDIDATES.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/shared-ui/CONFLICTS.jsonl",
+          "prisma-html/governance/visual-promotion/candidates/shared-ui/MANIFEST.json",
+          "prisma-html/governance/visual-promotion/candidates/shared-ui/SUMMARY.md",
+          "prisma-html/governance/visual-promotion/candidates/shared-ui/UNRESOLVED.jsonl"
+        ]
+      },
+      {
+        "chatId": 5,
+        "lane": "atlasfin-bridge",
+        "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
+        "disposition": "PROPOSED_ACCEPTANCE_READ_ONLY",
+        "blocker": null,
+        "files": [
+          "prisma-html/extras/atlasfin/bridge/PRISMA_ATLASFIN_VISUAL_PROMOTION_BRIDGE_V1.schema.json",
+          "prisma-html/extras/atlasfin/bridge/README.md",
+          "prisma-html/extras/atlasfin/bridge/atlasfin_bridge.py",
+          "prisma-html/extras/atlasfin/bridge/fixtures/tablet-candidate.json",
+          "prisma-html/extras/atlasfin/bridge/test_atlasfin_bridge.py"
+        ]
+      },
+      {
+        "chatId": 6,
+        "lane": "control-plane",
+        "head": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+        "disposition": "PROPOSED_ACCEPTANCE_CONTROL_PLANE",
+        "blocker": "requires one bounded compatibility/reconciliation-key follow-up before strict all-worker composition",
+        "files": [
+          "prisma-html/governance/visual-promotion/contracts/README.md",
+          "prisma-html/governance/visual-promotion/contracts/candidate-shard-manifest.schema.json",
+          "prisma-html/governance/visual-promotion/contracts/candidate.schema.json",
+          "prisma-html/governance/visual-promotion/contracts/control-plane.contract.json",
+          "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py",
+          "prisma-html/tools/visual_application/visual_work_entry_gate.py",
+          "prisma-html/tools/visual_promotion/README.md",
+          "prisma-html/tools/visual_promotion/__init__.py",
+          "prisma-html/tools/visual_promotion/cli.py",
+          "prisma-html/tools/visual_promotion/control_plane.py",
+          "prisma-html/tools/visual_promotion/tests/__init__.py",
+          "prisma-html/tools/visual_promotion/tests/fixtures/candidate.tablet.json",
+          "prisma-html/tools/visual_promotion/tests/fixtures/shard-manifest.tablet.json",
+          "prisma-html/tools/visual_promotion/tests/test_control_plane.py"
+        ]
+      }
+    ],
+    "driftClassification": {
+      "currentMainMovement": "NON_RELEVANT_COORDINATION_GOVERNANCE_DRIFT_FOR_WORKER_PHYSICAL_INPUTS",
+      "workerPhysicalAuthorityRecomputeRequired": false,
+      "broadRediscoveryAllowed": false,
+      "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+      "materialityCatalogInspected": false
+    },
+    "aggregateAccounting": {
+      "totalOutcomes": 2097,
+      "candidates": 365,
+      "unresolved": 1580,
+      "conflicts": 152,
+      "workEntryDecision": {
+        "REGISTER_TARGET_FIRST": 2065,
+        "BLOCKED": 32,
+        "GVAE_EXACT_APPLY": 0,
+        "SURFACE_BATCH_PLAN": 0
+      },
+      "candidatePromotionStatus": {
+        "ELIGIBLE_CANDIDATE": 139,
+        "REGISTER_TARGET_FIRST": 1926,
+        "BLOCKED": 32
+      },
+      "currentlyAuthorizedCanonicalPromotions": 0
+    },
+    "conflictSummary": {
+      "tablet": {
+        "count": 2,
+        "policy": "preserve physical DRIFT; no normalization"
+      },
+      "pc": {
+        "count": 1,
+        "targetId": "TGT.CENSUS.PC.097AB2F857F353CA4288.V1",
+        "policy": "preserve selector conflict .supplier-readable-v07 vs .supplier-readable-v07 *"
+      },
+      "mobile": {
+        "count": 138,
+        "policy": "preserve projection/RIFAT-product DRIFT; no repair direction"
+      },
+      "sharedUi": {
+        "count": 11,
+        "policy": "preserve multi-region conflicts; no inference"
+      }
+    },
+    "collisionSummary": {
+      "duplicateTargetIds": 0,
+      "bindingCandidateKeyCollisions": 0,
+      "currentFingerprintCrossSurfaceCollisions": 0,
+      "limitation": "candidate_fingerprint contains surfaceKey+targetId and is not a semantic coalescing key"
+    },
+    "semanticReconciliationCandidates": {
+      "strongSharedMeaningOrNdcGroups": 0,
+      "recipeLevelReviewOnly": [
+        {
+          "atlasfinRecipeId": "REC.table.governed.v2",
+          "surfaces": [
+            "tablet",
+            "pc"
+          ],
+          "tabletCount": 66,
+          "pcCount": 105,
+          "total": 171,
+          "canonicalMeaningResolved": false
+        },
+        {
+          "atlasfinRecipeId": "REC.card.governed.v2",
+          "surfaces": [
+            "tablet",
+            "pc"
+          ],
+          "tabletCount": 41,
+          "pcCount": 54,
+          "total": 95,
+          "canonicalMeaningResolved": false
+        },
+        {
+          "atlasfinRecipeId": "REC.panel.governed.v2",
+          "surfaces": [
+            "tablet",
+            "pc"
+          ],
+          "tabletCount": 20,
+          "pcCount": 27,
+          "total": 47,
+          "canonicalMeaningResolved": false
+        }
+      ],
+      "tabletOnlyRecipeReview": {
+        "atlasfinRecipeId": "REC.overlay.governed.v2",
+        "count": 11
+      },
+      "weakAllNullNoMatchGroupsExcluded": true,
+      "sharedUiCandidateMeanings": {
+        "shared-ui background layer": 35,
+        "shared-ui atmospheric layer": 4,
+        "shared-ui toolbar layer": 1
+      },
+      "mobileSemanticPromotion": "UNRESOLVED"
+    },
+    "expectedFilesManifestDelta": {
+      "acceptedLanePathSetBeforeCorrections": {
+        "added": 37,
+        "modified": 2,
+        "total": 39,
+        "overlaps": 0
+      },
+      "pathSetExpectedToRemainStableAfterSyntacticCorrections": true,
+      "exactGeneratedManifestHashKnown": false,
+      "refreshCountRequired": 1,
+      "refreshTiming": "ONLY_AFTER_ALL_OWNER_ACCEPTED_PRISMA_HTML_BYTES_ARE_ASSEMBLED"
+    },
+    "globalRefreshPlan": {
+      "deterministicAssemblyRefresh": [
+        "prisma-html/FILES_MANIFEST.json"
+      ],
+      "explicitlyNotAuthorizedNow": [
+        "prisma-html/authority/rifat/identity/registries/element-bindings.registry.json",
+        "prisma-html/authority/rifat/identity/registries/recipe.registry.json",
+        "prisma-html/authority/rifat/identity/compiled/**",
+        "prisma-html/authority/rifat/prisma-ui/visual-control/target-index/**",
+        "prisma-html/authority/rifat/visual-source-manifest.json",
+        "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json",
+        "PRISMA Factory Ledger/PRISMA_EVIDENCE_INDEX.json"
+      ]
+    },
+    "exactAssemblyOrder": [
+      "0. Start a fresh integration branch from current main 66fa02147f0cf31529c090a47f376026b406875a; freeze all six exact head/tree SHAs.",
+      "1. Apply exact Chat 6 owned path bytes from 7cc48fa49906c8f443b267fd6c3590fd3f4340fb, not historical commit replay.",
+      "2. Run Control Plane contracts/tests and Work Entry/no-broad-rediscovery gates.",
+      "3. Apply exact Chat 5 bridge path bytes from c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0; run bridge tests/check read-only.",
+      "4. Apply candidate provenance bytes in canonical surface order: Tablet 1b669d98..., PC 896f4a7f..., Mobile 7f32ce6f..., Shared UI 57b502f1..., using head-tree path extraction only.",
+      "5. Apply the owner-authorized fail-closed intake normalization in memory/source tooling; normalized records must retain source head/file/line/hash provenance and may not upgrade semantics.",
+      "6. Validate strict candidate + canonical manifest schemas, vocabulary, authority refs, Atlasfin/NDC registry refs, source hashes, zero-loss and disjoint ownership for all 2,097 outcomes.",
+      "7. Run duplicate/collision checks plus the separate semantic reconciliation review key; preserve unresolved/conflict outputs.",
+      "8. Rebuild Atlasfin Bridge snapshot against the assembled normalized candidate inputs and verify 418 catalog/read-only/Materiality standby.",
+      "9. Generate Current Truth + Surface Readiness; require runtimeVisualGreen=false and wholeSurfaceApplyReady=false unless separately proven.",
+      "10. Refresh prisma-html/FILES_MANIFEST.json exactly once.",
+      "11. Run VISCORE, CI, ForgeOS, Sync Sentinel, Identity/RIFAT no-regression, Atlasfin static gate and no-fake-READY checks.",
+      "12. STOP before canonical authority mutation or PR merge and present composer proposals for separate owner authorization."
+    ],
+    "requiredGatesBeforeAnyCanonicalMutationOrMerge": [
+      "strict normalized candidate + manifest schema PASS",
+      "closed vocabulary and authority-qualified reference PASS",
+      "current-main source/authority hash equivalence PASS",
+      "disjoint ownership and zero-loss PASS",
+      "duplicate/collision + semantic reconciliation review completed",
+      "Atlasfin Bridge read-only PASS with Materiality uninspected",
+      "Current Truth / Surface Readiness no-fake-green PASS",
+      "one deterministic FILES_MANIFEST refresh PASS",
+      "Factory Ledger classification/proposal gate for any later canonical mutation",
+      "fresh task-exact Authority Mesh + Layer Map for exact canonical mutation scope",
+      "Universal Visual Work Entry Gate decision for each exact target/change",
+      "GVAE PREVIEW/APPLY/receipt/VERIFY only where exact apply authority exists",
+      "CI / VISCORE / ForgeOS / Sync Sentinel / Identity / RIFAT / Atlasfin no-regression PASS",
+      "separate repository-owner authorization for canonical promotion/mutation/merge"
+    ],
+    "hardStopHeld": {
+      "canonicalPromotionPerformed": false,
+      "canonicalIdsMinted": false,
+      "productRuntimeMutation": false,
+      "pr539Merged": false,
+      "pr540Merged": false,
+      "filesManifestRefreshed": false,
+      "materialityFallbackUsed": false,
+      "broadRediscoveryPerformed": false
+    }
   }
 }
