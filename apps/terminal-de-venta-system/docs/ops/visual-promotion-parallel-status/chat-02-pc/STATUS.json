@@ -4,12 +4,12 @@
   "lane": "PC_PROMOTION",
   "statusBranch": "status/vp-chat-02-pc",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc",
-  "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:52:29-06:00",
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-04T20:15:30-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "agent/chat2-pc-promotion-20260904",
   "workHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
-  "summary": "Chat 2 PC promotion worker lane completed zero-loss candidate reconciliation for all 827 current PC Target Index census records. Outputs are candidate-only and ready for deterministic integration review; no product/runtime/global-authority mutation was performed.",
+  "summary": "Chat 2 PC worker shard remains complete and unchanged. Lane resumed only for the canonical continuation phase's bounded read-only revalidation of recorded source/authority inputs against current main; no candidate regeneration or lane mutation is authorized.",
   "blockers": [
     {
       "scope": "candidate",
@@ -89,7 +89,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Keep the PC candidate shard unchanged and available for deterministic control-plane/integration reconciliation. If integration consumes this lane, first perform base/source-authority hash revalidation against current main and preserve the recorded conflict/unresolved states unless stronger authority resolves them.",
+  "nextAction": "Perform bounded read-only revalidation of the recorded PC candidate manifest/source-authority hashes against current main, classify any delta, then return to READY_FOR_INTEGRATION if relevant authority is unchanged.",
   "handoff": {
     "readiness": "READY_FOR_INTEGRATION",
     "workBranch": "agent/chat2-pc-promotion-20260904",
