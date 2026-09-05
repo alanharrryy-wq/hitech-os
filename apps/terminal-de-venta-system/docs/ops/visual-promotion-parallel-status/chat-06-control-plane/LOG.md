@@ -205,3 +205,19 @@ Chat 5 Atlasfin certification PASS independently: `2,421/2,421` reference rows c
 ## 2026-09-05T06:41:00Z — PROGRESS
 
 Added exact certification-head/file hash registry and final handoff verifier under Chat 6 ownership. Every owner certification row will be hash-pinned into final global certification provenance. No canonical promotion, product/runtime mutation, broad rediscovery or Materiality read occurred.
+
+## 2026-09-05T06:20:00Z — BLOCKER_CLEARED
+
+AutoMesh v2 revalidation run `33949261013` passed on current `main` `1cc4d0d45b3878ace2906d08fa67f325a3b98a9d`. The relevant prompt/manifest drift was not ignored.
+
+## 2026-09-05T06:20:00Z — VALIDATION
+
+Fresh task-exact AutoMesh run `33949294075` also passed `PASS_COMPOSED_AUTHORITY_MESH` on the same HEAD. Required authority coverage is 100%, blockers=0 and Layer Map evidence exists for both Chat 6 tasks. Request digest `5cd15e40ea840664e61fc9683f0726dc28d330303f527fc8bd192c7a3b82a7c7`; composed artifact SHA-256 `38d052092ad9f67f058e9e1412b4d47b05680c22ac2e903ff7438e9ded4301bc`.
+
+## 2026-09-05T06:20:00Z — VALIDATION
+
+Universal anti-rework gate passed in both `PROPOSAL` and `MUTATION` modes for canonical capability `visual.generic_application_engine_v1` with requested action `ADVANCE`. Ledger truth remains `DONE / SOURCE_READY / doNotRebuild=true`; GVAE will not be rebuilt.
+
+## 2026-09-05T06:20:00Z — DECISION
+
+Bounded Chat 6 corpus/control-plane mutation is now permitted. Certification inputs are fixed to the exact five heads in the current canonical prompt. Existing unresolved/conflict semantics are valid corpus states and will be preserved.

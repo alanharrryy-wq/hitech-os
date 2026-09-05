@@ -5,7 +5,7 @@
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
   "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T06:41:00Z",
+  "updatedAt": "2026-09-05T06:20:00Z",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat6/candidate-corpus-cert-20260904",
   "workHead": "9fdc3545d8b3309395f9276723c81f9799b1c60f",
@@ -49,7 +49,11 @@
     "Tablet certification legitimately preserves the optional schema field as absent; global normalization may explicitly add it. Verification therefore requires strict validity + semantic fidelity, not artificial object/byte equality.",
     "Mobile certification stores semanticMutation=false under validation.semanticMutation; intake verifier now recognizes existing lane certification layouts without weakening the false-only invariant.",
     "Chat 5 Atlasfin certification independently cross-links 2,421/2,421 reference rows to the exact 2,097 surface certification source records; invalid/reference/source mismatches=0.",
-    "Chat 5 artifactDigestBasis is internally coherent: normalizationPolicySha256 is canonical-JSON digest; recipeReviewGroupsSha256 is canonical digest of groups array; it is not a stale file-byte digest."
+    "Chat 5 artifactDigestBasis is internally coherent: normalizationPolicySha256 is canonical-JSON digest; recipeReviewGroupsSha256 is canonical digest of groups array; it is not a stale file-byte digest.",
+    "Current canonical continuation is CANDIDATE_CORPUS_FINAL_AGGREGATION; Chats 1-5 are CERTIFIED_HOLD and exact accepted certification heads are now fixed in the prompt.",
+    "AutoMesh v2 revalidation run 33949261013 passed against current main 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d.",
+    "Fresh task-exact AutoMesh run 33949294075 also passed PASS_COMPOSED_AUTHORITY_MESH on the same current main with 100% required authority coverage, blockers=0 and Layer Map evidence present for both Chat 6 tasks.",
+    "Universal anti-rework gate classifies visual.generic_application_engine_v1 as DONE/SOURCE_READY/doNotRebuild=true and permits ADVANCE. PROPOSAL and MUTATION evaluations both PASS."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -76,7 +80,10 @@
     "Use exact worker-head sample fixtures from all four surfaces to exercise known normalization shapes before global corpus assembly.",
     "Add exact certification-intake registry with certification branch/head plus Git blob SHA and SHA-256 pins for every Chat 1-5 certification artifact.",
     "Verify surface certified NORMALIZED rows by strict candidate validation plus semantic fidelity to independent raw normalization, while preserving owner representation choices that are contract-valid.",
-    "Pin every owner certification row hash into the final global CERTIFICATION output; certification validity remains distinct from promotion/application authority."
+    "Pin every owner certification row hash into the final global CERTIFICATION output; certification validity remains distinct from promotion/application authority.",
+    "Proceed with bounded corpus/control-plane source mutation. Do not rebuild GVAE; ADVANCE only.",
+    "Consume only exact certified heads: Tablet fd111022438bab909151c2220b52e95aa5aa7eb3, PC 8cc979c141000fcedabf832f16468a6ee3e328e2, Mobile 664035e83943ae48c923585765d3c505b1bd8c53, Shared UI 553577aa74045c73ab9c92d1f81538e7e0a8c65a, Atlasfin 6c7743f55434eb8d3429f286e2f9eae275d93d87.",
+    "Chats 1-5 unresolved/conflict states are valid corpus states and will not be semantically rewritten to manufacture completeness."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/contracts/**",
@@ -239,17 +246,39 @@
       "name": "Certification intake tooling",
       "result": "IMPLEMENTED_PENDING_INTEGRATION_EXECUTION",
       "details": "Added certification-intake.registry.json, certification_handoffs.py, final_aggregation.py, CLI certify-final-corpus, contract hardening, tests; work head 9fdc3545d8b3309395f9276723c81f9799b1c60f."
+    },
+    {
+      "name": "AutoMesh v2 current-HEAD revalidation",
+      "result": "PASS",
+      "evidence": "workflow run 33949261013",
+      "details": "Relevant prompt/FILES_MANIFEST drift was detected and the revalidation workflow performed fresh preflight/Mesh instead of silently reusing stale evidence."
+    },
+    {
+      "name": "Fresh current-HEAD corpus-certification AutoMesh",
+      "result": "PASS_COMPOSED_AUTHORITY_MESH",
+      "evidence": "workflow run 33949294075; workflow artifact 9964303227; outer digest sha256:2d8f19759df34ac00cee529544588a41e1f4e2077e79e01733932ed6223664f0; composed artifact sha256:38d052092ad9f67f058e9e1412b4d47b05680c22ac2e903ff7438e9ded4301bc",
+      "details": "repoHead=1cc4d0d45b3878ace2906d08fa67f325a3b98a9d; required authority coverage=100%; blockers=0; task Layer Maps present; requestDigest=5cd15e40ea840664e61fc9683f0726dc28d330303f527fc8bd192c7a3b82a7c7."
+    },
+    {
+      "name": "Universal anti-rework gate PROPOSAL",
+      "result": "PASS_ANTI_REWORK_GATE",
+      "details": "visual.generic_application_engine_v1 => ADVANCE; canonical classification DONE, status SOURCE_READY, doNotRebuild=true."
+    },
+    {
+      "name": "Universal anti-rework gate MUTATION",
+      "result": "PASS_ANTI_REWORK_GATE",
+      "details": "Bound to current main 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d and reviewed current-HEAD PASS_COMPOSED_AUTHORITY_MESH summary."
     }
   ],
   "unresolved": [
-    "Assemble exact raw worker bytes, four surface certification derivatives, Chat 5 bridge/certification, and Chat 6 work bytes on one fresh integration branch from current main.",
-    "Execute certify-final-corpus on the assembled tree and commit the nine global corpus-certification outputs with exactly 2,097 valid records.",
-    "Refresh prisma-html/FILES_MANIFEST.json exactly once after all accepted prisma-html bytes and generated corpus outputs are present.",
-    "Run required integration/PR checks and merge only if every required check is green."
+    "Implement and test exact-head/hash-pinned certification intake plus separate semantic review grouping.",
+    "Independently verify all five exact certification handoffs and original worker/bridge provenance.",
+    "Generate and validate the 2,097-record global corpus outputs.",
+    "Assemble accepted bytes from then-current main, refresh FILES_MANIFEST once, run final gates, open one corpus-only PR and merge only if all required checks are green."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Create the fresh final integration branch from current main, assemble exact accepted head-tree bytes, generate/validate the global corpus outputs, then perform the single FILES_MANIFEST refresh and PR gate sequence.",
+  "nextAction": "Implement/test the pinned intake and corpus generator on the Chat 6 work branch, then consume the exact certified handoffs and generate the global corpus.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/candidate-corpus-cert-20260904",
@@ -564,6 +593,9 @@
       "sharedUi": "553577aa74045c73ab9c92d1f81538e7e0a8c65a",
       "atlasfin": "6c7743f55434eb8d3429f286e2f9eae275d93d87"
     },
-    "integrationBranch": null
+    "integrationBranch": null,
+    "currentHeadAuthorityMesh": "PASS_COMPOSED_AUTHORITY_MESH",
+    "authorityMeshRun": 33949294075,
+    "authorityMeshRequestDigest": "5cd15e40ea840664e61fc9683f0726dc28d330303f527fc8bd192c7a3b82a7c7"
   }
 }
