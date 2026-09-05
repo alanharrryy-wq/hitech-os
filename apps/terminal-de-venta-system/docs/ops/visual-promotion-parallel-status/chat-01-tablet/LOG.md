@@ -165,3 +165,38 @@ No updates published yet.
 - The previous direct-census lookup failure was a **reference-domain validation issue**, not a source defect.
 - Blocker cleared. Dry-run corpus validity is now **929/929**, with semantic mutation still **0**.
 
+## 2026-09-04T23:59:00-06:00 — VALIDATION
+
+- Final Git read-back result: `PASS_FINAL_TABLET_CORPUS_READBACK`.
+- Certification branch: `chat1/tablet-corpus-cert-20260904`.
+- Base: `8cc1918c5e015d1408335c15313e7364e04859c2`.
+- Head: `fd111022438bab909151c2220b52e95aa5aa7eb3`.
+- Branch delta: exactly **5 files**, all under `prisma-html/governance/visual-promotion/candidates/tablet/certification/`.
+- `NORMALIZED.jsonl`: **929** rows.
+- `CERTIFICATION.jsonl`: **929** rows.
+- `INVALID.jsonl`: **0** rows, empty Git blob.
+- Unique normalized targets: **929/929**.
+- Source/provenance failures: **0**.
+- Normalized record-hash failures: **0**.
+- Semantic mutations: **0**.
+- Certification labels: **139 VALID_ELIGIBLE_CANDIDATE + 788 VALID_REGISTER_TARGET_FIRST + 2 VALID_BLOCKED**.
+- Both physical DRIFT conflicts remain exact `DRIFT / BLOCKED / BLOCKED`.
+- The one existing Cobrar binding reuse remains exact and still has Work Entry `REGISTER_TARGET_FIRST`.
+- Canonical `main` is still `8cc1918c5e015d1408335c15313e7364e04859c2`; no post-certification drift exists.
+- No PR, no `FILES_MANIFEST.json`, no Materiality, no broad rediscovery, no product/runtime or global-authority mutation.
+
+## 2026-09-04T23:59:00-06:00 — HANDOFF
+
+- Chat 1 certification is ready for Chat 6 aggregation.
+- Exact acceptance ref: `chat1/tablet-corpus-cert-20260904@fd111022438bab909151c2220b52e95aa5aa7eb3`.
+- Immutable source ref remains `chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728`.
+- Corpus result: **929/929 valid, invalid=0, semanticMutationCount=0**.
+- Integration must preserve certification-only meaning. This handoff does not authorize canonical promotion or `GVAE_EXACT_APPLY`.
+
+## 2026-09-04T23:59:00-06:00 — COMPLETE
+
+- Chat 1 phase `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL` is complete.
+- State: `READY_FOR_INTEGRATION`.
+- No user action is required.
+- Further Tablet certification writes are on hold unless Chat 6/integration requests one bounded evidence-backed correction.
+
