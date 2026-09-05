@@ -1,0 +1,149 @@
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from .corpus_certification import (
+    assert_completion_invariants,
+    certify_registered_corpus,
+    load_registry as load_corpus_registry,
+    write_corpus_outputs,
+)
+from .final_aggregation import build_final_aggregation
+from .control_plane import (
+    ControlPlaneError,
+    build_current_truth,
+    build_surface_readiness,
+    composer_plan,
+    load_atlasfin_indexes,
+    load_json,
+    load_jsonl,
+    ndc_prefixes_from_registry,
+    validate_disjoint_write_ownership,
+    validate_shard,
+)
+
+
+def _rows(paths: list[str]) -> list[dict]:
+    return [row for path in paths for row in load_jsonl(Path(path))]
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="PRISMA Visual Promotion Control Plane, candidate-only and fail-closed")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    shard = sub.add_parser("validate-shard")
+    shard.add_argument("--manifest", required=True)
+    shard.add_argument("--candidates", action="append", default=[])
+    shard.add_argument("--unresolved", action="append", default=[])
+    shard.add_argument("--conflicts", action="append", default=[])
+    shard.add_argument("--expected-head")
+    shard.add_argument("--repo-root")
+    shard.add_argument("--changed-path", action="append", default=[])
+    shard.add_argument("--atlasfin-registry", action="append", default=[])
+    shard.add_argument("--ndc-prefix-registry")
+
+    plan = sub.add_parser("plan")
+    plan.add_argument("--outcomes", action="append", required=True)
+    plan.add_argument("--revalidated-equivalent-base", action="store_true")
+
+    truth = sub.add_parser("current-truth")
+    truth.add_argument("--target-index", required=True)
+    truth.add_argument("--outcomes", action="append", default=[])
+
+    sub.add_parser("validate-write-ownership")
+
+    corpus = sub.add_parser("certify-corpus")
+    corpus.add_argument("--repo-root", default=".")
+    corpus.add_argument(
+        "--registry",
+        default="prisma-html/governance/visual-promotion/contracts/legacy-worker-intake.registry.json",
+    )
+    corpus.add_argument(
+        "--out",
+        default="prisma-html/governance/visual-promotion/contracts/corpus-certification",
+    )
+
+    final = sub.add_parser("certify-final-corpus")
+    final.add_argument("--repo-root", default=".")
+    final.add_argument(
+        "--raw-registry",
+        default="prisma-html/governance/visual-promotion/contracts/legacy-worker-intake.registry.json",
+    )
+    final.add_argument(
+        "--certification-registry",
+        default="prisma-html/governance/visual-promotion/contracts/certification-intake.registry.json",
+    )
+    final.add_argument(
+        "--out",
+        default="prisma-html/governance/visual-promotion/contracts/corpus-certification",
+    )
+    args = parser.parse_args(argv)
+
+    try:
+        if args.command == "validate-shard":
+            atlasfin = load_atlasfin_indexes([Path(x) for x in args.atlasfin_registry]) if args.atlasfin_registry else None
+            prefixes = ndc_prefixes_from_registry(load_json(Path(args.ndc_prefix_registry))) if args.ndc_prefix_registry else None
+            result = validate_shard(
+                load_json(Path(args.manifest)),
+                _rows([*args.candidates, *args.unresolved, *args.conflicts]),
+                expected_head=args.expected_head,
+                repo_root=Path(args.repo_root) if args.repo_root else None,
+                atlasfin=atlasfin,
+                ndc_prefixes=prefixes,
+                changed_paths=args.changed_path,
+            )
+        elif args.command == "plan":
+            result = composer_plan(_rows(args.outcomes), revalidated_equivalent_base=args.revalidated_equivalent_base)
+        elif args.command == "current-truth":
+            current = build_current_truth(load_json(Path(args.target_index)), _rows(args.outcomes))
+            result = {"currentTruth": current, "surfaceReadiness": build_surface_readiness(current)}
+        elif args.command in {"certify-corpus", "certify-final-corpus"}:
+            repo_root = Path(args.repo_root).resolve()
+            out_root = Path(args.out)
+            if not out_root.is_absolute():
+                out_root = repo_root / out_root
+            if args.command == "certify-final-corpus":
+                raw_registry = Path(args.raw_registry)
+                cert_registry = Path(args.certification_registry)
+                if not raw_registry.is_absolute():
+                    raw_registry = repo_root / raw_registry
+                if not cert_registry.is_absolute():
+                    cert_registry = repo_root / cert_registry
+                corpus_result = build_final_aggregation(
+                    repo_root,
+                    raw_registry_path=raw_registry,
+                    certification_registry_path=cert_registry,
+                )
+            else:
+                registry_path = Path(args.registry)
+                if not registry_path.is_absolute():
+                    registry_path = repo_root / registry_path
+                corpus_result = certify_registered_corpus(
+                    repo_root,
+                    registry=load_corpus_registry(registry_path),
+                )
+                assert_completion_invariants(corpus_result)
+            write_corpus_outputs(corpus_result, out_root)
+            result = {
+                "status": (
+                    "PASS_CANDIDATE_CORPUS_CERTIFIED_FINAL_AGGREGATION"
+                    if args.command == "certify-final-corpus"
+                    else "PASS_CANDIDATE_CORPUS_CERTIFIED_SOURCE_STATIC"
+                ),
+                "summary": corpus_result["summary"],
+                "outputRoot": out_root.relative_to(repo_root).as_posix(),
+            }
+        else:
+            result = validate_disjoint_write_ownership()
+    except (ControlPlaneError, OSError, json.JSONDecodeError, TypeError, ValueError) as exc:
+        print(json.dumps({"status": "BLOCKED_VISUAL_PROMOTION_CONTROL_PLANE", "errors": [f"{type(exc).__name__}:{exc}"]}, indent=2, sort_keys=True))
+        return 2
+
+    print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

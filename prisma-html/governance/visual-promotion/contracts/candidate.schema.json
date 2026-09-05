@@ -1,0 +1,470 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.visual-promotion.candidate.v1",
+  "title": "PRISMA Visual Promotion Candidate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "prisma.visual-promotion.candidate.v1"
+    },
+    "candidateOnly": {
+      "const": true
+    },
+    "baseHead": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "surfaceKey": {
+      "enum": [
+        "tablet",
+        "pc",
+        "mobile",
+        "shared-ui"
+      ]
+    },
+    "targetId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recordKind": {
+      "type": "string"
+    },
+    "enforcement": {
+      "type": "string"
+    },
+    "physicalStatus": {
+      "enum": [
+        "CURRENT",
+        "STALE",
+        "DRIFT",
+        "MISSING",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "canonicalSourcePath": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "generatedOutputPath": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sourceSha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "outputSha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "projectionMode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "candidateFingerprint": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "physical": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "routeId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "regionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "slotId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "componentId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "componentUiId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ownerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ownerFile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "renderSourceFile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "styleSourceFile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "selector": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "implementationLayerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "routeId",
+        "regionId",
+        "slotId",
+        "componentId",
+        "componentUiId",
+        "ownerId",
+        "styleSourceFile",
+        "selector",
+        "implementationLayerId"
+      ]
+    },
+    "ndc": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ndcPrimaryId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ndcRefs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "ndcResolutionStatus": {
+          "enum": [
+            "RESOLVED_EXISTING",
+            "CANDIDATE_REVIEW_REQUIRED",
+            "UNRESOLVED",
+            "NOT_APPLICABLE"
+          ]
+        }
+      },
+      "required": [
+        "ndcPrimaryId",
+        "ndcRefs",
+        "ndcResolutionStatus"
+      ]
+    },
+    "visual": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "visualMeaningId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visualMeaningCandidate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visualMeaningStatus": {
+          "enum": [
+            "RESOLVED_EXISTING",
+            "CANDIDATE_REVIEW_REQUIRED",
+            "UNRESOLVED",
+            "NOT_APPLICABLE"
+          ]
+        }
+      },
+      "required": [
+        "visualMeaningId",
+        "visualMeaningCandidate",
+        "visualMeaningStatus"
+      ]
+    },
+    "atlasfin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "atlasfinCatalogElementId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atlasfinUiId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atlasfinFamilyId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atlasfinPresetId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atlasfinRecipeId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atlasfinLegacyRecipeId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atlasfinAdapterId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "atlasfinMatchStatus": {
+          "enum": [
+            "MATCHED_EXACT",
+            "MATCHED_FAMILY",
+            "MATCHED_PRESET",
+            "MATCHED_RECIPE",
+            "AMBIGUOUS",
+            "NO_MATCH",
+            "NOT_APPLICABLE"
+          ]
+        }
+      },
+      "required": [
+        "atlasfinMatchStatus"
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identityProfileId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identityRecipeId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identityAdapterId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "existingBindingId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bindingCandidateKey": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "bindingStatus": {
+          "enum": [
+            "EXISTING_RESOLVED",
+            "CANDIDATE",
+            "BLOCKED",
+            "NOT_APPLICABLE"
+          ]
+        }
+      },
+      "required": [
+        "bindingStatus"
+      ]
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "applicationLayerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "projectionStatus": {
+          "enum": [
+            "CURRENT",
+            "DRIFT",
+            "MISSING",
+            "NOT_REQUIRED",
+            "UNRESOLVED"
+          ]
+        },
+        "promotionStatus": {
+          "enum": [
+            "ELIGIBLE_CANDIDATE",
+            "REGISTER_TARGET_FIRST",
+            "BLOCKED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "workEntryDecision": {
+          "enum": [
+            "GVAE_EXACT_APPLY",
+            "SURFACE_BATCH_PLAN",
+            "REGISTER_TARGET_FIRST",
+            "BLOCKED"
+          ]
+        }
+      },
+      "required": [
+        "applicationLayerId",
+        "projectionStatus",
+        "promotionStatus",
+        "workEntryDecision"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "verified"
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "pattern": "^(ndc|atlasfin|identity|rifat|visual-control|target-index|projection-manifest|factory-ledger|code-atlas|work-entry-gate|gvae)::.+$"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "authorityDomain": {
+                "enum": [
+                  "ndc",
+                  "atlasfin",
+                  "identity",
+                  "rifat",
+                  "visual-control",
+                  "target-index",
+                  "projection-manifest",
+                  "factory-ledger",
+                  "code-atlas",
+                  "work-entry-gate",
+                  "gvae"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "version": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "authorityDomain",
+              "id"
+            ]
+          }
+        ]
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "candidateOnly",
+    "baseHead",
+    "surfaceKey",
+    "targetId",
+    "physicalStatus",
+    "physical",
+    "ndc",
+    "visual",
+    "atlasfin",
+    "identity",
+    "application",
+    "confidence",
+    "evidenceRefs",
+    "blockers",
+    "notes"
+  ]
+}

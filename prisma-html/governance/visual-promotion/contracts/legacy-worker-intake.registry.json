@@ -1,0 +1,168 @@
+{
+  "schema": "prisma.visual-promotion.legacy-worker-intake.v1",
+  "version": "1.0.0",
+  "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+  "commonWorkerBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "expectedCorpusCount": 2097,
+  "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+  "broadRediscoveryAllowed": false,
+  "sourceBytesImmutable": true,
+  "surfaces": {
+    "tablet": {
+      "sourceBranch": "chat1/tablet-visual-promotion-57b01ad8",
+      "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+      "rawRoot": "prisma-html/governance/visual-promotion/candidates/tablet",
+      "inputCount": 929,
+      "normalizationProfile": "STRICT_CANDIDATE_V1_ADD_SCHEMA_ONLY",
+      "sourceOutcomeCounts": {
+        "CANDIDATES": 139,
+        "UNRESOLVED": 788,
+        "CONFLICTS": 2
+      },
+      "files": {
+        "MANIFEST.json": {
+          "gitBlobSha": "c424146b13d566b668c59ce0ca626a5bcc544a21",
+          "sha256": "5ba25d4c118303bbb69f2bdaa002227e2b91624bb7c9cb00ed5b2c5b49452ef5"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "d19b79126b588c58bd804ca40df0f37bc4692785",
+          "sha256": "3d3a70e4b271f70305d41dfd70511e9776d6ec23f32c4011a4b543d6a628b915"
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "166f9ba5b8cc9b6b32e61bc889da3970c54f6453",
+          "sha256": "b4d732ea89e661828b9bef4927e0f397ea20b42b46f229119fd5e98493c699ab"
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "7a4d44a2c5bcfabddc3bfa5f9a96a359b8996508",
+          "sha256": "2ed2031784b6764e82bbfb20c06255318ce1e0b899e28b9e68480789b82891f5"
+        },
+        "SUMMARY.md": {
+          "gitBlobSha": "194d8d1def4609cb95f6660279bd2930b5a5642e",
+          "sha256": "3af4bed52fc533d2bbc1bee3985c8098d8d0a94db832245096323dd2ca8e5073"
+        }
+      }
+    },
+    "pc": {
+      "sourceBranch": "agent/chat2-pc-promotion-20260904",
+      "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+      "rawRoot": "prisma-html/governance/visual-promotion/candidates/pc",
+      "inputCount": 827,
+      "normalizationProfile": "STRICT_CANDIDATE_V1_ADD_SCHEMA_ONLY",
+      "sourceOutcomeCounts": {
+        "CANDIDATES": 186,
+        "UNRESOLVED": 640,
+        "CONFLICTS": 1
+      },
+      "files": {
+        "MANIFEST.json": {
+          "gitBlobSha": "1fcdaa0a4cba0c3ac2b123a4ec7f150ad7dd2daa",
+          "sha256": "6ecdae797f048cfd4b33c994b7abbd2feb70e69519facdd9a015f5de3cab388e"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "814b11fe333045b4f81d622542fdb016c577bbcd",
+          "sha256": "f96f8878fa598795b62f5b447372d3d7dec97a24d05d383500d8b3bb4f561933"
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "a43e769afd44af068a1c6c40ac3c9140144a9ff6",
+          "sha256": "9ebda8bb2ce86b054653b197e13730d65a891571b1e2b1592c73b6f73a11a5bb"
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "d4deaf154ce03242340b3fe385fc2cc11d3c62f4",
+          "sha256": "0267edd96d9630882b3d3555a640543e6f16efe26fcdc3b00624cdaa10b7a3f9"
+        },
+        "SUMMARY.md": {
+          "gitBlobSha": "3a99212db4245257c36d706d928f368bf9a5572f",
+          "sha256": "bdc76cbf48aeaf0ea28f6b819a32a8d548f5006389cca234e56fc45ebe3c6bce"
+        }
+      }
+    },
+    "mobile": {
+      "sourceBranch": "visual-promotion-chat3-mobile-20260904",
+      "sourceHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+      "rawRoot": "prisma-html/governance/visual-promotion/candidates/mobile",
+      "inputCount": 271,
+      "normalizationProfile": "MOBILE_LEGACY_PROJECTION_AND_QUALIFIED_REFS_V1",
+      "sourceOutcomeCounts": {
+        "CANDIDATES": 0,
+        "UNRESOLVED": 133,
+        "CONFLICTS": 138
+      },
+      "files": {
+        "MANIFEST.json": {
+          "gitBlobSha": "320c385eb3369539d0ab2a40af879ede200a1e9f",
+          "sha256": "337154d89ddadb08861b806560bba8769ebeb5da417b5788870cb16cc62633d5"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "edc991f6359e566db032f6ecd0f14d742735d2a4",
+          "sha256": "291ca7bdd5f0c7c26064c0cf8a0d2bb1c30b69797f6b988a0cd19965c7c17350"
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "79ac54af75206f70d7923540c0ef39f6707f97a1",
+          "sha256": "f34febd565cdb691c2e2aa47abd3060d5a0f44cbf18cb59c9d3fb2b8cb54faee"
+        },
+        "SUMMARY.md": {
+          "gitBlobSha": "80522b7677697a07a4d35aaaf2e50e1cd57c8aba",
+          "sha256": "57516c2d20d11fe91d5396d8d1fc3fbf94cfbe4c4adabfeba150d4d375582620"
+        }
+      }
+    },
+    "shared-ui": {
+      "sourceBranch": "visual-promotion-chat4-shared-ui-20260904",
+      "sourceHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+      "rawRoot": "prisma-html/governance/visual-promotion/candidates/shared-ui",
+      "inputCount": 70,
+      "normalizationProfile": "SHARED_UI_QUALIFIED_ATLASFIN_ADAPTER_V1",
+      "sourceOutcomeCounts": {
+        "CANDIDATES": 40,
+        "UNRESOLVED": 19,
+        "CONFLICTS": 11
+      },
+      "files": {
+        "MANIFEST.json": {
+          "gitBlobSha": "e3abb2041db6ce58c5487cdfc4b4d6bfe599781a",
+          "sha256": "c51394943b5ff2c06bcd714801122063cbd097498b2f467132d8d6b8d179b1c4"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "9c351af0fb8111f347762ea766af8699fb25452f",
+          "sha256": "ff89e661faf98f80f1e09fe2157ba1e60e1c250ae5f9e5101a8baf9e482aae3f"
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "6f68e7cf18e4af89635381fbfde230cfad04f417",
+          "sha256": "2f9b48426a6e60f82774751964ba5bd44c06eea714c8c530be687f8035f50055"
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "d29df0fc6aa42a473d140e1d11c79eee80d088ef",
+          "sha256": "b0f79b271c2314c7afb9d499cc471af414d2f662062561374a227549dd1edd31"
+        },
+        "SUMMARY.md": {
+          "gitBlobSha": "d05230a209d2dc2387b7e0329abdbdaaaa072a49",
+          "sha256": "fad3898873fc84f47e80ad39028d71c3402fd9ceb89b4388ba26811e5ffcdf96"
+        }
+      }
+    }
+  },
+  "expectedAggregate": {
+    "sourceOutcomeCounts": {
+      "CANDIDATES": 365,
+      "UNRESOLVED": 1580,
+      "CONFLICTS": 152
+    },
+    "promotionStatus": {
+      "ELIGIBLE_CANDIDATE": 139,
+      "REGISTER_TARGET_FIRST": 1926,
+      "BLOCKED": 32,
+      "NOT_APPLICABLE": 0
+    },
+    "workEntryDecision": {
+      "GVAE_EXACT_APPLY": 0,
+      "SURFACE_BATCH_PLAN": 0,
+      "REGISTER_TARGET_FIRST": 2065,
+      "BLOCKED": 32
+    },
+    "currentlyAuthorizedCanonicalPromotions": 0
+  }
+}

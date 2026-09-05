@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.visual-promotion.candidate-shard.v1",
+  "title": "PRISMA Visual Promotion Candidate Shard Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "prisma.visual-promotion.candidate-shard.v1"
+    },
+    "candidateOnly": {
+      "const": true
+    },
+    "baseHead": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "surfaceKey": {
+      "enum": [
+        "tablet",
+        "pc",
+        "mobile",
+        "shared-ui"
+      ]
+    },
+    "ownedRoot": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputCensusCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "inputTargetCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "materialityCatalogPolicy": {
+      "const": "STANDBY_USER_INVOKED_ONLY"
+    },
+    "broadRediscoveryPerformed": {
+      "const": false
+    },
+    "sourceAuthorityRefs": {
+      "type": "array"
+    },
+    "sourceHashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      }
+    },
+    "outputFiles": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "baseHead",
+    "surfaceKey"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "inputCensusCount"
+      ]
+    },
+    {
+      "required": [
+        "inputTargetCount"
+      ]
+    }
+  ]
+}
