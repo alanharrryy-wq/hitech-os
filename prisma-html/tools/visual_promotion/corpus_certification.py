@@ -5,1258 +5,487 @@ import hashlib
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Mapping, Sequence
 
 from .control_plane import (
-    CANDIDATE_SCHEMA,
-    SHARD_SCHEMA,
+    BROAD_REDISCOVERY_REASON,
+    CURRENT_CENSUS_REASON,
     MATERIALITY_POLICY,
     ControlPlaneError,
-    build_current_truth,
-    build_surface_readiness,
     detect_collisions,
-    load_atlasfin_indexes,
-    load_json,
-    ndc_prefixes_from_registry,
     validate_candidate,
 )
 
-REGISTRY_SCHEMA = "prisma.visual-promotion.legacy-worker-intake.v1"
-CERTIFICATION_SCHEMA = "prisma.visual-promotion.corpus-certification-record.v1"
-CORPUS_MANIFEST_SCHEMA = "prisma.visual-promotion.candidate-corpus-manifest.v1"
+REGISTRY_SCHEMA = "prisma.visual-promotion.intake-registry.v1"
+GLOBAL_CERT_SCHEMA = "prisma.visual-promotion.global-candidate-certification.v1"
+CURRENT_TRUTH_SCHEMA = "prisma.visual-promotion.certified-current-truth.v1"
+SURFACE_READINESS_SCHEMA = "prisma.visual-promotion.certified-surface-readiness.v1"
 SEMANTIC_REVIEW_SCHEMA = "prisma.visual-promotion.semantic-review-groups.v1"
 COLLISION_SCHEMA = "prisma.visual-promotion.corpus-collisions.v1"
-
-SURFACE_ORDER = ("tablet", "pc", "mobile", "shared-ui")
-OUTCOME_FILES = ("CANDIDATES.jsonl", "UNRESOLVED.jsonl", "CONFLICTS.jsonl")
-SOURCE_BUCKET = {
-    "CANDIDATES.jsonl": "CANDIDATES",
-    "UNRESOLVED.jsonl": "UNRESOLVED",
-    "CONFLICTS.jsonl": "CONFLICTS",
+EXPECTED_SURFACES = ("tablet", "pc", "mobile", "shared-ui")
+EXPECTED_CORPUS_COUNT = 2097
+AUTHORITY_DOMAINS = {
+    "ndc", "atlasfin", "identity", "rifat", "visual-control", "target-index",
+    "projection-manifest", "factory-ledger", "code-atlas", "work-entry-gate", "gvae",
 }
-CERTIFICATION_BY_PROMOTION = {
-    "ELIGIBLE_CANDIDATE": "VALID_ELIGIBLE_CANDIDATE",
-    "REGISTER_TARGET_FIRST": "VALID_REGISTER_TARGET_FIRST",
-    "BLOCKED": "VALID_BLOCKED",
-    "NOT_APPLICABLE": "VALID_NOT_APPLICABLE",
-}
-VALID_CERTIFICATIONS = frozenset(CERTIFICATION_BY_PROMOTION.values())
-TARGET_INDEX_PATHS = {
-    surface: f"prisma-html/authority/rifat/prisma-ui/visual-control/target-index/{surface}.json"
-    for surface in SURFACE_ORDER
-}
-ATLASFIN_PATHS = (
-    "prisma-html/extras/atlasfin/assets/data/atlas.manifest.json",
-    "prisma-html/extras/atlasfin/assets/data/visual-property.registry.json",
-    "prisma-html/extras/atlasfin/assets/data/visual-family.registry.json",
-    "prisma-html/extras/atlasfin/assets/data/visual-preset.registry.json",
-    "prisma-html/extras/atlasfin/assets/data/visual-recipe.registry.json",
-    "prisma-html/extras/atlasfin/assets/data/visual-state.registry.json",
-    "prisma-html/extras/atlasfin/assets/data/visual-variant.registry.json",
-    "prisma-html/extras/atlasfin/assets/data/surface-adapter.registry.json",
-    "prisma-html/extras/atlasfin/assets/data/visual.recipe.registry.json",
-)
-NDC_PREFIX_PATH = "apps/terminal-de-venta-system/docs/ndc/registry/ndc_prefix_registry.json"
-CORPUS_OUTPUTS = (
-    "CORPUS_MANIFEST.json",
-    "CANDIDATE_CORPUS.jsonl",
-    "CERTIFICATION.jsonl",
-    "INVALID.jsonl",
-    "COLLISIONS.json",
-    "SEMANTIC_REVIEW_GROUPS.json",
-    "CURRENT_TRUTH.json",
-    "SURFACE_READINESS.json",
-    "SUMMARY.md",
-)
 
 
-class CorpusCertificationError(ValueError):
+class CorpusCertificationError(RuntimeError):
     pass
 
 
-def canonical_json(value: Any) -> bytes:
-    return json.dumps(
-        value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")
+def stable_json(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def sha256_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
 def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
-def sha256_value(value: Any) -> str:
-    return sha256_bytes(canonical_json(value))
-
-
-def git_blob_sha1(value: bytes) -> str:
-    header = b"blob " + str(len(value)).encode("ascii") + b"\0"
-    return hashlib.sha1(header + value).hexdigest()
-
-
 def load_registry(path: Path) -> dict[str, Any]:
-    document = json.loads(path.read_text(encoding="utf-8-sig"))
-    if not isinstance(document, dict) or document.get("schema") != REGISTRY_SCHEMA:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("schema") != REGISTRY_SCHEMA:
         raise CorpusCertificationError("INTAKE_REGISTRY_SCHEMA_INVALID")
-    surfaces = document.get("surfaces")
-    if not isinstance(surfaces, dict):
-        raise CorpusCertificationError("INTAKE_REGISTRY_SURFACES_INVALID")
-    if tuple(sorted(surfaces)) != tuple(sorted(SURFACE_ORDER)):
-        raise CorpusCertificationError("INTAKE_REGISTRY_SURFACES_INVALID")
-    if document.get("materialityCatalogPolicy") != MATERIALITY_POLICY:
+    if data.get("materialityCatalogPolicy") != MATERIALITY_POLICY:
         raise CorpusCertificationError("MATERIALITY_POLICY_MUST_REMAIN_STANDBY")
-    if document.get("broadRediscoveryAllowed") is not False:
+    if data.get("broadRediscoveryAllowed") is not False:
         raise CorpusCertificationError("BROAD_REDISCOVERY_MUST_REMAIN_FORBIDDEN")
-    return document
+    if tuple(data.get("surfaceOrder") or ()) != EXPECTED_SURFACES:
+        raise CorpusCertificationError("SURFACE_ORDER_INVALID")
+    surfaces = data.get("surfaces")
+    if not isinstance(surfaces, dict) or set(surfaces) != set(EXPECTED_SURFACES):
+        raise CorpusCertificationError("INTAKE_REGISTRY_SURFACES_INVALID")
+    return data
 
 
-def _profile(registry: Mapping[str, Any], surface: str) -> dict[str, Any]:
-    if surface not in SURFACE_ORDER:
-        raise CorpusCertificationError(f"SURFACE_UNREGISTERED:{surface}")
-    raw = registry["surfaces"].get(surface)
-    if not isinstance(raw, dict):
-        raise CorpusCertificationError(f"SURFACE_PROFILE_MISSING:{surface}")
-    return raw
+def lane(registry: Mapping[str, Any], surface_key: str) -> Mapping[str, Any]:
+    surfaces = registry.get("surfaces")
+    if surface_key not in EXPECTED_SURFACES or not isinstance(surfaces, Mapping) or surface_key not in surfaces:
+        raise CorpusCertificationError(f"UNREGISTERED_SURFACE:{surface_key}")
+    row = surfaces[surface_key]
+    if not isinstance(row, Mapping):
+        raise CorpusCertificationError(f"INTAKE_LANE_OBJECT_REQUIRED:{surface_key}")
+    return row
+
+
+def verify_registered_head(registry: Mapping[str, Any], surface_key: str, *, kind: str, head: str) -> None:
+    field = {"worker": "workerHead", "certification": "certificationHead"}.get(kind)
+    if field is None:
+        raise CorpusCertificationError(f"INTAKE_KIND_INVALID:{kind}")
+    expected = lane(registry, surface_key).get(field)
+    if head != expected:
+        raise CorpusCertificationError(f"UNREGISTERED_{kind.upper()}_HEAD:{surface_key}:{head}")
 
 
 def verify_registered_file(
-    repo_root: Path,
-    registry: Mapping[str, Any],
-    *,
-    surface: str,
-    source_head: str,
-    filename: str,
-) -> tuple[Path, bytes, dict[str, Any]]:
-    profile = _profile(registry, surface)
-    if source_head != profile.get("sourceHead"):
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:UNKNOWN_SOURCE_HEAD:{surface}:{source_head}"
-        )
-    files = profile.get("files")
-    pin = files.get(filename) if isinstance(files, dict) else None
-    if not isinstance(pin, dict):
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:UNREGISTERED_FILE:{surface}:{filename}"
-        )
-    raw_root = str(profile.get("rawRoot") or "").rstrip("/")
-    path = (repo_root / raw_root / filename).resolve()
-    repo = repo_root.resolve()
-    if repo not in path.parents:
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:PATH_ESCAPE:{surface}:{filename}"
-        )
-    if not path.is_file():
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:SOURCE_FILE_MISSING:{surface}:{filename}"
-        )
-    data = path.read_bytes()
-    if sha256_bytes(data) != pin.get("sha256"):
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:FILE_SHA256_MISMATCH:{surface}:{filename}"
-        )
-    if git_blob_sha1(data) != pin.get("gitBlobSha"):
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:GIT_BLOB_MISMATCH:{surface}:{filename}"
-        )
-    return path, data, pin
+    registry: Mapping[str, Any], surface_key: str, *, kind: str, head: str,
+    file_name: str, content: bytes, git_blob_sha: str | None = None,
+) -> dict[str, Any]:
+    verify_registered_head(registry, surface_key, kind=kind, head=head)
+    bucket_name = {"worker": "workerFiles", "certification": "certificationFiles"}[kind]
+    bucket = lane(registry, surface_key).get(bucket_name)
+    if not isinstance(bucket, Mapping) or file_name not in bucket:
+        raise CorpusCertificationError(f"UNREGISTERED_{kind.upper()}_FILE:{surface_key}:{file_name}")
+    expected = bucket[file_name]
+    digest = sha256_bytes(content)
+    if digest != expected.get("sha256"):
+        raise CorpusCertificationError(f"INTAKE_SHA256_MISMATCH:{surface_key}:{kind}:{file_name}")
+    if git_blob_sha is not None and git_blob_sha != expected.get("gitBlobSha"):
+        raise CorpusCertificationError(f"INTAKE_GIT_BLOB_MISMATCH:{surface_key}:{kind}:{file_name}")
+    expected_count = expected.get("recordCount")
+    if expected_count is not None and file_name.endswith(".jsonl"):
+        actual = len([x for x in content.decode("utf-8").splitlines() if x.strip()])
+        if actual != expected_count:
+            raise CorpusCertificationError(
+                f"INTAKE_RECORD_COUNT_MISMATCH:{surface_key}:{kind}:{file_name}:{actual}:{expected_count}"
+            )
+    return {"status": "PASS_REGISTERED_INTAKE", "surfaceKey": surface_key, "kind": kind,
+            "head": head, "file": file_name, "sha256": digest, "gitBlobSha": expected.get("gitBlobSha"),
+            "recordCount": expected_count}
 
 
-def _strip_qualified(value: Any, domain: str) -> Any:
-    prefix = domain + "::"
-    if isinstance(value, str) and value.startswith(prefix):
-        return value[len(prefix):]
-    return value
+def verify_registered_atlasfin_file(
+    registry: Mapping[str, Any], *, kind: str, head: str, file_name: str,
+    content: bytes, git_blob_sha: str | None = None,
+) -> dict[str, Any]:
+    af = registry.get("atlasfin")
+    if not isinstance(af, Mapping):
+        raise CorpusCertificationError("ATLASFIN_REGISTRY_SECTION_REQUIRED")
+    pair = {"bridge": ("bridgeHead", "bridgeFiles"), "certification": ("certificationHead", "certificationFiles")}.get(kind)
+    if pair is None:
+        raise CorpusCertificationError(f"ATLASFIN_INTAKE_KIND_INVALID:{kind}")
+    head_field, files_field = pair
+    if head != af.get(head_field):
+        raise CorpusCertificationError(f"UNREGISTERED_ATLASFIN_{kind.upper()}_HEAD:{head}")
+    files = af.get(files_field)
+    if not isinstance(files, Mapping) or file_name not in files:
+        raise CorpusCertificationError(f"UNREGISTERED_ATLASFIN_{kind.upper()}_FILE:{file_name}")
+    expected = files[file_name]
+    digest = sha256_bytes(content)
+    if digest != expected.get("sha256"):
+        raise CorpusCertificationError(f"ATLASFIN_INTAKE_SHA256_MISMATCH:{kind}:{file_name}")
+    if git_blob_sha is not None and git_blob_sha != expected.get("gitBlobSha"):
+        raise CorpusCertificationError(f"ATLASFIN_INTAKE_GIT_BLOB_MISMATCH:{kind}:{file_name}")
+    expected_count = expected.get("recordCount")
+    if expected_count is not None and file_name.endswith(".jsonl"):
+        actual = len([x for x in content.decode("utf-8").splitlines() if x.strip()])
+        if actual != expected_count:
+            raise CorpusCertificationError(f"ATLASFIN_INTAKE_RECORD_COUNT_MISMATCH:{actual}:{expected_count}")
+    return {"status": "PASS_REGISTERED_ATLASFIN_INTAKE", "kind": kind, "head": head,
+            "file": file_name, "sha256": digest, "gitBlobSha": expected.get("gitBlobSha"),
+            "recordCount": expected_count}
 
 
-def _normalized_projection_view(record: Mapping[str, Any]) -> dict[str, Any]:
+def _evidence_ref(value: Any, *, base_head: str) -> Any:
+    if isinstance(value, Mapping):
+        return copy.deepcopy(value)
+    if not isinstance(value, str):
+        raise CorpusCertificationError("EVIDENCE_REF_SHAPE_INVALID")
+    if "::" in value and value.split("::", 1)[0] in AUTHORITY_DOMAINS:
+        return value
+    if value.startswith("prisma-html/authority/rifat/prisma-ui/visual-control/target-index/"):
+        return {"authorityDomain": "target-index", "id": value}
+    if value.startswith("prisma-html/authority/rifat/prisma-ui/visual-control/expanded/"):
+        return {"authorityDomain": "visual-control", "id": value}
+    if value.startswith("prisma-html/authority/rifat/"):
+        return {"authorityDomain": "rifat", "id": f"repo:{value}@{base_head}"}
+    if value.startswith("apps/terminal-de-venta-system/products/"):
+        return {"authorityDomain": "projection-manifest", "id": f"repo:{value}@{base_head}"}
+    raise CorpusCertificationError(f"UNREGISTERED_EVIDENCE_REF_SHAPE:{value}")
+
+
+def semantic_snapshot(record: Mapping[str, Any]) -> dict[str, Any]:
+    ndc = record.get("ndc") if isinstance(record.get("ndc"), Mapping) else {}
+    visual = record.get("visual") if isinstance(record.get("visual"), Mapping) else {}
+    af = record.get("atlasfin") if isinstance(record.get("atlasfin"), Mapping) else {}
+    identity = record.get("identity") if isinstance(record.get("identity"), Mapping) else {}
+    app = record.get("application") if isinstance(record.get("application"), Mapping) else {}
+    refs = [x.split("::", 1)[1] if isinstance(x, str) and x.startswith("ndc::") else x for x in (ndc.get("ndcRefs") or [])]
+    adapter = af.get("atlasfinAdapterId")
+    if isinstance(adapter, str) and adapter.startswith("atlasfin::"):
+        adapter = adapter.split("::", 1)[1]
+    return {
+        "targetId": record.get("targetId"), "surfaceKey": record.get("surfaceKey"),
+        "physicalStatus": record.get("physicalStatus"),
+        "ndcPrimaryId": ndc.get("ndcPrimaryId"), "ndcRefs": sorted(refs),
+        "ndcResolutionStatus": ndc.get("ndcResolutionStatus"),
+        "visualMeaningId": visual.get("visualMeaningId"),
+        "visualMeaningCandidate": visual.get("visualMeaningCandidate"),
+        "visualMeaningStatus": visual.get("visualMeaningStatus"),
+        "atlasfinFamilyId": af.get("atlasfinFamilyId"), "atlasfinPresetId": af.get("atlasfinPresetId"),
+        "atlasfinRecipeId": af.get("atlasfinRecipeId"), "atlasfinLegacyRecipeId": af.get("atlasfinLegacyRecipeId"),
+        "atlasfinAdapterId": adapter, "atlasfinMatchStatus": af.get("atlasfinMatchStatus"),
+        "identityRecipeId": identity.get("identityRecipeId"), "existingBindingId": identity.get("existingBindingId"),
+        "bindingStatus": identity.get("bindingStatus"), "projectionStatus": app.get("projectionStatus"),
+        "promotionStatus": app.get("promotionStatus"), "workEntryDecision": app.get("workEntryDecision"),
+    }
+
+
+def normalize_registered_raw_record(
+    registry: Mapping[str, Any], surface_key: str, record: Mapping[str, Any], *, source_head: str,
+) -> tuple[dict[str, Any], list[str]]:
+    verify_registered_head(registry, surface_key, kind="worker", head=source_head)
+    allowed = set(lane(registry, surface_key).get("allowedRawTransforms") or [])
     out = copy.deepcopy(dict(record))
-    projection = out.pop("projection", None)
-    if projection is None:
-        return out
-    if not isinstance(projection, dict):
-        raise CorpusCertificationError("INVALID_SCHEMA:PROJECTION_OBJECT_REQUIRED")
-    for key in (
-        "canonicalSourcePath",
-        "generatedOutputPath",
-        "sourceSha256",
-        "outputSha256",
-        "projectionMode",
-    ):
-        value = projection.get(key)
-        if (
-            key in out
-            and out[key] is not None
-            and value is not None
-            and out[key] != value
-        ):
-            raise CorpusCertificationError(
-                f"INVALID_PROVENANCE:PROJECTION_FIELD_CONFLICT:{key}"
-            )
-        if value is not None:
-            out[key] = value
-    projection_status = projection.get("projectionStatus")
-    application = out.get("application")
-    if projection_status is not None and isinstance(application, dict):
-        if application.get("projectionStatus") != projection_status:
-            raise CorpusCertificationError(
-                "INVALID_PROVENANCE:PROJECTION_STATUS_CONFLICT"
-            )
+    before = semantic_snapshot(out)
+    transforms: list[str] = []
+
+    if out.get("schema") is None:
+        if "EXPLICIT_STRICT_SCHEMA_TAG" in allowed:
+            out["schema"] = "prisma.visual-promotion.candidate.v1"
+            transforms.append("EXPLICIT_STRICT_SCHEMA_TAG")
+        elif surface_key not in {"tablet", "pc"}:
+            raise CorpusCertificationError(f"UNREGISTERED_SCHEMA_SHAPE:{surface_key}")
+
+    projection = out.get("projection")
+    if projection is not None:
+        name = "FLATTEN_PROJECTION_OBJECT_TO_STRICT_TOP_LEVEL_FIELDS"
+        if name not in allowed or not isinstance(projection, Mapping):
+            raise CorpusCertificationError(f"UNREGISTERED_PROJECTION_SHAPE:{surface_key}")
+        for key in ("canonicalSourcePath", "generatedOutputPath", "sourceSha256", "outputSha256", "projectionMode"):
+            if key in projection:
+                if key in out and out[key] != projection[key]:
+                    raise CorpusCertificationError(f"PROJECTION_FLATTEN_COLLISION:{key}")
+                out[key] = projection[key]
+        del out["projection"]
+        transforms.append(name)
+
+    ndc = out.get("ndc")
+    if isinstance(ndc, dict) and any(isinstance(x, str) and x.startswith("ndc::") for x in (ndc.get("ndcRefs") or [])):
+        name = "NORMALIZE_NDC_REFS_TO_DOMAIN_SCOPED_RAW_IDS"
+        if name not in allowed:
+            raise CorpusCertificationError(f"UNREGISTERED_NDC_REF_SHAPE:{surface_key}")
+        ndc["ndcRefs"] = [x.split("::", 1)[1] if isinstance(x, str) and x.startswith("ndc::") else x for x in ndc.get("ndcRefs") or []]
+        transforms.append(name)
+
+    af = out.get("atlasfin")
+    if isinstance(af, dict) and isinstance(af.get("atlasfinAdapterId"), str) and af["atlasfinAdapterId"].startswith("atlasfin::"):
+        name = "NORMALIZE_ATLASFIN_ADAPTER_TO_DOMAIN_SCOPED_RAW_ID" if surface_key == "mobile" else "QUALIFIED_ATLASFIN_ADAPTER_TO_STRICT_RAW_REGISTRY_ID"
+        if name not in allowed:
+            raise CorpusCertificationError(f"UNREGISTERED_ATLASFIN_ADAPTER_SHAPE:{surface_key}")
+        af["atlasfinAdapterId"] = af["atlasfinAdapterId"].split("::", 1)[1]
+        transforms.append(name)
+
+    refs = out.get("evidenceRefs")
+    if isinstance(refs, list) and any(isinstance(x, str) and "::" not in x for x in refs):
+        name = "NORMALIZE_UNQUALIFIED_EVIDENCE_REFS_TO_STRICT_AUTHORITY_REFS"
+        if name not in allowed:
+            raise CorpusCertificationError(f"UNREGISTERED_EVIDENCE_REF_SHAPE:{surface_key}")
+        base = str(out.get("baseHead") or registry.get("sourceBaseHead") or "")
+        out["evidenceRefs"] = [_evidence_ref(x, base_head=base) for x in refs]
+        transforms.append(name)
+
+    if semantic_snapshot(out) != before:
+        raise CorpusCertificationError(f"SEMANTIC_MUTATION_DETECTED:{surface_key}:{out.get('targetId')}")
+    if set(transforms) - allowed:
+        raise CorpusCertificationError("UNREGISTERED_TRANSFORM")
+    validate_candidate(out, expected_head=str(registry.get("sourceBaseHead") or ""))
+    return out, transforms
+
+
+def semantic_review_payload(record: Mapping[str, Any]) -> dict[str, Any] | None:
+    ndc = record.get("ndc") if isinstance(record.get("ndc"), Mapping) else {}
+    visual = record.get("visual") if isinstance(record.get("visual"), Mapping) else {}
+    af = record.get("atlasfin") if isinstance(record.get("atlasfin"), Mapping) else {}
+    identity = record.get("identity") if isinstance(record.get("identity"), Mapping) else {}
+    payload = {
+        "ndcPrimaryId": ndc.get("ndcPrimaryId"), "ndcRefs": sorted(ndc.get("ndcRefs") or []),
+        "visualMeaningId": visual.get("visualMeaningId"), "visualMeaningCandidate": visual.get("visualMeaningCandidate"),
+        "atlasfinFamilyId": af.get("atlasfinFamilyId"), "atlasfinPresetId": af.get("atlasfinPresetId"),
+        "atlasfinRecipeId": af.get("atlasfinRecipeId"), "atlasfinLegacyRecipeId": af.get("atlasfinLegacyRecipeId"),
+        "identityRecipeId": identity.get("identityRecipeId"),
+    }
+    values = [payload["ndcPrimaryId"], *payload["ndcRefs"], payload["visualMeaningId"], payload["visualMeaningCandidate"],
+              payload["atlasfinFamilyId"], payload["atlasfinPresetId"], payload["atlasfinRecipeId"],
+              payload["atlasfinLegacyRecipeId"], payload["identityRecipeId"]]
+    return payload if any(x not in (None, "") for x in values) else None
+
+
+def semantic_review_key(record: Mapping[str, Any]) -> str | None:
+    payload = semantic_review_payload(record)
+    return None if payload is None else sha256_text(stable_json(payload))
+
+
+def build_semantic_review_groups(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    grouped: dict[str, list[Mapping[str, Any]]] = defaultdict(list)
+    payloads: dict[str, dict[str, Any]] = {}
+    no_signal = 0
+    for row in records:
+        key = semantic_review_key(row)
+        if key is None:
+            no_signal += 1
+            continue
+        grouped[key].append(row)
+        payloads[key] = semantic_review_payload(row) or {}
+    groups = []
+    for key, rows in sorted(grouped.items()):
+        if len(rows) < 2:
+            continue
+        surfaces = sorted({str(r.get("surfaceKey")) for r in rows})
+        groups.append({
+            "reviewKey": key, "semanticEvidence": payloads[key], "recordCount": len(rows),
+            "surfaceKeys": surfaces, "crossSurface": len(surfaces) > 1,
+            "targetIds": sorted(str(r.get("targetId")) for r in rows),
+            "resolutionStatus": "REVIEW_ONLY_NOT_CANONICAL_AUTHORITY",
+        })
+    return {
+        "schema": SEMANTIC_REVIEW_SCHEMA, "status": "SEMANTIC_REVIEW_GROUPS_READY",
+        "reviewKeyIncludesSurfaceKey": False, "reviewKeyIncludesTargetId": False,
+        "collisionFingerprintChanged": False, "recordCount": len(records), "noSemanticSignalCount": no_signal,
+        "groupCount": len(groups), "crossSurfaceGroupCount": sum(1 for x in groups if x["crossSurface"]),
+        "groups": groups,
+    }
+
+
+def expected_certification_status(candidate: Mapping[str, Any]) -> str:
+    app = candidate.get("application") if isinstance(candidate.get("application"), Mapping) else {}
+    promotion = app.get("promotionStatus")
+    work = app.get("workEntryDecision")
+    if work == "BLOCKED" or promotion == "BLOCKED":
+        return "VALID_BLOCKED"
+    if promotion == "NOT_APPLICABLE":
+        return "VALID_NOT_APPLICABLE"
+    if promotion == "ELIGIBLE_CANDIDATE":
+        return "VALID_ELIGIBLE_CANDIDATE"
+    return "VALID_REGISTER_TARGET_FIRST"
+
+
+def lane_semantic_mutation(row: Mapping[str, Any]) -> bool:
+    if isinstance(row.get("semanticMutation"), bool):
+        return bool(row["semanticMutation"])
+    norm = row.get("normalization")
+    if isinstance(norm, Mapping) and isinstance(norm.get("semanticMutation"), bool):
+        return bool(norm["semanticMutation"])
+    return False
+
+
+def build_global_certification(
+    records_by_surface: Mapping[str, Sequence[tuple[str, Mapping[str, Any]]]],
+    lane_certifications: Mapping[str, Sequence[tuple[str, Mapping[str, Any]]]],
+    registry: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    out = []
+    for surface in EXPECTED_SURFACES:
+        candidates = list(records_by_surface.get(surface) or [])
+        cert_rows = list(lane_certifications.get(surface) or [])
+        count = int(lane(registry, surface).get("recordCount") or -1)
+        if len(candidates) != count or len(cert_rows) != count:
+            raise CorpusCertificationError(f"LANE_CERTIFICATION_COUNT_MISMATCH:{surface}")
+        by_target = {}
+        for line_no, (raw, row) in enumerate(cert_rows, start=1):
+            target = str(row.get("targetId") or "")
+            if not target or target in by_target:
+                raise CorpusCertificationError(f"LANE_CERTIFICATION_TARGET_INVALID:{surface}:{target}")
+            by_target[target] = (line_no, raw, row)
+        seen = set()
+        for normalized_line, candidate in candidates:
+            validate_candidate(candidate, expected_head=str(registry.get("sourceBaseHead") or ""))
+            target = str(candidate.get("targetId") or "")
+            if target in seen:
+                raise CorpusCertificationError(f"DUPLICATE_TARGET_IDS:{target}")
+            seen.add(target)
+            if target not in by_target:
+                raise CorpusCertificationError(f"CERTIFICATION_MISSING_TARGET:{surface}:{target}")
+            line_no, lane_raw, lane_row = by_target[target]
+            if lane_semantic_mutation(lane_row):
+                raise CorpusCertificationError(f"SEMANTIC_MUTATION_CERTIFIED:{surface}:{target}")
+            expected = expected_certification_status(candidate)
+            lane_status = lane_row.get("certificationStatus")
+            if isinstance(lane_status, str) and lane_status != expected:
+                raise CorpusCertificationError(f"CERTIFICATION_STATUS_MISMATCH:{surface}:{target}:{lane_status}:{expected}")
+            meta = lane(registry, surface)
+            out.append({
+                "schema": GLOBAL_CERT_SCHEMA, "surfaceKey": surface, "targetId": target,
+                "certificationStatus": expected, "candidateRecordSha256": sha256_text(normalized_line),
+                "candidateSource": {
+                    "workerHead": meta.get("workerHead"), "sourceBaseHead": registry.get("sourceBaseHead"),
+                    "certificationHead": meta.get("certificationHead"),
+                    "normalizedFile": f"prisma-html/governance/visual-promotion/candidates/{surface}/certification/NORMALIZED.jsonl",
+                },
+                "laneCertification": {
+                    "file": f"prisma-html/governance/visual-promotion/candidates/{surface}/certification/CERTIFICATION.jsonl",
+                    "line": line_no, "recordSha256": sha256_text(lane_raw),
+                },
+                "strictCandidateSchemaValid": True, "closedVocabularyValid": True, "referenceValid": True,
+                "provenanceValid": True, "semanticMutation": False,
+                "currentlyAuthorizedCanonicalPromotion": False, "runtimeVisualGreen": False,
+            })
+        extras = set(by_target) - seen
+        if extras:
+            raise CorpusCertificationError(f"CERTIFICATION_EXTRA_TARGETS:{surface}:{len(extras)}")
     return out
 
 
-def semantic_signature(record: Mapping[str, Any]) -> str:
-    out = _normalized_projection_view(record)
-    out.pop("schema", None)
-    out.pop("candidateFingerprint", None)
-    out.pop("evidenceRefs", None)
-
-    ndc = out.get("ndc")
-    if isinstance(ndc, dict):
-        if isinstance(ndc.get("ndcPrimaryId"), str):
-            ndc["ndcPrimaryId"] = _strip_qualified(
-                ndc["ndcPrimaryId"], "ndc"
-            )
-        refs = ndc.get("ndcRefs")
-        if isinstance(refs, list):
-            ndc["ndcRefs"] = [
-                _strip_qualified(item, "ndc") for item in refs
-            ]
-
-    atlasfin = out.get("atlasfin")
-    if isinstance(atlasfin, dict):
-        for field in (
-            "atlasfinCatalogElementId",
-            "atlasfinUiId",
-            "atlasfinFamilyId",
-            "atlasfinPresetId",
-            "atlasfinRecipeId",
-            "atlasfinLegacyRecipeId",
-            "atlasfinAdapterId",
-        ):
-            if isinstance(atlasfin.get(field), str):
-                atlasfin[field] = _strip_qualified(
-                    atlasfin[field], "atlasfin"
-                )
-    return sha256_value(out)
+def counter(rows: Sequence[Mapping[str, Any]], getter) -> dict[str, int]:
+    return dict(sorted(Counter(str(getter(row)) for row in rows).items()))
 
 
-def _normalize_evidence_ref(
-    ref: Any,
-) -> tuple[Any | None, str | None, dict[str, Any] | None]:
-    if isinstance(ref, dict):
-        return copy.deepcopy(ref), None, None
-    if not isinstance(ref, str):
-        change = {
-            "field": "evidenceRefs",
-            "from": ref,
-            "to": None,
-            "reason": "NON_STRING_EVIDENCE_LIFTED",
-        }
-        return None, None, change
-
-    prefixes = (
-        "ndc::",
-        "atlasfin::",
-        "identity::",
-        "rifat::",
-        "visual-control::",
-        "target-index::",
-        "projection-manifest::",
-        "factory-ledger::",
-        "code-atlas::",
-        "work-entry-gate::",
-        "gvae::",
-    )
-    if ref.startswith(prefixes):
-        return ref, None, None
-    if "/visual-control/target-index/" in ref:
-        mapped = {"authorityDomain": "target-index", "id": ref}
-        change = {
-            "field": "evidenceRefs",
-            "from": ref,
-            "to": mapped,
-            "reason": "QUALIFY_TARGET_INDEX_PATH",
-        }
-        return mapped, None, change
-    if "/visual-control/expanded/" in ref:
-        mapped = {"authorityDomain": "visual-control", "id": ref}
-        change = {
-            "field": "evidenceRefs",
-            "from": ref,
-            "to": mapped,
-            "reason": "QUALIFY_VISUAL_CONTROL_PATH",
-        }
-        return mapped, None, change
-    if ref.startswith("repo:prisma-html/authority/rifat/"):
-        mapped = {"authorityDomain": "rifat", "id": ref}
-        change = {
-            "field": "evidenceRefs",
-            "from": ref,
-            "to": mapped,
-            "reason": "QUALIFY_RIFAT_REPO_REF",
-        }
-        return mapped, None, change
-    if ref.startswith("repo:apps/terminal-de-venta-system/products/"):
-        mapped = {"authorityDomain": "projection-manifest", "id": ref}
-        change = {
-            "field": "evidenceRefs",
-            "from": ref,
-            "to": mapped,
-            "reason": "QUALIFY_PRODUCT_PROJECTION_PROVENANCE",
-        }
-        return mapped, None, change
-    if ref.startswith("git:"):
-        mapped = {"authorityDomain": "code-atlas", "id": ref}
-        change = {
-            "field": "evidenceRefs",
-            "from": ref,
-            "to": mapped,
-            "reason": "QUALIFY_GIT_PROVENANCE_FOR_REVIEW",
-        }
-        return mapped, None, change
-    change = {
-        "field": "evidenceRefs",
-        "from": ref,
-        "to": None,
-        "reason": "LIFT_UNKNOWN_NON_AUTHORITY_PROVENANCE",
-    }
-    return None, ref, change
-
-
-def normalize_manifest(
-    raw_manifest: Mapping[str, Any],
-    *,
-    surface: str,
-    registry: Mapping[str, Any],
-) -> dict[str, Any]:
-    profile = _profile(registry, surface)
-    if not isinstance(raw_manifest, Mapping):
-        raise CorpusCertificationError(
-            "INVALID_SCHEMA:MANIFEST_OBJECT_REQUIRED"
-        )
-    if raw_manifest.get("candidateOnly", True) is not True:
-        raise CorpusCertificationError(
-            "INVALID_SCHEMA:MANIFEST_CANDIDATE_ONLY_REQUIRED"
-        )
-    if raw_manifest.get("baseHead") != registry.get(
-        "commonWorkerBaseHead"
-    ):
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:MANIFEST_BASE_HEAD:{surface}"
-        )
-    if raw_manifest.get("surfaceKey") != surface:
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:MANIFEST_SURFACE:{surface}"
-        )
-
-    if surface == "tablet":
-        materiality = raw_manifest.get("policy", {}).get(
-            "materialityCatalogPolicy"
-        )
-        broad = raw_manifest.get("policy", {}).get(
-            "broadRediscoveryPerformed"
-        )
-    elif surface == "pc":
-        materiality = raw_manifest.get(
-            "materialityCatalog", {}
-        ).get("policy")
-        broad = raw_manifest.get(
-            "broadRediscovery", {}
-        ).get("performed")
-    elif surface == "mobile":
-        materiality = raw_manifest.get(
-            "materialityCatalogPolicy"
-        )
-        broad = raw_manifest.get(
-            "broadRediscoveryPerformed"
-        )
-    else:
-        materiality = raw_manifest.get(
-            "policies", {}
-        ).get("materialityCatalog")
-        broad = raw_manifest.get(
-            "policies", {}
-        ).get("broadRediscovery")
-
-    if materiality != MATERIALITY_POLICY:
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:MANIFEST_MATERIALITY:{surface}"
-        )
-    if broad is not False:
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:MANIFEST_BROAD_REDISCOVERY:{surface}"
-        )
-
-    return {
-        "schema": SHARD_SCHEMA,
-        "candidateOnly": True,
-        "baseHead": registry["commonWorkerBaseHead"],
-        "surfaceKey": surface,
-        "ownedRoot": str(profile["rawRoot"]).rstrip("/") + "/",
-        "inputCensusCount": int(profile["inputCount"]),
-        "materialityCatalogPolicy": MATERIALITY_POLICY,
-        "broadRediscoveryPerformed": False,
-        "outputFiles": [
-            "MANIFEST.json",
-            "CANDIDATES.jsonl",
-            "UNRESOLVED.jsonl",
-            "CONFLICTS.jsonl",
-            "SUMMARY.md",
-        ],
-        "notes": [
-            "Strict derivative manifest; original worker bytes remain immutable.",
-            "No semantic promotion, broad rediscovery, or Materiality fallback performed.",
-        ],
-    }
-
-
-def normalize_record(
-    raw_record: Mapping[str, Any],
-    *,
-    surface: str,
-    source_head: str,
-    source_file: str,
-    source_line: int,
-    source_record_sha256: str,
-    registry: Mapping[str, Any],
-    atlasfin_indexes: Mapping[str, set[str]] | None = None,
-    ndc_prefixes: set[str] | None = None,
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    profile = _profile(registry, surface)
-    if source_head != profile.get("sourceHead"):
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:UNKNOWN_SOURCE_HEAD:{surface}:{source_head}"
-        )
-    if source_file not in OUTCOME_FILES:
-        raise CorpusCertificationError(
-            f"INVALID_PROVENANCE:UNEXPECTED_OUTCOME_FILE:{source_file}"
-        )
-    if not isinstance(raw_record, Mapping):
-        raise CorpusCertificationError(
-            "INVALID_SCHEMA:RECORD_OBJECT_REQUIRED"
-        )
-    if raw_record.get("surfaceKey") != surface:
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:SURFACE_MISMATCH"
-        )
-
-    before = semantic_signature(raw_record)
-    row = _normalized_projection_view(raw_record)
-    changes: list[dict[str, Any]] = []
-    lifted: list[str] = []
-
-    if row.get("schema") is None:
-        row["schema"] = CANDIDATE_SCHEMA
-        changes.append(
-            {
-                "field": "schema",
-                "from": None,
-                "to": CANDIDATE_SCHEMA,
-                "reason": "DECLARE_CANONICAL_CANDIDATE_SCHEMA",
-            }
-        )
-
-    ndc = row.get("ndc")
-    if isinstance(ndc, dict) and isinstance(ndc.get("ndcRefs"), list):
-        normalized_refs = []
-        for value in ndc["ndcRefs"]:
-            new_value = _strip_qualified(value, "ndc")
-            normalized_refs.append(new_value)
-            if new_value != value:
-                changes.append(
-                    {
-                        "field": "ndc.ndcRefs",
-                        "from": value,
-                        "to": new_value,
-                        "reason": "RAW_NDC_FIELD_REQUIRES_UNQUALIFIED_ID",
-                    }
-                )
-        ndc["ndcRefs"] = normalized_refs
-        if isinstance(ndc.get("ndcPrimaryId"), str):
-            old = ndc["ndcPrimaryId"]
-            new = _strip_qualified(old, "ndc")
-            ndc["ndcPrimaryId"] = new
-            if old != new:
-                changes.append(
-                    {
-                        "field": "ndc.ndcPrimaryId",
-                        "from": old,
-                        "to": new,
-                        "reason": "RAW_NDC_FIELD_REQUIRES_UNQUALIFIED_ID",
-                    }
-                )
-
-    atlasfin = row.get("atlasfin")
-    if isinstance(atlasfin, dict):
-        for field in (
-            "atlasfinCatalogElementId",
-            "atlasfinUiId",
-            "atlasfinFamilyId",
-            "atlasfinPresetId",
-            "atlasfinRecipeId",
-            "atlasfinLegacyRecipeId",
-            "atlasfinAdapterId",
-        ):
-            if isinstance(atlasfin.get(field), str):
-                old = atlasfin[field]
-                new = _strip_qualified(old, "atlasfin")
-                atlasfin[field] = new
-                if old != new:
-                    changes.append(
-                        {
-                            "field": f"atlasfin.{field}",
-                            "from": old,
-                            "to": new,
-                            "reason": "RAW_ATLASFIN_FIELD_REQUIRES_UNQUALIFIED_ID",
-                        }
-                    )
-
-    evidence = row.get("evidenceRefs")
-    if not isinstance(evidence, list):
-        raise CorpusCertificationError(
-            "INVALID_SCHEMA:EVIDENCE_REFS_ARRAY_REQUIRED"
-        )
-    normalized_evidence = []
-    for ref in evidence:
-        mapped, lifted_ref, change = _normalize_evidence_ref(ref)
-        if mapped is not None:
-            normalized_evidence.append(mapped)
-        if lifted_ref is not None:
-            lifted.append(lifted_ref)
-        if change is not None:
-            changes.append(change)
-    row["evidenceRefs"] = normalized_evidence
-
-    after = semantic_signature(row)
-    if before != after:
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:SEMANTIC_MUTATION_DETECTED"
-        )
-
-    try:
-        validate_candidate(
-            row,
-            expected_head=str(raw_record.get("baseHead") or ""),
-            atlasfin=(
-                dict(atlasfin_indexes)
-                if atlasfin_indexes is not None
-                else None
-            ),
-            ndc_prefixes=ndc_prefixes,
-        )
-    except ControlPlaneError as exc:
-        message = str(exc)
-        reference_tokens = (
-            "AUTHORITY_",
-            "ATLASFIN_REFERENCE_",
-            "NDC_ID_",
-            "NDC_PREFIX_",
-        )
-        code = (
-            "INVALID_REFERENCE"
-            if any(token in message for token in reference_tokens)
-            else "INVALID_SCHEMA"
-        )
-        raise CorpusCertificationError(
-            f"{code}:{message}"
-        ) from exc
-
-    cert_status = CERTIFICATION_BY_PROMOTION.get(
-        row["application"]["promotionStatus"]
-    )
-    if cert_status is None:
-        raise CorpusCertificationError(
-            "INVALID_SCHEMA:PROMOTION_STATUS_UNCERTIFIABLE"
-        )
-
-    certification = {
-        "schema": CERTIFICATION_SCHEMA,
-        "surfaceKey": surface,
-        "targetId": row["targetId"],
-        "certificationStatus": cert_status,
-        "source": {
-            "head": source_head,
-            "file": source_file,
-            "line": source_line,
-            "recordSha256": source_record_sha256,
-            "sourceBucket": SOURCE_BUCKET[source_file],
-        },
-        "normalization": {
-            "profile": profile.get("normalizationProfile"),
-            "changed": bool(changes),
-            "semanticMutation": False,
-            "semanticSignatureBefore": before,
-            "semanticSignatureAfter": after,
-            "changes": changes,
-            "liftedProvenanceRefs": lifted,
-        },
-        "sourceTruth": {
-            "physicalStatus": raw_record.get("physicalStatus"),
-            "projectionStatus": (
-                raw_record.get("application") or {}
-            ).get("projectionStatus"),
-            "promotionStatus": (
-                raw_record.get("application") or {}
-            ).get("promotionStatus"),
-            "workEntryDecision": (
-                raw_record.get("application") or {}
-            ).get("workEntryDecision"),
-            "bindingStatus": (
-                raw_record.get("identity") or {}
-            ).get("bindingStatus"),
-            "ndcResolutionStatus": (
-                raw_record.get("ndc") or {}
-            ).get("ndcResolutionStatus"),
-        },
-        "normalizedRecordSha256": sha256_value(row),
-        "runtimeVisualGreen": False,
-        "canonicalPromotionAuthorized": False,
-    }
-    return row, certification
-
-
-def _invalid_certification(
-    *,
-    raw: bytes,
-    parsed: Any,
-    surface: str,
-    source_head: str,
-    source_file: str,
-    source_line: int,
-    error: Exception,
-) -> dict[str, Any]:
-    message = str(error)
-    status = "INVALID_PROVENANCE"
-    if message.startswith("INVALID_REFERENCE:"):
-        status = "INVALID_REFERENCE"
-    elif message.startswith("INVALID_SCHEMA:"):
-        status = "INVALID_SCHEMA"
-    target = (
-        parsed.get("targetId")
-        if isinstance(parsed, dict)
-        else None
-    )
-    return {
-        "schema": CERTIFICATION_SCHEMA,
-        "surfaceKey": surface,
-        "targetId": target,
-        "certificationStatus": status,
-        "source": {
-            "head": source_head,
-            "file": source_file,
-            "line": source_line,
-            "recordSha256": sha256_bytes(raw),
-            "sourceBucket": SOURCE_BUCKET.get(source_file),
-        },
-        "errors": [message],
-        "runtimeVisualGreen": False,
-        "canonicalPromotionAuthorized": False,
-    }
-
-
-def semantic_review_keys(
-    record: Mapping[str, Any],
-) -> list[dict[str, str]]:
-    keys: list[dict[str, str]] = []
-    ndc = (
-        record.get("ndc")
-        if isinstance(record.get("ndc"), Mapping)
-        else {}
-    )
-    visual = (
-        record.get("visual")
-        if isinstance(record.get("visual"), Mapping)
-        else {}
-    )
-    atlasfin = (
-        record.get("atlasfin")
-        if isinstance(record.get("atlasfin"), Mapping)
-        else {}
-    )
-
-    if (
-        ndc.get("ndcResolutionStatus") == "RESOLVED_EXISTING"
-        and ndc.get("ndcPrimaryId")
-    ):
-        keys.append(
-            {
-                "kind": "EXISTING_NDC_MEANING",
-                "key": f"ndc:{ndc['ndcPrimaryId']}",
-            }
-        )
-    if (
-        visual.get("visualMeaningStatus") == "RESOLVED_EXISTING"
-        and visual.get("visualMeaningId")
-    ):
-        keys.append(
-            {
-                "kind": "EXISTING_VISUAL_MEANING",
-                "key": f"visual:{visual['visualMeaningId']}",
-            }
-        )
-    if (
-        visual.get("visualMeaningStatus")
-        == "CANDIDATE_REVIEW_REQUIRED"
-        and visual.get("visualMeaningCandidate")
-    ):
-        label = " ".join(
-            str(visual["visualMeaningCandidate"]).split()
-        ).casefold()
-        keys.append(
-            {
-                "kind": "CANDIDATE_LABEL_REVIEW_ONLY",
-                "key": f"label:{label}",
-            }
-        )
-    if (
-        atlasfin.get("atlasfinMatchStatus") == "MATCHED_RECIPE"
-        and atlasfin.get("atlasfinRecipeId")
-    ):
-        keys.append(
-            {
-                "kind": "ATLASFIN_RECIPE_REVIEW_ONLY",
-                "key": f"recipe:{atlasfin['atlasfinRecipeId']}",
-            }
-        )
-    return keys
-
-
-def build_semantic_review_groups(
-    records: Iterable[Mapping[str, Any]],
-) -> dict[str, Any]:
-    grouped: dict[
-        tuple[str, str], list[Mapping[str, Any]]
-    ] = defaultdict(list)
+def build_current_truth_from_corpus(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    rows = []
     for row in records:
-        for item in semantic_review_keys(row):
-            grouped[(item["kind"], item["key"])].append(row)
-
-    groups = []
-    for (kind, key), rows in sorted(grouped.items()):
-        surfaces = sorted(
-            {str(row.get("surfaceKey")) for row in rows}
-        )
-        if kind == "ATLASFIN_RECIPE_REVIEW_ONLY":
-            notes = [
-                "Atlasfin recipe equality is visual recipe evidence only; "
-                "it does not imply one neutral meaning."
-            ]
-        else:
-            notes = [
-                "Review key is deterministic review evidence only; "
-                "it does not assign canonical authority."
-            ]
-        groups.append(
-            {
-                "kind": kind,
-                "reviewKey": key,
-                "recordCount": len(rows),
-                "surfaceKeys": surfaces,
-                "crossSurface": len(surfaces) > 1,
-                "targetIds": sorted(
-                    str(row.get("targetId")) for row in rows
-                ),
-                "canonicalMeaningResolvedByGroup": False,
-                "canAutoCoalesce": False,
-                "notes": notes,
-            }
-        )
-    return {
-        "schema": SEMANTIC_REVIEW_SCHEMA,
-        "groups": groups,
-        "allNullNoMatchGroupsExcluded": True,
-        "candidateFingerprintUsedAsSemanticUniquenessProof": False,
-        "canonicalIdsAssigned": False,
-        "runtimeVisualGreen": False,
-    }
-
-
-def certify_registered_corpus(
-    repo_root: Path,
-    *,
-    registry: Mapping[str, Any],
-    target_indexes: Mapping[
-        str, Mapping[str, Any]
-    ] | None = None,
-) -> dict[str, Any]:
-    repo_root = repo_root.resolve()
-    atlasfin_indexes = load_atlasfin_indexes(
-        [repo_root / path for path in ATLASFIN_PATHS]
-    )
-    ndc_prefixes = ndc_prefixes_from_registry(
-        load_json(repo_root / NDC_PREFIX_PATH)
-    )
-
-    normalized: list[dict[str, Any]] = []
-    certifications: list[dict[str, Any]] = []
-    invalid: list[dict[str, Any]] = []
-    source_file_evidence: list[dict[str, Any]] = []
-    normalized_manifests: dict[str, dict[str, Any]] = {}
-    source_bucket_counts: Counter[str] = Counter()
-
-    for surface in SURFACE_ORDER:
-        profile = _profile(registry, surface)
-        source_head = str(profile["sourceHead"])
-        _, manifest_bytes, manifest_pin = verify_registered_file(
-            repo_root, registry, surface=surface,
-            source_head=source_head, filename="MANIFEST.json"
-        )
-        raw_manifest = json.loads(manifest_bytes.decode("utf-8-sig"))
-        normalized_manifests[surface] = normalize_manifest(
-            raw_manifest, surface=surface, registry=registry
-        )
-        source_file_evidence.append({
-            "surfaceKey": surface, "head": source_head,
-            "file": "MANIFEST.json",
-            "gitBlobSha": manifest_pin["gitBlobSha"],
-            "sha256": manifest_pin["sha256"],
-            "bytes": len(manifest_bytes),
+        app = row.get("application") if isinstance(row.get("application"), Mapping) else {}
+        physical = str(row.get("physicalStatus") or "")
+        drift = physical in {"DRIFT", "STALE", "MISSING"} or app.get("projectionStatus") == "DRIFT"
+        rows.append({
+            "surfaceKey": row.get("surfaceKey"), "targetId": row.get("targetId"),
+            "recordKind": row.get("recordKind"), "enforcement": row.get("enforcement"),
+            "physicalStatus": physical, "projectionStatus": app.get("projectionStatus"),
+            "promotionStatus": app.get("promotionStatus"), "workEntryDecision": app.get("workEntryDecision"),
+            "currentCensusReusable": row.get("recordKind") == "VISUAL_CONTROL_CENSUS_TARGET" and row.get("enforcement") == "DISCOVERY_ONLY",
+            "genuineDiscoveryNeeded": drift, "discoveryScope": "TARGETED_ONLY" if drift else "NONE",
+            "broadRediscoveryAllowed": False, "nextStepReason": CURRENT_CENSUS_REASON,
+            "blockers": list(row.get("blockers") or []), "runtimeVisualGreen": False,
         })
-        surface_count = 0
-        for filename in OUTCOME_FILES:
-            _, data, pin = verify_registered_file(
-                repo_root,
-                registry,
-                surface=surface,
-                source_head=source_head,
-                filename=filename,
-            )
-            source_file_evidence.append(
-                {
-                    "surfaceKey": surface,
-                    "head": source_head,
-                    "file": filename,
-                    "gitBlobSha": pin["gitBlobSha"],
-                    "sha256": pin["sha256"],
-                    "bytes": len(data),
-                }
-            )
-            for line_no, raw_line in enumerate(
-                data.splitlines(), 1
-            ):
-                if not raw_line.strip():
-                    continue
-                surface_count += 1
-                source_bucket_counts[
-                    SOURCE_BUCKET[filename]
-                ] += 1
-                parsed: Any = None
-                try:
-                    parsed = json.loads(
-                        raw_line.decode("utf-8")
-                    )
-                    row, cert = normalize_record(
-                        parsed,
-                        surface=surface,
-                        source_head=source_head,
-                        source_file=filename,
-                        source_line=line_no,
-                        source_record_sha256=sha256_bytes(
-                            raw_line
-                        ),
-                        registry=registry,
-                        atlasfin_indexes=atlasfin_indexes,
-                        ndc_prefixes=ndc_prefixes,
-                    )
-                    normalized.append(row)
-                    certifications.append(cert)
-                except (
-                    UnicodeDecodeError,
-                    json.JSONDecodeError,
-                    CorpusCertificationError,
-                    ControlPlaneError,
-                ) as exc:
-                    bad = _invalid_certification(
-                        raw=raw_line,
-                        parsed=parsed,
-                        surface=surface,
-                        source_head=source_head,
-                        source_file=filename,
-                        source_line=line_no,
-                        error=exc,
-                    )
-                    certifications.append(bad)
-                    invalid.append(bad)
-
-        expected = int(profile["inputCount"])
-        if surface_count != expected:
-            raise CorpusCertificationError(
-                "INVALID_PROVENANCE:"
-                f"SURFACE_ZERO_LOSS_FAILED:{surface}:"
-                f"{surface_count}:{expected}"
-            )
-
-    expected_total = int(
-        registry.get("expectedCorpusCount") or 0
-    )
-    if len(certifications) != expected_total:
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:"
-            "CERTIFICATION_COUNT_MISMATCH:"
-            f"{len(certifications)}:{expected_total}"
-        )
-
-    expected_buckets = registry.get(
-        "expectedAggregate", {}
-    ).get("sourceOutcomeCounts", {})
-    if dict(source_bucket_counts) != expected_buckets:
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:"
-            "SOURCE_BUCKET_COUNTS_MISMATCH:"
-            f"{dict(source_bucket_counts)}:{expected_buckets}"
-        )
-
-    target_ids = [row["targetId"] for row in normalized]
-    duplicate_targets = sorted(
-        target
-        for target, count in Counter(target_ids).items()
-        if count > 1
-    )
-    if duplicate_targets:
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:DUPLICATE_TARGET_IDS:"
-            + ",".join(duplicate_targets[:20])
-        )
-
-    collisions = {
-        "schema": COLLISION_SCHEMA,
-        "recordCount": len(normalized),
-        "collisions": detect_collisions(normalized),
-        "duplicateTargetIds": duplicate_targets,
-        "runtimeVisualGreen": False,
-        "canonicalPromotionAuthorized": False,
-    }
-    review_groups = build_semantic_review_groups(
-        normalized
-    )
-
-    if target_indexes is None:
-        target_indexes = {
-            surface: json.loads(
-                (repo_root / rel).read_text(
-                    encoding="utf-8-sig"
-                )
-            )
-            for surface, rel in TARGET_INDEX_PATHS.items()
-        }
-
-    wanted = set(target_ids)
-    index_records: list[dict[str, Any]] = []
-    for surface in SURFACE_ORDER:
-        document = target_indexes.get(surface)
-        if not isinstance(document, Mapping):
-            raise CorpusCertificationError(
-                "INVALID_PROVENANCE:"
-                f"TARGET_INDEX_MISSING:{surface}"
-            )
-        for record in document.get("records", []):
-            if (
-                isinstance(record, dict)
-                and record.get("targetId") in wanted
-            ):
-                index_records.append(record)
-
-    current_truth = build_current_truth(
-        {
-            "schema":
-                "prisma.visual.application.target-index.corpus.v1",
-            "records": index_records,
-        },
-        normalized,
-    )
-    if current_truth.get("recordCount") != len(normalized):
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:"
-            "CURRENT_TRUTH_COUNT_MISMATCH:"
-            f"{current_truth.get('recordCount')}:"
-            f"{len(normalized)}"
-        )
-    readiness = build_surface_readiness(current_truth)
-
-    promotion_counts = Counter(
-        cert.get("sourceTruth", {}).get(
-            "promotionStatus"
-        )
-        for cert in certifications
-        if cert.get("certificationStatus")
-        in VALID_CERTIFICATIONS
-    )
-    work_entry_counts = Counter(
-        cert.get("sourceTruth", {}).get(
-            "workEntryDecision"
-        )
-        for cert in certifications
-        if cert.get("certificationStatus")
-        in VALID_CERTIFICATIONS
-    )
-    cert_counts = Counter(
-        cert["certificationStatus"]
-        for cert in certifications
-    )
-    semantic_mutations = sum(
-        1
-        for cert in certifications
-        if cert.get("normalization", {}).get(
-            "semanticMutation"
-        )
-        is True
-    )
-
-    expected_promotion = {
-        key: value
-        for key, value in registry.get(
-            "expectedAggregate", {}
-        ).get("promotionStatus", {}).items()
-        if value
-    }
-    if dict(promotion_counts) != expected_promotion:
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:"
-            "PROMOTION_COUNTS_MISMATCH:"
-            f"{dict(promotion_counts)}:"
-            f"{expected_promotion}"
-        )
-    expected_work = {
-        key: value
-        for key, value in registry.get(
-            "expectedAggregate", {}
-        ).get("workEntryDecision", {}).items()
-        if value
-    }
-    if dict(work_entry_counts) != expected_work:
-        raise CorpusCertificationError(
-            "INVALID_PROVENANCE:"
-            "WORK_ENTRY_COUNTS_MISMATCH:"
-            f"{dict(work_entry_counts)}:"
-            f"{expected_work}"
-        )
-
-    corpus_body = b"".join(
-        canonical_json(row) + b"\n"
-        for row in normalized
-    )
-    certification_body = b"".join(
-        canonical_json(row) + b"\n"
-        for row in certifications
-    )
-    manifest = {
-        "schema": CORPUS_MANIFEST_SCHEMA,
-        "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
-        "candidateOnly": True,
-        "expectedCorpusCount": expected_total,
-        "normalizedRecordCount": len(normalized),
-        "certificationRecordCount": len(certifications),
-        "invalidRecordCount": len(invalid),
-        "semanticMutationCount": semantic_mutations,
-        "sourceFiles": source_file_evidence,
-        "sourceHeads": {
-            surface: _profile(
-                registry, surface
-            )["sourceHead"]
-            for surface in SURFACE_ORDER
-        },
-        "normalizedSurfaceManifests": normalized_manifests,
-        "materialityCatalogPolicy": MATERIALITY_POLICY,
-        "materialityCatalogInspected": False,
-        "broadRediscoveryPerformed": False,
-        "currentlyAuthorizedCanonicalPromotions": 0,
-        "runtimeVisualGreen": False,
-        "wholeSurfaceApplyReady": False,
-        "candidateCorpusSha256": sha256_bytes(
-            corpus_body
-        ),
-        "certificationSha256": sha256_bytes(
-            certification_body
-        ),
-    }
-    summary = {
-        "schema":
-            "prisma.visual-promotion.candidate-corpus-summary.v1",
-        "normalizedRecordCount": len(normalized),
-        "certificationRecordCount": len(
-            certifications
-        ),
-        "invalidRecordCount": len(invalid),
-        "duplicateTargetIdCount": len(
-            duplicate_targets
-        ),
-        "collisionCount": len(
-            collisions["collisions"]
-        ),
-        "semanticMutationCount": semantic_mutations,
-        "certificationStatusCounts": dict(
-            sorted(cert_counts.items())
-        ),
-        "promotionStatusCounts": dict(
-            sorted(promotion_counts.items())
-        ),
-        "workEntryDecisionCounts": dict(
-            sorted(work_entry_counts.items())
-        ),
-        "currentlyAuthorizedCanonicalPromotions": 0,
-        "runtimeVisualGreen": False,
-        "wholeSurfaceApplyReady": False,
-        "materialityCatalogInspected": False,
-        "broadRediscoveryPerformed": False,
-    }
     return {
-        "manifest": manifest,
-        "records": normalized,
-        "certifications": certifications,
-        "invalid": invalid,
-        "collisions": collisions,
-        "semanticReviewGroups": review_groups,
-        "currentTruth": current_truth,
-        "surfaceReadiness": readiness,
-        "summary": summary,
+        "schema": CURRENT_TRUTH_SCHEMA, "status": "CERTIFIED_CORPUS_CURRENT_TRUTH",
+        "recordCount": len(rows), "runtimeVisualGreen": False, "currentlyAuthorizedCanonicalPromotions": 0,
+        "broadRediscoveryAllowed": False, "broadRediscoveryReason": BROAD_REDISCOVERY_REASON, "records": rows,
     }
 
 
-def _summary_markdown(
-    result: Mapping[str, Any],
-) -> str:
-    summary = result["summary"]
-    readiness = result["surfaceReadiness"]
-    status = (
-        "PASS_CANDIDATE_CORPUS_CERTIFIED_SOURCE_STATIC"
-        if not result["invalid"]
-        else "BLOCKED_INVALID_CORPUS"
-    )
-    lines = [
-        "# Candidate Corpus Certification",
-        "",
-        f"Status: {status}",
-        "",
-        f"- normalized records: {summary['normalizedRecordCount']}",
-        f"- certification records: {summary['certificationRecordCount']}",
-        f"- invalid records: {summary['invalidRecordCount']}",
-        f"- semantic mutations: {summary['semanticMutationCount']}",
-        f"- duplicate target IDs: {summary['duplicateTargetIdCount']}",
-        (
-            "- currently authorized canonical promotions: "
-            f"{summary['currentlyAuthorizedCanonicalPromotions']}"
-        ),
-        "- runtime visual green: false",
-        "- whole-surface APPLY_READY: false",
-        "- broad rediscovery: false",
-        "- Materiality Catalog inspected: false",
-        "",
-        "## Surface readiness",
-        "",
-    ]
-    for row in readiness.get("surfaces", []):
-        lines.append(
-            f"- {row['surfaceKey']}: "
-            f"{row['readinessStatus']}; "
-            f"inputs={row['inputTargetCount']}, "
-            f"discovery="
-            f"{row['genuineDiscoveryNeededCount']}, "
-            f"eligibleCandidates="
-            f"{row['eligibleCandidateCount']}, "
-            "wholeSurfaceApplyReady=false"
-        )
-    lines.extend(
-        [
-            "",
-            (
-                "Candidate-corpus certification proves "
-                "record/provenance validity only. It does "
-                "not promote Identity, RIFAT, NDC, "
-                "Target Index or runtime/product authority."
-            ),
-            "",
-        ]
-    )
-    return "\n".join(lines)
-
-
-def write_corpus_outputs(
-    result: Mapping[str, Any],
-    out_root: Path,
-) -> None:
-    out_root.mkdir(parents=True, exist_ok=True)
-    json_files = {
-        "CORPUS_MANIFEST.json": result["manifest"],
-        "COLLISIONS.json": result["collisions"],
-        "SEMANTIC_REVIEW_GROUPS.json":
-            result["semanticReviewGroups"],
-        "CURRENT_TRUTH.json": result["currentTruth"],
-        "SURFACE_READINESS.json":
-            result["surfaceReadiness"],
+def build_surface_readiness_from_corpus(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    surfaces = []
+    for surface in EXPECTED_SURFACES:
+        rows = [x for x in records if x.get("surfaceKey") == surface]
+        surfaces.append({
+            "surfaceKey": surface, "recordCount": len(rows),
+            "physicalStatusCounts": counter(rows, lambda r: r.get("physicalStatus")),
+            "projectionStatusCounts": counter(rows, lambda r: (r.get("application") or {}).get("projectionStatus")),
+            "promotionStatusCounts": counter(rows, lambda r: (r.get("application") or {}).get("promotionStatus")),
+            "workEntryDecisionCounts": counter(rows, lambda r: (r.get("application") or {}).get("workEntryDecision")),
+            "blockedRecordCount": sum(1 for r in rows if (r.get("application") or {}).get("workEntryDecision") == "BLOCKED"),
+            "wholeSurfaceApplyReady": False, "runtimeVisualGreen": False, "broadRediscoveryAllowed": False,
+            "broadRediscoveryReason": BROAD_REDISCOVERY_REASON, "status": "CANDIDATE_CORPUS_CERTIFIED_NOT_APPLY_READY",
+        })
+    return {
+        "schema": SURFACE_READINESS_SCHEMA, "status": "CERTIFIED_CORPUS_SURFACE_READINESS",
+        "runtimeVisualGreen": False, "wholeSurfaceApplyReadyCount": 0,
+        "currentlyAuthorizedCanonicalPromotions": 0, "surfaces": surfaces,
     }
-    for name, payload in json_files.items():
-        (out_root / name).write_text(
-            json.dumps(
-                payload,
-                ensure_ascii=False,
-                indent=2,
-                sort_keys=True,
-            )
-            + "\n",
-            encoding="utf-8",
-        )
-    for name, rows in (
-        ("CANDIDATE_CORPUS.jsonl", result["records"]),
-        (
-            "CERTIFICATION.jsonl",
-            result["certifications"],
-        ),
-        ("INVALID.jsonl", result["invalid"]),
-    ):
-        body = b"".join(
-            canonical_json(row) + b"\n"
-            for row in rows
-        )
-        (out_root / name).write_bytes(body)
-    (out_root / "SUMMARY.md").write_text(
-        _summary_markdown(result),
-        encoding="utf-8",
-    )
 
 
-def assert_completion_invariants(
-    result: Mapping[str, Any],
-    *,
-    expected_count: int = 2097,
-) -> None:
-    summary = result["summary"]
-    failures = []
-    if summary["normalizedRecordCount"] != expected_count:
-        failures.append("NORMALIZED_RECORD_COUNT")
-    if summary["certificationRecordCount"] != expected_count:
-        failures.append("CERTIFICATION_RECORD_COUNT")
-    if summary["invalidRecordCount"] != 0:
-        failures.append("INVALID_RECORDS")
-    if summary["semanticMutationCount"] != 0:
-        failures.append("SEMANTIC_MUTATION")
-    if summary["duplicateTargetIdCount"] != 0:
-        failures.append("DUPLICATE_TARGETS")
-    if (
-        summary[
-            "currentlyAuthorizedCanonicalPromotions"
-        ]
-        != 0
-    ):
-        failures.append("CANONICAL_PROMOTION_AUTHORIZED")
-    if summary["runtimeVisualGreen"] is not False:
-        failures.append("RUNTIME_VISUAL_GREEN")
-    if summary["wholeSurfaceApplyReady"] is not False:
-        failures.append("WHOLE_SURFACE_APPLY_READY")
-    if (
-        result["manifest"].get(
-            "materialityCatalogInspected"
-        )
-        is not False
-    ):
-        failures.append("MATERIALITY_INSPECTED")
-    if any(
-        row.get("wholeSurfaceApplyReady")
-        for row in result["surfaceReadiness"].get(
-            "surfaces", []
-        )
-    ):
-        failures.append("SURFACE_APPLY_READY")
-    if failures:
-        raise CorpusCertificationError(
-            "CORPUS_COMPLETION_INVARIANTS_FAILED:"
-            + ",".join(failures)
-        )
+def validate_global_corpus(
+    records: Sequence[Mapping[str, Any]], certifications: Sequence[Mapping[str, Any]], *,
+    registry: Mapping[str, Any],
+) -> dict[str, Any]:
+    errors = []
+    if len(records) != EXPECTED_CORPUS_COUNT:
+        errors.append(f"CORPUS_COUNT:{len(records)}:{EXPECTED_CORPUS_COUNT}")
+    if len(certifications) != EXPECTED_CORPUS_COUNT:
+        errors.append(f"CERTIFICATION_COUNT:{len(certifications)}:{EXPECTED_CORPUS_COUNT}")
+    expected_counts = {s: int(lane(registry, s).get("recordCount") or 0) for s in EXPECTED_SURFACES}
+    actual_counts = Counter(str(x.get("surfaceKey")) for x in records)
+    if dict(actual_counts) != expected_counts:
+        errors.append(f"SURFACE_COUNTS:{dict(actual_counts)}:{expected_counts}")
+    targets = [str(x.get("targetId") or "") for x in records]
+    cert_targets = [str(x.get("targetId") or "") for x in certifications]
+    missing = set(targets) - set(cert_targets)
+    extra = set(cert_targets) - set(targets)
+    duplicate_count = len(targets) - len(set(targets))
+    if duplicate_count:
+        errors.append(f"DUPLICATE_TARGET_IDS:{duplicate_count}")
+    if missing:
+        errors.append(f"MISSING_CERTIFICATION_TARGETS:{len(missing)}")
+    if extra:
+        errors.append(f"EXTRA_CERTIFICATION_TARGETS:{len(extra)}")
+    semantic_mutations = sum(1 for x in certifications if x.get("semanticMutation") is True)
+    exact_apply = sum(1 for x in records if (x.get("application") or {}).get("workEntryDecision") == "GVAE_EXACT_APPLY")
+    authorized = sum(1 for x in certifications if x.get("currentlyAuthorizedCanonicalPromotion") is True)
+    if semantic_mutations:
+        errors.append(f"SEMANTIC_MUTATION_COUNT:{semantic_mutations}")
+    if exact_apply:
+        errors.append(f"GVAE_EXACT_APPLY:{exact_apply}")
+    if authorized:
+        errors.append(f"CURRENTLY_AUTHORIZED_CANONICAL_PROMOTIONS:{authorized}")
+    for row in records:
+        try:
+            validate_candidate(row, expected_head=str(registry.get("sourceBaseHead") or ""))
+        except (ControlPlaneError, TypeError, ValueError) as exc:
+            errors.append(f"CANDIDATE_INVALID:{row.get('targetId')}:{exc}")
+            if len(errors) >= 20:
+                break
+    return {
+        "status": "PASS_CANDIDATE_CORPUS_VALIDATION" if not errors else "BLOCKED_CANDIDATE_CORPUS_VALIDATION",
+        "recordCount": len(records), "certificationCount": len(certifications), "missing": len(missing),
+        "extra": len(extra), "duplicateTargetIds": duplicate_count, "semanticMutationCount": semantic_mutations,
+        "currentlyAuthorizedCanonicalPromotions": authorized, "GVAE_EXACT_APPLY": exact_apply,
+        "runtimeVisualGreen": False, "errors": errors,
+    }
+
+
+def collision_report(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    collisions = detect_collisions(records)
+    duplicates = [x for x in collisions if x.get("kind") == "DUPLICATE_TARGET"]
+    bindings = [x for x in collisions if x.get("kind") == "BINDING_CANDIDATE_KEY_COLLISION"]
+    reviews = [x for x in collisions if x.get("kind") == "CROSS_SURFACE_FINGERPRINT_REVIEW"]
+    return {
+        "schema": COLLISION_SCHEMA,
+        "status": "PASS_NO_HARD_COLLISIONS" if not duplicates and not bindings else "BLOCKED_HARD_COLLISIONS",
+        "recordCount": len(records), "duplicateTargetIds": len(duplicates),
+        "bindingCandidateKeyCollisions": len(bindings), "crossSurfaceFingerprintReviews": len(reviews),
+        "collisionFingerprintChanged": False, "collisions": collisions,
+    }

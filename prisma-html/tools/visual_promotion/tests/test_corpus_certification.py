@@ -1,261 +1,140 @@
 from __future__ import annotations
 
-import copy
+import hashlib
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
 from visual_promotion.corpus_certification import (
     CorpusCertificationError,
     build_semantic_review_groups,
+    build_surface_readiness_from_corpus,
+    expected_certification_status,
     load_registry,
-    normalize_manifest,
-    normalize_record,
-    semantic_signature,
-    sha256_bytes,
+    normalize_registered_raw_record,
+    semantic_review_key,
+    verify_registered_file,
 )
 
-HERE = Path(__file__).resolve().parent
-REPO = HERE.parents[3]
-REGISTRY_PATH = (
-    REPO
-    / "prisma-html"
-    / "governance"
-    / "visual-promotion"
-    / "contracts"
-    / "legacy-worker-intake.registry.json"
-)
-FIXTURE_PATH = HERE / "fixtures" / "exact-worker-samples.json"
+HEAD = "57b01ad8bda043ec25763203354b686341bace09"
 
 
-def sample_manifest(surface: str, registry: dict) -> dict:
-    base = {
-        "candidateOnly": True,
-        "baseHead": registry["commonWorkerBaseHead"],
-        "surfaceKey": surface,
+def candidate(surface="mobile", target="TGT.CENSUS.MOBILE.AAAAAAAAAAAAAAAAAAAA.V1"):
+    return {
+        "schema": "prisma.visual-promotion.candidate.v1", "candidateOnly": True, "baseHead": HEAD,
+        "surfaceKey": surface, "targetId": target, "recordKind": "VISUAL_CONTROL_CENSUS_TARGET",
+        "enforcement": "DISCOVERY_ONLY", "physicalStatus": "CURRENT",
+        "canonicalSourcePath": "prisma-html/authority/rifat/surfaces/mobile/runtime-sources/app/globals.css",
+        "generatedOutputPath": "apps/terminal-de-venta-system/products/mobile/app/app/globals.css",
+        "sourceSha256": "a" * 64, "outputSha256": "a" * 64, "projectionMode": "exact-byte-copy",
+        "physical": {"routeId": None, "regionId": None, "slotId": None, "componentId": None,
+            "componentUiId": None, "ownerId": "products.mobile.app.app.globals.css",
+            "ownerFile": "products/mobile/app/app/globals.css", "renderSourceFile": None,
+            "styleSourceFile": "products/mobile/app/app/globals.css", "selector": "a",
+            "implementationLayerId": "products.mobile.app.app.globals.css.a"},
+        "ndc": {"ndcPrimaryId": None, "ndcRefs": ["SURF.mb.owner_home"], "ndcResolutionStatus": "UNRESOLVED"},
+        "visual": {"visualMeaningId": None, "visualMeaningCandidate": None, "visualMeaningStatus": "UNRESOLVED"},
+        "atlasfin": {"atlasfinFamilyId": None, "atlasfinPresetId": None, "atlasfinRecipeId": None,
+            "atlasfinAdapterId": "ADP.MB.TOUCH.V2", "atlasfinMatchStatus": "AMBIGUOUS"},
+        "identity": {"identityProfileId": None, "identityRecipeId": None,
+            "identityAdapterId": "identity::prisma.adapter.mobile.v1", "existingBindingId": None,
+            "bindingCandidateKey": None, "bindingStatus": "BLOCKED"},
+        "application": {"applicationLayerId": None, "projectionStatus": "CURRENT",
+            "promotionStatus": "REGISTER_TARGET_FIRST", "workEntryDecision": "REGISTER_TARGET_FIRST"},
+        "confidence": "high",
+        "evidenceRefs": ["target-index::TGT.X", "ndc::SURF.mb.owner_home", "atlasfin::ADP.MB.TOUCH.V2"],
+        "blockers": ["semantic"], "notes": [],
     }
-    if surface == "tablet":
-        base["policy"] = {
-            "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
-            "broadRediscoveryPerformed": False,
-        }
-    elif surface == "pc":
-        base["materialityCatalog"] = {
-            "policy": "STANDBY_USER_INVOKED_ONLY",
-        }
-        base["broadRediscovery"] = {"performed": False}
-    elif surface == "mobile":
-        base["materialityCatalogPolicy"] = (
-            "STANDBY_USER_INVOKED_ONLY"
-        )
-        base["broadRediscoveryPerformed"] = False
-    else:
-        base["policies"] = {
-            "materialityCatalog":
-                "STANDBY_USER_INVOKED_ONLY",
-            "broadRediscovery": False,
-        }
-    return base
+
+
+def registry():
+    def row(worker, cert, transforms):
+        return {"workerHead": worker, "certificationHead": cert, "recordCount": 1,
+            "workerFiles": {"CANDIDATES.jsonl": {"gitBlobSha": "b", "sha256": "x"}},
+            "certificationFiles": {"NORMALIZED.jsonl": {"gitBlobSha": "c", "sha256": "y", "recordCount": 1}},
+            "allowedRawTransforms": transforms}
+    return {"schema": "prisma.visual-promotion.intake-registry.v1", "sourceBaseHead": HEAD,
+        "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY", "broadRediscoveryAllowed": False,
+        "surfaceOrder": ["tablet", "pc", "mobile", "shared-ui"],
+        "surfaces": {
+            "tablet": row("1"*40, "2"*40, []), "pc": row("3"*40, "4"*40, []),
+            "mobile": row("5"*40, "6"*40, [
+                "FLATTEN_PROJECTION_OBJECT_TO_STRICT_TOP_LEVEL_FIELDS",
+                "NORMALIZE_NDC_REFS_TO_DOMAIN_SCOPED_RAW_IDS",
+                "NORMALIZE_UNQUALIFIED_EVIDENCE_REFS_TO_STRICT_AUTHORITY_REFS",
+                "NORMALIZE_ATLASFIN_ADAPTER_TO_DOMAIN_SCOPED_RAW_ID"]),
+            "shared-ui": row("7"*40, "8"*40, [
+                "EXPLICIT_STRICT_SCHEMA_TAG", "QUALIFIED_ATLASFIN_ADAPTER_TO_STRICT_RAW_REGISTRY_ID"])},
+        "atlasfin": {}}
 
 
 class CorpusCertificationTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.registry = load_registry(REGISTRY_PATH)
-        cls.fixtures = json.loads(
-            FIXTURE_PATH.read_text(encoding="utf-8")
-        )["samples"]
+    def test_registry_fails_closed_on_materiality_policy(self):
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td)/"r.json"; r=registry(); r["materialityCatalogPolicy"]="AUTO"
+            p.write_text(json.dumps(r), encoding="utf-8")
+            with self.assertRaisesRegex(CorpusCertificationError, "MATERIALITY_POLICY"):
+                load_registry(p)
 
-    def normalize_fixture(self, surface: str):
-        fixture = next(
-            row
-            for row in self.fixtures
-            if row["surfaceKey"] == surface
-        )
-        raw_line = fixture["rawLine"]
-        raw = json.loads(raw_line)
-        normalized, certification = normalize_record(
-            raw,
-            surface=surface,
-            source_head=fixture["sourceHead"],
-            source_file=fixture["sourceFile"],
-            source_line=fixture["sourceLine"],
-            source_record_sha256=sha256_bytes(
-                raw_line.encode("utf-8")
-            ),
-            registry=self.registry,
-        )
-        return fixture, raw, normalized, certification
+    def test_file_intake_is_head_and_hash_pinned(self):
+        r=registry(); raw=b"x\n"
+        meta=r["surfaces"]["mobile"]["workerFiles"]["CANDIDATES.jsonl"]
+        meta["sha256"]=hashlib.sha256(raw).hexdigest(); meta["recordCount"]=1
+        verify_registered_file(r, "mobile", kind="worker", head="5"*40,
+            file_name="CANDIDATES.jsonl", content=raw, git_blob_sha="b")
+        with self.assertRaisesRegex(CorpusCertificationError, "UNREGISTERED_WORKER_HEAD"):
+            verify_registered_file(r, "mobile", kind="worker", head="9"*40,
+                file_name="CANDIDATES.jsonl", content=raw)
 
-    def test_exact_worker_samples_cover_all_surfaces(self):
-        self.assertEqual(
-            {row["surfaceKey"] for row in self.fixtures},
-            {"tablet", "pc", "mobile", "shared-ui"},
-        )
-        for fixture in self.fixtures:
-            profile = self.registry["surfaces"][
-                fixture["surfaceKey"]
-            ]
-            self.assertEqual(
-                fixture["sourceHead"],
-                profile["sourceHead"],
-            )
-
-    def test_exact_samples_normalize_without_semantic_mutation(self):
-        for surface in (
-            "tablet",
-            "pc",
-            "mobile",
-            "shared-ui",
-        ):
-            _, raw, normalized, certification = (
-                self.normalize_fixture(surface)
-            )
-            self.assertEqual(
-                semantic_signature(raw),
-                semantic_signature(normalized),
-            )
-            self.assertFalse(
-                certification["normalization"][
-                    "semanticMutation"
-                ]
-            )
-            self.assertTrue(
-                certification[
-                    "certificationStatus"
-                ].startswith("VALID_")
-            )
-
-    def test_mobile_known_legacy_shape_normalizes_only_representation(self):
-        _, raw, normalized, certification = (
-            self.normalize_fixture("mobile")
-        )
-        self.assertIn("projection", raw)
+    def test_mobile_known_shape_normalizes_without_semantic_mutation(self):
+        r=registry(); raw=candidate()
+        raw["projection"]={k:raw.pop(k) for k in (
+            "canonicalSourcePath","generatedOutputPath","sourceSha256","outputSha256","projectionMode")}
+        raw["ndc"]["ndcRefs"]=["ndc::SURF.mb.owner_home"]
+        raw["atlasfin"]["atlasfinAdapterId"]="atlasfin::ADP.MB.TOUCH.V2"
+        raw["evidenceRefs"]=[
+            "prisma-html/authority/rifat/prisma-ui/visual-control/target-index/mobile.json",
+            "apps/terminal-de-venta-system/products/mobile/app/app/globals.css",
+            "ndc::SURF.mb.owner_home"]
+        normalized, transforms=normalize_registered_raw_record(r, "mobile", raw, source_head="5"*40)
+        self.assertEqual(normalized["ndc"]["ndcRefs"], ["SURF.mb.owner_home"])
+        self.assertEqual(normalized["atlasfin"]["atlasfinAdapterId"], "ADP.MB.TOUCH.V2")
         self.assertNotIn("projection", normalized)
-        self.assertEqual(
-            normalized["ndc"]["ndcRefs"],
-            ["SURF.mb.owner_home"],
-        )
-        self.assertEqual(
-            normalized["atlasfin"]["atlasfinAdapterId"],
-            "ADP.MB.TOUCH.V2",
-        )
-        self.assertEqual(
-            normalized["application"]["projectionStatus"],
-            "DRIFT",
-        )
-        domains = {
-            ref.get("authorityDomain")
-            for ref in normalized["evidenceRefs"]
-            if isinstance(ref, dict)
-        }
-        self.assertIn("projection-manifest", domains)
-        self.assertIn("code-atlas", domains)
-        self.assertEqual(
-            certification["normalization"]["liftedProvenanceRefs"],
-            [],
-        )
+        self.assertIn("FLATTEN_PROJECTION_OBJECT_TO_STRICT_TOP_LEVEL_FIELDS", transforms)
 
-    def test_shared_ui_qualified_adapter_becomes_raw_field(self):
-        _, _, normalized, certification = (
-            self.normalize_fixture("shared-ui")
-        )
-        self.assertEqual(
-            normalized["atlasfin"]["atlasfinAdapterId"],
-            "ADP.SHARED.NEUTRAL.V2",
-        )
-        self.assertFalse(
-            certification["normalization"][
-                "semanticMutation"
-            ]
-        )
+    def test_unknown_shape_fails_closed(self):
+        r=registry(); raw=candidate("tablet","TGT.CENSUS.TABLET.AAAAAAAAAAAAAAAAAAAA.V1")
+        raw["atlasfin"]["atlasfinAdapterId"]="atlasfin::ADP.TB.TOUCH.V2"
+        with self.assertRaisesRegex(CorpusCertificationError, "UNREGISTERED_ATLASFIN_ADAPTER_SHAPE"):
+            normalize_registered_raw_record(r, "tablet", raw, source_head="1"*40)
 
-    def test_unknown_head_fails_closed(self):
-        fixture = self.fixtures[0]
-        raw_line = fixture["rawLine"]
-        with self.assertRaisesRegex(
-            CorpusCertificationError,
-            "UNKNOWN_SOURCE_HEAD",
-        ):
-            normalize_record(
-                json.loads(raw_line),
-                surface=fixture["surfaceKey"],
-                source_head="0" * 40,
-                source_file=fixture["sourceFile"],
-                source_line=1,
-                source_record_sha256=sha256_bytes(
-                    raw_line.encode("utf-8")
-                ),
-                registry=self.registry,
-            )
+    def test_semantic_review_key_is_separate_from_surface_target_identity(self):
+        a=candidate(); a["visual"]["visualMeaningCandidate"]="primary action"
+        b=candidate("tablet","TGT.CENSUS.TABLET.BBBBBBBBBBBBBBBBBBBB.V1")
+        b["visual"]["visualMeaningCandidate"]="primary action"
+        self.assertEqual(semantic_review_key(a), semantic_review_key(b))
+        groups=build_semantic_review_groups([a,b])
+        self.assertEqual(groups["crossSurfaceGroupCount"],1)
+        self.assertFalse(groups["reviewKeyIncludesSurfaceKey"])
+        self.assertFalse(groups["reviewKeyIncludesTargetId"])
+        self.assertFalse(groups["collisionFingerprintChanged"])
 
-    def test_all_legacy_manifest_shapes_get_strict_derivative(self):
-        for surface in (
-            "tablet",
-            "pc",
-            "mobile",
-            "shared-ui",
-        ):
-            manifest = normalize_manifest(
-                sample_manifest(surface, self.registry),
-                surface=surface,
-                registry=self.registry,
-            )
-            self.assertEqual(
-                manifest["schema"],
-                "prisma.visual-promotion.candidate-shard.v1",
-            )
-            self.assertEqual(
-                manifest["inputCensusCount"],
-                self.registry["surfaces"][surface][
-                    "inputCount"
-                ],
-            )
-            self.assertFalse(
-                manifest["broadRediscoveryPerformed"]
-            )
-            self.assertEqual(
-                manifest["materialityCatalogPolicy"],
-                "STANDBY_USER_INVOKED_ONLY",
-            )
+    def test_certification_state_never_implies_exact_apply(self):
+        row=candidate()
+        self.assertEqual(expected_certification_status(row), "VALID_REGISTER_TARGET_FIRST")
+        row["application"]["promotionStatus"]="ELIGIBLE_CANDIDATE"
+        self.assertEqual(expected_certification_status(row), "VALID_ELIGIBLE_CANDIDATE")
+        self.assertNotEqual(row["application"]["workEntryDecision"], "GVAE_EXACT_APPLY")
 
-    def test_recipe_review_key_is_separate_and_review_only(self):
-        _, _, tablet, _ = self.normalize_fixture("tablet")
-        _, _, pc, _ = self.normalize_fixture("pc")
-        groups = build_semantic_review_groups(
-            [tablet, pc]
-        )["groups"]
-        recipe = next(
-            row
-            for row in groups
-            if row["reviewKey"]
-            == "recipe:REC.table.governed.v2"
-        )
-        self.assertEqual(
-            recipe["surfaceKeys"],
-            ["pc", "tablet"],
-        )
-        self.assertTrue(recipe["crossSurface"])
-        self.assertFalse(recipe["canAutoCoalesce"])
-        self.assertFalse(
-            recipe["canonicalMeaningResolvedByGroup"]
-        )
-
-    def test_registry_expected_counts_are_frozen(self):
-        self.assertEqual(
-            self.registry["expectedCorpusCount"],
-            2097,
-        )
-        self.assertEqual(
-            self.registry["expectedAggregate"][
-                "sourceOutcomeCounts"
-            ],
-            {
-                "CANDIDATES": 365,
-                "UNRESOLVED": 1580,
-                "CONFLICTS": 152,
-            },
-        )
+    def test_surface_readiness_never_claims_whole_surface_apply(self):
+        rows=[]
+        for i,s in enumerate(("tablet","pc","mobile","shared-ui")):
+            rows.append(candidate(s,f"TGT.CENSUS.{s.upper().replace('-', '_')}.{i:020X}.V1"))
+        out=build_surface_readiness_from_corpus(rows)
+        self.assertEqual(out["wholeSurfaceApplyReadyCount"],0)
+        self.assertFalse(out["runtimeVisualGreen"])
+        self.assertTrue(all(not x["wholeSurfaceApplyReady"] for x in out["surfaces"]))
 
 
 if __name__ == "__main__":
