@@ -156,3 +156,12 @@ No updates published yet.
 - Required proof: exact match against existing authority `BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1`.
 - No certification files have been committed while this proof is pending.
 
+## 2026-09-04T23:56:00-06:00 — BLOCKER_CLEARED
+
+- Exact Identity authority read for `BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1`.
+- Binding target proves the candidate's `routeId`, `regionId`, `slotId`, `componentUiId`, `ownerId`, selector and `implementationLayerId`.
+- Binding `layerId` equals candidate `applicationLayerId`.
+- Candidate `componentId` equals the binding-proven `componentUiId`, so no new component identity was inferred.
+- The previous direct-census lookup failure was a **reference-domain validation issue**, not a source defect.
+- Blocker cleared. Dry-run corpus validity is now **929/929**, with semantic mutation still **0**.
+
