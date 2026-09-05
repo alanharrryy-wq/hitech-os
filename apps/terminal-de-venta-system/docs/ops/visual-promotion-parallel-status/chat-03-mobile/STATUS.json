@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-03-mobile",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-03-mobile",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:52:07-06:00",
+  "updatedAt": "2026-09-04T19:52:46-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "visual-promotion-chat3-mobile-20260904",
   "workHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
-  "summary": "Chat 3 Mobile promotion candidate shard is complete and remains valid after explicit current-main drift review. The three commits added status-channel/governance coordination only and did not touch the Mobile candidate authority/readset or product/RIFAT projection evidence.",
+  "summary": "Chat 3 Mobile promotion candidate shard is complete, current-main drift was reviewed as non-relevant to its evidence, and the dedicated status branch is isolated correctly. Lane is ready for coordinator integration.",
   "blockers": [],
   "findings": [
     "Mobile census accounting is exact: 271 input targets, 271 unique outcomes, zero missing, zero extra, zero duplicates.",
@@ -71,6 +71,11 @@
       "name": "current interoperability compatibility review",
       "result": "PASS",
       "details": "Current Chat 3 mission/write ownership/output requirements are unchanged; new requirements concern dedicated status reporting and are now satisfied on status/vp-chat-03-mobile."
+    },
+    {
+      "name": "status branch isolation",
+      "result": "PASS",
+      "details": "Compared current main d08013db42c34ccafb80075392ec6d7a289cf7b5 to status branch: exactly two changed paths, Chat 3 STATUS.json and LOG.md; no candidate, runtime, authority, product or other-chat mailbox changes."
     }
   ],
   "unresolved": [
@@ -80,7 +85,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "No further candidate mutation is warranted from current evidence. Keep the status mailbox current and hand off commit 7f32ce6f1b602a14781fa2f4f3f323035f8029ec for coordinator integration/reconciliation.",
+  "nextAction": "Maintain this mailbox only if Chat 3 state materially changes. Otherwise hand off candidate commit 7f32ce6f1b602a14781fa2f4f3f323035f8029ec for coordinator integration.",
   "handoff": {
     "readiness": "READY_FOR_INTEGRATION",
     "workBranch": "visual-promotion-chat3-mobile-20260904",
@@ -97,6 +102,7 @@
     "mainDriftAssessment": "PASS_NON_RELEVANT_DRIFT",
     "preferredIntegration": "Cherry-pick/apply the single isolated Chat 3 candidate commit onto the current coordinator integration branch rather than rewriting the worker branch solely for ancestry.",
     "statusBranch": "status/vp-chat-03-mobile",
-    "statusHeadAfterThisUpdate": null
+    "statusHeadAfterThisUpdate": null,
+    "statusBranchIsolation": "PASS_EXACT_TWO_STATUS_FILES_ONLY"
   }
 }

@@ -27,3 +27,10 @@ No updates published yet.
 - Decision: do not rewrite/rebase candidate data merely because `main` moved. Preserve original `baseHead` and evidence provenance.
 - Handoff remains `READY_FOR_INTEGRATION`. Preferred integration is the single isolated candidate commit `7f32ce6f1b602a14781fa2f4f3f323035f8029ec` applied onto the coordinator's current integration base.
 - No user action required. No new blocker.
+
+## 2026-09-04T19:52:46-06:00 — VALIDATION / COMPLETE
+
+- Status-branch isolation validation PASS against current `main` `d08013db42c34ccafb80075392ec6d7a289cf7b5`.
+- Exactly two paths differ on `status/vp-chat-03-mobile`: this Chat's `STATUS.json` and append-only `LOG.md`.
+- No code, candidate shard, product/runtime, visual authority, global manifest or another Chat mailbox is present in the status-branch delta.
+- Chat 3 lane work remains `READY_FOR_INTEGRATION`; no additional candidate mutation is justified by current evidence.
