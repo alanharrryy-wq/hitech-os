@@ -4,17 +4,17 @@
   "lane": "SHARED_UI_PROMOTION",
   "statusBranch": "status/vp-chat-04-shared-ui",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui",
-  "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-04T23:44:00-06:00",
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T23:53:09-06:00",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat4/shared-ui-corpus-cert-20260904",
-  "workHead": null,
-  "summary": "Started CANDIDATE_CORPUS_CERTIFICATION_PARALLEL for Chat 4 from current canonical main. Certification will create a strict derivative of the immutable Shared UI worker corpus at source head 57b502f1064571cebd917b36882ef9c11e9fa7d8, preserving all 70 target IDs, 40/19/11 source accounting, 70 NDC UNRESOLVED outcomes, 70 Atlasfin NO_MATCH outcomes, and all semantic decisions. Only certification/** is writable on the new work branch.",
+  "workHead": "553577aa74045c73ab9c92d1f81538e7e0a8c65a",
+  "summary": "Chat 4 completed CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. The immutable Shared UI worker corpus at 57b502f1064571cebd917b36882ef9c11e9fa7d8 was certified into a strict derivative on chat4/shared-ui-corpus-cert-20260904 at 553577aa74045c73ab9c92d1f81538e7e0a8c65a. Result: 70/70 corpus-valid, invalid=0, semanticMutationCount=0, exact 40 candidates + 19 unresolved + 11 conflicts preserved, 70 NDC UNRESOLVED preserved, 70 Atlasfin NO_MATCH preserved. Normalization changed representation only: explicit candidate schema tag plus atlasfinAdapterId qualified-to-raw registry representation. No PR was opened for certification, PR #539 was not merged, and no FILES_MANIFEST/product/runtime/consumer/global-authority write occurred.",
   "blockers": [
     {
       "id": "PROMOTION_SEMANTIC_BLOCKERS_RECORDED",
-      "status": "RECORDED_NOT_LANE_MUTATION_AUTHORITY",
-      "detail": "All 70 records retain truthful semantic/application blockers such as exact-binding, layer-application-policy, recipe and semantic. 19 targets have no exact RIFAT region row and 11 have multiple candidate region rows. These are promotion readiness facts, not permission for Chat 4 to repair global authority."
+      "status": "VALID_CORPUS_STATE_NOT_CERTIFICATION_FAILURE",
+      "detail": "The certified corpus intentionally preserves promotion-readiness blockers. 19 records still have no exact RIFAT region, 11 retain multi-region conflict evidence, all 70 remain NDC UNRESOLVED and all 70 remain Atlasfin NO_MATCH. Corpus certification does not authorize inference or promotion."
     }
   ],
   "findings": [
@@ -33,7 +33,14 @@
     "Since the previous main observation d08013db42c34ccafb80075392ec6d7a289cf7b5, current main 66fa02147f0cf31529c090a47f376026b406875a changes only prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md and prisma-html/FILES_MANIFEST.json.",
     "No Shared UI candidate path, Target Index/expanded Shared UI evidence, Shared UI Identity authority, NDC input, Atlasfin registry, Shared UI projection manifest, consumer surface, product runtime, or generated product projection changed in that latest main delta.",
     "No bounded correction request from Chat 6/integration is present in the current Chat 4 mailbox or in the owner's continuation instruction.",
-    "Canonical phase is now CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly supersedes the prior HOLD. Chat 4 must create chat4/shared-ui-corpus-cert-20260904 from current main and write only prisma-html/governance/visual-promotion/candidates/shared-ui/certification/**."
+    "Canonical phase is now CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly supersedes the prior HOLD. Chat 4 must create chat4/shared-ui-corpus-cert-20260904 from current main and write only prisma-html/governance/visual-promotion/candidates/shared-ui/certification/**.",
+    "Strict Shared UI corpus certification completed at head 553577aa74045c73ab9c92d1f81538e7e0a8c65a with 70/70 valid records and INVALID.jsonl empty.",
+    "The strict Control Plane representation requires raw Atlasfin adapter registry IDs in atlasfinAdapterId. Source atlasfin::ADP.SHARED.NEUTRAL.V2 was normalized to ADP.SHARED.NEUTRAL.V2; current structured Atlasfin authority proves that raw ID exists.",
+    "Every normalized record preserves the original qualified adapter value in certification provenance; authority-qualified evidenceRefs remain unchanged.",
+    "All 70 exact source-record SHA-256 provenance values were recomputed from the immutable source JSONL bytes and verified after write.",
+    "Certification preserves exactly 19 no-region unresolved records and 11 multi-region conflict records without selecting a region.",
+    "Certification branch diff from base is exactly one commit and exactly five files, all under prisma-html/governance/visual-promotion/candidates/shared-ui/certification/**.",
+    "Latest relevant-main drift classification remained non-relevant to Shared UI source authority: the delta into certification base consisted only of the corpus prompt and FILES_MANIFEST maintenance."
   ],
   "decisions": [
     "Reused the current Visual Control/Target Index census and did not perform broad rediscovery.",
@@ -48,9 +55,20 @@
     "Preserved all 19 no-region and 11 multi-region cases without inference, all 70 NDC UNRESOLVED outcomes, all 70 Atlasfin NO_MATCH outcomes, and draft PR #539 without merge.",
     "Did not mutate the Shared UI candidate shard because current-main changes are coordination/integration-only and no bounded integration correction was requested.",
     "Did not update FILES_MANIFEST.json; one-time manifest refresh remains integration/composer-owned.",
-    "Beginning strict corpus certification as a derivative, never rewriting the immutable source worker bytes or draft PR #539."
+    "Beginning strict corpus certification as a derivative, never rewriting the immutable source worker bytes or draft PR #539.",
+    "Certified a derivative only; immutable source worker bytes and provenance were not rewritten.",
+    "Added only strict representation metadata: schema=prisma.visual-promotion.candidate.v1 and raw Atlasfin adapter field representation ADP.SHARED.NEUTRAL.V2.",
+    "Did not alter physical, NDC, visual meaning, Atlasfin match, Identity binding, projection, promotion or Work Entry semantics.",
+    "Did not open a certification-phase PR, did not merge draft PR #539, and did not update prisma-html/FILES_MANIFEST.json.",
+    "Did not edit Tablet/PC/Mobile consumers, product/runtime, generated projections, or global authority."
   ],
-  "changedPaths": [],
+  "changedPaths": [
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/certification/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/certification/NORMALIZED.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/certification/CERTIFICATION.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/certification/INVALID.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/certification/SUMMARY.md"
+  ],
   "validations": [
     {
       "name": "work-branch-head",
@@ -118,27 +136,95 @@
       "name": "corpus-certification-phase-start",
       "result": "IN_PROGRESS",
       "detail": "Source head fixed at 57b502f1064571cebd917b36882ef9c11e9fa7d8; certification base fixed at current main 8cc1918c5e015d1408335c15313e7364e04859c2."
+    },
+    {
+      "name": "strict-candidate-corpus",
+      "result": "PASS",
+      "detail": "70/70 normalized Shared UI records satisfy the strict candidate representation and closed vocabulary used for this certification derivative."
+    },
+    {
+      "name": "certification-record-count",
+      "result": "PASS",
+      "detail": "70 normalized records and 70 certification records; INVALID.jsonl is empty; unique target IDs=70."
+    },
+    {
+      "name": "zero-loss-source-accounting",
+      "result": "PASS",
+      "detail": "70 = 40 source candidates + 19 unresolved + 11 conflicts, preserved exactly."
+    },
+    {
+      "name": "semantic-fidelity",
+      "result": "PASS",
+      "detail": "semanticMutationCount=0; promotion remains 40 REGISTER_TARGET_FIRST + 30 BLOCKED; Work Entry remains 40 REGISTER_TARGET_FIRST + 30 BLOCKED."
+    },
+    {
+      "name": "semantic-status-preservation",
+      "result": "PASS",
+      "detail": "NDC UNRESOLVED=70, Atlasfin NO_MATCH=70, projection CURRENT=70, no-region unresolved=19, multi-region conflicts=11."
+    },
+    {
+      "name": "atlasfin-adapter-reference",
+      "result": "PASS",
+      "detail": "ADP.SHARED.NEUTRAL.V2 exists in the current structured Atlasfin surface-adapter registry; normalization changed only serialized field representation."
+    },
+    {
+      "name": "source-record-provenance",
+      "result": "PASS",
+      "detail": "70/70 source-record SHA-256 values verified against exact immutable source JSONL lines, with source file/head/line provenance pinned."
+    },
+    {
+      "name": "certification-branch-scope",
+      "result": "PASS",
+      "detail": "Certification branch is exactly one commit ahead of base and changes exactly five files, all inside shared-ui/certification/**."
+    },
+    {
+      "name": "post-write-certification-validation",
+      "result": "PASS_POST_WRITE_CERTIFICATION_VALIDATION",
+      "detail": "Re-fetched all five derivative files after commit and revalidated counts, strict representation, references, provenance, semantic fidelity, zero invalids and scope."
     }
   ],
   "unresolved": [
-    "Strict candidate intake schema/normalization contract must be resolved from current Control Plane authority before writing certification derivatives.",
-    "Qualified Atlasfin adapter representation requires normalization only if the current strict contract proves a representation mismatch.",
-    "Completion requires 70/70 corpus-valid, invalid=0, semanticMutationCount=0 and exact source-record hash provenance."
+    "19 corpus-valid Shared UI records remain no-region UNRESOLVED; certification does not infer a region.",
+    "11 corpus-valid Shared UI records retain multi-region conflict evidence; certification does not choose among regions.",
+    "All 70 corpus-valid records remain NDC UNRESOLVED.",
+    "All 70 corpus-valid records remain Atlasfin NO_MATCH.",
+    "Exact binding/layer-application/recipe/semantic promotion readiness remains unresolved or blocked as recorded by the immutable source corpus.",
+    "Global FILES_MANIFEST refresh and final multi-lane corpus assembly remain Chat 6 integration responsibilities."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Create the certification work branch from current main, inspect current strict Control Plane schema/normalization contract plus the five immutable Shared UI source-shard files, then generate and validate the five certification outputs only under certification/**.",
+  "nextAction": "Hold exact certification head 553577aa74045c73ab9c92d1f81538e7e0a8c65a for Chat 6 final aggregation. Make no further Chat 4 mutation unless integration requests one bounded evidence-backed certification correction. Keep this mailbox current if integration state changes.",
   "handoff": {
     "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+    "ready": true,
     "sourceBranch": "visual-promotion-chat4-shared-ui-20260904",
     "sourceHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
     "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
     "sourceAccounting": "70 = 40 candidates + 19 unresolved + 11 conflicts",
     "certificationBranch": "chat4/shared-ui-corpus-cert-20260904",
     "certificationBaseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
-    "certificationHead": null,
-    "requiredCompletion": "70/70 corpus-valid; invalid=0; semanticMutationCount=0; exact source provenance complete",
+    "certificationHead": "553577aa74045c73ab9c92d1f81538e7e0a8c65a",
+    "completion": "70/70 corpus-valid; invalid=0; semanticMutationCount=0; exact source-record provenance verified 70/70",
+    "certificationLabels": {
+      "VALID_REGISTER_TARGET_FIRST": 40,
+      "VALID_BLOCKED": 30
+    },
+    "preservedStates": {
+      "noRegionUnresolved": 19,
+      "multiRegionConflicts": 11,
+      "ndcUnresolved": 70,
+      "atlasfinNoMatch": 70,
+      "projectionCurrent": 70,
+      "promotionRegisterTargetFirst": 40,
+      "promotionBlocked": 30,
+      "workEntryRegisterTargetFirst": 40,
+      "workEntryBlocked": 30
+    },
     "prRule": "NO_PR_FOR_CHAT4_CERTIFICATION",
-    "safety": "Do not update FILES_MANIFEST.json, merge PR #539, inspect Materiality Catalog, edit consumers/products/runtime/global authority, or mint canonical IDs."
+    "originalDraftPr": 539,
+    "originalDraftPrMerged": false,
+    "integrationOwner": "CHAT_6_GLOBAL_CANDIDATE_CORPUS_CERTIFICATION_AND_FINAL_ASSEMBLY",
+    "filesManifestOwner": "CHAT_6_FINAL_INTEGRATION",
+    "safety": "Materiality uninspected; broad rediscovery false; no consumers/products/runtime/generated projections/global authority/FILES_MANIFEST writes; no canonical IDs minted."
   }
 }
