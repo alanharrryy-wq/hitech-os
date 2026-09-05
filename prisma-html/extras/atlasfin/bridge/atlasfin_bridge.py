@@ -507,12 +507,20 @@ def _cobrar_reference(repo: Path) -> dict[str, Any]:
     if p.get("layerId"):
         refs.append(authority_ref("rifat", str(p["layerId"])))
 
+    physical_paths = [p.get("ownerFile"), p.get("styleSourceFile")]
+    physical_status = "CURRENT"
+    for rel in physical_paths:
+        if not rel or not _contained(repo, Path(str(rel))).is_file():
+            physical_status = "MISSING"
+            blockers.append("COBRAR_PHYSICAL_EVIDENCE_MISSING")
+            break
+
     return {
         "recordKind": "atlasfinExactTargetReference",
         "candidateOnly": False,
         "surfaceKey": "tablet",
         "targetId": None,
-        "physicalStatus": "CURRENT" if projection_status == "CURRENT" else "DRIFT",
+        "physicalStatus": physical_status,
         "routeId": p.get("routeId"),
         "regionId": p.get("regionId"),
         "slotId": p.get("slotId"),
