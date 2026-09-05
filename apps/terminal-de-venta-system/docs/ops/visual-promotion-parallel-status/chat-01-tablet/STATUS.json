@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T20:13:20-06:00",
+  "updatedAt": "2026-09-04T20:14:40-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
   "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
-  "summary": "Chat 1 resumed under the current canonical continuation phase INTEGRATION_HANDOFF_AND_PLANNING. Tablet is explicitly in HOLD: preserve the recorded worker branch/head/base and accounting, do not recensus or recompute the 929 records, keep both physical DRIFT targets as conflicts, and make no lane mutation unless integration requests one bounded correction. A read-only bounded authority revalidation against current main is in progress.",
+  "summary": "Chat 1 is in canonical Tablet HOLD under INTEGRATION_HANDOFF_AND_PLANNING. Bounded read-only revalidation against current main 66fa02147f0cf31529c090a47f376026b406875a passed: all 13/13 authority snapshots pinned by the Tablet candidate manifest remain byte-identical, the canonical Chat 1 continuation prompt remains Tablet HOLD, and the worker branch still contains only the five owned Tablet candidate-shard files. No lane mutation is authorized or needed.",
   "blockers": [],
   "findings": [
     "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
@@ -25,7 +25,10 @@
     "NDC canon and ID grammar, Field Manual, Factory Ledger Agent Gate, Visual Change Master Map, and Visual Core Contract are unchanged between the Chat 1 base and current main.",
     "AGENTS.md plus the parallel README, chat prompts, interoperability contract, and vocabulary registry changed only to add the shared status-channel coordination protocol; no Tablet candidate vocabulary or authority semantics changed.",
     "Canonical prompt now explicitly places Chat 1 in Tablet HOLD under INTEGRATION_HANDOFF_AND_PLANNING.",
-    "The continuation override preserves work branch chat1/tablet-visual-promotion-57b01ad8, work head 1b669d98dc9063fe4d6f5f8ddc06262a6968e728, base 57b01ad8bda043ec25763203354b686341bace09, and accounting 929 = 139 candidates + 788 unresolved + 2 conflicts."
+    "The continuation override preserves work branch chat1/tablet-visual-promotion-57b01ad8, work head 1b669d98dc9063fe4d6f5f8ddc06262a6968e728, base 57b01ad8bda043ec25763203354b686341bace09, and accounting 929 = 139 candidates + 788 unresolved + 2 conflicts.",
+    "Bounded revalidation at current main 66fa02147f0cf31529c090a47f376026b406875a found 13/13 recorded Chat 1 authority snapshots unchanged by Git blob SHA.",
+    "Canonical prompt blob d9650c43542a89dcf4c6c787f32b36ef83541488 confirms Chat 1 remains Tablet HOLD with the exact recorded branch/head/base/accounting.",
+    "The worker branch remains exactly two commits ahead of its base and its delta is still limited to the five owned Tablet candidate-shard files."
   ],
   "decisions": [
     "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
@@ -37,7 +40,9 @@
     "Classify the base-to-current-main delta as coordination-only for Chat 1: no relevant source/authority drift requires candidate recomputation or broad rediscovery.",
     "Keep state READY_FOR_INTEGRATION. Recompute only if a future change touches a recorded Chat 1 input authority or changes candidate semantics.",
     "Do not mutate the Tablet candidate shard while in HOLD absent an explicit bounded correction request from Chat 6/integration.",
-    "Perform only bounded read-only revalidation of recorded Chat 1 authority/source inputs against current main; do not run recensus or broad rediscovery."
+    "Perform only bounded read-only revalidation of recorded Chat 1 authority/source inputs against current main; do not run recensus or broad rediscovery.",
+    "No recomputation or candidate-file mutation is warranted after the bounded revalidation because relevant Chat 1 authority inputs are unchanged.",
+    "Remain in HOLD and wait only for an explicit evidence-backed bounded correction request from Chat 6/integration."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json",
@@ -88,16 +93,31 @@
       "name": "work-branch ownership isolation after status adoption",
       "result": "PASS",
       "details": "work branch remains two commits ahead of its base and still modifies only the five Tablet candidate-shard files."
+    },
+    {
+      "name": "current continuation prompt verification",
+      "result": "PASS",
+      "details": "current main 66fa02147f0cf31529c090a47f376026b406875a; prompt blob d9650c43542a89dcf4c6c787f32b36ef83541488; Chat 1 continuation remains Tablet HOLD and preserves the recorded worker refs/accounting."
+    },
+    {
+      "name": "current-main bounded Chat 1 authority revalidation",
+      "result": "PASS",
+      "details": "13/13 pinned authority snapshots unchanged by Git blob SHA at current main 66fa02147f0cf31529c090a47f376026b406875a; no relevant authority drift detected."
+    },
+    {
+      "name": "worker branch ownership recheck",
+      "result": "PASS",
+      "details": "worker branch remains two commits ahead of base and modifies only MANIFEST.json, CANDIDATES.jsonl, UNRESOLVED.jsonl, CONFLICTS.jsonl and SUMMARY.md under candidates/tablet."
     }
   ],
   "unresolved": [
-    "Two census targets are physically DRIFT at the recorded base and remain blocked rather than guessed.",
-    "788 census records remain unresolved because semantic/application authority was insufficient for a candidate promotion.",
+    "Two census targets remain physical DRIFT conflicts and must stay blocked unless stronger canonical authority resolves them.",
+    "788 census records remain unresolved because semantic/application authority was insufficient for candidate promotion.",
     "NDC existing-meaning resolution remains unresolved for all 929 records absent direct machine-readable linkage."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Resolve current main and revalidate only the exact recorded Chat 1 authority/source inputs by hash. If unchanged or coordination-only, remain READY_FOR_INTEGRATION and stop lane work.",
+  "nextAction": "Hold. Do not mutate the Tablet lane. Update this mailbox only if a blocker/relevant authority drift appears or Chat 6/integration requests one bounded evidence-backed correction.",
   "handoff": {
     "ready": true,
     "classification": "LANE_CANDIDATE_HANDOFF_READY",
@@ -119,7 +139,7 @@
       "Chat 1's pinned input authorities remain byte-equivalent on current main d08013db42c34ccafb80075392ec6d7a289cf7b5; the intervening cohort governance edits are status-channel coordination-only.",
       "The two recorded physical DRIFT targets remain conflicts and must not be silently normalized."
     ],
-    "currentMainAtRevalidation": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
+    "currentMainAtRevalidation": "66fa02147f0cf31529c090a47f376026b406875a",
     "relevantAuthorityDrift": false,
     "coordinationOnlyDrift": true,
     "revalidationResult": "PASS_BOUNDED_CHAT1_AUTHORITY_EQUIVALENCE",
@@ -130,6 +150,7 @@
       "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md"
     ],
     "continuationMode": "TABLET_HOLD",
-    "canonicalPhase": "INTEGRATION_HANDOFF_AND_PLANNING"
+    "canonicalPhase": "INTEGRATION_HANDOFF_AND_PLANNING",
+    "canonicalPromptBlobSha": "d9650c43542a89dcf4c6c787f32b36ef83541488"
   }
 }
