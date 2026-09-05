@@ -91,6 +91,28 @@ class AtlasfinBridgeTests(unittest.TestCase):
         self.assertEqual(lane["workerDataState"], "INVALID")
         self.assertGreaterEqual(len(lane["blockers"]), 4)
 
+    def test_complete_worker_shard_is_present(self) -> None:
+        fixture = json.loads((HERE / "fixtures" / "tablet-candidate.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            lane_dir = root / bridge.CANDIDATE_ROOT / "tablet"
+            lane_dir.mkdir(parents=True)
+            (lane_dir / "MANIFEST.json").write_text(
+                json.dumps({"baseHead": fixture["baseHead"]}) + "\n",
+                encoding="utf-8",
+            )
+            (lane_dir / "CANDIDATES.jsonl").write_text(
+                json.dumps(fixture) + "\n",
+                encoding="utf-8",
+            )
+            (lane_dir / "UNRESOLVED.jsonl").write_text("", encoding="utf-8")
+            (lane_dir / "CONFLICTS.jsonl").write_text("", encoding="utf-8")
+            (lane_dir / "SUMMARY.md").write_text("# fixture\n", encoding="utf-8")
+            lane = bridge._load_worker_lane(root, "tablet")
+        self.assertEqual(lane["workerDataState"], "PRESENT")
+        self.assertEqual(len(lane["records"]), 1)
+        self.assertEqual(lane["blockers"], [])
+
     def test_fixture_preserves_candidate_only_contract(self) -> None:
         fixture = json.loads((HERE / "fixtures" / "tablet-candidate.json").read_text(encoding="utf-8"))
         self.assertEqual(bridge._candidate_conformance(fixture, "tablet", "fixture", 1), [])
