@@ -61,3 +61,11 @@ No updates published yet.
 - Diff is limited to this Chat 2 mailbox's `STATUS.json` and `LOG.md`.
 - Required STATUS fields: PASS, none missing.
 - LOG append-only preservation: PASS; seed history remains intact and the completion timeline was appended.
+
+## 2026-09-04T20:15:30-06:00 — PROGRESS
+
+- Canonical parallel prompt re-read after continuation update.
+- Chat 2 is now explicitly in `PC HOLD`.
+- Worker branch/head/base and accounting remain fixed: `agent/chat2-pc-promotion-20260904` @ `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`, base `57b01ad8bda043ec25763203354b686341bace09`, accounting `827 = 186 + 640 + 1`.
+- Lane resumed only to perform the newly required bounded read-only source/authority hash revalidation against current integration base.
+- Candidate shard regeneration, projection repair, broad rediscovery and product/global-authority mutation remain forbidden.
