@@ -6,6 +6,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from visual_application.visual_work_entry_gate import (
+    BROAD_REDISCOVERY_REASON as GATE_BROAD_REDISCOVERY_REASON,
+    CURRENT_CENSUS_REASON as GATE_CURRENT_CENSUS_REASON,
+    DECISIONS as GATE_DECISIONS,
+    decide_request as gate_decide_request,
+)
+
 from visual_promotion.control_plane import (
     BROAD_REDISCOVERY_REASON,
     CANDIDATE_SCHEMA,
@@ -27,6 +34,32 @@ from visual_promotion.control_plane import (
 
 HEAD = "a" * 40
 TARGET = "TGT.CENSUS.TABLET.0123456789ABCDEF.V1"
+
+
+def gate_authority():
+    row = {
+        "targetId": TARGET,
+        "recordKind": "VISUAL_CONTROL_CENSUS_TARGET",
+        "enforcement": "DISCOVERY_ONLY",
+        "surface": "tablet",
+        "selector": ".fixture",
+        "status": "BLOCKED",
+        "blockers": ["semantic", "recipe", "exact-binding", "layer-application-policy"],
+        "ownerCss": "apps/terminal-de-venta-system/products/tablet/app/fixture.css",
+    }
+    surfaces = ("tablet", "pc", "mobile", "web", "chart-lab", "control-center", "shared-ui")
+    return {
+        "index": {"schema": "prisma.visual.application.target-index.v1", "globalBlockers": [], "records": [row]},
+        "surfaceScopes": {surface: [] for surface in surfaces},
+        "visualRowsByPath": {},
+        "manifestRowsByPath": {},
+        "generatedOutputs": {},
+        "targetsById": {TARGET: row},
+        "targetsByPath": {},
+        "routes": {surface: set() for surface in surfaces},
+        "selectors": {surface: set() for surface in surfaces},
+        "ledger": {"capability": {"id": "visual.generic_application_engine_v1"}, "errors": []},
+    }
 
 
 def candidate(**overrides):
@@ -234,6 +267,35 @@ class ControlPlaneTests(unittest.TestCase):
         root = repo / "prisma-html" / "governance" / "visual-promotion" / "contracts"
         for name in ("candidate.schema.json", "candidate-shard-manifest.schema.json", "control-plane.contract.json"):
             self.assertIsInstance(json.loads((root / name).read_text(encoding="utf-8")), dict)
+
+    def test_work_entry_decisions_remain_exactly_four(self):
+        self.assertEqual(GATE_DECISIONS, ("GVAE_EXACT_APPLY", "SURFACE_BATCH_PLAN", "REGISTER_TARGET_FIRST", "BLOCKED"))
+
+    def test_work_entry_current_census_reason_is_machine_readable(self):
+        result = gate_decide_request({"task": "visual work", "surface": "tablet", "targetIds": [TARGET]}, authority=gate_authority(), current_head=HEAD)
+        self.assertEqual(result["decision"], "REGISTER_TARGET_FIRST")
+        self.assertIn(GATE_CURRENT_CENSUS_REASON, result["reasons"])
+
+    def test_work_entry_broad_rediscovery_over_current_census_is_blocked(self):
+        result = gate_decide_request({"task": "visual work", "surface": "tablet", "targetIds": [TARGET], "intent": "BROAD_REDISCOVERY"}, authority=gate_authority(), current_head=HEAD)
+        self.assertEqual(result["decision"], "BLOCKED")
+        self.assertIn(GATE_BROAD_REDISCOVERY_REASON, result["reasons"])
+        self.assertIn(GATE_CURRENT_CENSUS_REASON, result["reasons"])
+
+    def test_work_entry_surface_rediscovery_over_current_census_is_blocked(self):
+        result = gate_decide_request({"task": "visual work", "surface": "tablet", "intent": "REDISCOVER"}, authority=gate_authority(), current_head=HEAD)
+        self.assertEqual(result["decision"], "BLOCKED")
+        self.assertIn(GATE_BROAD_REDISCOVERY_REASON, result["reasons"])
+
+    def test_work_entry_strict_request_contract_rejects_unknown_fields(self):
+        result = gate_decide_request({"task": "visual work", "surface": "tablet", "surprise": True}, authority=gate_authority(), current_head=HEAD)
+        self.assertEqual(result["decision"], "BLOCKED")
+        self.assertTrue(any(value.startswith("REQUEST_CONTRACT_UNKNOWN_FIELDS:") for value in result["reasons"]))
+
+    def test_work_entry_strict_request_contract_rejects_bad_schema(self):
+        result = gate_decide_request({"schema": "wrong", "task": "visual work", "surface": "tablet"}, authority=gate_authority(), current_head=HEAD)
+        self.assertEqual(result["decision"], "BLOCKED")
+        self.assertIn("REQUEST_CONTRACT_SCHEMA_INVALID", result["reasons"])
 
 
 if __name__ == "__main__":
