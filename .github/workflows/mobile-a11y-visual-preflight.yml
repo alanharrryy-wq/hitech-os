@@ -1,0 +1,89 @@
+name: PRISMA Mobile A11Y Visual Repair Preflight
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  BASE_SHA: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+
+jobs:
+  authority:
+    if: github.event.pull_request.head.ref == 'preflight/mobile-a11y-visual-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Fail closed on base and carrier-only scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/mobile-a11y-visual-preflight.yml"
+          git checkout --detach "$BASE_SHA"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Fresh exact-task Authority Mesh with required layer map
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/mobile-a11y-authority"
+          mkdir -p "$OUT"
+          TASK='PRISMA Mobile /prisma-app is the single included product surface for this repair. Allowed product files are exactly apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx and apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css. Repair exactly three proven runtime defects at 390x844 and 430x932. A: in apps/terminal-de-venta-system/products/mobile/app/app/layout.tsx remove only maximumScale:1 from the Next Viewport object so browser zoom/scaling remains available, preserving width device-width, initialScale 1, viewportFit cover and themeColor. B: in apps/terminal-de-venta-system/products/mobile/app/src/components/prisma-app/prisma-mobile-dashboard.module.css repair Alertas card layout where severity, title and action text collide because three direct children are laid out by a two-column grid. C: in that same CSS repair Licencias y dispositivos metric values that break pathologically by character or syllable on phone widths, using the narrowest selector scope such as data-prisma-zone mobile-license-devices. Preserve all copy, values, seven-tab canon, business semantics, Mobile APIs, snapshot/runtime contracts, Cloudglass/background identity and all non-target behavior. Every repository path other than the two allowed product files is outside patch scope. Tablet, PC, Shared UI, Chart Lab, database, Prisma schema/migrations, deployment, production hosting, customer data, sync semantics and licensing semantics remain untouched. Require before/after evidence at 390x844 and 430x932, browser zoom accessibility, axe serious/critical verification, Mobile source gates, zero-important, typecheck, build, minimal rollback-safe diff, no !important and no fake green.'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            --task "$TASK" \
+            --surface mobile \
+            --repo "$GITHUB_WORKSPACE" \
+            --out "$OUT" \
+            --workers 18 \
+            --shards 54 \
+            --max-files 140 \
+            --max-mb 45 \
+            --run-id "mobile-a11y-visual-${GITHUB_RUN_ID}" \
+            --progress-jsonl "$OUT/progress.jsonl" \
+            --budget-root "$RUNNER_TEMP/mobile-a11y-budget" | tee "$RUNNER_TEMP/mobile-a11y-mesh.log"
+          ZIP="$(find "$OUT" -maxdepth 1 -type f \( -name '*result.zip' -o -name '*result*.zip' \) | head -n1)"
+          if [ -z "$ZIP" ]; then ZIP="$(grep -E '^OK_RESULT_ZIP=' "$RUNNER_TEMP/mobile-a11y-mesh.log" | tail -n1 | cut -d= -f2-)"; fi
+          test -f "$ZIP"
+          mkdir -p "$RUNNER_TEMP/evidence"
+          cp "$ZIP" "$RUNNER_TEMP/evidence/AUTHORITY_MESH_RESULT.zip"
+          cp "$RUNNER_TEMP/mobile-a11y-mesh.log" "$RUNNER_TEMP/evidence/AUTHORITY_MESH_RUN.log"
+          mkdir -p "$RUNNER_TEMP/unpacked"
+          python - "$ZIP" "$RUNNER_TEMP/unpacked" <<'PY'
+          import sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z: z.extractall(sys.argv[2])
+          PY
+          A="$RUNNER_TEMP/unpacked"
+          test -f "$A/.governance/current/AUTHORITY_READSET.lock.json"
+          test -f "$A/reports/APP_IMPACT_MATRIX.md"
+          test -f "$A/reports/CONTRACT_AND_GATE_MATRIX.json"
+          test -f "$A/reports/MISSING_OR_UNMAPPED_RISK.md"
+          test -f "$A/reports/AGENT_PROMPT_ENVELOPE.md"
+          test -f "$A/reports/AUTHORITY_MESH_REPORT.md"
+          test -f "$A/reports/LAYERS_MAP.json"
+          test -f "$A/reports/LAYERS_MAP.md"
+          cp -R "$A/reports" "$RUNNER_TEMP/evidence/reports"
+          cp -R "$A/.governance" "$RUNNER_TEMP/evidence/.governance"
+          grep -R '"status"[[:space:]]*:[[:space:]]*"PASS"' "$A" >/dev/null
+          grep -A8 '^## Included' "$A/reports/APP_IMPACT_MATRIX.md" | grep -Eq '^- mobile$'
+          ! grep -A20 '^## Explicitly excluded' "$A/reports/APP_IMPACT_MATRIX.md" | grep -Eq '^- mobile$'
+          grep -A10 '^## Explicit task paths not present in repo' "$A/reports/MISSING_OR_UNMAPPED_RISK.md" | grep -F 'None detected' >/dev/null
+      - name: Upload authority evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-a11y-visual-authority-${{ github.run_id }}
+          path: ${{ runner.temp }}/evidence/**
+          if-no-files-found: error
+          retention-days: 14
