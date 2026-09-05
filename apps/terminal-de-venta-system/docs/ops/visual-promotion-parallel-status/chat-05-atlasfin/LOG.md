@@ -85,3 +85,14 @@ No updates published yet.
 - Chat 5 remains ready for deterministic integration with exact frozen work head `c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0`.
 - No user action is required.
 - Waiting only for a bounded bridge correction request from the integration lane, if one is produced.
+
+
+## 2026-09-04T23:44:00-06:00 — START
+- Re-read the canonical continuation prompt and current Chat 5 mailbox.
+- Current phase is `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`.
+- Chat 5 assignment is `ATLASFIN CORPUS REFERENCE CERTIFICATION`.
+- Current canonical main/base for the certification branch is `8cc1918c5e015d1408335c15313e7364e04859c2`.
+- New authorized work branch: `chat5/atlasfin-corpus-cert-20260904`.
+- Write scope is only `prisma-html/extras/atlasfin/bridge/certification/**`.
+- Exact raw surface worker heads will be consumed independently; no wait on Chats 1-4 certification branches.
+- No PR is allowed for Chat 5 certification, no `FILES_MANIFEST.json` update is allowed, PR #540 remains unmerged, and Materiality Catalog remains entirely uninspected.
