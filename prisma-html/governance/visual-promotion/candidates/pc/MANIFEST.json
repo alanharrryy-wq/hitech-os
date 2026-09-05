@@ -1,0 +1,213 @@
+{
+  "schema": "prisma.visual-promotion.surface-candidate-manifest.v1",
+  "version": "1.0.0",
+  "lane": "CHAT_2_PC_PROMOTION",
+  "candidateOnly": true,
+  "surfaceKey": "pc",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "inputRecordKind": "VISUAL_CONTROL_CENSUS_TARGET",
+  "inputEnforcement": "DISCOVERY_ONLY",
+  "writeOwnership": [
+    "prisma-html/governance/visual-promotion/candidates/pc/**"
+  ],
+  "sourceAuthorities": {
+    "targetIndex": {
+      "path": "prisma-html/authority/rifat/prisma-ui/visual-control/target-index/pc.json",
+      "gitBlobSha": "75399955f562452b7687913b8b8aeeda4930b9fe",
+      "indexDigest": "d41c0b2f0f9a8f5d691f9f1dfcb2fa0dfa3e6b8bef9372d8b267b7d7b65e563e"
+    },
+    "expandedPc": {
+      "layers": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/pc/layers.jsonl",
+        "gitBlobSha": "fea515a0cef147fdc637d4d9946ee38626fc47b5"
+      },
+      "cssOwners": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/pc/owners-cssOwners.jsonl",
+        "gitBlobSha": "4351b0ca2ca3467562baf110517bfd40c7322292"
+      },
+      "routes": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/pc/routes.jsonl",
+        "gitBlobSha": "83ed476a1faaed4127c295fcf39040eca5c25276"
+      },
+      "components": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/pc/components.jsonl",
+        "gitBlobSha": "e259ea1ead1ddc358721f14a5bd393ed83a9ffe7"
+      },
+      "regionOwners": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/pc/owners-regionOwners.jsonl",
+        "gitBlobSha": "43ad9d68821f4f7f52fdc1b3fcd35e87e6c0532b",
+        "readForResolution": true
+      },
+      "editableSlots": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/pc/editable-slots.jsonl",
+        "gitBlobSha": "3ddb04ff162a5899db2f5d3249e1efa2c9483321",
+        "readForResolution": true
+      }
+    },
+    "projectionManifest": {
+      "path": "prisma-html/authority/rifat/visual-source-manifest.json",
+      "gitBlobSha": "82c9a080928ccf9d3f3c00aacb3d28feb2d91ad2"
+    },
+    "identity": {
+      "elementBindings": {
+        "path": "prisma-html/authority/rifat/identity/registries/element-bindings.registry.json",
+        "gitBlobSha": "88c3a7e8736d637e07ae1fd7dab377867e2b5ca8"
+      },
+      "recipes": {
+        "path": "prisma-html/authority/rifat/identity/registries/recipe.registry.json",
+        "gitBlobSha": "aaf26182b1637e1bfc6a14bd537af100ed96b1e4"
+      },
+      "adapters": {
+        "path": "prisma-html/authority/rifat/identity/registries/surface-adapters.registry.json",
+        "gitBlobSha": "b284f0300ae5cd6d88a5d6cd252c11858ab7376d"
+      }
+    },
+    "atlasfin": {
+      "manifest": "88a2bc10e471e75a61a78bbf3c0cb0b742380da1",
+      "properties": "7439ecad33d05b8a919fce24d0c8b0bc0d50f612",
+      "families": "6dcd40a41b506848a10490dc20a6bd446cee17df",
+      "presets": "1fa72b4065a2fe2cf4f047fb3496de1c52187034",
+      "recipes": "af8dbff2cf22e0cb77163128af0358cd0a9d3762",
+      "states": "ecc650fa1f8455ced5c72995973a0dab3ac5d578",
+      "variants": "b1b33c3c91f5be5226ed1cf27f095d0953fe7412",
+      "adapters": "f6eb2a32ff7a18ec80c6917654fc6d63c9024319",
+      "legacyBundle": "d2cecda5cd85a7cbed86cbc5e2e05e7127316120"
+    },
+    "ndc": {
+      "readme": "0abaf3b9d335a28f072c7a16c8c607a3ad97cf77",
+      "doctrine": "8883faa5abdcec267b1b12ed9e7c461c059c8450",
+      "idGrammar": "a4b02d587ba0016c2f8680f15b6984363904a3fa",
+      "surfaceUiAtlas": "4b164313126277a4636076a5b59aee3c5178ec5a",
+      "evidenceGovernance": "b8b7f54b8ec8e31aebe0022d39de2c74d0fc9fff",
+      "authorityMap": "bdd8577e7054c001d8eee6fae859051b24a5ce7c",
+      "surfaceRegistrySeed": "44c29f0333144501b0bef2e36c0aed0d3865ef2f",
+      "panelInsightSeed": "9956caae2001be67719c2d041fb2a9778419fa79"
+    }
+  },
+  "mandatoryStartupRead": [
+    "/AGENTS.md",
+    "apps/terminal-de-venta-system/docs/ops/PRISMA_FIELD_MANUAL_APRENDIZAJE_OPERATIVO.md",
+    "PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER_AGENT_GATE.md",
+    "prisma-html/docs/ops/PRISMA_VISUAL_CHANGE_MASTER_MAP.md",
+    "prisma-html/authority/rifat/identity/contract/PRISMA_VISUAL_CORE_CONTRACT.md",
+    "prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_INTEROPERABILITY_CONTRACT.md",
+    "prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_VOCABULARY.registry.json",
+    "prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md"
+  ],
+  "materialityCatalog": {
+    "policy": "STANDBY_USER_INVOKED_ONLY",
+    "inspected": false,
+    "consumed": false,
+    "fallbackUsed": false
+  },
+  "broadRediscovery": {
+    "performed": false,
+    "reason": "CURRENT_CENSUS_REUSED"
+  },
+  "atlasfinFirst": {
+    "performed": true,
+    "matchingRule": "Only exact equality between machine-classified Visual Control layerType and one unique Atlasfin visual-recipe familyKind is promoted as MATCHED_RECIPE. No fuzzy selector/name matching. No family or preset is guessed.",
+    "canonicalIdentityPromotion": false
+  },
+  "projectionClassification": {
+    "currentRule": "Target Index canonical source/output must match visual-source-manifest and source/output hashes must be equal.",
+    "missingRule": "MISSING only when Target Index has null canonical source/output and explicit projection blocker.",
+    "repairPerformed": false
+  },
+  "physicalClassification": {
+    "currentRule": "Existing implementationLayerId and ownerCss must match expanded PC layer evidence; selector comparison normalizes CSS-insignificant comma/whitespace only.",
+    "broadDiscoveryPerformed": false
+  },
+  "canonicalIdsMinted": false,
+  "productRuntimeMutation": false,
+  "globalAuthorityMutation": false,
+  "accounting": {
+    "inputTargetCount": 827,
+    "currentPhysicalCount": 826,
+    "outcomeCounts": {
+      "candidates": 186,
+      "unresolved": 640,
+      "conflicts": 1,
+      "output": 827
+    },
+    "atlasfinMatchCounts": {
+      "MATCHED_EXACT": 0,
+      "MATCHED_FAMILY": 0,
+      "MATCHED_PRESET": 0,
+      "MATCHED_RECIPE": 186,
+      "AMBIGUOUS": 0,
+      "NO_MATCH": 641,
+      "NOT_APPLICABLE": 0
+    },
+    "ndcResolutionCounts": {
+      "RESOLVED_EXISTING": 0,
+      "CANDIDATE_REVIEW_REQUIRED": 0,
+      "UNRESOLVED": 827,
+      "NOT_APPLICABLE": 0
+    },
+    "visualMeaningCounts": {
+      "RESOLVED_EXISTING": 0,
+      "CANDIDATE_REVIEW_REQUIRED": 0,
+      "UNRESOLVED": 827,
+      "NOT_APPLICABLE": 0
+    },
+    "bindingCounts": {
+      "EXISTING_RESOLVED": 0,
+      "CANDIDATE": 0,
+      "BLOCKED": 827,
+      "NOT_APPLICABLE": 0
+    },
+    "bindingCandidateKeyCount": 0,
+    "projectionStatusCounts": {
+      "CURRENT": 688,
+      "DRIFT": 0,
+      "MISSING": 139,
+      "NOT_REQUIRED": 0,
+      "UNRESOLVED": 0
+    },
+    "promotionStatusCounts": {
+      "ELIGIBLE_CANDIDATE": 0,
+      "REGISTER_TARGET_FIRST": 827,
+      "BLOCKED": 0,
+      "NOT_APPLICABLE": 0
+    },
+    "workEntryDecisionCounts": {
+      "GVAE_EXACT_APPLY": 0,
+      "SURFACE_BATCH_PLAN": 0,
+      "REGISTER_TARGET_FIRST": 827,
+      "BLOCKED": 0
+    },
+    "physicalStatusCounts": {
+      "CURRENT": 826,
+      "STALE": 0,
+      "DRIFT": 1,
+      "MISSING": 0,
+      "NOT_APPLICABLE": 0
+    },
+    "physicalResolutionCounts": {
+      "routeId": 78,
+      "regionId": 0,
+      "slotId": 0,
+      "componentId": 107,
+      "ownerId": 746
+    }
+  },
+  "conflicts": [
+    {
+      "targetId": "TGT.CENSUS.PC.097AB2F857F353CA4288.V1",
+      "targetIndexSelector": ".supplier-readable-v07",
+      "expandedSelector": ".supplier-readable-v07 *"
+    }
+  ],
+  "validation": {
+    "zeroLossAccounting": "PASS",
+    "uniqueTargetIds": "PASS",
+    "closedVocabulary": "PASS",
+    "authorityDomains": "PASS",
+    "writeOwnership": "PASS",
+    "materialityFallback": "NOT_USED",
+    "broadRediscovery": "NOT_RUN",
+    "globalAuthorityWrites": 0,
+    "productRuntimeWrites": 0
+  }
+}
