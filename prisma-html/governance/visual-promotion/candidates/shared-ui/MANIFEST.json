@@ -1,0 +1,88 @@
+{
+  "candidateOnly": true,
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "lane": "Chat 4 Shared UI",
+  "surfaceKey": "shared-ui",
+  "mission": "Promote existing Shared UI census evidence as neutral/shared visual-source candidates while preserving one source of semantic truth across consumers.",
+  "writeRoot": "prisma-html/governance/visual-promotion/candidates/shared-ui/**",
+  "inputAuthority": {
+    "targetIndex": "prisma-html/authority/rifat/prisma-ui/visual-control/target-index/shared-ui.json",
+    "expandedSharedUi": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/shared-ui/**",
+    "identitySharedUiAdapter": "prisma-html/authority/rifat/identity/adapters/shared-ui.adapter.json",
+    "identityBindings": "prisma-html/authority/rifat/identity/registries/element-bindings.registry.json",
+    "projectionManifest": "prisma-html/authority/rifat/visual-source-manifest.json",
+    "ndcCanon": "apps/terminal-de-venta-system/docs/ndc/**",
+    "atlasfinRegistries": "prisma-html/extras/atlasfin/assets/data/*registry*"
+  },
+  "policies": {
+    "atlasfinFirst": true,
+    "atlasfinSharedAdapter": "atlasfin::ADP.SHARED.NEUTRAL.V2",
+    "atlasfinVisualRecipeTargetSelectorsExamined": 12,
+    "atlasfinExactSelectorMatches": 0,
+    "materialityCatalog": "STANDBY_USER_INVOKED_ONLY",
+    "materialityInspected": false,
+    "broadRediscovery": false,
+    "globalAuthorityWrites": false,
+    "productWrites": false,
+    "consumerWrites": false,
+    "canonicalIdsMinted": false
+  },
+  "consumerEvidence": [
+    {
+      "surfaceKey": "pc",
+      "path": "apps/terminal-de-venta-system/products/pc/app/app/globals.css",
+      "observation": "direct shared prisma-components.css consumer; evidence only"
+    },
+    {
+      "surfaceKey": "mobile",
+      "path": "apps/terminal-de-venta-system/products/mobile/app/app/globals.css",
+      "observation": "direct shared prisma-components.css consumer; evidence only"
+    },
+    {
+      "surfaceKey": "tablet",
+      "path": "apps/terminal-de-venta-system/products/tablet/app/components/pos/pos-payment-panel.tsx",
+      "observation": "imports Shared UI PrismaActionButton/CheckoutPanel/StateBanner; evidence only"
+    }
+  ],
+  "accounting": {
+    "inputCensusCount": 70,
+    "currentPhysicalCount": 70,
+    "candidates": 40,
+    "unresolved": 19,
+    "conflicts": 11,
+    "outputCount": 70,
+    "atlasfinMatchCounts": {
+      "NO_MATCH": 70
+    },
+    "ndcResolutionCounts": {
+      "UNRESOLVED": 70
+    },
+    "bindingStatusCounts": {
+      "CANDIDATE": 40,
+      "BLOCKED": 30
+    },
+    "projectionStatusCounts": {
+      "CURRENT": 70
+    },
+    "promotionStatusCounts": {
+      "REGISTER_TARGET_FIRST": 40,
+      "BLOCKED": 30
+    },
+    "recordsWithBlockers": 70
+  },
+  "zeroLoss": true,
+  "outputs": [
+    "MANIFEST.json",
+    "CANDIDATES.jsonl",
+    "UNRESOLVED.jsonl",
+    "CONFLICTS.jsonl",
+    "SUMMARY.md"
+  ],
+  "claims": {
+    "runtimeCertified": false,
+    "applicationAuthorized": false,
+    "exactTargetsCreated": false,
+    "ndcCanonicalized": false,
+    "identityCanonicalized": false
+  }
+}
