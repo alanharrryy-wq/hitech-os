@@ -1,0 +1,352 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://prisma.local/schemas/atlasfin/PRISMA_ATLASFIN_VISUAL_PROMOTION_BRIDGE_V1.schema.json",
+  "title": "PRISMA Atlasfin Visual Promotion Bridge V1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "baseHead",
+    "readOnly",
+    "atlasfinRole",
+    "authorityPolicy",
+    "materialityCatalog",
+    "sources",
+    "atlasfin",
+    "visualCore",
+    "promotionWorkers",
+    "promotionRecords",
+    "currentReferences",
+    "summary",
+    "integrity"
+  ],
+  "properties": {
+    "schema": {
+      "const": "prisma.atlasfin.visual-promotion-bridge.v1"
+    },
+    "version": {
+      "const": "1.0.0"
+    },
+    "baseHead": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "readOnly": {
+      "const": true
+    },
+    "atlasfinRole": {
+      "const": "priority-human-cockpit-reference"
+    },
+    "authorityPolicy": {
+      "type": "object",
+      "required": [
+        "atlasfinIsEditableAuthority",
+        "atlasfinWritesProduct",
+        "workersProposeCanonicalComposersAssign",
+        "unknownStaysUnknown",
+        "broadRediscoveryAllowed"
+      ],
+      "properties": {
+        "atlasfinIsEditableAuthority": {
+          "const": false
+        },
+        "atlasfinWritesProduct": {
+          "const": false
+        },
+        "workersProposeCanonicalComposersAssign": {
+          "const": true
+        },
+        "unknownStaysUnknown": {
+          "const": true
+        },
+        "broadRediscoveryAllowed": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "materialityCatalog": {
+      "type": "object",
+      "required": [
+        "policy",
+        "inspected",
+        "automaticFallbackAllowed",
+        "automaticPromotionAllowed"
+      ],
+      "properties": {
+        "policy": {
+          "const": "STANDBY_USER_INVOKED_ONLY"
+        },
+        "inspected": {
+          "const": false
+        },
+        "automaticFallbackAllowed": {
+          "const": false
+        },
+        "automaticPromotionAllowed": {
+          "const": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "object"
+    },
+    "atlasfin": {
+      "type": "object",
+      "required": [
+        "manifestStatus",
+        "catalogElementCount",
+        "catalogElements",
+        "registries"
+      ],
+      "properties": {
+        "manifestStatus": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "catalogElementCount": {
+          "const": 418
+        },
+        "catalogElements": {
+          "type": "array",
+          "minItems": 418,
+          "maxItems": 418
+        },
+        "registries": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "visualCore": {
+      "type": "object",
+      "required": [
+        "feedState",
+        "path",
+        "schema",
+        "visualCoreStatus",
+        "selectedProfileId",
+        "applicationEngine",
+        "surfaces",
+        "authorityRef"
+      ],
+      "properties": {
+        "feedState": {
+          "enum": [
+            "PRESENT",
+            "PENDING_NOT_PRESENT"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "schema": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visualCoreStatus": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "selectedProfileId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "applicationEngine": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "surfaces": {
+          "type": "array"
+        },
+        "authorityRef": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/authorityRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "promotionWorkers": {
+      "type": "object",
+      "required": [
+        "tablet",
+        "pc",
+        "mobile",
+        "shared-ui"
+      ],
+      "properties": {
+        "tablet": {
+          "$ref": "#/$defs/workerLane"
+        },
+        "pc": {
+          "$ref": "#/$defs/workerLane"
+        },
+        "mobile": {
+          "$ref": "#/$defs/workerLane"
+        },
+        "shared-ui": {
+          "$ref": "#/$defs/workerLane"
+        }
+      },
+      "additionalProperties": false
+    },
+    "promotionRecords": {
+      "type": "array"
+    },
+    "currentReferences": {
+      "type": "object",
+      "required": [
+        "cobrar"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "catalogElementCount",
+        "workerRecordCount",
+        "pendingWorkerCount",
+        "invalidWorkerCount"
+      ],
+      "properties": {
+        "catalogElementCount": {
+          "const": 418
+        },
+        "workerRecordCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pendingWorkerCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "invalidWorkerCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        }
+      },
+      "additionalProperties": false
+    },
+    "integrity": {
+      "type": "object",
+      "required": [
+        "algorithm",
+        "canonicalPayloadSha256"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "SHA-256"
+        },
+        "canonicalPayloadSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "authorityRef": {
+      "type": "object",
+      "required": [
+        "authorityDomain",
+        "id"
+      ],
+      "properties": {
+        "authorityDomain": {
+          "enum": [
+            "ndc",
+            "atlasfin",
+            "identity",
+            "rifat",
+            "visual-control",
+            "target-index",
+            "projection-manifest",
+            "factory-ledger",
+            "code-atlas",
+            "work-entry-gate",
+            "gvae"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "workerLane": {
+      "type": "object",
+      "required": [
+        "surfaceKey",
+        "workerDataState",
+        "manifest",
+        "outcomeCounts",
+        "records",
+        "blockers"
+      ],
+      "properties": {
+        "surfaceKey": {
+          "enum": [
+            "tablet",
+            "pc",
+            "mobile",
+            "shared-ui"
+          ]
+        },
+        "workerDataState": {
+          "enum": [
+            "PENDING_NOT_PRESENT",
+            "PRESENT",
+            "INVALID"
+          ]
+        },
+        "manifest": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "outcomeCounts": {
+          "type": "object"
+        },
+        "records": {
+          "type": "array"
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

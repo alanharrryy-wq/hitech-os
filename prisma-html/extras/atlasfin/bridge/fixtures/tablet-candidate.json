@@ -1,0 +1,62 @@
+{
+  "candidateOnly": true,
+  "baseHead": "0000000000000000000000000000000000000000",
+  "surfaceKey": "tablet",
+  "targetId": "FIXTURE.NOT_CANONICAL.001",
+  "recordKind": "fixtureCandidate",
+  "physicalStatus": "CURRENT",
+  "physical": {
+    "routeId": null,
+    "regionId": null,
+    "slotId": null,
+    "componentId": null,
+    "componentUiId": null,
+    "ownerId": null,
+    "ownerFile": null,
+    "renderSourceFile": null,
+    "styleSourceFile": null,
+    "selector": ".fixture",
+    "implementationLayerId": "fixture.layer.not-canonical"
+  },
+  "ndc": {
+    "ndcPrimaryId": null,
+    "ndcRefs": [],
+    "ndcResolutionStatus": "UNRESOLVED"
+  },
+  "visual": {
+    "visualMeaningId": null,
+    "visualMeaningCandidate": null,
+    "visualMeaningStatus": "UNRESOLVED"
+  },
+  "atlasfin": {
+    "atlasfinCatalogElementId": null,
+    "atlasfinFamilyId": null,
+    "atlasfinPresetId": null,
+    "atlasfinRecipeId": null,
+    "atlasfinAdapterId": null,
+    "atlasfinMatchStatus": "NO_MATCH"
+  },
+  "identity": {
+    "identityProfileId": null,
+    "identityRecipeId": null,
+    "identityAdapterId": null,
+    "existingBindingId": null,
+    "bindingCandidateKey": null,
+    "bindingStatus": "BLOCKED"
+  },
+  "application": {
+    "projectionStatus": "UNRESOLVED",
+    "promotionStatus": "BLOCKED",
+    "workEntryDecision": "BLOCKED"
+  },
+  "evidence": {
+    "evidenceRefs": [
+      "fixture-only"
+    ],
+    "confidence": "low",
+    "blockers": [
+      "FIXTURE_ONLY"
+    ],
+    "notes": "Non-canonical test fixture."
+  }
+}
