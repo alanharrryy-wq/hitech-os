@@ -1,0 +1,404 @@
+name: PC Atlasfin Exact Target Provenance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pc-atlasfin-exact-target-provenance.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-target:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Prepare evidence root
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pc-atlasfin-exact-target"
+          mkdir -p "$OUT/uimap"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          git rev-parse HEAD > "$OUT/HEAD.txt"
+          git status --short --branch > "$OUT/GIT_STATUS_BEFORE.txt"
+
+      - name: Run fresh UIMAP with Authority Mesh
+        shell: bash
+        run: |
+          set -uo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/tools/code-atlas/src"
+          python -m code_atlas.app_map.uimap.cli \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-dir "$OUT/uimap" \
+            --zip-path "$OUT/UIMAP_CURRENT_SOURCE.zip" \
+            --workers 18 \
+            --run-timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            > "$OUT/UIMAP_STDOUT.log" 2> "$OUT/UIMAP_STDERR.log"
+          rc=$?
+          echo "$rc" > "$OUT/UIMAP_RETURN_CODE.txt"
+          exit "$rc"
+
+      - name: Build exact import and CSS provenance map
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path, PurePosixPath
+          from collections import defaultdict, deque
+          import csv, hashlib, json, os, re, subprocess
+
+          root = Path(os.environ['GITHUB_WORKSPACE'])
+          out = Path(os.environ['OUT'])
+          app = root / 'apps/terminal-de-venta-system'
+          pc = app / 'products/pc/app'
+          atlas = root / 'prisma-html/extras/atlasfin'
+          uimap = out / 'uimap'
+
+          def readj(path, default=None):
+              try:
+                  return json.loads(path.read_text(encoding='utf-8'))
+              except Exception:
+                  return default
+
+          def repo_rel(path):
+              return path.relative_to(root).as_posix()
+
+          def sha(path):
+              h = hashlib.sha256()
+              with path.open('rb') as f:
+                  for chunk in iter(lambda: f.read(1024*1024), b''):
+                      h.update(chunk)
+              return h.hexdigest().upper()
+
+          head = subprocess.check_output(['git','rev-parse','HEAD'], cwd=root, text=True).strip()
+          ures = readj(uimap/'reports/RESULT.json', {}) or {}
+          authority = readj(uimap/'authority/AUTHORITY_READSET.lock.json', {}) or {}
+          impact = readj(uimap/'authority/APP_IMPACT_MATRIX.json', {}) or {}
+          gates = readj(uimap/'authority/CONTRACT_AND_GATE_MATRIX.json', {}) or {}
+          pc_batch = readj(uimap/'batches/02_pc.json', {}) or {}
+          components = pc_batch.get('components', [])
+
+          recipe = readj(atlas/'assets/data/visual.recipe.registry.json', {}) or {}
+          family_content = next((x for x in recipe.get('elements', []) if isinstance(x, dict) and x.get('key') == 'content'), {})
+          family_accent = next((x for x in recipe.get('elements', []) if isinstance(x, dict) and x.get('key') == 'accent'), {})
+
+          source_exts = ('.tsx','.ts','.jsx','.js','.mjs','.cjs')
+          code_files = [p for p in pc.rglob('*') if p.is_file() and p.suffix.lower() in source_exts and not any(x in p.parts for x in ('.next','node_modules','dist','build','coverage'))]
+          code_set = {p.resolve() for p in code_files}
+
+          import_re = re.compile(r'(?:import|export)\s+(?:(?:[^;\n]*?)\s+from\s+)?["\']([^"\']+)["\']')
+          dyn_re = re.compile(r'import\(\s*["\']([^"\']+)["\']\s*\)')
+          css_import_re = re.compile(r'import\s+([A-Za-z_$][\w$]*)\s+from\s+["\']([^"\']+\.module\.(?:css|scss))["\']')
+          side_css_re = re.compile(r'import\s+["\']([^"\']+\.module\.(?:css|scss))["\']')
+
+          def resolve_module(owner, spec, allow_css=False):
+              if spec.startswith('@/'):
+                  base = pc / spec[2:]
+              elif spec.startswith('@components/'):
+                  base = pc/'components'/spec[len('@components/'):]
+              elif spec.startswith('@lib/'):
+                  base = pc/'lib'/spec[len('@lib/'):]
+              elif spec.startswith('.'):
+                  base = owner.parent / spec
+              else:
+                  return None
+              candidates = [base]
+              if allow_css:
+                  candidates += [Path(str(base)+'.css'), Path(str(base)+'.scss')]
+              else:
+                  candidates += [Path(str(base)+ext) for ext in source_exts]
+                  candidates += [base/f'index{ext}' for ext in source_exts]
+              for q in candidates:
+                  try:
+                      rq = q.resolve()
+                  except Exception:
+                      continue
+                  if q.is_file() and (allow_css or rq in code_set):
+                      return q
+              return None
+
+          graph = defaultdict(set)
+          css_imports = defaultdict(dict)
+          source_text = {}
+          for owner in code_files:
+              text = owner.read_text(encoding='utf-8', errors='replace')
+              source_text[owner.resolve()] = text
+              specs = import_re.findall(text) + dyn_re.findall(text)
+              for spec in specs:
+                  q = resolve_module(owner, spec, allow_css=False)
+                  if q:
+                      graph[owner.resolve()].add(q.resolve())
+              for alias, spec in css_import_re.findall(text):
+                  q = resolve_module(owner, spec, allow_css=True)
+                  if q:
+                      css_imports[owner.resolve()][q.resolve()] = alias
+              for spec in side_css_re.findall(text):
+                  q = resolve_module(owner, spec, allow_css=True)
+                  if q and q.resolve() not in css_imports[owner.resolve()]:
+                      css_imports[owner.resolve()][q.resolve()] = None
+
+          def route_for_page(page):
+              rel = page.relative_to(pc/'app')
+              parts = list(rel.parent.parts)
+              parts = [p for p in parts if not (p.startswith('(') and p.endswith(')'))]
+              return '/' + '/'.join(parts) if parts else '/'
+
+          route_pages = {}
+          for p in code_files:
+              try:
+                  rel = p.relative_to(pc/'app')
+              except ValueError:
+                  continue
+              if p.name != 'page.tsx' or (rel.parts and rel.parts[0] == 'api'):
+                  continue
+              route_pages[route_for_page(p)] = p.resolve()
+
+          owner_routes = defaultdict(set)
+          route_reach = {}
+          for route, start in route_pages.items():
+              seen = {start}; q = deque([(start,0)])
+              while q:
+                  cur, depth = q.popleft()
+                  owner_routes[cur].add(route)
+                  if depth >= 10:
+                      continue
+                  for nxt in graph.get(cur, ()):
+                      if nxt not in seen:
+                          seen.add(nxt); q.append((nxt, depth+1))
+              route_reach[route] = len(seen)
+
+          def owner_path(component):
+              val = component.get('ownerFile')
+              if not val: return None
+              p = (root/val)
+              return p.resolve() if p.exists() else None
+
+          exact = []
+          rejected = []
+          for c in components:
+              if not isinstance(c, dict):
+                  continue
+              op = owner_path(c)
+              if not op or op not in source_text:
+                  continue
+              routes = sorted(owner_routes.get(op, set()))
+              imports = css_imports.get(op, {})
+              if not imports:
+                  continue
+              text = source_text[op]
+              exact_targets = []
+              for vt in c.get('visualTargets', []) or []:
+                  sf = vt.get('styleSourceFile')
+                  if not sf: continue
+                  sp = (root/sf)
+                  if not sp.exists(): continue
+                  sr = sp.resolve()
+                  if sr not in imports:
+                      continue
+                  if vt.get('anchorKind') != 'CSS_MODULE_CLASS':
+                      continue
+                  alias = imports[sr]
+                  anchor = vt.get('anchorValue') or ''
+                  class_used = False
+                  if alias:
+                      class_used = bool(re.search(rf'\b{re.escape(alias)}\s*(?:\.\s*{re.escape(anchor)}|\[\s*["\']{re.escape(anchor)}["\']\s*\])', text))
+                  else:
+                      class_used = True
+                  if not class_used:
+                      continue
+                  exact_targets.append({
+                      'visualTargetId': vt.get('visualTargetId'),
+                      'selector': vt.get('selector'),
+                      'anchorValue': anchor,
+                      'targetRole': vt.get('targetRole'),
+                      'stateSelector': vt.get('stateSelector'),
+                      'atRule': vt.get('atRule'),
+                      'styleSourceFile': sf,
+                      'styleSourceHash': vt.get('sourceHash'),
+                      'cssModuleAlias': alias,
+                  })
+              if not exact_targets:
+                  continue
+
+              is_lab = any('/laboratorio-pc/' in r or '/referencia-visual' in r for r in routes)
+              is_feedback = any(x in (c.get('ownerFile') or '').lower() for x in ('/error.','/loading.'))
+              stock_protected = ('inventory-workspace.tsx' in (c.get('ownerFile') or '') or '/stock' in routes)
+              route_unique = len(routes) == 1
+              bounded = route_unique and not is_lab and not is_feedback and not stock_protected
+              selectors = sorted(set(x['selector'] for x in exact_targets if x.get('selector')))
+              roles = sorted(set(x['targetRole'] for x in exact_targets if x.get('targetRole')))
+
+              score = 0
+              if bounded: score += 20
+              if c.get('confidence') == 'HIGH': score += 6
+              elif c.get('confidence') == 'MEDIUM': score += 4
+              if 'ROOT' in roles or 'CONTAINER' in roles: score += 6
+              if any(re.search(r'(panel|workspace|section|card|ledger|table|grid|rail|drawer|hero|summary|strip|surface)', s, re.I) for s in selectors): score += 5
+              if any(re.search(r'(button|btn|link|chip|pill|badge|tab|active|selected)', s, re.I) for s in selectors): score += 2
+              if 'data-prisma-' in text: score += 5
+              if any(len(s) > 10 for s in selectors): score += 2
+              if all(s in {'.hero','.card','.grid','.btn','.kicker','.section'} for s in selectors): score -= 4
+              if len(routes) > 1: score -= min(len(routes), 8) * 2
+
+              row = {
+                  'componentUiId': c.get('componentUiId'),
+                  'componentId': c.get('componentId'),
+                  'ownerId': c.get('ownerId'),
+                  'ownerFile': c.get('ownerFile'),
+                  'ownerSymbol': c.get('ownerSymbol'),
+                  'routesByImportGraph': routes,
+                  'routeUnique': route_unique,
+                  'regionId': c.get('regionId'),
+                  'slotId': c.get('slotId'),
+                  'adapterId': c.get('adapterId'),
+                  'confidence': c.get('confidence'),
+                  'exactVisualTargets': exact_targets,
+                  'exactSelectors': selectors,
+                  'targetRoles': roles,
+                  'boundedPilotEligible': bounded,
+                  'existingStockPilotProtected': stock_protected,
+                  'atlasfinSemanticCandidate': family_content.get('semantic_id'),
+                  'atlasfinRecipeCandidate': family_content.get('recipe_id'),
+                  'applicationStatus': 'SOURCE_PROVENANCE_ONLY_NOT_AUTHORIZED',
+                  'score': score,
+                  'blockingReasons': c.get('blockingReasons', []),
+              }
+              exact.append(row)
+
+          eligible = [r for r in exact if r['boundedPilotEligible']]
+          eligible.sort(key=lambda r: (-r['score'], r['routesByImportGraph'][0], r['componentUiId'] or ''))
+
+          by_route = {}
+          for r in eligible:
+              route = r['routesByImportGraph'][0]
+              b = by_route.setdefault(route, {'routePath':route,'candidateCount':0,'topScore':-999,'topComponentUiId':None,'owners':set(),'selectors':set()})
+              b['candidateCount'] += 1
+              b['owners'].add(r['ownerFile'])
+              b['selectors'].update(r['exactSelectors'])
+              if r['score'] > b['topScore']:
+                  b['topScore'] = r['score']; b['topComponentUiId'] = r['componentUiId']
+          route_rank = []
+          for b in by_route.values():
+              b['owners'] = sorted(b['owners']); b['selectors'] = sorted(b['selectors'])
+              b['routeScore'] = b['topScore'] + min(b['candidateCount'], 6)
+              route_rank.append(b)
+          route_rank.sort(key=lambda x: (-x['routeScore'], x['routePath']))
+
+          recommended = eligible[0] if eligible else None
+          recommended_route = recommended['routesByImportGraph'][0] if recommended else None
+
+          result = {
+              'schema':'prisma.pc.atlasfin.exact-target-provenance.v1',
+              'status':'PASS' if ures.get('ok') and recommended else 'BLOCKED',
+              'decision':'READY_FOR_TASK_EXACT_AUTHORITY_MESH' if ures.get('ok') and recommended else 'NO_BOUNDED_EXACT_TARGET_PROVEN',
+              'head':head,
+              'uimapFinalStatus':ures.get('finalStatus'),
+              'productMutation':False,
+              'runtimeMutation':False,
+              'visualApplicationPerformed':False,
+              'authority':{
+                  'taskId':authority.get('taskId'),
+                  'sourceSnapshotHash':authority.get('sourceSnapshotHash'),
+                  'integrity':authority.get('integrity'),
+                  'appImpact':impact,
+                  'gates':gates,
+              },
+              'provenanceMethod':{
+                  'routeDiscovery':'Next app/**/page.tsx excluding app/api',
+                  'routeOwnership':'static local import graph, depth<=10',
+                  'styleEligibility':'owner directly imports CSS Module AND owner references exact module class AND UIMAP visualTarget points to same CSS Module',
+                  'boundedRule':'exactly one customer route reaches owner; excludes lab/reference, loading/error, and protected /stock precedent',
+              },
+              'counts':{
+                  'pcComponents':len(components),
+                  'codeFiles':len(code_files),
+                  'routePages':len(route_pages),
+                  'exactSourceProvenanceComponents':len(exact),
+                  'boundedPilotEligibleComponents':len(eligible),
+                  'boundedRoutes':len(route_rank),
+              },
+              'recommended':recommended,
+              'topRoutes':route_rank[:20],
+              'topComponents':eligible[:40],
+              'atlasfin':{
+                  'contentSemanticId':family_content.get('semantic_id'),
+                  'contentRecipeId':family_content.get('recipe_id'),
+                  'accentSemanticId':family_accent.get('semantic_id'),
+                  'accentRecipeId':family_accent.get('recipe_id'),
+              },
+              'nextGate':'Run task-exact Authority Mesh pinned to the recommended route/component/owner/CSS module. Do not APPLY Atlasfin yet.',
+          }
+          (out/'RESULT.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+          (out/'PC_ATLASFIN_EXACT_TARGETS.json').write_text(json.dumps({'schema':'prisma.pc.atlasfin.exact-targets.v1','rows':exact},ensure_ascii=False,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+
+          with (out/'PC_ATLASFIN_EXACT_TARGETS.csv').open('w',encoding='utf-8',newline='') as f:
+              fields=['componentUiId','ownerFile','ownerSymbol','routesByImportGraph','regionId','slotId','adapterId','confidence','boundedPilotEligible','existingStockPilotProtected','score','exactSelectors','targetRoles','applicationStatus']
+              w=csv.DictWriter(f,fieldnames=fields); w.writeheader()
+              for r in exact:
+                  x={k:r.get(k) for k in fields}
+                  x['routesByImportGraph']='|'.join(r['routesByImportGraph']); x['exactSelectors']='|'.join(r['exactSelectors']); x['targetRoles']='|'.join(r['targetRoles'])
+                  w.writerow(x)
+
+          md=['# PC Atlasfin Exact Target Provenance','',f'- Status: `{result["status"]}`',f'- Decision: `{result["decision"]}`',f'- HEAD: `{head}`',f'- UIMAP: `{ures.get("finalStatus")}`',f'- Exact source-provenance components: `{len(exact)}`',f'- Bounded pilot-eligible: `{len(eligible)}`',f'- Bounded routes: `{len(route_rank)}`','']
+          if recommended:
+              md += ['## Recommended exact target','',f'- Route: `{recommended_route}`',f'- Component UI ID: `{recommended["componentUiId"]}`',f'- Owner: `{recommended["ownerFile"]}`',f'- Slot: `{recommended["slotId"]}`',f'- Adapter: `{recommended["adapterId"]}`',f'- Selectors: `{", ".join(recommended["exactSelectors"])}`',f'- CSS source: `{recommended["exactVisualTargets"][0]["styleSourceFile"]}`',f'- Atlasfin semantic candidate: `{recommended["atlasfinSemanticCandidate"]}`',f'- Atlasfin recipe candidate: `{recommended["atlasfinRecipeCandidate"]}`','']
+          md += ['## Safety truth','','- This proves source provenance only.','- No certified layer or binding ID was invented.','- No product/runtime mutation occurred.','- UIMAP selector matches from unrelated CSS files are rejected unless the owner directly imports that CSS Module and references the exact class.','- Existing `/stock` StockFicha pilot is excluded from new-pilot selection.','', '## Next gate','',result['nextGate']]
+          (out/'PC_ATLASFIN_EXACT_TARGET_REPORT.md').write_text('\n'.join(md)+'\n',encoding='utf-8')
+          PY
+
+      - name: Prove PC product was not mutated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short --branch > "$OUT/GIT_STATUS_AFTER.txt"
+          git diff -- apps/terminal-de-venta-system/products/pc > "$OUT/PC_PRODUCT_DIFF_AFTER.patch"
+          if test -s "$OUT/PC_PRODUCT_DIFF_AFTER.patch"; then
+            echo 'PC_PRODUCT_MUTATION_DETECTED' > "$OUT/PC_PRODUCT_MUTATION_STATUS.txt"
+            exit 1
+          fi
+          echo 'NO_PC_PRODUCT_MUTATION' > "$OUT/PC_PRODUCT_MUTATION_STATUS.txt"
+
+      - name: Package evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os,zipfile
+          out=Path(os.environ['OUT'])
+          rows=[]
+          for p in sorted(out.rglob('*')):
+              if p.is_file() and p.name not in {'MANIFEST.json','pc-atlasfin-exact-target-evidence.zip'}:
+                  rows.append({'path':p.relative_to(out).as_posix(),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          (out/'MANIFEST.json').write_text(json.dumps({'files':rows},indent=2,sort_keys=True)+'\n',encoding='utf-8')
+          zpath=out/'pc-atlasfin-exact-target-evidence.zip'
+          with zipfile.ZipFile(zpath,'w',zipfile.ZIP_DEFLATED) as z:
+              for p in sorted(out.rglob('*')):
+                  if p.is_file() and p != zpath: z.write(p,p.relative_to(out).as_posix())
+          PY
+
+      - name: Upload exact target evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-atlasfin-exact-target-${{ github.run_id }}
+          path: |
+            ${{ env.OUT }}/pc-atlasfin-exact-target-evidence.zip
+            ${{ env.OUT }}/RESULT.json
+            ${{ env.OUT }}/PC_ATLASFIN_EXACT_TARGET_REPORT.md
+            ${{ env.OUT }}/PC_ATLASFIN_EXACT_TARGETS.csv
+          retention-days: 14

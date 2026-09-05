@@ -1,0 +1,411 @@
+name: PC Atlasfin Binding Prep
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/pc-atlasfin-binding-prep.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  binding-prep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Prepare evidence root
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/pc-atlasfin-binding-prep"
+          mkdir -p "$OUT/uimap"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          git rev-parse HEAD > "$OUT/HEAD.txt"
+          git status --short --branch > "$OUT/GIT_STATUS_BEFORE.txt"
+
+      - name: Run fresh UIMAP with Authority Mesh
+        shell: bash
+        run: |
+          set -uo pipefail
+          export PYTHONPATH="$GITHUB_WORKSPACE/tools/code-atlas/src"
+          python -m code_atlas.app_map.uimap.cli \
+            --product-root "$GITHUB_WORKSPACE" \
+            --governor-root "$GITHUB_WORKSPACE/prisma-html" \
+            --output-dir "$OUT/uimap" \
+            --zip-path "$OUT/UIMAP_CURRENT_SOURCE.zip" \
+            --workers 18 \
+            --run-timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            > "$OUT/UIMAP_STDOUT.log" 2> "$OUT/UIMAP_STDERR.log"
+          rc=$?
+          echo "$rc" > "$OUT/UIMAP_RETURN_CODE.txt"
+          exit "$rc"
+
+      - name: Build Atlasfin to PC binding prep
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import csv, hashlib, json, os, re, subprocess
+
+          root = Path(os.environ['GITHUB_WORKSPACE'])
+          out = Path(os.environ['OUT'])
+          app = root / 'apps/terminal-de-venta-system'
+          pc = app / 'products/pc/app'
+          atlas = root / 'prisma-html/extras/atlasfin'
+          uimap = out / 'uimap'
+
+          def readj(path, default=None):
+              try:
+                  return json.loads(path.read_text(encoding='utf-8'))
+              except Exception:
+                  return default
+
+          def sha(path):
+              h = hashlib.sha256()
+              with path.open('rb') as f:
+                  for chunk in iter(lambda: f.read(1024 * 1024), b''):
+                      h.update(chunk)
+              return h.hexdigest().upper()
+
+          def style_targets(component):
+              rows = []
+              for e in component.get('evidenceRefs', []):
+                  if isinstance(e, dict) and e.get('evidenceType') == 'STYLE_TARGET' and e.get('selector'):
+                      rows.append({
+                          'selector': e.get('selector'),
+                          'sourceFile': e.get('sourceFile'),
+                          'sourceHash': e.get('sourceHash'),
+                      })
+              seen, dedup = set(), []
+              for row in rows:
+                  k = (row['selector'], row['sourceFile'])
+                  if k not in seen:
+                      seen.add(k); dedup.append(row)
+              return dedup
+
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+          uimap_result = readj(uimap / 'reports/RESULT.json', {}) or {}
+          authority = readj(uimap / 'authority/AUTHORITY_READSET.lock.json', {}) or {}
+          impact = readj(uimap / 'authority/APP_IMPACT_MATRIX.json', {}) or {}
+          gates = readj(uimap / 'authority/CONTRACT_AND_GATE_MATRIX.json', {}) or {}
+          risk = readj(uimap / 'authority/MISSING_OR_UNMAPPED_RISK.json', {}) or {}
+          pc_batch = readj(uimap / 'batches/02_pc.json', {}) or {}
+          components = pc_batch.get('components', [])
+
+          recipe = readj(atlas / 'assets/data/visual.recipe.registry.json', {}) or {}
+          adapters = readj(atlas / 'assets/data/surface-adapter.registry.json', {}) or {}
+
+          def walk(v):
+              if isinstance(v, dict):
+                  yield v
+                  for x in v.values():
+                      yield from walk(x)
+              elif isinstance(v, list):
+                  for x in v:
+                      yield from walk(x)
+
+          pc_adapter = next((o for o in walk(adapters) if o.get('id') == 'ADP.PC.ADMIN.V2'), None)
+          atlas_families = {}
+          for el in recipe.get('elements', []):
+              if not isinstance(el, dict) or el.get('key') not in {'smoke','chrome','content','accent'}:
+                  continue
+              pb = next((b for b in el.get('target_bindings', []) if isinstance(b, dict) and b.get('surface_id') == 'SURF.PC.ADMIN'), {})
+              atlas_families[el['key']] = {
+                  'semanticId': el.get('semantic_id'),
+                  'recipeId': el.get('recipe_id'),
+                  'presetId': el.get('preset_id'),
+                  'materialId': el.get('material_id'),
+                  'currentPcBindingStatus': pb.get('status'),
+                  'registryPcAdapter': pb.get('adapter_id'),
+                  'requiredAdapter': 'ADP.PC.ADMIN.V2',
+              }
+
+          # Existing governed PC precedent. It is a reference, not a target to rebuild.
+          stock_addendum = root / 'PRISMA Factory Ledger/addenda/PC_STOCK_FICHA_TABLET_LICENSES_VISUAL_PILOT_V1.md'
+          stock_text = stock_addendum.read_text(encoding='utf-8', errors='replace') if stock_addendum.exists() else ''
+          stock_precedent = {
+              'found': stock_addendum.exists(),
+              'target': '/stock → StockFicha → PC-STOCK-FICHA-PANEL-01' if 'PC-STOCK-FICHA-PANEL-01' in stock_text else None,
+              'bindingId': 'BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1' if 'BND.SURFACE.OPERATIONAL.PC.STOCK.FICHA.V1' in stock_text else None,
+              'layerId': 'LYR.SURFACE.OPERATIONAL.DETAIL' if 'LYR.SURFACE.OPERATIONAL.DETAIL' in stock_text else None,
+              'recipeId': 'REC.panel.operational.cloudglass' if 'REC.panel.operational.cloudglass' in stock_text else None,
+              'adapterId': 'ADP.PC.DENSE.CLOUDGLASS.V1' if 'ADP.PC.DENSE.CLOUDGLASS.V1' in stock_text else None,
+              'doNotRebuild': 'do not rebuild' in stock_text.lower(),
+              'sourceFile': stock_addendum.relative_to(root).as_posix() if stock_addendum.exists() else None,
+          }
+
+          rows = []
+          chrome = []
+          content = []
+          accent = []
+
+          accent_rx = re.compile(r'(active|selected|focus|primary|accent|nav|link|button|btn|tab|pill|chip|badge|status|tone|cta)', re.I)
+          chrome_rx = re.compile(r'(sidebar|topbar|top-bar|brand|nav|search|context|routeintent|surfacecontext|userchip|shell)', re.I)
+          generic_rx = re.compile(r'^\.(card|btn|button|row|panel|section|kicker)$', re.I)
+
+          for c in components:
+              if not isinstance(c, dict):
+                  continue
+              st = style_targets(c)
+              if not st:
+                  continue
+              owner = c.get('ownerFile') or ''
+              route = c.get('routePath') or ''
+              cid = c.get('componentUiId')
+              selectors = [x['selector'] for x in st]
+              joined = ' '.join([cid or '', c.get('componentId') or '', c.get('slotId') or '', owner] + selectors)
+              is_lab = '/laboratorio-pc/' in route or '/referencia-visual' in route
+              is_feedback = any(x in owner.lower() for x in ('/error.', '/loading.'))
+              is_api = route.startswith('/api/')
+              is_stock_done_zone = ('inventory-workspace.tsx' in owner or route == '/stock')
+
+              fams = []
+              if owner.endswith('components/layout/app-shell.tsx') or chrome_rx.search(joined):
+                  fams.append('chrome')
+              if not is_api and not is_lab and not owner.endswith('components/layout/app-shell.tsx'):
+                  fams.append('content')
+              if accent_rx.search(joined):
+                  fams.append('accent')
+
+              score = 0
+              if route and route != '/': score += 8
+              if route and not is_api: score += 2
+              if c.get('confidence') == 'HIGH': score += 5
+              elif c.get('confidence') == 'MEDIUM': score += 3
+              if any((x.get('sourceFile') or '').endswith('.module.css') for x in st): score += 5
+              if any(re.search(r'(panel|workspace|section|card|ledger|table|grid|rail|drawer|hero|summary|strip)', s, re.I) for s in selectors): score += 3
+              if any(generic_rx.match(s.strip()) for s in selectors): score -= 3
+              if is_feedback: score -= 8
+              if is_lab: score -= 20
+              if is_api: score -= 20
+              if is_stock_done_zone: score -= 12
+              if c.get('routeId') == 'ROUTE.pc.unrouted': score -= 2
+
+              row = {
+                  'componentUiId': cid,
+                  'componentId': c.get('componentId'),
+                  'ownerId': c.get('ownerId'),
+                  'ownerFile': owner,
+                  'routeId': c.get('routeId'),
+                  'routePath': route,
+                  'regionId': c.get('regionId'),
+                  'slotId': c.get('slotId'),
+                  'adapterId': c.get('adapterId'),
+                  'confidence': c.get('confidence'),
+                  'selectors': selectors,
+                  'candidateFamilies': fams,
+                  'pilotScore': score,
+                  'existingStockPilotProtected': is_stock_done_zone,
+                  'status': 'PROPOSED_BINDING_PREP_ONLY',
+                  'blockingReasons': c.get('blockingReasons', []),
+              }
+              rows.append(row)
+              if 'chrome' in fams: chrome.append(row)
+              if 'content' in fams: content.append(row)
+              if 'accent' in fams: accent.append(row)
+
+          globals_css = pc / 'app/globals.css'
+          globals_text = globals_css.read_text(encoding='utf-8', errors='replace') if globals_css.exists() else ''
+          smoke = {
+              'family': 'smoke',
+              'semanticId': atlas_families.get('smoke', {}).get('semanticId'),
+              'recipeId': atlas_families.get('smoke', {}).get('recipeId'),
+              'ownerFile': 'apps/terminal-de-venta-system/products/pc/app/app/globals.css',
+              'selector': 'body',
+              'sourceHash': sha(globals_css) if globals_css.exists() else None,
+              'bodySelectorPresent': bool(re.search(r'(^|\n)body\s*\{', globals_text)),
+              'pcAtlasTokensPresent': sorted(set(re.findall(r'--pc-atlas-[A-Za-z0-9_-]+', globals_text))),
+              'status': 'CANDIDATE_GLOBAL_ATMOSPHERE_NEEDS_EXACT_LAYER_BINDING',
+          }
+
+          # First new pilot candidate must be bounded and must not reuse the already-DONE StockFicha pilot.
+          eligible = [r for r in content if r['pilotScore'] >= 10 and r['routePath'] not in {'', '/'} and not r['existingStockPilotProtected']]
+          eligible.sort(key=lambda r: (-r['pilotScore'], r['routePath'], r['componentUiId'] or ''))
+          top = eligible[:40]
+
+          # Aggregate route candidates to avoid picking a weird leaf just because its selector is specific.
+          by_route = {}
+          for r in eligible:
+              route = r['routePath']
+              b = by_route.setdefault(route, {'routePath': route, 'candidateCount': 0, 'topScore': -999, 'topComponentUiId': None, 'owners': set()})
+              b['candidateCount'] += 1
+              b['owners'].add(r['ownerFile'])
+              if r['pilotScore'] > b['topScore']:
+                  b['topScore'] = r['pilotScore']; b['topComponentUiId'] = r['componentUiId']
+          route_rank = []
+          for b in by_route.values():
+              b['owners'] = sorted(b['owners'])
+              b['routeScore'] = b['topScore'] + min(b['candidateCount'], 8)
+              route_rank.append(b)
+          route_rank.sort(key=lambda b: (-b['routeScore'], b['routePath']))
+
+          visual_surfaces = readj(app / '.prisma-ui/visual-control/surfaces.json', {}) or {}
+          surface_registry = readj(app / '.prisma-ui/surfaces.json', {}) or {}
+          visual_ids = [x.get('surface') for x in visual_surfaces.get('surfaces', []) if isinstance(x, dict)]
+          pc_surface = next((x for x in surface_registry.get('surfaces', []) if isinstance(x, dict) and x.get('surface') == 'pc'), None)
+          index_gap = {
+              'pcInSurfaceRegistry': pc_surface is not None,
+              'pcInVisualControlIndex': 'pc' in visual_ids,
+              'visualControlSurfaceIds': visual_ids,
+              'status': 'REFRESH_REQUIRED' if pc_surface and 'pc' not in visual_ids else 'NO_SCOPE_GAP_DETECTED',
+              'mutationPerformed': False,
+          }
+
+          task_scope = {
+              'task': 'Build source-only Atlasfin→PC binding preparation from fresh UIMAP. Do not mutate PC product/runtime. Preserve the existing DONE StockFicha pilot and identify a bounded NEW pilot candidate only.',
+              'authorityTaskId': authority.get('taskId'),
+              'authoritySourceSnapshotHash': authority.get('sourceSnapshotHash'),
+              'authorityIntegrity': authority.get('integrity'),
+              'uimapFinalStatus': uimap_result.get('finalStatus'),
+              'uimapComponentCount': uimap_result.get('componentCount'),
+              'pcComponentCount': len(components),
+          }
+
+          decision = 'BLOCKED_UIMAP_NOT_GREEN'
+          if uimap_result.get('ok') and pc_adapter and chrome and content and eligible:
+              decision = 'READY_FOR_TASK_EXACT_AUTHORITY_MESH_ON_BOUNDED_PC_ATLASFIN_PILOT'
+
+          result = {
+              'schema': 'prisma.pc.atlasfin.binding-prep.v1',
+              'status': 'PASS' if decision.startswith('READY_') else 'BLOCKED',
+              'decision': decision,
+              'head': head,
+              'productMutation': False,
+              'runtimeMutation': False,
+              'visualApplicationPerformed': False,
+              'taskScope': task_scope,
+              'authority': {
+                  'readset': authority,
+                  'appImpact': impact,
+                  'gates': gates,
+                  'riskCount': len(risk.get('risks', [])) if isinstance(risk, dict) else None,
+              },
+              'atlasfin': {
+                  'adapterFound': pc_adapter is not None,
+                  'adapter': pc_adapter,
+                  'families': atlas_families,
+              },
+              'existingPcVisualPrecedent': stock_precedent,
+              'families': {
+                  'smoke': smoke,
+                  'chromeCandidateCount': len(chrome),
+                  'contentCandidateCount': len(content),
+                  'accentCandidateCount': len(accent),
+              },
+              'visualControlIndexGap': index_gap,
+              'pilot': {
+                  'eligibleComponentCount': len(eligible),
+                  'topComponents': top,
+                  'topRoutes': route_rank[:20],
+                  'recommendedRoute': route_rank[0]['routePath'] if route_rank else None,
+                  'recommendedComponentUiId': route_rank[0]['topComponentUiId'] if route_rank else None,
+                  'note': 'Recommendation is source-only ranking, not APPLY authority.',
+              },
+              'nextGate': 'Run task-exact Authority Mesh for the recommended bounded route/component, then author exact semantic/layer/binding contract without product mutation. APPLY remains forbidden until that gate passes.',
+          }
+
+          (out / 'RESULT.json').write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          (out / 'PC_ATLASFIN_BINDING_PREP.json').write_text(json.dumps({'schema':'prisma.pc.atlasfin.binding-candidates.v1','rows':rows}, ensure_ascii=False, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          (out / 'PC_VISUAL_CONTROL_INDEX_REFRESH_GAP.json').write_text(json.dumps(index_gap, ensure_ascii=False, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          with (out / 'PC_ATLASFIN_BINDING_PREP.csv').open('w', encoding='utf-8', newline='') as f:
+              fields = ['componentUiId','componentId','ownerId','ownerFile','routeId','routePath','regionId','slotId','adapterId','confidence','candidateFamilies','pilotScore','existingStockPilotProtected','status','selectors']
+              w = csv.DictWriter(f, fieldnames=fields); w.writeheader()
+              for r in rows:
+                  x = {k:r.get(k) for k in fields}
+                  x['candidateFamilies'] = '|'.join(r['candidateFamilies'])
+                  x['selectors'] = '|'.join(r['selectors'])
+                  w.writerow(x)
+
+          with (out / 'PC_ATLASFIN_PILOT_CANDIDATES.csv').open('w', encoding='utf-8', newline='') as f:
+              fields = ['componentUiId','routePath','ownerFile','regionId','slotId','adapterId','confidence','pilotScore','selectors']
+              w = csv.DictWriter(f, fieldnames=fields); w.writeheader()
+              for r in top:
+                  x = {k:r.get(k) for k in fields}; x['selectors'] = '|'.join(r['selectors']); w.writerow(x)
+
+          md = [
+              '# PC Atlasfin Binding Prep', '',
+              f'- Status: `{result["status"]}`',
+              f'- Decision: `{decision}`',
+              f'- HEAD: `{head}`',
+              f'- UIMAP: `{uimap_result.get("finalStatus")}`',
+              f'- PC components: `{len(components)}`',
+              f'- Chrome candidates: `{len(chrome)}`',
+              f'- Content candidates: `{len(content)}`',
+              f'- Accent candidates: `{len(accent)}`',
+              f'- Bounded pilot-eligible components: `{len(eligible)}`',
+              f'- Recommended route: `{result["pilot"]["recommendedRoute"]}`',
+              f'- Recommended component: `{result["pilot"]["recommendedComponentUiId"]}`',
+              '', '## Guardrails', '',
+              '- No PC product/runtime mutation.',
+              '- No Atlasfin APPLY.',
+              '- No invented certified layer IDs or binding IDs.',
+              '- Existing `/stock` StockFicha pilot remains protected and is used only as governed precedent.',
+              '- Atlasfin semantic IDs are copied from the canonical registry only.',
+              '- Recommendation is a source-only ranking. It is not application authority.',
+              '', '## Atlasfin families', ''
+          ]
+          for key in ('smoke','chrome','content','accent'):
+              fam = atlas_families.get(key, {})
+              md.append(f'- `{key}` `{fam.get("semanticId")}` → current PC registry status `{fam.get("currentPcBindingStatus")}`')
+          md += ['', '## Visual-control drift', '', f'- `{index_gap["status"]}`', '', '## Next gate', '', result['nextGate']]
+          (out / 'PC_ATLASFIN_BINDING_PREP_REPORT.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
+          PY
+
+      - name: Prove PC product was not mutated
+        shell: bash
+        run: |
+          set -euo pipefail
+          git status --short --branch > "$OUT/GIT_STATUS_AFTER.txt"
+          git diff -- apps/terminal-de-venta-system/products/pc > "$OUT/PC_PRODUCT_DIFF_AFTER.patch"
+          if test -s "$OUT/PC_PRODUCT_DIFF_AFTER.patch"; then
+            echo 'PC_PRODUCT_MUTATION_DETECTED' > "$OUT/PC_PRODUCT_MUTATION_STATUS.txt"
+            exit 1
+          fi
+          echo 'NO_PC_PRODUCT_MUTATION' > "$OUT/PC_PRODUCT_MUTATION_STATUS.txt"
+
+      - name: Package evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, zipfile
+          out = Path(os.environ['OUT'])
+          rows = []
+          for p in sorted(out.rglob('*')):
+              if p.is_file() and p.name not in {'MANIFEST.json','pc-atlasfin-binding-prep-evidence.zip'}:
+                  rows.append({'path':p.relative_to(out).as_posix(),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          (out/'MANIFEST.json').write_text(json.dumps({'files':rows}, indent=2, sort_keys=True)+'\n', encoding='utf-8')
+          zpath = out/'pc-atlasfin-binding-prep-evidence.zip'
+          with zipfile.ZipFile(zpath,'w',zipfile.ZIP_DEFLATED) as z:
+              for p in sorted(out.rglob('*')):
+                  if p.is_file() and p != zpath:
+                      z.write(p,p.relative_to(out).as_posix())
+          PY
+
+      - name: Upload binding prep evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pc-atlasfin-binding-prep-${{ github.run_id }}
+          path: |
+            ${{ env.OUT }}/pc-atlasfin-binding-prep-evidence.zip
+            ${{ env.OUT }}/RESULT.json
+            ${{ env.OUT }}/PC_ATLASFIN_BINDING_PREP_REPORT.md
+            ${{ env.OUT }}/PC_ATLASFIN_BINDING_PREP.csv
+            ${{ env.OUT }}/PC_ATLASFIN_PILOT_CANDIDATES.csv
+          retention-days: 14
