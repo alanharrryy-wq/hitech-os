@@ -139,3 +139,31 @@ No updates published yet.
 - Only the legacy shard manifest envelope is normalized to `prisma.visual-promotion.candidate-shard.v1`.
 - Deterministic per-record provenance hash rule: SHA-256 over the exact UTF-8 JSON record bytes excluding the line terminator.
 - No projection repair, semantic inference, binding resolution, Atlasfin upgrade, canonical ID minting, Materiality use or product/global-authority mutation.
+
+## 2026-09-04T23:56:00-06:00 — VALIDATION
+
+- Post-commit certification revalidation: `PASS_POSTCOMMIT_PC_CORPUS_CERTIFICATION`.
+- Certification branch: `chat2/pc-corpus-cert-20260904`.
+- Branch base: `8cc1918c5e015d1408335c15313e7364e04859c2`.
+- Final certification head: `8cc979c141000fcedabf832f16468a6ee3e328e2`.
+- Branch delta: 5 commits ahead / 0 behind base; exactly five changed paths, all under the owned `pc/certification/**` root.
+- Committed corpus: 827 normalized records, 827 certification rows, invalid=0, unique targets=827.
+- `semanticMutationCount=0`; `representationChangedCount=0`; source provenance complete.
+- Preserved: `826 CURRENT / 1 DRIFT`, `688 projection CURRENT / 139 MISSING`, `186 MATCHED_RECIPE / 641 NO_MATCH`, `827 NDC UNRESOLVED`, `827 binding BLOCKED`, `827 REGISTER_TARGET_FIRST`.
+- Certification labels: `827 VALID_REGISTER_TARGET_FIRST`.
+- Exact selector conflict remains `.supplier-readable-v07` vs `.supplier-readable-v07 *`.
+- Raw worker branch remains byte/history immutable at `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`.
+
+## 2026-09-04T23:56:00-06:00 — HANDOFF
+
+- Result: `PASS_PC_CANDIDATE_CORPUS_CERTIFIED`.
+- Chat 6 should consume `chat2/pc-corpus-cert-20260904@8cc979c141000fcedabf832f16468a6ee3e328e2` by exact head/tree.
+- Output root: `prisma-html/governance/visual-promotion/candidates/pc/certification/`.
+- No Chat 2 PR was opened. No `FILES_MANIFEST.json` update was made.
+- Corpus validity does not authorize canonical promotion, binding resolution, projection repair, GVAE APPLY or runtime readiness.
+
+## 2026-09-04T23:56:00-06:00 — COMPLETE
+
+- Chat 2 PC corpus-certification lane is complete and `READY_FOR_INTEGRATION`.
+- No user action is required.
+- Further writes are blocked by lane policy unless deterministic integration requests a bounded evidence-backed certification correction.
