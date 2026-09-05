@@ -4,12 +4,12 @@
   "lane": "TABLET_PROMOTION",
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
-  "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T20:14:40-06:00",
-  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
-  "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
-  "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
-  "summary": "Chat 1 is in canonical Tablet HOLD under INTEGRATION_HANDOFF_AND_PLANNING. Bounded read-only revalidation against current main 66fa02147f0cf31529c090a47f376026b406875a passed: all 13/13 authority snapshots pinned by the Tablet candidate manifest remain byte-identical, the canonical Chat 1 continuation prompt remains Tablet HOLD, and the worker branch still contains only the five owned Tablet candidate-shard files. No lane mutation is authorized or needed.",
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-04T23:44:00-06:00",
+  "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "workBranch": "chat1/tablet-corpus-cert-20260904",
+  "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "summary": "Chat 1 entered CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. A fresh certification branch was created from current canonical main 8cc1918c5e015d1408335c15313e7364e04859c2. The immutable source remains chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728. Work is limited to candidates/tablet/certification/** and must produce a 929/929 strict, provenance-pinned derivative with invalid=0 and semanticMutationCount=0.",
   "blockers": [],
   "findings": [
     "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
@@ -28,7 +28,10 @@
     "The continuation override preserves work branch chat1/tablet-visual-promotion-57b01ad8, work head 1b669d98dc9063fe4d6f5f8ddc06262a6968e728, base 57b01ad8bda043ec25763203354b686341bace09, and accounting 929 = 139 candidates + 788 unresolved + 2 conflicts.",
     "Bounded revalidation at current main 66fa02147f0cf31529c090a47f376026b406875a found 13/13 recorded Chat 1 authority snapshots unchanged by Git blob SHA.",
     "Canonical prompt blob d9650c43542a89dcf4c6c787f32b36ef83541488 confirms Chat 1 remains Tablet HOLD with the exact recorded branch/head/base/accounting.",
-    "The worker branch remains exactly two commits ahead of its base and its delta is still limited to the five owned Tablet candidate-shard files."
+    "The worker branch remains exactly two commits ahead of its base and its delta is still limited to the five owned Tablet candidate-shard files.",
+    "Canonical phase changed to CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly supersedes Tablet HOLD.",
+    "Certification branch chat1/tablet-corpus-cert-20260904 was created from current main 8cc1918c5e015d1408335c15313e7364e04859c2.",
+    "Immutable source provenance remains chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728 with 929 = 139 candidates + 788 unresolved + 2 conflicts."
   ],
   "decisions": [
     "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
@@ -42,14 +45,17 @@
     "Do not mutate the Tablet candidate shard while in HOLD absent an explicit bounded correction request from Chat 6/integration.",
     "Perform only bounded read-only revalidation of recorded Chat 1 authority/source inputs against current main; do not run recensus or broad rediscovery.",
     "No recomputation or candidate-file mutation is warranted after the bounded revalidation because relevant Chat 1 authority inputs are unchanged.",
-    "Remain in HOLD and wait only for an explicit evidence-backed bounded correction request from Chat 6/integration."
+    "Remain in HOLD and wait only for an explicit evidence-backed bounded correction request from Chat 6/integration.",
+    "Create only a certified derivative under prisma-html/governance/visual-promotion/candidates/tablet/certification/**; never rewrite the original worker shard.",
+    "Use the Chat 6 strict candidate/manifest contract as the intake authority for representation normalization, preserving every semantic decision and both DRIFT conflicts.",
+    "Do not open a PR and do not refresh prisma-html/FILES_MANIFEST.json in Chat 1."
   ],
   "changedPaths": [
-    "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json",
-    "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
-    "prisma-html/governance/visual-promotion/candidates/tablet/UNRESOLVED.jsonl",
-    "prisma-html/governance/visual-promotion/candidates/tablet/CONFLICTS.jsonl",
-    "prisma-html/governance/visual-promotion/candidates/tablet/SUMMARY.md",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/NORMALIZED.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/CERTIFICATION.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/INVALID.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/SUMMARY.md",
     "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/STATUS.json",
     "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md"
   ],
@@ -111,46 +117,31 @@
     }
   ],
   "unresolved": [
-    "Two census targets remain physical DRIFT conflicts and must stay blocked unless stronger canonical authority resolves them.",
-    "788 census records remain unresolved because semantic/application authority was insufficient for candidate promotion.",
-    "NDC existing-meaning resolution remains unresolved for all 929 records absent direct machine-readable linkage."
+    "Strict intake normalization and reference validation must still be executed against all 929 source records.",
+    "Completion requires INVALID.jsonl empty, exact 929 certification rows, zero duplicates/missing/extras and semanticMutationCount=0."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Hold. Do not mutate the Tablet lane. Update this mailbox only if a blocker/relevant authority drift appears or Chat 6/integration requests one bounded evidence-backed correction.",
+  "nextAction": "Read the exact Chat 6 candidate schema/control-plane contract at its recorded head, then normalize and certify the immutable 929 Tablet source records with exact source head/file/record hashes.",
   "handoff": {
-    "ready": true,
-    "classification": "LANE_CANDIDATE_HANDOFF_READY",
-    "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
-    "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
-    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
-    "candidateRoot": "prisma-html/governance/visual-promotion/candidates/tablet",
-    "accounting": {
-      "input": 929,
+    "ready": false,
+    "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+    "sourceBranch": "chat1/tablet-visual-promotion-57b01ad8",
+    "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+    "sourceBase": "57b01ad8bda043ec25763203354b686341bace09",
+    "certificationBranch": "chat1/tablet-corpus-cert-20260904",
+    "certificationBaseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+    "certificationHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+    "inputCount": 929,
+    "sourceAccounting": {
       "candidates": 139,
       "unresolved": 788,
-      "conflicts": 2,
-      "output": 929
+      "conflicts": 2
     },
-    "integrationNotes": [
-      "Preserve candidate-only semantics.",
-      "Canonical composer must dedupe the one existing resolved Identity binding rather than mint another binding/target.",
-      "Do not turn DISCOVERY_ONLY or ELIGIBLE_CANDIDATE into application authorization.",
-      "Chat 1's pinned input authorities remain byte-equivalent on current main d08013db42c34ccafb80075392ec6d7a289cf7b5; the intervening cohort governance edits are status-channel coordination-only.",
-      "The two recorded physical DRIFT targets remain conflicts and must not be silently normalized."
-    ],
-    "currentMainAtRevalidation": "66fa02147f0cf31529c090a47f376026b406875a",
-    "relevantAuthorityDrift": false,
-    "coordinationOnlyDrift": true,
-    "revalidationResult": "PASS_BOUNDED_CHAT1_AUTHORITY_EQUIVALENCE",
-    "statusChannelValidation": "PASS_OWN_MAILBOX_ONLY",
-    "statusBranchBase": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
-    "statusBranchFiles": [
-      "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/STATUS.json",
-      "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md"
-    ],
-    "continuationMode": "TABLET_HOLD",
-    "canonicalPhase": "INTEGRATION_HANDOFF_AND_PLANNING",
-    "canonicalPromptBlobSha": "d9650c43542a89dcf4c6c787f32b36ef83541488"
+    "targetCompletion": {
+      "corpusValid": 929,
+      "invalid": 0,
+      "semanticMutationCount": 0
+    }
   }
 }
