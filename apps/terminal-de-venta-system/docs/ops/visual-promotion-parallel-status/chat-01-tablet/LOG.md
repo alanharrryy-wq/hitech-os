@@ -83,3 +83,18 @@ No updates published yet.
 - Integration may consume `chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728` with the recorded caveat that the two physical DRIFT records remain blocked conflicts.
 - Future Chat 1 work should resume only if a recorded input authority/candidate-semantic contract drifts or canonical integration requests a bounded correction inside the Chat 1 ownership.
 
+## 2026-09-04T19:58:10-06:00 — VALIDATION
+
+- Status-branch isolation check: **PASS**.
+- The status branch is based on `d08013db42c34ccafb80075392ec6d7a289cf7b5` and its entire Chat 1 reporting delta touches only:
+  - `apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/STATUS.json`
+  - `apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md`
+- Work branch isolation remains **PASS**: exactly five Tablet candidate-shard files, no other lane/product/global-authority writes.
+
+## 2026-09-04T19:58:10-06:00 — COMPLETE
+
+- Chat 1 reporting channel is initialized and current.
+- Chat 1 original candidate-promotion work remains `READY_FOR_INTEGRATION`.
+- No user action is needed.
+- No further worker mutation is justified unless relevant authority drifts or integration requests a bounded Chat 1 correction.
+
