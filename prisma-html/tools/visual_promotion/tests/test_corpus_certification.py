@@ -144,14 +144,16 @@ class CorpusCertificationTests(unittest.TestCase):
             normalized["application"]["projectionStatus"],
             "DRIFT",
         )
-        lifted = certification["normalization"][
-            "liftedProvenanceRefs"
-        ]
-        self.assertTrue(
-            any(value.startswith("repo:apps/") for value in lifted)
-        )
-        self.assertTrue(
-            any(value.startswith("git:") for value in lifted)
+        domains = {
+            ref.get("authorityDomain")
+            for ref in normalized["evidenceRefs"]
+            if isinstance(ref, dict)
+        }
+        self.assertIn("projection-manifest", domains)
+        self.assertIn("code-atlas", domains)
+        self.assertEqual(
+            certification["normalization"]["liftedProvenanceRefs"],
+            [],
         )
 
     def test_shared_ui_qualified_adapter_becomes_raw_field(self):

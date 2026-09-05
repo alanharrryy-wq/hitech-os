@@ -287,7 +287,7 @@ def _normalize_evidence_ref(
         }
         return mapped, None, change
     if ref.startswith("repo:prisma-html/authority/rifat/"):
-        mapped = {"authorityDomain": "rifat", "id": ref[5:]}
+        mapped = {"authorityDomain": "rifat", "id": ref}
         change = {
             "field": "evidenceRefs",
             "from": ref,
@@ -296,21 +296,23 @@ def _normalize_evidence_ref(
         }
         return mapped, None, change
     if ref.startswith("repo:apps/terminal-de-venta-system/products/"):
+        mapped = {"authorityDomain": "projection-manifest", "id": ref}
         change = {
             "field": "evidenceRefs",
             "from": ref,
-            "to": None,
-            "reason": "LIFT_NON_AUTHORITY_PRODUCT_PROVENANCE",
+            "to": mapped,
+            "reason": "QUALIFY_PRODUCT_PROJECTION_PROVENANCE",
         }
-        return None, ref, change
+        return mapped, None, change
     if ref.startswith("git:"):
+        mapped = {"authorityDomain": "code-atlas", "id": ref}
         change = {
             "field": "evidenceRefs",
             "from": ref,
-            "to": None,
-            "reason": "LIFT_NON_AUTHORITY_GIT_PROVENANCE",
+            "to": mapped,
+            "reason": "QUALIFY_GIT_PROVENANCE_FOR_REVIEW",
         }
-        return None, ref, change
+        return mapped, None, change
     change = {
         "field": "evidenceRefs",
         "from": ref,
