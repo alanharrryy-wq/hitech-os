@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import unittest
 
-from visual_application.visual_work_entry_gate import classify_path, decide_request, evaluate_changed
+from visual_application.visual_work_entry_gate import (
+    BROAD_REDISCOVERY_REASON,
+    CURRENT_CENSUS_REASON,
+    DECISIONS,
+    classify_path,
+    decide_request,
+    evaluate_changed,
+)
 
 HEAD = "a" * 40
 EXACT = "TGT.TABLET.EXACT.ONE.V1"
@@ -215,6 +222,36 @@ class VisualWorkEntryGateTests(unittest.TestCase):
         a=authority(); a["index"]["globalBlockers"]=["authority-drift"]
         r=decide_request({"task":"visual work","targetIds":[EXACT]},authority=a,current_head=HEAD)
         self.assertEqual(r["decision"],"BLOCKED")
+
+
+    def test_28_decisions_remain_exactly_four(self):
+        self.assertEqual(DECISIONS, ("GVAE_EXACT_APPLY", "SURFACE_BATCH_PLAN", "REGISTER_TARGET_FIRST", "BLOCKED"))
+
+    def test_29_current_census_reason_is_machine_readable(self):
+        r = decide_request({"task":"visual work","surface":"tablet","targetIds":[CENSUS]}, authority=authority(), current_head=HEAD)
+        self.assertEqual(r["decision"], "REGISTER_TARGET_FIRST")
+        self.assertIn(CURRENT_CENSUS_REASON, r["reasons"])
+
+    def test_30_broad_rediscovery_over_current_census_is_blocked(self):
+        r = decide_request({"task":"visual work","surface":"tablet","targetIds":[CENSUS],"intent":"BROAD_REDISCOVERY"}, authority=authority(), current_head=HEAD)
+        self.assertEqual(r["decision"], "BLOCKED")
+        self.assertIn(BROAD_REDISCOVERY_REASON, r["reasons"])
+        self.assertIn(CURRENT_CENSUS_REASON, r["reasons"])
+
+    def test_31_surface_rediscovery_over_current_census_is_blocked(self):
+        r = decide_request({"task":"visual work","surface":"tablet","intent":"REDISCOVER"}, authority=authority(), current_head=HEAD)
+        self.assertEqual(r["decision"], "BLOCKED")
+        self.assertIn(BROAD_REDISCOVERY_REASON, r["reasons"])
+
+    def test_32_strict_request_contract_rejects_unknown_fields(self):
+        r = decide_request({"task":"visual work","surface":"tablet","surprise":True}, authority=authority(), current_head=HEAD)
+        self.assertEqual(r["decision"], "BLOCKED")
+        self.assertTrue(any(x.startswith("REQUEST_CONTRACT_UNKNOWN_FIELDS:") for x in r["reasons"]))
+
+    def test_33_strict_request_contract_rejects_bad_schema(self):
+        r = decide_request({"schema":"wrong","task":"visual work","surface":"tablet"}, authority=authority(), current_head=HEAD)
+        self.assertEqual(r["decision"], "BLOCKED")
+        self.assertIn("REQUEST_CONTRACT_SCHEMA_INVALID", r["reasons"])
 
 
 if __name__ == "__main__":
