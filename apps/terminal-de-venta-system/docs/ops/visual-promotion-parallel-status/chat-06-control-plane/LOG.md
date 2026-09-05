@@ -185,3 +185,23 @@ AutoMesh v2 revalidation run `33949261013` classified the prompt movement as `BL
 ## 2026-09-05T06:18:30Z — VALIDATION
 
 Universal Factory Ledger anti-rework gate: PROPOSAL = `PASS_ANTI_REWORK_GATE`; MUTATION = `PASS_ANTI_REWORK_GATE`. Canonical capability `visual.generic_application_engine_v1` remains `DONE / SOURCE_READY / doNotRebuild=true`, action `ADVANCE`. No rebuild is authorized or attempted.
+
+## 2026-09-05T06:41:00Z — FINDING
+
+The Chat 6 work branch already contained concurrent corpus-certification implementation. It was audited and reused rather than rebuilt. Current controlled work head after bounded handoff hardening is `9fdc3545d8b3309395f9276723c81f9799b1c60f`.
+
+## 2026-09-05T06:41:00Z — VALIDATION
+
+Independent surface certification audit PASS: Tablet `929/929`, PC `827/827`, Mobile `271/271`, Shared UI `70/70`. Across all `2,097` records: semantic mismatches `0`, source head/file/line/record-hash mismatches `0`, invalid certification statuses `0`, semanticMutation violations `0`.
+
+## 2026-09-05T06:41:00Z — FINDING
+
+Tablet legitimately omits the optional `schema` field in its owner-certified derivative while Chat 6 may explicitly add it during global normalization. The intake verifier was corrected to require strict candidate validity plus semantic fidelity, not false byte/object identity.
+
+## 2026-09-05T06:41:00Z — VALIDATION
+
+Chat 5 Atlasfin certification PASS independently: `2,421/2,421` reference rows cross-link exactly to the `2,097` owner-certified source records; invalid refs `0`, source provenance mismatches `0`, semantic mutations `0`. The apparent digest mismatch was not a defect: its manifest deliberately uses canonical JSON/substructure digest bases for policy/groups.
+
+## 2026-09-05T06:41:00Z — PROGRESS
+
+Added exact certification-head/file hash registry and final handoff verifier under Chat 6 ownership. Every owner certification row will be hash-pinned into final global certification provenance. No canonical promotion, product/runtime mutation, broad rediscovery or Materiality read occurred.

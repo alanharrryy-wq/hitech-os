@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
   "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T06:18:30Z",
+  "updatedAt": "2026-09-05T06:41:00Z",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat6/candidate-corpus-cert-20260904",
-  "workHead": "131c38980343d5892e1341e5fd919fc8c81a3095",
-  "summary": "Chat 6 corpus-certification control plane is source-ready for cohort intake. Fresh task-exact AutoMesh passed. Exact prior Chat 6 source bytes were brought forward by head-tree extraction, a machine registry pins all four raw worker heads and 20 source files by Git blob/SHA-256, and fail-closed normalization/corpus-certification tooling plus exact worker-head fixtures are implemented. No raw worker bytes, certification lane bytes, global corpus artifacts, FILES_MANIFEST refresh, PR, canonical promotion, product/runtime mutation, Materiality read, or broad rediscovery has occurred yet.",
+  "workHead": "9fdc3545d8b3309395f9276723c81f9799b1c60f",
+  "summary": "Chat 6 final corpus aggregation is active on work head 9fdc3545d8b3309395f9276723c81f9799b1c60f. Current-head Authority Mesh/revalidation and Factory Ledger PROPOSAL+MUTATION gates are green. Exact certification intake pins for Chats 1-5 are now machine-readable, and all four surface certified derivatives plus Chat 5 Atlasfin reference certification were independently re-audited against immutable raw provenance with zero semantic/source mismatches.",
   "blockers": [],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
@@ -43,7 +43,13 @@
     "Canonical main subsequently advanced to 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d, requiring AutoMesh v2 revalidation before more governed changes.",
     "Current canonical prompt blob 4bb50fea55da73ed1f194bfd9a52a7aad2486f39 advances Chat 6 to CANDIDATE_CORPUS_FINAL_AGGREGATION and pins certification heads for Chats 1-5.",
     "AutoMesh v2 revalidation correctly classified prompt drift as BLOCKED_RELEVANT_DRIFT, ran the mandatory full refresh, and produced fresh PASS_COMPOSED_AUTHORITY_MESH bound to main 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d.",
-    "Universal Factory Ledger anti-rework PROPOSAL and MUTATION decisions both PASS for visual.generic_application_engine_v1 with requestedAction=ADVANCE, preserving DONE/SOURCE_READY/doNotRebuild=true."
+    "Universal Factory Ledger anti-rework PROPOSAL and MUTATION decisions both PASS for visual.generic_application_engine_v1 with requestedAction=ADVANCE, preserving DONE/SOURCE_READY/doNotRebuild=true.",
+    "Concurrent work already present on the Chat 6 work branch implemented corpus_certification.py; Chat 6 reused/audited it instead of rebuilding or overwriting it.",
+    "All four owner-certified surface derivatives are semantically equivalent to immutable raw source records after only authorized representation normalization: Tablet 929/929, PC 827/827, Mobile 271/271, Shared UI 70/70; source-record provenance mismatches=0.",
+    "Tablet certification legitimately preserves the optional schema field as absent; global normalization may explicitly add it. Verification therefore requires strict validity + semantic fidelity, not artificial object/byte equality.",
+    "Mobile certification stores semanticMutation=false under validation.semanticMutation; intake verifier now recognizes existing lane certification layouts without weakening the false-only invariant.",
+    "Chat 5 Atlasfin certification independently cross-links 2,421/2,421 reference rows to the exact 2,097 surface certification source records; invalid/reference/source mismatches=0.",
+    "Chat 5 artifactDigestBasis is internally coherent: normalizationPolicySha256 is canonical-JSON digest; recipeReviewGroupsSha256 is canonical digest of groups array; it is not a stale file-byte digest."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -67,7 +73,10 @@
     "Do not perform canonical Identity/RIFAT/NDC/Target Index promotion or product/runtime mutation in this phase.",
     "Treat evidenceRefs repository-product and git references as provenance rather than inventing an authority domain; preserve them in certification normalization.liftedProvenanceRefs.",
     "Normalize legacy worker manifests to strict derivative manifests while keeping raw manifest bytes immutable and pinned.",
-    "Use exact worker-head sample fixtures from all four surfaces to exercise known normalization shapes before global corpus assembly."
+    "Use exact worker-head sample fixtures from all four surfaces to exercise known normalization shapes before global corpus assembly.",
+    "Add exact certification-intake registry with certification branch/head plus Git blob SHA and SHA-256 pins for every Chat 1-5 certification artifact.",
+    "Verify surface certified NORMALIZED rows by strict candidate validation plus semantic fidelity to independent raw normalization, while preserving owner representation choices that are contract-valid.",
+    "Pin every owner certification row hash into the final global CERTIFICATION output; certification validity remains distinct from promotion/application authority."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/contracts/**",
@@ -215,21 +224,36 @@
       "name": "Universal anti-rework MUTATION",
       "result": "PASS_ANTI_REWORK_GATE",
       "details": "Bound to current head 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d and fresh PASS_COMPOSED_AUTHORITY_MESH summary; visualMutation=false; no errors."
+    },
+    {
+      "name": "Surface certification independent audit",
+      "result": "PASS",
+      "details": "Tablet 929, PC 827, Mobile 271, Shared UI 70: zero semantic mismatches, zero source-provenance mismatches; all certification statuses VALID_* and semanticMutation=false after format-aware validation."
+    },
+    {
+      "name": "Atlasfin certification independent audit",
+      "result": "PASS",
+      "details": "2,421 reference rows across 2,097 targets; VALID_REFERENCE=2,421, semanticMutation=false, authorityDomain=atlasfin, source target/head/file/line/hash cross-link mismatches=0."
+    },
+    {
+      "name": "Certification intake tooling",
+      "result": "IMPLEMENTED_PENDING_INTEGRATION_EXECUTION",
+      "details": "Added certification-intake.registry.json, certification_handoffs.py, final_aggregation.py, CLI certify-final-corpus, contract hardening, tests; work head 9fdc3545d8b3309395f9276723c81f9799b1c60f."
     }
   ],
   "unresolved": [
-    "Implement exact-head/hash-pinned normalizer and semantic review key on Chat 6 work branch.",
-    "Verify exact certification heads fd111022..., 8cc979c..., 664035e..., 553577aa..., 6c7743f... independently and aggregate 2,097 records.",
-    "Create global corpus outputs, then assemble accepted raw/certification/bridge/control-plane bytes on a fresh integration branch from then-current main.",
-    "Refresh FILES_MANIFEST.json exactly once only after final accepted prisma-html bytes are present and run required PR gates."
+    "Assemble exact raw worker bytes, four surface certification derivatives, Chat 5 bridge/certification, and Chat 6 work bytes on one fresh integration branch from current main.",
+    "Execute certify-final-corpus on the assembled tree and commit the nine global corpus-certification outputs with exactly 2,097 valid records.",
+    "Refresh prisma-html/FILES_MANIFEST.json exactly once after all accepted prisma-html bytes and generated corpus outputs are present.",
+    "Run required integration/PR checks and merge only if every required check is green."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Implement the bounded normalizer/global corpus tooling now that current-head Mesh and both anti-rework gates are green; then consume exact certification heads and aggregate deterministically.",
+  "nextAction": "Create the fresh final integration branch from current main, assemble exact accepted head-tree bytes, generate/validate the global corpus outputs, then perform the single FILES_MANIFEST refresh and PR gate sequence.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/candidate-corpus-cert-20260904",
-    "workHead": "2285101755a0859681cfe23d45db9b96b2beea53",
+    "workHead": "9fdc3545d8b3309395f9276723c81f9799b1c60f",
     "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
     "closedPullRequest": 541,
     "validatedEquivalentCodeHead": "cb21ca01ecf8ec755fe34820d3d5b34673f70581",
@@ -529,6 +553,17 @@
       "result": "PASS_FULL_MESH_REFRESH_AFTER_RELEVANT_DRIFT"
     },
     "antiReworkProposal": "PASS_ANTI_REWORK_GATE",
-    "antiReworkMutation": "PASS_ANTI_REWORK_GATE"
+    "antiReworkMutation": "PASS_ANTI_REWORK_GATE",
+    "certificationIntakeImplemented": true,
+    "independentSurfaceCertificationAudit": "PASS_2097_OF_2097",
+    "independentAtlasfinCertificationAudit": "PASS_2421_OF_2421",
+    "certificationHandoffHeads": {
+      "tablet": "fd111022438bab909151c2220b52e95aa5aa7eb3",
+      "pc": "8cc979c141000fcedabf832f16468a6ee3e328e2",
+      "mobile": "664035e83943ae48c923585765d3c505b1bd8c53",
+      "sharedUi": "553577aa74045c73ab9c92d1f81538e7e0a8c65a",
+      "atlasfin": "6c7743f55434eb8d3429f286e2f9eae275d93d87"
+    },
+    "integrationBranch": null
   }
 }
