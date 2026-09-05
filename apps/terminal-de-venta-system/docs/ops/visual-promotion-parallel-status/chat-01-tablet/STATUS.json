@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:58:10-06:00",
+  "updatedAt": "2026-09-04T20:13:20-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
   "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
-  "summary": "Chat 1 Tablet candidate shard remains complete and handoff-ready. A bounded revalidation against current main d08013db42c34ccafb80075392ec6d7a289cf7b5 found no drift in the recorded Tablet/Identity/projection/Atlasfin authority inputs. The only relevant governance-document changes since the lane base add the shared status channel and do not alter Chat 1 candidate semantics.",
+  "summary": "Chat 1 resumed under the current canonical continuation phase INTEGRATION_HANDOFF_AND_PLANNING. Tablet is explicitly in HOLD: preserve the recorded worker branch/head/base and accounting, do not recensus or recompute the 929 records, keep both physical DRIFT targets as conflicts, and make no lane mutation unless integration requests one bounded correction. A read-only bounded authority revalidation against current main is in progress.",
   "blockers": [],
   "findings": [
     "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
@@ -23,7 +23,9 @@
     "All 13 authority files pinned in the Chat 1 MANIFEST authoritySnapshots are byte-identical on current main by Git blob SHA.",
     "The six additional Atlasfin registries reviewed by Chat 1 (manifest, property, preset, state, variant, legacy visual.recipe registry) are also byte-identical on current main.",
     "NDC canon and ID grammar, Field Manual, Factory Ledger Agent Gate, Visual Change Master Map, and Visual Core Contract are unchanged between the Chat 1 base and current main.",
-    "AGENTS.md plus the parallel README, chat prompts, interoperability contract, and vocabulary registry changed only to add the shared status-channel coordination protocol; no Tablet candidate vocabulary or authority semantics changed."
+    "AGENTS.md plus the parallel README, chat prompts, interoperability contract, and vocabulary registry changed only to add the shared status-channel coordination protocol; no Tablet candidate vocabulary or authority semantics changed.",
+    "Canonical prompt now explicitly places Chat 1 in Tablet HOLD under INTEGRATION_HANDOFF_AND_PLANNING.",
+    "The continuation override preserves work branch chat1/tablet-visual-promotion-57b01ad8, work head 1b669d98dc9063fe4d6f5f8ddc06262a6968e728, base 57b01ad8bda043ec25763203354b686341bace09, and accounting 929 = 139 candidates + 788 unresolved + 2 conflicts."
   ],
   "decisions": [
     "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
@@ -33,7 +35,9 @@
     "Do not mint canonical NDC, VIS, BND, TGT, LYR, Identity recipe/family/preset, or adapter IDs from the surface worker.",
     "Treat lane output as candidate exchange data only, never as Work Entry authorization, GVAE receipt, runtime certification, or canonical authority.",
     "Classify the base-to-current-main delta as coordination-only for Chat 1: no relevant source/authority drift requires candidate recomputation or broad rediscovery.",
-    "Keep state READY_FOR_INTEGRATION. Recompute only if a future change touches a recorded Chat 1 input authority or changes candidate semantics."
+    "Keep state READY_FOR_INTEGRATION. Recompute only if a future change touches a recorded Chat 1 input authority or changes candidate semantics.",
+    "Do not mutate the Tablet candidate shard while in HOLD absent an explicit bounded correction request from Chat 6/integration.",
+    "Perform only bounded read-only revalidation of recorded Chat 1 authority/source inputs against current main; do not run recensus or broad rediscovery."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json",
@@ -93,7 +97,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Lane is complete and READY_FOR_INTEGRATION. No further Chat 1 writes are warranted now; preserve this mailbox as the live coordination snapshot and update it only if a blocker, relevant authority drift, integration correction request, or new Chat 1 milestone occurs.",
+  "nextAction": "Resolve current main and revalidate only the exact recorded Chat 1 authority/source inputs by hash. If unchanged or coordination-only, remain READY_FOR_INTEGRATION and stop lane work.",
   "handoff": {
     "ready": true,
     "classification": "LANE_CANDIDATE_HANDOFF_READY",
@@ -124,6 +128,8 @@
     "statusBranchFiles": [
       "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/STATUS.json",
       "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md"
-    ]
+    ],
+    "continuationMode": "TABLET_HOLD",
+    "canonicalPhase": "INTEGRATION_HANDOFF_AND_PLANNING"
   }
 }
