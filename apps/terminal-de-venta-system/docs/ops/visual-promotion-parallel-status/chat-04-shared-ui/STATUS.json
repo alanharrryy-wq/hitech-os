@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-04-shared-ui",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:54:18-06:00",
+  "updatedAt": "2026-09-04T20:14:00-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "visual-promotion-chat4-shared-ui-20260904",
   "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
-  "summary": "Chat 4 Shared UI promotion is lane-complete and ready for integration/handoff. The required five-file shard reconciles all 70 Shared UI census targets with zero loss. Read-only drift evaluation shows current main advanced to d08013db42c34ccafb80075392ec6d7a289cf7b5 only through the new status-channel coordination layer plus global FILES_MANIFEST maintenance; no Shared UI candidate path or underlying Shared UI visual authority/evidence path used by Chat 4 was changed. No lane regeneration or rebase is justified. A separate global FILES_MANIFEST integration remains outside Chat 4 authority.",
+  "summary": "Re-read the current canonical continuation prompt at main 66fa02147f0cf31529c090a47f376026b406875a and confirmed Chat 4 is explicitly in Shared UI HOLD. The recorded work branch/head/base/accounting remain authoritative for handoff. Current-main movement since the previous review changes only the canonical continuation prompt and global FILES_MANIFEST maintenance, so there is no relevant Shared UI authority/source drift and no lane recomputation, rebase, merge, or candidate mutation is authorized. Chat 4 remains READY_FOR_INTEGRATION and will respond only to a bounded integration correction request.",
   "blockers": [
     {
       "id": "GLOBAL_FILES_MANIFEST_SCOPE_CONFLICT",
@@ -33,7 +33,11 @@
     "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the immutable lane base remains 57b01ad8bda043ec25763203354b686341bace09.",
     "Base-to-current-main compare is 3 commits ahead and changes only coordination/status artifacts, AGENTS.md, the visual-promotion shared docs/vocabulary with status-channel additions, and prisma-html/FILES_MANIFEST.json maintenance. It does not touch prisma-html/governance/visual-promotion/candidates/shared-ui/**, Shared UI Target Index/expanded evidence, Shared UI Identity adapter/bindings, NDC source registries used, Atlasfin registries used, or the Shared UI projection manifest.",
     "The new shared-contract changes add status-channel reporting as a coordination-only write exception; they do not grant new lane mutation authority or alter Chat 4 candidate ownership.",
-    "Status branch diff against current main contains only this Chat 4 mailbox's STATUS.json and LOG.md; the branch commit count is intentionally not treated as a stable status fact because each report update adds commits."
+    "Status branch diff against current main contains only this Chat 4 mailbox's STATUS.json and LOG.md; the branch commit count is intentionally not treated as a stable status fact because each report update adds commits.",
+    "Canonical prompt current phase is INTEGRATION_HANDOFF_AND_PLANNING and assigns Chat 4 to Shared UI HOLD with exact preserved refs: work branch visual-promotion-chat4-shared-ui-20260904, work head 57b502f1064571cebd917b36882ef9c11e9fa7d8, draft PR #539, base 57b01ad8bda043ec25763203354b686341bace09, accounting 70 = 40 candidates + 19 unresolved + 11 conflicts.",
+    "Since the previous main observation d08013db42c34ccafb80075392ec6d7a289cf7b5, current main 66fa02147f0cf31529c090a47f376026b406875a changes only prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md and prisma-html/FILES_MANIFEST.json.",
+    "No Shared UI candidate path, Target Index/expanded Shared UI evidence, Shared UI Identity authority, NDC input, Atlasfin registry, Shared UI projection manifest, consumer surface, product runtime, or generated product projection changed in that latest main delta.",
+    "No bounded correction request from Chat 6/integration is present in the current Chat 4 mailbox or in the owner's continuation instruction."
   ],
   "decisions": [
     "Reused the current Visual Control/Target Index census and did not perform broad rediscovery.",
@@ -43,7 +47,11 @@
     "Used local candidate binding keys only for the 40 single-region candidate records.",
     "Fail-closed on the global FILES_MANIFEST conflict rather than manufacturing a green check outside Chat 4 ownership.",
     "Kept PR #539 as draft for handoff instead of merging.",
-    "Did not rebase/regenerate the lane merely because main moved: read-only path comparison found no relevant Shared UI authority/candidate overlap, while the changed global manifest remains an integration concern for the authorized composer."
+    "Did not rebase/regenerate the lane merely because main moved: read-only path comparison found no relevant Shared UI authority/candidate overlap, while the changed global manifest remains an integration concern for the authorized composer.",
+    "Followed the normative continuation override: remain in HOLD instead of repeating completed census/promotion analysis.",
+    "Preserved all 19 no-region and 11 multi-region cases without inference, all 70 NDC UNRESOLVED outcomes, all 70 Atlasfin NO_MATCH outcomes, and draft PR #539 without merge.",
+    "Did not mutate the Shared UI candidate shard because current-main changes are coordination/integration-only and no bounded integration correction was requested.",
+    "Did not update FILES_MANIFEST.json; one-time manifest refresh remains integration/composer-owned."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/shared-ui/MANIFEST.json",
@@ -99,6 +107,21 @@
       "name": "status-branch-scope",
       "result": "PASS",
       "detail": "Compared status/vp-chat-04-shared-ui against current main: exactly two modified paths, both inside Chat 4's own mailbox (STATUS.json and LOG.md); no product, candidate shard, global manifest, authority, or other-chat mailbox changes."
+    },
+    {
+      "name": "canonical-continuation-prompt",
+      "result": "PASS_CHAT4_HOLD_CONFIRMED",
+      "detail": "Current main prompt explicitly places Chat 4 in Shared UI HOLD and requires READY_FOR_INTEGRATION with no further lane mutation except bounded integration corrections."
+    },
+    {
+      "name": "latest-main-delta",
+      "result": "PASS_NO_RELEVANT_SHARED_UI_DRIFT",
+      "detail": "d08013db42c34ccafb80075392ec6d7a289cf7b5..66fa02147f0cf31529c090a47f376026b406875a changes only the canonical continuation prompt and FILES_MANIFEST.json."
+    },
+    {
+      "name": "work-head-preservation",
+      "result": "PASS",
+      "detail": "visual-promotion-chat4-shared-ui-20260904 remains identical to 57b502f1064571cebd917b36882ef9c11e9fa7d8."
     }
   ],
   "unresolved": [
@@ -111,18 +134,18 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "No further lane-local mutation is authorized or necessary. Keep this mailbox current if integration state changes; Control Plane/canonical composer can consume draft PR #539 and perform its own authorized deterministic global-manifest integration/revalidation.",
+  "nextAction": "Hold the Shared UI lane at READY_FOR_INTEGRATION. Make no candidate, consumer, runtime, authority, manifest, rebase, or merge mutation unless the integration lane/owner issues one bounded evidence-backed correction request. Continue updating this mailbox on any material integration-state change.",
   "handoff": {
     "pr": 539,
     "prState": "OPEN_DRAFT",
     "workBranch": "visual-promotion-chat4-shared-ui-20260904",
     "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
     "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
-    "currentMainObserved": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
+    "currentMainObserved": "66fa02147f0cf31529c090a47f376026b406875a",
     "relevantMainDrift": false,
     "accounting": "70 = 40 candidates + 19 unresolved + 11 conflicts",
     "integrationOwnerNeeded": "VISUAL_PROMOTION_CONTROL_PLANE_OR_CANONICAL_COMPOSER",
-    "integrationNote": "A coordinator may consume the five Chat 4 shard files and perform the separately authorized global FILES_MANIFEST integration/revalidation. Chat 4 must not make that global write or silently rebase mixed-base output.",
+    "integrationNote": "Current canonical continuation prompt explicitly keeps Chat 4 in HOLD. Coordinator may consume work head 57b502f1064571cebd917b36882ef9c11e9fa7d8; no lane recomputation is warranted. Global FILES_MANIFEST composition/revalidation remains separately authorized integration work.",
     "safety": "Materiality not inspected; broad rediscovery false; no product/runtime/consumer/global authority writes; no canonical IDs minted."
   }
 }
