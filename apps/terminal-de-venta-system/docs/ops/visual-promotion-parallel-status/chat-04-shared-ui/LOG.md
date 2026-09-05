@@ -48,3 +48,7 @@ Validated the status branch boundary against current main. `status/vp-chat-04-sh
 
 ## 2026-09-04T19:53:55-06:00 — COMPLETE
 Chat 4 reporting catch-up and original-lane continuation are complete for the current state. Lane remains `READY_FOR_INTEGRATION`. No user action is required. The only remaining integration dependency is the separately authorized global `FILES_MANIFEST.json` composition/revalidation by the Control Plane/canonical composer.
+
+
+## 2026-09-04T19:54:18-06:00 — PROGRESS
+Normalized the machine-readable snapshot to avoid treating the status branch's own commit count as a stable fact. Each status update naturally adds commits, so the durable scope assertion is path-based: the status branch diff contains only Chat 4's own `STATUS.json` and `LOG.md`.
