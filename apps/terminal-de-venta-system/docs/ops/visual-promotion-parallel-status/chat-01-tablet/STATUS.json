@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:54:52-06:00",
+  "updatedAt": "2026-09-04T19:57:31-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
   "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
-  "summary": "Chat 1 Tablet candidate shard is complete and zero-loss at its recorded base. It reused the existing Tablet census, applied Atlasfin-first conservatively, kept Materiality Catalog in standby, minted no canonical IDs, and wrote only the owned Tablet candidate shard. A bounded current-main authority drift check is the next coordination step before integration consumes the shard.",
+  "summary": "Chat 1 Tablet candidate shard remains complete and handoff-ready. A bounded revalidation against current main d08013db42c34ccafb80075392ec6d7a289cf7b5 found no drift in the recorded Tablet/Identity/projection/Atlasfin authority inputs. The only relevant governance-document changes since the lane base add the shared status channel and do not alter Chat 1 candidate semantics.",
   "blockers": [],
   "findings": [
     "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
@@ -18,7 +18,12 @@
     "Atlasfin-first accounting: 138 MATCHED_RECIPE, 789 NO_MATCH, and 2 NOT_APPLICABLE because physical evidence was in DRIFT.",
     "NDC remained UNRESOLVED for all 929 records because no direct existing NDC authority relation was proven; no NDC meaning was inferred from selector names.",
     "One existing resolved Identity binding was reused only on exact selector plus implementationLayerId equality.",
-    "The two physical conflicts are TGT.CENSUS.TABLET.3B2FED34BC21B5C9FEEC.V1 and TGT.CENSUS.TABLET.850AD4CEF4CCD12BCD05.V1."
+    "The two physical conflicts are TGT.CENSUS.TABLET.3B2FED34BC21B5C9FEEC.V1 and TGT.CENSUS.TABLET.850AD4CEF4CCD12BCD05.V1.",
+    "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5, three commits ahead of Chat 1 base 57b01ad8bda043ec25763203354b686341bace09.",
+    "All 13 authority files pinned in the Chat 1 MANIFEST authoritySnapshots are byte-identical on current main by Git blob SHA.",
+    "The six additional Atlasfin registries reviewed by Chat 1 (manifest, property, preset, state, variant, legacy visual.recipe registry) are also byte-identical on current main.",
+    "NDC canon and ID grammar, Field Manual, Factory Ledger Agent Gate, Visual Change Master Map, and Visual Core Contract are unchanged between the Chat 1 base and current main.",
+    "AGENTS.md plus the parallel README, chat prompts, interoperability contract, and vocabulary registry changed only to add the shared status-channel coordination protocol; no Tablet candidate vocabulary or authority semantics changed."
   ],
   "decisions": [
     "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
@@ -26,7 +31,9 @@
     "Do not inspect or fall back to the Surface Visual Governor Materiality Catalog; keep it STANDBY_USER_INVOKED_ONLY.",
     "Preserve null/UNRESOLVED values where current machine authority is ambiguous; unknown stays unknown.",
     "Do not mint canonical NDC, VIS, BND, TGT, LYR, Identity recipe/family/preset, or adapter IDs from the surface worker.",
-    "Treat lane output as candidate exchange data only, never as Work Entry authorization, GVAE receipt, runtime certification, or canonical authority."
+    "Treat lane output as candidate exchange data only, never as Work Entry authorization, GVAE receipt, runtime certification, or canonical authority.",
+    "Classify the base-to-current-main delta as coordination-only for Chat 1: no relevant source/authority drift requires candidate recomputation or broad rediscovery.",
+    "Keep state READY_FOR_INTEGRATION. Recompute only if a future change touches a recorded Chat 1 input authority or changes candidate semantics."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json",
@@ -62,17 +69,21 @@
       "name": "work branch delta",
       "result": "PASS",
       "details": "work branch is two commits ahead of base and modifies only the five Tablet candidate-shard files."
+    },
+    {
+      "name": "bounded current-main authority drift revalidation",
+      "result": "PASS",
+      "details": "current main d08013db42c34ccafb80075392ec6d7a289cf7b5; 13/13 pinned authority snapshots unchanged by Git blob SHA; 6/6 additional Atlasfin registry inputs unchanged; NDC canon/grammar and core startup authorities unchanged; changed cohort docs are status-channel coordination-only."
     }
   ],
   "unresolved": [
     "Two census targets are physically DRIFT at the recorded base and remain blocked rather than guessed.",
     "788 census records remain unresolved because semantic/application authority was insufficient for a candidate promotion.",
-    "NDC existing-meaning resolution remains unresolved for all 929 records absent direct machine-readable linkage.",
-    "Current main may have advanced after the lane base; relevant authority hashes still need a bounded drift check before integration consumes mixed-base evidence."
+    "NDC existing-meaning resolution remains unresolved for all 929 records absent direct machine-readable linkage."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Run a bounded current-main drift check only across Chat 1 input authorities and update this mailbox immediately with the result; do not rediscover the Tablet surface.",
+  "nextAction": "No further Chat 1 candidate mutation is required. Hand off the candidate branch to canonical integration/control-plane reconciliation; revalidate only if a recorded Chat 1 authority input or candidate-semantic contract later drifts.",
   "handoff": {
     "ready": true,
     "classification": "LANE_CANDIDATE_HANDOFF_READY",
@@ -91,7 +102,12 @@
       "Preserve candidate-only semantics.",
       "Canonical composer must dedupe the one existing resolved Identity binding rather than mint another binding/target.",
       "Do not turn DISCOVERY_ONLY or ELIGIBLE_CANDIDATE into application authorization.",
-      "Before mixed-base integration, compare the exact authority snapshots recorded in MANIFEST.json or perform fresh revalidation if relevant drift exists."
-    ]
+      "Chat 1's pinned input authorities remain byte-equivalent on current main d08013db42c34ccafb80075392ec6d7a289cf7b5; the intervening cohort governance edits are status-channel coordination-only.",
+      "The two recorded physical DRIFT targets remain conflicts and must not be silently normalized."
+    ],
+    "currentMainAtRevalidation": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
+    "relevantAuthorityDrift": false,
+    "coordinationOnlyDrift": true,
+    "revalidationResult": "PASS_BOUNDED_CHAT1_AUTHORITY_EQUIVALENCE"
   }
 }
