@@ -4,13 +4,20 @@
   "lane": "TABLET_PROMOTION",
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
-  "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-04T23:44:00-06:00",
+  "state": "BLOCKED",
+  "updatedAt": "2026-09-04T23:52:00-06:00",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat1/tablet-corpus-cert-20260904",
   "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
-  "summary": "Chat 1 entered CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. A fresh certification branch was created from current canonical main 8cc1918c5e015d1408335c15313e7364e04859c2. The immutable source remains chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728. Work is limited to candidates/tablet/certification/** and must produce a 929/929 strict, provenance-pinned derivative with invalid=0 and semanticMutationCount=0.",
-  "blockers": [],
+  "summary": "Tablet corpus certification dry-run validated 928/929 records under direct physical-reference checks. The sole blocked record is the existing Cobrar Identity-binding reuse target TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1: slotId/componentId/componentUiId/ownerId are not found in expanded Visual Control physical strings and must be validated against the stronger existing Identity binding authority before certification can continue. No certification bytes have been committed.",
+  "blockers": [
+    {
+      "id": "TABLET_EXISTING_BINDING_REFERENCE_DOMAIN_CHECK",
+      "status": "ACTIVE",
+      "targetId": "TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1",
+      "detail": "Strict shape/vocabulary pass. Direct physical lookup does not prove slotId/componentId/componentUiId/ownerId; verify those coordinates against BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 before clearing."
+    }
+  ],
   "findings": [
     "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
     "Chat 1 reconciled all 929 census inputs exactly once: 139 candidate outcomes, 788 unresolved outcomes, and 2 conflicts.",
@@ -31,7 +38,10 @@
     "The worker branch remains exactly two commits ahead of its base and its delta is still limited to the five owned Tablet candidate-shard files.",
     "Canonical phase changed to CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly supersedes Tablet HOLD.",
     "Certification branch chat1/tablet-corpus-cert-20260904 was created from current main 8cc1918c5e015d1408335c15313e7364e04859c2.",
-    "Immutable source provenance remains chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728 with 929 = 139 candidates + 788 unresolved + 2 conflicts."
+    "Immutable source provenance remains chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728 with 929 = 139 candidates + 788 unresolved + 2 conflicts.",
+    "Dry-run corpus accounting remains exact: 929 unique targets = 139 candidates + 788 unresolved + 2 conflicts; semanticMutationCount=0.",
+    "Base 57b01ad8.. to certification base 8cc1918c.. has 22 changed files but zero overlap with 13 recorded Tablet authority snapshot paths and zero overlap with 40 referenced canonical source/generated output paths.",
+    "928/929 records passed strict shape/vocabulary plus direct reference checks; the only pending reference-domain proof is the existing Cobrar Identity-binding reuse record."
   ],
   "decisions": [
     "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
@@ -114,15 +124,20 @@
       "name": "worker branch ownership recheck",
       "result": "PASS",
       "details": "worker branch remains two commits ahead of base and modifies only MANIFEST.json, CANDIDATES.jsonl, UNRESOLVED.jsonl, CONFLICTS.jsonl and SUMMARY.md under candidates/tablet."
+    },
+    {
+      "name": "Tablet corpus certification dry-run",
+      "result": "BLOCKED_1_REFERENCE_DOMAIN_PROOF",
+      "details": "929/929 strict shape/vocabulary structurally valid; 929 unique source-record hashes; 2 DRIFT conflicts preserved; one existing-binding record requires stronger Identity binding coordinate proof for slotId/componentId/componentUiId/ownerId."
     }
   ],
   "unresolved": [
-    "Strict intake normalization and reference validation must still be executed against all 929 source records.",
-    "Completion requires INVALID.jsonl empty, exact 929 certification rows, zero duplicates/missing/extras and semanticMutationCount=0."
+    "Prove the four stronger binding coordinates on TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1 against existing binding BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1.",
+    "Completion still requires 929/929 corpus-valid, invalid=0 and semanticMutationCount=0."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Read the exact Chat 6 candidate schema/control-plane contract at its recorded head, then normalize and certify the immutable 929 Tablet source records with exact source head/file/record hashes.",
+  "nextAction": "Read the exact existing Identity binding record and compare its slotId/componentId/componentUiId/ownerId to the candidate. Clear the blocker only on exact authority match.",
   "handoff": {
     "ready": false,
     "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
@@ -142,6 +157,9 @@
       "corpusValid": 929,
       "invalid": 0,
       "semanticMutationCount": 0
-    }
+    },
+    "dryRunValid": 928,
+    "dryRunInvalid": 1,
+    "activeCertificationBlocker": "TABLET_EXISTING_BINDING_REFERENCE_DOMAIN_CHECK"
   }
 }
