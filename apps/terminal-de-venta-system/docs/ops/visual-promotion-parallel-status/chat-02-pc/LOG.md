@@ -69,3 +69,35 @@ No updates published yet.
 - Worker branch/head/base and accounting remain fixed: `agent/chat2-pc-promotion-20260904` @ `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`, base `57b01ad8bda043ec25763203354b686341bace09`, accounting `827 = 186 + 640 + 1`.
 - Lane resumed only to perform the newly required bounded read-only source/authority hash revalidation against current integration base.
 - Candidate shard regeneration, projection repair, broad rediscovery and product/global-authority mutation remain forbidden.
+
+## 2026-09-04T20:19:17-06:00 — FINDING
+
+- Current canonical `main` is `66fa02147f0cf31529c090a47f376026b406875a`.
+- Bounded revalidation checked the exact PC worker-manifest provenance against current `main`: 28/28 recorded source-authority Git blob SHAs match.
+- Relevant source/authority drift count: 0.
+- Base-to-main changed paths are coordination/prompt/status-channel/global-manifest bytes; none of the 28 PC candidate source-authority inputs changed.
+- Interoperability contract changed only by adding the status-channel write exception.
+- Core promotion vocabulary is semantically unchanged; only `coordinationStatusChannel` was added.
+
+## 2026-09-04T20:19:17-06:00 — DECISION
+
+- Classify current main movement for Chat 2 as `NON_RELEVANT_COORDINATION_ONLY`.
+- Do not regenerate, rebase or mutate the PC candidate shard.
+- Preserve the 139 projection `MISSING` records and the one selector conflict exactly as recorded.
+- Return to `READY_FOR_INTEGRATION` / PC HOLD.
+
+## 2026-09-04T20:19:17-06:00 — VALIDATION
+
+- Source-authority hash revalidation: PASS, 28/28 exact blob matches.
+- Interoperability semantic stability: PASS, status-channel addition only.
+- Vocabulary semantic stability: PASS for scope, authority domains, ID policies, fields, enums, NDC edges, Atlasfin sources, Materiality policy, ownership, forbidden writes and hard truths.
+- Worker branch immutability: PASS, `agent/chat2-pc-promotion-20260904` remains exactly `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`.
+- Five worker output blob SHAs: PASS, unchanged.
+
+## 2026-09-04T20:19:17-06:00 — HANDOFF
+
+- Chat 2 remains `READY_FOR_INTEGRATION`.
+- Current integration base checked: `66fa02147f0cf31529c090a47f376026b406875a`.
+- Revalidation classification: `NON_RELEVANT_COORDINATION_ONLY`.
+- Candidate mutation required: false.
+- Future action is HOLD unless deterministic integration requests one bounded correction backed by stronger authority/evidence.
