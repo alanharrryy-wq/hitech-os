@@ -2,7 +2,7 @@
 
 Status: `CANONICAL_PARALLEL_CHAT_PROMPTS`
 
-Current phase: `CANDIDATE_CORPUS_FINAL_AGGREGATION`
+Current phase: `CORPUS_FINAL_PARALLEL_VERIFICATION`
 
 ## How the user should invoke a chat
 
@@ -40,101 +40,247 @@ These rules are inherited by every chat below:
 
 ## CURRENT CONTINUATION PHASE — NORMATIVE OVERRIDE
 
-Phase: `CANDIDATE_CORPUS_FINAL_AGGREGATION`
+Phase: `CORPUS_FINAL_PARALLEL_VERIFICATION`
 
-The five certification lanes are complete. Their remaining semantic unresolved/conflict states are **valid corpus states**, not certification failures. Do not ask Chats 1–5 to invent semantic authority merely to make the corpus look more complete.
+This phase parallelizes the remaining finalization without creating multiple writers for the same global corpus.
 
-Current certified handoffs:
+Repository truth at phase start:
 
-| Chat | Lane | Certification branch | Certification head | Result |
-|---|---|---|---|---|
-| 1 | Tablet | `chat1/tablet-corpus-cert-20260904` | `fd111022438bab909151c2220b52e95aa5aa7eb3` | 929/929 valid, invalid=0, semanticMutationCount=0 |
-| 2 | PC | `chat2/pc-corpus-cert-20260904` | `8cc979c141000fcedabf832f16468a6ee3e328e2` | 827/827 valid, invalid=0, semanticMutationCount=0 |
-| 3 | Mobile | `chat3/mobile-corpus-cert-20260904` | `664035e83943ae48c923585765d3c505b1bd8c53` | 271/271 valid, invalid=0, semanticMutationCount=0 |
-| 4 | Shared UI | `chat4/shared-ui-corpus-cert-20260904` | `553577aa74045c73ab9c92d1f81538e7e0a8c65a` | 70/70 valid, invalid=0, semanticMutationCount=0 |
-| 5 | Atlasfin | `chat5/atlasfin-corpus-cert-20260904` | `6c7743f55434eb8d3429f286e2f9eae275d93d87` | 2,421/2,421 non-null refs valid, hardInvalidRefCount=0 |
+- canonical main: `1cc4d0d45b3878ace2906d08fa67f325a3b98a9d`;
+- Chat 6 work branch: `chat6/candidate-corpus-cert-20260904`;
+- Chat 6 observed work head before this prompt update: `9fdc3545d8b3309395f9276723c81f9799b1c60f`;
+- AutoMesh/current-head authority: PASS;
+- fresh task-exact Mesh: `PASS_COMPOSED_AUTHORITY_MESH`;
+- universal anti-rework PROPOSAL: PASS;
+- universal anti-rework MUTATION: PASS;
+- independent surface certification audit: `2,097/2,097` PASS with zero semantic/provenance mismatches;
+- Atlasfin certification audit: `2,421/2,421` PASS, invalid=0;
+- exact-head/hash-pinned normalizer/intake: implemented and fail-closed;
+- Materiality Catalog remains uninspected;
+- product/runtime mutation remains zero;
+- canonical promotion remains zero.
 
-Aggregate certified surface count is exactly `2,097`.
+The five certification heads remain immutable accepted evidence:
 
-### Chats 1–5 continuation
+| Chat | Lane | Certification head |
+|---|---|---|
+| 1 | Tablet | `fd111022438bab909151c2220b52e95aa5aa7eb3` |
+| 2 | PC | `8cc979c141000fcedabf832f16468a6ee3e328e2` |
+| 3 | Mobile | `664035e83943ae48c923585765d3c505b1bd8c53` |
+| 4 | Shared UI | `553577aa74045c73ab9c92d1f81538e7e0a8c65a` |
+| 5 | Atlasfin | `6c7743f55434eb8d3429f286e2f9eae275d93d87` |
 
-Chats 1–5 are now `CERTIFIED_HOLD`.
+## Parallel verification architecture
 
-They must:
+There is one global writer and five independent witnesses.
 
-1. preserve the exact certification branch/head above;
-2. make no new certification mutation by initiative;
-3. keep unresolved/conflict truth unchanged;
-4. not touch `prisma-html/FILES_MANIFEST.json`;
-5. not open or merge certification PRs;
-6. not touch product/runtime/global authority;
-7. respond only if Chat 6 reports a bounded, evidence-backed certification defect tied to an exact target/reference/provenance failure.
+- Chats 1–4 independently verify their certified surface truth and publish a deterministic witness receipt to their own status mailbox.
+- Chat 5 independently verifies Atlasfin reference/snapshot expectations and publishes an Atlasfin witness receipt.
+- Chat 6 remains the **only** writer/compositor for the global corpus, integration branch, one-time FILES_MANIFEST refresh, final PR and merge.
+- Chats 1–5 do not wait for Chat 6 and do not mutate their certification branches.
+- Chat 6 does not wait to materialize the corpus. It continues global generation immediately and consumes the five witness receipts before final PR closure.
+- No Chat may modify another Chat's certification bytes or mailbox.
 
-If Chat 6 asks for a correction, the owning Chat must:
-- reproduce the failure against the exact certification head;
-- fix only its owned certification directory;
-- preserve original worker provenance;
-- require invalid=0 and semanticMutationCount=0 after the correction;
-- publish the new exact certification head to its mailbox.
+A witness receipt is coordination evidence, not canonical authority, Work Entry authorization or runtime certification.
 
-Do not resolve semantic/product blockers in this phase. For example:
-- Tablet's 788 unresolved and 2 physical DRIFT conflicts remain valid unresolved/blocker states;
-- PC's selector conflict and 139 projection MISSING states remain valid;
-- Mobile's 138 DRIFT records remain unresolved as to repair direction;
-- Shared UI's 19 no-region and 11 multi-region cases remain valid unresolved/conflict states;
-- Atlasfin recipe equality remains review evidence only.
+### Common witness rules for Chats 1–5
 
-### CHAT 6 — FINAL GLOBAL CORPUS AGGREGATION
+Perform the verification read-only from exact Git head-tree bytes.
 
-Chat 6 is the only active assembly lane.
+Write **only** to your existing dedicated status mailbox branch. Do not create source/certification commits.
+
+Under `handoff.parallelWitness` publish at minimum:
+
+- `phase: CORPUS_FINAL_PARALLEL_VERIFICATION`;
+- `result`;
+- `certificationHead`;
+- `expectedInputCount`;
+- exact certification output Git blob SHAs or SHA-256 digests used;
+- `invalidCount`;
+- `semanticMutationCount`;
+- `duplicateTargetIds` where applicable;
+- surface/reference-specific invariant counts;
+- `materialityCatalogInspected: false`;
+- `productRuntimeMutation: false`;
+- `canonicalPromotionPerformed: false`;
+- exact defects, if any.
+
+A PASS receipt must be reproducible from the immutable certification head.
+
+If a real defect exists, publish `FAIL_*_WITNESS` with the exact target/reference, source file/line/hash and violated invariant. Do not repair anything unless Chat 6 later issues a bounded correction request.
+
+---
+
+### CHAT 1 — TABLET FINAL WITNESS
+
+Read only:
+
+`chat1/tablet-corpus-cert-20260904@fd111022438bab909151c2220b52e95aa5aa7eb3`
+
+Verify independently:
+
+- NORMALIZED = 929;
+- CERTIFICATION = 929;
+- INVALID = 0;
+- unique target IDs = 929;
+- semanticMutationCount = 0;
+- certification labels remain:
+  - 139 `VALID_ELIGIBLE_CANDIDATE`;
+  - 788 `VALID_REGISTER_TARGET_FIRST`;
+  - 2 `VALID_BLOCKED`;
+- physical partition remains 927 CURRENT + 2 DRIFT;
+- both known Tablet DRIFT target IDs remain blocked;
+- the existing Cobrar Identity binding reuse remains exact and is not promoted beyond its recorded state;
+- source head/file/line/record-hash provenance is complete.
+
+Publish:
+
+`PASS_TABLET_CORPUS_WITNESS`
+
+only if every invariant passes.
+
+Then remain in `CERTIFIED_HOLD`.
+
+---
+
+### CHAT 2 — PC FINAL WITNESS
+
+Read only:
+
+`chat2/pc-corpus-cert-20260904@8cc979c141000fcedabf832f16468a6ee3e328e2`
+
+Verify independently:
+
+- NORMALIZED = 827;
+- CERTIFICATION = 827;
+- INVALID = 0;
+- unique target IDs = 827;
+- semanticMutationCount = 0;
+- all 827 certification labels remain `VALID_REGISTER_TARGET_FIRST`;
+- physical partition remains 826 CURRENT + 1 DRIFT;
+- projection partition remains 688 CURRENT + 139 MISSING;
+- selector conflict for `TGT.CENSUS.PC.097AB2F857F353CA4288.V1` remains exactly unresolved;
+- no projection MISSING record was silently repaired;
+- provenance hashes are complete.
+
+Publish:
+
+`PASS_PC_CORPUS_WITNESS`
+
+only if every invariant passes.
+
+Then remain in `CERTIFIED_HOLD`.
+
+---
+
+### CHAT 3 — MOBILE FINAL WITNESS
+
+Read only:
+
+`chat3/mobile-corpus-cert-20260904@664035e83943ae48c923585765d3c505b1bd8c53`
+
+Verify independently:
+
+- NORMALIZED = 271;
+- CERTIFICATION = 271;
+- INVALID = 0;
+- unique target IDs = 271;
+- semanticMutationCount = 0;
+- all 271 certification labels remain `VALID_REGISTER_TARGET_FIRST`;
+- projection partition remains exactly 133 CURRENT + 138 DRIFT;
+- no RIFAT-vs-product repair direction was selected for the 138 DRIFT records;
+- representation normalization preserved original qualified/raw values in provenance;
+- strict NDC/Atlasfin/Identity references remain valid;
+- all source and normalized record hashes reproduce.
+
+Publish:
+
+`PASS_MOBILE_CORPUS_WITNESS`
+
+only if every invariant passes.
+
+Then remain in `CERTIFIED_HOLD`.
+
+---
+
+### CHAT 4 — SHARED UI FINAL WITNESS
+
+Read only:
+
+`chat4/shared-ui-corpus-cert-20260904@553577aa74045c73ab9c92d1f81538e7e0a8c65a`
+
+Verify independently:
+
+- NORMALIZED = 70;
+- CERTIFICATION = 70;
+- INVALID = 0;
+- unique target IDs = 70;
+- semanticMutationCount = 0;
+- certification labels remain 40 `VALID_REGISTER_TARGET_FIRST` + 30 `VALID_BLOCKED`;
+- 19 no-region unresolved records remain unresolved;
+- 11 multi-region conflicts remain conflicts;
+- all 70 NDC outcomes remain UNRESOLVED;
+- all 70 Atlasfin outcomes remain NO_MATCH;
+- projection remains CURRENT for all 70;
+- no consumer/product/global authority bytes changed.
+
+Publish:
+
+`PASS_SHARED_UI_CORPUS_WITNESS`
+
+only if every invariant passes.
+
+Then remain in `CERTIFIED_HOLD`.
+
+---
+
+### CHAT 5 — ATLASFIN FINAL WITNESS
+
+Read only:
+
+`chat5/atlasfin-corpus-cert-20260904@6c7743f55434eb8d3429f286e2f9eae275d93d87`
+
+Use current structured Atlasfin authority and the immutable certification evidence.
+
+Verify independently:
+
+- source surface outcomes = 2,097;
+- non-null Atlasfin references = 2,421;
+- valid normalized references = 2,421;
+- hard invalid references = 0;
+- representation-only adapter normalizations = 341;
+- semanticMutationCount = 0;
+- every reference retains source head/file/line/hash provenance;
+- recipe review groups are re-derived from evidence;
+- recipe equality remains `semanticCoalescingAllowed=false`;
+- all-null/NO_MATCH groups remain excluded from semantic coalescing;
+- Materiality Catalog remains completely uninspected.
+
+Prepare the expected read-only snapshot acceptance criteria that Chat 6 must satisfy after materializing the global corpus. Do not write the global snapshot yourself.
+
+Publish:
+
+`PASS_ATLASFIN_CORPUS_WITNESS`
+
+only if every invariant passes.
+
+Then remain in `CERTIFIED_HOLD`.
+
+---
+
+### CHAT 6 — GLOBAL COMPOSITOR + INTEGRATOR
+
+Chat 6 continues immediately. Do not wait for witness receipts before materializing the corpus.
 
 Current work branch:
 
 `chat6/candidate-corpus-cert-20260904`
 
-Existing Control Plane source:
+Preserve all current-head Authority Mesh and anti-rework evidence, but because this prompt update advances `main`, revalidate authority against the new canonical HEAD before any *new* mutation performed after that movement. Use AutoMesh v2 rules. Do not silently reuse stale HEAD-bound authority.
 
-- branch: `chat6/visual-promotion-control-plane-20260904`
-- source head: `7cc48fa49906c8f443b267fd6c3590fd3f4340fb`
-- validated equivalent code head: `cb21ca01ecf8ec755fe34820d3d5b34673f70581`
+Remaining work:
 
-Chat 6 already has a successful task-exact corpus-certification Authority Mesh attempt recorded in its mailbox. Because this canonical prompt merge moves `main`, Chat 6 must **revalidate authority against the current HEAD** with AutoMesh v2 before mutation. Do not silently reuse the old HEAD-bound evidence.
-
-If revalidation returns `PASS_ALREADY_CURRENT` or `PASS_NO_RELEVANT_DRIFT`, use only the resulting current-HEAD-bound attestation. Any relevant/non-ancestor/invalid drift requires a fresh Mesh.
-
-#### Mandatory anti-rework gate
-
-Before source mutation:
-
-1. Read current `PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json`.
-2. Classify this exact bounded task against canonical capability IDs. At minimum re-evaluate `visual.generic_application_engine_v1`; include any additional capability only if current Ledger authority explicitly proves it is affected.
-3. Run the universal anti-rework gate in `PROPOSAL` mode.
-4. Do not rebuild `visual.generic_application_engine_v1` if it remains `DONE / SOURCE_READY / doNotRebuild=true`; use `REUSE`, `VERIFY` or `ADVANCE` according to the live Ledger/nextGate.
-5. After current-HEAD Authority Mesh/revalidation evidence is available, run the same gate in `MUTATION` mode with the reviewed Mesh summary.
-6. Only `PASS_ANTI_REWORK_GATE` permits the bounded Control Plane/corpus source mutation.
-
-#### Exact accepted certification inputs
-
-Consume by exact head-tree bytes, never by reconstructing history:
-
-- Tablet certification: `fd111022438bab909151c2220b52e95aa5aa7eb3`
-- PC certification: `8cc979c141000fcedabf832f16468a6ee3e328e2`
-- Mobile certification: `664035e83943ae48c923585765d3c505b1bd8c53`
-- Shared UI certification: `553577aa74045c73ab9c92d1f81538e7e0a8c65a`
-- Atlasfin certification: `6c7743f55434eb8d3429f286e2f9eae275d93d87`
-
-Also consume the exact original worker heads and Chat 5 source bridge head already recorded by the previous plan, so provenance remains independently verifiable.
-
-#### Chat 6 must finish these unresolved tasks
-
-1. Bring forward the exact Chat 6 owned-path bytes from `7cc48fa49906c8f443b267fd6c3590fd3f4340fb` by head-tree extraction.
-2. Implement/test the fail-closed exact-head/hash-pinned intake normalizer.
-3. Register only the exact known worker/certification heads and hashes. Unknown head/hash/shape fails closed.
-4. Add the separate semantic reconciliation review key without weakening duplicate/collision fingerprints.
-5. Verify all five certification handoffs independently before aggregation.
-6. Generate the global certification corpus under:
-   `prisma-html/governance/visual-promotion/contracts/corpus-certification/**`
-7. Required global outputs remain:
+1. Materialize the nine global corpus outputs:
    - `CORPUS_MANIFEST.json`
    - `CANDIDATE_CORPUS.jsonl`
    - `CERTIFICATION.jsonl`
@@ -144,66 +290,58 @@ Also consume the exact original worker heads and Chat 5 source bridge head alrea
    - `CURRENT_TRUTH.json`
    - `SURFACE_READINESS.json`
    - `SUMMARY.md`
-8. Global invariants:
-   - `2,097/2,097` normalized records;
-   - `2,097/2,097` certification rows;
+2. Certify:
+   - 2,097/2,097 normalized;
+   - 2,097/2,097 certification;
    - invalid=0;
    - missing=0;
    - extra=0;
    - duplicateTargetIds=0;
    - semanticMutationCount=0;
-   - all source/certification heads and record hashes pinned;
-   - unresolved/conflict semantics preserved;
-   - `currentlyAuthorizedCanonicalPromotions=0`;
    - `GVAE_EXACT_APPLY=0`;
+   - `currentlyAuthorizedCanonicalPromotions=0`;
    - `runtimeVisualGreen=false`;
    - no whole surface APPLY_READY.
-9. Rebuild/validate the Atlasfin Bridge snapshot only as a read-only consumer of the assembled corpus. Materiality remains completely uninspected.
-10. Generate Current Truth and Surface Readiness from certified corpus evidence, not assumptions.
-11. Assemble accepted bytes on one fresh integration branch from the then-current `main`.
-12. Refresh `prisma-html/FILES_MANIFEST.json` exactly once, after every accepted `prisma-html` byte is present.
-13. Run all required gates:
-   - strict candidate/manifest/corpus schema validation;
-   - closed vocabulary and authority-reference validation;
-   - zero-loss/provenance/hash validation;
-   - duplicate/collision + semantic-review validation;
-   - Work Entry/no-broad-rediscovery gates;
-   - Atlasfin bridge/static tests;
-   - Current Truth / Surface Readiness no-fake-green checks;
-   - Identity/RIFAT no-regression;
+3. Rebuild/validate the Atlasfin snapshot only as a read-only consumer of the materialized corpus.
+4. Continue using exact-head/hash-pinned fail-closed intake. Unknown head/hash/shape must fail closed.
+5. Create a fresh integration branch from the then-current `main` and assemble only accepted exact head-tree bytes.
+6. Before the final manifest refresh, re-read all five witness mailboxes.
+7. Require these five independent receipts:
+   - `PASS_TABLET_CORPUS_WITNESS`;
+   - `PASS_PC_CORPUS_WITNESS`;
+   - `PASS_MOBILE_CORPUS_WITNESS`;
+   - `PASS_SHARED_UI_CORPUS_WITNESS`;
+   - `PASS_ATLASFIN_CORPUS_WITNESS`.
+8. Cross-check the materialized global corpus slices against those witness expectations. A witness mismatch is a hard stop, not a warning.
+9. If a witness reports a real certification defect, issue a bounded correction request to the owning Chat. Do not patch its certification bytes inside Chat 6.
+10. Once all accepted bytes and witness checks pass, refresh `prisma-html/FILES_MANIFEST.json` exactly once.
+11. Run in parallel where CI infrastructure permits:
    - VISCORE;
    - CI;
    - ForgeOS Quality Gate;
-   - Sync Sentinel.
-14. Open **one** candidate-corpus-only integration PR.
-15. If the exact final PR head is clean/mergeable and all required checks are green, merge it to `main` under the repository owner's standing merge authorization.
-16. Verify merged `main` contains the exact accepted corpus/certification/control-plane bytes and the one final manifest.
-17. Close PR #539 and/or #540 as superseded only if the merged corpus integration contains their intended accepted bytes byte-for-byte. Do not merge those PRs separately merely for history.
-18. Update Chat 6 mailbox to `DONE` with:
-   `PASS_CANDIDATE_CORPUS_CERTIFIED`
+   - Sync Sentinel;
+   - Identity/RIFAT no-regression;
+   - strict schemas/vocabulary/authority refs;
+   - Work Entry/no-broad-rediscovery;
+   - Atlasfin static/read-only;
+   - Current Truth/Surface Readiness no-fake-green.
+12. Open one candidate-corpus-only integration PR.
+13. Merge only if the exact final PR head is clean/mergeable and every required gate is green. Standing repository-owner merge authorization applies.
+14. Verify merged `main` contains the exact accepted corpus/control-plane/certification bytes and the one final FILES_MANIFEST.
+15. Close PR #539/#540 only if byte-for-byte supersession is proven.
+16. Publish `DONE / PASS_CANDIDATE_CORPUS_CERTIFIED` to the Chat 6 mailbox.
 
-#### Fail-closed correction loop
+### Serial barriers that must not be faked
 
-If Chat 6 finds a real certification defect in Chats 1–5:
+Only these steps remain intentionally serial:
 
-- identify the exact Chat, target/reference, file, head and failing invariant;
-- publish the bounded correction request in Chat 6 mailbox;
-- do not patch another Chat's owned certification bytes inside Chat 6;
-- consume the corrected certification head only after the owning Chat reports invalid=0 and semanticMutationCount=0;
-- resume aggregation without recensus or semantic reinvention.
+`global corpus materialized -> five witness receipts cross-checked -> exact final assembly -> one FILES_MANIFEST refresh -> exact PR-head gates -> merge -> main verification`
 
-#### Hard stop after successful corpus merge
+Everything else above should proceed in parallel.
 
-This final aggregation still does **not** authorize:
+### Hard stop remains
 
-- canonical Identity/RIFAT/NDC/Target Index promotion;
-- new canonical `BND.*`, `TGT.*`, `LYR.*`, `VIS.*`, NDC or adapter IDs;
-- product/runtime/CSS/TSX mutation;
-- projection repair;
-- Materiality Catalog use;
-- claiming corpus-valid means APPLY_READY.
-
-Completion of this phase means the entire candidate corpus is merged, strict-valid, provenance-complete and machine-queryable. It does not mean all semantic blockers have been solved.
+This phase does not authorize canonical Identity/RIFAT/NDC/Target Index promotion, new canonical IDs, product/runtime/CSS/TSX mutation, projection repair, Materiality Catalog use or any claim that corpus-valid means APPLY_READY.
 
 
 ---
