@@ -146,3 +146,13 @@ No updates published yet.
 - Write boundary: only `prisma-html/governance/visual-promotion/candidates/tablet/certification/**`.
 - No PR and no `prisma-html/FILES_MANIFEST.json` update are allowed in this lane.
 
+## 2026-09-04T23:52:00-06:00 — BLOCKER
+
+- Dry-run strict corpus validation reached **928/929 direct-reference PASS**.
+- Strict shape and closed vocabulary are **929/929 PASS**.
+- Zero-loss remains **929 unique targets** with source buckets **139 / 788 / 2**.
+- The sole pending record is `TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1`, the one existing Identity-binding reuse.
+- Its `slotId`, `componentId`, `componentUiId` and `ownerId` are not direct expanded Visual Control references. This is not being guessed valid.
+- Required proof: exact match against existing authority `BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1`.
+- No certification files have been committed while this proof is pending.
+
