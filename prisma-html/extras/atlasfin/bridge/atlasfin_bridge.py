@@ -71,6 +71,7 @@ REGISTRY_RECORD_KINDS = {
 }
 
 WORKER_OUTCOME_FILES = ("CANDIDATES.jsonl", "UNRESOLVED.jsonl", "CONFLICTS.jsonl")
+WORKER_REQUIRED_FILES = ("MANIFEST.json", *WORKER_OUTCOME_FILES, "SUMMARY.md")
 
 
 class BridgeError(RuntimeError):
@@ -376,6 +377,18 @@ def _load_worker_lane(repo: Path, surface_key: str) -> dict[str, Any]:
     records: list[dict[str, Any]] = []
     counts: dict[str, int] = {}
 
+    for required_name in WORKER_REQUIRED_FILES:
+        if not (lane / required_name).is_file():
+            blockers.append(f"WORKER_REQUIRED_FILE_MISSING:{required_name}")
+
+    manifest_base_head = (
+        str(manifest.get("baseHead") or "").lower()
+        if isinstance(manifest, dict)
+        else None
+    )
+    if manifest_base_head and not HEX40.fullmatch(manifest_base_head):
+        blockers.append("WORKER_MANIFEST_BASE_HEAD_INVALID")
+
     for filename in WORKER_OUTCOME_FILES:
         path = lane / filename
         if not path.is_file():
@@ -386,6 +399,9 @@ def _load_worker_lane(repo: Path, surface_key: str) -> dict[str, Any]:
         counts[filename] = len(rows)
         for idx, row in enumerate(rows, start=1):
             blockers.extend(_candidate_conformance(row, surface_key, filename, idx))
+            row_head = str(row.get("baseHead") or "").lower()
+            if manifest_base_head and row_head and row_head != manifest_base_head:
+                blockers.append(f"WORKER_BASE_HEAD_MISMATCH:{filename}:{idx}")
             records.append(
                 _worker_bridge_record(
                     row,
