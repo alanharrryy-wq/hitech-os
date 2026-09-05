@@ -149,8 +149,11 @@ def _semantic_mutation(row: Mapping[str, Any]) -> Any:
     if "semanticMutation" in row:
         return row.get("semanticMutation")
     normalization = row.get("normalization")
-    if isinstance(normalization, Mapping):
+    if isinstance(normalization, Mapping) and "semanticMutation" in normalization:
         return normalization.get("semanticMutation")
+    validation = row.get("validation")
+    if isinstance(validation, Mapping) and "semanticMutation" in validation:
+        return validation.get("semanticMutation")
     return None
 
 
