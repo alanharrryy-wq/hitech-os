@@ -4,20 +4,126 @@
   "lane": "ATLASFIN_BRIDGE",
   "statusBranch": "status/vp-chat-05-atlasfin",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-05-atlasfin",
-  "state": "NOT_STARTED",
-  "updatedAt": null,
-  "baseHead": null,
-  "workBranch": null,
-  "workHead": null,
-  "summary": "No status report has been published yet.",
-  "blockers": [],
-  "findings": [],
-  "decisions": [],
-  "changedPaths": [],
-  "validations": [],
-  "unresolved": [],
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T19:50:29-06:00",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "workBranch": "chat5-atlasfin-bridge-20260904",
+  "workHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
+  "summary": "Chat 5 Atlasfin Bridge implemented as a bounded read-only bridge under prisma-html/extras/atlasfin/bridge/** and published in PR #540. It reuses the 418-element Atlasfin catalog and structured registries, preserves authority-domain separation, consumes optional worker candidate shards without fabricating missing data, exposes current Cobrar evidence as read-only reference, and leaves Materiality Catalog in STANDBY_USER_INVOKED_ONLY.",
+  "blockers": [
+    {
+      "code": "FILES_MANIFEST_INTEGRATION_REQUIRED",
+      "status": "OPEN_INTEGRATION_ONLY",
+      "detail": "PRISMA VISCORE1 Certification is red only at the final committed prisma-html/FILES_MANIFEST.json parity step because Chat 5 added five bridge files. Chat 5 ownership forbids writing that global manifest; the integration/composer lane must consume the generated manifest candidate."
+    }
+  ],
+  "findings": [
+    "Atlasfin current manifest reports ATLAS_COMPLETE_27_PAGES with 418 catalog elements.",
+    "Structured Atlasfin registries currently expose 79 properties, 32 families, 32 presets, 8 recipes, 19 states, 16 variants, 8 adapters and 1 asset.",
+    "Current Cobrar exact-target evidence remains available and binding BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 is resolved; the bridge keeps Identity recipe IDs separate from Atlasfin recipe IDs.",
+    "The optional VISCORE Atlasfin status feed may be absent in-tree; bridge reports PENDING_NOT_PRESENT rather than synthesizing status.",
+    "Materiality Catalog was not inspected and the bridge contains a fail-closed guard against reading it automatically."
+  ],
+  "decisions": [
+    "Reuse existing Atlasfin/VISCORE/GVAE foundations; do not rebuild Atlasfin, Identity Dictionary, RIFAT, Target Index or Visual Control.",
+    "Keep bridge read-only and contained to Chat 5-owned path.",
+    "Treat absent worker shards as PENDING_NOT_PRESENT and malformed/partial shards as INVALID.",
+    "Do not modify prisma-html/FILES_MANIFEST.json from Chat 5; hand that parity update to the integration/composer lane.",
+    "Do not merge PR #540 from Chat 5."
+  ],
+  "changedPaths": [
+    "prisma-html/extras/atlasfin/bridge/atlasfin_bridge.py",
+    "prisma-html/extras/atlasfin/bridge/PRISMA_ATLASFIN_VISUAL_PROMOTION_BRIDGE_V1.schema.json",
+    "prisma-html/extras/atlasfin/bridge/README.md",
+    "prisma-html/extras/atlasfin/bridge/fixtures/tablet-candidate.json",
+    "prisma-html/extras/atlasfin/bridge/test_atlasfin_bridge.py"
+  ],
+  "validations": [
+    {
+      "name": "CI",
+      "result": "PASS",
+      "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
+    },
+    {
+      "name": "PRISMA Sync Sentinel Watch",
+      "result": "PASS",
+      "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
+    },
+    {
+      "name": "ForgeOS Quality Gate",
+      "result": "PASS",
+      "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
+    },
+    {
+      "name": "GVAE V1 deterministic source/static suite",
+      "result": "PASS_134_ZERO_SKIPS"
+    },
+    {
+      "name": "GVAE mandatory registered-target mutation gate",
+      "result": "PASS"
+    },
+    {
+      "name": "Universal Visual Work Entry Gate",
+      "result": "PASS"
+    },
+    {
+      "name": "Fresh task-scoped Authority Mesh with native Layer Map",
+      "result": "PASS"
+    },
+    {
+      "name": "PRISMA HTML source validator",
+      "result": "PASS"
+    },
+    {
+      "name": "VISCORE architecture check",
+      "result": "PASS"
+    },
+    {
+      "name": "Identity Dictionary gate",
+      "result": "PASS"
+    },
+    {
+      "name": "RIFAT authority no-regression gate",
+      "result": "PASS_NO_NEW_REGRESSION"
+    },
+    {
+      "name": "Atlasfin static gate",
+      "result": "PASS_27_OF_27_PAGES_20_OF_20_TASKS_ZERO_ISSUES"
+    },
+    {
+      "name": "No fake READY gate",
+      "result": "PASS"
+    },
+    {
+      "name": "PRISMA VISCORE1 Certification overall",
+      "result": "BLOCKED_ONLY_BY_FILES_MANIFEST_PARITY",
+      "detail": "All preceding VISCORE1 steps passed; final committed FILES_MANIFEST parity failed because the five new Chat 5 files are intentionally not written into the global manifest from this lane."
+    }
+  ],
+  "unresolved": [
+    "Integration/composer lane must update/regenerate prisma-html/FILES_MANIFEST.json for the five Chat 5 bridge files.",
+    "PR #540 remains open and must be integrated/merged by the owning coordination lane after cohort checks.",
+    "The Chat 5 narrow test file exists but standing workflows do not invoke it directly; no workflow modification was made because .github/workflows/** is outside Chat 5 ownership."
+  ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Await first report from assigned chat.",
-  "handoff": null
+  "nextAction": "Remain available for integration feedback on PR #540; if the composer requests a bounded bridge correction, apply it only in Chat 5 work scope and immediately refresh this mailbox.",
+  "handoff": {
+    "pullRequest": 540,
+    "pullRequestUrl": "https://github.com/prismahitech/hitech-os/pull/540",
+    "integrationState": "READY_FOR_INTEGRATION_WITH_MANIFEST_PARITY_HANDOFF",
+    "generatedManifestArtifact": {
+      "workflowRunId": 33936224670,
+      "artifactId": 9960264654,
+      "digest": "sha256:54f10cb8d7d04b10de3af4feb58a25b1791f0758fab2552de020184dd78e7cdc",
+      "purpose": "Candidate prisma-html/FILES_MANIFEST.json containing the five Chat 5 bridge files; consume only from the integration/composer lane."
+    },
+    "invariants": [
+      "Do not inspect or promote Materiality Catalog automatically.",
+      "Do not treat Atlasfin as second editable authority.",
+      "Do not collapse Atlasfin IDs with Identity/RIFAT/NDC IDs.",
+      "Do not promote candidate evidence to authority or runtime certification.",
+      "Do not modify product/runtime from this bridge."
+    ]
+  }
 }
