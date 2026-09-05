@@ -4,18 +4,13 @@
   "lane": "SHARED_UI_PROMOTION",
   "statusBranch": "status/vp-chat-04-shared-ui",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui",
-  "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T20:14:00-06:00",
-  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
-  "workBranch": "visual-promotion-chat4-shared-ui-20260904",
-  "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
-  "summary": "Re-read the current canonical continuation prompt at main 66fa02147f0cf31529c090a47f376026b406875a and confirmed Chat 4 is explicitly in Shared UI HOLD. The recorded work branch/head/base/accounting remain authoritative for handoff. Current-main movement since the previous review changes only the canonical continuation prompt and global FILES_MANIFEST maintenance, so there is no relevant Shared UI authority/source drift and no lane recomputation, rebase, merge, or candidate mutation is authorized. Chat 4 remains READY_FOR_INTEGRATION and will respond only to a bounded integration correction request.",
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-04T23:44:00-06:00",
+  "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "workBranch": "chat4/shared-ui-corpus-cert-20260904",
+  "workHead": null,
+  "summary": "Started CANDIDATE_CORPUS_CERTIFICATION_PARALLEL for Chat 4 from current canonical main. Certification will create a strict derivative of the immutable Shared UI worker corpus at source head 57b502f1064571cebd917b36882ef9c11e9fa7d8, preserving all 70 target IDs, 40/19/11 source accounting, 70 NDC UNRESOLVED outcomes, 70 Atlasfin NO_MATCH outcomes, and all semantic decisions. Only certification/** is writable on the new work branch.",
   "blockers": [
-    {
-      "id": "GLOBAL_FILES_MANIFEST_SCOPE_CONFLICT",
-      "status": "ACTIVE_EXTERNAL_INTEGRATION",
-      "detail": "PRISMA VISCORE1 Certification fails only at 'Committed file manifest must already match'. prisma-html/tools/refresh_files_manifest.py inventories the five new prisma-html lane files, but the Chat 4 worker contract forbids writes to global FILES_MANIFEST.json, its generator, workflow, or other lanes. This does not invalidate lane handoff readiness."
-    },
     {
       "id": "PROMOTION_SEMANTIC_BLOCKERS_RECORDED",
       "status": "RECORDED_NOT_LANE_MUTATION_AUTHORITY",
@@ -37,7 +32,8 @@
     "Canonical prompt current phase is INTEGRATION_HANDOFF_AND_PLANNING and assigns Chat 4 to Shared UI HOLD with exact preserved refs: work branch visual-promotion-chat4-shared-ui-20260904, work head 57b502f1064571cebd917b36882ef9c11e9fa7d8, draft PR #539, base 57b01ad8bda043ec25763203354b686341bace09, accounting 70 = 40 candidates + 19 unresolved + 11 conflicts.",
     "Since the previous main observation d08013db42c34ccafb80075392ec6d7a289cf7b5, current main 66fa02147f0cf31529c090a47f376026b406875a changes only prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md and prisma-html/FILES_MANIFEST.json.",
     "No Shared UI candidate path, Target Index/expanded Shared UI evidence, Shared UI Identity authority, NDC input, Atlasfin registry, Shared UI projection manifest, consumer surface, product runtime, or generated product projection changed in that latest main delta.",
-    "No bounded correction request from Chat 6/integration is present in the current Chat 4 mailbox or in the owner's continuation instruction."
+    "No bounded correction request from Chat 6/integration is present in the current Chat 4 mailbox or in the owner's continuation instruction.",
+    "Canonical phase is now CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly supersedes the prior HOLD. Chat 4 must create chat4/shared-ui-corpus-cert-20260904 from current main and write only prisma-html/governance/visual-promotion/candidates/shared-ui/certification/**."
   ],
   "decisions": [
     "Reused the current Visual Control/Target Index census and did not perform broad rediscovery.",
@@ -51,15 +47,10 @@
     "Followed the normative continuation override: remain in HOLD instead of repeating completed census/promotion analysis.",
     "Preserved all 19 no-region and 11 multi-region cases without inference, all 70 NDC UNRESOLVED outcomes, all 70 Atlasfin NO_MATCH outcomes, and draft PR #539 without merge.",
     "Did not mutate the Shared UI candidate shard because current-main changes are coordination/integration-only and no bounded integration correction was requested.",
-    "Did not update FILES_MANIFEST.json; one-time manifest refresh remains integration/composer-owned."
+    "Did not update FILES_MANIFEST.json; one-time manifest refresh remains integration/composer-owned.",
+    "Beginning strict corpus certification as a derivative, never rewriting the immutable source worker bytes or draft PR #539."
   ],
-  "changedPaths": [
-    "prisma-html/governance/visual-promotion/candidates/shared-ui/MANIFEST.json",
-    "prisma-html/governance/visual-promotion/candidates/shared-ui/CANDIDATES.jsonl",
-    "prisma-html/governance/visual-promotion/candidates/shared-ui/UNRESOLVED.jsonl",
-    "prisma-html/governance/visual-promotion/candidates/shared-ui/CONFLICTS.jsonl",
-    "prisma-html/governance/visual-promotion/candidates/shared-ui/SUMMARY.md"
-  ],
+  "changedPaths": [],
   "validations": [
     {
       "name": "work-branch-head",
@@ -122,30 +113,32 @@
       "name": "work-head-preservation",
       "result": "PASS",
       "detail": "visual-promotion-chat4-shared-ui-20260904 remains identical to 57b502f1064571cebd917b36882ef9c11e9fa7d8."
+    },
+    {
+      "name": "corpus-certification-phase-start",
+      "result": "IN_PROGRESS",
+      "detail": "Source head fixed at 57b502f1064571cebd917b36882ef9c11e9fa7d8; certification base fixed at current main 8cc1918c5e015d1408335c15313e7364e04859c2."
     }
   ],
   "unresolved": [
-    "19 census targets have no exact RIFAT region row proven.",
-    "11 census targets map to multiple RIFAT region rows and Chat 4 did not choose among them.",
-    "70 targets remain NDC UNRESOLVED.",
-    "70 targets have Atlasfin NO_MATCH at the proven element/family/preset/recipe level.",
-    "Exact binding/layer-application/recipe/semantic readiness remains unresolved or blocked as recorded per target.",
-    "Global FILES_MANIFEST update/integration belongs to Control Plane/canonical composer, not Chat 4."
+    "Strict candidate intake schema/normalization contract must be resolved from current Control Plane authority before writing certification derivatives.",
+    "Qualified Atlasfin adapter representation requires normalization only if the current strict contract proves a representation mismatch.",
+    "Completion requires 70/70 corpus-valid, invalid=0, semanticMutationCount=0 and exact source-record hash provenance."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Hold the Shared UI lane at READY_FOR_INTEGRATION. Make no candidate, consumer, runtime, authority, manifest, rebase, or merge mutation unless the integration lane/owner issues one bounded evidence-backed correction request. Continue updating this mailbox on any material integration-state change.",
+  "nextAction": "Create the certification work branch from current main, inspect current strict Control Plane schema/normalization contract plus the five immutable Shared UI source-shard files, then generate and validate the five certification outputs only under certification/**.",
   "handoff": {
-    "pr": 539,
-    "prState": "OPEN_DRAFT",
-    "workBranch": "visual-promotion-chat4-shared-ui-20260904",
-    "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
-    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
-    "currentMainObserved": "66fa02147f0cf31529c090a47f376026b406875a",
-    "relevantMainDrift": false,
-    "accounting": "70 = 40 candidates + 19 unresolved + 11 conflicts",
-    "integrationOwnerNeeded": "VISUAL_PROMOTION_CONTROL_PLANE_OR_CANONICAL_COMPOSER",
-    "integrationNote": "Current canonical continuation prompt explicitly keeps Chat 4 in HOLD. Coordinator may consume work head 57b502f1064571cebd917b36882ef9c11e9fa7d8; no lane recomputation is warranted. Global FILES_MANIFEST composition/revalidation remains separately authorized integration work.",
-    "safety": "Materiality not inspected; broad rediscovery false; no product/runtime/consumer/global authority writes; no canonical IDs minted."
+    "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+    "sourceBranch": "visual-promotion-chat4-shared-ui-20260904",
+    "sourceHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+    "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "sourceAccounting": "70 = 40 candidates + 19 unresolved + 11 conflicts",
+    "certificationBranch": "chat4/shared-ui-corpus-cert-20260904",
+    "certificationBaseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+    "certificationHead": null,
+    "requiredCompletion": "70/70 corpus-valid; invalid=0; semanticMutationCount=0; exact source provenance complete",
+    "prRule": "NO_PR_FOR_CHAT4_CERTIFICATION",
+    "safety": "Do not update FILES_MANIFEST.json, merge PR #539, inspect Materiality Catalog, edit consumers/products/runtime/global authority, or mint canonical IDs."
   }
 }
