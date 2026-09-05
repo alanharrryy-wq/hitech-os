@@ -22,3 +22,15 @@ Commands:
     PYTHONPATH=prisma-html/tools python -m visual_promotion.cli plan --outcomes <CANDIDATES.jsonl>
 
 The composer is proposal-only. canonicalMutationPerformed, canonicalIdsAssigned, runtimeVisualGreen and productionReady remain false.
+
+## Candidate corpus certification
+
+The corpus-certification phase is fail-closed and candidate-only. It recognizes only the exact legacy worker heads and file hashes in `legacy-worker-intake.registry.json`, preserves original raw bytes as provenance, normalizes representation only, and refuses semantic mutation.
+
+Run only after the four exact raw candidate shards are assembled at their canonical candidate paths:
+
+```bash
+PYTHONPATH=prisma-html/tools python -m visual_promotion.cli certify-corpus --repo-root .
+```
+
+Outputs are written under `prisma-html/governance/visual-promotion/contracts/corpus-certification/`. A corpus PASS never authorizes canonical promotion, product/runtime mutation, broad rediscovery, Materiality Catalog use, or whole-surface APPLY_READY.

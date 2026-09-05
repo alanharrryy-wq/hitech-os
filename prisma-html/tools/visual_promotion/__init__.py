@@ -37,3 +37,27 @@ __all__ = [
     "validate_owned_output",
     "validate_shard",
 ]
+
+from .corpus_certification import (
+    CorpusCertificationError,
+    assert_completion_invariants,
+    build_semantic_review_groups,
+    certify_registered_corpus,
+    normalize_manifest,
+    normalize_record,
+    semantic_review_keys,
+    verify_registered_file,
+    write_corpus_outputs,
+)
+
+__all__ += [
+    "CorpusCertificationError",
+    "assert_completion_invariants",
+    "build_semantic_review_groups",
+    "certify_registered_corpus",
+    "normalize_manifest",
+    "normalize_record",
+    "semantic_review_keys",
+    "verify_registered_file",
+    "write_corpus_outputs",
+]
