@@ -4,115 +4,35 @@
   "lane": "ATLASFIN_BRIDGE",
   "statusBranch": "status/vp-chat-05-atlasfin",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-05-atlasfin",
-  "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T20:16:00-06:00",
-  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
-  "workBranch": "chat5-atlasfin-bridge-20260904",
-  "workHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
-  "summary": "Chat 5 remains in canonical HOLD / READY_FOR_INTEGRATION. The updated continuation prompt was re-read on current main 66fa02147f0cf31529c090a47f376026b406875a. Work branch/head and evidence provenance remain frozen at chat5-atlasfin-bridge-20260904 / c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0 from base 57b01ad8bda043ec25763203354b686341bace09. Bounded comparison shows main movement is coordination/governance-only for Chat 5 and does not modify Atlasfin catalog/registries, Cobrar bridge evidence, Identity/RIFAT contracts, or bridge source inputs; no lane recomputation or mutation is authorized.",
-  "blockers": [
-    {
-      "code": "FILES_MANIFEST_INTEGRATION_REQUIRED",
-      "status": "OPEN_INTEGRATION_ONLY",
-      "detail": "The final global prisma-html/FILES_MANIFEST.json refresh for accepted Chat 5 bridge bytes remains integration/composer-owned. Current main refreshed FILES_MANIFEST for coordination-document changes only; PR #540 bridge files are still not on main, so Chat 5 must not repair this global manifest."
-    }
-  ],
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-04T23:44:00-06:00",
+  "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "workBranch": "chat5/atlasfin-corpus-cert-20260904",
+  "workHead": null,
+  "summary": "Chat 5 started CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. The canonical prompt now authorizes an Atlasfin reference certification derivative on a new branch from current main, writing only prisma-html/extras/atlasfin/bridge/certification/**. Exact raw worker heads for Chats 1-4 and the existing Chat 5 bridge head remain immutable evidence.",
+  "blockers": [],
   "findings": [
-    "Canonical main is now 66fa02147f0cf31529c090a47f376026b406875a.",
-    "The continuation prompt places Chats 1–5 in handoff/hold mode and explicitly freezes Chat 5 work branch chat5-atlasfin-bridge-20260904, work head c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0, PR #540 and base 57b01ad8bda043ec25763203354b686341bace09.",
-    "Bounded diff from Chat 5 base to current main changes AGENTS/status-channel docs, continuation prompt, interoperability/vocabulary coordination clauses and FILES_MANIFEST bookkeeping; it does not change Chat 5 Atlasfin catalog/registry/source inputs or the owned bridge implementation.",
-    "Interoperability/vocabulary changes only add the dedicated coordination-status exception and status-channel metadata; Atlasfin-first, authority-domain separation, no broad rediscovery and Materiality STANDBY remain unchanged.",
-    "No relevant authority/source drift requiring Chat 5 bridge recomputation was found."
+    "Current phase is CANDIDATE_CORPUS_CERTIFICATION_PARALLEL.",
+    "Chat 5 scope is Atlasfin reference interoperability certification across the exact raw worker heads for Tablet, PC, Mobile and Shared UI.",
+    "Worker certification phase explicitly forbids a Chat 5 PR and forbids prisma-html/FILES_MANIFEST.json updates.",
+    "Materiality Catalog remains STANDBY_USER_INVOKED_ONLY and must stay entirely uninspected."
   ],
   "decisions": [
-    "Honor the normative HOLD override and make no work-branch changes without a bounded integration correction request.",
-    "Preserve exact work branch/head and base provenance; do not rebase solely because main advanced.",
-    "Classify current main movement as non-relevant/coordination-only drift for Chat 5.",
-    "Do not update prisma-html/FILES_MANIFEST.json and do not merge PR #540.",
-    "Do not inspect or use Materiality Catalog."
+    "Create chat5/atlasfin-corpus-cert-20260904 from current canonical main 8cc1918c5e015d1408335c15313e7364e04859c2.",
+    "Write only prisma-html/extras/atlasfin/bridge/certification/**.",
+    "Use exact raw worker heads independently; do not wait for Chats 1-4 certification branches.",
+    "Preserve authority-domain separation and treat recipe convergence as review-only evidence, never semantic coalescing proof.",
+    "Do not open a PR, do not merge PR #540, and do not update FILES_MANIFEST.json."
   ],
-  "changedPaths": [
-    "prisma-html/extras/atlasfin/bridge/atlasfin_bridge.py",
-    "prisma-html/extras/atlasfin/bridge/PRISMA_ATLASFIN_VISUAL_PROMOTION_BRIDGE_V1.schema.json",
-    "prisma-html/extras/atlasfin/bridge/README.md",
-    "prisma-html/extras/atlasfin/bridge/fixtures/tablet-candidate.json",
-    "prisma-html/extras/atlasfin/bridge/test_atlasfin_bridge.py"
-  ],
-  "validations": [
-    {
-      "name": "CI",
-      "result": "PASS",
-      "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
-    },
-    {
-      "name": "PRISMA Sync Sentinel Watch",
-      "result": "PASS",
-      "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
-    },
-    {
-      "name": "ForgeOS Quality Gate",
-      "result": "PASS",
-      "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
-    },
-    {
-      "name": "GVAE V1 deterministic source/static suite",
-      "result": "PASS_134_ZERO_SKIPS"
-    },
-    {
-      "name": "GVAE mandatory registered-target mutation gate",
-      "result": "PASS"
-    },
-    {
-      "name": "Universal Visual Work Entry Gate",
-      "result": "PASS"
-    },
-    {
-      "name": "Fresh task-scoped Authority Mesh with native Layer Map",
-      "result": "PASS"
-    },
-    {
-      "name": "PRISMA HTML source validator",
-      "result": "PASS"
-    },
-    {
-      "name": "VISCORE architecture check",
-      "result": "PASS"
-    },
-    {
-      "name": "Identity Dictionary gate",
-      "result": "PASS"
-    },
-    {
-      "name": "RIFAT authority no-regression gate",
-      "result": "PASS_NO_NEW_REGRESSION"
-    },
-    {
-      "name": "Atlasfin static gate",
-      "result": "PASS_27_OF_27_PAGES_20_OF_20_TASKS_ZERO_ISSUES"
-    },
-    {
-      "name": "No fake READY gate",
-      "result": "PASS"
-    },
-    {
-      "name": "PRISMA VISCORE1 Certification overall",
-      "result": "BLOCKED_ONLY_BY_FILES_MANIFEST_PARITY",
-      "detail": "All preceding VISCORE1 steps passed; final committed FILES_MANIFEST parity failed because the five new Chat 5 files are intentionally not written into the global manifest from this lane."
-    },
-    {
-      "name": "Continuation bounded drift revalidation",
-      "result": "PASS_NON_RELEVANT_COORDINATION_ONLY_DRIFT",
-      "detail": "Compared 57b01ad8bda043ec25763203354b686341bace09 to current main 66fa02147f0cf31529c090a47f376026b406875a. No Chat 5 Atlasfin bridge authority/source inputs changed."
-    }
-  ],
+  "changedPaths": [],
+  "validations": [],
   "unresolved": [
-    "Integration/composer lane must perform the one-time final prisma-html/FILES_MANIFEST.json refresh after accepted prisma-html bytes from all lanes are assembled.",
-    "PR #540 remains open and must not be merged by Chat 5.",
-    "Chat 5 is waiting for any evidence-backed bounded bridge correction request from the integration lane; none is currently present."
+    "Need to re-derive Atlasfin reference validity and recipe convergence from exact raw worker evidence.",
+    "Need to produce the six required certification artifacts and prove hard invalid ref count is zero."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Hold. Preserve PR #540 and c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0 unchanged. If integration requests a bounded bridge correction, validate the request against current authority, modify only prisma-html/extras/atlasfin/bridge/**, then immediately update this mailbox.",
+  "nextAction": "Read the required startup authority set, exact raw worker heads and current Atlasfin structured authority; then generate and validate the Chat 5 certification derivative.",
   "handoff": {
     "pullRequest": 540,
     "pullRequestUrl": "https://github.com/prismahitech/hitech-os/pull/540",
@@ -131,8 +51,11 @@
       "Do not modify product/runtime from this bridge."
     ],
     "currentCanonicalMain": "66fa02147f0cf31529c090a47f376026b406875a",
-    "continuationPhase": "INTEGRATION_HANDOFF_AND_PLANNING",
+    "continuationPhase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
     "chat5Mode": "HOLD",
-    "driftClassification": "NON_RELEVANT_COORDINATION_ONLY"
+    "driftClassification": "NON_RELEVANT_COORDINATION_ONLY",
+    "certificationBranch": "chat5/atlasfin-corpus-cert-20260904",
+    "certificationBase": "8cc1918c5e015d1408335c15313e7364e04859c2",
+    "sourceBridgeHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
   }
 }
