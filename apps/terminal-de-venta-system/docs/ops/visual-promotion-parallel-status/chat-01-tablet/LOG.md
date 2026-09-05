@@ -130,3 +130,19 @@ No updates published yet.
 - Chat 1 is now holding exactly as the canonical continuation prompt requires.
 - Resume only for a material blocker/relevant drift or an explicit evidence-backed bounded correction request from Chat 6/integration.
 
+## 2026-09-04T23:44:00-06:00 — START
+
+- Canonical phase re-read: `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`.
+- Chat 1 assignment: **TABLET CORPUS CERTIFICATION**.
+- Previous HOLD is superseded by the new normative override.
+- Fresh certification branch created from canonical `main`:
+  - branch: `chat1/tablet-corpus-cert-20260904`
+  - base/head at creation: `8cc1918c5e015d1408335c15313e7364e04859c2`
+- Immutable source remains:
+  - branch: `chat1/tablet-visual-promotion-57b01ad8`
+  - head: `1b669d98dc9063fe4d6f5f8ddc06262a6968e728`
+  - source base: `57b01ad8bda043ec25763203354b686341bace09`
+  - accounting: `929 = 139 candidates + 788 unresolved + 2 conflicts`
+- Write boundary: only `prisma-html/governance/visual-promotion/candidates/tablet/certification/**`.
+- No PR and no `prisma-html/FILES_MANIFEST.json` update are allowed in this lane.
+
