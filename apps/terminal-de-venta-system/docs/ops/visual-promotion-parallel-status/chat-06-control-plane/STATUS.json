@@ -5,18 +5,12 @@
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
   "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T05:49:30Z",
+  "updatedAt": "2026-09-05T05:52:00Z",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat6/candidate-corpus-cert-20260904",
   "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "summary": "Chat 6 resumed under canonical phase CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. New work branch chat6/candidate-corpus-cert-20260904 was created from current main 8cc1918c5e015d1408335c15313e7364e04859c2. The prior integration-plan HOLD is superseded by explicit owner authorization to build the global candidate corpus certification, assemble accepted certification lanes, refresh FILES_MANIFEST exactly once, open one candidate-corpus-only integration PR, and merge only if every required check is green.",
-  "blockers": [
-    {
-      "id": "AUTOMESH_PREFLIGHT_SOURCE_HEAD_NOT_ON_MAIN",
-      "status": "SELF_RESOLVING",
-      "detail": "Fresh AutoMesh run 33948117475 failed closed because the request incorrectly listed Chat 6 source-head-only files/directories as required current-main authorities. Those files are intentionally absent from main before corpus assembly. Correction: require only authority that exists on current main and pin source head 7cc48fa... in task provenance rather than pretending it is current-main authority."
-    }
-  ],
+  "blockers": [],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
     "Current Visual Control census and Target Index are reusable physical truth. DISCOVERY_ONLY is not UNDISCOVERED and broad recensus is not a legal shortcut.",
@@ -39,7 +33,8 @@
     "Cross-surface strong semantic/NDC reconciliation candidates = 0 from current proven IDs. Recipe-level review candidates exist across Tablet+PC for REC.table.governed.v2 (171 rows), REC.card.governed.v2 (95), and REC.panel.governed.v2 (47); recipe equality is not semantic identity.",
     "The only existing resolved binding reuse is Tablet target TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1 -> BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 / ACT.primary / LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE, still REGISTER_TARGET_FIRST.",
     "Canonical prompt blob 07762a44523f864bfaf016d2db385f2434e507d7 sets phase CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly authorizes Chat 6 global corpus certification/final assembly.",
-    "Current canonical main at phase start is 8cc1918c5e015d1408335c15313e7364e04859c2."
+    "Current canonical main at phase start is 8cc1918c5e015d1408335c15313e7364e04859c2.",
+    "Corrected fresh task-exact AutoMesh run 33948191110 passed PASS_COMPOSED_AUTHORITY_MESH on current main 8cc1918c5e015d1408335c15313e7364e04859c2 with zero blockers."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -169,6 +164,12 @@
       "result": "BLOCKED_EXPECTED_FAIL_CLOSED",
       "evidence": "workflow run 33948117475",
       "details": "Preflight coverage 75%/66.6667%; missing authorities were only Chat 6 source-head paths absent from current main. Mesh did not run, compose or grant mutation authority."
+    },
+    {
+      "name": "Fresh corpus-certification AutoMesh attempt 2",
+      "result": "PASS_COMPOSED_AUTHORITY_MESH",
+      "evidence": "workflow run 33948191110; artifact 9964001762; GitHub artifact digest sha256:94e24c6e34d49038c401c1622e647cd48edb147a228b2ab685bb112196846d0a; composed payload sha256:0918d3228415d4beeb760083ae64e293fa2cc31b19bc2b4a1b01a0e4fd047d1f",
+      "details": "Current-main bound request, preflight PASS, task-exact parallel Mesh PASS, compose PASS, blockers=[]."
     }
   ],
   "unresolved": [
@@ -179,7 +180,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Submit corrected fresh task-exact AutoMesh against current-main authorities only, with prior Chat 6 source head pinned as provenance, then proceed only on PASS_COMPOSED_AUTHORITY_MESH.",
+  "nextAction": "Bring forward exact Chat 6 source-head bytes by head-tree extraction onto the corpus-certification work branch, then implement and validate pinned normalization/global corpus tooling.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/candidate-corpus-cert-20260904",

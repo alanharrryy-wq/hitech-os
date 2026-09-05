@@ -141,3 +141,11 @@ Fresh AutoMesh run `33948117475` failed closed at universal preflight. Root caus
 ## 2026-09-05T05:49:30Z — DECISION
 
 Do not weaken coverage or bypass the gate. Resubmit a corrected task-exact request using only current-main authority paths and treat source head `7cc48fa49906c8f443b267fd6c3590fd3f4340fb` as immutable provenance to be imported after authority passes.
+
+## 2026-09-05T05:52:00Z — BLOCKER_CLEARED
+
+Corrected fresh task-exact AutoMesh run `33948191110` completed successfully on current `main` `8cc1918c5e015d1408335c15313e7364e04859c2`: `PASS_COMPOSED_AUTHORITY_MESH`, blockers empty. GitHub artifact `9964001762`, digest `sha256:94e24c6e34d49038c401c1622e647cd48edb147a228b2ab685bb112196846d0a`; composed authority payload SHA-256 `0918d3228415d4beeb760083ae64e293fa2cc31b19bc2b4a1b01a0e4fd047d1f`.
+
+## 2026-09-05T05:52:00Z — VALIDATION
+
+Universal preflight, task-exact parallel Mesh and composed authority all passed. The previous request-construction blocker is cleared without weakening coverage or bypassing fail-closed behavior.
