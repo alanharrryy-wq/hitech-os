@@ -59,6 +59,17 @@ REGISTRIES: dict[str, tuple[str, str, str | None]] = {
     "assets": ("visual-asset.registry.json", "id", None),
 }
 
+REGISTRY_RECORD_KINDS = {
+    "properties": "atlasfinProperty",
+    "families": "atlasfinFamily",
+    "presets": "atlasfinPreset",
+    "recipes": "atlasfinRecipe",
+    "states": "atlasfinState",
+    "variants": "atlasfinVariant",
+    "adapters": "atlasfinAdapter",
+    "assets": "atlasfinAsset",
+}
+
 WORKER_OUTCOME_FILES = ("CANDIDATES.jsonl", "UNRESOLVED.jsonl", "CONFLICTS.jsonl")
 
 
@@ -232,7 +243,7 @@ def _registry_records(
         if not raw_id:
             raise BridgeError(f"ATLASFIN_REGISTRY_ITEM_ID_REQUIRED:{registry_name}:{index}:{id_key}")
         record: dict[str, Any] = {
-            "recordKind": f"atlasfin{registry_name[:-1].capitalize()}",
+            "recordKind": REGISTRY_RECORD_KINDS[registry_name],
             "authorityRef": authority_ref("atlasfin", raw_id, version=str(version) if version else None),
             "payload": copy.deepcopy(item),
         }
