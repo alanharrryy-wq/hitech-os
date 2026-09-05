@@ -1,0 +1,41 @@
+{
+  "schema": "prisma.visual-promotion.candidate-shard.v1",
+  "candidateOnly": true,
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "surfaceKey": "shared-ui",
+  "ownedRoot": "prisma-html/governance/visual-promotion/candidates/shared-ui/",
+  "inputCensusCount": 70,
+  "inputTargetCount": 70,
+  "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+  "broadRediscoveryPerformed": false,
+  "sourceAuthorityRefs": [
+    "atlasfin::ADP.SHARED.NEUTRAL.V2",
+    "identity::prisma.adapter.shared-ui.v1",
+    "target-index::shared-ui",
+    "projection-manifest::prisma-html/authority/rifat/visual-source-manifest.json"
+  ],
+  "sourceHashes": {
+    "apps/terminal-de-venta-system/products/shared-ui/prisma/components/prisma-components.css": "9300caf161f0459a5176dbd7e14372cdea4ec72b03f341527b79aeb8b0f8afa7",
+    "apps/terminal-de-venta-system/products/shared-ui/prisma/components/PrismaComponents.module.css": "03c5c9773805c08ff489d1aed3cb7005916cb259ec316372017e092b6b09e1e7",
+    "apps/terminal-de-venta-system/products/shared-ui/prisma/effects/prisma-reference-effects.css": "71d464fa427da6c7c8ee2810a7e39475f233f83a391eee4ad776bc5f4effdc6e",
+    "prisma-html/authority/rifat/surfaces/shared-ui/runtime-sources/prisma/components/prisma-components.css": "9300caf161f0459a5176dbd7e14372cdea4ec72b03f341527b79aeb8b0f8afa7",
+    "prisma-html/authority/rifat/surfaces/shared-ui/runtime-sources/prisma/components/PrismaComponents.module.css": "03c5c9773805c08ff489d1aed3cb7005916cb259ec316372017e092b6b09e1e7",
+    "prisma-html/authority/rifat/surfaces/shared-ui/runtime-sources/prisma/effects/prisma-reference-effects.css": "71d464fa427da6c7c8ee2810a7e39475f233f83a391eee4ad776bc5f4effdc6e"
+  },
+  "outputFiles": [
+    "MANIFEST.json",
+    "NORMALIZED.jsonl",
+    "CERTIFICATION.jsonl",
+    "INVALID.jsonl",
+    "SUMMARY.md"
+  ],
+  "notes": [
+    "Certification branch base 8cc1918c5e015d1408335c15313e7364e04859c2; immutable worker source visual-promotion-chat4-shared-ui-20260904@57b502f1064571cebd917b36882ef9c11e9fa7d8; worker source base 57b01ad8bda043ec25763203354b686341bace09.",
+    "Source shard SHA256 MANIFEST=c51394943b5ff2c06bcd714801122063cbd097498b2f467132d8d6b8d179b1c4 CANDIDATES=ff89e661faf98f80f1e09fe2157ba1e60e1c250ae5f9e5101a8baf9e482aae3f UNRESOLVED=2f9b48426a6e60f82774751964ba5bd44c06eea714c8c530be687f8035f50055 CONFLICTS=b0f79b271c2314c7afb9d499cc471af414d2f662062561374a227549dd1edd31 SUMMARY=fad3898873fc84f47e80ad39028d71c3402fd9ceb89b4388ba26811e5ffcdf96.",
+    "Strict Control Plane authority 7cc48fa49906c8f443b267fd6c3590fd3f4340fb; candidate schema blob 6a7b0fb08ef0ba85ebd3782053f82a9a90cd8bdb; shard schema blob 659cbc3f0239f0435008ba796ebc181b3da6232c; contract blob dbdd3b2ccc30a09f34f9de7ea931ac4b1049ed30.",
+    "Representation-only normalization: explicit candidate schema tag and atlasfinAdapterId atlasfin::ADP.SHARED.NEUTRAL.V2 to raw registry ID ADP.SHARED.NEUTRAL.V2.",
+    "semanticMutationCount=0; 19 no-region unresolved and 11 multi-region conflicts preserved; NDC UNRESOLVED=70; Atlasfin NO_MATCH=70.",
+    "Latest main delta changes only corpus prompt and FILES_MANIFEST.json; no relevant Shared UI source/authority drift.",
+    "Materiality Catalog remained STANDBY_USER_INVOKED_ONLY and was not inspected or consumed."
+  ]
+}
