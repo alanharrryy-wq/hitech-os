@@ -5,7 +5,7 @@
   "statusBranch": "status/vp-chat-02-pc",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:51:32-06:00",
+  "updatedAt": "2026-09-04T19:52:29-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "agent/chat2-pc-promotion-20260904",
   "workHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
@@ -73,6 +73,11 @@
       "check": "work branch head verification",
       "result": "PASS",
       "detail": "agent/chat2-pc-promotion-20260904 is identical to commit 896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078 and is 5 commits ahead / 0 behind its recorded base."
+    },
+    {
+      "check": "status-channel branch isolation and mailbox contract",
+      "result": "PASS",
+      "detail": "status/vp-chat-02-pc is 2 commits ahead / 0 behind current main and changes only this Chat 2 mailbox's STATUS.json and LOG.md; all required STATUS fields are present and LOG.md preserved prior text append-only."
     }
   ],
   "unresolved": [
