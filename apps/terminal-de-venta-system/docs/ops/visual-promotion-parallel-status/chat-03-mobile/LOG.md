@@ -46,3 +46,13 @@ No updates published yet.
 - No candidate/runtime/authority/product mutation performed in this continuation step.
 - Chat 3 remains `READY_FOR_INTEGRATION` in HOLD, pending only an explicit bounded correction request from Chat 6/integration if deterministic validation finds one.
 - No user action required.
+
+## 2026-09-04T23:44:00-06:00 — START / PROGRESS / DECISION
+
+- Re-read the canonical prompt at `main` `8cc1918c5e015d1408335c15313e7364e04859c2`.
+- Current phase is now `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`; the previous HOLD is superseded.
+- Assigned lane is **Chat 3 — Mobile Corpus Certification**.
+- Immutable source provenance remains `visual-promotion-chat3-mobile-20260904` @ `7f32ce6f1b602a14781fa2f4f3f323035f8029ec`, source base `57b01ad8bda043ec25763203354b686341bace09`, input `271`.
+- Planned certification branch: `chat3/mobile-corpus-cert-20260904` from current canonical main.
+- Scope is syntactic/reference normalization only. No semantic upgrade, no projection repair, no RIFAT-vs-product choice, no Materiality use, no product/runtime mutation.
+- Lane state changed to `IN_PROGRESS`.

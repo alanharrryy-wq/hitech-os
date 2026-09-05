@@ -4,12 +4,12 @@
   "lane": "MOBILE_PROMOTION",
   "statusBranch": "status/vp-chat-03-mobile",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-03-mobile",
-  "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T20:14:00-06:00",
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-04T23:44:00-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "visual-promotion-chat3-mobile-20260904",
   "workHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
-  "summary": "Chat 3 Mobile is in canonical HOLD under phase INTEGRATION_HANDOFF_AND_PLANNING. The completed candidate shard is preserved exactly at work head 7f32ce6f1b602a14781fa2f4f3f323035f8029ec; no regeneration, rebase, repair-direction choice or further lane mutation is authorized without a bounded integration correction request.",
+  "summary": "Chat 3 has entered CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. Mobile certification will derive strict normalized/certification artifacts from immutable source head 7f32ce6f1b602a14781fa2f4f3f323035f8029ec without changing semantics, drift decisions, or product/runtime authority.",
   "blockers": [],
   "findings": [
     "Mobile census accounting is exact: 271 input targets, 271 unique outcomes, zero missing, zero extra, zero duplicates.",
@@ -20,7 +20,9 @@
     "The current interoperability contract/vocabulary additions are status-channel coordination rules; the candidate field/enumeration contract used by Chat 3 remains compatible.",
     "Canonical prompt now declares phase INTEGRATION_HANDOFF_AND_PLANNING and places Chat 3 in Mobile HOLD.",
     "Current main is 66fa02147f0cf31529c090a47f376026b406875a; since the prior observed main d08013db42c34ccafb80075392ec6d7a289cf7b5, only the canonical parallel prompt and prisma-html/FILES_MANIFEST.json changed.",
-    "That delta is coordination/integration-planning only and does not change Chat 3 Mobile census, RIFAT/product projection evidence, Identity/NDC/Atlasfin inputs or the existing 271-target accounting."
+    "That delta is coordination/integration-planning only and does not change Chat 3 Mobile census, RIFAT/product projection evidence, Identity/NDC/Atlasfin inputs or the existing 271-target accounting.",
+    "Canonical main for corpus-certification start is 8cc1918c5e015d1408335c15313e7364e04859c2.",
+    "Canonical prompt explicitly authorizes Chat 3 Mobile corpus certification and identifies syntactic/reference normalization only: projection representation, ndcRefs contract form, evidenceRefs contract form, and Atlasfin adapter representation."
   ],
   "decisions": [
     "No broad rediscovery was performed; DISCOVERY_ONLY census was reused as existing physical evidence.",
@@ -32,7 +34,9 @@
     "Handoff should integrate the single isolated candidate commit 7f32ce6f1b602a14781fa2f4f3f323035f8029ec onto the coordinator's current integration base, preserving its baseHead/evidence provenance.",
     "Follow the normative continuation override: preserve the isolated candidate commit/baseHead/evidence provenance and remain in HOLD.",
     "Do not regenerate or rebase the Mobile shard, do not choose RIFAT-vs-product repair direction for 138 DRIFT targets, and preserve all REGISTER_TARGET_FIRST outcomes.",
-    "Do not perform any further candidate mutation unless Chat 6/integration issues an evidence-backed bounded correction request."
+    "Do not perform any further candidate mutation unless Chat 6/integration issues an evidence-backed bounded correction request.",
+    "Begin certification from current canonical main on planned branch chat3/mobile-corpus-cert-20260904.",
+    "Treat original worker bytes at 7f32ce6f1b602a14781fa2f4f3f323035f8029ec as immutable source evidence; certification output will be derivative only."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/mobile/MANIFEST.json",
@@ -99,13 +103,12 @@
     }
   ],
   "unresolved": [
-    "All 271 census targets still lack complete semantic meaning, exact recipe, exact binding and/or layer-application policy required for promotion beyond REGISTER_TARGET_FIRST.",
-    "The 138 drifted targets require authority reconciliation; Chat 3 must not choose whether RIFAT source or product projection should be repaired.",
-    "Canonical integration remains coordinator-owned. Chat 3 is waiting only for a bounded correction request, if deterministic integration validation finds one."
+    "Strict Control Plane schema/contract must be read and applied exactly before normalization is materialized.",
+    "All 271 normalized records must reach strict validation with invalid=0 and semanticMutationCount=0."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "HOLD. Preserve the existing worker commit and status provenance. Take no further lane mutation unless Chat 6/integration requests a bounded evidence-backed correction; if such a request appears, record it in this mailbox before acting.",
+  "nextAction": "Read the mandatory startup authorities plus exact Control Plane schema/contract, create chat3/mobile-corpus-cert-20260904 from main 8cc1918c5e015d1408335c15313e7364e04859c2, then generate only the five certification files.",
   "handoff": {
     "readiness": "READY_FOR_INTEGRATION",
     "workBranch": "visual-promotion-chat3-mobile-20260904",
@@ -124,13 +127,18 @@
     "statusBranch": "status/vp-chat-03-mobile",
     "statusHeadAfterThisUpdate": null,
     "statusBranchIsolation": "PASS_EXACT_TWO_STATUS_FILES_ONLY",
-    "continuationPhase": "INTEGRATION_HANDOFF_AND_PLANNING",
-    "continuationMode": "HOLD",
+    "continuationPhase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+    "continuationMode": "ACTIVE_CERTIFICATION",
     "latestMainDriftAssessment": "PASS_NON_RELEVANT_DRIFT",
     "preservedWorkBranch": "visual-promotion-chat3-mobile-20260904",
     "preservedWorkHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
     "preservedBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
     "preservedAccounting": "271 total = 133 CURRENT + 138 DRIFT",
-    "boundedCorrectionRequiredBeforeFurtherMutation": true
+    "boundedCorrectionRequiredBeforeFurtherMutation": true,
+    "certificationSourceBranch": "visual-promotion-chat3-mobile-20260904",
+    "certificationSourceHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+    "certificationSourceBase": "57b01ad8bda043ec25763203354b686341bace09",
+    "certificationBranchPlanned": "chat3/mobile-corpus-cert-20260904",
+    "certificationStartMainHead": "8cc1918c5e015d1408335c15313e7364e04859c2"
   }
 }
