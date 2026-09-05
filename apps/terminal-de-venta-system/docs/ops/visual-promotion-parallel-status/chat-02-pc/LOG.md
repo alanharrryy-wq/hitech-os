@@ -112,3 +112,14 @@ No updates published yet.
 - Chat 2 continuation is classified as bounded `VERIFY/REUSE` only.
 - No GVAE rebuild, BUILD/REBUILD, mutation gate, candidate regeneration or product/global-authority mutation is warranted.
 - PC lane remains `READY_FOR_INTEGRATION` in HOLD.
+
+## 2026-09-04T23:43:30-06:00 — START
+
+- Canonical prompt re-read. Current phase is `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`.
+- Assigned lane remains Chat 2 / `PC_PROMOTION`.
+- Immutable source provenance: `agent/chat2-pc-promotion-20260904` @ `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`, source base `57b01ad8bda043ec25763203354b686341bace09`.
+- Input accounting is fixed: `827 = 186 candidates + 640 unresolved + 1 conflict`.
+- New certification branch required: `chat2/pc-corpus-cert-20260904`.
+- Allowed lane writes are restricted to `prisma-html/governance/visual-promotion/candidates/pc/certification/**`.
+- Source worker bytes are immutable evidence. Certification is a derivative only.
+- Required completion remains 827/827 corpus-valid, invalid=0, semanticMutationCount=0, selector conflict preserved, 139 projection MISSING preserved.
