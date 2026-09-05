@@ -1,6 +1,6 @@
 {
   "schema": "prisma.visual-promotion.status-channel.v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "CANONICAL_COORDINATION_CHANNEL",
   "staticRoot": "prisma-html/docs/ops/visual-promotion-parallel/status-channel",
   "writableRoot": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status",
@@ -102,5 +102,24 @@
       "statusBranch": "status/vp-chat-06-control-plane",
       "mailbox": "chat-06-control-plane"
     }
-  ]
+  ],
+  "currentPhase": "CORPUS_FINAL_PARALLEL_VERIFICATION",
+  "canonicalPrompt": "prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md",
+  "statusIndex": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/STATUS_INDEX.json",
+  "mailboxDrivenExecution": {
+    "ownerContinuationMessage": "Continue with your work. Re-read the canonical prompt and your own mailbox, then execute your current Chat assignment.",
+    "ownerRelayRequired": false,
+    "chatMustReadOwnMailbox": true,
+    "chatMustPublishOwnMailbox": true,
+    "coordinatorReadsOtherMailboxesDirectly": true,
+    "phaseReceiptField": "handoff.parallelWitness",
+    "expectedResults": {
+      "1": "PASS_TABLET_CORPUS_WITNESS",
+      "2": "PASS_PC_CORPUS_WITNESS",
+      "3": "PASS_MOBILE_CORPUS_WITNESS",
+      "4": "PASS_SHARED_UI_CORPUS_WITNESS",
+      "5": "PASS_ATLASFIN_CORPUS_WITNESS",
+      "6": "PASS_CANDIDATE_CORPUS_CERTIFIED"
+    }
+  }
 }
