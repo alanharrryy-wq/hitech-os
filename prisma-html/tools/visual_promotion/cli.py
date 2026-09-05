@@ -10,6 +10,7 @@ from .corpus_certification import (
     load_registry as load_corpus_registry,
     write_corpus_outputs,
 )
+from .final_aggregation import build_final_aggregation
 from .control_plane import (
     ControlPlaneError,
     build_current_truth,
@@ -63,6 +64,21 @@ def main(argv: list[str] | None = None) -> int:
         "--out",
         default="prisma-html/governance/visual-promotion/contracts/corpus-certification",
     )
+
+    final = sub.add_parser("certify-final-corpus")
+    final.add_argument("--repo-root", default=".")
+    final.add_argument(
+        "--raw-registry",
+        default="prisma-html/governance/visual-promotion/contracts/legacy-worker-intake.registry.json",
+    )
+    final.add_argument(
+        "--certification-registry",
+        default="prisma-html/governance/visual-promotion/contracts/certification-intake.registry.json",
+    )
+    final.add_argument(
+        "--out",
+        default="prisma-html/governance/visual-promotion/contracts/corpus-certification",
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -83,22 +99,39 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "current-truth":
             current = build_current_truth(load_json(Path(args.target_index)), _rows(args.outcomes))
             result = {"currentTruth": current, "surfaceReadiness": build_surface_readiness(current)}
-        elif args.command == "certify-corpus":
+        elif args.command in {"certify-corpus", "certify-final-corpus"}:
             repo_root = Path(args.repo_root).resolve()
-            registry_path = Path(args.registry)
-            if not registry_path.is_absolute():
-                registry_path = repo_root / registry_path
             out_root = Path(args.out)
             if not out_root.is_absolute():
                 out_root = repo_root / out_root
-            corpus_result = certify_registered_corpus(
-                repo_root,
-                registry=load_corpus_registry(registry_path),
-            )
-            assert_completion_invariants(corpus_result)
+            if args.command == "certify-final-corpus":
+                raw_registry = Path(args.raw_registry)
+                cert_registry = Path(args.certification_registry)
+                if not raw_registry.is_absolute():
+                    raw_registry = repo_root / raw_registry
+                if not cert_registry.is_absolute():
+                    cert_registry = repo_root / cert_registry
+                corpus_result = build_final_aggregation(
+                    repo_root,
+                    raw_registry_path=raw_registry,
+                    certification_registry_path=cert_registry,
+                )
+            else:
+                registry_path = Path(args.registry)
+                if not registry_path.is_absolute():
+                    registry_path = repo_root / registry_path
+                corpus_result = certify_registered_corpus(
+                    repo_root,
+                    registry=load_corpus_registry(registry_path),
+                )
+                assert_completion_invariants(corpus_result)
             write_corpus_outputs(corpus_result, out_root)
             result = {
-                "status": "PASS_CANDIDATE_CORPUS_CERTIFIED_SOURCE_STATIC",
+                "status": (
+                    "PASS_CANDIDATE_CORPUS_CERTIFIED_FINAL_AGGREGATION"
+                    if args.command == "certify-final-corpus"
+                    else "PASS_CANDIDATE_CORPUS_CERTIFIED_SOURCE_STATIC"
+                ),
                 "summary": corpus_result["summary"],
                 "outputRoot": out_root.relative_to(repo_root).as_posix(),
             }

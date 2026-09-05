@@ -25,12 +25,14 @@ The composer is proposal-only. canonicalMutationPerformed, canonicalIdsAssigned,
 
 ## Candidate corpus certification
 
-The corpus-certification phase is fail-closed and candidate-only. It recognizes only the exact legacy worker heads and file hashes in `legacy-worker-intake.registry.json`, preserves original raw bytes as provenance, normalizes representation only, and refuses semantic mutation.
+The raw-worker normalizer is fail-closed and recognizes only the exact legacy worker heads and file hashes in `legacy-worker-intake.registry.json`. Original worker bytes remain immutable and normalization may change representation only.
 
-Run only after the four exact raw candidate shards are assembled at their canonical candidate paths:
+Final aggregation additionally requires every exact owner certification head/file in `certification-intake.registry.json`. Chat 6 independently regenerates each strict normalized record from raw evidence, proves object equality with the owner-certified derivative, proves each owner certification row points back to the same raw source head/file/line/record hash, validates Chat 5's 2,421 Atlasfin reference certifications, and then pins those certification row hashes into the global corpus.
+
+After all accepted raw and certification bytes are assembled:
 
 ```bash
-PYTHONPATH=prisma-html/tools python -m visual_promotion.cli certify-corpus --repo-root .
+PYTHONPATH=prisma-html/tools python -m visual_promotion.cli certify-final-corpus --repo-root .
 ```
 
-Outputs are written under `prisma-html/governance/visual-promotion/contracts/corpus-certification/`. A corpus PASS never authorizes canonical promotion, product/runtime mutation, broad rediscovery, Materiality Catalog use, or whole-surface APPLY_READY.
+Outputs live under `prisma-html/governance/visual-promotion/contracts/corpus-certification/`. A corpus PASS never authorizes canonical promotion, product/runtime mutation, broad rediscovery, Materiality Catalog use, projection repair, or whole-surface APPLY_READY.

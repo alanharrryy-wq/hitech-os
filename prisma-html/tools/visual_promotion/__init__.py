@@ -61,3 +61,25 @@ __all__ += [
     "verify_registered_file",
     "write_corpus_outputs",
 ]
+
+from .certification_handoffs import (
+    CertificationHandoffError,
+    assert_final_aggregation_invariants,
+    enrich_global_result_with_handoffs,
+    load_certification_registry,
+    verify_all_certification_handoffs,
+    verify_atlasfin_handoff,
+    verify_surface_handoff,
+)
+from .final_aggregation import build_final_aggregation
+
+__all__ += [
+    "CertificationHandoffError",
+    "assert_final_aggregation_invariants",
+    "enrich_global_result_with_handoffs",
+    "load_certification_registry",
+    "verify_all_certification_handoffs",
+    "verify_atlasfin_handoff",
+    "verify_surface_handoff",
+    "build_final_aggregation",
+]

@@ -1,9 +1,11 @@
 {
   "schema": "prisma.visual-promotion.corpus-certification.contract.v1",
-  "version": "1.0.0",
-  "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+  "version": "1.1.0",
+  "phase": "CANDIDATE_CORPUS_FINAL_AGGREGATION",
   "candidateOnly": true,
   "expectedCorpusCount": 2097,
+  "acceptedCertificationRegistry": "prisma-html/governance/visual-promotion/contracts/certification-intake.registry.json",
+  "exactCertificationHandoffsRequired": true,
   "certificationLabels": [
     "VALID_ELIGIBLE_CANDIDATE",
     "VALID_REGISTER_TARGET_FIRST",
@@ -20,6 +22,14 @@
     "normalizedDataDerivative": true,
     "semanticMutationAllowed": false,
     "unknownHeadHashOrShape": "FAIL_CLOSED"
+  },
+  "certificationHandoffs": {
+    "exactHeadTreeBytesRequired": true,
+    "normalizedRecordEqualityRequired": true,
+    "sourceRecordHashEqualityRequired": true,
+    "invalidFilesMustBeEmpty": true,
+    "semanticMutationCountRequired": 0,
+    "atlasfinReferenceCertificationRequired": true
   },
   "semanticReview": {
     "separateFromCollisionFingerprint": true,
