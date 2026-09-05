@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.visual-promotion.corpus-row.v1",
+  "title": "PRISMA Candidate Corpus Row v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "prisma.visual-promotion.corpus-row.v1"
+    },
+    "surfaceKey": {
+      "enum": [
+        "tablet",
+        "pc",
+        "mobile",
+        "shared-ui"
+      ]
+    },
+    "targetId": {
+      "type": "string"
+    },
+    "normalizedLine": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "recordSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "physicalStatus": {
+      "enum": [
+        "CURRENT",
+        "STALE",
+        "DRIFT",
+        "MISSING",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "physical": {
+      "type": "object"
+    },
+    "ndc": {
+      "type": "object"
+    },
+    "visual": {
+      "type": "object"
+    },
+    "atlasfin": {
+      "type": "object"
+    },
+    "identity": {
+      "type": "object"
+    },
+    "application": {
+      "type": "object"
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "verified"
+      ]
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "surfaceKey",
+    "targetId",
+    "normalizedLine",
+    "recordSha256",
+    "physicalStatus",
+    "physical",
+    "ndc",
+    "visual",
+    "atlasfin",
+    "identity",
+    "application",
+    "confidence",
+    "blockers"
+  ]
+}

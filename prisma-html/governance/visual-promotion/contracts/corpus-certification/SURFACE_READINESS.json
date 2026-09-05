@@ -1,0 +1,106 @@
+{
+  "schema": "prisma.visual-promotion.certified-surface-readiness.v1",
+  "status": "CERTIFIED_CORPUS_SURFACE_READINESS",
+  "runtimeVisualGreen": false,
+  "wholeSurfaceApplyReadyCount": 0,
+  "currentlyAuthorizedCanonicalPromotions": 0,
+  "surfaces": [
+    {
+      "surfaceKey": "tablet",
+      "recordCount": 929,
+      "physicalStatusCounts": {
+        "CURRENT": 927,
+        "DRIFT": 2
+      },
+      "projectionStatusCounts": {
+        "CURRENT": 929
+      },
+      "promotionStatusCounts": {
+        "BLOCKED": 2,
+        "ELIGIBLE_CANDIDATE": 139,
+        "REGISTER_TARGET_FIRST": 788
+      },
+      "workEntryDecisionCounts": {
+        "BLOCKED": 2,
+        "REGISTER_TARGET_FIRST": 927
+      },
+      "blockedRecordCount": 2,
+      "wholeSurfaceApplyReady": false,
+      "runtimeVisualGreen": false,
+      "broadRediscoveryAllowed": false,
+      "broadRediscoveryReason": "BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS",
+      "status": "CANDIDATE_CORPUS_CERTIFIED_NOT_APPLY_READY"
+    },
+    {
+      "surfaceKey": "pc",
+      "recordCount": 827,
+      "physicalStatusCounts": {
+        "CURRENT": 826,
+        "DRIFT": 1
+      },
+      "projectionStatusCounts": {
+        "CURRENT": 688,
+        "MISSING": 139
+      },
+      "promotionStatusCounts": {
+        "REGISTER_TARGET_FIRST": 827
+      },
+      "workEntryDecisionCounts": {
+        "REGISTER_TARGET_FIRST": 827
+      },
+      "blockedRecordCount": 0,
+      "wholeSurfaceApplyReady": false,
+      "runtimeVisualGreen": false,
+      "broadRediscoveryAllowed": false,
+      "broadRediscoveryReason": "BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS",
+      "status": "CANDIDATE_CORPUS_CERTIFIED_NOT_APPLY_READY"
+    },
+    {
+      "surfaceKey": "mobile",
+      "recordCount": 271,
+      "physicalStatusCounts": {
+        "CURRENT": 271
+      },
+      "projectionStatusCounts": {
+        "CURRENT": 133,
+        "DRIFT": 138
+      },
+      "promotionStatusCounts": {
+        "REGISTER_TARGET_FIRST": 271
+      },
+      "workEntryDecisionCounts": {
+        "REGISTER_TARGET_FIRST": 271
+      },
+      "blockedRecordCount": 0,
+      "wholeSurfaceApplyReady": false,
+      "runtimeVisualGreen": false,
+      "broadRediscoveryAllowed": false,
+      "broadRediscoveryReason": "BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS",
+      "status": "CANDIDATE_CORPUS_CERTIFIED_NOT_APPLY_READY"
+    },
+    {
+      "surfaceKey": "shared-ui",
+      "recordCount": 70,
+      "physicalStatusCounts": {
+        "CURRENT": 70
+      },
+      "projectionStatusCounts": {
+        "CURRENT": 70
+      },
+      "promotionStatusCounts": {
+        "BLOCKED": 30,
+        "REGISTER_TARGET_FIRST": 40
+      },
+      "workEntryDecisionCounts": {
+        "BLOCKED": 30,
+        "REGISTER_TARGET_FIRST": 40
+      },
+      "blockedRecordCount": 30,
+      "wholeSurfaceApplyReady": false,
+      "runtimeVisualGreen": false,
+      "broadRediscoveryAllowed": false,
+      "broadRediscoveryReason": "BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS",
+      "status": "CANDIDATE_CORPUS_CERTIFIED_NOT_APPLY_READY"
+    }
+  ]
+}

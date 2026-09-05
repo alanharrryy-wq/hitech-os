@@ -1,0 +1,99 @@
+{
+  "schema": "prisma.visual-promotion.corpus-certification-manifest.v1",
+  "phase": "CANDIDATE_CORPUS_FINAL_AGGREGATION",
+  "status": "PASS_CANDIDATE_CORPUS_CERTIFIED",
+  "candidateOnly": true,
+  "canonicalPromotionPerformed": false,
+  "productRuntimeMutationPerformed": false,
+  "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+  "materialityCatalogInspected": false,
+  "broadRediscoveryPerformed": false,
+  "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "recordCount": 2097,
+  "certificationCount": 2097,
+  "invalidCount": 0,
+  "missingCount": 0,
+  "extraCount": 0,
+  "duplicateTargetIds": 0,
+  "semanticMutationCount": 0,
+  "currentlyAuthorizedCanonicalPromotions": 0,
+  "GVAE_EXACT_APPLY": 0,
+  "runtimeVisualGreen": false,
+  "wholeSurfaceApplyReadyCount": 0,
+  "surfaceCounts": {
+    "tablet": 929,
+    "pc": 827,
+    "mobile": 271,
+    "shared-ui": 70
+  },
+  "inputs": {
+    "controlPlaneSourceHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+    "currentAuthorityHead": "1cc4d0d45b3878ace2906d08fa67f325a3b98a9d",
+    "intakeRegistry": "prisma-html/governance/visual-promotion/contracts/intake-registry.json"
+  },
+  "atlasfinReferenceCertification": {
+    "bridgeSourceHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
+    "certificationHead": "6c7743f55434eb8d3429f286e2f9eae275d93d87",
+    "gitBlobSha": "579f5eda34500333cfc1e1c373e858da2b382e5d",
+    "sha256": "2566b64eabfec3d88c59518a4a3160d48a8ddda65a02709eda1b14102b0a2eea",
+    "referenceCount": 2421,
+    "hardInvalidRefCount": 0,
+    "semanticMutationCount": 0
+  },
+  "outputs": {
+    "CANDIDATE_CORPUS.jsonl": {
+      "gitBlobSha": "af6b8a7bea4be94fa0e0e42354d404d74c183083",
+      "sha256": "4fc99c8b1b7a6f9b6b97e3c7ee26cd964e1c67f7e61691384354cb24f6292696",
+      "bytes": 2876194,
+      "recordCount": 2097
+    },
+    "CERTIFICATION.jsonl": {
+      "gitBlobSha": "05b4f36b65464e035177468b5088039b96069460",
+      "sha256": "b39261cd19bdcea23880ceb5aeb4a5a8e602cd0e1203b019ace0f90f56fb3732",
+      "bytes": 1466727,
+      "recordCount": 2097
+    },
+    "INVALID.jsonl": {
+      "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "recordCount": 0
+    },
+    "COLLISIONS.json": {
+      "gitBlobSha": "9a709ffedfac54e286c52d820b157b2beca7402b",
+      "sha256": "37ecf3cf6f84fd549ef5b29c25195417373f108d0d83ae747c84d06abc0bf434",
+      "bytes": 289
+    },
+    "SEMANTIC_REVIEW_GROUPS.json": {
+      "gitBlobSha": "f059564ed26e266e19f9d5d92ed25c4a3a5af243",
+      "sha256": "ccbae5061a33e8cd384fb34117bb9baa2b1893479c0011acc08344561baf64d3",
+      "bytes": 39867
+    },
+    "CURRENT_TRUTH.json": {
+      "gitBlobSha": "1e36a9d7eebfcf8976db9458dd2f530ebca364b4",
+      "sha256": "645f5441c098b7bcf741a59c1a73accc08557cb7aa540d23ebd845115e504dee",
+      "bytes": 1632584
+    },
+    "SURFACE_READINESS.json": {
+      "gitBlobSha": "a0901b9633eb349601335212f188c2b84ce30534",
+      "sha256": "30ff400a481b0208e91ec3973f52b5304cc51d61d6ae80611acf13ebfdcbce37",
+      "bytes": 3035
+    },
+    "SUMMARY.md": {
+      "gitBlobSha": "e7bdf7f42ebe44859b62bf5a434435b4737816d2",
+      "sha256": "4944fabc1780a87f2ccbfd3c92ce850797d3a65f7e81036a9933e79c5c802ea8",
+      "bytes": 1382
+    }
+  },
+  "validation": {
+    "strictCandidateSchema": "PASS_BY_CERTIFIED_NORMALIZED_INPUT",
+    "closedVocabularyAndAuthorityRefs": "PASS_BY_CERTIFIED_NORMALIZED_INPUT",
+    "zeroLossAndProvenance": "PASS",
+    "duplicateCollision": "PASS",
+    "semanticReview": "PASS_REVIEW_ONLY",
+    "atlasfinReferences": "PASS",
+    "workEntryNoBroadRediscovery": "PASS",
+    "currentTruthNoFakeGreen": "PASS",
+    "surfaceReadinessNoFakeGreen": "PASS"
+  }
+}
