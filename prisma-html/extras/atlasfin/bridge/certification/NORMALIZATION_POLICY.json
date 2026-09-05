@@ -1,0 +1,51 @@
+{
+  "schema": "prisma.atlasfin.reference-normalization-policy.v1",
+  "version": "1.0.0",
+  "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+  "authorityDomain": "atlasfin",
+  "strictCandidateRepresentation": "RAW_ATLASFIN_ID_IN_ATLASFIN_FIELDS",
+  "rules": [
+    {
+      "input": "null",
+      "output": "null",
+      "semanticChange": false,
+      "certification": "NO_REFERENCE"
+    },
+    {
+      "input": "<rawAtlasfinId>",
+      "output": "<rawAtlasfinId>",
+      "semanticChange": false,
+      "certification": "VALIDATE_EXACT_CURRENT_REGISTRY_ID"
+    },
+    {
+      "input": "atlasfin::<rawAtlasfinId>",
+      "output": "<rawAtlasfinId>",
+      "semanticChange": false,
+      "preserveOriginalValue": true,
+      "certification": "VALIDATE_EXACT_CURRENT_REGISTRY_ID"
+    },
+    {
+      "input": "<other-domain>::<id>",
+      "output": "<id>",
+      "semanticChange": false,
+      "certification": "INVALID_REFERENCE_NON_ATLASFIN_DOMAIN"
+    }
+  ],
+  "fieldAuthorityMap": {
+    "atlasfinCatalogElementId": "atlas.manifest.json#sections[*].items[*].id",
+    "atlasfinUiId": "atlas.manifest.json#sections[*].items[*].id",
+    "atlasfinFamilyId": "visual-family.registry.json#items[*].familyId",
+    "atlasfinPresetId": "visual-preset.registry.json#items[*].presetId",
+    "atlasfinRecipeId": "visual-recipe.registry.json#items[*].recipeId",
+    "atlasfinLegacyRecipeId": "visual.recipe.registry.json",
+    "atlasfinAdapterId": "surface-adapter.registry.json#items[*].id"
+  },
+  "evidenceRefRule": "Qualified evidenceRefs remain authority-qualified. This policy normalizes only values serialized inside atlasfin.* candidate fields.",
+  "matchStatusRule": "Reference validity never upgrades atlasfinMatchStatus. AMBIGUOUS, NO_MATCH and NOT_APPLICABLE remain semantically unchanged.",
+  "recipeConvergenceRule": "Equal Atlasfin recipe IDs are review evidence only. They are not a neutral meaning, NDC meaning, Identity recipe, binding, or canonical coalescing key.",
+  "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+  "materialityCatalogInspected": false,
+  "automaticFallbackAllowed": false,
+  "canonicalIdMintingAllowed": false,
+  "productRuntimeMutationAllowed": false
+}

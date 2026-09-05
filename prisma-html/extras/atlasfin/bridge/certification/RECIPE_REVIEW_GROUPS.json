@@ -1,0 +1,3353 @@
+{
+  "schema": "prisma.atlasfin.recipe-review-groups.v1",
+  "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+  "reviewOnly": true,
+  "semanticCoalescingAllowed": false,
+  "excludedClasses": [
+    "ALL_NULL_ATLASFIN_REFS",
+    "NO_MATCH"
+  ],
+  "groupCount": 4,
+  "groups": [
+    {
+      "recipeId": "REC.card.governed.v2",
+      "authorityQualifiedRecipeRef": "atlasfin::REC.card.governed.v2",
+      "totalOccurrences": 95,
+      "surfaceCounts": {
+        "tablet": 41,
+        "pc": 54
+      },
+      "surfaceKeys": [
+        "tablet",
+        "pc"
+      ],
+      "crossSurface": true,
+      "reviewOnly": true,
+      "semanticCoalescingAllowed": false,
+      "reviewReason": "RECIPE_EQUALITY_IS_NOT_PROOF_OF_SHARED_NEUTRAL_MEANING",
+      "excludedFromAutomaticCoalescing": true,
+      "targetIdsBySurface": {
+        "tablet": [
+          "TGT.CENSUS.TABLET.03226728122A192D429D.V1",
+          "TGT.CENSUS.TABLET.0929F0295CF5DAE701D1.V1",
+          "TGT.CENSUS.TABLET.10D3F7818E8F214B8BC9.V1",
+          "TGT.CENSUS.TABLET.11D7E86CCE08686F9E0A.V1",
+          "TGT.CENSUS.TABLET.11FBB180A1EB2B9AA206.V1",
+          "TGT.CENSUS.TABLET.19FCEC29D70FD419F650.V1",
+          "TGT.CENSUS.TABLET.1FF44D1C759A50C5845E.V1",
+          "TGT.CENSUS.TABLET.241579D56E9DA503B904.V1",
+          "TGT.CENSUS.TABLET.27A0F4D89268574DC566.V1",
+          "TGT.CENSUS.TABLET.28048CE6CFE8F8316932.V1",
+          "TGT.CENSUS.TABLET.2EA199181491325BB0B4.V1",
+          "TGT.CENSUS.TABLET.330E70CEADF7B7EEE183.V1",
+          "TGT.CENSUS.TABLET.43464DED9A57C2012AC4.V1",
+          "TGT.CENSUS.TABLET.5F4ED666B17243A0838E.V1",
+          "TGT.CENSUS.TABLET.61C3823E6A13B0C5AB56.V1",
+          "TGT.CENSUS.TABLET.6C4FF90099E80041F64C.V1",
+          "TGT.CENSUS.TABLET.767A5473AC7F3E2E15FB.V1",
+          "TGT.CENSUS.TABLET.77384118CA97CA26DD52.V1",
+          "TGT.CENSUS.TABLET.7F962E328F74D678529D.V1",
+          "TGT.CENSUS.TABLET.87906C22854836D9A49A.V1",
+          "TGT.CENSUS.TABLET.89A5B417EE4FA30BDC85.V1",
+          "TGT.CENSUS.TABLET.8A3EFBD02270B28ED78C.V1",
+          "TGT.CENSUS.TABLET.90D575F0628A66F1DFC2.V1",
+          "TGT.CENSUS.TABLET.93C65B93F0F2ADC3E708.V1",
+          "TGT.CENSUS.TABLET.940B9BAE00EF88D3F1A3.V1",
+          "TGT.CENSUS.TABLET.9C8D4B7C20E65CDC3EBA.V1",
+          "TGT.CENSUS.TABLET.9DF3B23F86251FEA506E.V1",
+          "TGT.CENSUS.TABLET.A3AF342EDD8CE1FA16B8.V1",
+          "TGT.CENSUS.TABLET.A616D321014A7F20C1BF.V1",
+          "TGT.CENSUS.TABLET.B636BCE83AFF981236B4.V1",
+          "TGT.CENSUS.TABLET.B70DF5EA92CA1DBE557F.V1",
+          "TGT.CENSUS.TABLET.B863911806CD1325D91B.V1",
+          "TGT.CENSUS.TABLET.B91D145CDC6E7AC096DB.V1",
+          "TGT.CENSUS.TABLET.BED06734650622A1D817.V1",
+          "TGT.CENSUS.TABLET.C70EB9AF7808CEB91CBC.V1",
+          "TGT.CENSUS.TABLET.CAEDE5B2E9BFB289FA94.V1",
+          "TGT.CENSUS.TABLET.CC0C7923234C1B1BC8AE.V1",
+          "TGT.CENSUS.TABLET.E492F5E4B3FD2DA45D83.V1",
+          "TGT.CENSUS.TABLET.E4BDBFAD6721473DDF8F.V1",
+          "TGT.CENSUS.TABLET.E78B9A78ED49C085500D.V1",
+          "TGT.CENSUS.TABLET.F2A1F0131F02EFA7AE4D.V1"
+        ],
+        "pc": [
+          "TGT.CENSUS.PC.0BBBEA2F793327BA35AA.V1",
+          "TGT.CENSUS.PC.1C71F4C6F5C3A62E8CF4.V1",
+          "TGT.CENSUS.PC.1E7E71CFA0D7BB358DE1.V1",
+          "TGT.CENSUS.PC.2122C60BB39FDFDB4357.V1",
+          "TGT.CENSUS.PC.217C985E334A8DE47046.V1",
+          "TGT.CENSUS.PC.23C19BEBBF93D9F49AD1.V1",
+          "TGT.CENSUS.PC.298D6109622B07B98A1F.V1",
+          "TGT.CENSUS.PC.3B360922BCE27C9EDC11.V1",
+          "TGT.CENSUS.PC.3B7A54B04D8A65D2BE87.V1",
+          "TGT.CENSUS.PC.3DB5E3FA5429CA98991B.V1",
+          "TGT.CENSUS.PC.44026C31801B360EB631.V1",
+          "TGT.CENSUS.PC.460CCAE102B60D5E1396.V1",
+          "TGT.CENSUS.PC.4F7EE3ED27ED9F412436.V1",
+          "TGT.CENSUS.PC.51F78033CC5A9404CE3A.V1",
+          "TGT.CENSUS.PC.55058CB5237C1857B05E.V1",
+          "TGT.CENSUS.PC.617596A9F19D4B2EBEA1.V1",
+          "TGT.CENSUS.PC.6367829EBE0016106008.V1",
+          "TGT.CENSUS.PC.63EF7B74538961638E7F.V1",
+          "TGT.CENSUS.PC.6549EC277ACC548FC228.V1",
+          "TGT.CENSUS.PC.6957211BDFCC38DEA54B.V1",
+          "TGT.CENSUS.PC.6B77773103910F18E159.V1",
+          "TGT.CENSUS.PC.6BAC570C2ED499189218.V1",
+          "TGT.CENSUS.PC.6E7087BF33379DA99081.V1",
+          "TGT.CENSUS.PC.794546E4D99692650794.V1",
+          "TGT.CENSUS.PC.8D9DE6B646373BFCFC98.V1",
+          "TGT.CENSUS.PC.8DD02F48DABA36DDE84A.V1",
+          "TGT.CENSUS.PC.8F919E37EE8EDB3E317A.V1",
+          "TGT.CENSUS.PC.979898916313D605FCA1.V1",
+          "TGT.CENSUS.PC.99E65950422F289C600C.V1",
+          "TGT.CENSUS.PC.9D25766E2D7A7EE966E7.V1",
+          "TGT.CENSUS.PC.9E70DD0E312F630E7476.V1",
+          "TGT.CENSUS.PC.A04E0233B4093424BF7E.V1",
+          "TGT.CENSUS.PC.A1105A3484375B20465B.V1",
+          "TGT.CENSUS.PC.A1EC15EE23FB06258757.V1",
+          "TGT.CENSUS.PC.A4737ECF73EC3C4A9C29.V1",
+          "TGT.CENSUS.PC.A49C7C65A024287D9F8C.V1",
+          "TGT.CENSUS.PC.B03D8AF024F3DCA68416.V1",
+          "TGT.CENSUS.PC.B0A8075D7AEDE8C832F4.V1",
+          "TGT.CENSUS.PC.C1966281B9A1D2384DFC.V1",
+          "TGT.CENSUS.PC.C2E91C5A4AD5AE6B2969.V1",
+          "TGT.CENSUS.PC.C307FA3F67F531AD3C6C.V1",
+          "TGT.CENSUS.PC.C54F24B6C519B592FC87.V1",
+          "TGT.CENSUS.PC.D091CB713A90FBE4BCA5.V1",
+          "TGT.CENSUS.PC.D487F95387CC2A5B2134.V1",
+          "TGT.CENSUS.PC.D49C75857C57334863D0.V1",
+          "TGT.CENSUS.PC.DDA9AF5A4512926444FD.V1",
+          "TGT.CENSUS.PC.E1D18CAE52627B139B67.V1",
+          "TGT.CENSUS.PC.E30A0D239C707219CBDB.V1",
+          "TGT.CENSUS.PC.E9C1D1320A3FEF22E7AF.V1",
+          "TGT.CENSUS.PC.EA33655CD2669F34A40E.V1",
+          "TGT.CENSUS.PC.EA3F94B9FF44091A91AC.V1",
+          "TGT.CENSUS.PC.F06B1F35EB4583346F96.V1",
+          "TGT.CENSUS.PC.FA49FD30A48DC57E75CA.V1",
+          "TGT.CENSUS.PC.FFF86651FC166E77216C.V1"
+        ]
+      },
+      "sourceEvidence": [
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.03226728122A192D429D.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 3,
+          "sourceRecordSha256": "5938993ced9f18db87349718214341c073915e93be489d58734a557f5030248b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.0929F0295CF5DAE701D1.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 7,
+          "sourceRecordSha256": "76951c59c264c3b3e9ed3e35f050c0103069b649eb55e10838addb1f1943f6fa",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.10D3F7818E8F214B8BC9.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 10,
+          "sourceRecordSha256": "d8aff46e2d6612d770584e6c9e913ae19a3282cd50ff740a18ab6f7e89f1c1cf",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.11D7E86CCE08686F9E0A.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 11,
+          "sourceRecordSha256": "b91dede54fada49a59ab72f52e79ff55837f36cd0e211c239a58fa034dd1d1d0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.11FBB180A1EB2B9AA206.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 12,
+          "sourceRecordSha256": "84640c03f84ae2823cddfa342305847391c9a84eff3e73a475c4f267a25143dc",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.19FCEC29D70FD419F650.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 16,
+          "sourceRecordSha256": "1b878210057edf7d6fb2c11362b640c33ab9fb82ce01575ed3485ed43a6031a9",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.1FF44D1C759A50C5845E.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 18,
+          "sourceRecordSha256": "0c91435ece36fa59e0ab6ee51a3c35b558300f681f6748a40401494fc27f5ee7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.241579D56E9DA503B904.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 21,
+          "sourceRecordSha256": "d02e26f8e8ca229f2d3bf9281b89cf95d8fcdfca472cf54a7b2e6052cdd01d62",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.27A0F4D89268574DC566.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 22,
+          "sourceRecordSha256": "94d6ec2d2d50def9dfb9f9da2883d371478591d16dbe61dc79ea399368ac76ce",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.28048CE6CFE8F8316932.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 23,
+          "sourceRecordSha256": "1d0428607b45007f8c3e2d7c8ea6025c8041a6999f7a11fb2d7511159fe34393",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.2EA199181491325BB0B4.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 27,
+          "sourceRecordSha256": "9f3abd8b958c3c026c247781eb7be6e25f6e4a66537d00e82999a52682c9fb69",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.330E70CEADF7B7EEE183.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 28,
+          "sourceRecordSha256": "c64e1c10cadec55c156f4ede829f1c55751aa03b334b749de2908e96bca5be65",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.43464DED9A57C2012AC4.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 35,
+          "sourceRecordSha256": "8c036f70647a173a457adf8facaef254015ad81db7734046d577932288753e64",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.5F4ED666B17243A0838E.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 47,
+          "sourceRecordSha256": "3565658ce63b4a064e410b724c2b8fd5a6d5f7944f6535974bcdd38041113888",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.61C3823E6A13B0C5AB56.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 48,
+          "sourceRecordSha256": "4d34042d8a5666ec39eeaeab87fbefa2fc9f68942047205dde1aea3c71851fd8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6C4FF90099E80041F64C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 55,
+          "sourceRecordSha256": "b521fba9fd65c704bb91319ca754564732c36993ab14e232bfa9687d28f99834",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.767A5473AC7F3E2E15FB.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 63,
+          "sourceRecordSha256": "09ac596e8ca7f810d9d9279ce058b76d4e4510415ee569efb53d6c890ff19d9c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.77384118CA97CA26DD52.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 66,
+          "sourceRecordSha256": "8531b8c82a0cba5965b860d3d25038af41d679d38466e468fceff8a295933d06",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.7F962E328F74D678529D.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 70,
+          "sourceRecordSha256": "e045e87a94ffc02679b122d4a389f4958e7d49ef85511acb8ab4727a39616abd",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.87906C22854836D9A49A.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 71,
+          "sourceRecordSha256": "518d6c94a87e1b4dc966a6bc698dad6bf47b6ed79352bc0b23ca894d976a56cf",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.89A5B417EE4FA30BDC85.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 73,
+          "sourceRecordSha256": "54ffb152eaffc932b5304a78111396e0f5261deb9139cb9b9448c88090487155",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.8A3EFBD02270B28ED78C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 74,
+          "sourceRecordSha256": "f0334f06f9fd6c2bb4d0580e53db0358ae16c3f6e979d6662ed02a1a9c7a8ade",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.90D575F0628A66F1DFC2.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 79,
+          "sourceRecordSha256": "ed61f0b14291688cfd3c2f4df7a4326603fa5831e0df8eec5a211e1af95f87fe",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.93C65B93F0F2ADC3E708.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 83,
+          "sourceRecordSha256": "886ebdc6c95b97279c681fd72e677c4503c3a9628f5d70da8d41659e75085e29",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.940B9BAE00EF88D3F1A3.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 84,
+          "sourceRecordSha256": "4174aada259422a9cc575118940c630faf0824f4098420b592db03eb354740c0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.9C8D4B7C20E65CDC3EBA.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 87,
+          "sourceRecordSha256": "e6bad4615f0be2a9f550a9a140546a72a4d717dc79cf6b63052b7518bfe0793a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.9DF3B23F86251FEA506E.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 89,
+          "sourceRecordSha256": "9f8cd9dfca135f09d24854a484f256a22d90853f5ae24b6daf2d228dfc72f51e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.A3AF342EDD8CE1FA16B8.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 91,
+          "sourceRecordSha256": "3d410c136caf95c2048f57d0f05e1e3a4dbee94e7b6169d7880feeaab02c094e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.A616D321014A7F20C1BF.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 93,
+          "sourceRecordSha256": "b1ff4c94f713279333bea66444a4c0005cee271bf918e9ab005681114798bea5",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B636BCE83AFF981236B4.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 99,
+          "sourceRecordSha256": "fba14d80b9eba8e232cc4c219b4900e66a06260cbffaa4bcb891f18751bfed7e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B70DF5EA92CA1DBE557F.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 100,
+          "sourceRecordSha256": "64f412d212221aa5bd84a19b7df09e83c50ab08dd5a271891b6f9e8c69e4ec9d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B863911806CD1325D91B.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 101,
+          "sourceRecordSha256": "0a8693684a6e489c7d10b567efb739400844427275045226371e8a1db59eef8e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B91D145CDC6E7AC096DB.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 103,
+          "sourceRecordSha256": "02c99c7fc35622e1557722b47b6b88c29558bb1818d43e4d3b7e3f59e1c4246e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.BED06734650622A1D817.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 106,
+          "sourceRecordSha256": "be72d3815cef39f1b0867957e07796526e19d2c90ac609add1773e6c5075514d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.C70EB9AF7808CEB91CBC.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 109,
+          "sourceRecordSha256": "521a3c117e926f86bfa71d0b7e252971c41d87c9e35e29b3d57eee65028c6b6b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.CAEDE5B2E9BFB289FA94.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 110,
+          "sourceRecordSha256": "a09197ee8bb06203fa7f315066b51132dac75645491f4114b2244b3f47d86cff",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.CC0C7923234C1B1BC8AE.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 112,
+          "sourceRecordSha256": "3db14ad4e6ce4c6bb1008ecf0996a0ff18c7110bec503025feca839f8a57601b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.E492F5E4B3FD2DA45D83.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 122,
+          "sourceRecordSha256": "104953c716c09567acf4b677b74c366a636bfea5a486db2c5109ce7654cf2770",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.E4BDBFAD6721473DDF8F.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 123,
+          "sourceRecordSha256": "ee3d2d3c57bd353f418562509c70abb4e0d6cfc107f72ba30b6317d35b5d2072",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.E78B9A78ED49C085500D.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 125,
+          "sourceRecordSha256": "f5beb1e903f01c4b33eb26c2cc83f2699514f114a120a678394224779be2c4c9",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.F2A1F0131F02EFA7AE4D.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 131,
+          "sourceRecordSha256": "2301a5da77f4b912d17af70b848b34edb98c1de2c3f4356ec270ae4c8e97a74a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0BBBEA2F793327BA35AA.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 9,
+          "sourceRecordSha256": "bc109ad10581b3f7e9865da90e0310b898b7857837028051d4ae997bb92f4e36",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.1C71F4C6F5C3A62E8CF4.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 19,
+          "sourceRecordSha256": "782765c0bce44b8bd291fe7d3bbaf9997c339adcfd35676438d6608062a65662",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.1E7E71CFA0D7BB358DE1.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 21,
+          "sourceRecordSha256": "a9938c65ffe8e2bcd94404f5131ad953f5605ec0d16f55e903a5c93755dce99b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.2122C60BB39FDFDB4357.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 22,
+          "sourceRecordSha256": "fb11cf0ee718901e7e51977abe3001bd0be17645be65bf7266302d77e1b30942",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.217C985E334A8DE47046.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 23,
+          "sourceRecordSha256": "ffeec78857a60d4d83fda45d6bb445de84a92d685a8f9b31c38a5872e7f80ee7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.23C19BEBBF93D9F49AD1.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 24,
+          "sourceRecordSha256": "948f1d40a3abd6295775d550fbb2ddd50b14380ee8b4bf9eb2e4d4c6c1bd66c8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.298D6109622B07B98A1F.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 25,
+          "sourceRecordSha256": "069406e1d754ee02b252aae9b0a19450eff2ae0d7a9215e78f7a344e632e8b29",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3B360922BCE27C9EDC11.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 33,
+          "sourceRecordSha256": "113f1c84a8c063e5d156cee59b9d5236ac6fa2d39b4e3378cddf6a833179ee6b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3B7A54B04D8A65D2BE87.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 34,
+          "sourceRecordSha256": "e9fe3ed3132510ad3dac1d65c42d6a0b2a0b01221fdadc7676651212fd0f8c0f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3DB5E3FA5429CA98991B.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 36,
+          "sourceRecordSha256": "0916b975e9fad41498e58e32055bb8d4e75294297a993d2018a2124083465615",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.44026C31801B360EB631.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 42,
+          "sourceRecordSha256": "d50214f83f1e5f9c9f04283995fda1b02335ac62e9a07daadaa05355eeb99983",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.460CCAE102B60D5E1396.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 43,
+          "sourceRecordSha256": "eeb080e13990cfb4bfca55901270a77270a9c714371ad73cec1a7735a2744491",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4F7EE3ED27ED9F412436.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 58,
+          "sourceRecordSha256": "0f628d4e8f63eb560cb41b60c05a4ad34da239602a43839a2d2dcba68eaab7ff",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.51F78033CC5A9404CE3A.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 59,
+          "sourceRecordSha256": "b583baa78acff0ce8bb4cca13ad5cdb6f03590d343ba0c2e397cc129fa6951db",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.55058CB5237C1857B05E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 60,
+          "sourceRecordSha256": "ce400fb37b1e25e4590d52bc3d3a23fe92bc82a7b361515455d7fd8fe63e7e25",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.617596A9F19D4B2EBEA1.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 68,
+          "sourceRecordSha256": "e2a510f394169587bbfccb72bc9b80a2f4f9592ee4a30d279fc45b27b55b5933",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6367829EBE0016106008.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 72,
+          "sourceRecordSha256": "202a817049bcee713ad662d68637f49c15d67a4b0937917d80ae55d12158b125",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.63EF7B74538961638E7F.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 73,
+          "sourceRecordSha256": "a31abb2efb9c155441c9b0be64bd5db0392765ac16dd7e0cd5fe6a09d33a205d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6549EC277ACC548FC228.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 74,
+          "sourceRecordSha256": "70e8cdbcda31e9399843b1e6e14f3a39c9b60c72e17d0c1c7f75b1be62659937",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6957211BDFCC38DEA54B.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 76,
+          "sourceRecordSha256": "b59615bd280c2566d4be033f04318841487a02d5bb2c3d11624acccc9580a6ff",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6B77773103910F18E159.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 78,
+          "sourceRecordSha256": "08fd8923cd0c9946356b10dd43629b64f07352627b102f0bb971b6c52f10aefa",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6BAC570C2ED499189218.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 80,
+          "sourceRecordSha256": "12c346e8c77662f521cb9355a159475804c718fdab1bd5fe48ec373303c5c055",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6E7087BF33379DA99081.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 84,
+          "sourceRecordSha256": "ac1e96c7703aa80c415a97f1116130ba1b8f384dcedbd62e3be9a8f84393f69f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.794546E4D99692650794.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 94,
+          "sourceRecordSha256": "c16c2c3d76a8ef4ae8222d45493028c06f05d511a8dba0d288e49243807ce43d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8D9DE6B646373BFCFC98.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 104,
+          "sourceRecordSha256": "7aaea537b466e54125958a41b7bab1431c2c93faefb42806d63acf87ab889985",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8DD02F48DABA36DDE84A.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 105,
+          "sourceRecordSha256": "a9fc8adb74779663e2e895921c35ebc6f4dc859519d0cf72ef4928bb673b8953",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8F919E37EE8EDB3E317A.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 108,
+          "sourceRecordSha256": "6c696e5659a1e7ad33f0e9ffdec0764e350073529e519699734e7de55219f5a8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.979898916313D605FCA1.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 115,
+          "sourceRecordSha256": "fe37e8860f3dcc8cdaaeb7024075b02a629194f3223e9c8d966d2f3aac85d2f4",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.99E65950422F289C600C.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 117,
+          "sourceRecordSha256": "a4c51266ac4f92018b138abb07107d348251d17dd78d71b8decc1c4dffce0eaf",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.9D25766E2D7A7EE966E7.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 118,
+          "sourceRecordSha256": "c163d62f73731623bc2df6a66712778a2592f0653fbe1e9fdfa4ba91e43355a1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.9E70DD0E312F630E7476.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 119,
+          "sourceRecordSha256": "98114c395ce15448a93826e438a10592ffdaa057986bc0ee663529e7c46060ed",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.A04E0233B4093424BF7E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 120,
+          "sourceRecordSha256": "40b982aecef08250f1b34aaef8a828b4a97e99aff0bf1709fe0ad377d7de5374",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.A1105A3484375B20465B.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 121,
+          "sourceRecordSha256": "bdc59949d666ebbf8dd307ba5e2b802520fc711f7e139f69961ff849d9390fdc",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.A1EC15EE23FB06258757.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 122,
+          "sourceRecordSha256": "21ae99e8e4bb87a89ac50d15d1da14e60e07beb49139cc05c29818cb81f5cff2",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.A4737ECF73EC3C4A9C29.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 123,
+          "sourceRecordSha256": "cd0ade0e49aaa8aed6cfdd500ed8d5812277cc783815ff68055032c6ed25a7d8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.A49C7C65A024287D9F8C.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 124,
+          "sourceRecordSha256": "0966005270518f34f8862c9cb44ef3036df527f80a7fce9b7572118c970e86f6",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B03D8AF024F3DCA68416.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 128,
+          "sourceRecordSha256": "2fc30d1e58f14cde67a91410280c45cbc707be15e2dea8259735103ea98b8b75",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B0A8075D7AEDE8C832F4.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 129,
+          "sourceRecordSha256": "2f458102a257cddb949c28ba97a68eb4e9422c12173eeada4969cb60a0b224eb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.C1966281B9A1D2384DFC.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 138,
+          "sourceRecordSha256": "67f5b35ac2c9ae7cb90ae0a4c000eaf2c24dddc55eae7a04d058fd5a5eac5daa",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.C2E91C5A4AD5AE6B2969.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 139,
+          "sourceRecordSha256": "401c60dd80fe7ead5639ef302b9117d8ccbbd5c382009c924b81e42574bf4f6f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.C307FA3F67F531AD3C6C.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 140,
+          "sourceRecordSha256": "8ffcbe901b1458060b14f01f656975a92fa57147028a4e9244d47ef29df62c2b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.C54F24B6C519B592FC87.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 141,
+          "sourceRecordSha256": "6a5e877776378fb9fb06403a32cbc39151dce2786869a8f4facacec654a392bc",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D091CB713A90FBE4BCA5.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 147,
+          "sourceRecordSha256": "1d802403aebcdc2990a765b74c6d98dcacfc01ae69e31fc788f4e784756a1528",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D487F95387CC2A5B2134.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 153,
+          "sourceRecordSha256": "74bd5bc372ca98ab02c00e6b3a2cd4f5bff9814ef527bc46c2b1de115484c219",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D49C75857C57334863D0.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 154,
+          "sourceRecordSha256": "ad928e86838c8ea82e04157ce8faad6e881544c9ec817ddca56946494f38b243",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.DDA9AF5A4512926444FD.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 157,
+          "sourceRecordSha256": "4d09783933d4d3f97980bf2d87e2eb0e99926872e05058bb10a1e07f1b933cb8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.E1D18CAE52627B139B67.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 160,
+          "sourceRecordSha256": "8104011fd647682f6b5dcee544d0255eed23dda494b1fd38d355b3cd5e4ec2c7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.E30A0D239C707219CBDB.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 161,
+          "sourceRecordSha256": "57bcb53a195a605c94e02c30988ca3feaca6ec25e34746b28493a6a4f1a46ccb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.E9C1D1320A3FEF22E7AF.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 166,
+          "sourceRecordSha256": "ec689286ac6bff19afe81e16f156ae8d28e4422f8187d6b9091d79650f22d749",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.EA33655CD2669F34A40E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 167,
+          "sourceRecordSha256": "9bd7e04e0bb8824127eb8f560f8a5b4e299932d5bfc8d6aa6c25cf0b72e7af8d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.EA3F94B9FF44091A91AC.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 168,
+          "sourceRecordSha256": "dda6e4d3baeacd1e226e14db9ddb81fca74c908e4e527e5c67bbb0ef7f868775",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.F06B1F35EB4583346F96.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 172,
+          "sourceRecordSha256": "aa4c211e8d101b48bce3dffa8bc1d40cb93d84c8ddd91328ca08c239986dd353",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FA49FD30A48DC57E75CA.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 178,
+          "sourceRecordSha256": "22f3d7e8cba19403ac0a642b0aa8c254883314b7dbe22ec81d7c29dd633f46f8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FFF86651FC166E77216C.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 186,
+          "sourceRecordSha256": "6ab0368d52de06a0b96d6d35a9e66229be16a502d21bfa0bd7025d3056df7b6a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        }
+      ]
+    },
+    {
+      "recipeId": "REC.overlay.governed.v2",
+      "authorityQualifiedRecipeRef": "atlasfin::REC.overlay.governed.v2",
+      "totalOccurrences": 11,
+      "surfaceCounts": {
+        "tablet": 11
+      },
+      "surfaceKeys": [
+        "tablet"
+      ],
+      "crossSurface": false,
+      "reviewOnly": true,
+      "semanticCoalescingAllowed": false,
+      "reviewReason": "RECIPE_EQUALITY_IS_NOT_PROOF_OF_SHARED_NEUTRAL_MEANING",
+      "excludedFromAutomaticCoalescing": true,
+      "targetIdsBySurface": {
+        "tablet": [
+          "TGT.CENSUS.TABLET.04058FB8FD522D4D4CAC.V1",
+          "TGT.CENSUS.TABLET.0699E2FC5E37DB4A21F9.V1",
+          "TGT.CENSUS.TABLET.18586DE98621742BDB87.V1",
+          "TGT.CENSUS.TABLET.2822AA8B36FC05B7CD9E.V1",
+          "TGT.CENSUS.TABLET.52DFE81CFAFB8E83CE74.V1",
+          "TGT.CENSUS.TABLET.53AAEFF56B906FC30974.V1",
+          "TGT.CENSUS.TABLET.6EDE611EB30D904A2248.V1",
+          "TGT.CENSUS.TABLET.74B9B742FCD6E96D07EB.V1",
+          "TGT.CENSUS.TABLET.87CB89E898C6FA42B629.V1",
+          "TGT.CENSUS.TABLET.903039FBE066CDC0C14E.V1",
+          "TGT.CENSUS.TABLET.E539E861BF84142237FC.V1"
+        ]
+      },
+      "sourceEvidence": [
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.04058FB8FD522D4D4CAC.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 4,
+          "sourceRecordSha256": "ce41c641ed571a38ec565bdf356c34dba33a4e1497e253e475123295347897b8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.0699E2FC5E37DB4A21F9.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 5,
+          "sourceRecordSha256": "282a203d67fdbc6a9e2b9d85fabdf5264db24a76d7f426768e40acd2451a3c15",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.18586DE98621742BDB87.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 14,
+          "sourceRecordSha256": "3fa3d4623773950f899a19878de6243e3d710b024841e510da1eed0f3d8e1bc1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.2822AA8B36FC05B7CD9E.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 24,
+          "sourceRecordSha256": "82b24d730ed0f3ca46b8cd0530a7af0d3e9930f2daa65deb8b6cb70ae8c96f3e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.52DFE81CFAFB8E83CE74.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 40,
+          "sourceRecordSha256": "92b7b82a8026767075371ba481121912447a65962173101ed4724f1166efcb66",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.53AAEFF56B906FC30974.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 41,
+          "sourceRecordSha256": "71a214eefcf577cfb8193e855bf1c05751cf483a04f309c9dedacc47e6f6b98e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6EDE611EB30D904A2248.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 59,
+          "sourceRecordSha256": "aa7ee680208455bddf817d14600ef0e2646f856aa9e5150ada35559fca84c984",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.74B9B742FCD6E96D07EB.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 62,
+          "sourceRecordSha256": "d802ee3728e4974b4baa6905cd2a30ccf0ba8fc1cd5f5c473e96e8f295f83e7e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.87CB89E898C6FA42B629.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 72,
+          "sourceRecordSha256": "3f621aedca074e9f6457602b9dca340c7dd1a1ee700f4bf6200f14240cc42dd5",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.903039FBE066CDC0C14E.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 78,
+          "sourceRecordSha256": "1c85717c32e1c7e709d0b53916ff65a7fda7502325865aba48c2cbfdc35e622f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.E539E861BF84142237FC.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 124,
+          "sourceRecordSha256": "88a66af2ab6740477a877cd4f8d132f1ff9479b1394cf665d70e792c8f920172",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        }
+      ]
+    },
+    {
+      "recipeId": "REC.panel.governed.v2",
+      "authorityQualifiedRecipeRef": "atlasfin::REC.panel.governed.v2",
+      "totalOccurrences": 47,
+      "surfaceCounts": {
+        "tablet": 20,
+        "pc": 27
+      },
+      "surfaceKeys": [
+        "tablet",
+        "pc"
+      ],
+      "crossSurface": true,
+      "reviewOnly": true,
+      "semanticCoalescingAllowed": false,
+      "reviewReason": "RECIPE_EQUALITY_IS_NOT_PROOF_OF_SHARED_NEUTRAL_MEANING",
+      "excludedFromAutomaticCoalescing": true,
+      "targetIdsBySurface": {
+        "tablet": [
+          "TGT.CENSUS.TABLET.1331350877F1824C056D.V1",
+          "TGT.CENSUS.TABLET.195344A9B72000C2B769.V1",
+          "TGT.CENSUS.TABLET.1E4FB428D2FF31EFBC7A.V1",
+          "TGT.CENSUS.TABLET.3A2E8CC3C99BCC6B6DBA.V1",
+          "TGT.CENSUS.TABLET.3C529456FD0A1988178C.V1",
+          "TGT.CENSUS.TABLET.5953D38BA8B1E0B7E288.V1",
+          "TGT.CENSUS.TABLET.5BC9A603D3E66E8D68B3.V1",
+          "TGT.CENSUS.TABLET.6D2201F729DDCB893EFB.V1",
+          "TGT.CENSUS.TABLET.6D458A75DF8C7D4ED00B.V1",
+          "TGT.CENSUS.TABLET.8CE9E3CEDB0B0732F066.V1",
+          "TGT.CENSUS.TABLET.902978438EC686122317.V1",
+          "TGT.CENSUS.TABLET.90F4119AF8681AA13505.V1",
+          "TGT.CENSUS.TABLET.92E89D5D55E83F256CD8.V1",
+          "TGT.CENSUS.TABLET.A1DF64FF2D09925CBCB9.V1",
+          "TGT.CENSUS.TABLET.A9480B36952D15CB05C4.V1",
+          "TGT.CENSUS.TABLET.C0546E2651ED679EEE04.V1",
+          "TGT.CENSUS.TABLET.CB4190B0F34577507187.V1",
+          "TGT.CENSUS.TABLET.D9C78B16D1423EF0E0FF.V1",
+          "TGT.CENSUS.TABLET.E384273A9EA94066B467.V1",
+          "TGT.CENSUS.TABLET.F457741D023A31EAE94A.V1"
+        ],
+        "pc": [
+          "TGT.CENSUS.PC.0238390DD9B779777F17.V1",
+          "TGT.CENSUS.PC.08FA85BF91CCA49CF68E.V1",
+          "TGT.CENSUS.PC.0CEAAECC4120D52E7CE4.V1",
+          "TGT.CENSUS.PC.0E0C95F870E7CACE6526.V1",
+          "TGT.CENSUS.PC.11337204FCD359D39FCA.V1",
+          "TGT.CENSUS.PC.12AF5EC7C2EB90212AE1.V1",
+          "TGT.CENSUS.PC.29C550CCABB8D19DDC71.V1",
+          "TGT.CENSUS.PC.2E05957384A37D6AA9E0.V1",
+          "TGT.CENSUS.PC.3CB3A62CEC9DC4DE6291.V1",
+          "TGT.CENSUS.PC.411343A5D8C4C3D70537.V1",
+          "TGT.CENSUS.PC.4954588C44ECC7ABBF1C.V1",
+          "TGT.CENSUS.PC.4AEB216631059561F352.V1",
+          "TGT.CENSUS.PC.5C8BF031C2C082345354.V1",
+          "TGT.CENSUS.PC.6213EFAA358AB6B7CA30.V1",
+          "TGT.CENSUS.PC.6CC072FF944F55B85FE6.V1",
+          "TGT.CENSUS.PC.6E4D7C386F9BF063AD66.V1",
+          "TGT.CENSUS.PC.70E5D8B7311645034552.V1",
+          "TGT.CENSUS.PC.7448CE65C76ED8D88E65.V1",
+          "TGT.CENSUS.PC.85468ECC40983617C476.V1",
+          "TGT.CENSUS.PC.9049D202E57C3EC9F9AD.V1",
+          "TGT.CENSUS.PC.B99F38557AB28503377A.V1",
+          "TGT.CENSUS.PC.BF9E5830814172B32B0F.V1",
+          "TGT.CENSUS.PC.D22E64EA1CCEEE4DEBAF.V1",
+          "TGT.CENSUS.PC.D24DEF548C9B9E0D6E17.V1",
+          "TGT.CENSUS.PC.DF94C7D14D35F06BD468.V1",
+          "TGT.CENSUS.PC.EF1DCBC29011325BAFB9.V1",
+          "TGT.CENSUS.PC.F699311891C2F80E4276.V1"
+        ]
+      },
+      "sourceEvidence": [
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.1331350877F1824C056D.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 13,
+          "sourceRecordSha256": "40813ea5f04ff84c63c2211baa0ea816ffacc57ad97b8abbbc7f46b8c40a3572",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.195344A9B72000C2B769.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 15,
+          "sourceRecordSha256": "6f949d7be5efb0e4ed55cab1dab5ba51d23f03721cc742355427d574ef8bc421",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.1E4FB428D2FF31EFBC7A.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 17,
+          "sourceRecordSha256": "485abe8ad454ac33262aefdc7870048af4ade006c1d5e1b622792531d20a6c08",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.3A2E8CC3C99BCC6B6DBA.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 31,
+          "sourceRecordSha256": "64718edfc23b0125cfa01c26361d3ee29e10e87db1e593b5784341b0a28ed4ff",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.3C529456FD0A1988178C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 33,
+          "sourceRecordSha256": "d2577a98b4c72afcdb5d7170730b3c4cc74bf3d6461604c153543a5ff72d2b95",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.5953D38BA8B1E0B7E288.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 43,
+          "sourceRecordSha256": "50dffd6a02c77ebbe7a7d5c17457cc33f8c0443d074f4d42a784f53f6eb3b676",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.5BC9A603D3E66E8D68B3.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 45,
+          "sourceRecordSha256": "ba000faef45114fb42b9fdb890d523ddaa71bfca4dee61973a26ddda8a268fa4",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6D2201F729DDCB893EFB.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 56,
+          "sourceRecordSha256": "64614a000de1c8cec932f55577c72ced43efa0ffb2941fc0d70727cabd0a8ee3",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6D458A75DF8C7D4ED00B.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 57,
+          "sourceRecordSha256": "eb18e31c169bdd802c415f54a4890e1f339e4b67d0de601fcd96268957cfaa83",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.8CE9E3CEDB0B0732F066.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 75,
+          "sourceRecordSha256": "01054dd4ad1d1bf5c7f2358a55e510cabeda44040a01c4310788c59c78bd14d4",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.902978438EC686122317.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 77,
+          "sourceRecordSha256": "5de2696942fbadbc4e9622d7b197244ecfdbd0ffa9d910be8fb02c2cbfa30239",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.90F4119AF8681AA13505.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 80,
+          "sourceRecordSha256": "ec62bfaa08b555c9de18effdb2e4ea8cb6efacec8ab6e5f9c4457f6abe7cdb4c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.92E89D5D55E83F256CD8.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 82,
+          "sourceRecordSha256": "3f665a320898e96b84c3259803e2e4ca331eeb3daee9b84c68e12a068474e1e6",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.A1DF64FF2D09925CBCB9.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 90,
+          "sourceRecordSha256": "81c2ef524d7560e34c505f8420cca5fc742e9e518bae1107a3552b7a26a8015b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.A9480B36952D15CB05C4.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 95,
+          "sourceRecordSha256": "5dc10df96cda981f76c842ee7e3c80784717afc6bb43d3cb6f73ed22ac75a4b1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.C0546E2651ED679EEE04.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 107,
+          "sourceRecordSha256": "cb3566600651b2b0603ac76e40ef94fe20913dce321c2326b42f707d52bda709",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.CB4190B0F34577507187.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 111,
+          "sourceRecordSha256": "3984de71ce7dfa0ad0d0629b45bb84a6a64d8da1093ff72910d5bfd305baad28",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.D9C78B16D1423EF0E0FF.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 117,
+          "sourceRecordSha256": "459edaf44e29bbe056079603e2dff3ea800966edc85498386a73459f83e710f6",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.E384273A9EA94066B467.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 121,
+          "sourceRecordSha256": "082db45a9dff26f09f00f2a64ceefab54f4204382f83b9c045aef3d5cdf01dfa",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.F457741D023A31EAE94A.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 133,
+          "sourceRecordSha256": "ff24e556c5347e65e2ac25a6b05ad37260babc80a3925e53cf34ced54743d2da",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0238390DD9B779777F17.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 2,
+          "sourceRecordSha256": "f53333ff0f1797051754453cbc2a8b7a10ad3669c118cdb76770864c5c283bea",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.08FA85BF91CCA49CF68E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 5,
+          "sourceRecordSha256": "37ce5784ddf6881bef69c9e127dcd5aa41a807d9ceb2e799504a149fc0ed7c11",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0CEAAECC4120D52E7CE4.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 11,
+          "sourceRecordSha256": "04a3f63f4cb127dba1d44828f9eba5a88ca8ac00d04d04c8e506200d50f5ffcb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0E0C95F870E7CACE6526.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 12,
+          "sourceRecordSha256": "be9a7e59f13afd3efa3d75b3994121ea3c5f66a4e80886bec27f1a5c446f72c6",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.11337204FCD359D39FCA.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 14,
+          "sourceRecordSha256": "5b3023a143d476cbdb1b8537f702c7a4f90995c36c7986e43d49ba08ff0ec15a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.12AF5EC7C2EB90212AE1.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 15,
+          "sourceRecordSha256": "5d27f572eafa088421506ceff41e15057269b9c128a6cde14256ebf575cd1638",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.29C550CCABB8D19DDC71.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 26,
+          "sourceRecordSha256": "33e6f54df09fa9e02a58180441b40ec70448556ae95e716f824c6df10336996d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.2E05957384A37D6AA9E0.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 28,
+          "sourceRecordSha256": "7a990766066a6dc87a353bfe88d8cb333f0461906e73a91d11164a42e2c2f9da",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3CB3A62CEC9DC4DE6291.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 35,
+          "sourceRecordSha256": "3e81d3ad850ca45995b84d4139e393195823536f3db68b8026c094e478ee21d4",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.411343A5D8C4C3D70537.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 39,
+          "sourceRecordSha256": "53c833a7b1a001e484a0487dbfc459572008e2663a8d6efb59cafd3aab632fc0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4954588C44ECC7ABBF1C.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 46,
+          "sourceRecordSha256": "11244be9f1f4eee384accd3b6f1e2050659a20e6a13b96ee97c9fb0054b8badc",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4AEB216631059561F352.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 47,
+          "sourceRecordSha256": "04c05fa3c02ee48ef61ab81ece3b485e80959a0bcd1bd536469e1a62c215210f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.5C8BF031C2C082345354.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 65,
+          "sourceRecordSha256": "32a367cb94ed6c3253f236d1046f23d97ba9d42cdf227866ff5187b14f2b61ba",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6213EFAA358AB6B7CA30.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 70,
+          "sourceRecordSha256": "da80256c7a81b3ec0a5b556ba3c1a59ff60f1695ad22cc11ee4d0d178afadb0d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6CC072FF944F55B85FE6.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 82,
+          "sourceRecordSha256": "d56fe83b3a675d8ea7d3dd6fc92a45e4bd834443e99544c0446fff109180e3c0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6E4D7C386F9BF063AD66.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 83,
+          "sourceRecordSha256": "72b893ad52726b86e1277b30dd0aaefceb97c5a3d068359025939691f4e98622",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.70E5D8B7311645034552.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 85,
+          "sourceRecordSha256": "c7a835571a7c1c1f4513dd3469d26f44524fc27ba8b8ceb989197536f7c373e0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7448CE65C76ED8D88E65.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 88,
+          "sourceRecordSha256": "92c185eefde19b0cb355f9bd405118d8c49f9a76a3712338441b47ba70dfe04c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.85468ECC40983617C476.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 101,
+          "sourceRecordSha256": "acb656ad47860e71f1b87707633fd0919955b69cccb240cdbc730bffbeb0f185",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.9049D202E57C3EC9F9AD.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 110,
+          "sourceRecordSha256": "303aec45a7ff27d0bbbc476f4d667d398d0f627e2f7c507c922dc64a9d9d1cf6",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B99F38557AB28503377A.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 135,
+          "sourceRecordSha256": "a69908f83b4da71c54e8e53c687c3505699a8aed760b8f2a28c6330153cdc074",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.BF9E5830814172B32B0F.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 137,
+          "sourceRecordSha256": "dc9032593d618e6d10dc3a59816b7b2bd755326b5174098e9bc56c2d1577169c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D22E64EA1CCEEE4DEBAF.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 150,
+          "sourceRecordSha256": "a97109d7c288e17c16f602b1658b652acab222a49496a848e79f70de0e48a6ce",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D24DEF548C9B9E0D6E17.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 151,
+          "sourceRecordSha256": "2d3678d37ed430f953efc1a4d8e2a80e54e7857885afe7df8a5330090355cb26",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.DF94C7D14D35F06BD468.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 158,
+          "sourceRecordSha256": "23cceccb276f377d0df296c701e7e85157f3241642c384056e69a4b4241bc7c2",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.EF1DCBC29011325BAFB9.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 171,
+          "sourceRecordSha256": "cd2ecfe510e40616f7b7f7c5b444d47162f13eb5d057a24ca2b25ae7ffc6d4aa",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.F699311891C2F80E4276.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 174,
+          "sourceRecordSha256": "1dd399c21463534921a4122bbda44369624ca49e31ed3cb8f7bc0ee640899540",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        }
+      ]
+    },
+    {
+      "recipeId": "REC.table.governed.v2",
+      "authorityQualifiedRecipeRef": "atlasfin::REC.table.governed.v2",
+      "totalOccurrences": 171,
+      "surfaceCounts": {
+        "tablet": 66,
+        "pc": 105
+      },
+      "surfaceKeys": [
+        "tablet",
+        "pc"
+      ],
+      "crossSurface": true,
+      "reviewOnly": true,
+      "semanticCoalescingAllowed": false,
+      "reviewReason": "RECIPE_EQUALITY_IS_NOT_PROOF_OF_SHARED_NEUTRAL_MEANING",
+      "excludedFromAutomaticCoalescing": true,
+      "targetIdsBySurface": {
+        "tablet": [
+          "TGT.CENSUS.TABLET.00EE5391791EB685F977.V1",
+          "TGT.CENSUS.TABLET.02ED810103CDD6C96473.V1",
+          "TGT.CENSUS.TABLET.07F1F9F65E8A817469A2.V1",
+          "TGT.CENSUS.TABLET.0BB50F05F4C17A642E85.V1",
+          "TGT.CENSUS.TABLET.21D083685B27FD1B0E04.V1",
+          "TGT.CENSUS.TABLET.223AF1A1599769A73059.V1",
+          "TGT.CENSUS.TABLET.2D815FD55D33725B5DA5.V1",
+          "TGT.CENSUS.TABLET.2D8F952073A395E5B9A1.V1",
+          "TGT.CENSUS.TABLET.37B2F1309E998B50D995.V1",
+          "TGT.CENSUS.TABLET.39DEBFE60185CDCA797C.V1",
+          "TGT.CENSUS.TABLET.3A695D94DDB70A5CBC5E.V1",
+          "TGT.CENSUS.TABLET.3D85E4A30D1817690461.V1",
+          "TGT.CENSUS.TABLET.43E0FD670A68C24733BB.V1",
+          "TGT.CENSUS.TABLET.46B4F3DDF8D65A2FF1A5.V1",
+          "TGT.CENSUS.TABLET.4AC94BC2294A1320D571.V1",
+          "TGT.CENSUS.TABLET.5186BBCB9F3AF734ECBF.V1",
+          "TGT.CENSUS.TABLET.577CC204F3A6F9467B55.V1",
+          "TGT.CENSUS.TABLET.5ACEB3F509D1E0C51E16.V1",
+          "TGT.CENSUS.TABLET.5DF81A4260F840758194.V1",
+          "TGT.CENSUS.TABLET.63B2627CE38F2C824B65.V1",
+          "TGT.CENSUS.TABLET.63FCDD77D5C3A97F3049.V1",
+          "TGT.CENSUS.TABLET.6562697373AF4681E73C.V1",
+          "TGT.CENSUS.TABLET.662C3D59DE4CD8F8A53B.V1",
+          "TGT.CENSUS.TABLET.67DAA8F5D645AEB959DC.V1",
+          "TGT.CENSUS.TABLET.6AA0888138506F126187.V1",
+          "TGT.CENSUS.TABLET.6D79800EE3D8CBBF7201.V1",
+          "TGT.CENSUS.TABLET.6F25AECE8FCBDC3E3AC4.V1",
+          "TGT.CENSUS.TABLET.704E656FAFEE75B6E278.V1",
+          "TGT.CENSUS.TABLET.7709E26A7B12B9CA875D.V1",
+          "TGT.CENSUS.TABLET.772CB84B1B31CFCC4EB6.V1",
+          "TGT.CENSUS.TABLET.7BD687A3F2C90E849F73.V1",
+          "TGT.CENSUS.TABLET.7DB018FFC553C0F29458.V1",
+          "TGT.CENSUS.TABLET.7F0C05035E7402A6EC2E.V1",
+          "TGT.CENSUS.TABLET.8F42D536FA8FF906AFCB.V1",
+          "TGT.CENSUS.TABLET.90FD01F090EB861961A0.V1",
+          "TGT.CENSUS.TABLET.97B7E609E368D26E1DD0.V1",
+          "TGT.CENSUS.TABLET.98D574F356DF3D343C51.V1",
+          "TGT.CENSUS.TABLET.9CB37A989560FD8612CE.V1",
+          "TGT.CENSUS.TABLET.A51A4BE7E157EFD1BF31.V1",
+          "TGT.CENSUS.TABLET.A6568B6450EF44AF2821.V1",
+          "TGT.CENSUS.TABLET.AEB571A23E06D78F019A.V1",
+          "TGT.CENSUS.TABLET.B26E2645824F8A1D40E0.V1",
+          "TGT.CENSUS.TABLET.B38405739AF6F8F3C33A.V1",
+          "TGT.CENSUS.TABLET.B8B0827A64B8322922F5.V1",
+          "TGT.CENSUS.TABLET.B963B2D9A819CF6D2687.V1",
+          "TGT.CENSUS.TABLET.BAF84E8EC56B32A88ED2.V1",
+          "TGT.CENSUS.TABLET.C149CDC0E58967C29AE0.V1",
+          "TGT.CENSUS.TABLET.D070A82B39D2701A13D6.V1",
+          "TGT.CENSUS.TABLET.D1943307A079A3E8F3B5.V1",
+          "TGT.CENSUS.TABLET.D2A8191D8CE776AB1861.V1",
+          "TGT.CENSUS.TABLET.D61F281CA94864F48CE8.V1",
+          "TGT.CENSUS.TABLET.DD3CE871E67820CFEF65.V1",
+          "TGT.CENSUS.TABLET.DF95F34FAC4D82777436.V1",
+          "TGT.CENSUS.TABLET.E036F2DF7C78527D799C.V1",
+          "TGT.CENSUS.TABLET.EBF913E0043939F47810.V1",
+          "TGT.CENSUS.TABLET.ED28F223B22707E22EED.V1",
+          "TGT.CENSUS.TABLET.EDB58F9D5AEE6917B45C.V1",
+          "TGT.CENSUS.TABLET.EE0392C5E5D923FDD556.V1",
+          "TGT.CENSUS.TABLET.EFB1BECC30465B122A1C.V1",
+          "TGT.CENSUS.TABLET.F2CC982D29453754A99F.V1",
+          "TGT.CENSUS.TABLET.F4DAE5B31710DA0C1081.V1",
+          "TGT.CENSUS.TABLET.F86DBD22BC1AD30A367F.V1",
+          "TGT.CENSUS.TABLET.FB04DB0155F5576185DD.V1",
+          "TGT.CENSUS.TABLET.FBFEFE1EF38893831370.V1",
+          "TGT.CENSUS.TABLET.FED4877CC05D922F3A0C.V1",
+          "TGT.CENSUS.TABLET.FFC438F0038BC9974BA5.V1"
+        ],
+        "pc": [
+          "TGT.CENSUS.PC.0162F2E13904C11EE820.V1",
+          "TGT.CENSUS.PC.03FECD0CE606D29F785E.V1",
+          "TGT.CENSUS.PC.0743BDB253D11E189D29.V1",
+          "TGT.CENSUS.PC.0A226C3616FCB21D5158.V1",
+          "TGT.CENSUS.PC.0AA9328F70911B951A5E.V1",
+          "TGT.CENSUS.PC.0BA864640CE2FC086918.V1",
+          "TGT.CENSUS.PC.0CADFCC0FF84323B48BF.V1",
+          "TGT.CENSUS.PC.100AB96291C8801EAB92.V1",
+          "TGT.CENSUS.PC.1706B257844286195F3B.V1",
+          "TGT.CENSUS.PC.1714102E04D35DD374D2.V1",
+          "TGT.CENSUS.PC.183EBCD215AF10B4912D.V1",
+          "TGT.CENSUS.PC.1E4B799985A739D319E8.V1",
+          "TGT.CENSUS.PC.2BD3AA1CEB16FF9ADB26.V1",
+          "TGT.CENSUS.PC.314D3AA0806D4AD944FA.V1",
+          "TGT.CENSUS.PC.3647B527111B8F701BDA.V1",
+          "TGT.CENSUS.PC.397E9FD05FEB227097B5.V1",
+          "TGT.CENSUS.PC.3AC7A52837C30A1E25EE.V1",
+          "TGT.CENSUS.PC.3E8F85998239AC430F27.V1",
+          "TGT.CENSUS.PC.3F85B2EE5C54E285524F.V1",
+          "TGT.CENSUS.PC.41A17C45BF324D73B4EA.V1",
+          "TGT.CENSUS.PC.42859076864FA2254438.V1",
+          "TGT.CENSUS.PC.46283147A3067504225E.V1",
+          "TGT.CENSUS.PC.483A492B7009F98E2B18.V1",
+          "TGT.CENSUS.PC.4AF1BE3A79DC012D6136.V1",
+          "TGT.CENSUS.PC.4B3ACA55522A3429648D.V1",
+          "TGT.CENSUS.PC.4B8BCF324BF35AF80352.V1",
+          "TGT.CENSUS.PC.4BB9A2349557D4116482.V1",
+          "TGT.CENSUS.PC.4C06E791105706C6BDF3.V1",
+          "TGT.CENSUS.PC.4C4C28CF01155A93CF06.V1",
+          "TGT.CENSUS.PC.4C9512F11FD9967AA701.V1",
+          "TGT.CENSUS.PC.4D2BCE7FEE72341717F2.V1",
+          "TGT.CENSUS.PC.4D39FF38C830F408F8F6.V1",
+          "TGT.CENSUS.PC.4D535C9169E902226902.V1",
+          "TGT.CENSUS.PC.57FAD4D5F01CC6E8072D.V1",
+          "TGT.CENSUS.PC.598017B69C1E909BD6D2.V1",
+          "TGT.CENSUS.PC.59E786207D317737A81C.V1",
+          "TGT.CENSUS.PC.5C80B684CA1DFA945A25.V1",
+          "TGT.CENSUS.PC.5D68957A3F4ACD9EA7BD.V1",
+          "TGT.CENSUS.PC.60F700A0DF24B991A794.V1",
+          "TGT.CENSUS.PC.6178C3142347E941A4DF.V1",
+          "TGT.CENSUS.PC.62FEA309C420BFE535D5.V1",
+          "TGT.CENSUS.PC.65A8CA5122CF9A705C43.V1",
+          "TGT.CENSUS.PC.69652B7E7648E5A6A870.V1",
+          "TGT.CENSUS.PC.6B7B2E99495F83472760.V1",
+          "TGT.CENSUS.PC.6BD695A6CDDDF1EBD917.V1",
+          "TGT.CENSUS.PC.7217C464B351B42BDC09.V1",
+          "TGT.CENSUS.PC.7235ECBB8510C8EE53FD.V1",
+          "TGT.CENSUS.PC.745F681454C9380B5DAB.V1",
+          "TGT.CENSUS.PC.7534D85FBE690CB529F6.V1",
+          "TGT.CENSUS.PC.76E89791D5D7C876DCC4.V1",
+          "TGT.CENSUS.PC.78E8591A50D748D9DA2A.V1",
+          "TGT.CENSUS.PC.78FD9B9B1BAFFBCBB451.V1",
+          "TGT.CENSUS.PC.7A34A2E5667CD626CD3C.V1",
+          "TGT.CENSUS.PC.7B842E0E786EA5039B13.V1",
+          "TGT.CENSUS.PC.7F133C5837675A3E6FAF.V1",
+          "TGT.CENSUS.PC.7FC9558339C4AF4C7ADD.V1",
+          "TGT.CENSUS.PC.8196DFF158CB9F1B7EE1.V1",
+          "TGT.CENSUS.PC.8213DC9FD030D2A29ACE.V1",
+          "TGT.CENSUS.PC.8621477FC4314F1267B3.V1",
+          "TGT.CENSUS.PC.88137C6E3B42A60348ED.V1",
+          "TGT.CENSUS.PC.8F0462E9AF32D03C114D.V1",
+          "TGT.CENSUS.PC.8F886599CDF62EDBAED6.V1",
+          "TGT.CENSUS.PC.8FD912C1F69DAF3EBFED.V1",
+          "TGT.CENSUS.PC.911F06FE549436B823A8.V1",
+          "TGT.CENSUS.PC.9196C6B2DDFF7BB3A687.V1",
+          "TGT.CENSUS.PC.9302E8B17DDE7945C416.V1",
+          "TGT.CENSUS.PC.977DEF9FAA2F5F5ABC43.V1",
+          "TGT.CENSUS.PC.9880B69B09FD8D1DA42D.V1",
+          "TGT.CENSUS.PC.A81AB156B74EA93ECFC9.V1",
+          "TGT.CENSUS.PC.A97F2F91E70FB6CC1288.V1",
+          "TGT.CENSUS.PC.AFC048ACC41945EBE95E.V1",
+          "TGT.CENSUS.PC.B35C8C92B2ED901F8ACB.V1",
+          "TGT.CENSUS.PC.B4081F8492485046051A.V1",
+          "TGT.CENSUS.PC.B4EFD155C2F79F742FB8.V1",
+          "TGT.CENSUS.PC.B515E0438C4047EC8314.V1",
+          "TGT.CENSUS.PC.B91E0EF439643362BAFC.V1",
+          "TGT.CENSUS.PC.BDCCB1C497B7E5086F01.V1",
+          "TGT.CENSUS.PC.C6CA79EFD476CA3E2950.V1",
+          "TGT.CENSUS.PC.C8365D709D4F0A24E003.V1",
+          "TGT.CENSUS.PC.CB89EBD61852BC26B452.V1",
+          "TGT.CENSUS.PC.CE8B45ED034D903CA6B6.V1",
+          "TGT.CENSUS.PC.D0761722B3C23183FB2B.V1",
+          "TGT.CENSUS.PC.D0F464ED7DB026EEF409.V1",
+          "TGT.CENSUS.PC.D18AD9D99265AEFBBA9D.V1",
+          "TGT.CENSUS.PC.D2D9AA804F1A977B7299.V1",
+          "TGT.CENSUS.PC.D5406184565DD861C1A9.V1",
+          "TGT.CENSUS.PC.DD7F016F024A662EF896.V1",
+          "TGT.CENSUS.PC.DF9E756102CF58473599.V1",
+          "TGT.CENSUS.PC.E40C701A6F4166A7BAB3.V1",
+          "TGT.CENSUS.PC.E40FD0653ECAE17E8F92.V1",
+          "TGT.CENSUS.PC.E80E89D11EB0A3A81B25.V1",
+          "TGT.CENSUS.PC.E90AA9AA3034F248B9BD.V1",
+          "TGT.CENSUS.PC.EB73029D1A15DAAC9821.V1",
+          "TGT.CENSUS.PC.EDAC12AC15B8875FE9E3.V1",
+          "TGT.CENSUS.PC.F4CF7A94D66939E81F98.V1",
+          "TGT.CENSUS.PC.F92B1BF0C08A188D49F5.V1",
+          "TGT.CENSUS.PC.F9B86175619AEC3914E0.V1",
+          "TGT.CENSUS.PC.F9CE53AC8F5D793B01CC.V1",
+          "TGT.CENSUS.PC.FB4694C39B96F7EC5826.V1",
+          "TGT.CENSUS.PC.FB4A36EF044E465EF041.V1",
+          "TGT.CENSUS.PC.FC5218B8A6ED022170F0.V1",
+          "TGT.CENSUS.PC.FC57863A5E75CCF940CC.V1",
+          "TGT.CENSUS.PC.FE49A0426B8E8200AE6D.V1",
+          "TGT.CENSUS.PC.FF27C691731312624A07.V1",
+          "TGT.CENSUS.PC.FF324F08B97C45F89EB3.V1"
+        ]
+      },
+      "sourceEvidence": [
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.00EE5391791EB685F977.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 1,
+          "sourceRecordSha256": "65e9f09d96995703e9130f802c31ad1ffe84e999bdf5deb26b719cc2e6b5321e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.02ED810103CDD6C96473.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 2,
+          "sourceRecordSha256": "bf72762009c7eadd3e529a4fb262347580f409be85d734ed3cd98982d6b29280",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.07F1F9F65E8A817469A2.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 6,
+          "sourceRecordSha256": "d5b99d49c4cd7a238571d21dc9c80127aff2f43c9bec0ffe6e1c4f3788416362",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.0BB50F05F4C17A642E85.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 8,
+          "sourceRecordSha256": "1348036e14acfc3c661dd0c705ed7952b83aa2c1535c3537e3cfd10388ad47cf",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.21D083685B27FD1B0E04.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 19,
+          "sourceRecordSha256": "2b98dc30ef6813a127fa7e7a3a8101f7bc73c97ac90e4b96d4556e118c14fa06",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.223AF1A1599769A73059.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 20,
+          "sourceRecordSha256": "052088b81f37c20a20a4f842a9db98f6c62eca7b028ef4d2c38ccbf0c2fe9aee",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.2D815FD55D33725B5DA5.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 25,
+          "sourceRecordSha256": "b02cac7fbe2be1f31779f991ee2aded2405bd9d26ba3d65d71719bc40d5d0f63",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.2D8F952073A395E5B9A1.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 26,
+          "sourceRecordSha256": "c89255b684ec7ac5f4b66befdab0052e42a65c4a3fab5a50e8db38bc864b694e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.37B2F1309E998B50D995.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 29,
+          "sourceRecordSha256": "3a5e25fcaec1f08d5f6d04512ee41fd2c6bfa6e34638601950354c60542e3ba1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.39DEBFE60185CDCA797C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 30,
+          "sourceRecordSha256": "7a74ed0d1b220758f15827c85ef6cd02024cebb4b6d63b4f909cf7975e745501",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.3A695D94DDB70A5CBC5E.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 32,
+          "sourceRecordSha256": "f8a4f3e3480d5fa76e3c185b9135d5528abaef05dfb701ebe5ce23d3fef8557d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.3D85E4A30D1817690461.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 34,
+          "sourceRecordSha256": "cba019e68129f8ed7167d9c4fefc4fe51fd4983c48f6ab986ef0bac2ae8b8b1b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.43E0FD670A68C24733BB.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 36,
+          "sourceRecordSha256": "55a408fa3b9131bfcefa315c842ad06ba4ae63258caadcfd46fe463236c90072",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.46B4F3DDF8D65A2FF1A5.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 37,
+          "sourceRecordSha256": "c81bd881cae99d635129a9f6a564dd80b5441ab8aca0ea66de8a03fd2e804475",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.4AC94BC2294A1320D571.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 38,
+          "sourceRecordSha256": "a0878ffe35d20408686d3745648a5c87d31eddddcb8f7a003665ec62f85c59d7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.5186BBCB9F3AF734ECBF.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 39,
+          "sourceRecordSha256": "a21fe91d46773511f30f6d0e6d7335c5e7a65257f26ab36fc9a8ed716606163d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.577CC204F3A6F9467B55.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 42,
+          "sourceRecordSha256": "129bb650d2faffa8dd5fb03a1c1711a738faf3289cb88978f12fe1513ad9fd80",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.5ACEB3F509D1E0C51E16.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 44,
+          "sourceRecordSha256": "c2911a9ff472f887ee46db59b5d4fefd5ffbdfc0932c8ffc5b69c1046661f863",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.5DF81A4260F840758194.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 46,
+          "sourceRecordSha256": "fd507870ded95d46ebdb170336f2f027af1a672c5fd28a748559d72c9718070f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.63B2627CE38F2C824B65.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 49,
+          "sourceRecordSha256": "e7d4bb3191c49480483f5f466bb4f66901fb2211e1c594256427dd87ba6ae772",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.63FCDD77D5C3A97F3049.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 50,
+          "sourceRecordSha256": "8a219322df1559770e63d337db5af125dfcc78cf109a41c8349811090eef61de",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6562697373AF4681E73C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 51,
+          "sourceRecordSha256": "4c7e8a6cb9f2f78c0604bca8706259832853170192025ccc935605d232e97b7a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.662C3D59DE4CD8F8A53B.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 52,
+          "sourceRecordSha256": "58f263ecefb6792bbf6287af40121d82928abc0085505b64f228abb930f524c0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.67DAA8F5D645AEB959DC.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 53,
+          "sourceRecordSha256": "d77ada5324f7d7cd1220b0a17cb28154548a1af28e781e7cdb900a25b855a5fa",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6AA0888138506F126187.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 54,
+          "sourceRecordSha256": "60d2087b81f2e75f8dfc9ad1039977234f8890f5156b33f6d833f92a46cb28c2",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6D79800EE3D8CBBF7201.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 58,
+          "sourceRecordSha256": "bbf514c5dab75948f291c7e8069985d4bba7ba33a6b10846ca16ddbc46acb697",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.6F25AECE8FCBDC3E3AC4.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 60,
+          "sourceRecordSha256": "594be9115deafec41d3e5b2e7c5f429aed07e460fe1f9c6420dbdd75de6583bb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.704E656FAFEE75B6E278.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 61,
+          "sourceRecordSha256": "fa9bf6a1abd8bad87ce5f35c13a6d52d8a0bc3dbf201d1ceb3f1df40f5eeb3d1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.7709E26A7B12B9CA875D.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 64,
+          "sourceRecordSha256": "e3b3e7cf8d4f061a8449f23dd940c81f10188c403906fee26887709a782c9148",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.772CB84B1B31CFCC4EB6.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 65,
+          "sourceRecordSha256": "6fe0e87d9ba9a1a625682b76337e6ef78150e98dd9a2c904822bb1c54e8566a3",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.7BD687A3F2C90E849F73.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 67,
+          "sourceRecordSha256": "eb06a2592c8b8a6333219e4b58fab8d2477b7cc70ee2d35a61c60dae84ae11f8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.7DB018FFC553C0F29458.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 68,
+          "sourceRecordSha256": "358dc86e4a176d9522e13ad9f7f7e089d4dbfcbfde1df113189f4139bbd9477d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.7F0C05035E7402A6EC2E.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 69,
+          "sourceRecordSha256": "0d204b50fa1def6ad39cdfcac445987f3d9d1a617cf641f199e3d3ccdbd7fe5d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.8F42D536FA8FF906AFCB.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 76,
+          "sourceRecordSha256": "ed60b4bd07f2d9313437e384fea3355ff51dccfd1f3e4671545c4e11bd9722b1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.90FD01F090EB861961A0.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 81,
+          "sourceRecordSha256": "1dd71890c0b2ddacb8a3bff4be2f32e41740a4773bc30c9d4f60ffbae1d614b7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.97B7E609E368D26E1DD0.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 85,
+          "sourceRecordSha256": "16432911ec6f10a245c2d9a1c417d7486ccad2f5c119013e465b1a8e796e76e3",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.98D574F356DF3D343C51.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 86,
+          "sourceRecordSha256": "e7ade89df0955bf2f5bce10c3c1a63e53c83283f9f4de4d53f7ea693507d7d09",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.9CB37A989560FD8612CE.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 88,
+          "sourceRecordSha256": "75e1a5f49a560b85a7d3b2b1dc323e50982016f417ca0aa1621743ab6672cef3",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.A51A4BE7E157EFD1BF31.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 92,
+          "sourceRecordSha256": "0d6255f8f452fd4eeb065fc0b0a95397ec8b47afe1d3adcc6d98fa3fa5eecf2a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.A6568B6450EF44AF2821.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 94,
+          "sourceRecordSha256": "63b2d7b87dbfc6e06ec1308782c90b80ece5ac79308a4e9704f3a6407c2e0c53",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.AEB571A23E06D78F019A.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 96,
+          "sourceRecordSha256": "6f11849590df403cc47cb5349587845e41c6afae220b44a32fe78d9429bd1048",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B26E2645824F8A1D40E0.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 97,
+          "sourceRecordSha256": "79e4126b76d4087c5c10648674a23c47818eb7b08db5695cc27700e3654656b5",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B38405739AF6F8F3C33A.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 98,
+          "sourceRecordSha256": "d3f6cf885b5a63ebc073bd2bba208a165ac31edd0d60fb053e34bd4cb4d90c2b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B8B0827A64B8322922F5.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 102,
+          "sourceRecordSha256": "dc7570e139f01a63c2130153f96bbedefc584a8b19a2e7c45f6cf2f0cd1b0dc1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.B963B2D9A819CF6D2687.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 104,
+          "sourceRecordSha256": "7fb2a8c027a33fa41a0f4131bf9ae32fa3409f2e5866078fe1219874a5e49bc5",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.BAF84E8EC56B32A88ED2.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 105,
+          "sourceRecordSha256": "4af3c960a376e7a18b91b84fe1dad01711514f0e96bf969dd87c08b10591016f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.C149CDC0E58967C29AE0.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 108,
+          "sourceRecordSha256": "6992ab1f5bfb3873da1c9ab9e8bc13ea7dc1706ed89efc0fba4d173af8d4165b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.D070A82B39D2701A13D6.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 113,
+          "sourceRecordSha256": "44a0224e03b7d0c4950e7a1cada6af84494067b442b5e9ffa3717d8b0172620d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.D1943307A079A3E8F3B5.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 114,
+          "sourceRecordSha256": "75b9493d1afd33b18c86e8d30e82c8257dc7d9d7cd1dcb06c09cdc224f84a097",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.D2A8191D8CE776AB1861.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 115,
+          "sourceRecordSha256": "169db1444de1b4ca7ec8ee29ebca08d04bc86f39ffa3cb124d3e7b8b9786b72a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.D61F281CA94864F48CE8.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 116,
+          "sourceRecordSha256": "350211c558896511d3d3a45edcef4ecc4560b3fcacfc8c3d38fff47a2e6858c0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.DD3CE871E67820CFEF65.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 118,
+          "sourceRecordSha256": "a960d384b4b834c4aee1b0c66dca21a852e9de8003139c542aceabe8f1c13452",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.DF95F34FAC4D82777436.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 119,
+          "sourceRecordSha256": "d210e9ba26eebd881d2a26e39c75b820bf8e738b402648ab25316df1488d6068",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.E036F2DF7C78527D799C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 120,
+          "sourceRecordSha256": "94a3b09f5d37e5dd57fe50fb1998889148e9ef875076569606931db4308fc056",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.EBF913E0043939F47810.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 126,
+          "sourceRecordSha256": "d54395cdac21a65e6b1b9366ae38019d588c0befc140d3b2c2f77af48b0912cb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.ED28F223B22707E22EED.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 127,
+          "sourceRecordSha256": "0ad0797ff79f3854b76c4df48caab57d59f07cbf6c26e6cd8332db4061904b87",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.EDB58F9D5AEE6917B45C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 128,
+          "sourceRecordSha256": "7cb7a65bf1be45e8f4825537a2e5dbccbb6165ce8b28db54c6e7fc9255aa9cd9",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.EE0392C5E5D923FDD556.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 129,
+          "sourceRecordSha256": "980195fee0573494010bc30b53325971b66ce8f3345b67404db6aecd8f2d4033",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.EFB1BECC30465B122A1C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 130,
+          "sourceRecordSha256": "214879c64b4602cc452302c7185ae0bc0ab39c2ce613a1625193f09c3b90e849",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.F2CC982D29453754A99F.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 132,
+          "sourceRecordSha256": "58271f8ecde7dabd95e3dceb4e64f1e145b2b36838298182d755c14abd2e8540",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.F4DAE5B31710DA0C1081.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 134,
+          "sourceRecordSha256": "b96a8f98b6dde2baad3e023759e21a183741fa8b862efb4ccda72c457a611ceb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.F86DBD22BC1AD30A367F.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 135,
+          "sourceRecordSha256": "fe3b12095777f5291f7a9d2c30dece1aa4930ed7525f92f30cb00d9d4315c212",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.FB04DB0155F5576185DD.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 136,
+          "sourceRecordSha256": "e5e3ca28e42dc0c373ddee274f40c7ce99c18dad43122978785364f4e5d02a90",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.FBFEFE1EF38893831370.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 137,
+          "sourceRecordSha256": "ad19fb2a6eea11e7ee1720cd70ddb1443836d8356d86dc414c2104ac6c2ab733",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.FED4877CC05D922F3A0C.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 138,
+          "sourceRecordSha256": "bc80d59ccaa306673d189780f34dcb2753e2a49793c387a709febcd4a32dc4e7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "tablet",
+          "targetId": "TGT.CENSUS.TABLET.FFC438F0038BC9974BA5.V1",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "sourceLine": 139,
+          "sourceRecordSha256": "663a920fbea8d3820aec2709fc684a60821a971c2983e16c85fe254bebf83014",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0162F2E13904C11EE820.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 1,
+          "sourceRecordSha256": "47cfdc94e94093348ae310c125411ac2439e6e579eb6dffe67100f7d1174cbcf",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.03FECD0CE606D29F785E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 3,
+          "sourceRecordSha256": "e3f59a0d1b38276fb133af010a0f9d4d1c4371533546e0ece04caa13538c37cb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0743BDB253D11E189D29.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 4,
+          "sourceRecordSha256": "df03795e761577b2d55533241120ba42917f1aac3303be9c0d874e7fc9ba874b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0A226C3616FCB21D5158.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 6,
+          "sourceRecordSha256": "2205e29fffb19384eb4598cab5888ceeebfde2b04c7075e7674cefa9241b0cc4",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0AA9328F70911B951A5E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 7,
+          "sourceRecordSha256": "425932c9b24e901aa0e9088cb64845ddef1d8f38d4277c58148dadd5ed022c35",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0BA864640CE2FC086918.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 8,
+          "sourceRecordSha256": "a1b265fa8f59b855a5ac8da723f6ae8f21a7754ef7ba01cb6438f351aaf68453",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.0CADFCC0FF84323B48BF.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 10,
+          "sourceRecordSha256": "62e352037be8dfdfb40a692ce8a1c0cedfe3c00424c26fc4c8faaecd183c9a11",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.100AB96291C8801EAB92.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 13,
+          "sourceRecordSha256": "0a32d2882d23862f7f6d3a030289b54e578b32fc9709d20221b99817b63c6395",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.1706B257844286195F3B.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 16,
+          "sourceRecordSha256": "ac8d7d81e1dcd5b833d160ec9149296d7b8a13720ac207df78d2452dc063b922",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.1714102E04D35DD374D2.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 17,
+          "sourceRecordSha256": "82f891e93b97a7a65d471e7c7724233b5124e3f2f599d9ba215f412094f78376",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.183EBCD215AF10B4912D.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 18,
+          "sourceRecordSha256": "e3e08d5ca59d6ce97367c24d8828d7574539a3b05a90156fb5b5dae976dc1f2d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.1E4B799985A739D319E8.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 20,
+          "sourceRecordSha256": "fac5f4f06802d637b8922637815101a0a50164f0bb25ca50119906a4ef57fc4e",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.2BD3AA1CEB16FF9ADB26.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 27,
+          "sourceRecordSha256": "6a58d50f90edba4fc98fb372277abb9d343ebf55dc58b9182d4f05fbda0e0476",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.314D3AA0806D4AD944FA.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 29,
+          "sourceRecordSha256": "45fb523d7d20bad89b01c14806bc648491866ab23b46d76c827c5a7d2b3c3677",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3647B527111B8F701BDA.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 30,
+          "sourceRecordSha256": "438dac13f9d0e7f02683540b7c2c7d140616831f2a121b43d569009767c9d757",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.397E9FD05FEB227097B5.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 31,
+          "sourceRecordSha256": "f301d25a34277ab9adaae45e19e74db6c1c663814f5ea2b0cd61f96130205785",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3AC7A52837C30A1E25EE.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 32,
+          "sourceRecordSha256": "73e4d6939aaa6148465d4a8ca22ef71146ec0df74dcc8ac935c186161aeeb1a0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3E8F85998239AC430F27.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 37,
+          "sourceRecordSha256": "087f271b0b9304951b4accdb54831f04ac3a7ea44aecbe5ad6bef7b80236da29",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.3F85B2EE5C54E285524F.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 38,
+          "sourceRecordSha256": "18624b5c0a5809fa8b54420391d91c7870b45f5c6b13a5c58b5b72377eb2c5ae",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.41A17C45BF324D73B4EA.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 40,
+          "sourceRecordSha256": "a12863799c2ddb15ad5752e4829704916e069888c2cd9e5689cf86105f02c9fb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.42859076864FA2254438.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 41,
+          "sourceRecordSha256": "df64d9e19f09de4657d1571c678a20e5da0d5b3519c3df85c6ace8110c299755",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.46283147A3067504225E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 44,
+          "sourceRecordSha256": "683efe58bf1c93f93e64d09be52687b636d0c0ca57f4bebdf71c834c0ab83334",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.483A492B7009F98E2B18.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 45,
+          "sourceRecordSha256": "fc4b8992475e32da6a5391eed1a2b21585174f9069b79a8737610d2fcd999356",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4AF1BE3A79DC012D6136.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 48,
+          "sourceRecordSha256": "7d2b93827564540ba7a6d59bc878dca11b2b1ef404e87c81a7a41d5fefaf4861",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4B3ACA55522A3429648D.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 49,
+          "sourceRecordSha256": "f8a5d9905f41e49e130dd1108264064e396716a87de06dfe283be6884f91fba1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4B8BCF324BF35AF80352.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 50,
+          "sourceRecordSha256": "27a95ca62b99632a1e470948e98c82d69ae73ac505249a8a5587cc58bfd639ad",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4BB9A2349557D4116482.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 51,
+          "sourceRecordSha256": "57bcc66af32d4cc9273c0b1c0156dcc441860f0a5996d5716930ca8e078ff29b",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4C06E791105706C6BDF3.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 52,
+          "sourceRecordSha256": "e015fbce0da0dce84ce2d515d73e151ccfb13657b6668d8655fca778b39a215c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4C4C28CF01155A93CF06.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 53,
+          "sourceRecordSha256": "a94d5783aa5ca9090b90d7d4881f08c3f568ad2e5eae5edf95911184973dbb10",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4C9512F11FD9967AA701.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 54,
+          "sourceRecordSha256": "9fbfbf60735290cb234e8916e7d2057f9bb23944b9b6ff6bc31a23ccdcd69fbb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4D2BCE7FEE72341717F2.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 55,
+          "sourceRecordSha256": "2d15f950989eb261490a5c643511aca6b11a302f85300e2b11e8d7a94aa11822",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4D39FF38C830F408F8F6.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 56,
+          "sourceRecordSha256": "b2590cf411c80eefe0a29206b3bf1f28251e106ea1cd0d65242c166ac2b267a2",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.4D535C9169E902226902.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 57,
+          "sourceRecordSha256": "7f4db54104d082ee586c00049a43fcf6da10cea497e20ea4063b2d2e102e2a90",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.57FAD4D5F01CC6E8072D.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 61,
+          "sourceRecordSha256": "83e216537616c5cfe7627342d4f48b20bfd25b2a6485d055c61e565274c31179",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.598017B69C1E909BD6D2.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 62,
+          "sourceRecordSha256": "3a4ff39bd59177b320557779497a74765190f1f9026efdfa2388801b085e36ec",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.59E786207D317737A81C.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 63,
+          "sourceRecordSha256": "2a8fa766dfd9fe2cd4c7377fcc94f6f72d5ae8bb2cf32538d8c5d21192b40b4c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.5C80B684CA1DFA945A25.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 64,
+          "sourceRecordSha256": "3e15937ce608c03c9fc26320065639e45008e9c4abe136da39ad8dae90af899f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.5D68957A3F4ACD9EA7BD.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 66,
+          "sourceRecordSha256": "ea9bdd8599562f0e68b02100f3285c5a03e9c65cc30e84047796e08ed1debc4a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.60F700A0DF24B991A794.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 67,
+          "sourceRecordSha256": "7e4b869281ca0ff0a8fca63604460b9015bad43a8bc17d1271e02647214f6446",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6178C3142347E941A4DF.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 69,
+          "sourceRecordSha256": "e2505fe3fd79ca801cfc2f0db0d0ce30df8af9aac3fcf55b8b1856d236f68e8f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.62FEA309C420BFE535D5.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 71,
+          "sourceRecordSha256": "3276d90f97bb3cc99daa6e3b85aeff02bd4f36b7ee85f73056ca4f1dd6a86744",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.65A8CA5122CF9A705C43.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 75,
+          "sourceRecordSha256": "0aa9b4098c84a6ddcba3b0c4fb1c06d8dda3c00a7afeb1bf20a96d82ee6aecc0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.69652B7E7648E5A6A870.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 77,
+          "sourceRecordSha256": "232f7b87d534ff8e95da692d3e092aaf0131eacd4b24e82164b13abb09f8d597",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6B7B2E99495F83472760.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 79,
+          "sourceRecordSha256": "dab6f280986be6d19081d88133e37ccf12e01a381079d4409ae26106cdc731d7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.6BD695A6CDDDF1EBD917.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 81,
+          "sourceRecordSha256": "de34789a7b6f0a494a0011ddc903e64228f7a902dac7f436f390c3d3fc750dc6",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7217C464B351B42BDC09.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 86,
+          "sourceRecordSha256": "9f39faf8e5cc2a4613f0ecadd95208bbd8023feb492388fb486cd5ebe9211f38",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7235ECBB8510C8EE53FD.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 87,
+          "sourceRecordSha256": "acc57f3fa20905284af301bc36dea9e0a7e5acbe3dc097d4c2a48865a710ef70",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.745F681454C9380B5DAB.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 89,
+          "sourceRecordSha256": "7b7805e6ce2aa132d59b2bf61f8c327da60212f1b0f4c14f7f61d16a6030b1fc",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7534D85FBE690CB529F6.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 90,
+          "sourceRecordSha256": "ad37fbd833326a6ea86e4e9170423c110d4827815dc30fb541fed7809fb7b632",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.76E89791D5D7C876DCC4.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 91,
+          "sourceRecordSha256": "b46330ad233cc08b09cab1b2db17d223ba93cb99825303a0cb03d26dd854a7da",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.78E8591A50D748D9DA2A.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 92,
+          "sourceRecordSha256": "d7fbd77aa900c2e8d7918e37daf945f3dc3600a6ac66a56ca29267955fd75211",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.78FD9B9B1BAFFBCBB451.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 93,
+          "sourceRecordSha256": "165ea4462664b40cbad8db20f82487bcd30c0db8198f3818885d63d6083c8e21",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7A34A2E5667CD626CD3C.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 95,
+          "sourceRecordSha256": "5400e09956bde4b50c4f11894b7de19e3c8b76c1c26b62b78b7883c37019b53c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7B842E0E786EA5039B13.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 96,
+          "sourceRecordSha256": "71e4e44a1bb0945c2d7b96c5f2644dae1e791054b057418c2bf33d2aa3fc57ab",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7F133C5837675A3E6FAF.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 97,
+          "sourceRecordSha256": "af4a0988fbd556e21ef3339d2216cd619f134658f568fbcaff94f514b428a633",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.7FC9558339C4AF4C7ADD.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 98,
+          "sourceRecordSha256": "f9a08caadd7e51891a7bfe54eb3e2f06d60eb9bb1dcf3bfcc1a3839bb17018f8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8196DFF158CB9F1B7EE1.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 99,
+          "sourceRecordSha256": "8f98206fcecc2b0fd88bdf2ed6e16f27589d3e20b4e29f007091bd8a9fd2f2ed",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8213DC9FD030D2A29ACE.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 100,
+          "sourceRecordSha256": "c123021c90328a612c706b63e69bbd01b7f878980ecd83f6779510e052750e65",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8621477FC4314F1267B3.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 102,
+          "sourceRecordSha256": "7d68fbe48327dbd8ad0957b96cb79d1ee040a30e7928759aec10e161f1f2b8ce",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.88137C6E3B42A60348ED.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 103,
+          "sourceRecordSha256": "96a4c6c02d837ddf02671d934c77da8224884abd4fbdd224998eec797cd164a6",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8F0462E9AF32D03C114D.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 106,
+          "sourceRecordSha256": "5b04d6e47404737bd23ad0d853b0359ce1c794cc8952ccbf0a574fa587caa826",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8F886599CDF62EDBAED6.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 107,
+          "sourceRecordSha256": "3f3176bbb72dbc7e31428132d768c45323acb94a3071af787adf39f2399e2aaf",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.8FD912C1F69DAF3EBFED.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 109,
+          "sourceRecordSha256": "f4ba64b09952e2d086777461253f0080016b2604bea51ab9f5fa4d7069653500",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.911F06FE549436B823A8.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 111,
+          "sourceRecordSha256": "f7d678208134cd2088944cefdb62750a415198323df9d5b4568862b3741df2e9",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.9196C6B2DDFF7BB3A687.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 112,
+          "sourceRecordSha256": "890063a02b09b150b5892d39c12fa3f1343bbff7a21f51e6d8530f9f95b10a74",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.9302E8B17DDE7945C416.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 113,
+          "sourceRecordSha256": "a0a57f9a17decea22ed8f24d45a9161af4357664233c19e07e971320981338e9",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.977DEF9FAA2F5F5ABC43.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 114,
+          "sourceRecordSha256": "c1ef9a2cd0288ddb403656e52b5c05efbeac353d3c497af20411d24db15936ad",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.9880B69B09FD8D1DA42D.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 116,
+          "sourceRecordSha256": "65e1c79f17648584b6caa1ac5f683b34cd14b36a592a46d17bcc833897a1de11",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.A81AB156B74EA93ECFC9.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 125,
+          "sourceRecordSha256": "bc1705fb9fe91d467251bb000850dbc59878e57b492dbfddd58134bb26da6278",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.A97F2F91E70FB6CC1288.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 126,
+          "sourceRecordSha256": "8e25be53c74f23499c50785a987ab34ab85d354ecc7c2243d4e133e1864fe124",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.AFC048ACC41945EBE95E.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 127,
+          "sourceRecordSha256": "d69eb09c8c4cf307021e6619023307dbf6bbd75ec1634e17e02a491815e4e806",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B35C8C92B2ED901F8ACB.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 130,
+          "sourceRecordSha256": "c5287aa1c7755ac04b9400f62e784f933d2c8412379399f61cd1f3f16e75f11a",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B4081F8492485046051A.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 131,
+          "sourceRecordSha256": "17042d091774e09b38d931bd2dce4f49ad1192024fd76717fb950610b52d85bb",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B4EFD155C2F79F742FB8.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 132,
+          "sourceRecordSha256": "8a468a02e8d251cbda85abdb6b42a86dbdf82dd14cf55da7ebc928285fa4afa3",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B515E0438C4047EC8314.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 133,
+          "sourceRecordSha256": "91179091990b4e7f22375727cb7c45e9dbdda9b663613c725db164d8dabad137",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.B91E0EF439643362BAFC.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 134,
+          "sourceRecordSha256": "b939675b8e15d839d5fd9300178f100c4163fb491970a5f92ad38e4901816e3f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.BDCCB1C497B7E5086F01.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 136,
+          "sourceRecordSha256": "3ec81770828fd6e09a057d8edbb18ca0aae3050da9f0ee2db04f5af48ec944ce",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.C6CA79EFD476CA3E2950.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 142,
+          "sourceRecordSha256": "33635ffa30b3b288314cc0080f37ac416da4ebf95c814f26b3db0f836166c546",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.C8365D709D4F0A24E003.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 143,
+          "sourceRecordSha256": "e7dc42a50a131ef1ff1a5138a4c4032ae0d079fc5f91f7aaa6bf916317c2af8c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.CB89EBD61852BC26B452.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 144,
+          "sourceRecordSha256": "a5bd3f64118560171829f6cae53148040b89da02da478bf20bd806bcb74f01fa",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.CE8B45ED034D903CA6B6.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 145,
+          "sourceRecordSha256": "c4c112a656fd80f2e1bdb865216cc2e2831564ebd71dde4f814f5fec2d6d2aff",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D0761722B3C23183FB2B.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 146,
+          "sourceRecordSha256": "c4ace4f76c1ceb7bacd60fc54c7b7d9477e59116fb7749a80eaffbbb0e2ff8ca",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D0F464ED7DB026EEF409.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 148,
+          "sourceRecordSha256": "b1e2f506ba0fcb01fb48613736b893c7241485519e884a3b00f5fde7d34ec184",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D18AD9D99265AEFBBA9D.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 149,
+          "sourceRecordSha256": "24ac1bbb8dc7e2e97a71dc9fc476bc51d80855d3b457c20ef28b644aae33643f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D2D9AA804F1A977B7299.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 152,
+          "sourceRecordSha256": "ee4450581f111ab3fadf0090a4d45f792924ead2f6fae259769decf8248d9f33",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.D5406184565DD861C1A9.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 155,
+          "sourceRecordSha256": "3ee7b848c8bc8e8694eb482d697fd5ca8a77899cce1c428feb501ceca69a82ea",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.DD7F016F024A662EF896.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 156,
+          "sourceRecordSha256": "3d83248024aebf1e0a5e84e048e9f174cc3c674fccb23ed4ef52cb4dadc169c7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.DF9E756102CF58473599.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 159,
+          "sourceRecordSha256": "4dabb7740ee7f8249fa26bbd0995acd2b6c7ab2d42471ae9b0310d9aedb8cde1",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.E40C701A6F4166A7BAB3.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 162,
+          "sourceRecordSha256": "439f4716cef988e6b0a47bc24dc6cac47a9b8b5cdb31524d3a4c455c68f7cb5c",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.E40FD0653ECAE17E8F92.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 163,
+          "sourceRecordSha256": "06786836ccd3b4bf4cb35b5bded2884ddd1ad51892ddf0ad68ae4d999a3a73fd",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.E80E89D11EB0A3A81B25.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 164,
+          "sourceRecordSha256": "5ab81e9b6aab9f3a15113a4b4a0bc7ee92eb1e291967a8cff3423ccc81ded584",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.E90AA9AA3034F248B9BD.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 165,
+          "sourceRecordSha256": "a66dfb3a0afc292f80ec3ae099dff80de0a3116533b6e0da3fd9a9483e4667e8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.EB73029D1A15DAAC9821.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 169,
+          "sourceRecordSha256": "b0e8955a20cb378ca18f41f5ac2341e9fbecefe6b35cf5e4a3b1620c7dd2d035",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.EDAC12AC15B8875FE9E3.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 170,
+          "sourceRecordSha256": "7c0b655011cf8098c0691a0c90b585572ab4a664e5a7c2a29a024f4716b816b8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.F4CF7A94D66939E81F98.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 173,
+          "sourceRecordSha256": "2a9bcabcebc51370fd53c8de27ec297a3e291f098298754966dc6b0e258a5160",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.F92B1BF0C08A188D49F5.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 175,
+          "sourceRecordSha256": "af64e0e48a2badbd7dade40d0bf4d256b08eb65ef470231f5dcae69272f125f7",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.F9B86175619AEC3914E0.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 176,
+          "sourceRecordSha256": "b0ba133df7acc1926c1d0171ee86fbcdce38310a4b54ff4e2227a826e2308197",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.F9CE53AC8F5D793B01CC.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 177,
+          "sourceRecordSha256": "a6607e1c0a97c85c2801844a10fc61e2e3ea2d8a2a87ec648ce2bb7336d4d9d3",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FB4694C39B96F7EC5826.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 179,
+          "sourceRecordSha256": "b3466d4e0496e97c28aba2850a19e297bef479c252f6cadd3b7742a9310f612f",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FB4A36EF044E465EF041.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 180,
+          "sourceRecordSha256": "ad682f2592ed0a5602a802e0a9b0a54f5891396308fc3708fb2b10f76cc4d8d5",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FC5218B8A6ED022170F0.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 181,
+          "sourceRecordSha256": "f85067c94037fc110d219b80330d626a1544606d2956e5bc5021fb516c3cceb0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FC57863A5E75CCF940CC.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 182,
+          "sourceRecordSha256": "7a39ca20b51fbc0d2d1ef84f8509dbd20db8ff54dc20c0c364173b6cbb6ed4a0",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FE49A0426B8E8200AE6D.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 183,
+          "sourceRecordSha256": "c6857db3e24c7a58c8d28f480c469a89c2a3aaf91662269399bced1d1069cdac",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FF27C691731312624A07.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 184,
+          "sourceRecordSha256": "5167e3429494f988671e4b7358d91b3b07d365302da2256e9c8d4351dc3c213d",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        },
+        {
+          "surfaceKey": "pc",
+          "targetId": "TGT.CENSUS.PC.FF324F08B97C45F89EB3.V1",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "sourceLine": 185,
+          "sourceRecordSha256": "14fb0aa059d5284bf2463e3af7635382a2dd7c757faa11132822b82738fa90d8",
+          "atlasfinMatchStatus": "MATCHED_RECIPE"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,239 @@
+{
+  "schema": "prisma.atlasfin.corpus-reference-certification-manifest.v1",
+  "version": "1.0.0",
+  "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+  "chatId": 5,
+  "lane": "ATLASFIN_CORPUS_REFERENCE_CERTIFICATION",
+  "status": "CERTIFIED_REFERENCE_CORPUS",
+  "certificationBranch": "chat5/atlasfin-corpus-cert-20260904",
+  "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "sourceBridge": {
+    "branch": "chat5-atlasfin-bridge-20260904",
+    "head": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
+    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "immutableEvidence": true,
+    "bridgeReadOnly": true
+  },
+  "rawSurfaceSources": [
+    {
+      "surfaceKey": "tablet",
+      "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+      "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+      "files": [
+        {
+          "surfaceKey": "tablet",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+          "gitBlobSha": "d19b79126b588c58bd804ca40df0f37bc4692785",
+          "recordCount": 139
+        },
+        {
+          "surfaceKey": "tablet",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/UNRESOLVED.jsonl",
+          "gitBlobSha": "166f9ba5b8cc9b6b32e61bc889da3970c54f6453",
+          "recordCount": 788
+        },
+        {
+          "surfaceKey": "tablet",
+          "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/tablet/CONFLICTS.jsonl",
+          "gitBlobSha": "7a4d44a2c5bcfabddc3bfa5f9a96a359b8996508",
+          "recordCount": 2
+        }
+      ],
+      "totalOutcomeRecords": 929
+    },
+    {
+      "surfaceKey": "pc",
+      "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+      "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+      "files": [
+        {
+          "surfaceKey": "pc",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+          "gitBlobSha": "814b11fe333045b4f81d622542fdb016c577bbcd",
+          "recordCount": 186
+        },
+        {
+          "surfaceKey": "pc",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/UNRESOLVED.jsonl",
+          "gitBlobSha": "a43e769afd44af068a1c6c40ac3c9140144a9ff6",
+          "recordCount": 640
+        },
+        {
+          "surfaceKey": "pc",
+          "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/pc/CONFLICTS.jsonl",
+          "gitBlobSha": "d4deaf154ce03242340b3fe385fc2cc11d3c62f4",
+          "recordCount": 1
+        }
+      ],
+      "totalOutcomeRecords": 827
+    },
+    {
+      "surfaceKey": "mobile",
+      "sourceHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+      "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+      "files": [
+        {
+          "surfaceKey": "mobile",
+          "sourceHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/mobile/CANDIDATES.jsonl",
+          "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "recordCount": 0
+        },
+        {
+          "surfaceKey": "mobile",
+          "sourceHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/mobile/UNRESOLVED.jsonl",
+          "gitBlobSha": "edc991f6359e566db032f6ecd0f14d742735d2a4",
+          "recordCount": 133
+        },
+        {
+          "surfaceKey": "mobile",
+          "sourceHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/mobile/CONFLICTS.jsonl",
+          "gitBlobSha": "79ac54af75206f70d7923540c0ef39f6707f97a1",
+          "recordCount": 138
+        }
+      ],
+      "totalOutcomeRecords": 271
+    },
+    {
+      "surfaceKey": "shared-ui",
+      "sourceHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+      "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+      "files": [
+        {
+          "surfaceKey": "shared-ui",
+          "sourceHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/shared-ui/CANDIDATES.jsonl",
+          "gitBlobSha": "9c351af0fb8111f347762ea766af8699fb25452f",
+          "recordCount": 40
+        },
+        {
+          "surfaceKey": "shared-ui",
+          "sourceHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/shared-ui/UNRESOLVED.jsonl",
+          "gitBlobSha": "6f68e7cf18e4af89635381fbfde230cfad04f417",
+          "recordCount": 19
+        },
+        {
+          "surfaceKey": "shared-ui",
+          "sourceHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+          "sourceFile": "prisma-html/governance/visual-promotion/candidates/shared-ui/CONFLICTS.jsonl",
+          "gitBlobSha": "d29df0fc6aa42a473d140e1d11c79eee80d088ef",
+          "recordCount": 11
+        }
+      ],
+      "totalOutcomeRecords": 70
+    }
+  ],
+  "atlasfinAuthority": {
+    "canonicalMainHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+    "catalogElementCount": 418,
+    "structuredRegistries": [
+      {
+        "kind": "catalog",
+        "path": "prisma-html/extras/atlasfin/assets/data/atlas.manifest.json",
+        "gitBlobSha": "88a2bc10e471e75a61a78bbf3c0cb0b742380da1",
+        "declaredCount": 418
+      },
+      {
+        "kind": "property",
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-property.registry.json",
+        "gitBlobSha": "7439ecad33d05b8a919fce24d0c8b0bc0d50f612",
+        "declaredCount": 79
+      },
+      {
+        "kind": "family",
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-family.registry.json",
+        "gitBlobSha": "6dcd40a41b506848a10490dc20a6bd446cee17df",
+        "declaredCount": 32
+      },
+      {
+        "kind": "preset",
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-preset.registry.json",
+        "gitBlobSha": "1fa72b4065a2fe2cf4f047fb3496de1c52187034",
+        "declaredCount": 32
+      },
+      {
+        "kind": "recipe",
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-recipe.registry.json",
+        "gitBlobSha": "af8dbff2cf22e0cb77163128af0358cd0a9d3762",
+        "declaredCount": 8
+      },
+      {
+        "kind": "state",
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-state.registry.json",
+        "gitBlobSha": "ecc650fa1f8455ced5c72995973a0dab3ac5d578",
+        "declaredCount": 19
+      },
+      {
+        "kind": "variant",
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-variant.registry.json",
+        "gitBlobSha": "b1b33c3c91f5be5226ed1cf27f095d0953fe7412",
+        "declaredCount": 16
+      },
+      {
+        "kind": "adapter",
+        "path": "prisma-html/extras/atlasfin/assets/data/surface-adapter.registry.json",
+        "gitBlobSha": "f6eb2a32ff7a18ec80c6917654fc6d63c9024319",
+        "declaredCount": 8
+      },
+      {
+        "kind": "legacyRecipe",
+        "path": "prisma-html/extras/atlasfin/assets/data/visual.recipe.registry.json",
+        "gitBlobSha": "d2cecda5cd85a7cbed86cbc5e2e05e7127316120",
+        "declaredCount": null
+      }
+    ],
+    "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+    "materialityCatalogInspected": false
+  },
+  "certification": {
+    "totalSurfaceOutcomeRecords": 2097,
+    "totalNonNullAtlasfinReferences": 2421,
+    "nonNullReferenceCountsByField": {
+      "atlasfinCatalogElementId": 0,
+      "atlasfinUiId": 0,
+      "atlasfinFamilyId": 0,
+      "atlasfinPresetId": 0,
+      "atlasfinRecipeId": 324,
+      "atlasfinLegacyRecipeId": 0,
+      "atlasfinAdapterId": 2097
+    },
+    "representationNormalizationCount": 341,
+    "hardInvalidReferenceCount": 0,
+    "recipeReviewGroupCount": 4,
+    "crossSurfaceRecipeReviewGroupCount": 3,
+    "singleSurfaceRecipeReviewGroupCount": 1,
+    "semanticMutationCount": 0,
+    "authorityDomainSeparationPreserved": true,
+    "canonicalPromotionPerformed": false,
+    "runtimeVisualGreen": false,
+    "productRuntimeMutationPerformed": false
+  },
+  "outputs": [
+    "MANIFEST.json",
+    "NORMALIZATION_POLICY.json",
+    "ATLASFIN_REFERENCE_CERTIFICATION.jsonl",
+    "RECIPE_REVIEW_GROUPS.json",
+    "INVALID_REFS.jsonl",
+    "SUMMARY.md"
+  ],
+  "completionCriteria": {
+    "allNormalizedNonNullRefsValid": true,
+    "hardInvalidRefCountZero": true,
+    "semanticMutationCountZero": true,
+    "materialityUninspected": true
+  },
+  "artifactDigestBasis": {
+    "normalizationPolicySha256": "8d9ccc04ace197d645f9946278892a7d7f519f579449e03d893969e127ba8542",
+    "referenceCertificationSha256": "2566b64eabfec3d88c59518a4a3160d48a8ddda65a02709eda1b14102b0a2eea",
+    "recipeReviewGroupsSha256": "1a456bd167d6ea53084d88660f9662212aaa07e5b77a09998923cb097a09ea7e"
+  }
+}
