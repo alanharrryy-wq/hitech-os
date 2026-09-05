@@ -9,6 +9,7 @@ from typing import Any, Iterable, Mapping
 
 from .control_plane import (
     CANDIDATE_SCHEMA,
+    SHARD_SCHEMA,
     MATERIALITY_POLICY,
     ControlPlaneError,
     build_current_truth,
@@ -317,6 +318,93 @@ def _normalize_evidence_ref(
         "reason": "LIFT_UNKNOWN_NON_AUTHORITY_PROVENANCE",
     }
     return None, ref, change
+
+
+def normalize_manifest(
+    raw_manifest: Mapping[str, Any],
+    *,
+    surface: str,
+    registry: Mapping[str, Any],
+) -> dict[str, Any]:
+    profile = _profile(registry, surface)
+    if not isinstance(raw_manifest, Mapping):
+        raise CorpusCertificationError(
+            "INVALID_SCHEMA:MANIFEST_OBJECT_REQUIRED"
+        )
+    if raw_manifest.get("candidateOnly", True) is not True:
+        raise CorpusCertificationError(
+            "INVALID_SCHEMA:MANIFEST_CANDIDATE_ONLY_REQUIRED"
+        )
+    if raw_manifest.get("baseHead") != registry.get(
+        "commonWorkerBaseHead"
+    ):
+        raise CorpusCertificationError(
+            f"INVALID_PROVENANCE:MANIFEST_BASE_HEAD:{surface}"
+        )
+    if raw_manifest.get("surfaceKey") != surface:
+        raise CorpusCertificationError(
+            f"INVALID_PROVENANCE:MANIFEST_SURFACE:{surface}"
+        )
+
+    if surface == "tablet":
+        materiality = raw_manifest.get("policy", {}).get(
+            "materialityCatalogPolicy"
+        )
+        broad = raw_manifest.get("policy", {}).get(
+            "broadRediscoveryPerformed"
+        )
+    elif surface == "pc":
+        materiality = raw_manifest.get(
+            "materialityCatalog", {}
+        ).get("policy")
+        broad = raw_manifest.get(
+            "broadRediscovery", {}
+        ).get("performed")
+    elif surface == "mobile":
+        materiality = raw_manifest.get(
+            "materialityCatalogPolicy"
+        )
+        broad = raw_manifest.get(
+            "broadRediscoveryPerformed"
+        )
+    else:
+        materiality = raw_manifest.get(
+            "policies", {}
+        ).get("materialityCatalog")
+        broad = raw_manifest.get(
+            "policies", {}
+        ).get("broadRediscovery")
+
+    if materiality != MATERIALITY_POLICY:
+        raise CorpusCertificationError(
+            f"INVALID_PROVENANCE:MANIFEST_MATERIALITY:{surface}"
+        )
+    if broad is not False:
+        raise CorpusCertificationError(
+            f"INVALID_PROVENANCE:MANIFEST_BROAD_REDISCOVERY:{surface}"
+        )
+
+    return {
+        "schema": SHARD_SCHEMA,
+        "candidateOnly": True,
+        "baseHead": registry["commonWorkerBaseHead"],
+        "surfaceKey": surface,
+        "ownedRoot": str(profile["rawRoot"]).rstrip("/") + "/",
+        "inputCensusCount": int(profile["inputCount"]),
+        "materialityCatalogPolicy": MATERIALITY_POLICY,
+        "broadRediscoveryPerformed": False,
+        "outputFiles": [
+            "MANIFEST.json",
+            "CANDIDATES.jsonl",
+            "UNRESOLVED.jsonl",
+            "CONFLICTS.jsonl",
+            "SUMMARY.md",
+        ],
+        "notes": [
+            "Strict derivative manifest; original worker bytes remain immutable.",
+            "No semantic promotion, broad rediscovery, or Materiality fallback performed.",
+        ],
+    }
 
 
 def normalize_record(
@@ -700,11 +788,27 @@ def certify_registered_corpus(
     certifications: list[dict[str, Any]] = []
     invalid: list[dict[str, Any]] = []
     source_file_evidence: list[dict[str, Any]] = []
+    normalized_manifests: dict[str, dict[str, Any]] = {}
     source_bucket_counts: Counter[str] = Counter()
 
     for surface in SURFACE_ORDER:
         profile = _profile(registry, surface)
         source_head = str(profile["sourceHead"])
+        _, manifest_bytes, manifest_pin = verify_registered_file(
+            repo_root, registry, surface=surface,
+            source_head=source_head, filename="MANIFEST.json"
+        )
+        raw_manifest = json.loads(manifest_bytes.decode("utf-8-sig"))
+        normalized_manifests[surface] = normalize_manifest(
+            raw_manifest, surface=surface, registry=registry
+        )
+        source_file_evidence.append({
+            "surfaceKey": surface, "head": source_head,
+            "file": "MANIFEST.json",
+            "gitBlobSha": manifest_pin["gitBlobSha"],
+            "sha256": manifest_pin["sha256"],
+            "bytes": len(manifest_bytes),
+        })
         surface_count = 0
         for filename in OUTCOME_FILES:
             _, data, pin = verify_registered_file(
@@ -948,6 +1052,7 @@ def certify_registered_corpus(
             )["sourceHead"]
             for surface in SURFACE_ORDER
         },
+        "normalizedSurfaceManifests": normalized_manifests,
         "materialityCatalogPolicy": MATERIALITY_POLICY,
         "materialityCatalogInspected": False,
         "broadRediscoveryPerformed": False,
