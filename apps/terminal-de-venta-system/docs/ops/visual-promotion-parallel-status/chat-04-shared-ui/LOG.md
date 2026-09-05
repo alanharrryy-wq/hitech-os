@@ -84,3 +84,31 @@ Certification scope is strictly `prisma-html/governance/visual-promotion/candida
 
 ## 2026-09-04T23:44:00-06:00 — DECISION
 Certification must preserve all 70 target IDs, the exact `40 candidates + 19 unresolved + 11 conflicts` source accounting, all 70 NDC `UNRESOLVED` outcomes, all Atlasfin `NO_MATCH` outcomes, the 19 no-region unresolved cases and 11 multi-region conflicts. Representation normalization may not change semantics.
+
+
+## 2026-09-04T23:53:09-06:00 — FINDING
+Completed the strict Shared UI certification derivative on `chat4/shared-ui-corpus-cert-20260904` at `553577aa74045c73ab9c92d1f81538e7e0a8c65a`. The immutable worker source remains `visual-promotion-chat4-shared-ui-20260904@57b502f1064571cebd917b36882ef9c11e9fa7d8`.
+
+## 2026-09-04T23:53:09-06:00 — DECISION
+Normalization was representation-only. Every derivative row adds `schema=prisma.visual-promotion.candidate.v1`. The source field `atlasfin::ADP.SHARED.NEUTRAL.V2` in `atlasfinAdapterId` is represented as the strict raw registry ID `ADP.SHARED.NEUTRAL.V2`; the original qualified value remains pinned in certification provenance and qualified evidence refs remain qualified. No semantic field was upgraded or resolved.
+
+## 2026-09-04T23:53:09-06:00 — VALIDATION
+Corpus result: `70/70` valid, `INVALID.jsonl` empty, unique targets `70`, `semanticMutationCount=0`. Source accounting remains exactly `40 candidates + 19 unresolved + 11 conflicts`. Certification labels are `40 VALID_REGISTER_TARGET_FIRST + 30 VALID_BLOCKED`.
+
+## 2026-09-04T23:53:09-06:00 — VALIDATION
+Semantic invariants passed: NDC `UNRESOLVED=70`, Atlasfin `NO_MATCH=70`, projection `CURRENT=70`, promotion `40 REGISTER_TARGET_FIRST + 30 BLOCKED`, Work Entry `40 REGISTER_TARGET_FIRST + 30 BLOCKED`. All 19 no-region unresolved records and all 11 multi-region conflict records were preserved without inference.
+
+## 2026-09-04T23:53:09-06:00 — VALIDATION
+Provenance validation passed `70/70`: each certification record pins source branch/head/base, exact source file, source line/logical record, source-file SHA-256 and SHA-256 of the exact immutable source JSONL record. Post-write re-fetch confirmed every source-record hash.
+
+## 2026-09-04T23:53:09-06:00 — VALIDATION
+Branch-boundary validation passed. The certification branch is exactly one commit ahead of certification base `8cc1918c5e015d1408335c15313e7364e04859c2` and changes exactly five paths, all under `prisma-html/governance/visual-promotion/candidates/shared-ui/certification/**`.
+
+## 2026-09-04T23:53:09-06:00 — DECISION
+No certification PR was opened. Draft PR #539 was not merged. `prisma-html/FILES_MANIFEST.json`, Tablet/PC/Mobile consumers, product/runtime, generated projections and global authority were not modified. Materiality Catalog remains `STANDBY_USER_INVOKED_ONLY` and uninspected.
+
+## 2026-09-04T23:53:09-06:00 — HANDOFF
+Chat 4 certification is `READY_FOR_INTEGRATION`. Exact certification handoff: `chat4/shared-ui-corpus-cert-20260904@553577aa74045c73ab9c92d1f81538e7e0a8c65a`. Chat 6 owns final multi-lane corpus aggregation and the single authorized `FILES_MANIFEST.json` refresh.
+
+## 2026-09-04T23:53:09-06:00 — COMPLETE
+`CANDIDATE_CORPUS_CERTIFICATION_PARALLEL` is complete for Shared UI: `70/70 corpus-valid; invalid=0; semanticMutationCount=0; exact source provenance verified 70/70`. No user action is required from Chat 4.
