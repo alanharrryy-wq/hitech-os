@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T23:59:00-06:00",
+  "updatedAt": "2026-09-05T00:02:20-06:00",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat1/tablet-corpus-cert-20260904",
   "workHead": "fd111022438bab909151c2220b52e95aa5aa7eb3",
-  "summary": "Chat 1 Tablet candidate corpus certification is complete. The certified derivative at fd111022438bab909151c2220b52e95aa5aa7eb3 preserves the immutable source head 1b669d98dc9063fe4d6f5f8ddc06262a6968e728 exactly: 929/929 corpus-valid, invalid=0, semanticMutationCount=0, 139 candidates + 788 unresolved + 2 conflicts unchanged. Final Git read-back proved exact five-file ownership, 929 normalized rows, 929 certification rows, empty INVALID.jsonl, complete row hashes/provenance, both DRIFT conflicts preserved and the single existing Cobrar Identity-binding reuse preserved. Current main equals certification base 8cc1918c5e015d1408335c15313e7364e04859c2.",
+  "summary": "Chat 1 completed TABLET CORPUS CERTIFICATION. The certified derivative at chat1/tablet-corpus-cert-20260904@fd111022438bab909151c2220b52e95aa5aa7eb3 contains exactly the five required files under candidates/tablet/certification/**. Final audit: 929/929 normalized rows, 929/929 certification rows, 929 unique targets, INVALID.jsonl empty, 929/929 source-record hashes recomputed and matched, identity-pass-through exact, semanticMutationCount=0. The 139 ELIGIBLE_CANDIDATE, 788 REGISTER_TARGET_FIRST and 2 BLOCKED semantics remain unchanged.",
   "blockers": [],
   "findings": [
     "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
@@ -41,7 +41,15 @@
     "Final read-back from Git verified 929 NORMALIZED rows, 929 CERTIFICATION rows, 0 INVALID rows, 929 unique target IDs, 0 provenance/hash failures and semanticMutationCount=0.",
     "Certification labels are 139 VALID_ELIGIBLE_CANDIDATE + 788 VALID_REGISTER_TARGET_FIRST + 2 VALID_BLOCKED.",
     "Certification branch is one commit ahead of base and changes exactly five files under candidates/tablet/certification/**.",
-    "Current canonical main remains exactly 8cc1918c5e015d1408335c15313e7364e04859c2, so there is no post-certification main drift to classify."
+    "Current canonical main remains exactly 8cc1918c5e015d1408335c15313e7364e04859c2, so there is no post-certification main drift to classify.",
+    "Certification work branch head is fd111022438bab909151c2220b52e95aa5aa7eb3, one commit ahead of certification base 8cc1918c5e015d1408335c15313e7364e04859c2.",
+    "Final branch diff contains exactly five added files, all under prisma-html/governance/visual-promotion/candidates/tablet/certification/**.",
+    "NORMALIZED.jsonl contains exactly 929 rows and is an exact identity pass-through in deterministic source-bucket order CANDIDATES, UNRESOLVED, CONFLICTS.",
+    "CERTIFICATION.jsonl contains exactly 929 rows with exact source head/base/file/line and deterministic SHA-256 provenance; all 929 provenance hashes recomputed successfully.",
+    "INVALID.jsonl is empty with Git empty-blob SHA e69de29bb2d1d6434b8b29ae775ad8c2e48c5391.",
+    "Certification status counts are 139 VALID_ELIGIBLE_CANDIDATE, 788 VALID_REGISTER_TARGET_FIRST and 2 VALID_BLOCKED.",
+    "The sole stronger-authority row is TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1; BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 proves its elevated coordinates without changing candidate semantics.",
+    "Both physical DRIFT targets remain exact source conflicts with promotionStatus BLOCKED and workEntryDecision BLOCKED."
   ],
   "decisions": [
     "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
@@ -62,7 +70,10 @@
     "For the single EXISTING_RESOLVED binding reuse, validate binding-owned physical coordinates against the exact resolved Identity binding target; do not require those stronger coordinates to appear independently in the lower-level expanded census string set.",
     "Preserve raw Tablet record bytes in NORMALIZED.jsonl and normalize only the strict candidate-shard envelope plus separate certification/provenance metadata.",
     "Certification validity is not promotion readiness: the 139 VALID_ELIGIBLE_CANDIDATE rows still retain Work Entry REGISTER_TARGET_FIRST; the two conflict rows remain VALID_BLOCKED.",
-    "Hand off exact certification head fd111022438bab909151c2220b52e95aa5aa7eb3 to Chat 6 for aggregate corpus composition; make no further Chat 1 lane mutation unless a bounded evidence-backed correction is requested."
+    "Hand off exact certification head fd111022438bab909151c2220b52e95aa5aa7eb3 to Chat 6 for aggregate corpus composition; make no further Chat 1 lane mutation unless a bounded evidence-backed correction is requested.",
+    "Certify Tablet rows by identity pass-through because all 929 source records are already strict-record compatible; normalize only the canonical shard intake envelope and certification/provenance representation.",
+    "Classify corpus validity separately from promotion readiness: valid REGISTER_TARGET_FIRST and valid BLOCKED records remain unresolved/blocked rather than being upgraded.",
+    "Publish the certification head for Chat 6 consumption and make no PR or FILES_MANIFEST update from Chat 1."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/tablet/certification/MANIFEST.json",
@@ -168,18 +179,49 @@
       "name": "Certification write boundary",
       "result": "PASS",
       "details": "No PR opened; prisma-html/FILES_MANIFEST.json untouched; no product/runtime/global authority/Materiality/broad-rediscovery writes."
+    },
+    {
+      "name": "certification branch write boundary",
+      "result": "PASS",
+      "details": "1 commit ahead of certification base; exactly five added files and all are under candidates/tablet/certification/**."
+    },
+    {
+      "name": "strict corpus final content audit",
+      "result": "PASS_FINAL_CONTENT_AUDIT",
+      "details": "NORMALIZED=929; CERTIFICATION=929; unique targets=929; identity pass-through exact; certification provenance SHA-256 recomputed=929/929; semanticMutationCount=0."
+    },
+    {
+      "name": "certification labels",
+      "result": "PASS",
+      "details": "139 VALID_ELIGIBLE_CANDIDATE + 788 VALID_REGISTER_TARGET_FIRST + 2 VALID_BLOCKED = 929; zero INVALID_*."
+    },
+    {
+      "name": "invalid corpus file",
+      "result": "PASS_EMPTY",
+      "details": "INVALID.jsonl empty; Git blob e69de29bb2d1d6434b8b29ae775ad8c2e48c5391."
+    },
+    {
+      "name": "source-shard manifest hashes",
+      "result": "PASS",
+      "details": "CANDIDATES, UNRESOLVED and CONFLICTS source SHA-256 values in certification MANIFEST were recomputed and matched."
+    },
+    {
+      "name": "semantic invariants",
+      "result": "PASS",
+      "details": "139 ELIGIBLE_CANDIDATE, 788 REGISTER_TARGET_FIRST, 2 BLOCKED; Work Entry 927 REGISTER_TARGET_FIRST + 2 BLOCKED; two DRIFT conflicts and single existing Identity binding reuse preserved exactly."
     }
   ],
   "unresolved": [
-    "Global candidate-corpus aggregation and one-time prisma-html/FILES_MANIFEST.json refresh remain Chat 6/integration-owned.",
-    "Corpus certification does not resolve the 788 unresolved semantics, the two physical DRIFT conflicts, or authorize any canonical promotion/GVAE_EXACT_APPLY."
+    "788 corpus-valid Tablet records still require REGISTER_TARGET_FIRST semantic/application authority before any exact apply can exist.",
+    "2 corpus-valid Tablet records remain physical DRIFT / BLOCKED conflicts and must not be normalized into readiness.",
+    "Corpus certification does not authorize canonical Identity/RIFAT/NDC/Target Index promotion, GVAE_EXACT_APPLY or product/runtime mutation."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Hand off chat1/tablet-corpus-cert-20260904@fd111022438bab909151c2220b52e95aa5aa7eb3 to Chat 6. Hold further Tablet certification mutation unless integration requests one bounded evidence-backed correction.",
+  "nextAction": "Handoff to Chat 6/integration. Consume chat1/tablet-corpus-cert-20260904@fd111022438bab909151c2220b52e95aa5aa7eb3 together with immutable source chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728. Chat 1 should only resume for a bounded evidence-backed certification correction request.",
   "handoff": {
     "ready": true,
-    "classification": "TABLET_CANDIDATE_CORPUS_CERTIFIED_READY_FOR_AGGREGATION",
+    "classification": "TABLET_CANDIDATE_CORPUS_CERTIFIED",
     "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
     "sourceBranch": "chat1/tablet-visual-promotion-57b01ad8",
     "sourceHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
@@ -187,13 +229,16 @@
     "certificationBranch": "chat1/tablet-corpus-cert-20260904",
     "certificationBaseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
     "certificationHead": "fd111022438bab909151c2220b52e95aa5aa7eb3",
-    "certificationResult": "PASS_TABLET_CANDIDATE_CORPUS_CERTIFIED",
-    "finalReadbackResult": "PASS_FINAL_TABLET_CORPUS_READBACK",
+    "candidateRoot": "prisma-html/governance/visual-promotion/candidates/tablet",
+    "certificationRoot": "prisma-html/governance/visual-promotion/candidates/tablet/certification",
     "inputCount": 929,
-    "corpusValid": 929,
-    "invalid": 0,
+    "corpusValidCount": 929,
+    "invalidCount": 0,
     "semanticMutationCount": 0,
-    "accounting": {
+    "normalizedCount": 929,
+    "certificationRowCount": 929,
+    "uniqueTargetCount": 929,
+    "sourceAccounting": {
       "candidates": 139,
       "unresolved": 788,
       "conflicts": 2
@@ -202,10 +247,6 @@
       "VALID_ELIGIBLE_CANDIDATE": 139,
       "VALID_REGISTER_TARGET_FIRST": 788,
       "VALID_BLOCKED": 2
-    },
-    "physicalStatus": {
-      "CURRENT": 927,
-      "DRIFT": 2
     },
     "promotionStatus": {
       "ELIGIBLE_CANDIDATE": 139,
@@ -216,17 +257,21 @@
       "REGISTER_TARGET_FIRST": 927,
       "BLOCKED": 2
     },
-    "existingBindingReuse": {
-      "targetId": "TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1",
-      "existingBindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
-      "visualMeaningId": "ACT.primary",
-      "identityRecipeId": "REC.button.primary",
-      "applicationLayerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE"
-    },
     "conflictTargetIds": [
       "TGT.CENSUS.TABLET.3B2FED34BC21B5C9FEEC.V1",
       "TGT.CENSUS.TABLET.850AD4CEF4CCD12BCD05.V1"
     ],
+    "existingResolvedBinding": {
+      "targetId": "TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1",
+      "existingBindingId": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1",
+      "identityRecipeId": "REC.button.primary",
+      "visualMeaningId": "ACT.primary",
+      "applicationLayerId": "LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE"
+    },
+    "validationResult": "PASS_TABLET_CANDIDATE_CORPUS_CERTIFIED",
+    "provenanceHashPassCount": 929,
+    "identityPassThroughExact": true,
+    "invalidBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
     "outputFiles": [
       "prisma-html/governance/visual-promotion/candidates/tablet/certification/MANIFEST.json",
       "prisma-html/governance/visual-promotion/candidates/tablet/certification/NORMALIZED.jsonl",
@@ -234,18 +279,11 @@
       "prisma-html/governance/visual-promotion/candidates/tablet/certification/INVALID.jsonl",
       "prisma-html/governance/visual-promotion/candidates/tablet/certification/SUMMARY.md"
     ],
-    "outputBlobShas": {
-      "MANIFEST": "6914a2e372f69bd8295fa9f2259af4910851add6",
-      "NORMALIZED": "776eb8bbc2b6ae70cbd2b0da351f9057d8ba2d67",
-      "CERTIFICATION": "7a6ffef009a6775fc8e9d6f131803185c7cedf08",
-      "INVALID": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
-      "SUMMARY": "6027ecdf748a5fd19b99c2bbcfe6039ec9b80307"
-    },
     "materialityCatalogInspected": false,
     "broadRediscoveryPerformed": false,
-    "filesManifestTouched": false,
-    "prOpened": false,
+    "canonicalPromotionPerformed": false,
     "productRuntimeMutation": false,
-    "canonicalAuthorityMutation": false
+    "filesManifestTouched": false,
+    "pullRequestOpened": false
   }
 }
