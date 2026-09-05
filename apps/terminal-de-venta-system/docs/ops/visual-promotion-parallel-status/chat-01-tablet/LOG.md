@@ -200,3 +200,36 @@ No updates published yet.
 - No user action is required.
 - Further Tablet certification writes are on hold unless Chat 6/integration requests one bounded evidence-backed correction.
 
+## 2026-09-05T00:02:20-06:00 — VALIDATION
+
+- Final certification branch HEAD: `fd111022438bab909151c2220b52e95aa5aa7eb3`.
+- Branch is exactly **1 commit** ahead of certification base `8cc1918c5e015d1408335c15313e7364e04859c2`.
+- Diff boundary: exactly **5 added files**, all under `prisma-html/governance/visual-promotion/candidates/tablet/certification/**`.
+- `NORMALIZED.jsonl`: **929** rows.
+- `CERTIFICATION.jsonl`: **929** rows.
+- Unique targets: **929/929**.
+- Exact identity pass-through against immutable source rows: **PASS**.
+- Source-record SHA-256 provenance recomputed: **929/929 PASS**.
+- Semantic mutation count: **0**.
+- Certification labels: **139 VALID_ELIGIBLE_CANDIDATE + 788 VALID_REGISTER_TARGET_FIRST + 2 VALID_BLOCKED**.
+- `INVALID.jsonl`: empty, blob `e69de29bb2d1d6434b8b29ae775ad8c2e48c5391`.
+- Final audit: `PASS_FINAL_CONTENT_AUDIT`.
+
+## 2026-09-05T00:02:20-06:00 — HANDOFF
+
+- Certification status: **TABLET_CANDIDATE_CORPUS_CERTIFIED**.
+- Source worker remains immutable at `chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728`.
+- Certified derivative: `chat1/tablet-corpus-cert-20260904@fd111022438bab909151c2220b52e95aa5aa7eb3`.
+- Two physical DRIFT conflicts remain exact `VALID_BLOCKED` records.
+- The one existing Identity binding reuse remains exact and authority-proven.
+- No PR was opened.
+- `prisma-html/FILES_MANIFEST.json` was not touched.
+- No canonical IDs were minted and no product/runtime/global-authority mutation occurred.
+- Chat 6/integration can now consume the exact certification head.
+
+## 2026-09-05T00:02:20-06:00 — COMPLETE
+
+- Chat 1 corpus-certification phase complete: **929/929 corpus-valid**, **invalid=0**, **semanticMutationCount=0**.
+- State: `READY_FOR_INTEGRATION`.
+- No user action required.
+
