@@ -1,0 +1,77 @@
+{
+  "schema": "prisma.visual-promotion.control-plane.contract.v1",
+  "status": "SOURCE_STATIC_CONTROL_PLANE_CONTRACT",
+  "candidateSchema": "prisma.visual-promotion.candidate.v1",
+  "candidateShardSchema": "prisma.visual-promotion.candidate-shard.v1",
+  "surfaceKeys": [
+    "tablet",
+    "pc",
+    "mobile",
+    "shared-ui"
+  ],
+  "protectedSurfaces": [
+    "web",
+    "chart-lab",
+    "control-center"
+  ],
+  "authorityDomains": [
+    "ndc",
+    "atlasfin",
+    "identity",
+    "rifat",
+    "visual-control",
+    "target-index",
+    "projection-manifest",
+    "factory-ledger",
+    "code-atlas",
+    "work-entry-gate",
+    "gvae"
+  ],
+  "workEntryDecisions": [
+    "GVAE_EXACT_APPLY",
+    "SURFACE_BATCH_PLAN",
+    "REGISTER_TARGET_FIRST",
+    "BLOCKED"
+  ],
+  "workEntryReasons": {
+    "currentCensus": "REUSE_EXISTING_CENSUS_SEMANTIC_PROMOTION_REQUIRED",
+    "broadRediscovery": "BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS"
+  },
+  "atlasfin": {
+    "priorityReference": true,
+    "productAuthority": false
+  },
+  "materialityCatalog": {
+    "policy": "STANDBY_USER_INVOKED_ONLY",
+    "automaticDiscovery": false,
+    "automaticFallback": false,
+    "automaticRecipePromotion": false,
+    "automaticSemanticInference": false,
+    "automaticApplicationSource": false
+  },
+  "writeOwnership": {
+    "chat1-tablet": "prisma-html/governance/visual-promotion/candidates/tablet/",
+    "chat2-pc": "prisma-html/governance/visual-promotion/candidates/pc/",
+    "chat3-mobile": "prisma-html/governance/visual-promotion/candidates/mobile/",
+    "chat4-shared-ui": "prisma-html/governance/visual-promotion/candidates/shared-ui/",
+    "chat5-atlasfin-bridge": "prisma-html/extras/atlasfin/bridge/",
+    "chat6-control-plane-tools": "prisma-html/tools/visual_promotion/",
+    "chat6-control-plane-contracts": "prisma-html/governance/visual-promotion/contracts/"
+  },
+  "zeroLossEquation": "input census count = candidate/resolved + unresolved + blocked/not-applicable",
+  "noFakeGreen": [
+    "DISCOVERY_ONLY_IS_NOT_UNDISCOVERED",
+    "ATLASFIN_CATALOG_IS_NOT_IDENTITY_AUTHORITY",
+    "CANDIDATE_IS_NOT_BINDING",
+    "BINDING_IS_NOT_MUTATION_AUTHORIZATION",
+    "SOURCE_STATIC_IS_NOT_RUNTIME_VISUAL_GREEN"
+  ],
+  "canonicalComposer": {
+    "directMutation": false,
+    "assignCanonicalIds": false,
+    "mixedBaseRequiresRevalidation": true,
+    "collisionReviewRequired": true
+  },
+  "runtimeVisualGreen": false,
+  "productionReady": false
+}

@@ -1,0 +1,69 @@
+{
+  "candidateOnly": true,
+  "baseHead": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "surfaceKey": "tablet",
+  "targetId": "TGT.CENSUS.TABLET.0123456789ABCDEF.V1",
+  "recordKind": "VISUAL_CONTROL_CENSUS_TARGET",
+  "enforcement": "DISCOVERY_ONLY",
+  "physicalStatus": "CURRENT",
+  "physical": {
+    "routeId": null,
+    "regionId": null,
+    "slotId": null,
+    "componentId": null,
+    "componentUiId": null,
+    "ownerId": null,
+    "ownerFile": null,
+    "renderSourceFile": null,
+    "styleSourceFile": null,
+    "selector": ".fixture",
+    "implementationLayerId": "products.tablet.fixture"
+  },
+  "ndc": {
+    "ndcPrimaryId": null,
+    "ndcRefs": [],
+    "ndcResolutionStatus": "UNRESOLVED"
+  },
+  "visual": {
+    "visualMeaningId": null,
+    "visualMeaningCandidate": "fixture",
+    "visualMeaningStatus": "CANDIDATE_REVIEW_REQUIRED"
+  },
+  "atlasfin": {
+    "atlasfinCatalogElementId": null,
+    "atlasfinUiId": null,
+    "atlasfinFamilyId": null,
+    "atlasfinPresetId": null,
+    "atlasfinRecipeId": null,
+    "atlasfinLegacyRecipeId": null,
+    "atlasfinAdapterId": null,
+    "atlasfinMatchStatus": "NO_MATCH"
+  },
+  "identity": {
+    "identityProfileId": null,
+    "identityRecipeId": null,
+    "identityAdapterId": null,
+    "existingBindingId": null,
+    "bindingCandidateKey": "tablet:fixture",
+    "bindingStatus": "CANDIDATE"
+  },
+  "application": {
+    "applicationLayerId": null,
+    "projectionStatus": "UNRESOLVED",
+    "promotionStatus": "REGISTER_TARGET_FIRST",
+    "workEntryDecision": "REGISTER_TARGET_FIRST"
+  },
+  "confidence": "low",
+  "evidenceRefs": [
+    {
+      "authorityDomain": "target-index",
+      "id": "TGT.CENSUS.TABLET.0123456789ABCDEF.V1"
+    }
+  ],
+  "blockers": [
+    "semantic"
+  ],
+  "notes": [
+    "REUSE_EXISTING_CENSUS_SEMANTIC_PROMOTION_REQUIRED"
+  ]
+}

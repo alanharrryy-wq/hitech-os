@@ -27,6 +27,15 @@ COMPONENT_SUFFIXES = (".tsx", ".jsx")
 ASSET_SUFFIXES = (".svg", ".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif")
 FORBIDDEN_INTENTS = {"DIRECT_EDIT", "WILDCARD_EDIT", "UNTRACKED_VISUAL_MUTATION", "GUESS_AUTHORITY"}
 EXECUTION_INTENTS = {"APPLY", "MUTATE", "EXECUTE", "GVAE_APPLY"}
+REDISCOVERY_INTENTS = {"DISCOVER", "DISCOVERY", "REDISCOVER", "BROAD_DISCOVERY", "BROAD_REDISCOVERY", "RECENSUS"}
+REQUEST_SCHEMA = "prisma.visual.work-entry.request.v1"
+REQUEST_FIELDS = frozenset({
+    "schema", "task", "surface", "surfaces", "routes", "files", "selectors", "targetIds",
+    "mode", "intent", "intention", "expectedHead", "authorityMesh",
+})
+CURRENT_CENSUS_REASON = "REUSE_EXISTING_CENSUS_SEMANTIC_PROMOTION_REQUIRED"
+BROAD_REDISCOVERY_REASON = "BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS"
+HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 IMPORTANT = re.compile(r"!\s*important\b", re.I)
 
@@ -85,6 +94,42 @@ def _items(value: Any) -> list[str]:
 
 def _contains_wildcard(values: Iterable[str]) -> bool:
     return any("*" in str(value) for value in values)
+
+
+def _request_contract_errors(request: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    unknown = sorted(set(request) - REQUEST_FIELDS)
+    if unknown:
+        errors.append("REQUEST_CONTRACT_UNKNOWN_FIELDS:" + ",".join(unknown))
+    schema = request.get("schema")
+    if schema is not None and schema != REQUEST_SCHEMA:
+        errors.append("REQUEST_CONTRACT_SCHEMA_INVALID")
+    task = request.get("task")
+    if task is not None and (not isinstance(task, str) or not 3 <= len(task) <= 6000):
+        errors.append("REQUEST_CONTRACT_TASK_INVALID")
+    surface = request.get("surface")
+    if surface is not None and not isinstance(surface, str):
+        errors.append("REQUEST_CONTRACT_SURFACE_INVALID")
+    for field in ("surfaces", "routes", "files", "selectors", "targetIds"):
+        value = request.get(field)
+        if value is None:
+            continue
+        if not isinstance(value, list) or any(not isinstance(item, str) or not item for item in value):
+            errors.append(f"REQUEST_CONTRACT_{field.upper()}_INVALID")
+            continue
+        if len(set(value)) != len(value):
+            errors.append(f"REQUEST_CONTRACT_{field.upper()}_DUPLICATES")
+    for field in ("mode", "intent", "intention"):
+        value = request.get(field)
+        if value is not None and (not isinstance(value, str) or not value):
+            errors.append(f"REQUEST_CONTRACT_{field.upper()}_INVALID")
+    expected = request.get("expectedHead")
+    if expected is not None and (not isinstance(expected, str) or not HEX40.fullmatch(expected)):
+        errors.append("REQUEST_CONTRACT_EXPECTED_HEAD_INVALID")
+    mesh = request.get("authorityMesh")
+    if mesh is not None and not isinstance(mesh, dict):
+        errors.append("REQUEST_CONTRACT_AUTHORITY_MESH_INVALID")
+    return errors
 
 
 def _ledger_truth() -> dict[str, Any]:
@@ -281,6 +326,9 @@ def decide_request(request: dict[str, Any], *, authority: dict[str, Any] | None 
     head = current_head or _head(REPO_ROOT)
     if not isinstance(request, dict):
         return _decision("BLOCKED", reasons=["REQUEST_OBJECT_REQUIRED"])
+    contract_errors = _request_contract_errors(request)
+    if contract_errors:
+        return _decision("BLOCKED", reasons=contract_errors)
     expected = str(request.get("expectedHead") or "").strip()
     if expected and expected != head:
         return _decision("BLOCKED", reasons=["EXPECTED_HEAD_MISMATCH"], details={"expectedHead": expected, "currentHead": head})
@@ -329,7 +377,9 @@ def decide_request(request: dict[str, Any], *, authority: dict[str, Any] | None 
     if explicit_records:
         if any(row.get("recordKind") == CENSUS_KIND or row.get("enforcement") == DISCOVERY_ONLY for row in explicit_records):
             missing = [str(x) for row in explicit_records for x in row.get("blockers", [])]
-            return _decision("REGISTER_TARGET_FIRST", reasons=["DISCOVERY_ONLY_PHYSICAL_COORDINATE"], missing=missing, details={"targetIds": target_ids})
+            if intent in REDISCOVERY_INTENTS:
+                return _decision("BLOCKED", reasons=[BROAD_REDISCOVERY_REASON, CURRENT_CENSUS_REASON], missing=missing, details={"targetIds": target_ids})
+            return _decision("REGISTER_TARGET_FIRST", reasons=["DISCOVERY_ONLY_PHYSICAL_COORDINATE", CURRENT_CENSUS_REASON], missing=missing, details={"targetIds": target_ids})
         if any(row.get("recordKind") != EXACT_KIND or row.get("enforcement") != ENFORCED for row in explicit_records):
             return _decision("BLOCKED", reasons=["TARGET_ENFORCEMENT_INVALID"])
         blocked = [row for row in explicit_records if row.get("status") != "APPLY_READY"]
@@ -352,7 +402,13 @@ def decide_request(request: dict[str, Any], *, authority: dict[str, Any] | None 
             return _decision("BLOCKED", reasons=["SURFACE_REQUIRED_FOR_BATCH"])
         if any(plan.get("recordCount", 0) == 0 for plan in plans):
             return _decision("BLOCKED", reasons=["SURFACE_HAS_NO_VISUAL_CONTROL_CENSUS"], details={"plans": plans})
-        return _decision("SURFACE_BATCH_PLAN", reasons=["WHOLE_SURFACE_IS_EXACT_TARGET_COMPOSITION_NOT_WILDCARD"], details={"plans": plans})
+        has_current_census = any(plan.get("discoveryOnlyCount", 0) > 0 for plan in plans)
+        if intent in REDISCOVERY_INTENTS and has_current_census:
+            return _decision("BLOCKED", reasons=[BROAD_REDISCOVERY_REASON, CURRENT_CENSUS_REASON], details={"plans": plans})
+        reasons = ["WHOLE_SURFACE_IS_EXACT_TARGET_COMPOSITION_NOT_WILDCARD"]
+        if has_current_census:
+            reasons.append(CURRENT_CENSUS_REASON)
+        return _decision("SURFACE_BATCH_PLAN", reasons=reasons, details={"plans": plans})
 
     matched: list[dict[str, Any]] = []
     for row in path_info:
@@ -365,7 +421,10 @@ def decide_request(request: dict[str, Any], *, authority: dict[str, Any] | None 
             return _decision("BLOCKED", reasons=["STALE_SOURCE_OR_PROJECTION_HASH"])
         census = [row for row in matched if row.get("recordKind") == CENSUS_KIND or row.get("enforcement") == DISCOVERY_ONLY]
         if census:
-            return _decision("REGISTER_TARGET_FIRST", reasons=["VISUAL_CONTROL_CENSUS_REQUIRES_SEMANTIC_PROMOTION"], missing=[str(x) for row in census for x in row.get("blockers", [])], details={"matchedTargets": [r.get("targetId") for r in census]})
+            missing = [str(x) for row in census for x in row.get("blockers", [])]
+            if intent in REDISCOVERY_INTENTS:
+                return _decision("BLOCKED", reasons=[BROAD_REDISCOVERY_REASON, CURRENT_CENSUS_REASON], missing=missing, details={"matchedTargets": [r.get("targetId") for r in census]})
+            return _decision("REGISTER_TARGET_FIRST", reasons=["VISUAL_CONTROL_CENSUS_REQUIRES_SEMANTIC_PROMOTION", CURRENT_CENSUS_REASON], missing=missing, details={"matchedTargets": [r.get("targetId") for r in census]})
         exact = [row for row in matched if row.get("recordKind") == EXACT_KIND and row.get("enforcement") == ENFORCED]
         if exact and all(row.get("status") == "APPLY_READY" for row in exact):
             return _decision("GVAE_EXACT_APPLY", reasons=["RESOLVED_TO_EXACT_APPLY_READY_TARGETS"], details={"targetIds": [r.get("targetId") for r in exact]})
