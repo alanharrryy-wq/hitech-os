@@ -2,13 +2,19 @@
 
 Status: `CANONICAL_PARALLEL_CHAT_PROMPTS`
 
+Current phase: `INTEGRATION_HANDOFF_AND_PLANNING`
+
 ## How the user should invoke a chat
 
-The user may give a new chat only the folder path and say:
+For a new chat, the user may give only the folder path and say:
 
 > Go to this folder, read the mandatory startup documents, and execute **Chat N** from `PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md`.
 
-The chat must read the interoperability contract and vocabulary registry before doing any lane work.
+For an existing Chat 1–6 that already completed its first lane phase, the user may now say only:
+
+> Continue with your work. The canonical prompt in `prisma-html/docs/ops/visual-promotion-parallel/PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md` was updated. Re-read it, locate your assigned Chat number, read your current status mailbox, and follow the current continuation instructions exactly.
+
+The chat must read the interoperability contract, vocabulary registry, current prompt and its own status mailbox before doing any lane work.
 
 ## Rules shared by all six chats
 
@@ -30,6 +36,164 @@ These rules are inherited by every chat below:
 - Read `status-channel/README.md` and `status-channel/STATUS_CHANNEL_CONTRACT.json`; publish status to the mailbox mapped to your assigned Chat number.
 - Status reporting is separate from lane work: update only your dedicated `STATUS.json` and `LOG.md` on the mapped `status/vp-chat-XX-...` branch. Never put lane source/candidate changes on the status branch.
 - Publish immediately when this instruction is received, whenever a blocker appears/clears, after a material finding/decision/milestone, and at completion. Include work branch/head, blockers, findings, validations and next action.
+
+
+## CURRENT CONTINUATION PHASE — NORMATIVE OVERRIDE
+
+This section reflects the current six-mailbox state after the initial parallel lane work.
+
+All six Chats currently report `READY_FOR_INTEGRATION`.
+
+**This section overrides any earlier build/analysis instruction below when that work is already complete.** The original Chat sections remain the provenance and scope definition for each lane; they are not permission to repeat completed census, bridge or Control Plane work.
+
+General continuation rules:
+
+- First read your own current `STATUS.json` and `LOG.md`.
+- Preserve the exact worker branch/head and evidence provenance recorded in the mailbox.
+- Do not redo completed work merely because `main` moved. Revalidate only relevant authority/source inputs and classify drift.
+- Coordination-only changes to this prompt/status system do not by themselves require lane recomputation.
+- Chats 1–5 are in **handoff/hold** mode. They may update their status mailbox and make only bounded corrections explicitly requested by the integration lane.
+- Chat 6 is in **deterministic integration-planning** mode. It may consume explicit worker refs and prepare a plan, but it is not yet authorized to perform canonical promotion, merge worker PRs, mint global IDs, mutate product/runtime, or update global authority.
+- `prisma-html/FILES_MANIFEST.json` must be refreshed **once** by the authorized integration/composer stage after accepted `prisma-html` bytes from all lanes are assembled. Worker lanes must not independently repair it.
+- Atlasfin remains the priority visual reference/cockpit. Materiality Catalog remains `STANDBY_USER_INVOKED_ONLY`.
+- Unknown stays unknown. Conflicts remain conflicts unless stronger canonical authority resolves them.
+- Continue publishing material status changes to the dedicated status branch/mailbox.
+
+### Chat 1 current continuation — Tablet HOLD
+
+Preserve exactly:
+
+- work branch: `chat1/tablet-visual-promotion-57b01ad8`
+- work head: `1b669d98dc9063fe4d6f5f8ddc06262a6968e728`
+- base head: `57b01ad8bda043ec25763203354b686341bace09`
+- accounting: `929 = 139 candidates + 788 unresolved + 2 conflicts`
+
+Current instructions:
+
+1. Do not recensus or recompute the 929 Tablet census records.
+2. Preserve both physical DRIFT targets as conflicts; do not normalize them.
+3. Preserve candidate-only semantics and the one existing resolved Identity binding reuse.
+4. Do not mint NDC/VIS/BND/TGT/LYR/recipe/adapter IDs.
+5. Stay `READY_FOR_INTEGRATION`.
+6. Make no further lane mutation unless Chat 6/integration requests one bounded correction after evidence-backed validation.
+7. Keep the status mailbox current if a blocker, relevant authority drift or integration correction request appears.
+
+### Chat 2 current continuation — PC HOLD
+
+Preserve exactly:
+
+- work branch: `agent/chat2-pc-promotion-20260904`
+- work head: `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`
+- base head: `57b01ad8bda043ec25763203354b686341bace09`
+- accounting: `827 = 186 candidates + 640 unresolved + 1 conflict`
+
+Current instructions:
+
+1. Do not regenerate the PC shard.
+2. Preserve the selector conflict for `TGT.CENSUS.PC.097AB2F857F353CA4288.V1`: `.supplier-readable-v07` versus `.supplier-readable-v07 *`.
+3. Do not repair the 139 projection `MISSING` records in this lane.
+4. If not already recorded against the current integration base, perform only bounded read-only source/authority hash revalidation. Do not use broad rediscovery.
+5. If relevant authority is unchanged, remain `READY_FOR_INTEGRATION` and do not mutate candidate files.
+6. Respond only to bounded integration correction requests.
+
+### Chat 3 current continuation — Mobile HOLD
+
+Preserve exactly:
+
+- work branch: `visual-promotion-chat3-mobile-20260904`
+- work head: `7f32ce6f1b602a14781fa2f4f3f323035f8029ec`
+- base head: `57b01ad8bda043ec25763203354b686341bace09`
+- accounting: `271 total = 133 CURRENT + 138 DRIFT`
+
+Current instructions:
+
+1. Do not regenerate or rebase the candidate shard merely to make ancestry look tidy.
+2. Preserve the isolated candidate commit and its `baseHead`/evidence provenance.
+3. Do not choose RIFAT-vs-product repair direction for the 138 drifted targets.
+4. Preserve all `REGISTER_TARGET_FIRST` outcomes until stronger authority exists.
+5. Preferred integration is to consume/apply the isolated worker commit onto the coordinator's current integration base after validation.
+6. Stay in HOLD unless integration requests a bounded correction.
+
+### Chat 4 current continuation — Shared UI HOLD
+
+Preserve exactly:
+
+- work branch: `visual-promotion-chat4-shared-ui-20260904`
+- work head: `57b502f1064571cebd917b36882ef9c11e9fa7d8`
+- draft PR: `#539`
+- base head: `57b01ad8bda043ec25763203354b686341bace09`
+- accounting: `70 = 40 candidates + 19 unresolved + 11 conflicts`
+
+Current instructions:
+
+1. Do not resolve the 19 no-region or 11 multi-region cases by inference.
+2. Preserve 70 NDC `UNRESOLVED` and Atlasfin `NO_MATCH` outcomes unless stronger authority resolves them.
+3. Do not edit Shared UI consumers or product surfaces.
+4. Do not update `prisma-html/FILES_MANIFEST.json`; the manifest parity issue is integration-owned.
+5. Do not merge PR #539 from Chat 4.
+6. Stay `READY_FOR_INTEGRATION` and only perform bounded integration corrections if requested.
+
+### Chat 5 current continuation — Atlasfin Bridge HOLD
+
+Preserve exactly:
+
+- work branch: `chat5-atlasfin-bridge-20260904`
+- work head: `c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0`
+- PR: `#540`
+- base head: `57b01ad8bda043ec25763203354b686341bace09`
+- owned implementation: `prisma-html/extras/atlasfin/bridge/**`
+
+Current instructions:
+
+1. Keep the bridge read-only.
+2. Reuse the existing 418-element Atlasfin catalog and structured registries; do not rebuild Atlasfin.
+3. Preserve authority-domain separation between Atlasfin, Identity/RIFAT and NDC.
+4. Do not update `prisma-html/FILES_MANIFEST.json`; its parity blocker is integration-owned.
+5. Do not merge PR #540 from Chat 5.
+6. Do not inspect or use Materiality Catalog.
+7. Stay `READY_FOR_INTEGRATION` and only perform bounded bridge corrections if requested by integration.
+
+### Chat 6 current continuation — deterministic integration planning
+
+Use these explicit handoff refs:
+
+| Chat | Lane | Work branch | Work head |
+|---|---|---|---|
+| 1 | Tablet | `chat1/tablet-visual-promotion-57b01ad8` | `1b669d98dc9063fe4d6f5f8ddc06262a6968e728` |
+| 2 | PC | `agent/chat2-pc-promotion-20260904` | `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078` |
+| 3 | Mobile | `visual-promotion-chat3-mobile-20260904` | `7f32ce6f1b602a14781fa2f4f3f323035f8029ec` |
+| 4 | Shared UI | `visual-promotion-chat4-shared-ui-20260904` | `57b502f1064571cebd917b36882ef9c11e9fa7d8` |
+| 5 | Atlasfin Bridge | `chat5-atlasfin-bridge-20260904` | `c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0` |
+| 6 | Control Plane | `chat6/visual-promotion-control-plane-20260904` | `7cc48fa49906c8f443b267fd6c3590fd3f4340fb` |
+
+Chat 6 current mission is **planning and validation only**:
+
+1. Read all six current `STATUS.json` mailboxes and resolve the current canonical `main` head.
+2. Revalidate every handoff's `baseHead`, recorded source hashes and relevant authority inputs against current `main`.
+3. Classify each delta as relevant drift, non-relevant/coordination-only drift, or conflict. Do not equate SHA movement with semantic drift.
+4. Validate all worker outputs with the Control Plane: schema, vocabulary, authority-qualified refs, disjoint ownership, zero-loss, collisions, duplicates and base/source hashes.
+5. Consume Atlasfin Bridge as priority reference/cockpit without converting Atlasfin into editable Identity/RIFAT authority.
+6. Preserve unresolved/conflict states unless stronger canonical authority proves a resolution.
+7. Prepare a deterministic `INTEGRATION PLAN` that states:
+   - exact worker commits/files proposed for acceptance;
+   - conflicts and duplicate/collision findings;
+   - semantic reconciliation candidates;
+   - expected one-time `FILES_MANIFEST.json` delta;
+   - global files that would require one deterministic refresh;
+   - eligible canonical promotions versus blocked items;
+   - exact assembly order;
+   - exact validation/gates required before any mutation or merge.
+8. Publish the plan summary and blockers to the Chat 6 status mailbox.
+
+Hard stop for Chat 6:
+
+- Do **not** promote worker candidates into global Identity/RIFAT authority yet.
+- Do **not** mint new canonical `BND.*`, `TGT.*`, `LYR.*`, `VIS.*`, NDC or adapter IDs yet.
+- Do **not** mutate product/runtime.
+- Do **not** merge PR #539 or PR #540 yet.
+- Do **not** perform the final global `FILES_MANIFEST.json` refresh yet.
+- Stop after the deterministic integration plan and wait for explicit owner authorization for canonical integration/mutation/merge.
+
 
 
 ---
