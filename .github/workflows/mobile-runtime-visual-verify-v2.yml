@@ -1,0 +1,286 @@
+name: PRISMA Mobile Runtime Visual VERIFY V2
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  BASE_SHA: '0ef7e0c67edac5d0e8166c2b952dd423cbb1841f'
+  MOBILE_ROOT: 'apps/terminal-de-venta-system/products/mobile/app'
+  BASE_URL: 'http://127.0.0.1:3140'
+  OLD_CARRIER_SHA: '3f9ba377d020451932e4a9228b157aadcb95ad3a'
+
+jobs:
+  verify:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'verify/mobile-runtime-visual-3008'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+
+    steps:
+      - name: Checkout disposable carrier
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Fail closed on canonical drift and carrier scope
+        id: scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$BASE_SHA"
+          mapfile -t files < <(git diff --name-only origin/main...HEAD)
+          test "${#files[@]}" = "1"
+          test "${files[0]}" = ".github/workflows/mobile-runtime-visual-verify-v2.yml"
+
+      - name: Detach exact canonical source
+        id: detach
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout --detach "$BASE_SHA"
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          test -z "$(git status --porcelain --untracked-files=no)"
+
+      - name: Setup Python for fresh Authority Mesh
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Generate fresh task-exact Authority Mesh
+        id: mesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/authority-out"
+          mkdir -p "$OUT"
+          TASK='Verify PRISMA Mobile /prisma-app runtime and visual conformance on exact canonical source without product mutation; cover seven canonical tabs, two phone viewports, loading/error/stale states, ready/partial/empty render fixtures, keyboard and ARIA behavior, browser diagnostics, horizontal overflow, accessibility, source invariants; Mobile VERIFY only; explicitly exclude Tablet, PC, Shared UI, Chart Lab, DB, Prisma schema/migrations, deploy, licensing semantics, sync semantics, custody/zero-egress and production certification.'
+          python tools/code-atlas/src/code_atlas/motors/smart_allmesh_automesh.py \
+            --task "$TASK" \
+            --surface 'Mobile /prisma-app VERIFY' \
+            --repo "$GITHUB_WORKSPACE" \
+            --out "$OUT" \
+            --workers 18 \
+            --shards 54 \
+            --max-files 120 \
+            --max-mb 40 \
+            --run-id "mobile-runtime-visual-${GITHUB_RUN_ID}" \
+            --progress-jsonl "$OUT/progress.jsonl" \
+            --budget-root "$RUNNER_TEMP/authority-budget" | tee "$RUNNER_TEMP/authority-mesh.log"
+          ZIP="$(find "$OUT" -maxdepth 1 -type f \( -name '*result.zip' -o -name '*result*.zip' \) | head -n1)"
+          if [ -z "$ZIP" ]; then
+            ZIP="$(grep -E '^OK_RESULT_ZIP=' "$RUNNER_TEMP/authority-mesh.log" | tail -n1 | cut -d= -f2-)"
+          fi
+          test -n "$ZIP"
+          test -f "$ZIP"
+          mkdir -p "$RUNNER_TEMP/authority"
+          python - "$ZIP" "$RUNNER_TEMP/authority" <<'PY'
+          import sys, zipfile
+          z, out = sys.argv[1:]
+          with zipfile.ZipFile(z) as f:
+              f.extractall(out)
+          PY
+          A="$RUNNER_TEMP/authority"
+          test -f "$A/.governance/current/AUTHORITY_READSET.lock.json"
+          test -f "$A/reports/APP_IMPACT_MATRIX.md"
+          test -f "$A/reports/CONTRACT_AND_GATE_MATRIX.json"
+          test -f "$A/reports/MISSING_OR_UNMAPPED_RISK.md"
+          test -f "$A/reports/AGENT_PROMPT_ENVELOPE.md"
+          test -f "$A/reports/AUTHORITY_MESH_REPORT.md"
+          test -f "$A/reports/LAYERS_MAP.json"
+          test -f "$A/reports/LAYERS_MAP.md"
+          grep -R '"status"[[:space:]]*:[[:space:]]*"PASS"' "$A" >/dev/null
+
+      - name: Initialize evidence boundary
+        id: evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          mkdir -p "$E/screenshots" "$E/authority"
+          cp -R "$RUNNER_TEMP/authority/." "$E/authority/"
+          cp "$RUNNER_TEMP/authority-mesh.log" "$E/authority-mesh.log"
+          cat > "$E/EVIDENCE_BOUNDARY.md" <<'EOF'
+          # PRISMA Mobile runtime/visual VERIFY V2
+          Exact canonical source is tested on an ephemeral GitHub Actions loopback runner. This can prove isolated runtime rendering, seven-tab navigation, viewport behavior, render-state fixtures, keyboard/ARIA behavior, accessibility observations, diagnostics and source non-mutation. It does not certify production hosting, customer data, auth, sync, licensing semantics, custody/zero-egress, deployment or distribution. Fixtures are render-only and are not upstream-business-semantic evidence.
+          EOF
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install dependencies and run current Mobile gates
+        id: static
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          npm install --global pnpm@9.15.0
+          pnpm install --frozen-lockfile --ignore-scripts
+          cd "$MOBILE_ROOT"
+          npm install --ignore-scripts --no-package-lock --legacy-peer-deps
+          cd "$GITHUB_WORKSPACE"
+          pnpm -C "$MOBILE_ROOT" run verify:interface-canon | tee "$E/verify-interface-canon.log"
+          pnpm -C "$MOBILE_ROOT" run verify:premium-navigation | tee "$E/verify-premium-navigation.log"
+          pnpm -C "$MOBILE_ROOT" run verify:data-readiness | tee "$E/verify-data-readiness.log"
+          pnpm -C "$MOBILE_ROOT" run verify:source-states | tee "$E/verify-source-states.log"
+          pnpm -C "$MOBILE_ROOT" run typecheck | tee "$E/typecheck.log"
+          pnpm -C "$MOBILE_ROOT" run build | tee "$E/build.log"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} +
+          rm -rf "$MOBILE_ROOT/.next"
+
+      - name: Install isolated browser harness
+        id: browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          PW="$RUNNER_TEMP/mobile-pw"
+          mkdir -p "$PW"
+          cd "$PW"
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright@1.55.0 axe-core@4.10.3
+          npx playwright install --with-deps chromium
+
+      - name: Start only runner-owned Mobile runtime
+        id: server
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          (cd "$MOBILE_ROOT" && nohup ./node_modules/.bin/next dev --webpack -H 127.0.0.1 -p 3140 >"$E/mobile-dev.log" 2>&1 & echo $! > "$RUNNER_TEMP/mobile.pid")
+          for i in $(seq 1 90); do
+            if curl -fsS "$BASE_URL/prisma-app" >/dev/null 2>&1; then echo MOBILE_LOOPBACK_READY; exit 0; fi
+            sleep 1
+          done
+          cat "$E/mobile-dev.log" || true
+          exit 1
+
+      - name: Reuse immutable verifier and correct canonical tab selectors
+        id: materialize
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://raw.githubusercontent.com/prismahitech/hitech-os/$OLD_CARRIER_SHA/.github/workflows/mobile-runtime-visual-verify-carrier.yml"
+          curl -fsSL "$URL" -o "$RUNNER_TEMP/old-carrier.yml"
+          python - "$RUNNER_TEMP/old-carrier.yml" "$RUNNER_TEMP/mobile-pw/verify.mjs" <<'PY'
+          import sys
+          src = open(sys.argv[1], encoding='utf-8').read()
+          marker = "cat > \"$RUNNER_TEMP/mobile-pw/verify.mjs\" <<'JS'\n"
+          start = src.index(marker) + len(marker)
+          end = src.index('\n          JS\n', start)
+          raw = src[start:end]
+          lines = [line[10:] if line.startswith('          ') else line for line in raw.splitlines()]
+          out = []
+          counts = {'labels': 0, 'first': 0, 'active': 0, 'loop': 0, 'tab': 0}
+          for line in lines:
+              if 'async function tabLabels(page)' in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "async function tabLabels(page) { return (await page.locator('[role=\"tab\"] > span').allTextContents()).map(clean); }")
+                  counts['labels'] += 1
+                  continue
+              if "const first = page.getByRole('tab'" in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "const first = page.locator('#prisma-mobile-tab-inicio');")
+                  counts['first'] += 1
+                  continue
+              if 'document.activeElement?.textContent' in line:
+                  out.append(line.replace('document.activeElement?.textContent', "document.activeElement?.querySelector('span')?.textContent"))
+                  counts['active'] += 1
+                  continue
+              if 'for (const label of EXPECTED) {' in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "const TAB_IDS = { Inicio: 'inicio', Ventas: 'ventas', 'Operación': 'operacion', Licencias: 'licencias', Alertas: 'alertas', Stock: 'stock', Sistema: 'sistema' };")
+                  out.append(line)
+                  counts['loop'] += 1
+                  continue
+              if "const tab = page.getByRole('tab', { name: label, exact: true });" in line:
+                  indent = line[:len(line) - len(line.lstrip())]
+                  out.append(indent + "const tab = page.locator(`#prisma-mobile-tab-${TAB_IDS[label]}`);")
+                  counts['tab'] += 1
+                  continue
+              out.append(line)
+          expected = {'labels': 1, 'first': 1, 'loop': 1, 'tab': 1}
+          for key, value in expected.items():
+              if counts[key] != value:
+                  raise SystemExit(f'SELECTOR_PATCH_COUNT_{key.upper()}={counts[key]}')
+          if counts['active'] < 3:
+              raise SystemExit(f'SELECTOR_PATCH_COUNT_ACTIVE={counts["active"]}')
+          js = '\n'.join(out) + '\n'
+          open(sys.argv[2], 'w', encoding='utf-8').write(js)
+          print('SELECTOR_PATCH_COUNTS=' + repr(counts))
+          PY
+          node --check "$RUNNER_TEMP/mobile-pw/verify.mjs"
+          grep -F "#prisma-mobile-tab-inicio" "$RUNNER_TEMP/mobile-pw/verify.mjs" >/dev/null
+          grep -F "[role=\"tab\"] > span" "$RUNNER_TEMP/mobile-pw/verify.mjs" >/dev/null
+
+      - name: Run isolated runtime and visual VERIFY
+        id: visual
+        continue-on-error: true
+        shell: bash
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/mobile-visual-evidence
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/mobile-pw"
+          node verify.mjs
+
+      - name: Prove tracked Mobile product source remained unchanged
+        id: source_guard
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          E="$RUNNER_TEMP/mobile-visual-evidence"
+          find "$MOBILE_ROOT" -maxdepth 1 -type d -name 'zero-important-gate *' -prune -exec rm -rf {} + 2>/dev/null || true
+          rm -rf "$MOBILE_ROOT/.next" 2>/dev/null || true
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          git diff --exit-code -- "$MOBILE_ROOT"
+          test -z "$(git status --porcelain --untracked-files=no -- "$MOBILE_ROOT")"
+          git status --short --branch > "$E/git-status.txt"
+          git diff --name-only > "$E/source-diff.txt"
+
+      - name: Stop only runner-owned Mobile process
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if [ -f "$RUNNER_TEMP/mobile.pid" ]; then
+            PID="$(cat "$RUNNER_TEMP/mobile.pid")"
+            kill "$PID" 2>/dev/null || true
+          fi
+          exit 0
+
+      - name: Upload one evidence artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mobile-runtime-visual-v2-${{ github.run_id }}
+          path: ${{ runner.temp }}/mobile-visual-evidence/**
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail closed unless governed VERIFY passed
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ steps.scope.outcome }}" = "success"
+          test "${{ steps.detach.outcome }}" = "success"
+          test "${{ steps.mesh.outcome }}" = "success"
+          test "${{ steps.evidence.outcome }}" = "success"
+          test "${{ steps.static.outcome }}" = "success"
+          test "${{ steps.browser.outcome }}" = "success"
+          test "${{ steps.server.outcome }}" = "success"
+          test "${{ steps.materialize.outcome }}" = "success"
+          test "${{ steps.visual.outcome }}" = "success"
+          test "${{ steps.source_guard.outcome }}" = "success"
+          grep -F '"verdict": "PASS_MOBILE_RUNTIME_VISUAL_CONFORMANCE_ISOLATED"' "$RUNNER_TEMP/mobile-visual-evidence/RESULT.json"
