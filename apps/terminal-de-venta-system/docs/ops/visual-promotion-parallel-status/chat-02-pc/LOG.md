@@ -101,3 +101,14 @@ No updates published yet.
 - Revalidation classification: `NON_RELEVANT_COORDINATION_ONLY`.
 - Candidate mutation required: false.
 - Future action is HOLD unless deterministic integration requests one bounded correction backed by stronger authority/evidence.
+
+## 2026-09-04T20:20:36-06:00 — FINDING
+
+- Factory Ledger capability `visual.generic_application_engine_v1` remains `DONE / SOURCE_READY / doNotRebuild=true`.
+- Its current next gate preserves the universal Visual Work Entry model: census `DISCOVERY_ONLY` must `REGISTER_TARGET_FIRST` or remain blocked; physical census alone is not application authority.
+
+## 2026-09-04T20:20:36-06:00 — DECISION
+
+- Chat 2 continuation is classified as bounded `VERIFY/REUSE` only.
+- No GVAE rebuild, BUILD/REBUILD, mutation gate, candidate regeneration or product/global-authority mutation is warranted.
+- PC lane remains `READY_FOR_INTEGRATION` in HOLD.
