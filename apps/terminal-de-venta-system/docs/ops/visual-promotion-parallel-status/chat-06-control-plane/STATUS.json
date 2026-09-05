@@ -4,20 +4,94 @@
   "lane": "VISUAL_PROMOTION_CONTROL_PLANE",
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
-  "state": "NOT_STARTED",
-  "updatedAt": null,
-  "baseHead": null,
-  "workBranch": null,
-  "workHead": null,
-  "summary": "No status report has been published yet.",
-  "blockers": [],
-  "findings": [],
-  "decisions": [],
-  "changedPaths": [],
-  "validations": [],
-  "unresolved": [],
+  "state": "BLOCKED",
+  "updatedAt": "2026-09-05T01:50:08Z",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "workBranch": "chat6/visual-promotion-control-plane-20260904",
+  "workHead": "0a78a72f420def2cd9c843e2de08d9ae6b124f48",
+  "summary": "Chat 6 Control Plane is implemented on its dedicated work branch. Deterministic candidate/control-plane contracts and tooling exist, bounded Work Entry anti-rediscovery hardening is in place, and no surface candidate shard or product visual was authored. Completion is currently blocked by the PR workflow bot repeatedly materializing prisma-html/FILES_MANIFEST.json on the work branch, a global integration output outside Chat 6 write ownership.",
+  "blockers": [
+    {
+      "id": "AUTO_GLOBAL_MANIFEST_WRITE",
+      "status": "ACTIVE",
+      "path": "prisma-html/FILES_MANIFEST.json",
+      "detail": "PRISMA GVAE All-Surface Authority auto-commits a fresh global FILES_MANIFEST.json to the Chat 6 work branch while PR #541 is open. Chat 6 is not authorized to retain that global integration output in its lane diff."
+    }
+  ],
+  "findings": [
+    "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true, so Chat 6 advanced it without rebuilding GVAE.",
+    "The existing Visual Control census and Target Index are current physical truth for the promotion cohort; DISCOVERY_ONLY is not UNDISCOVERED.",
+    "Atlasfin structured registries are sufficient as the priority visual reference for Control Plane validation. Materiality Catalog was not inspected and remains STANDBY_USER_INVOKED_ONLY.",
+    "The all-surface authority workflow can mutate FILES_MANIFEST.json on the lane branch even when the lane itself never writes that path."
+  ],
+  "decisions": [
+    "Preserve exactly the four Work Entry decisions: GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST, BLOCKED.",
+    "Use REUSE_EXISTING_CENSUS_SEMANTIC_PROMOTION_REQUIRED for current census promotion and BROAD_REDISCOVERY_FORBIDDEN_CURRENT_CENSUS for forbidden recensus attempts.",
+    "Keep the canonical composer proposal-only: no canonical ID assignment and no direct registry/product mutation.",
+    "Treat the workflow-authored FILES_MANIFEST.json change as out-of-scope contamination to remove before handoff, not as lane output."
+  ],
+  "changedPaths": [
+    "prisma-html/tools/visual_promotion/**",
+    "prisma-html/governance/visual-promotion/contracts/**",
+    "prisma-html/tools/visual_application/visual_work_entry_gate.py",
+    "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py",
+    "prisma-html/FILES_MANIFEST.json [workflow-bot write; out-of-scope blocker, must not remain in final lane diff]"
+  ],
+  "validations": [
+    {
+      "name": "Task-exact Authority Mesh",
+      "result": "PASS_COMPOSED_AUTHORITY_MESH",
+      "evidence": "workflow run 33935634655",
+      "details": "requiredAuthorityCoveragePct=100; blockers=0; layerMapPresent=true; base head 57b01ad8bda043ec25763203354b686341bace09"
+    },
+    {
+      "name": "GVAE V1 deterministic source/static suite",
+      "result": "PASS",
+      "evidence": "PRISMA VISCORE1 Certification run 33936530294",
+      "details": "134-test historical suite passed after avoiding test-count drift."
+    },
+    {
+      "name": "Universal Visual Work Entry Gate",
+      "result": "PASS",
+      "evidence": "PRISMA VISCORE1 Certification run 33936530294"
+    },
+    {
+      "name": "Target Index / Visual Core / RIFAT / Identity / Atlasfin source-static gates",
+      "result": "PASS",
+      "evidence": "PRISMA VISCORE1 Certification run 33936530294",
+      "details": "All reached PASS before the final committed-manifest comparison."
+    },
+    {
+      "name": "Committed FILES_MANIFEST comparison",
+      "result": "FAIL",
+      "evidence": "PRISMA VISCORE1 Certification run 33936530294",
+      "details": "Failure is the known global manifest mismatch caused by lane-owned additions while the global manifest is integration-owned; the separate all-surface authority workflow then auto-committed that global file, creating the current blocker."
+    },
+    {
+      "name": "PRISMA GVAE All-Surface Authority",
+      "result": "PASS_WITH_BRANCH_MUTATION",
+      "evidence": "runs 33936530292 and subsequent bot commit 0a78a72f420def2cd9c843e2de08d9ae6b124f48",
+      "details": "Authority workflow passed but wrote prisma-html/FILES_MANIFEST.json, which is outside Chat 6 write ownership."
+    }
+  ],
+  "unresolved": [
+    "Stop the open-PR workflow from re-materializing FILES_MANIFEST.json on every lane update.",
+    "Restore FILES_MANIFEST.json to the base-head bytes after the workflow can no longer re-add it.",
+    "Re-check final diff so only Chat 6-owned paths plus the two explicitly permitted Work Entry files remain.",
+    "Run final narrow source/static validation on the clean lane head and publish exact handoff commit."
+  ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Await first report from assigned chat.",
-  "handoff": null
+  "nextAction": "Close PR #541 to stop pull-request automation on the lane branch, restore FILES_MANIFEST.json to base bytes, validate the resulting exact Chat 6 diff, then publish a fresh status update.",
+  "handoff": {
+    "ready": false,
+    "pullRequest": 541,
+    "taskBranch": "chat6/visual-promotion-control-plane-20260904",
+    "currentHead": "0a78a72f420def2cd9c843e2de08d9ae6b124f48",
+    "integrationRule": "Do not integrate until the workflow-authored global FILES_MANIFEST.json is absent from the lane diff.",
+    "candidateShardsWritten": false,
+    "productVisualMutation": false,
+    "globalCanonicalPromotion": false,
+    "materialityFallbackUsed": false
+  }
 }
