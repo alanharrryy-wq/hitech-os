@@ -61,6 +61,18 @@ Atlasfin (`prisma-html/extras/atlasfin`) is the priority visual reference/cockpi
 
 The Surface Visual Governor Materiality Catalog is `STANDBY_USER_INVOKED_ONLY`. Do not inspect, consume, promote or use it as an Atlasfin fallback unless the repository owner explicitly invokes it for a named task.
 
+### Parallel visual-promotion status channel
+
+When working as Chat 1–6 in the visual-promotion cohort, also read:
+
+- `prisma-html/docs/ops/visual-promotion-parallel/status-channel/README.md`
+- `prisma-html/docs/ops/visual-promotion-parallel/status-channel/STATUS_CHANNEL_CONTRACT.json`
+
+Each chat has one dedicated status mailbox and one deterministic status branch. Status reporting is a coordination-only exception to lane write ownership: update only your own `STATUS.json` and `LOG.md` on your mapped `status/vp-chat-XX-...` branch. Never edit another chat's mailbox, global authority or product source through the status branch.
+
+Publish status at start, on blockers, after material findings/decisions/milestones, and at completion. Status is coordination evidence only, never authority or mutation permission.
+
+
 
 ## 200 Operating Directives
 

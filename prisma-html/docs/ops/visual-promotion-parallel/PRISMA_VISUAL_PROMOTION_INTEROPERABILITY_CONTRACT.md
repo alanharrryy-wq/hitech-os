@@ -596,6 +596,17 @@ and, when task authority specifically permits it, bounded Work Entry Gate code/t
 
 It may not populate surface candidate shards.
 
+### Status-channel exception to write ownership
+
+Coordination status is the only cross-cutting write exception for all six lanes.
+
+A worker may additionally update only its own mailbox under `apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/<chat-mailbox>/`, and only on the dedicated status branch defined by `status-channel/STATUS_CHANNEL_CONTRACT.json`.
+
+Allowed status files: `STATUS.json` and `LOG.md` only.
+
+The status branch must contain no product/runtime mutation, candidate shard, canonical authority change, `FILES_MANIFEST.json` change or another chat's mailbox change. Status is coordination/evidence only and never promotes a candidate, resolves a binding, authorizes GVAE or certifies runtime.
+
+
 ## 18. Files forbidden to parallel workers
 
 During independent worker execution, none of the six lanes may hand-edit or regenerate:
