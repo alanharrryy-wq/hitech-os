@@ -5,7 +5,7 @@
   "statusBranch": "status/vp-chat-04-shared-ui",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:53:17-06:00",
+  "updatedAt": "2026-09-04T19:53:55-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "visual-promotion-chat4-shared-ui-20260904",
   "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
@@ -32,7 +32,8 @@
     "Consumer references in Tablet, PC and Mobile were recorded as evidence only; no consumer files were edited.",
     "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the immutable lane base remains 57b01ad8bda043ec25763203354b686341bace09.",
     "Base-to-current-main compare is 3 commits ahead and changes only coordination/status artifacts, AGENTS.md, the visual-promotion shared docs/vocabulary with status-channel additions, and prisma-html/FILES_MANIFEST.json maintenance. It does not touch prisma-html/governance/visual-promotion/candidates/shared-ui/**, Shared UI Target Index/expanded evidence, Shared UI Identity adapter/bindings, NDC source registries used, Atlasfin registries used, or the Shared UI projection manifest.",
-    "The new shared-contract changes add status-channel reporting as a coordination-only write exception; they do not grant new lane mutation authority or alter Chat 4 candidate ownership."
+    "The new shared-contract changes add status-channel reporting as a coordination-only write exception; they do not grant new lane mutation authority or alter Chat 4 candidate ownership.",
+    "Status branch is exactly 4 commits ahead of current main and its diff contains only this Chat 4 mailbox's STATUS.json and LOG.md."
   ],
   "decisions": [
     "Reused the current Visual Control/Target Index census and did not perform broad rediscovery.",
@@ -93,6 +94,11 @@
       "name": "PRISMA VISCORE1 Certification",
       "result": "FAIL_EXTERNAL_SCOPE_CONFLICT",
       "detail": "All substantive source/static/GVAE/Work Entry/Target Index/Visual Core/Mesh/Identity/RIFAT/Atlasfin/no-fake-READY steps passed; only the committed global FILES_MANIFEST match step failed."
+    },
+    {
+      "name": "status-branch-scope",
+      "result": "PASS",
+      "detail": "Compared status/vp-chat-04-shared-ui against current main: exactly two modified paths, both inside Chat 4's own mailbox (STATUS.json and LOG.md); no product, candidate shard, global manifest, authority, or other-chat mailbox changes."
     }
   ],
   "unresolved": [
