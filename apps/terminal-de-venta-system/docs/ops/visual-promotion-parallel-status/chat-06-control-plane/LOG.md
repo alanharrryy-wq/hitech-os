@@ -133,3 +133,11 @@ Created `chat6/candidate-corpus-cert-20260904` from current canonical `main` `8c
 ## 2026-09-05T05:44:00Z — DECISION
 
 Proceed only with the Chat 6-authorized Control Plane/global corpus scope. Preserve exact source heads and raw worker bytes, implement fail-closed exact-head/hash-pinned normalization, keep semantic reconciliation review separate from collision fingerprints, and retain the hard stop against canonical authority/product/runtime mutation.
+
+## 2026-09-05T05:49:30Z — BLOCKER
+
+Fresh AutoMesh run `33948117475` failed closed at universal preflight. Root cause is request construction, not repository drift: the request incorrectly required Chat 6 source-head-only files/directories as if they already existed on current `main`. Coverage stopped at 75%/66.6667% and no Mesh/composition ran.
+
+## 2026-09-05T05:49:30Z — DECISION
+
+Do not weaken coverage or bypass the gate. Resubmit a corrected task-exact request using only current-main authority paths and treat source head `7cc48fa49906c8f443b267fd6c3590fd3f4340fb` as immutable provenance to be imported after authority passes.

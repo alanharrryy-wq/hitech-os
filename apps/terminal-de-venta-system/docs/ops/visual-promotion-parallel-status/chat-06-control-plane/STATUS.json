@@ -5,12 +5,18 @@
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
   "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T05:44:00Z",
+  "updatedAt": "2026-09-05T05:49:30Z",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat6/candidate-corpus-cert-20260904",
   "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "summary": "Chat 6 resumed under canonical phase CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. New work branch chat6/candidate-corpus-cert-20260904 was created from current main 8cc1918c5e015d1408335c15313e7364e04859c2. The prior integration-plan HOLD is superseded by explicit owner authorization to build the global candidate corpus certification, assemble accepted certification lanes, refresh FILES_MANIFEST exactly once, open one candidate-corpus-only integration PR, and merge only if every required check is green.",
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "AUTOMESH_PREFLIGHT_SOURCE_HEAD_NOT_ON_MAIN",
+      "status": "SELF_RESOLVING",
+      "detail": "Fresh AutoMesh run 33948117475 failed closed because the request incorrectly listed Chat 6 source-head-only files/directories as required current-main authorities. Those files are intentionally absent from main before corpus assembly. Correction: require only authority that exists on current main and pin source head 7cc48fa... in task provenance rather than pretending it is current-main authority."
+    }
+  ],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
     "Current Visual Control census and Target Index are reusable physical truth. DISCOVERY_ONLY is not UNDISCOVERED and broad recensus is not a legal shortcut.",
@@ -157,6 +163,12 @@
       "name": "Exact current Control Plane collision check",
       "result": "PASS_ZERO_COLLISIONS_WITH_KNOWN_LIMITATION",
       "details": "0 duplicate target IDs, 0 bindingCandidateKey collisions, 0 cross-surface fingerprint collisions; current fingerprint cannot semantically group different targets because it includes surfaceKey and targetId."
+    },
+    {
+      "name": "Fresh corpus-certification AutoMesh attempt 1",
+      "result": "BLOCKED_EXPECTED_FAIL_CLOSED",
+      "evidence": "workflow run 33948117475",
+      "details": "Preflight coverage 75%/66.6667%; missing authorities were only Chat 6 source-head paths absent from current main. Mesh did not run, compose or grant mutation authority."
     }
   ],
   "unresolved": [
@@ -167,7 +179,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Run anti-rework/task-authority gates for the exact Chat 6 corpus-certification tooling scope, then bring forward source-head bytes and implement the normalizer/global corpus machinery.",
+  "nextAction": "Submit corrected fresh task-exact AutoMesh against current-main authorities only, with prior Chat 6 source head pinned as provenance, then proceed only on PASS_COMPOSED_AUTHORITY_MESH.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/candidate-corpus-cert-20260904",
