@@ -165,3 +165,11 @@ Exact worker-head sample fixtures now cover Tablet, PC, Mobile and Shared UI nor
 ## 2026-09-05T05:59:00Z — PROGRESS
 
 Per canonical phase protocol, Chat 6 may now re-read Chats 1-5 status mailboxes and consume only explicit certification handoffs.
+
+## 2026-09-05T05:56:00Z — PROGRESS
+
+Exact Chat 6 Control Plane bytes from source head `7cc48fa49906c8f443b267fd6c3590fd3f4340fb` were brought forward onto corpus-certification work head `131c38980343d5892e1341e5fd919fc8c81a3095` by head-tree extraction, not history replay.
+
+## 2026-09-05T05:56:00Z — BLOCKER
+
+Canonical `main` advanced from `8cc1918c5e015d1408335c15313e7364e04859c2` to `1cc4d0d45b3878ace2906d08fa67f325a3b98a9d`. Per AutoMesh v2, further governed mutation is paused pending revalidation of artifact `9964001762` / digest `sha256:94e24c6e34d49038c401c1622e647cd48edb147a228b2ab685bb112196846d0a`.

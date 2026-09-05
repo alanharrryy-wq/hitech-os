@@ -5,12 +5,18 @@
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
   "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T05:59:00Z",
+  "updatedAt": "2026-09-05T05:56:00Z",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat6/candidate-corpus-cert-20260904",
-  "workHead": "2285101755a0859681cfe23d45db9b96b2beea53",
+  "workHead": "131c38980343d5892e1341e5fd919fc8c81a3095",
   "summary": "Chat 6 corpus-certification control plane is source-ready for cohort intake. Fresh task-exact AutoMesh passed. Exact prior Chat 6 source bytes were brought forward by head-tree extraction, a machine registry pins all four raw worker heads and 20 source files by Git blob/SHA-256, and fail-closed normalization/corpus-certification tooling plus exact worker-head fixtures are implemented. No raw worker bytes, certification lane bytes, global corpus artifacts, FILES_MANIFEST refresh, PR, canonical promotion, product/runtime mutation, Materiality read, or broad rediscovery has occurred yet.",
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "MAIN_MOVED_REVALIDATION_REQUIRED",
+      "status": "ACTIVE_SELF_RESOLVING",
+      "detail": "Canonical main advanced from phase-start/Mesh head 8cc1918c5e015d1408335c15313e7364e04859c2 to 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d after the fresh PASS_COMPOSED_AUTHORITY_MESH. AutoMesh v2 revalidation is required before further governed mutation/merge."
+    }
+  ],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
     "Current Visual Control census and Target Index are reusable physical truth. DISCOVERY_ONLY is not UNDISCOVERED and broad recensus is not a legal shortcut.",
@@ -38,7 +44,9 @@
     "Exact Chat 6 source head 7cc48fa49906c8f443b267fd6c3590fd3f4340fb was brought forward by blob/tree identity rather than commit replay.",
     "legacy-worker-intake.registry.json now pins Tablet 929, PC 827, Mobile 271 and Shared UI 70 raw-worker inputs with exact source heads plus Git blob SHA and SHA-256 for MANIFEST/CANDIDATES/UNRESOLVED/CONFLICTS/SUMMARY files.",
     "Corpus normalizer preserves a semantic signature across representation changes, flattens only the registered Mobile projection envelope, strips authority qualification only from raw NDC/Atlasfin ID fields, qualifies known authority evidence paths, lifts non-authority product/git provenance into certification metadata, and fails closed on unknown head/hash/shape.",
-    "A separate semantic review key layer was added without changing candidate_fingerprint collision behavior. Recipe equality is explicitly review-only and cannot auto-coalesce canonical meaning."
+    "A separate semantic review key layer was added without changing candidate_fingerprint collision behavior. Recipe equality is explicitly review-only and cannot auto-coalesce canonical meaning.",
+    "Exact Chat 6 owned-path bytes from source head 7cc48fa49906c8f443b267fd6c3590fd3f4340fb were brought forward by head-tree extraction onto work head 131c38980343d5892e1341e5fd919fc8c81a3095.",
+    "Canonical main subsequently advanced to 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d, requiring AutoMesh v2 revalidation before more governed changes."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -67,10 +75,9 @@
   "changedPaths": [
     "prisma-html/governance/visual-promotion/contracts/**",
     "prisma-html/tools/visual_promotion/**",
-    "prisma-html/tools/visual_application/visual_work_entry_gate.py (exact prior Chat 6 byte carry-forward only)",
-    "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py (exact prior Chat 6 byte carry-forward only)",
-    "Status-only: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/STATUS.json",
-    "Status-only: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/LOG.md"
+    "prisma-html/tools/visual_application/visual_work_entry_gate.py",
+    "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py",
+    "Status-only mailbox updates on status/vp-chat-06-control-plane"
   ],
   "validations": [
     {
@@ -204,7 +211,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Read current Chat 1-5 certification mailboxes and validate their explicit certification branch/head handoffs against the canonical phase requirements.",
+  "nextAction": "Revalidate AutoMesh artifact 9964001762 / digest sha256:94e24c6e34d49038c401c1622e647cd48edb147a228b2ab685bb112196846d0a against current main 1cc4d0d45b3878ace2906d08fa67f325a3b98a9d; continue only on an allowed revalidation decision.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/candidate-corpus-cert-20260904",
