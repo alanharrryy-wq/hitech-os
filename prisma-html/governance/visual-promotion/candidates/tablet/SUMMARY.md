@@ -17,8 +17,8 @@ Atlasfin is used first as the priority visual reference. The Materiality Catalog
 | Tablet Target Index total records | 933 |
 | Chat 1 census inputs (`VISUAL_CONTROL_CENSUS_TARGET`) | 929 |
 | Existing non-census exact targets excluded from worker input | 4 |
-| `CANDIDATES.jsonl` | 141 |
-| `UNRESOLVED.jsonl` | 786 |
+| `CANDIDATES.jsonl` | 139 |
+| `UNRESOLVED.jsonl` | 788 |
 | `CONFLICTS.jsonl` | 2 |
 | Total Chat 1 outcomes | 929 |
 | Duplicate target IDs | 0 |
@@ -37,25 +37,25 @@ Accounting result: **PASS_ZERO_LOSS**.
 - owner resolved: 755
 - projectionStatus: `{"CURRENT":929}`
 
-A null route/slot/component is intentional when current machine evidence has multiple consumers/property-level slots or no unique coordinate. No ambiguity was converted into a guess.
+Null route/slot/component values are intentional when current machine evidence has multiple consumers/property-level slots or no unique coordinate. No ambiguity was converted into a guess. Physical DRIFT is recorded as a conflict and is not silently rediscovered.
 
 ## Atlasfin-first result
 
-Atlasfin match accounting: `{"NO_MATCH":786,"MATCHED_RECIPE":143}`.
+Atlasfin match accounting: `{"NO_MATCH":789,"MATCHED_RECIPE":138,"NOT_APPLICABLE":2}`.
 
-Recipe-level candidates are emitted only when the machine Visual Control `layerType` directly corresponds to a unique generic Atlasfin recipe kind among the reviewed Atlasfin family/recipe registries: card, table, panel, or overlay. Family/preset variants are deliberately left unset because multiple Atlasfin variants exist. No name-only match is upgraded to evidence.
+Recipe-level candidates are emitted only when the **Target Index machine census `layerType`** directly corresponds to a unique generic Atlasfin recipe kind among the reviewed Atlasfin family/recipe registries: card, table, panel, or overlay. Expanded low-level property classifications and class-name similarity are not used to upgrade a match. Family/preset variants remain unset because multiple Atlasfin variants exist.
 
 ## NDC / Identity / binding result
 
 - NDC resolution: `{"UNRESOLVED":929}`
-- visual meaning: `{"UNRESOLVED":787,"CANDIDATE_REVIEW_REQUIRED":141,"RESOLVED_EXISTING":1}`
-- binding: `{"BLOCKED":787,"CANDIDATE":141,"EXISTING_RESOLVED":1}`
-- promotion: `{"REGISTER_TARGET_FIRST":786,"ELIGIBLE_CANDIDATE":141,"BLOCKED":2}`
+- visual meaning: `{"UNRESOLVED":790,"CANDIDATE_REVIEW_REQUIRED":138,"RESOLVED_EXISTING":1}`
+- binding: `{"BLOCKED":790,"CANDIDATE":138,"EXISTING_RESOLVED":1}`
+- promotion: `{"REGISTER_TARGET_FIRST":788,"ELIGIBLE_CANDIDATE":139,"BLOCKED":2}`
 - Work Entry: `{"REGISTER_TARGET_FIRST":927,"BLOCKED":2}`
 
 NDC stays unresolved unless a direct existing NDC authority relationship is proven. The worker mints no NDC, visual meaning, binding, target, application-layer, recipe, family, preset, or adapter IDs.
 
-One existing resolved Identity binding may be reused only where the census coordinate exactly equals the binding's selector plus `implementationLayerId`. That relationship is emitted as existing authority and is explicitly marked for canonical dedupe against the already-existing exact target, not as a new binding.
+An existing resolved Identity binding is reused only where the census coordinate exactly equals the binding's selector plus `implementationLayerId`. That relationship is emitted as existing authority and marked for canonical dedupe against the already-existing exact target, not as a new binding.
 
 ## Guardrails held
 
