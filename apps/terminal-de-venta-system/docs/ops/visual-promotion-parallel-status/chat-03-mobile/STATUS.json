@@ -5,20 +5,22 @@
   "statusBranch": "status/vp-chat-03-mobile",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-03-mobile",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:52:46-06:00",
+  "updatedAt": "2026-09-04T20:14:00-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "visual-promotion-chat3-mobile-20260904",
   "workHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
-  "summary": "Chat 3 Mobile promotion candidate shard is complete, current-main drift was reviewed as non-relevant to its evidence, and the dedicated status branch is isolated correctly. Lane is ready for coordinator integration.",
+  "summary": "Chat 3 Mobile is in canonical HOLD under phase INTEGRATION_HANDOFF_AND_PLANNING. The completed candidate shard is preserved exactly at work head 7f32ce6f1b602a14781fa2f4f3f323035f8029ec; no regeneration, rebase, repair-direction choice or further lane mutation is authorized without a bounded integration correction request.",
   "blockers": [],
   "findings": [
     "Mobile census accounting is exact: 271 input targets, 271 unique outcomes, zero missing, zero extra, zero duplicates.",
     "Projection classification: 133 CURRENT and 138 DRIFT targets; all DRIFT targets are in prisma-mobile-dashboard.module.css.",
     "Governed cleanup commit 731574f97dba0ec46420369b777071500ce2f833 directly changed the .crystalCommand rule by removing retired .multiContextRoot residue; this supports a legitimate newer product/runtime candidate and a stale canonical-authority candidate for that residue.",
     "Atlasfin Mobile-compatible recipes exist, but Mobile target bindings remain missing/blocked, so no recipe was promoted by similarity.",
-    "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the work branch remains based on 57b01ad8bda043ec25763203354b686341bace09.",
     "Explicit base-to-current-main review found 3 commits affecting status-channel/governance coordination files only. No Mobile Target Index, expanded Mobile authority, RIFAT Mobile source, Mobile product projection, visual-source-manifest, Identity registry, NDC registry or Atlasfin registry path used by Chat 3 changed.",
-    "The current interoperability contract/vocabulary additions are status-channel coordination rules; the candidate field/enumeration contract used by Chat 3 remains compatible."
+    "The current interoperability contract/vocabulary additions are status-channel coordination rules; the candidate field/enumeration contract used by Chat 3 remains compatible.",
+    "Canonical prompt now declares phase INTEGRATION_HANDOFF_AND_PLANNING and places Chat 3 in Mobile HOLD.",
+    "Current main is 66fa02147f0cf31529c090a47f376026b406875a; since the prior observed main d08013db42c34ccafb80075392ec6d7a289cf7b5, only the canonical parallel prompt and prisma-html/FILES_MANIFEST.json changed.",
+    "That delta is coordination/integration-planning only and does not change Chat 3 Mobile census, RIFAT/product projection evidence, Identity/NDC/Atlasfin inputs or the existing 271-target accounting."
   ],
   "decisions": [
     "No broad rediscovery was performed; DISCOVERY_ONLY census was reused as existing physical evidence.",
@@ -27,7 +29,10 @@
     "Materiality Catalog remained STANDBY_USER_INVOKED_ONLY and was not inspected or consumed.",
     "Projection drift was classified without selecting source-vs-product repair direction.",
     "Treat current-main movement as non-relevant drift for the completed Chat 3 candidate evidence. Do not rewrite or rebase the candidate shard merely to make branch ancestry look tidy.",
-    "Handoff should integrate the single isolated candidate commit 7f32ce6f1b602a14781fa2f4f3f323035f8029ec onto the coordinator's current integration base, preserving its baseHead/evidence provenance."
+    "Handoff should integrate the single isolated candidate commit 7f32ce6f1b602a14781fa2f4f3f323035f8029ec onto the coordinator's current integration base, preserving its baseHead/evidence provenance.",
+    "Follow the normative continuation override: preserve the isolated candidate commit/baseHead/evidence provenance and remain in HOLD.",
+    "Do not regenerate or rebase the Mobile shard, do not choose RIFAT-vs-product repair direction for 138 DRIFT targets, and preserve all REGISTER_TARGET_FIRST outcomes.",
+    "Do not perform any further candidate mutation unless Chat 6/integration issues an evidence-backed bounded correction request."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/mobile/MANIFEST.json",
@@ -76,16 +81,31 @@
       "name": "status branch isolation",
       "result": "PASS",
       "details": "Compared current main d08013db42c34ccafb80075392ec6d7a289cf7b5 to status branch: exactly two changed paths, Chat 3 STATUS.json and LOG.md; no candidate, runtime, authority, product or other-chat mailbox changes."
+    },
+    {
+      "name": "continuation prompt re-read",
+      "result": "PASS",
+      "details": "Current phase is INTEGRATION_HANDOFF_AND_PLANNING; Chat 3 continuation is Mobile HOLD with exact preserved branch/head/base/accounting matching the mailbox."
+    },
+    {
+      "name": "latest main drift review",
+      "result": "PASS_NON_RELEVANT_DRIFT",
+      "details": "d08013db42c34ccafb80075392ec6d7a289cf7b5 -> 66fa02147f0cf31529c090a47f376026b406875a changed only PRISMA_VISUAL_PROMOTION_PARALLEL_CHAT_PROMPTS.md and prisma-html/FILES_MANIFEST.json; no Chat 3 relevant authority/source input changed."
+    },
+    {
+      "name": "handoff identity check",
+      "result": "PASS",
+      "details": "Canonical prompt preserves Chat 3 work branch visual-promotion-chat3-mobile-20260904, work head 7f32ce6f1b602a14781fa2f4f3f323035f8029ec, base 57b01ad8bda043ec25763203354b686341bace09 and accounting 271 = 133 CURRENT + 138 DRIFT."
     }
   ],
   "unresolved": [
     "All 271 census targets still lack complete semantic meaning, exact recipe, exact binding and/or layer-application policy required for promotion beyond REGISTER_TARGET_FIRST.",
-    "The 138 drifted targets require authority reconciliation; Chat 3 deliberately did not choose whether RIFAT source or product projection should be repaired.",
-    "Integration still needs to apply/cherry-pick the isolated Chat 3 candidate commit onto the coordinator's current integration branch; this is handoff work, not a Chat 3 evidence blocker."
+    "The 138 drifted targets require authority reconciliation; Chat 3 must not choose whether RIFAT source or product projection should be repaired.",
+    "Canonical integration remains coordinator-owned. Chat 3 is waiting only for a bounded correction request, if deterministic integration validation finds one."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Maintain this mailbox only if Chat 3 state materially changes. Otherwise hand off candidate commit 7f32ce6f1b602a14781fa2f4f3f323035f8029ec for coordinator integration.",
+  "nextAction": "HOLD. Preserve the existing worker commit and status provenance. Take no further lane mutation unless Chat 6/integration requests a bounded evidence-backed correction; if such a request appears, record it in this mailbox before acting.",
   "handoff": {
     "readiness": "READY_FOR_INTEGRATION",
     "workBranch": "visual-promotion-chat3-mobile-20260904",
@@ -98,11 +118,19 @@
       "Do not auto-repair the MultiContext divergence merely to obtain green.",
       "Materiality Catalog was not used."
     ],
-    "currentMainHead": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
+    "currentMainHead": "66fa02147f0cf31529c090a47f376026b406875a",
     "mainDriftAssessment": "PASS_NON_RELEVANT_DRIFT",
     "preferredIntegration": "Cherry-pick/apply the single isolated Chat 3 candidate commit onto the current coordinator integration branch rather than rewriting the worker branch solely for ancestry.",
     "statusBranch": "status/vp-chat-03-mobile",
     "statusHeadAfterThisUpdate": null,
-    "statusBranchIsolation": "PASS_EXACT_TWO_STATUS_FILES_ONLY"
+    "statusBranchIsolation": "PASS_EXACT_TWO_STATUS_FILES_ONLY",
+    "continuationPhase": "INTEGRATION_HANDOFF_AND_PLANNING",
+    "continuationMode": "HOLD",
+    "latestMainDriftAssessment": "PASS_NON_RELEVANT_DRIFT",
+    "preservedWorkBranch": "visual-promotion-chat3-mobile-20260904",
+    "preservedWorkHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+    "preservedBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "preservedAccounting": "271 total = 133 CURRENT + 138 DRIFT",
+    "boundedCorrectionRequiredBeforeFurtherMutation": true
   }
 }

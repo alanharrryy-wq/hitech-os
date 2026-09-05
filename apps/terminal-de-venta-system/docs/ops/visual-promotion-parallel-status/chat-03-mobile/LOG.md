@@ -34,3 +34,15 @@ No updates published yet.
 - Exactly two paths differ on `status/vp-chat-03-mobile`: this Chat's `STATUS.json` and append-only `LOG.md`.
 - No code, candidate shard, product/runtime, visual authority, global manifest or another Chat mailbox is present in the status-branch delta.
 - Chat 3 lane work remains `READY_FOR_INTEGRATION`; no additional candidate mutation is justified by current evidence.
+
+## 2026-09-04T20:14:00-06:00 — PROGRESS / FINDING / DECISION / VALIDATION / HANDOFF
+
+- Re-read the canonical prompt at current `main` `66fa02147f0cf31529c090a47f376026b406875a` and located assigned **Chat 3 — Mobile Promotion**.
+- Current phase is `INTEGRATION_HANDOFF_AND_PLANNING`; normative continuation places Chat 3 in **HOLD**.
+- Re-read this Chat's current mailbox and confirmed preserved provenance: work branch `visual-promotion-chat3-mobile-20260904`, work head `7f32ce6f1b602a14781fa2f4f3f323035f8029ec`, base `57b01ad8bda043ec25763203354b686341bace09`, accounting `271 = 133 CURRENT + 138 DRIFT`.
+- Re-read current interoperability contract, vocabulary registry and status-channel contract. Atlasfin remains priority reference; Materiality Catalog remains `STANDBY_USER_INVOKED_ONLY`.
+- Latest drift review from prior observed `main` `d08013db42c34ccafb80075392ec6d7a289cf7b5` to current `main` found only two changed paths: the canonical parallel prompt and `prisma-html/FILES_MANIFEST.json`. Result: `PASS_NON_RELEVANT_DRIFT` for Chat 3 evidence.
+- Decision: no shard regeneration, no rebase, no RIFAT-vs-product repair choice, no change to the 138 DRIFT classifications, and no change to `REGISTER_TARGET_FIRST` outcomes.
+- No candidate/runtime/authority/product mutation performed in this continuation step.
+- Chat 3 remains `READY_FOR_INTEGRATION` in HOLD, pending only an explicit bounded correction request from Chat 6/integration if deterministic validation finds one.
+- No user action required.
