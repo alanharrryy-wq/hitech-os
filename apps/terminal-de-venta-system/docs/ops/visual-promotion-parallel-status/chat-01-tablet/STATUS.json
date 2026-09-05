@@ -4,20 +4,13 @@
   "lane": "TABLET_PROMOTION",
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
-  "state": "BLOCKED",
-  "updatedAt": "2026-09-04T23:52:00-06:00",
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-04T23:56:00-06:00",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat1/tablet-corpus-cert-20260904",
   "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
-  "summary": "Tablet corpus certification dry-run validated 928/929 records under direct physical-reference checks. The sole blocked record is the existing Cobrar Identity-binding reuse target TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1: slotId/componentId/componentUiId/ownerId are not found in expanded Visual Control physical strings and must be validated against the stronger existing Identity binding authority before certification can continue. No certification bytes have been committed.",
-  "blockers": [
-    {
-      "id": "TABLET_EXISTING_BINDING_REFERENCE_DOMAIN_CHECK",
-      "status": "ACTIVE",
-      "targetId": "TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1",
-      "detail": "Strict shape/vocabulary pass. Direct physical lookup does not prove slotId/componentId/componentUiId/ownerId; verify those coordinates against BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 before clearing."
-    }
-  ],
+  "summary": "Tablet corpus certification blocker cleared by exact Identity authority. BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 proves the stronger Cobrar coordinates, including routeId, regionId, slotId, componentUiId, ownerId, selector, implementationLayerId and application layer; the candidate componentId equals the proven componentUiId. Dry-run therefore has no real unnormalizable defect. Certification materialization can proceed without semantic mutation.",
+  "blockers": [],
   "findings": [
     "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
     "Chat 1 reconciled all 929 census inputs exactly once: 139 candidate outcomes, 788 unresolved outcomes, and 2 conflicts.",
@@ -41,7 +34,9 @@
     "Immutable source provenance remains chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728 with 929 = 139 candidates + 788 unresolved + 2 conflicts.",
     "Dry-run corpus accounting remains exact: 929 unique targets = 139 candidates + 788 unresolved + 2 conflicts; semanticMutationCount=0.",
     "Base 57b01ad8.. to certification base 8cc1918c.. has 22 changed files but zero overlap with 13 recorded Tablet authority snapshot paths and zero overlap with 40 referenced canonical source/generated output paths.",
-    "928/929 records passed strict shape/vocabulary plus direct reference checks; the only pending reference-domain proof is the existing Cobrar Identity-binding reuse record."
+    "928/929 records passed strict shape/vocabulary plus direct reference checks; the only pending reference-domain proof is the existing Cobrar Identity-binding reuse record.",
+    "Existing binding BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 target TGT.TABLET.POS.COBRAR.PRIMARY.V1 exactly matches the census candidate routeId, regionId, slotId, componentUiId, ownerId, selector and implementationLayerId; its layerId matches candidate applicationLayerId.",
+    "Candidate componentId equals the binding-proven componentUiId value products.tablet.app.components.pos.pos.ticket.panel.tsx, so the prior direct-physical lookup failure is resolved by stronger Identity authority rather than inference."
   ],
   "decisions": [
     "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
@@ -58,7 +53,8 @@
     "Remain in HOLD and wait only for an explicit evidence-backed bounded correction request from Chat 6/integration.",
     "Create only a certified derivative under prisma-html/governance/visual-promotion/candidates/tablet/certification/**; never rewrite the original worker shard.",
     "Use the Chat 6 strict candidate/manifest contract as the intake authority for representation normalization, preserving every semantic decision and both DRIFT conflicts.",
-    "Do not open a PR and do not refresh prisma-html/FILES_MANIFEST.json in Chat 1."
+    "Do not open a PR and do not refresh prisma-html/FILES_MANIFEST.json in Chat 1.",
+    "For the single EXISTING_RESOLVED binding reuse, validate binding-owned physical coordinates against the exact resolved Identity binding target; do not require those stronger coordinates to appear independently in the lower-level expanded census string set."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/tablet/certification/MANIFEST.json",
@@ -129,15 +125,19 @@
       "name": "Tablet corpus certification dry-run",
       "result": "BLOCKED_1_REFERENCE_DOMAIN_PROOF",
       "details": "929/929 strict shape/vocabulary structurally valid; 929 unique source-record hashes; 2 DRIFT conflicts preserved; one existing-binding record requires stronger Identity binding coordinate proof for slotId/componentId/componentUiId/ownerId."
+    },
+    {
+      "name": "Cobrar existing-binding stronger-authority proof",
+      "result": "PASS",
+      "details": "BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 exactly proves route/region/slot/componentUi/owner/selector/implementationLayer/applicationLayer; candidate componentId equals proven componentUiId."
     }
   ],
   "unresolved": [
-    "Prove the four stronger binding coordinates on TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1 against existing binding BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1.",
-    "Completion still requires 929/929 corpus-valid, invalid=0 and semanticMutationCount=0."
+    "Materialize the five certification outputs, then re-read and verify final branch ownership/counts/hashes before marking READY_FOR_INTEGRATION."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Read the exact existing Identity binding record and compare its slotId/componentId/componentUiId/ownerId to the candidate. Clear the blocker only on exact authority match.",
+  "nextAction": "Materialize MANIFEST.json, NORMALIZED.jsonl, CERTIFICATION.jsonl, empty INVALID.jsonl and SUMMARY.md in one certification commit; then verify branch diff and 929/929 counts.",
   "handoff": {
     "ready": false,
     "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
@@ -158,8 +158,8 @@
       "invalid": 0,
       "semanticMutationCount": 0
     },
-    "dryRunValid": 928,
-    "dryRunInvalid": 1,
-    "activeCertificationBlocker": "TABLET_EXISTING_BINDING_REFERENCE_DOMAIN_CHECK"
+    "dryRunValid": 929,
+    "dryRunInvalid": 0,
+    "activeCertificationBlocker": null
   }
 }
