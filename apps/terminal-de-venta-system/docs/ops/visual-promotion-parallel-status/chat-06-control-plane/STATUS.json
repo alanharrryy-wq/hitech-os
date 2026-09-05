@@ -5,11 +5,11 @@
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
   "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T05:52:00Z",
+  "updatedAt": "2026-09-05T05:59:00Z",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat6/candidate-corpus-cert-20260904",
-  "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
-  "summary": "Chat 6 resumed under canonical phase CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. New work branch chat6/candidate-corpus-cert-20260904 was created from current main 8cc1918c5e015d1408335c15313e7364e04859c2. The prior integration-plan HOLD is superseded by explicit owner authorization to build the global candidate corpus certification, assemble accepted certification lanes, refresh FILES_MANIFEST exactly once, open one candidate-corpus-only integration PR, and merge only if every required check is green.",
+  "workHead": "2285101755a0859681cfe23d45db9b96b2beea53",
+  "summary": "Chat 6 corpus-certification control plane is source-ready for cohort intake. Fresh task-exact AutoMesh passed. Exact prior Chat 6 source bytes were brought forward by head-tree extraction, a machine registry pins all four raw worker heads and 20 source files by Git blob/SHA-256, and fail-closed normalization/corpus-certification tooling plus exact worker-head fixtures are implemented. No raw worker bytes, certification lane bytes, global corpus artifacts, FILES_MANIFEST refresh, PR, canonical promotion, product/runtime mutation, Materiality read, or broad rediscovery has occurred yet.",
   "blockers": [],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
@@ -34,7 +34,11 @@
     "The only existing resolved binding reuse is Tablet target TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1 -> BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 / ACT.primary / LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE, still REGISTER_TARGET_FIRST.",
     "Canonical prompt blob 07762a44523f864bfaf016d2db385f2434e507d7 sets phase CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly authorizes Chat 6 global corpus certification/final assembly.",
     "Current canonical main at phase start is 8cc1918c5e015d1408335c15313e7364e04859c2.",
-    "Corrected fresh task-exact AutoMesh run 33948191110 passed PASS_COMPOSED_AUTHORITY_MESH on current main 8cc1918c5e015d1408335c15313e7364e04859c2 with zero blockers."
+    "Corrected fresh task-exact AutoMesh run 33948191110 passed PASS_COMPOSED_AUTHORITY_MESH on current main 8cc1918c5e015d1408335c15313e7364e04859c2 with zero blockers.",
+    "Exact Chat 6 source head 7cc48fa49906c8f443b267fd6c3590fd3f4340fb was brought forward by blob/tree identity rather than commit replay.",
+    "legacy-worker-intake.registry.json now pins Tablet 929, PC 827, Mobile 271 and Shared UI 70 raw-worker inputs with exact source heads plus Git blob SHA and SHA-256 for MANIFEST/CANDIDATES/UNRESOLVED/CONFLICTS/SUMMARY files.",
+    "Corpus normalizer preserves a semantic signature across representation changes, flattens only the registered Mobile projection envelope, strips authority qualification only from raw NDC/Atlasfin ID fields, qualifies known authority evidence paths, lifts non-authority product/git provenance into certification metadata, and fails closed on unknown head/hash/shape.",
+    "A separate semantic review key layer was added without changing candidate_fingerprint collision behavior. Recipe equality is explicitly review-only and cannot auto-coalesce canonical meaning."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -55,12 +59,18 @@
     "Use exact head-tree path extraction for the prior Chat 6 source head and all worker/certification inputs; do not replay historical commits.",
     "Build an exact-head/hash-pinned fail-closed normalizer that recognizes only registered legacy worker bytes and known representation differences.",
     "Do not weaken duplicate/collision fingerprints; add a separate semantic review key for cross-surface review.",
-    "Do not perform canonical Identity/RIFAT/NDC/Target Index promotion or product/runtime mutation in this phase."
+    "Do not perform canonical Identity/RIFAT/NDC/Target Index promotion or product/runtime mutation in this phase.",
+    "Treat evidenceRefs repository-product and git references as provenance rather than inventing an authority domain; preserve them in certification normalization.liftedProvenanceRefs.",
+    "Normalize legacy worker manifests to strict derivative manifests while keeping raw manifest bytes immutable and pinned.",
+    "Use exact worker-head sample fixtures from all four surfaces to exercise known normalization shapes before global corpus assembly."
   ],
   "changedPaths": [
-    "No lane source changes yet in the new phase.",
-    "Status-only update: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/STATUS.json",
-    "Status-only update: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/LOG.md"
+    "prisma-html/governance/visual-promotion/contracts/**",
+    "prisma-html/tools/visual_promotion/**",
+    "prisma-html/tools/visual_application/visual_work_entry_gate.py (exact prior Chat 6 byte carry-forward only)",
+    "prisma-html/tools/visual_application/tests/test_visual_work_entry_gate.py (exact prior Chat 6 byte carry-forward only)",
+    "Status-only: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/STATUS.json",
+    "Status-only: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/LOG.md"
   ],
   "validations": [
     {
@@ -170,21 +180,35 @@
       "result": "PASS_COMPOSED_AUTHORITY_MESH",
       "evidence": "workflow run 33948191110; artifact 9964001762; GitHub artifact digest sha256:94e24c6e34d49038c401c1622e647cd48edb147a228b2ab685bb112196846d0a; composed payload sha256:0918d3228415d4beeb760083ae64e293fa2cc31b19bc2b4a1b01a0e4fd047d1f",
       "details": "Current-main bound request, preflight PASS, task-exact parallel Mesh PASS, compose PASS, blockers=[]."
+    },
+    {
+      "name": "Exact source byte carry-forward",
+      "result": "PASS",
+      "details": "14 prior Chat 6 source paths were applied by Git blob identity from source head 7cc48fa... onto phase branch from main 8cc1918..., with no history replay."
+    },
+    {
+      "name": "Pinned intake registry construction",
+      "result": "PASS_SOURCE_STATIC",
+      "details": "All four original worker heads and 20 raw shard files are explicitly registered by source head, Git blob SHA and SHA-256; aggregate input count fixed at 2,097."
+    },
+    {
+      "name": "Exact worker-head normalization fixtures",
+      "result": "SOURCE_AUTHORED_PENDING_EXECUTION",
+      "details": "Exact Tablet, PC, Mobile conflict and Shared UI source lines are pinned in test fixtures. Execution will occur in cohort integration/PR validation after raw shard assembly."
     }
   ],
   "unresolved": [
-    "Run Factory Ledger anti-rework proposal/mutation authorization for this exact bounded Control Plane/corpus-certification source change.",
-    "Bring forward exact Chat 6 owned-path bytes from 7cc48fa49906c8f443b267fd6c3590fd3f4340fb onto the new branch.",
-    "Implement/test the pinned normalizer, semantic review key, and global corpus generator against the exact four raw worker heads.",
-    "Re-read certification lane mailboxes 1-5 only after global tooling is ready, then perform final accepted assembly."
+    "Re-read certification status mailboxes 1-5 now that global tooling is source-ready and consume only explicit certification heads/handoffs.",
+    "Assemble raw worker bytes plus accepted certification bytes onto a fresh integration branch from then-current main using head-tree extraction.",
+    "Run the corpus generator against all 2,097 assembled raw records and require zero invalid/semantic mutation/duplicate targets before one FILES_MANIFEST refresh and final PR."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Bring forward exact Chat 6 source-head bytes by head-tree extraction onto the corpus-certification work branch, then implement and validate pinned normalization/global corpus tooling.",
+  "nextAction": "Read current Chat 1-5 certification mailboxes and validate their explicit certification branch/head handoffs against the canonical phase requirements.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/candidate-corpus-cert-20260904",
-    "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+    "workHead": "2285101755a0859681cfe23d45db9b96b2beea53",
     "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
     "closedPullRequest": 541,
     "validatedEquivalentCodeHead": "cb21ca01ecf8ec755fe34820d3d5b34673f70581",
@@ -472,6 +496,7 @@
     },
     "phaseStartMain": "8cc1918c5e015d1408335c15313e7364e04859c2",
     "canonicalPromptBlobSha": "07762a44523f864bfaf016d2db385f2434e507d7",
-    "corpusCertificationResult": null
+    "corpusCertificationResult": null,
+    "globalToolingSourceReady": true
   }
 }

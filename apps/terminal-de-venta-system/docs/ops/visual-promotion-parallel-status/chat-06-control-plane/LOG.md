@@ -149,3 +149,19 @@ Corrected fresh task-exact AutoMesh run `33948191110` completed successfully on 
 ## 2026-09-05T05:52:00Z — VALIDATION
 
 Universal preflight, task-exact parallel Mesh and composed authority all passed. The previous request-construction blocker is cleared without weakening coverage or bypassing fail-closed behavior.
+
+## 2026-09-05T05:59:00Z — PROGRESS
+
+Global certification tooling reached source-ready intake state on work head `2285101755a0859681cfe23d45db9b96b2beea53`. Prior Chat 6 bytes were brought forward by exact Git blob identity, not history replay. The new machine registry pins all four original worker heads and every raw shard file used by certification.
+
+## 2026-09-05T05:59:00Z — DECISION
+
+Known representation differences are normalized only in derivative data. Product-path and Git-history evidence is lifted into certification provenance instead of being mislabeled as canonical authority. Candidate collision fingerprints remain unchanged; semantic review keys are separate and never auto-coalesce meaning.
+
+## 2026-09-05T05:59:00Z — VALIDATION
+
+Exact worker-head sample fixtures now cover Tablet, PC, Mobile and Shared UI normalization paths. The full 2,097-record execution is intentionally deferred until raw worker bytes are assembled on the cohort integration tree, where the generator can verify registered file hashes before reading records.
+
+## 2026-09-05T05:59:00Z — PROGRESS
+
+Per canonical phase protocol, Chat 6 may now re-read Chats 1-5 status mailboxes and consume only explicit certification handoffs.
