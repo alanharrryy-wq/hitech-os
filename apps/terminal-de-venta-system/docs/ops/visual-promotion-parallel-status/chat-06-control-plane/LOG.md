@@ -121,3 +121,15 @@ Deterministic `INTEGRATION PLAN` completed and embedded in the Chat 6 `STATUS.js
 ## 2026-09-05T02:46:00Z — COMPLETE
 
 Chat 6 continuation planning/validation phase is complete. State changed to `WAITING_EXTERNAL` because the canonical prompt explicitly requires stopping after the deterministic integration plan and waiting for repository-owner authorization. No product/runtime mutation, no candidate promotion, no global authority write, no PR #539/#540 merge, no Materiality read, no broad rediscovery, and no `FILES_MANIFEST.json` refresh occurred.
+
+## 2026-09-05T05:44:00Z — START
+
+Canonical prompt re-read from current `main` blob `07762a44523f864bfaf016d2db385f2434e507d7`. The prior integration-planning HOLD is superseded. Chat 6 is now executing `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`.
+
+## 2026-09-05T05:44:00Z — PROGRESS
+
+Created `chat6/candidate-corpus-cert-20260904` from current canonical `main` `8cc1918c5e015d1408335c15313e7364e04859c2`. No lane source bytes have been changed yet.
+
+## 2026-09-05T05:44:00Z — DECISION
+
+Proceed only with the Chat 6-authorized Control Plane/global corpus scope. Preserve exact source heads and raw worker bytes, implement fail-closed exact-head/hash-pinned normalization, keep semantic reconciliation review separate from collision fingerprints, and retain the hard stop against canonical authority/product/runtime mutation.

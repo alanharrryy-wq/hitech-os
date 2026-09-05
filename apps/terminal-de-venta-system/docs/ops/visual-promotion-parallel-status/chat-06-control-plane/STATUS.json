@@ -4,34 +4,13 @@
   "lane": "VISUAL_PROMOTION_CONTROL_PLANE",
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
-  "state": "WAITING_EXTERNAL",
-  "updatedAt": "2026-09-05T02:46:00Z",
-  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
-  "workBranch": "chat6/visual-promotion-control-plane-20260904",
-  "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
-  "summary": "Deterministic Chat 6 INTEGRATION PLAN is complete. All six exact handoff heads were consumed as provenance; current-main drift is non-relevant to worker physical/source authority. Net lane bytes are disjoint (39 paths: 37 added, 2 modified). Strict canonical composition is not yet authorized and is blocked by known intake-envelope incompatibilities plus an identity-bound reconciliation fingerprint. No canonical promotion, merge, product/runtime mutation, global authority write or FILES_MANIFEST refresh was performed.",
-  "blockers": [
-    {
-      "id": "CHAT3_CONTROL_PLANE_SCHEMA_INCOMPATIBILITY",
-      "status": "ACTIVE_PRE_INTEGRATION",
-      "detail": "Mobile 271/271 records fail strict Control Plane intake as-is: nested top-level projection object, qualified ndcRefs value, unqualified repo/path evidenceRefs, and qualified Atlasfin adapter in a raw-ID field. Physical/projection semantics remain preserved and source hashes are current."
-    },
-    {
-      "id": "SHARD_MANIFEST_CONTRACT_DIVERGENCE",
-      "status": "ACTIVE_PRE_INTEGRATION",
-      "detail": "All four surface manifests are rich worker envelopes that do not satisfy the strict candidate-shard-manifest JSON Schema (additionalProperties=false). Runtime validate_shard is looser than the JSON Schema. Chat 1/4 also lack a top-level input count; Chat 2 additionally uses legacy manifest schema prisma.visual-promotion.surface-candidate-manifest.v1."
-    },
-    {
-      "id": "ATLASFIN_FIELD_QUALIFICATION_MISMATCH",
-      "status": "ACTIVE_PRE_INTEGRATION",
-      "detail": "Chat 3 uses atlasfin::ADP.MB.TOUCH.V2 and Chat 4 uses atlasfin::ADP.SHARED.NEUTRAL.V2 in atlasfinAdapterId. Current Control Plane registry normalization expects raw IDs ADP.MB.TOUCH.V2 and ADP.SHARED.NEUTRAL.V2; qualified refs belong in evidence/reference form."
-    },
-    {
-      "id": "RECONCILIATION_FINGERPRINT_IDENTITY_BOUND",
-      "status": "ACTIVE_PRE_CANONICAL_COMPOSER",
-      "detail": "candidate_fingerprint includes surfaceKey and targetId, yielding 2,097 singleton groups. It can detect duplicates/collisions but cannot provide cross-surface semantic coalescing. A separately authorized bounded reconciliation-key correction is required before canonical composer use."
-    }
-  ],
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-05T05:44:00Z",
+  "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "workBranch": "chat6/candidate-corpus-cert-20260904",
+  "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "summary": "Chat 6 resumed under canonical phase CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. New work branch chat6/candidate-corpus-cert-20260904 was created from current main 8cc1918c5e015d1408335c15313e7364e04859c2. The prior integration-plan HOLD is superseded by explicit owner authorization to build the global candidate corpus certification, assemble accepted certification lanes, refresh FILES_MANIFEST exactly once, open one candidate-corpus-only integration PR, and merge only if every required check is green.",
+  "blockers": [],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
     "Current Visual Control census and Target Index are reusable physical truth. DISCOVERY_ONLY is not UNDISCOVERED and broad recensus is not a legal shortcut.",
@@ -52,7 +31,9 @@
     "Work Entry aggregate is 2,065 REGISTER_TARGET_FIRST + 32 BLOCKED; there are zero GVAE_EXACT_APPLY and zero SURFACE_BATCH_PLAN decisions.",
     "Candidate-level promotionStatus has 139 ELIGIBLE_CANDIDATE records, all Tablet, but every one still has Work Entry REGISTER_TARGET_FIRST. Therefore currently authorized canonical promotions = 0.",
     "Cross-surface strong semantic/NDC reconciliation candidates = 0 from current proven IDs. Recipe-level review candidates exist across Tablet+PC for REC.table.governed.v2 (171 rows), REC.card.governed.v2 (95), and REC.panel.governed.v2 (47); recipe equality is not semantic identity.",
-    "The only existing resolved binding reuse is Tablet target TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1 -> BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 / ACT.primary / LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE, still REGISTER_TARGET_FIRST."
+    "The only existing resolved binding reuse is Tablet target TGT.CENSUS.TABLET.0DC6BC69B3278EC225CE.V1 -> BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 / ACT.primary / LYR.ACT.PRIMARY.TABLET.POS.COBRAR.BASE, still REGISTER_TARGET_FIRST.",
+    "Canonical prompt blob 07762a44523f864bfaf016d2db385f2434e507d7 sets phase CANDIDATE_CORPUS_CERTIFICATION_PARALLEL and explicitly authorizes Chat 6 global corpus certification/final assembly.",
+    "Current canonical main at phase start is 8cc1918c5e015d1408335c15313e7364e04859c2."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -69,12 +50,16 @@
     "Any normalization must be syntactic/provenance-preserving only: no status upgrade, no conflict resolution, no new ID, no semantic inference. Normalized output must pass the strict canonical candidate/manifest schemas.",
     "Add a separate future reconciliation review key that excludes surfaceKey/targetId and refuses all-null evidence groups. Keep duplicate/collision fingerprint behavior separate from semantic reconciliation behavior.",
     "For later assembly, consume exact owned file bytes from head trees, not branch-history replay/cherry-pick chains. This avoids transient historical global-manifest bot commits and preserves disjoint ownership.",
-    "Do not merge PR #539 or #540 and do not refresh FILES_MANIFEST until a later owner-authorized assembly has fixed the pre-integration compatibility blockers."
+    "Do not merge PR #539 or #540 and do not refresh FILES_MANIFEST until a later owner-authorized assembly has fixed the pre-integration compatibility blockers.",
+    "Use exact head-tree path extraction for the prior Chat 6 source head and all worker/certification inputs; do not replay historical commits.",
+    "Build an exact-head/hash-pinned fail-closed normalizer that recognizes only registered legacy worker bytes and known representation differences.",
+    "Do not weaken duplicate/collision fingerprints; add a separate semantic review key for cross-surface review.",
+    "Do not perform canonical Identity/RIFAT/NDC/Target Index promotion or product/runtime mutation in this phase."
   ],
   "changedPaths": [
-    "No work-branch source changes in continuation phase.",
-    "Status-only updates: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/STATUS.json",
-    "Status-only updates: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/LOG.md"
+    "No lane source changes yet in the new phase.",
+    "Status-only update: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/STATUS.json",
+    "Status-only update: apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/LOG.md"
   ],
   "validations": [
     {
@@ -175,18 +160,18 @@
     }
   ],
   "unresolved": [
-    "Owner authorization is required before any bounded Control Plane compatibility/reconciliation-key implementation or integration assembly.",
-    "Strict all-worker canonical intake must remain blocked until the manifest/record normalization issue is resolved by an explicitly authorized bounded correction.",
-    "Final generated FILES_MANIFEST.json bytes/hash remain intentionally unknown until accepted/corrected prisma-html bytes are assembled and the one authorized deterministic refresh runs.",
-    "No canonical Identity/RIFAT/NDC/Target Index promotion proposal may be executed until normalized candidates pass the Control Plane and subsequent authority gates."
+    "Run Factory Ledger anti-rework proposal/mutation authorization for this exact bounded Control Plane/corpus-certification source change.",
+    "Bring forward exact Chat 6 owned-path bytes from 7cc48fa49906c8f443b267fd6c3590fd3f4340fb onto the new branch.",
+    "Implement/test the pinned normalizer, semantic review key, and global corpus generator against the exact four raw worker heads.",
+    "Re-read certification lane mailboxes 1-5 only after global tooling is ready, then perform final accepted assembly."
   ],
-  "needsUserAction": true,
-  "userActionRequested": "Explicitly authorize the next bounded integration step. Recommended authorization: allow Chat 6 to implement a fail-closed exact-head/hash-pinned intake normalizer plus a separate semantic reconciliation review key, then assemble the six lane head trees non-canonically for validation. This does not authorize canonical ID minting, product/runtime mutation, PR #539/#540 merge, or global authority promotion.",
-  "nextAction": "WAIT for explicit repository-owner authorization. If authorized, implement only the bounded Control Plane intake/reconciliation correction, revalidate all 2,097 normalized outcomes, then perform non-canonical deterministic assembly in the planned order. Do not proceed to canonical promotion without separate authorization.",
+  "needsUserAction": false,
+  "userActionRequested": null,
+  "nextAction": "Run anti-rework/task-authority gates for the exact Chat 6 corpus-certification tooling scope, then bring forward source-head bytes and implement the normalizer/global corpus machinery.",
   "handoff": {
     "ready": false,
-    "workBranch": "chat6/visual-promotion-control-plane-20260904",
-    "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+    "workBranch": "chat6/candidate-corpus-cert-20260904",
+    "workHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
     "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
     "closedPullRequest": 541,
     "validatedEquivalentCodeHead": "cb21ca01ecf8ec755fe34820d3d5b34673f70581",
@@ -208,7 +193,7 @@
     "integrationPlanReady": false,
     "workerOutcomeRowsValidated": 2097,
     "controlPlaneCollisionCount": 0,
-    "phase": "INTEGRATION_HANDOFF_AND_PLANNING",
+    "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
     "planStatus": "PLAN_COMPLETE_WAITING_OWNER_AUTHORIZATION",
     "commonWorkerBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
     "exactAcceptanceInputs": [
@@ -471,6 +456,9 @@
       "filesManifestRefreshed": false,
       "materialityFallbackUsed": false,
       "broadRediscoveryPerformed": false
-    }
+    },
+    "phaseStartMain": "8cc1918c5e015d1408335c15313e7364e04859c2",
+    "canonicalPromptBlobSha": "07762a44523f864bfaf016d2db385f2434e507d7",
+    "corpusCertificationResult": null
   }
 }
