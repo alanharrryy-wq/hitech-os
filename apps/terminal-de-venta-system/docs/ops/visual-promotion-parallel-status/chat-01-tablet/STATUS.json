@@ -5,7 +5,7 @@
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:57:31-06:00",
+  "updatedAt": "2026-09-04T19:58:10-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
   "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
@@ -74,6 +74,16 @@
       "name": "bounded current-main authority drift revalidation",
       "result": "PASS",
       "details": "current main d08013db42c34ccafb80075392ec6d7a289cf7b5; 13/13 pinned authority snapshots unchanged by Git blob SHA; 6/6 additional Atlasfin registry inputs unchanged; NDC canon/grammar and core startup authorities unchanged; changed cohort docs are status-channel coordination-only."
+    },
+    {
+      "name": "status-channel ownership isolation",
+      "result": "PASS",
+      "details": "status branch delta from its pre-report base d08013db42c34ccafb80075392ec6d7a289cf7b5 modifies only chat-01-tablet/STATUS.json and chat-01-tablet/LOG.md."
+    },
+    {
+      "name": "work-branch ownership isolation after status adoption",
+      "result": "PASS",
+      "details": "work branch remains two commits ahead of its base and still modifies only the five Tablet candidate-shard files."
     }
   ],
   "unresolved": [
@@ -83,7 +93,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "No further Chat 1 candidate mutation is required. Hand off the candidate branch to canonical integration/control-plane reconciliation; revalidate only if a recorded Chat 1 authority input or candidate-semantic contract later drifts.",
+  "nextAction": "Lane is complete and READY_FOR_INTEGRATION. No further Chat 1 writes are warranted now; preserve this mailbox as the live coordination snapshot and update it only if a blocker, relevant authority drift, integration correction request, or new Chat 1 milestone occurs.",
   "handoff": {
     "ready": true,
     "classification": "LANE_CANDIDATE_HANDOFF_READY",
@@ -108,6 +118,12 @@
     "currentMainAtRevalidation": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
     "relevantAuthorityDrift": false,
     "coordinationOnlyDrift": true,
-    "revalidationResult": "PASS_BOUNDED_CHAT1_AUTHORITY_EQUIVALENCE"
+    "revalidationResult": "PASS_BOUNDED_CHAT1_AUTHORITY_EQUIVALENCE",
+    "statusChannelValidation": "PASS_OWN_MAILBOX_ONLY",
+    "statusBranchBase": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
+    "statusBranchFiles": [
+      "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/STATUS.json",
+      "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md"
+    ]
   }
 }
