@@ -5,7 +5,7 @@
   "statusBranch": "status/vp-chat-02-pc",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T20:19:17-06:00",
+  "updatedAt": "2026-09-04T20:20:36-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "agent/chat2-pc-promotion-20260904",
   "workHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
@@ -31,7 +31,8 @@
     "From worker base to current main, changed files are coordination/prompt/status-channel/FILES_MANIFEST bytes; none of the 28 recorded candidate source-authority inputs changed.",
     "Interoperability contract delta from worker base only adds the status-channel write exception. No prior interoperability rule was removed.",
     "Vocabulary scope, authority domains, ID policies, field names, enums, NDC edge types, Atlasfin sources, Materiality policy, write ownership, forbidden worker writes and hard truths are unchanged; only coordinationStatusChannel was added.",
-    "The worker branch still resolves exactly to 896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078 and all five candidate output blob SHAs are unchanged."
+    "The worker branch still resolves exactly to 896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078 and all five candidate output blob SHAs are unchanged.",
+    "Factory Ledger capability visual.generic_application_engine_v1 remains DONE / SOURCE_READY / doNotRebuild=true; this Chat 2 continuation is VERIFY/read-only and must not rebuild GVAE or treat DISCOVERY_ONLY census as application authority."
   ],
   "decisions": [
     "Reused current Visual Control/Target Index physical census and did not run broad rediscovery.",
@@ -42,7 +43,8 @@
     "Did not repair projection/source gaps, copy product bytes into RIFAT, or mutate runtime/product/global authority.",
     "Classified main movement since baseHead as NON_RELEVANT_COORDINATION_ONLY for Chat 2 candidate provenance because all recorded semantic/physical/source authority blobs remain identical.",
     "No shard recomputation, rebase, projection repair or candidate-file mutation is warranted by current main movement.",
-    "Remain in PC HOLD / READY_FOR_INTEGRATION and respond only to bounded evidence-backed integration correction requests."
+    "Remain in PC HOLD / READY_FOR_INTEGRATION and respond only to bounded evidence-backed integration correction requests.",
+    "Factory Ledger anti-rework classification for this continuation: VERIFY/REUSE only for existing visual.generic_application_engine_v1 capability; no BUILD/REBUILD or mutation gate is warranted."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
@@ -119,7 +121,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Hold the byte-stable PC shard at the recorded worker commit. Await deterministic integration review or a bounded evidence-backed correction request; do not recensus, regenerate, repair projection gaps or mutate candidate files.",
+  "nextAction": "Remain in PC HOLD with the byte-stable shard and current revalidation evidence. Act only on a bounded integration correction request backed by stronger authority/evidence.",
   "handoff": {
     "readiness": "READY_FOR_INTEGRATION",
     "workBranch": "agent/chat2-pc-promotion-20260904",
