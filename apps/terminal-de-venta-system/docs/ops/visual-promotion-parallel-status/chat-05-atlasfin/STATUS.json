@@ -4,35 +4,87 @@
   "lane": "ATLASFIN_BRIDGE",
   "statusBranch": "status/vp-chat-05-atlasfin",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-05-atlasfin",
-  "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-04T23:44:00-06:00",
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T23:51:17-06:00",
   "baseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
   "workBranch": "chat5/atlasfin-corpus-cert-20260904",
-  "workHead": null,
-  "summary": "Chat 5 started CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. The canonical prompt now authorizes an Atlasfin reference certification derivative on a new branch from current main, writing only prisma-html/extras/atlasfin/bridge/certification/**. Exact raw worker heads for Chats 1-4 and the existing Chat 5 bridge head remain immutable evidence.",
+  "workHead": "6c7743f55434eb8d3429f286e2f9eae275d93d87",
+  "summary": "Chat 5 completed CANDIDATE_CORPUS_CERTIFICATION_PARALLEL for Atlasfin reference interoperability. A certified derivative was created from current main 8cc1918c5e015d1408335c15313e7364e04859c2 under prisma-html/extras/atlasfin/bridge/certification/**. Exact raw worker heads for Tablet, PC, Mobile and Shared UI were read directly; 2,097 source outcome records yielded 2,421 non-null Atlasfin references. All 2,421 normalized refs validate against current structured Atlasfin authority, hardInvalidRefCount=0, semanticMutationCount=0, and 341 representation-only adapter normalizations were recorded with original value and source-record SHA-256 provenance.",
   "blockers": [],
   "findings": [
-    "Current phase is CANDIDATE_CORPUS_CERTIFICATION_PARALLEL.",
-    "Chat 5 scope is Atlasfin reference interoperability certification across the exact raw worker heads for Tablet, PC, Mobile and Shared UI.",
-    "Worker certification phase explicitly forbids a Chat 5 PR and forbids prisma-html/FILES_MANIFEST.json updates.",
-    "Materiality Catalog remains STANDBY_USER_INVOKED_ONLY and must stay entirely uninspected."
+    "Raw source accounting revalidated exactly: Tablet 929, PC 827, Mobile 271, Shared UI 70, aggregate 2,097.",
+    "Every one of the 2,097 surface outcomes carries an Atlasfin adapter reference; 324 records also carry a non-null Atlasfin recipe reference.",
+    "2,421/2,421 non-null Atlasfin references certify as VALID_REFERENCE against current structured authority; INVALID_REFS.jsonl is empty.",
+    "341 representation-only normalizations are required: Mobile 271 and Shared UI 70 qualified atlasfin:: adapter values normalize to raw Atlasfin IDs inside atlasfin.* strict candidate fields while preserving original serialized values and source-record hashes.",
+    "Re-derived recipe convergence: REC.table.governed.v2 = Tablet 66 + PC 105; REC.card.governed.v2 = Tablet 41 + PC 54; REC.panel.governed.v2 = Tablet 20 + PC 27; REC.overlay.governed.v2 = Tablet 11 only.",
+    "Recipe equality is explicitly certified as review-only and semanticCoalescingAllowed=false. It does not prove shared NDC/Identity meaning.",
+    "Materiality Catalog remained entirely uninspected."
   ],
   "decisions": [
-    "Create chat5/atlasfin-corpus-cert-20260904 from current canonical main 8cc1918c5e015d1408335c15313e7364e04859c2.",
-    "Write only prisma-html/extras/atlasfin/bridge/certification/**.",
-    "Use exact raw worker heads independently; do not wait for Chats 1-4 certification branches.",
-    "Preserve authority-domain separation and treat recipe convergence as review-only evidence, never semantic coalescing proof.",
-    "Do not open a PR, do not merge PR #540, and do not update FILES_MANIFEST.json."
+    "Use raw Atlasfin IDs inside atlasfin.* candidate fields; strip only an atlasfin:: prefix when present and preserve the original value in certification provenance.",
+    "Keep authority-qualified evidence references qualified; the normalization policy applies only to Atlasfin field serialization.",
+    "Exclude all-null and NO_MATCH records from semantic recipe coalescing review.",
+    "Preserve Atlasfin, Identity/RIFAT and NDC authority-domain separation.",
+    "Do not open a certification PR, do not merge PR #540, do not update prisma-html/FILES_MANIFEST.json, and do not perform canonical/product/runtime mutation."
   ],
-  "changedPaths": [],
-  "validations": [],
+  "changedPaths": [
+    "prisma-html/extras/atlasfin/bridge/certification/MANIFEST.json",
+    "prisma-html/extras/atlasfin/bridge/certification/NORMALIZATION_POLICY.json",
+    "prisma-html/extras/atlasfin/bridge/certification/ATLASFIN_REFERENCE_CERTIFICATION.jsonl",
+    "prisma-html/extras/atlasfin/bridge/certification/RECIPE_REVIEW_GROUPS.json",
+    "prisma-html/extras/atlasfin/bridge/certification/INVALID_REFS.jsonl",
+    "prisma-html/extras/atlasfin/bridge/certification/SUMMARY.md"
+  ],
+  "validations": [
+    {
+      "name": "Exact raw source accounting",
+      "result": "PASS",
+      "detail": "929 + 827 + 271 + 70 = 2,097 exact source outcomes from the four recorded worker heads."
+    },
+    {
+      "name": "Atlasfin non-null reference certification",
+      "result": "PASS",
+      "detail": "2,421/2,421 VALID_REFERENCE; hard invalid refs=0."
+    },
+    {
+      "name": "Representation normalization audit",
+      "result": "PASS",
+      "detail": "341 representation-only changes; semanticMutationCount=0."
+    },
+    {
+      "name": "Source provenance audit",
+      "result": "PASS",
+      "detail": "Every certification row carries sourceHead, sourceFile, sourceLine and a 64-hex SHA-256 sourceRecordSha256."
+    },
+    {
+      "name": "Recipe convergence re-derivation",
+      "result": "PASS",
+      "detail": "Four review groups re-derived from raw evidence; three Tablet+PC groups and one Tablet-only overlay group; semanticCoalescingAllowed=false for all."
+    },
+    {
+      "name": "Certification branch write-scope audit",
+      "result": "PASS",
+      "detail": "Branch is exactly one commit ahead of base and changes only the six required files under prisma-html/extras/atlasfin/bridge/certification/**."
+    },
+    {
+      "name": "Materiality policy audit",
+      "result": "PASS",
+      "detail": "materialityCatalogInspected=false; no fallback or promotion."
+    },
+    {
+      "name": "Worker PR rule",
+      "result": "PASS",
+      "detail": "No pull request exists for chat5/atlasfin-corpus-cert-20260904."
+    }
+  ],
   "unresolved": [
-    "Need to re-derive Atlasfin reference validity and recipe convergence from exact raw worker evidence.",
-    "Need to produce the six required certification artifacts and prove hard invalid ref count is zero."
+    "Chat 6 must consume certification branch/head chat5/atlasfin-corpus-cert-20260904@6c7743f55434eb8d3429f286e2f9eae275d93d87 during final corpus assembly.",
+    "Chat 6/integration owns the one-time prisma-html/FILES_MANIFEST.json refresh after all accepted corpus bytes are assembled.",
+    "Original bridge PR #540 remains open and unmerged; Chat 5 did not alter or merge it."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Read the required startup authority set, exact raw worker heads and current Atlasfin structured authority; then generate and validate the Chat 5 certification derivative.",
+  "nextAction": "Handoff to Chat 6 final corpus assembly. Remain available only for an evidence-backed bounded correction to the certification derivative if integration reports one.",
   "handoff": {
     "pullRequest": 540,
     "pullRequestUrl": "https://github.com/prismahitech/hitech-os/pull/540",
@@ -56,6 +108,31 @@
     "driftClassification": "NON_RELEVANT_COORDINATION_ONLY",
     "certificationBranch": "chat5/atlasfin-corpus-cert-20260904",
     "certificationBase": "8cc1918c5e015d1408335c15313e7364e04859c2",
-    "sourceBridgeHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0"
+    "sourceBridgeHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
+    "certificationHead": "6c7743f55434eb8d3429f286e2f9eae275d93d87",
+    "certificationState": "READY_FOR_INTEGRATION",
+    "sourceBridgeBranch": "chat5-atlasfin-bridge-20260904",
+    "sourceWorkerHeads": {
+      "tablet": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+      "pc": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+      "mobile": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+      "shared-ui": "57b502f1064571cebd917b36882ef9c11e9fa7d8"
+    },
+    "corpusMetrics": {
+      "sourceOutcomeRecords": 2097,
+      "nonNullAtlasfinReferences": 2421,
+      "validReferences": 2421,
+      "hardInvalidReferences": 0,
+      "representationNormalizations": 341,
+      "semanticMutationCount": 0,
+      "recipeReviewGroups": 4
+    },
+    "integrationNotes": [
+      "Consume this derivative together with the immutable raw worker heads and source bridge head.",
+      "Do not use recipe equality as semantic coalescing authority.",
+      "Preserve raw-vs-qualified normalization provenance when strict-normalizing surface candidates.",
+      "Do not use Materiality Catalog.",
+      "Final FILES_MANIFEST refresh is integration-owned and must occur once."
+    ]
   }
 }
