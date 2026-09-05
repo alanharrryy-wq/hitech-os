@@ -5,12 +5,31 @@
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
   "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-05T02:15:00Z",
+  "updatedAt": "2026-09-05T02:29:00Z",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat6/visual-promotion-control-plane-20260904",
   "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
-  "summary": "Chat 6 resumed under the canonical INTEGRATION_HANDOFF_AND_PLANNING continuation. The five worker refs and the existing Control Plane ref are now explicit in the canonical prompt. Current main is 66fa02147f0cf31529c090a47f376026b406875a. Deterministic integration validation/planning is in progress; no canonical promotion, merge, product/runtime mutation, global ID minting or FILES_MANIFEST refresh is authorized.",
-  "blockers": [],
+  "summary": "Chat 6 deterministic integration planning is active. Current-main source/hash drift is non-relevant to worker physical authority, but direct Control Plane validation exposed interoperability blockers: Chat 3 candidate records are not schema-compatible with the current Control Plane envelope, Chats 1/2/4 have manifest-envelope mismatches, and the current reconciliation fingerprint cannot group different targets/surfaces because it includes surfaceKey and targetId.",
+  "blockers": [
+    {
+      "id": "CHAT3_CONTROL_PLANE_SCHEMA_INCOMPATIBILITY",
+      "status": "ACTIVE_PLANNING_BLOCKER",
+      "scope": "chat3 mobile handoff 7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+      "detail": "All 271 Mobile outcome rows fail current Control Plane candidate validation: top-level projection object is an unknown field; ndcRefs contains qualified 'ndc::SURF.mb.owner_home' instead of a raw NDC ID; evidenceRefs contain unqualified repo/path strings; Atlasfin adapter is stored as 'atlasfin::ADP.MB.TOUCH.V2' instead of the registry raw ID expected by Atlasfin normalization. This does not authorize silent rewriting."
+    },
+    {
+      "id": "SHARD_MANIFEST_ENVELOPE_MISMATCH",
+      "status": "ACTIVE_PLANNING_BLOCKER",
+      "scope": "Chats 1, 2 and 4 manifests",
+      "detail": "Direct validate_shard semantics reject Chat 1 and Chat 4 because top-level inputCensusCount/inputTargetCount is absent; Chat 2 additionally uses schema prisma.visual-promotion.surface-candidate-manifest.v1 rather than prisma.visual-promotion.candidate-shard.v1. Row-level candidate content otherwise preserves zero-loss/unique target accounting."
+    },
+    {
+      "id": "RECONCILIATION_FINGERPRINT_IDENTITY_BOUND",
+      "status": "ACTIVE_BEFORE_CANONICAL_COMPOSER",
+      "scope": "Chat 6 Control Plane",
+      "detail": "Current candidate_fingerprint includes surfaceKey and targetId. Across 2,097 worker outcome rows it yields 2,097 singleton groups and therefore no cross-surface reconciliation group. Canonical promotion must not rely on this key for semantic coalescing without a separately authorized bounded correction/review key."
+    }
+  ],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
     "Current Visual Control census and Target Index are reusable physical truth. DISCOVERY_ONLY is not UNDISCOVERED and broad recensus is not a legal shortcut.",
@@ -18,7 +37,12 @@
     "PRISMA GVAE All-Surface Authority auto-materialized prisma-html/FILES_MANIFEST.json while PR #541 was open. Closing that PR stopped the lane-branch mutation loop.",
     "Final work tree is byte-equivalent to the CI-validated code head cb21ca01ecf8ec755fe34820d3d5b34673f70581: compare cb21..7cc48f reports zero changed files.",
     "Canonical continuation now provides explicit worker refs for Chats 1-5 and places Chat 6 in deterministic integration-planning mode.",
-    "All six current status mailboxes report READY_FOR_INTEGRATION. Several worker lanes retain truthful local/integration blockers, but none authorizes Chat 6 to resolve them by inference."
+    "All six current status mailboxes report READY_FOR_INTEGRATION. Several worker lanes retain truthful local/integration blockers, but none authorizes Chat 6 to resolve them by inference.",
+    "Exact base..current-main diff changes only coordination/governance files plus FILES_MANIFEST.json; no candidate canonicalSourcePath/generatedOutputPath or underlying product/RIFAT source path changed.",
+    "Source/hash revalidation by byte-equivalence passed for Tablet (40 unique recorded source/output paths), Mobile (14) and Shared UI (6); none intersects base..current-main changed paths. PC candidate rows do not carry per-row source/output hashes, so its manifest-level authority snapshots remain the relevant hash evidence.",
+    "Row-level structural/vocabulary validation passed 929/929 Tablet, 827/827 PC and 70/70 Shared UI before Atlasfin registry-existence checks. Mobile failed 271/271 for the schema/reference-envelope reasons recorded as a blocker.",
+    "Atlasfin current registries prove Tablet/PC recipe and adapter IDs. Mobile and Shared UI store qualified adapter strings in atlasfinAdapterId, which current Control Plane normalization expects as raw Atlasfin IDs.",
+    "Exact Control Plane collision logic found zero duplicate target IDs, zero bindingCandidateKey collisions and zero cross-surface fingerprint collisions across 2,097 outcome rows."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -28,7 +52,9 @@
     "Close PR #541 rather than keep allowing PR automation to write a forbidden global integration output onto the lane branch.",
     "Leave FILES_MANIFEST.json unchanged from base on the Chat 6 lane. The interoperability contract assigns its one-time refresh to the later integration stage.",
     "Treat current main movement as evidence to classify, not automatic semantic drift. Revalidate only recorded/relevant source and authority inputs.",
-    "Consume the exact worker heads named by the canonical continuation prompt; do not silently substitute newer lane commits."
+    "Consume the exact worker heads named by the canonical continuation prompt; do not silently substitute newer lane commits.",
+    "Do not normalize Chat 3 or manifest envelopes in-place during planning. Preserve worker commits and represent required bounded corrections explicitly in the integration plan.",
+    "Treat zero current fingerprint collisions as an implementation property, not proof that no semantic cross-surface reconciliation exists."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/contracts/README.md",
@@ -92,16 +118,37 @@
       "result": "PASS",
       "evidence": "compare cb21ca01ecf8ec755fe34820d3d5b34673f70581..7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
       "details": "Two commits ahead but zero file differences, proving the final handoff tree equals the code tree that received successful CI/ForgeOS/Sync/GVAE validations."
+    },
+    {
+      "name": "Worker row-level Control Plane structural/vocabulary validation",
+      "result": "PARTIAL_PASS",
+      "details": "Tablet 929/929 PASS; PC 827/827 PASS; Shared UI 70/70 PASS; Mobile 0/271 PASS due envelope/reference-format mismatch."
+    },
+    {
+      "name": "Direct shard-manifest validation compatibility",
+      "result": "BLOCKED",
+      "details": "Chat 3 manifest envelope is accepted by current top-level count/base rules; Chat 1/4 lack top-level input count; Chat 2 has legacy schema plus missing top-level input count."
+    },
+    {
+      "name": "Current-main source/hash equivalence",
+      "result": "PASS_NON_RELEVANT_DRIFT",
+      "details": "No worker product/RIFAT source/output path referenced by candidate hashes changed between base 57b01ad8... and current main 66fa0214...."
+    },
+    {
+      "name": "Cross-shard collision detection",
+      "result": "PASS_ZERO_COLLISIONS_WITH_LIMITATION",
+      "details": "0 duplicate target IDs; 0 bindingCandidateKey collisions; 0 cross-surface fingerprint reviews across 2,097 rows. Fingerprint includes surfaceKey+targetId, so this is not semantic-dedupe proof."
     }
   ],
   "unresolved": [
-    "Revalidate each worker handoff's baseHead, source hashes and relevant authority inputs against current main 66fa02147f0cf31529c090a47f376026b406875a.",
-    "Run deterministic Control Plane validation across all candidate/bridge outputs and classify collisions/conflicts without promotion.",
-    "Prepare the deterministic INTEGRATION PLAN and stop before canonical mutation/merge."
+    "Validate Chat 5 Atlasfin Bridge current-input equivalence and bridge contract/read-only behavior against current main.",
+    "Resolve exact manifest/record compatibility strategy in the INTEGRATION PLAN without mutating worker shards during planning.",
+    "Compute expected one-time FILES_MANIFEST.json delta and exact deterministic assembly order.",
+    "List eligible promotions vs blocked items and gates required before any canonical mutation."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Inspect the exact worker commits and outputs, compare their recorded authority/source inputs against current main, then run Control Plane validation and assemble the deterministic integration plan.",
+  "nextAction": "Validate the Atlasfin Bridge and remaining authority snapshot equivalence, then produce the deterministic integration plan with bounded correction requirements and hard-stop boundaries.",
   "handoff": {
     "ready": false,
     "workBranch": "chat6/visual-promotion-control-plane-20260904",
@@ -124,6 +171,8 @@
     "continuationMode": "DETERMINISTIC_INTEGRATION_PLANNING",
     "currentMainHead": "66fa02147f0cf31529c090a47f376026b406875a",
     "explicitWorkerRefsReceived": true,
-    "integrationPlanReady": false
+    "integrationPlanReady": false,
+    "workerOutcomeRowsValidated": 2097,
+    "controlPlaneCollisionCount": 0
   }
 }

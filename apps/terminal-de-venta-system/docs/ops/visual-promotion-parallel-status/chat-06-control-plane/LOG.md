@@ -61,3 +61,27 @@ Read all six current `STATUS.json` mailboxes. All report `READY_FOR_INTEGRATION`
 ## 2026-09-05T02:15:00Z — DECISION
 
 Proceed with read-only deterministic validation/planning only. No broad rediscovery, no Materiality inspection, no global ID minting, no candidate promotion, no product/runtime mutation, no PR merge and no final `FILES_MANIFEST.json` refresh.
+
+## 2026-09-05T02:29:00Z — FINDING
+
+Direct Control Plane validation across the four surface shards found a real interoperability mismatch. Tablet 929/929, PC 827/827 and Shared UI 70/70 outcome rows pass the current structural/vocabulary/reference-envelope checks used so far. Mobile 271/271 does not: each row carries a top-level `projection` object not accepted by the current candidate schema, qualified `ndc::SURF.mb.owner_home` inside `ndcRefs` where the Control Plane expects a raw NDC ID, and unqualified repo/path entries inside `evidenceRefs`. Mobile also stores the Atlasfin adapter as `atlasfin::ADP.MB.TOUCH.V2` in the canonical Atlasfin field.
+
+## 2026-09-05T02:29:00Z — BLOCKER
+
+`CHAT3_CONTROL_PLANE_SCHEMA_INCOMPATIBILITY` recorded. No silent normalization or rewrite is authorized during planning.
+
+## 2026-09-05T02:29:00Z — FINDING
+
+Direct shard-manifest validation also exposes envelope drift: Chat 1 and Chat 4 omit the top-level input count expected by `validate_shard`; Chat 2 additionally declares legacy schema `prisma.visual-promotion.surface-candidate-manifest.v1`. Their row-level zero-loss accounting remains intact.
+
+## 2026-09-05T02:29:00Z — FINDING
+
+Current-main source/hash revalidation is clean for physical inputs: none of the worker-recorded product/RIFAT source/output paths changed between base `57b01ad8...` and current main `66fa0214...`. The main movement is coordination/governance drift, not physical-source drift.
+
+## 2026-09-05T02:29:00Z — FINDING
+
+Across all 2,097 outcome rows, exact Control Plane collision logic reports zero duplicate targets, zero binding-candidate-key collisions and zero cross-surface fingerprint collisions. However, the current fingerprint includes both `surfaceKey` and `targetId`, producing 2,097 singleton groups. Therefore zero collisions cannot be interpreted as proof of zero cross-surface semantic reconciliation need.
+
+## 2026-09-05T02:29:00Z — DECISION
+
+Preserve all worker heads exactly. Planning will describe bounded compatibility corrections separately and will not mutate candidate shards, canonical authority, runtime or global manifests.
