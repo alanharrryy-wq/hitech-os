@@ -1,0 +1,169 @@
+{
+  "formatVersion": "1",
+  "candidateOnly": true,
+  "chat": "Chat 1",
+  "mission": "Tablet existing-census semantic/binding/application candidate promotion",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "surfaceKey": "tablet",
+  "ownedWriteRoot": "prisma-html/governance/visual-promotion/candidates/tablet/**",
+  "input": {
+    "targetIndexRecordCount": 933,
+    "censusRecordKind": "VISUAL_CONTROL_CENSUS_TARGET",
+    "censusTargetCount": 929,
+    "excludedNonCensusRecordCount": 4,
+    "excludedNonCensusTargetIds": [
+      "TGT.TABLET.POS.COBRAR.ACCENT.BASE.V1",
+      "TGT.TABLET.POS.COBRAR.ACCENT.BEFORE.V1",
+      "TGT.TABLET.POS.COBRAR.ACCENT.ICON.V1",
+      "TGT.TABLET.POS.COBRAR.PRIMARY.V1"
+    ]
+  },
+  "authoritySnapshots": {
+    "targetIndex": {
+      "path": "prisma-html/authority/rifat/prisma-ui/visual-control/target-index/tablet.json",
+      "gitBlobSha": "15a974f70cc6e0b83e104ee935fc61936f2bd94a",
+      "indexDigest": "d41c0b2f0f9a8f5d691f9f1dfcb2fa0dfa3e6b8bef9372d8b267b7d7b65e563e"
+    },
+    "expandedVisualControl": {
+      "layers": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/tablet/layers.jsonl",
+        "gitBlobSha": "54918d96c2485cbc69d157545e0d41cfdb1b310c"
+      },
+      "cssOwners": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/tablet/owners-cssOwners.jsonl",
+        "gitBlobSha": "8ee1d9f04f77d8b99e44d28d1492830e5fc269ed"
+      },
+      "regionOwners": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/tablet/owners-regionOwners.jsonl",
+        "gitBlobSha": "aaefb8da21bb1db492208a45a0f40c687f96b8e2"
+      },
+      "editableSlots": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/tablet/editable-slots.jsonl",
+        "gitBlobSha": "92a62843dce007b7ea1c8f26db1c0165f31a5274"
+      },
+      "routes": {
+        "path": "prisma-html/authority/rifat/prisma-ui/visual-control/expanded/tablet/routes.jsonl",
+        "gitBlobSha": "a9730378211f09134ca155e00a70e786dfaea7a4"
+      }
+    },
+    "identity": {
+      "bindings": {
+        "path": "prisma-html/authority/rifat/identity/registries/element-bindings.registry.json",
+        "gitBlobSha": "88c3a7e8736d637e07ae1fd7dab377867e2b5ca8"
+      },
+      "recipes": {
+        "path": "prisma-html/authority/rifat/identity/registries/recipe.registry.json",
+        "gitBlobSha": "aaf26182b1637e1bfc6a14bd537af100ed96b1e4"
+      },
+      "adapters": {
+        "path": "prisma-html/authority/rifat/identity/registries/surface-adapters.registry.json",
+        "gitBlobSha": "b284f0300ae5cd6d88a5d6cd252c11858ab7376d"
+      }
+    },
+    "projectionManifest": {
+      "path": "prisma-html/authority/rifat/visual-source-manifest.json",
+      "gitBlobSha": "82c9a080928ccf9d3f3c00aacb3d28feb2d91ad2"
+    },
+    "atlasfin": {
+      "families": {
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-family.registry.json",
+        "gitBlobSha": "6dcd40a41b506848a10490dc20a6bd446cee17df"
+      },
+      "recipes": {
+        "path": "prisma-html/extras/atlasfin/assets/data/visual-recipe.registry.json",
+        "gitBlobSha": "af8dbff2cf22e0cb77163128af0358cd0a9d3762"
+      },
+      "adapters": {
+        "path": "prisma-html/extras/atlasfin/assets/data/surface-adapter.registry.json",
+        "gitBlobSha": "f6eb2a32ff7a18ec80c6917654fc6d63c9024319"
+      }
+    },
+    "ndc": {
+      "canon": "apps/terminal-de-venta-system/docs/ndc/01_NDC_CANON_AND_DOCTRINE.md",
+      "idGrammar": "apps/terminal-de-venta-system/docs/ndc/02_NDC_ID_GRAMMAR_AND_NAMING.md"
+    }
+  },
+  "policy": {
+    "atlasfinFirst": true,
+    "atlasfinRole": "PRIORITY_VISUAL_REFERENCE_AND_CANONICAL_HUMAN_COCKPIT",
+    "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+    "materialityCatalogInspected": false,
+    "materialityFallbackUsed": false,
+    "broadRediscoveryPerformed": false,
+    "currentCensusReused": true,
+    "canonicalIdsMinted": false,
+    "productOrRuntimeMutation": false,
+    "globalAuthorityMutation": false,
+    "protectedSurfacesTouched": [],
+    "protectedSurfaces": [
+      "web",
+      "chart-lab",
+      "control-center"
+    ]
+  },
+  "accounting": {
+    "inputCensusCount": 929,
+    "outputCount": 929,
+    "outcomes": {
+      "CANDIDATES": 141,
+      "UNRESOLVED": 786,
+      "CONFLICTS": 2
+    },
+    "physicalStatus": {
+      "CURRENT": 927,
+      "DRIFT": 2
+    },
+    "physicalCoordinates": {
+      "routeResolved": 369,
+      "regionResolved": 363,
+      "slotResolved": 1,
+      "componentResolved": 156,
+      "ownerResolved": 755
+    },
+    "atlasfinMatchStatus": {
+      "NO_MATCH": 786,
+      "MATCHED_RECIPE": 143
+    },
+    "ndcResolutionStatus": {
+      "UNRESOLVED": 929
+    },
+    "visualMeaningStatus": {
+      "UNRESOLVED": 787,
+      "CANDIDATE_REVIEW_REQUIRED": 141,
+      "RESOLVED_EXISTING": 1
+    },
+    "bindingStatus": {
+      "BLOCKED": 787,
+      "CANDIDATE": 141,
+      "EXISTING_RESOLVED": 1
+    },
+    "projectionStatus": {
+      "CURRENT": 929
+    },
+    "promotionStatus": {
+      "REGISTER_TARGET_FIRST": 786,
+      "ELIGIBLE_CANDIDATE": 141,
+      "BLOCKED": 2
+    },
+    "workEntryDecision": {
+      "REGISTER_TARGET_FIRST": 927,
+      "BLOCKED": 2
+    }
+  },
+  "validation": {
+    "zeroLoss": true,
+    "duplicateTargetIdCount": 0,
+    "missingTargetIdCount": 0,
+    "extraTargetIdCount": 0,
+    "enumViolationCount": 0,
+    "forbiddenAmbiguousFieldCount": 0,
+    "writesOutsideOwnedDirectory": 0
+  },
+  "changedPaths": [
+    "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/UNRESOLVED.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/CONFLICTS.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/SUMMARY.md"
+  ]
+}
