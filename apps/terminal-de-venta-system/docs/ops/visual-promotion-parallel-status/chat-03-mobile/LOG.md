@@ -56,3 +56,22 @@ No updates published yet.
 - Planned certification branch: `chat3/mobile-corpus-cert-20260904` from current canonical main.
 - Scope is syntactic/reference normalization only. No semantic upgrade, no projection repair, no RIFAT-vs-product choice, no Materiality use, no product/runtime mutation.
 - Lane state changed to `IN_PROGRESS`.
+
+## 2026-09-04T23:59:00-06:00 — FINDING / DECISION / VALIDATION / HANDOFF / COMPLETE
+
+- Created certification branch `chat3/mobile-corpus-cert-20260904` from canonical `main` `8cc1918c5e015d1408335c15313e7364e04859c2`.
+- Certification commit: `664035e83943ae48c923585765d3c505b1bd8c53`.
+- Wrote exactly five owned outputs under `prisma-html/governance/visual-promotion/candidates/mobile/certification/`: `MANIFEST.json`, `NORMALIZED.jsonl`, `CERTIFICATION.jsonl`, `INVALID.jsonl`, `SUMMARY.md`.
+- Strict representation normalization completed for the known Mobile mismatches only: projection flattening, raw domain-scoped NDC refs, strict evidence-ref qualification, and raw Atlasfin adapter ID.
+- Original worker bytes remain immutable at `7f32ce6f1b602a14781fa2f4f3f323035f8029ec`; every normalized row pins source file, line and SHA-256 of the original JSONL record.
+- Validation PASS: `271/271` normalized, `271/271` certification, unique targets `271`, missing `0`, extra `0`, duplicates `0`, invalid `0`.
+- Certification status: `271 VALID_REGISTER_TARGET_FIRST`.
+- Semantic invariants PASS: `semanticMutationCount=0`; all promotion and Work Entry decisions remain `REGISTER_TARGET_FIRST`.
+- Projection partition unchanged: `133 CURRENT + 138 DRIFT`.
+- Read-back provenance validation PASS: source-record hash mismatches `0`; normalized-record hash mismatches `0`.
+- Reference validation PASS for NDC `SURF.mb.owner_home`, Atlasfin `ADP.MB.TOUCH.V2`, Identity `prisma.adapter.mobile.v1`; strict evidence refs invalid count `0`.
+- File digests: `NORMALIZED.jsonl = bfec6c59764f92ed54edd63dd1df4273165044ade95839a92d08930e93703ee1`; `CERTIFICATION.jsonl = 81eb0afbf8c7fa54833ed09f503d2ccf2ee5407c5aed089dcda6bbd75219a287`.
+- Branch-scope validation PASS: exactly five changed paths, all inside the Mobile certification root.
+- No RIFAT-vs-product repair direction chosen. No broad rediscovery. No Materiality Catalog. No product/runtime/global-authority mutation. No `FILES_MANIFEST.json` refresh. No Chat 3 PR.
+- Chat 3 state: `READY_FOR_INTEGRATION` with result `PASS_MOBILE_CANDIDATE_CORPUS_CERTIFIED`.
+- Handoff to Chat 6: consume `chat3/mobile-corpus-cert-20260904` @ `664035e83943ae48c923585765d3c505b1bd8c53` as the certified Mobile derivative while preserving raw source provenance `7f32ce6f1b602a14781fa2f4f3f323035f8029ec`.
