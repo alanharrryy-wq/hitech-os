@@ -16,6 +16,26 @@ For an existing Chat 1–6 that already completed its first lane phase, the user
 
 The chat must read the interoperability contract, vocabulary registry, current prompt and its own status mailbox before doing any lane work.
 
+### Mailbox-driven continuation rule
+
+For the current cohort the owner does **not** need to paste per-Chat instructions, witness results or cross-chat handoffs.
+
+The only continuation message required in an existing Chat is:
+
+> Continue with your work. Re-read the canonical prompt and your own mailbox, then execute your current Chat assignment.
+
+On receipt, every Chat must:
+
+1. resolve its own Chat number, status branch and mailbox from `STATUS_CHANNEL_CONTRACT.json` / `STATUS_INDEX.json`;
+2. read its own current `STATUS.json` and append-only `LOG.md`;
+3. re-read the current phase and its exact Chat section in this canonical prompt;
+4. execute only that assignment;
+5. publish start/progress/blocker/completion back to the **same mailbox branch**;
+6. place the phase result/receipt under `handoff` as required by the current phase;
+7. never ask the repository owner to carry a receipt from one Chat to another when the status branch is readable.
+
+Chat 6 must discover Chats 1–5 progress and receipts by reading their deterministic status branches directly. A missing receipt remains missing; do not infer it and do not request a copy/paste relay from the owner.
+
 ## Rules shared by all six chats
 
 These rules are inherited by every chat below:
@@ -305,7 +325,7 @@ Remaining work:
 3. Rebuild/validate the Atlasfin snapshot only as a read-only consumer of the materialized corpus.
 4. Continue using exact-head/hash-pinned fail-closed intake. Unknown head/hash/shape must fail closed.
 5. Create a fresh integration branch from the then-current `main` and assemble only accepted exact head-tree bytes.
-6. Before the final manifest refresh, re-read all five witness mailboxes.
+6. Before the final manifest refresh, re-read all five witness mailboxes directly from their deterministic `status/vp-chat-XX-...` branches. Do not ask the owner to paste witness messages between chats.
 7. Require these five independent receipts:
    - `PASS_TABLET_CORPUS_WITNESS`;
    - `PASS_PC_CORPUS_WITNESS`;
