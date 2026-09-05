@@ -123,3 +123,19 @@ No updates published yet.
 - Allowed lane writes are restricted to `prisma-html/governance/visual-promotion/candidates/pc/certification/**`.
 - Source worker bytes are immutable evidence. Certification is a derivative only.
 - Required completion remains 827/827 corpus-valid, invalid=0, semanticMutationCount=0, selector conflict preserved, 139 projection MISSING preserved.
+
+## 2026-09-04T23:49:00-06:00 — FINDING
+
+- Precommit PC corpus certification passed against the exact strict candidate schema from Control Plane head `7cc48fa49906c8f443b267fd6c3590fd3f4340fb`.
+- All `827/827` source records are already strict candidate representations.
+- The legacy compatibility gap is the PC source manifest/count envelope, not candidate semantic fields.
+- Certification labels are `827 VALID_REGISTER_TARGET_FIRST`. Source bucket placement does not upgrade promotion readiness.
+- Preserved counts: physical `826 CURRENT / 1 DRIFT`; projection `688 CURRENT / 139 MISSING`; Atlasfin `186 MATCHED_RECIPE / 641 NO_MATCH`; NDC `827 UNRESOLVED`; Identity binding `827 BLOCKED`.
+- Invalid records: 0. Duplicate target IDs: 0. semanticMutationCount: 0.
+
+## 2026-09-04T23:49:00-06:00 — DECISION
+
+- `NORMALIZED.jsonl` will preserve every source record byte-for-byte because no field-level normalization is required for PC.
+- Only the legacy shard manifest envelope is normalized to `prisma.visual-promotion.candidate-shard.v1`.
+- Deterministic per-record provenance hash rule: SHA-256 over the exact UTF-8 JSON record bytes excluding the line terminator.
+- No projection repair, semantic inference, binding resolution, Atlasfin upgrade, canonical ID minting, Materiality use or product/global-authority mutation.
