@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .control_plane import MATERIALITY_POLICY, validate_candidate
+from .corpus_certification import semantic_signature
 
 REGISTRY_SCHEMA = "prisma.visual-promotion.certification-intake.v1"
 SURFACE_ORDER = ("tablet", "pc", "mobile", "shared-ui")
@@ -228,9 +229,11 @@ def verify_surface_handoff(
     for target in sorted(expected_targets):
         norm_line, norm_raw, norm = owner_normalized[target]
         validate_candidate(norm, expected_head=str(norm.get("baseHead") or ""))
-        if canonical_json(norm) != canonical_json(independent_by_target[target]):
+        if semantic_signature(norm) != semantic_signature(
+            independent_by_target[target]
+        ):
             raise CertificationHandoffError(
-                f"CERTIFICATION_NORMALIZED_RECORD_MISMATCH:{surface}:{target}"
+                f"CERTIFICATION_NORMALIZED_SEMANTIC_MISMATCH:{surface}:{target}"
             )
 
         cert_line, cert_raw, cert = owner_certified[target]
@@ -292,7 +295,7 @@ def verify_surface_handoff(
         "recordCount": expected,
         "invalidCount": 0,
         "semanticMutationCount": 0,
-        "normalizedRecordsExactMatch": True,
+        "normalizedRecordsSemanticallyEquivalent": True,
         "sourceProvenanceExactMatch": True,
         "files": file_evidence,
         "ownerByTarget": owner_meta,

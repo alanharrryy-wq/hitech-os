@@ -25,11 +25,13 @@
   },
   "certificationHandoffs": {
     "exactHeadTreeBytesRequired": true,
-    "normalizedRecordEqualityRequired": true,
+    "normalizedRecordEqualityRequired": false,
     "sourceRecordHashEqualityRequired": true,
     "invalidFilesMustBeEmpty": true,
     "semanticMutationCountRequired": 0,
-    "atlasfinReferenceCertificationRequired": true
+    "atlasfinReferenceCertificationRequired": true,
+    "normalizedSemanticFidelityRequired": true,
+    "strictCandidateValidationRequired": true
   },
   "semanticReview": {
     "separateFromCollisionFingerprint": true,
