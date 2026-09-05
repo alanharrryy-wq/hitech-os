@@ -53,3 +53,33 @@ No updates published yet.
 - Two physical drift records remain explicitly blocked: `TGT.CENSUS.TABLET.3B2FED34BC21B5C9FEEC.V1` and `TGT.CENSUS.TABLET.850AD4CEF4CCD12BCD05.V1`.
 - Next step is a bounded comparison of the exact Chat 1 input-authority hashes against current `main`. This is revalidation, not broad rediscovery.
 
+## 2026-09-04T19:57:31-06:00 — FINDING
+
+- Current `main`: `d08013db42c34ccafb80075392ec6d7a289cf7b5`, three commits ahead of Chat 1 base.
+- Bounded revalidation checked the exact Chat 1 input authorities only. No recensus and no broad rediscovery were performed.
+- All **13/13** authority files pinned in `MANIFEST.json.authoritySnapshots` are byte-identical on current `main` by Git blob SHA.
+- The six additional Atlasfin registries used/reviewed by the lane are also byte-identical.
+- NDC canon/ID grammar and the unchanged startup authorities (Field Manual, Factory Ledger Agent Gate, Visual Change Master Map, Visual Core Contract) show no relevant drift.
+- The changed startup/cohort docs only add the shared status-channel protocol.
+
+## 2026-09-04T19:57:31-06:00 — DECISION
+
+- Base-to-current-main movement is classified as **coordination-only drift** for Chat 1.
+- No candidate recomputation, no broad rediscovery and no product/runtime mutation are justified.
+- State remains `READY_FOR_INTEGRATION`.
+
+## 2026-09-04T19:57:31-06:00 — VALIDATION
+
+- `PASS_BOUNDED_CHAT1_AUTHORITY_EQUIVALENCE`.
+- Pinned authority snapshots unchanged: **13/13**.
+- Additional Atlasfin registry inputs unchanged: **6/6**.
+- Relevant candidate-semantic drift detected: **0**.
+- Status-channel governance additions detected: yes, coordination-only.
+
+## 2026-09-04T19:57:31-06:00 — HANDOFF
+
+- Chat 1 original lane work is complete under its worker completion rule.
+- No user action is required.
+- Integration may consume `chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728` with the recorded caveat that the two physical DRIFT records remain blocked conflicts.
+- Future Chat 1 work should resume only if a recorded input authority/candidate-semantic contract drifts or canonical integration requests a bounded correction inside the Chat 1 ownership.
+
