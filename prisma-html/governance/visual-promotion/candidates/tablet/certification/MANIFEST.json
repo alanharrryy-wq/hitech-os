@@ -1,0 +1,36 @@
+{
+  "schema": "prisma.visual-promotion.candidate-shard.v1",
+  "candidateOnly": true,
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "surfaceKey": "tablet",
+  "ownedRoot": "prisma-html/governance/visual-promotion/candidates/tablet/",
+  "inputCensusCount": 929,
+  "inputTargetCount": 929,
+  "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+  "broadRediscoveryPerformed": false,
+  "sourceAuthorityRefs": [],
+  "sourceHashes": {
+    "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl": "3d3a70e4b271f70305d41dfd70511e9776d6ec23f32c4011a4b543d6a628b915",
+    "prisma-html/governance/visual-promotion/candidates/tablet/UNRESOLVED.jsonl": "b4d732ea89e661828b9bef4927e0f397ea20b42b46f229119fd5e98493c699ab",
+    "prisma-html/governance/visual-promotion/candidates/tablet/CONFLICTS.jsonl": "2ed2031784b6764e82bbfb20c06255318ce1e0b899e28b9e68480789b82891f5",
+    "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json": "5ba25d4c118303bbb69f2bdaa002227e2b91624bb7c9cb00ed5b2c5b49452ef5",
+    "prisma-html/governance/visual-promotion/candidates/tablet/SUMMARY.md": "3af4bed52fc533d2bbc1bee3985c8098d8d0a94db832245096323dd2ca8e5073"
+  },
+  "outputFiles": [
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/NORMALIZED.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/CERTIFICATION.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/INVALID.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/certification/SUMMARY.md"
+  ],
+  "notes": [
+    "Certification derivative branch chat1/tablet-corpus-cert-20260904 created from canonical main 8cc1918c5e015d1408335c15313e7364e04859c2.",
+    "Immutable source worker: chat1/tablet-visual-promotion-57b01ad8@1b669d98dc9063fe4d6f5f8ddc06262a6968e728; source base 57b01ad8bda043ec25763203354b686341bace09.",
+    "Strict intake contract pinned to Chat 6 7cc48fa49906c8f443b267fd6c3590fd3f4340fb; candidate schema blob 6a7b0fb08ef0ba85ebd3782053f82a9a90cd8bdb; manifest schema blob 659cbc3f0239f0435008ba796ebc181b3da6232c.",
+    "All 929 Tablet source rows are strict-record compatible, so NORMALIZED.jsonl is identity pass-through of exact source JSONL row bytes; the known Tablet compatibility difference is the source manifest envelope.",
+    "CERTIFICATION.jsonl pins source head, source base, source file, source bucket, source line and SHA-256 of exact UTF-8 source record bytes excluding newline for every record.",
+    "The single EXISTING_RESOLVED Cobrar record was reference-validated against BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 as stronger Identity authority; no source field changed.",
+    "Both physical DRIFT conflicts remain source CONFLICTS with DRIFT/BLOCKED/BLOCKED semantics.",
+    "No Materiality access/fallback, broad rediscovery, canonical-ID minting, product/runtime mutation, global authority mutation, PR creation or FILES_MANIFEST refresh."
+  ]
+}
