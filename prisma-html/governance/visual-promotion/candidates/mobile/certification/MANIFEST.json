@@ -1,0 +1,147 @@
+{
+  "schema": "prisma.visual-promotion.surface-corpus-certification.v1",
+  "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+  "chatId": 3,
+  "lane": "MOBILE_CORPUS_CERTIFICATION",
+  "surfaceKey": "mobile",
+  "candidateOnly": true,
+  "certificationOnly": true,
+  "certificationBaseHead": "8cc1918c5e015d1408335c15313e7364e04859c2",
+  "certificationBranch": "chat3/mobile-corpus-cert-20260904",
+  "ownedRoot": "prisma-html/governance/visual-promotion/candidates/mobile/certification/**",
+  "sourceProvenance": {
+    "sourceBranch": "visual-promotion-chat3-mobile-20260904",
+    "sourceHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+    "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "inputCount": 271,
+    "sourceFiles": [
+      {
+        "path": "prisma-html/governance/visual-promotion/candidates/mobile/MANIFEST.json",
+        "gitBlobSha": "320c385eb3369539d0ab2a40af879ede200a1e9f",
+        "sha256": "337154d89ddadb08861b806560bba8769ebeb5da417b5788870cb16cc62633d5"
+      },
+      {
+        "path": "prisma-html/governance/visual-promotion/candidates/mobile/UNRESOLVED.jsonl",
+        "gitBlobSha": "edc991f6359e566db032f6ecd0f14d742735d2a4",
+        "sha256": "291ca7bdd5f0c7c26064c0cf8a0d2bb1c30b69797f6b988a0cd19965c7c17350",
+        "recordCount": 133
+      },
+      {
+        "path": "prisma-html/governance/visual-promotion/candidates/mobile/CONFLICTS.jsonl",
+        "gitBlobSha": "79ac54af75206f70d7923540c0ef39f6707f97a1",
+        "sha256": "f34febd565cdb691c2e2aa47abd3060d5a0f44cbf18cb59c9d3fb2b8cb54faee",
+        "recordCount": 138
+      },
+      {
+        "path": "prisma-html/governance/visual-promotion/candidates/mobile/CANDIDATES.jsonl",
+        "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "recordCount": 0
+      }
+    ],
+    "sourceTargetDigest": "532ba142c843a3531ba445070ea9234144a6022c037d0eb8a830b52894815f1e"
+  },
+  "controlPlaneAuthority": {
+    "sourceBranch": "chat6/visual-promotion-control-plane-20260904",
+    "sourceHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+    "validatedEquivalentCodeHead": "cb21ca01ecf8ec755fe34820d3d5b34673f70581",
+    "candidateSchema": "prisma-html/governance/visual-promotion/contracts/candidate.schema.json",
+    "candidateSchemaGitBlobSha": "6a7b0fb08ef0ba85ebd3782053f82a9a90cd8bdb",
+    "shardManifestSchema": "prisma-html/governance/visual-promotion/contracts/candidate-shard-manifest.schema.json",
+    "shardManifestSchemaGitBlobSha": "659cbc3f0239f0435008ba796ebc181b3da6232c",
+    "controlPlaneContract": "prisma-html/governance/visual-promotion/contracts/control-plane.contract.json",
+    "controlPlaneContractGitBlobSha": "dbdd3b2ccc30a09f34f9de7ea931ac4b1049ed30"
+  },
+  "normalizationPolicy": {
+    "representationOnly": true,
+    "semanticMutationAllowed": false,
+    "semanticMutationCount": 0,
+    "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+    "materialityCatalogInspected": false,
+    "broadRediscoveryPerformed": false,
+    "repairDirectionChosen": false,
+    "transforms": [
+      "FLATTEN_PROJECTION_OBJECT_TO_STRICT_TOP_LEVEL_FIELDS",
+      "NORMALIZE_NDC_REFS_TO_DOMAIN_SCOPED_RAW_IDS",
+      "NORMALIZE_UNQUALIFIED_EVIDENCE_REFS_TO_STRICT_AUTHORITY_REFS",
+      "NORMALIZE_ATLASFIN_ADAPTER_TO_DOMAIN_SCOPED_RAW_ID"
+    ],
+    "evidenceRefConversionCount": 1493
+  },
+  "referenceValidation": {
+    "ndcRef": "SURF.mb.owner_home",
+    "ndcRegistryPath": "apps/terminal-de-venta-system/docs/ndc/registry/ndc_surface_registry_seed.json",
+    "ndcRegistryGitBlobSha": "44c29f0333144501b0bef2e36c0aed0d3865ef2f",
+    "atlasfinAdapterId": "ADP.MB.TOUCH.V2",
+    "atlasfinRegistryPath": "prisma-html/extras/atlasfin/assets/data/surface-adapter.registry.json",
+    "atlasfinRegistryGitBlobSha": "f6eb2a32ff7a18ec80c6917654fc6d63c9024319",
+    "identityAdapterId": "prisma.adapter.mobile.v1",
+    "identityRegistryPath": "prisma-html/authority/rifat/identity/registries/surface-adapters.registry.json",
+    "identityRegistryGitBlobSha": "b284f0300ae5cd6d88a5d6cd252c11858ab7376d",
+    "status": "PASS"
+  },
+  "accounting": {
+    "inputCount": 271,
+    "normalizedCount": 271,
+    "certificationCount": 271,
+    "invalidCount": 0,
+    "uniqueTargetIds": 271,
+    "missingTargetIds": 0,
+    "extraTargetIds": 0,
+    "duplicateTargetIds": 0,
+    "sourceBuckets": {
+      "candidates": 0,
+      "unresolved": 133,
+      "conflicts": 138
+    }
+  },
+  "projectionStatusCounts": {
+    "CURRENT": 133,
+    "DRIFT": 138,
+    "MISSING": 0,
+    "NOT_REQUIRED": 0,
+    "UNRESOLVED": 0
+  },
+  "certificationStatusCounts": {
+    "VALID_ELIGIBLE_CANDIDATE": 0,
+    "VALID_REGISTER_TARGET_FIRST": 271,
+    "VALID_BLOCKED": 0,
+    "VALID_NOT_APPLICABLE": 0
+  },
+  "semanticInvariants": {
+    "allTargetIdsPreserved": true,
+    "promotionStatusPreserved": true,
+    "workEntryDecisionPreserved": true,
+    "ndcResolutionPreserved": true,
+    "bindingStatusPreserved": true,
+    "atlasfinMatchStatusPreserved": true,
+    "driftPartitionPreserved": true,
+    "rifatVsProductRepairDirectionChosen": false,
+    "semanticMutationCount": 0
+  },
+  "outputFiles": [
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/certification/NORMALIZED.jsonl",
+      "sha256": "bfec6c59764f92ed54edd63dd1df4273165044ade95839a92d08930e93703ee1",
+      "recordCount": 271
+    },
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/certification/CERTIFICATION.jsonl",
+      "sha256": "81eb0afbf8c7fa54833ed09f503d2ccf2ee5407c5aed089dcda6bbd75219a287",
+      "recordCount": 271
+    },
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/certification/INVALID.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "recordCount": 0
+    },
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/certification/SUMMARY.md"
+    }
+  ],
+  "invalidPolicy": "FINAL_CORPUS_MAY_NOT_CONTAIN_INVALID_RECORDS",
+  "runtimeVisualGreen": false,
+  "currentlyAuthorizedCanonicalPromotions": 0,
+  "filesManifestUpdated": false,
+  "prOpened": false
+}
