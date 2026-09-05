@@ -5,31 +5,31 @@
   "statusBranch": "status/vp-chat-05-atlasfin",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-05-atlasfin",
   "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T19:50:29-06:00",
+  "updatedAt": "2026-09-04T20:16:00-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat5-atlasfin-bridge-20260904",
   "workHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
-  "summary": "Chat 5 Atlasfin Bridge implemented as a bounded read-only bridge under prisma-html/extras/atlasfin/bridge/** and published in PR #540. It reuses the 418-element Atlasfin catalog and structured registries, preserves authority-domain separation, consumes optional worker candidate shards without fabricating missing data, exposes current Cobrar evidence as read-only reference, and leaves Materiality Catalog in STANDBY_USER_INVOKED_ONLY.",
+  "summary": "Chat 5 remains in canonical HOLD / READY_FOR_INTEGRATION. The updated continuation prompt was re-read on current main 66fa02147f0cf31529c090a47f376026b406875a. Work branch/head and evidence provenance remain frozen at chat5-atlasfin-bridge-20260904 / c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0 from base 57b01ad8bda043ec25763203354b686341bace09. Bounded comparison shows main movement is coordination/governance-only for Chat 5 and does not modify Atlasfin catalog/registries, Cobrar bridge evidence, Identity/RIFAT contracts, or bridge source inputs; no lane recomputation or mutation is authorized.",
   "blockers": [
     {
       "code": "FILES_MANIFEST_INTEGRATION_REQUIRED",
       "status": "OPEN_INTEGRATION_ONLY",
-      "detail": "PRISMA VISCORE1 Certification is red only at the final committed prisma-html/FILES_MANIFEST.json parity step because Chat 5 added five bridge files. Chat 5 ownership forbids writing that global manifest; the integration/composer lane must consume the generated manifest candidate."
+      "detail": "The final global prisma-html/FILES_MANIFEST.json refresh for accepted Chat 5 bridge bytes remains integration/composer-owned. Current main refreshed FILES_MANIFEST for coordination-document changes only; PR #540 bridge files are still not on main, so Chat 5 must not repair this global manifest."
     }
   ],
   "findings": [
-    "Atlasfin current manifest reports ATLAS_COMPLETE_27_PAGES with 418 catalog elements.",
-    "Structured Atlasfin registries currently expose 79 properties, 32 families, 32 presets, 8 recipes, 19 states, 16 variants, 8 adapters and 1 asset.",
-    "Current Cobrar exact-target evidence remains available and binding BND.ACT.PRIMARY.TABLET.POS.COBRAR.V1 is resolved; the bridge keeps Identity recipe IDs separate from Atlasfin recipe IDs.",
-    "The optional VISCORE Atlasfin status feed may be absent in-tree; bridge reports PENDING_NOT_PRESENT rather than synthesizing status.",
-    "Materiality Catalog was not inspected and the bridge contains a fail-closed guard against reading it automatically."
+    "Canonical main is now 66fa02147f0cf31529c090a47f376026b406875a.",
+    "The continuation prompt places Chats 1–5 in handoff/hold mode and explicitly freezes Chat 5 work branch chat5-atlasfin-bridge-20260904, work head c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0, PR #540 and base 57b01ad8bda043ec25763203354b686341bace09.",
+    "Bounded diff from Chat 5 base to current main changes AGENTS/status-channel docs, continuation prompt, interoperability/vocabulary coordination clauses and FILES_MANIFEST bookkeeping; it does not change Chat 5 Atlasfin catalog/registry/source inputs or the owned bridge implementation.",
+    "Interoperability/vocabulary changes only add the dedicated coordination-status exception and status-channel metadata; Atlasfin-first, authority-domain separation, no broad rediscovery and Materiality STANDBY remain unchanged.",
+    "No relevant authority/source drift requiring Chat 5 bridge recomputation was found."
   ],
   "decisions": [
-    "Reuse existing Atlasfin/VISCORE/GVAE foundations; do not rebuild Atlasfin, Identity Dictionary, RIFAT, Target Index or Visual Control.",
-    "Keep bridge read-only and contained to Chat 5-owned path.",
-    "Treat absent worker shards as PENDING_NOT_PRESENT and malformed/partial shards as INVALID.",
-    "Do not modify prisma-html/FILES_MANIFEST.json from Chat 5; hand that parity update to the integration/composer lane.",
-    "Do not merge PR #540 from Chat 5."
+    "Honor the normative HOLD override and make no work-branch changes without a bounded integration correction request.",
+    "Preserve exact work branch/head and base provenance; do not rebase solely because main advanced.",
+    "Classify current main movement as non-relevant/coordination-only drift for Chat 5.",
+    "Do not update prisma-html/FILES_MANIFEST.json and do not merge PR #540.",
+    "Do not inspect or use Materiality Catalog."
   ],
   "changedPaths": [
     "prisma-html/extras/atlasfin/bridge/atlasfin_bridge.py",
@@ -98,16 +98,21 @@
       "name": "PRISMA VISCORE1 Certification overall",
       "result": "BLOCKED_ONLY_BY_FILES_MANIFEST_PARITY",
       "detail": "All preceding VISCORE1 steps passed; final committed FILES_MANIFEST parity failed because the five new Chat 5 files are intentionally not written into the global manifest from this lane."
+    },
+    {
+      "name": "Continuation bounded drift revalidation",
+      "result": "PASS_NON_RELEVANT_COORDINATION_ONLY_DRIFT",
+      "detail": "Compared 57b01ad8bda043ec25763203354b686341bace09 to current main 66fa02147f0cf31529c090a47f376026b406875a. No Chat 5 Atlasfin bridge authority/source inputs changed."
     }
   ],
   "unresolved": [
-    "Integration/composer lane must update/regenerate prisma-html/FILES_MANIFEST.json for the five Chat 5 bridge files.",
-    "PR #540 remains open and must be integrated/merged by the owning coordination lane after cohort checks.",
-    "The Chat 5 narrow test file exists but standing workflows do not invoke it directly; no workflow modification was made because .github/workflows/** is outside Chat 5 ownership."
+    "Integration/composer lane must perform the one-time final prisma-html/FILES_MANIFEST.json refresh after accepted prisma-html bytes from all lanes are assembled.",
+    "PR #540 remains open and must not be merged by Chat 5.",
+    "Chat 5 is waiting for any evidence-backed bounded bridge correction request from the integration lane; none is currently present."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Remain available for integration feedback on PR #540; if the composer requests a bounded bridge correction, apply it only in Chat 5 work scope and immediately refresh this mailbox.",
+  "nextAction": "Hold. Preserve PR #540 and c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0 unchanged. If integration requests a bounded bridge correction, validate the request against current authority, modify only prisma-html/extras/atlasfin/bridge/**, then immediately update this mailbox.",
   "handoff": {
     "pullRequest": 540,
     "pullRequestUrl": "https://github.com/prismahitech/hitech-os/pull/540",
@@ -124,6 +129,10 @@
       "Do not collapse Atlasfin IDs with Identity/RIFAT/NDC IDs.",
       "Do not promote candidate evidence to authority or runtime certification.",
       "Do not modify product/runtime from this bridge."
-    ]
+    ],
+    "currentCanonicalMain": "66fa02147f0cf31529c090a47f376026b406875a",
+    "continuationPhase": "INTEGRATION_HANDOFF_AND_PLANNING",
+    "chat5Mode": "HOLD",
+    "driftClassification": "NON_RELEVANT_COORDINATION_ONLY"
   }
 }
