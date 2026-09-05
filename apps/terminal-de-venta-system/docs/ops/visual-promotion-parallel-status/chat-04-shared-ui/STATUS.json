@@ -4,20 +4,110 @@
   "lane": "SHARED_UI_PROMOTION",
   "statusBranch": "status/vp-chat-04-shared-ui",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui",
-  "state": "NOT_STARTED",
-  "updatedAt": null,
-  "baseHead": null,
-  "workBranch": null,
-  "workHead": null,
-  "summary": "No status report has been published yet.",
-  "blockers": [],
-  "findings": [],
-  "decisions": [],
-  "changedPaths": [],
-  "validations": [],
-  "unresolved": [],
+  "state": "WAITING_EXTERNAL",
+  "updatedAt": "2026-09-04T19:51:58-06:00",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "workBranch": "visual-promotion-chat4-shared-ui-20260904",
+  "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+  "summary": "Chat 4 Shared UI promotion lane is complete within its canonical write boundary. The required five-file Shared UI candidate shard was produced with zero-loss accounting for all 70 census targets and exposed as draft PR #539. Lane-local work is finished; integration is waiting on a global FILES_MANIFEST responsibility that Chat 4 is contractually forbidden to mutate. Current main has advanced to d08013db42c34ccafb80075392ec6d7a289cf7b5 since the lane base; overlap/relevance of that movement is the next read-only check.",
+  "blockers": [
+    {
+      "id": "GLOBAL_FILES_MANIFEST_SCOPE_CONFLICT",
+      "status": "ACTIVE_EXTERNAL",
+      "detail": "PRISMA VISCORE1 Certification fails only at 'Committed file manifest must already match'. prisma-html/tools/refresh_files_manifest.py inventories the five new prisma-html lane files, but the Chat 4 worker contract forbids writes to global FILES_MANIFEST.json, its generator, workflow, or other lanes."
+    },
+    {
+      "id": "PROMOTION_SEMANTIC_BLOCKERS_RECORDED",
+      "status": "RECORDED_NOT_LANE_MUTATION_AUTHORITY",
+      "detail": "All 70 records retain truthful semantic/application blockers such as exact-binding, layer-application-policy, recipe and semantic. 19 targets have no exact RIFAT region row and 11 have multiple candidate region rows. These are promotion readiness facts, not permission for Chat 4 to repair global authority."
+    }
+  ],
+  "findings": [
+    "Shared UI Target Index census contains exactly 70 DISCOVERY_ONLY targets and all 70 physical source/output hashes are current.",
+    "Exact region-row join partitions the census as 40 single-region candidate rows, 19 no-region unresolved rows and 11 multi-region conflicts.",
+    "Atlasfin-first review found the neutral Shared UI adapter atlasfin::ADP.SHARED.NEUTRAL.V2 but zero exact selector matches across the 12 current Atlasfin visual recipe target selectors; all 70 are NO_MATCH rather than inferred matches.",
+    "No exact existing NDC binding was proven for any of the 70 physical targets; all ndcResolutionStatus values remain UNRESOLVED and no canonical NDC IDs were invented.",
+    "Identity Shared UI is a NEUTRAL_SOURCE and its existing neutral binding definitions are blocked by missing concrete surface binding authority; no exact existing binding was claimed for these physical targets.",
+    "Projection evidence is CURRENT for all 70 exact-byte-copy source/output pairs.",
+    "Consumer references in Tablet, PC and Mobile were recorded as evidence only; no consumer files were edited.",
+    "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the immutable lane base remains 57b01ad8bda043ec25763203354b686341bace09."
+  ],
+  "decisions": [
+    "Reused the current Visual Control/Target Index census and did not perform broad rediscovery.",
+    "Kept Materiality Catalog at STANDBY_USER_INVOKED_ONLY and did not inspect or consume it.",
+    "Did not mint canonical IDs or promote ambiguous evidence into authority.",
+    "Did not edit consumer shards/products, generated projection, global Identity/RIFAT/Target Index/Factory Ledger/Evidence Index or FILES_MANIFEST.json.",
+    "Used local candidate binding keys only for the 40 single-region candidate records.",
+    "Fail-closed on the global FILES_MANIFEST conflict rather than manufacturing a green check outside Chat 4 ownership.",
+    "Kept PR #539 as draft for handoff instead of merging."
+  ],
+  "changedPaths": [
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/CANDIDATES.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/UNRESOLVED.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/CONFLICTS.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/shared-ui/SUMMARY.md"
+  ],
+  "validations": [
+    {
+      "name": "work-branch-head",
+      "result": "PASS",
+      "detail": "visual-promotion-chat4-shared-ui-20260904 is identical to 57b502f1064571cebd917b36882ef9c11e9fa7d8."
+    },
+    {
+      "name": "zero-loss-accounting",
+      "result": "PASS",
+      "detail": "70 input census targets = 40 candidates + 19 unresolved + 11 conflicts = 70 outputs; target IDs are unique and reconciled exactly once."
+    },
+    {
+      "name": "status-vocabulary-and-record-validation",
+      "result": "PASS",
+      "detail": "Required JSON/JSONL parsed; candidateOnly/baseHead/surfaceKey/closed enums and policy flags validated with no validation errors."
+    },
+    {
+      "name": "scope-diff",
+      "result": "PASS",
+      "detail": "Exactly five work paths changed, all under prisma-html/governance/visual-promotion/candidates/shared-ui/**."
+    },
+    {
+      "name": "ForgeOS Quality Gate",
+      "result": "PASS"
+    },
+    {
+      "name": "CI",
+      "result": "PASS"
+    },
+    {
+      "name": "PRISMA Sync Sentinel Watch",
+      "result": "PASS"
+    },
+    {
+      "name": "PRISMA VISCORE1 Certification",
+      "result": "FAIL_EXTERNAL_SCOPE_CONFLICT",
+      "detail": "All substantive source/static/GVAE/Work Entry/Target Index/Visual Core/Mesh/Identity/RIFAT/Atlasfin/no-fake-READY steps passed; only the committed global FILES_MANIFEST match step failed."
+    }
+  ],
+  "unresolved": [
+    "19 census targets have no exact RIFAT region row proven.",
+    "11 census targets map to multiple RIFAT region rows and Chat 4 did not choose among them.",
+    "70 targets remain NDC UNRESOLVED.",
+    "70 targets have Atlasfin NO_MATCH at the proven element/family/preset/recipe level.",
+    "Exact binding/layer-application/recipe/semantic readiness remains unresolved or blocked as recorded per target.",
+    "Global FILES_MANIFEST update/integration belongs to Control Plane/canonical composer, not Chat 4.",
+    "Current main movement from lane base to d08013db42c34ccafb80075392ec6d7a289cf7b5 has not yet been evaluated for relevant overlap."
+  ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Await first report from assigned chat.",
-  "handoff": null
+  "nextAction": "Read-only compare the immutable Chat 4 base against current main to determine whether the new main movement overlaps Chat 4 authority or candidate paths; then update this mailbox. Do not mutate outside Chat 4 candidate ownership.",
+  "handoff": {
+    "pr": 539,
+    "prState": "OPEN_DRAFT",
+    "workBranch": "visual-promotion-chat4-shared-ui-20260904",
+    "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "accounting": "70 = 40 candidates + 19 unresolved + 11 conflicts",
+    "integrationOwnerNeeded": "VISUAL_PROMOTION_CONTROL_PLANE_OR_CANONICAL_COMPOSER",
+    "integrationNote": "A coordinator may consume the five Chat 4 shard files and perform the separately authorized global FILES_MANIFEST integration. Chat 4 must not make that global write.",
+    "safety": "Materiality not inspected; broad rediscovery false; no product/runtime/consumer/global authority writes; no canonical IDs minted."
+  }
 }
