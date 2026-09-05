@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import unittest
 
-from visual_application.visual_work_entry_gate import classify_path, decide_request, evaluate_changed
+from visual_application.visual_work_entry_gate import (
+    BROAD_REDISCOVERY_REASON,
+    CURRENT_CENSUS_REASON,
+    DECISIONS,
+    classify_path,
+    decide_request,
+    evaluate_changed,
+)
 
 HEAD = "a" * 40
 EXACT = "TGT.TABLET.EXACT.ONE.V1"
@@ -117,8 +124,14 @@ class VisualWorkEntryGateTests(unittest.TestCase):
         self.assertEqual(r["decision"], "BLOCKED")
 
     def test_07_census_target_register_first(self):
+        self.assertEqual(DECISIONS, ("GVAE_EXACT_APPLY", "SURFACE_BATCH_PLAN", "REGISTER_TARGET_FIRST", "BLOCKED"))
         r = decide_request({"task":"visual work","surface":"tablet","targetIds":[CENSUS]}, authority=authority(), current_head=HEAD)
         self.assertEqual(r["decision"], "REGISTER_TARGET_FIRST")
+        self.assertIn(CURRENT_CENSUS_REASON, r["reasons"])
+        rediscovery = decide_request({"task":"visual work","surface":"tablet","targetIds":[CENSUS],"intent":"BROAD_REDISCOVERY"}, authority=authority(), current_head=HEAD)
+        self.assertEqual(rediscovery["decision"], "BLOCKED")
+        self.assertIn(BROAD_REDISCOVERY_REASON, rediscovery["reasons"])
+        self.assertIn(CURRENT_CENSUS_REASON, rediscovery["reasons"])
 
     def test_08_exact_apply_ready_routes_to_gvae(self):
         r = decide_request({"task":"visual work","surface":"tablet","targetIds":[EXACT]}, authority=authority(), current_head=HEAD)
@@ -133,6 +146,10 @@ class VisualWorkEntryGateTests(unittest.TestCase):
         r = decide_request({"task":"whole tablet visual","surface":"tablet"}, authority=authority(), current_head=HEAD)
         self.assertEqual(r["decision"], "SURFACE_BATCH_PLAN")
         self.assertFalse(r["details"]["plans"][0]["ready"])
+        self.assertIn(CURRENT_CENSUS_REASON, r["reasons"])
+        rediscovery = decide_request({"task":"whole tablet visual","surface":"tablet","intent":"REDISCOVER"}, authority=authority(), current_head=HEAD)
+        self.assertEqual(rediscovery["decision"], "BLOCKED")
+        self.assertIn(BROAD_REDISCOVERY_REASON, rediscovery["reasons"])
 
     def test_11_ambiguous_ownership_blocked(self):
         a = authority()
@@ -191,6 +208,12 @@ class VisualWorkEntryGateTests(unittest.TestCase):
     def test_22_expected_head_mismatch_blocked(self):
         r=decide_request({"task":"visual work","surface":"tablet","expectedHead":"b"*40},authority=authority(),current_head=HEAD)
         self.assertEqual(r["decision"],"BLOCKED")
+        unknown=decide_request({"task":"visual work","surface":"tablet","surprise":True},authority=authority(),current_head=HEAD)
+        self.assertEqual(unknown["decision"],"BLOCKED")
+        self.assertTrue(any(value.startswith("REQUEST_CONTRACT_UNKNOWN_FIELDS:") for value in unknown["reasons"]))
+        schema=decide_request({"schema":"wrong","task":"visual work","surface":"tablet"},authority=authority(),current_head=HEAD)
+        self.assertEqual(schema["decision"],"BLOCKED")
+        self.assertIn("REQUEST_CONTRACT_SCHEMA_INVALID",schema["reasons"])
 
     def test_23_factory_ledger_failure_blocks(self):
         a=authority(); a["ledger"]["errors"]=["FACTORY_LEDGER_DNR_REQUIRED"]
