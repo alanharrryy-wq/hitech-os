@@ -71,3 +71,16 @@ Applied the normative HOLD override. No recensus, candidate regeneration, rebase
 
 ## 2026-09-04T20:14:00-06:00 — HANDOFF
 Current handoff remains ready: draft PR #539 and worker head `57b502f1064571cebd917b36882ef9c11e9fa7d8`. Integration/composer owns any later deterministic global `FILES_MANIFEST.json` refresh and may request a bounded evidence-backed correction if one is discovered. Until then Chat 4 stays on HOLD and keeps this mailbox current.
+
+
+## 2026-09-04T23:44:00-06:00 — START
+Canonical phase changed to `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`. Re-read the current prompt, mandatory startup authority, and this Chat 4 mailbox. The previous HOLD is superseded.
+
+## 2026-09-04T23:44:00-06:00 — DECISION
+Started Chat 4 Shared UI corpus certification from current canonical main `8cc1918c5e015d1408335c15313e7364e04859c2`. New work branch: `chat4/shared-ui-corpus-cert-20260904`. Immutable source provenance remains `visual-promotion-chat4-shared-ui-20260904@57b502f1064571cebd917b36882ef9c11e9fa7d8` with source base `57b01ad8bda043ec25763203354b686341bace09`.
+
+## 2026-09-04T23:44:00-06:00 — PROGRESS
+Certification scope is strictly `prisma-html/governance/visual-promotion/candidates/shared-ui/certification/**`. Required derivative outputs are `MANIFEST.json`, `NORMALIZED.jsonl`, `CERTIFICATION.jsonl`, `INVALID.jsonl`, and `SUMMARY.md`. No PR will be opened for this phase by Chat 4.
+
+## 2026-09-04T23:44:00-06:00 — DECISION
+Certification must preserve all 70 target IDs, the exact `40 candidates + 19 unresolved + 11 conflicts` source accounting, all 70 NDC `UNRESOLVED` outcomes, all Atlasfin `NO_MATCH` outcomes, the 19 no-region unresolved cases and 11 multi-region conflicts. Representation normalization may not change semantics.
