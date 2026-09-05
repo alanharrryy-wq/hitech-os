@@ -4,19 +4,21 @@
   "lane": "VISUAL_PROMOTION_CONTROL_PLANE",
   "statusBranch": "status/vp-chat-06-control-plane",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane",
-  "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-05T01:52:03Z",
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-05T02:15:00Z",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "chat6/visual-promotion-control-plane-20260904",
   "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
-  "summary": "Initial Chat 6 scope is complete and ready for deterministic cohort integration. The Control Plane provides candidate/schema/vocabulary/reference/write-ownership/hash/zero-loss/collision/Atlasfin/NDC reconciliation validation, proposal-only composer planning, Visual Current Truth, Surface Readiness, and bounded Work Entry anti-rediscovery hardening. The temporary workflow-authored global FILES_MANIFEST.json contamination was removed and no forbidden global file remains in the final lane diff.",
+  "summary": "Chat 6 resumed under the canonical INTEGRATION_HANDOFF_AND_PLANNING continuation. The five worker refs and the existing Control Plane ref are now explicit in the canonical prompt. Current main is 66fa02147f0cf31529c090a47f376026b406875a. Deterministic integration validation/planning is in progress; no canonical promotion, merge, product/runtime mutation, global ID minting or FILES_MANIFEST refresh is authorized.",
   "blockers": [],
   "findings": [
     "Factory Ledger capability visual.generic_application_engine_v1 is DONE/SOURCE_READY with doNotRebuild=true; Chat 6 reused and advanced existing machinery rather than rebuilding it.",
     "Current Visual Control census and Target Index are reusable physical truth. DISCOVERY_ONLY is not UNDISCOVERED and broad recensus is not a legal shortcut.",
     "Atlasfin structured registries are the priority visual reference for this cohort. Materiality Catalog was never inspected or used as fallback and remains STANDBY_USER_INVOKED_ONLY.",
     "PRISMA GVAE All-Surface Authority auto-materialized prisma-html/FILES_MANIFEST.json while PR #541 was open. Closing that PR stopped the lane-branch mutation loop.",
-    "Final work tree is byte-equivalent to the CI-validated code head cb21ca01ecf8ec755fe34820d3d5b34673f70581: compare cb21..7cc48f reports zero changed files."
+    "Final work tree is byte-equivalent to the CI-validated code head cb21ca01ecf8ec755fe34820d3d5b34673f70581: compare cb21..7cc48f reports zero changed files.",
+    "Canonical continuation now provides explicit worker refs for Chats 1-5 and places Chat 6 in deterministic integration-planning mode.",
+    "All six current status mailboxes report READY_FOR_INTEGRATION. Several worker lanes retain truthful local/integration blockers, but none authorizes Chat 6 to resolve them by inference."
   ],
   "decisions": [
     "Preserve exactly GVAE_EXACT_APPLY, SURFACE_BATCH_PLAN, REGISTER_TARGET_FIRST and BLOCKED as Work Entry decisions.",
@@ -24,7 +26,9 @@
     "Canonical composer remains proposal-only: no canonical IDs assigned, no canonical registry mutation and no product/runtime mutation.",
     "Candidate data remains candidate-only and authority-qualified; candidate is not authority and resolved binding is not mutation authorization.",
     "Close PR #541 rather than keep allowing PR automation to write a forbidden global integration output onto the lane branch.",
-    "Leave FILES_MANIFEST.json unchanged from base on the Chat 6 lane. The interoperability contract assigns its one-time refresh to the later integration stage."
+    "Leave FILES_MANIFEST.json unchanged from base on the Chat 6 lane. The interoperability contract assigns its one-time refresh to the later integration stage.",
+    "Treat current main movement as evidence to classify, not automatic semantic drift. Revalidate only recorded/relevant source and authority inputs.",
+    "Consume the exact worker heads named by the canonical continuation prompt; do not silently substitute newer lane commits."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/contracts/README.md",
@@ -91,14 +95,15 @@
     }
   ],
   "unresolved": [
-    "Later cohort integration must deterministically refresh prisma-html/FILES_MANIFEST.json once after accepted prisma-html bytes from all lanes are assembled. This is an integration responsibility, not a Chat 6 lane blocker.",
-    "Later integration/reconciliation with actual worker candidate shards requires explicit worker branch/commit refs; initial Control Plane completion does not wait for them."
+    "Revalidate each worker handoff's baseHead, source hashes and relevant authority inputs against current main 66fa02147f0cf31529c090a47f376026b406875a.",
+    "Run deterministic Control Plane validation across all candidate/bridge outputs and classify collisions/conflicts without promotion.",
+    "Prepare the deterministic INTEGRATION PLAN and stop before canonical mutation/merge."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Remain stable for handoff. When the user explicitly supplies/authorizes worker branch or commit refs, use this Control Plane for deterministic integration/reconciliation without broad rediscovery.",
+  "nextAction": "Inspect the exact worker commits and outputs, compare their recorded authority/source inputs against current main, then run Control Plane validation and assemble the deterministic integration plan.",
   "handoff": {
-    "ready": true,
+    "ready": false,
     "workBranch": "chat6/visual-promotion-control-plane-20260904",
     "workHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
     "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
@@ -115,6 +120,10 @@
       "Use Atlasfin Bridge/registries as priority visual reference without converting Atlasfin into Identity authority.",
       "Keep Materiality Catalog standby unless repository owner explicitly invokes it for a named task.",
       "Refresh FILES_MANIFEST.json only once at the integration stage after accepted prisma-html bytes are assembled."
-    ]
+    ],
+    "continuationMode": "DETERMINISTIC_INTEGRATION_PLANNING",
+    "currentMainHead": "66fa02147f0cf31529c090a47f376026b406875a",
+    "explicitWorkerRefsReceived": true,
+    "integrationPlanReady": false
   }
 }

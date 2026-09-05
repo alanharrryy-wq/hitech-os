@@ -49,3 +49,15 @@ Chat 6 initial Control Plane is `READY_FOR_INTEGRATION`. Branch: `chat6/visual-p
 ## 2026-09-05T01:52:03Z — COMPLETE
 
 Initial Chat 6 scope completed without product visual mutation, surface candidate writes, global canonical promotion, broad rediscovery or Materiality fallback. The lane remains stable for handoff; later cohort assembly must refresh `FILES_MANIFEST.json` once after accepted `prisma-html` bytes are assembled.
+
+## 2026-09-05T02:15:00Z — START
+
+Canonical continuation prompt re-read from `main` (blob `d9650c43542a89dcf4c6c787f32b36ef83541488`). Chat 6 is now in `DETERMINISTIC_INTEGRATION_PLANNING`, not hold. Current canonical `main` is `66fa02147f0cf31529c090a47f376026b406875a`.
+
+## 2026-09-05T02:15:00Z — PROGRESS
+
+Read all six current `STATUS.json` mailboxes. All report `READY_FOR_INTEGRATION`. Exact worker heads from the canonical prompt are preserved: Chat 1 `1b669d98dc9063fe4d6f5f8ddc06262a6968e728`, Chat 2 `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`, Chat 3 `7f32ce6f1b602a14781fa2f4f3f323035f8029ec`, Chat 4 `57b502f1064571cebd917b36882ef9c11e9fa7d8`, Chat 5 `c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0`, Chat 6 `7cc48fa49906c8f443b267fd6c3590fd3f4340fb`.
+
+## 2026-09-05T02:15:00Z — DECISION
+
+Proceed with read-only deterministic validation/planning only. No broad rediscovery, no Materiality inspection, no global ID minting, no candidate promotion, no product/runtime mutation, no PR merge and no final `FILES_MANIFEST.json` refresh.
