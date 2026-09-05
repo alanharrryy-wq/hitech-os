@@ -2,7 +2,7 @@
 
 Status: `CANONICAL_PARALLEL_CHAT_PROMPTS`
 
-Current phase: `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`
+Current phase: `CANDIDATE_CORPUS_FINAL_AGGREGATION`
 
 ## How the user should invoke a chat
 
@@ -40,390 +40,170 @@ These rules are inherited by every chat below:
 
 ## CURRENT CONTINUATION PHASE — NORMATIVE OVERRIDE
 
-Phase: `CANDIDATE_CORPUS_CERTIFICATION_PARALLEL`
+Phase: `CANDIDATE_CORPUS_FINAL_AGGREGATION`
 
-Repository-owner authorization for this phase is explicit: finish the candidate corpus first, in six parallel lanes, before any canonical visual promotion or product/runtime mutation. This phase supersedes the previous HOLD / integration-planning continuation instructions.
+The five certification lanes are complete. Their remaining semantic unresolved/conflict states are **valid corpus states**, not certification failures. Do not ask Chats 1–5 to invent semantic authority merely to make the corpus look more complete.
 
-Chat 6 already completed the read-only integration plan and found the real compatibility gap. The current exact corpus source remains the six recorded worker heads. Current aggregate truth from that plan is:
+Current certified handoffs:
 
-- total surface outcomes: `2,097`;
-- source outcome buckets: `365 candidate + 1,580 unresolved + 152 conflict`;
-- promotion status: `139 ELIGIBLE_CANDIDATE + 1,926 REGISTER_TARGET_FIRST + 32 BLOCKED`;
-- Work Entry: `2,065 REGISTER_TARGET_FIRST + 32 BLOCKED`;
-- duplicate target IDs: `0`;
-- binding-candidate-key collisions: `0`;
-- currently authorized canonical promotions: `0`;
-- `GVAE_EXACT_APPLY`: `0`;
-- physical worker-source drift against the last reviewed main: none relevant;
-- Materiality Catalog: not inspected and still `STANDBY_USER_INVOKED_ONLY`.
+| Chat | Lane | Certification branch | Certification head | Result |
+|---|---|---|---|---|
+| 1 | Tablet | `chat1/tablet-corpus-cert-20260904` | `fd111022438bab909151c2220b52e95aa5aa7eb3` | 929/929 valid, invalid=0, semanticMutationCount=0 |
+| 2 | PC | `chat2/pc-corpus-cert-20260904` | `8cc979c141000fcedabf832f16468a6ee3e328e2` | 827/827 valid, invalid=0, semanticMutationCount=0 |
+| 3 | Mobile | `chat3/mobile-corpus-cert-20260904` | `664035e83943ae48c923585765d3c505b1bd8c53` | 271/271 valid, invalid=0, semanticMutationCount=0 |
+| 4 | Shared UI | `chat4/shared-ui-corpus-cert-20260904` | `553577aa74045c73ab9c92d1f81538e7e0a8c65a` | 70/70 valid, invalid=0, semanticMutationCount=0 |
+| 5 | Atlasfin | `chat5/atlasfin-corpus-cert-20260904` | `6c7743f55434eb8d3429f286e2f9eae275d93d87` | 2,421/2,421 non-null refs valid, hardInvalidRefCount=0 |
 
-Chat 6 also proved these compatibility issues:
+Aggregate certified surface count is exactly `2,097`.
 
-- Tablet and Shared UI rich shard manifests need canonical intake-envelope normalization.
-- PC also carries a legacy manifest schema/count envelope.
-- Mobile 271/271 records require syntactic/reference normalization before strict Control Plane composition.
-- Mobile normalization must preserve all existing semantics, including the `133 CURRENT / 138 DRIFT` partition and every existing promotion/Work Entry decision.
-- Current duplicate/collision fingerprints are not semantic coalescing keys.
-- Atlasfin recipe equality is review evidence only, not proof of shared neutral meaning.
-- `prisma-html/FILES_MANIFEST.json` remains integration-owned and must be refreshed exactly once after all accepted `prisma-html` bytes are assembled.
+### Chats 1–5 continuation
 
-### Corpus-certification meaning
+Chats 1–5 are now `CERTIFIED_HOLD`.
 
-This phase separates **record validity** from **promotion readiness**.
+They must:
 
-A candidate record is corpus-valid when it is strict-schema-valid, provenance-pinned, reference-valid, zero-loss-accounted, non-duplicated and semantically faithful to its source evidence.
+1. preserve the exact certification branch/head above;
+2. make no new certification mutation by initiative;
+3. keep unresolved/conflict truth unchanged;
+4. not touch `prisma-html/FILES_MANIFEST.json`;
+5. not open or merge certification PRs;
+6. not touch product/runtime/global authority;
+7. respond only if Chat 6 reports a bounded, evidence-backed certification defect tied to an exact target/reference/provenance failure.
 
-A corpus-valid record may still be unresolved or blocked.
+If Chat 6 asks for a correction, the owning Chat must:
+- reproduce the failure against the exact certification head;
+- fix only its owned certification directory;
+- preserve original worker provenance;
+- require invalid=0 and semanticMutationCount=0 after the correction;
+- publish the new exact certification head to its mailbox.
 
-Certification metadata may classify a record as:
+Do not resolve semantic/product blockers in this phase. For example:
+- Tablet's 788 unresolved and 2 physical DRIFT conflicts remain valid unresolved/blocker states;
+- PC's selector conflict and 139 projection MISSING states remain valid;
+- Mobile's 138 DRIFT records remain unresolved as to repair direction;
+- Shared UI's 19 no-region and 11 multi-region cases remain valid unresolved/conflict states;
+- Atlasfin recipe equality remains review evidence only.
 
-- `VALID_ELIGIBLE_CANDIDATE`
-- `VALID_REGISTER_TARGET_FIRST`
-- `VALID_BLOCKED`
-- `VALID_NOT_APPLICABLE`
+### CHAT 6 — FINAL GLOBAL CORPUS AGGREGATION
 
-Temporary certification failures may use:
+Chat 6 is the only active assembly lane.
 
-- `INVALID_SCHEMA`
-- `INVALID_REFERENCE`
-- `INVALID_PROVENANCE`
-
-The final corpus may not contain any `INVALID_*` record.
-
-These certification labels do **not** replace or upgrade `promotionStatus`, `bindingStatus`, `projectionStatus`, `workEntryDecision`, NDC resolution, Atlasfin match status or confidence.
-
-### Immutable provenance rule
-
-The original worker bytes at the recorded heads are immutable evidence. Do not rewrite history or pretend the original representation was already strict.
-
-Surface workers create a **certified derivative** from the exact recorded source head. Every normalized record must preserve source head, source file and a deterministic source-record hash in certification metadata.
-
-Known syntactic normalization may change representation only. It may not:
-
-- change semantic meaning;
-- invent NDC or visual meaning;
-- turn `NO_MATCH` into an Atlasfin match;
-- resolve a binding;
-- repair projection drift;
-- choose RIFAT vs product truth;
-- mint canonical IDs;
-- turn `REGISTER_TARGET_FIRST` or `BLOCKED` into `GVAE_EXACT_APPLY`.
-
-### Parallelism rule
-
-All six Chats start independently now.
-
-Chats 1–4 certify only their own surface.
-Chat 5 certifies Atlasfin/reference interoperability across the exact raw worker heads.
-Chat 6 implements the normalizer/composer and global corpus machinery immediately from the already-known exact worker heads.
-
-No Chat waits before starting.
-
-At its final aggregation step, Chat 6 re-reads the five other mailboxes and consumes the new certification heads if they are ready. If a certification lane is not ready yet, Chat 6 records exactly which lane is pending and stops without inventing data.
-
-### Worker PR / manifest rule
-
-Chats 1–5 must **not open a PR** for this certification phase and must not update `prisma-html/FILES_MANIFEST.json`.
-
-They commit only to their certification work branch and publish the exact head in their own mailbox.
-
-Chat 6 owns the one final integration PR. After assembling all accepted raw + certification + bridge + control-plane bytes, Chat 6 refreshes `prisma-html/FILES_MANIFEST.json` exactly once, runs all required gates, and may merge that **candidate-corpus-only** PR to `main` when all required checks are green.
-
-Standing owner authorization permits that final green merge for this phase. It does **not** authorize canonical Identity/RIFAT/NDC/Target Index promotion or product/runtime mutation.
-
----
-
-### CHAT 1 — TABLET CORPUS CERTIFICATION
-
-Source provenance:
-
-- source branch: `chat1/tablet-visual-promotion-57b01ad8`
-- source head: `1b669d98dc9063fe4d6f5f8ddc06262a6968e728`
-- source base: `57b01ad8bda043ec25763203354b686341bace09`
-- input count: `929`
-- source accounting: `139 candidates + 788 unresolved + 2 conflicts`
-
-Create a new work branch from current canonical `main`:
-
-`chat1/tablet-corpus-cert-20260904`
-
-Write only:
-
-`prisma-html/governance/visual-promotion/candidates/tablet/certification/**`
-
-Required outputs:
-
-- `MANIFEST.json`
-- `NORMALIZED.jsonl`
-- `CERTIFICATION.jsonl`
-- `INVALID.jsonl`
-- `SUMMARY.md`
-
-Mission:
-
-1. Read the five exact source-shard files from the recorded source head without modifying them.
-2. Normalize only the known strict intake-envelope/representation differences required by the Chat 6 Control Plane contract.
-3. Preserve every target ID and every semantic field value unless a pure representation conversion is necessary.
-4. Preserve both Tablet physical DRIFT conflicts exactly as conflicts.
-5. Preserve the one proven existing Identity binding reuse exactly.
-6. Pin each normalized record to its exact source head/file/source-record hash.
-7. Validate all 929 normalized records against the strict candidate schema and closed vocabulary.
-8. Validate NDC/Atlasfin/Identity references without inventing missing authority.
-9. Produce exactly 929 certification rows and zero duplicate/missing/extra targets.
-10. `INVALID.jsonl` must be empty for certification completion. If a real unnormalizable defect exists, record it and remain blocked rather than guessing.
-
-Expected semantic invariant: corpus certification must not change the existing Tablet candidate/unresolved/conflict meaning or promotion/Work Entry decisions.
-
-Completion: `929/929` corpus-valid, invalid=0, semanticMutationCount=0, exact source provenance complete, mailbox updated with the new certification branch/head.
-
----
-
-### CHAT 2 — PC CORPUS CERTIFICATION
-
-Source provenance:
-
-- source branch: `agent/chat2-pc-promotion-20260904`
-- source head: `896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078`
-- source base: `57b01ad8bda043ec25763203354b686341bace09`
-- input count: `827`
-- source accounting: `186 candidates + 640 unresolved + 1 conflict`
-
-Create:
-
-`chat2/pc-corpus-cert-20260904`
-
-Write only:
-
-`prisma-html/governance/visual-promotion/candidates/pc/certification/**`
-
-Produce the same five certification files as Chat 1.
-
-Mission:
-
-1. Preserve exact source bytes/provenance and normalize the legacy manifest schema/count envelope into the strict certification derivative.
-2. Certify all 827 record representations against the strict current candidate contract.
-3. Preserve the selector conflict for `TGT.CENSUS.PC.097AB2F857F353CA4288.V1` exactly: `.supplier-readable-v07` vs `.supplier-readable-v07 *`.
-4. Preserve all 139 projection `MISSING` states; do not repair them.
-5. Preserve every existing NDC/Identity/Atlasfin semantic status. No semantic upgrade from file bucket placement.
-6. Pin source head/file/source-record hashes.
-7. Zero-loss and unique-target validation must remain `827/827`.
-8. Final `INVALID.jsonl` must be empty or the lane remains explicitly blocked.
-
-Completion: 827/827 corpus-valid, invalid=0, semanticMutationCount=0, source conflict preserved, mailbox updated.
-
----
-
-### CHAT 3 — MOBILE CORPUS CERTIFICATION
-
-Source provenance:
-
-- source branch: `visual-promotion-chat3-mobile-20260904`
-- source head: `7f32ce6f1b602a14781fa2f4f3f323035f8029ec`
-- source base: `57b01ad8bda043ec25763203354b686341bace09`
-- input count: `271`
-- source physical/projection partition: `133 CURRENT + 138 DRIFT`
-
-Create:
-
-`chat3/mobile-corpus-cert-20260904`
-
-Write only:
-
-`prisma-html/governance/visual-promotion/candidates/mobile/certification/**`
-
-Produce the same five certification files.
-
-This is a **syntactic/reference normalization lane**, not a Mobile repair lane.
-
-Known normalization work identified by Chat 6:
-
-- top-level `projection` representation is not accepted by the strict candidate schema;
-- `ndcRefs` contains authority-qualified NDC refs where the strict canonical field expects the contract form;
-- `evidenceRefs` contains unqualified repo/path values that must be represented in the strict evidence-ref contract without losing provenance;
-- the Atlasfin adapter field carries `atlasfin::ADP.MB.TOUCH.V2` where the canonical Atlasfin field must use the exact representation required by the current strict contract.
-
-Rules:
-
-1. Use the exact Control Plane schema/contract as authority for representation.
-2. Transform only the known representation mismatch.
-3. Preserve the original qualified/raw value in certification provenance whenever normalization changes its serialized form.
-4. Preserve all 271 target IDs.
-5. Preserve all current semantic decisions, including `133 CURRENT / 138 DRIFT`.
-6. Do not choose RIFAT vs product repair direction for any of the 138 DRIFT records.
-7. Do not promote Atlasfin by similarity.
-8. Do not change NDC resolution, binding, promotion or Work Entry semantics.
-9. Require 271/271 strict candidate validation, zero loss, zero duplicates and source-hash provenance.
-10. Final `INVALID.jsonl` must be empty.
-
-Completion: 271/271 corpus-valid, invalid=0, semanticMutationCount=0, drift partition unchanged, mailbox updated.
-
----
-
-### CHAT 4 — SHARED UI CORPUS CERTIFICATION
-
-Source provenance:
-
-- source branch: `visual-promotion-chat4-shared-ui-20260904`
-- source head: `57b502f1064571cebd917b36882ef9c11e9fa7d8`
-- source base: `57b01ad8bda043ec25763203354b686341bace09`
-- input count: `70`
-- source accounting: `40 candidates + 19 unresolved + 11 conflicts`
-
-Create:
-
-`chat4/shared-ui-corpus-cert-20260904`
-
-Write only:
-
-`prisma-html/governance/visual-promotion/candidates/shared-ui/certification/**`
-
-Produce the same five certification files.
-
-Mission:
-
-1. Normalize the rich manifest intake envelope and any qualified Atlasfin adapter representation into the strict certification derivative.
-2. Preserve all 70 target IDs and source provenance.
-3. Preserve the 19 no-region unresolved records without inference.
-4. Preserve the 11 multi-region conflicts without choosing a region.
-5. Preserve all 70 NDC `UNRESOLVED` outcomes.
-6. Preserve all Atlasfin `NO_MATCH` outcomes unless exact current Atlasfin authority proves the serialized reference itself was wrong; recipe/name similarity is insufficient.
-7. Do not edit Tablet/PC/Mobile consumers.
-8. Require strict validation, zero loss and zero invalid records.
-9. Do not update the global file manifest or merge draft PR #539.
-
-Completion: 70/70 corpus-valid, invalid=0, semanticMutationCount=0, mailbox updated.
-
----
-
-### CHAT 5 — ATLASFIN CORPUS REFERENCE CERTIFICATION
-
-Source bridge provenance:
-
-- source branch: `chat5-atlasfin-bridge-20260904`
-- source head: `c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0`
-- source base: `57b01ad8bda043ec25763203354b686341bace09`
-
-Create:
-
-`chat5/atlasfin-corpus-cert-20260904`
-
-Write only:
-
-`prisma-html/extras/atlasfin/bridge/certification/**`
-
-Required outputs:
-
-- `MANIFEST.json`
-- `NORMALIZATION_POLICY.json`
-- `ATLASFIN_REFERENCE_CERTIFICATION.jsonl`
-- `RECIPE_REVIEW_GROUPS.json`
-- `INVALID_REFS.jsonl`
-- `SUMMARY.md`
-
-Mission:
-
-1. Reuse the existing 418-element Atlasfin catalog and all structured registries. Do not rebuild Atlasfin.
-2. Read the exact raw surface worker heads for Chats 1–4 independently; do not wait for their certification branches before starting.
-3. Validate every non-null Atlasfin element/family/preset/recipe/adapter reference against current structured Atlasfin authority.
-4. Define the deterministic representation normalization policy for qualified vs raw Atlasfin fields needed by strict candidate intake.
-5. Preserve authority-domain separation. Atlasfin IDs are not Identity/RIFAT/NDC IDs.
-6. Recompute review-only cross-surface recipe convergence and prove that recipe equality does not imply one shared neutral meaning.
-7. Exclude all-null/`NO_MATCH` groups from semantic coalescing.
-8. Keep Materiality Catalog entirely uninspected.
-9. Record any hard invalid Atlasfin ref separately. Completion requires zero hard invalid normalized refs.
-10. Keep the bridge read-only and do not merge PR #540.
-
-The current plan observed review-only convergence for Tablet+PC on table/card/panel recipes and a Tablet-only overlay group. Re-derive these counts from evidence rather than trusting the old summary blindly.
-
-Completion: Atlasfin reference normalization policy certified, all normalized non-null refs valid, hard invalid ref count=0, mailbox updated.
-
----
-
-### CHAT 6 — GLOBAL CANDIDATE CORPUS CERTIFICATION + FINAL ASSEMBLY
-
-Existing Control Plane provenance:
-
-- source branch: `chat6/visual-promotion-control-plane-20260904`
-- source head: `7cc48fa49906c8f443b267fd6c3590fd3f4340fb`
-- validated equivalent code head: `cb21ca01ecf8ec755fe34820d3d5b34673f70581`
-
-Create a new work branch from current `main`:
+Current work branch:
 
 `chat6/candidate-corpus-cert-20260904`
 
-Primary write ownership remains:
+Existing Control Plane source:
 
-- `prisma-html/tools/visual_promotion/**`
-- `prisma-html/governance/visual-promotion/contracts/**`
+- branch: `chat6/visual-promotion-control-plane-20260904`
+- source head: `7cc48fa49906c8f443b267fd6c3590fd3f4340fb`
+- validated equivalent code head: `cb21ca01ecf8ec755fe34820d3d5b34673f70581`
 
-Global corpus artifacts must live under:
+Chat 6 already has a successful task-exact corpus-certification Authority Mesh attempt recorded in its mailbox. Because this canonical prompt merge moves `main`, Chat 6 must **revalidate authority against the current HEAD** with AutoMesh v2 before mutation. Do not silently reuse the old HEAD-bound evidence.
 
-`prisma-html/governance/visual-promotion/contracts/corpus-certification/**`
+If revalidation returns `PASS_ALREADY_CURRENT` or `PASS_NO_RELEVANT_DRIFT`, use only the resulting current-HEAD-bound attestation. Any relevant/non-ancestor/invalid drift requires a fresh Mesh.
 
-Required Control Plane work:
+#### Mandatory anti-rework gate
 
-1. Bring forward the exact existing Chat 6 owned-path bytes from source head `7cc48fa...`, not historical commit replay.
-2. Implement the fail-closed **exact-head/hash-pinned intake normalizer** recommended by the completed integration plan.
-3. The normalizer may recognize only explicitly registered legacy worker heads/file hashes and known syntactic differences.
-4. Unknown head/hash/shape must fail closed.
-5. Preserve original source bytes and provenance; normalized data is a derivative.
-6. Add a separate semantic reconciliation review key that does not weaken duplicate/collision fingerprints.
-7. Do not use the current `surfaceKey + targetId` fingerprint as proof of semantic uniqueness.
-8. Validate with exact worker-head fixtures for Tablet, PC, Mobile and Shared UI.
-9. Produce deterministic Current Truth and Surface Readiness with no fake READY.
+Before source mutation:
 
-Required global certification outputs:
+1. Read current `PRISMA Factory Ledger/PRISMA_FACTORY_LEDGER.json`.
+2. Classify this exact bounded task against canonical capability IDs. At minimum re-evaluate `visual.generic_application_engine_v1`; include any additional capability only if current Ledger authority explicitly proves it is affected.
+3. Run the universal anti-rework gate in `PROPOSAL` mode.
+4. Do not rebuild `visual.generic_application_engine_v1` if it remains `DONE / SOURCE_READY / doNotRebuild=true`; use `REUSE`, `VERIFY` or `ADVANCE` according to the live Ledger/nextGate.
+5. After current-HEAD Authority Mesh/revalidation evidence is available, run the same gate in `MUTATION` mode with the reviewed Mesh summary.
+6. Only `PASS_ANTI_REWORK_GATE` permits the bounded Control Plane/corpus source mutation.
 
-- `CORPUS_MANIFEST.json`
-- `CANDIDATE_CORPUS.jsonl`
-- `CERTIFICATION.jsonl`
-- `INVALID.jsonl`
-- `COLLISIONS.json`
-- `SEMANTIC_REVIEW_GROUPS.json`
-- `CURRENT_TRUTH.json`
-- `SURFACE_READINESS.json`
-- `SUMMARY.md`
+#### Exact accepted certification inputs
 
-Global completion invariants:
+Consume by exact head-tree bytes, never by reconstructing history:
 
-- exactly `2,097` normalized surface records;
-- exactly `2,097` certification records;
-- zero missing/extra/duplicate target IDs;
-- zero `INVALID_*` certification records;
-- all source heads/files/record hashes pinned;
-- no semantic mutation by normalization;
-- all unresolved/conflict semantics preserved;
-- aggregate promotion and Work Entry counts remain source-faithful unless stronger canonical authority, already present and explicitly proven, requires a correction;
-- `currentlyAuthorizedCanonicalPromotions=0`;
-- `runtimeVisualGreen=false` unless separate runtime evidence exists;
-- no whole surface is declared APPLY_READY from this corpus certification.
+- Tablet certification: `fd111022438bab909151c2220b52e95aa5aa7eb3`
+- PC certification: `8cc979c141000fcedabf832f16468a6ee3e328e2`
+- Mobile certification: `664035e83943ae48c923585765d3c505b1bd8c53`
+- Shared UI certification: `553577aa74045c73ab9c92d1f81538e7e0a8c65a`
+- Atlasfin certification: `6c7743f55434eb8d3429f286e2f9eae275d93d87`
 
-Parallel finalization protocol:
+Also consume the exact original worker heads and Chat 5 source bridge head already recorded by the previous plan, so provenance remains independently verifiable.
 
-1. Start immediately from the existing exact raw worker heads and implement/test the normalizer without waiting.
-2. When the global tooling is ready, re-read status mailboxes 1–5.
-3. Consume each new certification branch/head recorded by its owner.
-4. Verify each surface certification is zero-loss, invalid=0, semanticMutationCount=0 and source-provenance pinned.
-5. Verify Chat 5 Atlasfin certification and normalization policy.
-6. Assemble accepted exact raw worker bytes + certification bytes + Chat 5 bridge/certification + Chat 6 Control Plane/global corpus on one fresh integration branch from the then-current `main`.
-7. Use head-tree path extraction, not history replay.
-8. Refresh `prisma-html/FILES_MANIFEST.json` exactly once after all accepted `prisma-html` bytes are assembled.
-9. Run strict candidate/manifest schemas, Control Plane tests, Work Entry/no-broad-rediscovery gates, Atlasfin bridge/static tests, Current Truth/Surface Readiness no-fake-green validation, Identity/RIFAT no-regression, VISCORE, CI, ForgeOS and Sync Sentinel.
-10. Open one candidate-corpus integration PR.
-11. If and only if the final exact PR head is clean/mergeable and all required checks are green, merge that PR to `main` under the owner's standing merge authorization.
-12. After successful main merge, verify the merged tree and update Chat 6 mailbox to `DONE` with result `PASS_CANDIDATE_CORPUS_CERTIFIED`.
-13. If PR #539 and/or #540 are fully subsumed byte-for-byte by the merged integration result, they may be closed as superseded after verification; do not merge them separately just to preserve history.
+#### Chat 6 must finish these unresolved tasks
 
-Hard stop even after corpus merge:
+1. Bring forward the exact Chat 6 owned-path bytes from `7cc48fa49906c8f443b267fd6c3590fd3f4340fb` by head-tree extraction.
+2. Implement/test the fail-closed exact-head/hash-pinned intake normalizer.
+3. Register only the exact known worker/certification heads and hashes. Unknown head/hash/shape fails closed.
+4. Add the separate semantic reconciliation review key without weakening duplicate/collision fingerprints.
+5. Verify all five certification handoffs independently before aggregation.
+6. Generate the global certification corpus under:
+   `prisma-html/governance/visual-promotion/contracts/corpus-certification/**`
+7. Required global outputs remain:
+   - `CORPUS_MANIFEST.json`
+   - `CANDIDATE_CORPUS.jsonl`
+   - `CERTIFICATION.jsonl`
+   - `INVALID.jsonl`
+   - `COLLISIONS.json`
+   - `SEMANTIC_REVIEW_GROUPS.json`
+   - `CURRENT_TRUTH.json`
+   - `SURFACE_READINESS.json`
+   - `SUMMARY.md`
+8. Global invariants:
+   - `2,097/2,097` normalized records;
+   - `2,097/2,097` certification rows;
+   - invalid=0;
+   - missing=0;
+   - extra=0;
+   - duplicateTargetIds=0;
+   - semanticMutationCount=0;
+   - all source/certification heads and record hashes pinned;
+   - unresolved/conflict semantics preserved;
+   - `currentlyAuthorizedCanonicalPromotions=0`;
+   - `GVAE_EXACT_APPLY=0`;
+   - `runtimeVisualGreen=false`;
+   - no whole surface APPLY_READY.
+9. Rebuild/validate the Atlasfin Bridge snapshot only as a read-only consumer of the assembled corpus. Materiality remains completely uninspected.
+10. Generate Current Truth and Surface Readiness from certified corpus evidence, not assumptions.
+11. Assemble accepted bytes on one fresh integration branch from the then-current `main`.
+12. Refresh `prisma-html/FILES_MANIFEST.json` exactly once, after every accepted `prisma-html` byte is present.
+13. Run all required gates:
+   - strict candidate/manifest/corpus schema validation;
+   - closed vocabulary and authority-reference validation;
+   - zero-loss/provenance/hash validation;
+   - duplicate/collision + semantic-review validation;
+   - Work Entry/no-broad-rediscovery gates;
+   - Atlasfin bridge/static tests;
+   - Current Truth / Surface Readiness no-fake-green checks;
+   - Identity/RIFAT no-regression;
+   - VISCORE;
+   - CI;
+   - ForgeOS Quality Gate;
+   - Sync Sentinel.
+14. Open **one** candidate-corpus-only integration PR.
+15. If the exact final PR head is clean/mergeable and all required checks are green, merge it to `main` under the repository owner's standing merge authorization.
+16. Verify merged `main` contains the exact accepted corpus/certification/control-plane bytes and the one final manifest.
+17. Close PR #539 and/or #540 as superseded only if the merged corpus integration contains their intended accepted bytes byte-for-byte. Do not merge those PRs separately merely for history.
+18. Update Chat 6 mailbox to `DONE` with:
+   `PASS_CANDIDATE_CORPUS_CERTIFIED`
 
-- no global Identity/RIFAT/NDC/Target Index promotion;
-- no canonical `BND.*`, `TGT.*`, `LYR.*`, `VIS.*`, NDC or adapter ID minting;
-- no product/runtime/CSS/TSX mutation;
-- no projection repair;
-- no Materiality Catalog use;
-- no claim that corpus-valid means APPLY_READY.
+#### Fail-closed correction loop
 
-The phase is finished only when the candidate corpus itself is merged and certified, with all 2,097 records valid as records and their unresolved/blocker truth preserved.
+If Chat 6 finds a real certification defect in Chats 1–5:
+
+- identify the exact Chat, target/reference, file, head and failing invariant;
+- publish the bounded correction request in Chat 6 mailbox;
+- do not patch another Chat's owned certification bytes inside Chat 6;
+- consume the corrected certification head only after the owning Chat reports invalid=0 and semanticMutationCount=0;
+- resume aggregation without recensus or semantic reinvention.
+
+#### Hard stop after successful corpus merge
+
+This final aggregation still does **not** authorize:
+
+- canonical Identity/RIFAT/NDC/Target Index promotion;
+- new canonical `BND.*`, `TGT.*`, `LYR.*`, `VIS.*`, NDC or adapter IDs;
+- product/runtime/CSS/TSX mutation;
+- projection repair;
+- Materiality Catalog use;
+- claiming corpus-valid means APPLY_READY.
+
+Completion of this phase means the entire candidate corpus is merged, strict-valid, provenance-complete and machine-queryable. It does not mean all semantic blockers have been solved.
 
 
 ---
