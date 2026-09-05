@@ -1,0 +1,40 @@
+{
+  "schema": "prisma.visual-promotion.corpus-certification.contract.v1",
+  "version": "1.0.0",
+  "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+  "candidateOnly": true,
+  "expectedCorpusCount": 2097,
+  "certificationLabels": [
+    "VALID_ELIGIBLE_CANDIDATE",
+    "VALID_REGISTER_TARGET_FIRST",
+    "VALID_BLOCKED",
+    "VALID_NOT_APPLICABLE",
+    "INVALID_SCHEMA",
+    "INVALID_REFERENCE",
+    "INVALID_PROVENANCE"
+  ],
+  "finalInvalidLabelsAllowed": false,
+  "normalization": {
+    "exactHeadAndFileHashPinned": true,
+    "originalSourceBytesImmutable": true,
+    "normalizedDataDerivative": true,
+    "semanticMutationAllowed": false,
+    "unknownHeadHashOrShape": "FAIL_CLOSED"
+  },
+  "semanticReview": {
+    "separateFromCollisionFingerprint": true,
+    "candidateFingerprintIsSemanticUniquenessProof": false,
+    "recipeEqualityImpliesNeutralMeaning": false,
+    "allNullNoMatchGroupsExcluded": true,
+    "canonicalIdsAssigned": false
+  },
+  "hardStops": {
+    "currentlyAuthorizedCanonicalPromotions": 0,
+    "runtimeVisualGreen": false,
+    "wholeSurfaceApplyReady": false,
+    "productRuntimeMutation": false,
+    "globalIdentityRifatNdcTargetIndexPromotion": false,
+    "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+    "broadRediscoveryAllowed": false
+  }
+}
