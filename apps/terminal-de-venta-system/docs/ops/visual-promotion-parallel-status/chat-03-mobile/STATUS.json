@@ -4,20 +4,80 @@
   "lane": "MOBILE_PROMOTION",
   "statusBranch": "status/vp-chat-03-mobile",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-03-mobile",
-  "state": "NOT_STARTED",
-  "updatedAt": null,
-  "baseHead": null,
-  "workBranch": null,
-  "workHead": null,
-  "summary": "No status report has been published yet.",
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T19:50:47-06:00",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "workBranch": "visual-promotion-chat3-mobile-20260904",
+  "workHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+  "summary": "Chat 3 Mobile promotion candidate shard is complete on its work branch. It reuses the current Mobile census, classifies projection drift without choosing a repair direction, and leaves all targets REGISTER_TARGET_FIRST rather than fabricating semantic/binding authority.",
   "blockers": [],
-  "findings": [],
-  "decisions": [],
-  "changedPaths": [],
-  "validations": [],
-  "unresolved": [],
+  "findings": [
+    "Mobile census accounting is exact: 271 input targets, 271 unique outcomes, zero missing, zero extra, zero duplicates.",
+    "Projection classification: 133 CURRENT and 138 DRIFT targets; all DRIFT targets are in prisma-mobile-dashboard.module.css.",
+    "Governed cleanup commit 731574f97dba0ec46420369b777071500ce2f833 directly changed the .crystalCommand rule by removing retired .multiContextRoot residue; this supports a legitimate newer product/runtime candidate and a stale canonical-authority candidate for that residue.",
+    "Atlasfin Mobile-compatible recipes exist, but Mobile target bindings remain missing/blocked, so no recipe was promoted by similarity.",
+    "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the work branch is based on 57b01ad8bda043ec25763203354b686341bace09; the work branch is 1 commit ahead and 3 commits behind current main."
+  ],
+  "decisions": [
+    "No broad rediscovery was performed; DISCOVERY_ONLY census was reused as existing physical evidence.",
+    "No canonical IDs were minted in the worker lane.",
+    "All 271 outcomes remain promotionStatus/workEntryDecision REGISTER_TARGET_FIRST.",
+    "Materiality Catalog remained STANDBY_USER_INVOKED_ONLY and was not inspected or consumed.",
+    "Projection drift was classified without selecting source-vs-product repair direction."
+  ],
+  "changedPaths": [
+    "prisma-html/governance/visual-promotion/candidates/mobile/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/mobile/CANDIDATES.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/mobile/UNRESOLVED.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/mobile/CONFLICTS.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/mobile/SUMMARY.md"
+  ],
+  "validations": [
+    {
+      "name": "candidate-shard path scope",
+      "result": "PASS",
+      "details": "Exactly five changed paths, all under prisma-html/governance/visual-promotion/candidates/mobile/."
+    },
+    {
+      "name": "zero-loss target accounting",
+      "result": "PASS",
+      "details": "271 input target IDs = 271 unique output target IDs; 0 missing, 0 extra, 0 duplicate."
+    },
+    {
+      "name": "projection outcome partition",
+      "result": "PASS",
+      "details": "133 CURRENT records in UNRESOLVED; 138 DRIFT records in CONFLICTS; 0 cross-category leakage."
+    },
+    {
+      "name": "status/enums validation",
+      "result": "PASS",
+      "details": "Observed projectionStatus, promotionStatus, workEntryDecision and atlasfinMatchStatus values are within contract vocabulary."
+    },
+    {
+      "name": "protected main mutation check at work completion",
+      "result": "PASS",
+      "details": "main remained unchanged at work completion; candidate work was isolated to branch visual-promotion-chat3-mobile-20260904."
+    }
+  ],
+  "unresolved": [
+    "All 271 census targets still lack complete semantic meaning, exact recipe, exact binding and/or layer-application policy required for promotion beyond REGISTER_TARGET_FIRST.",
+    "The 138 drifted targets require authority reconciliation; Chat 3 deliberately did not choose whether RIFAT source or product projection should be repaired.",
+    "Current main has advanced three commits past the work base; relevance of those commits to this candidate shard still needs explicit drift review before integration."
+  ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Await first report from assigned chat.",
-  "handoff": null
+  "nextAction": "Review the three commits by which current main advanced since baseHead and determine whether they intersect Chat 3 authority/candidate evidence. If non-relevant, keep the shard as handoff-ready; if relevant, record the drift and refresh only the candidate shard if the lane contract permits.",
+  "handoff": {
+    "readiness": "READY_FOR_INTEGRATION",
+    "workBranch": "visual-promotion-chat3-mobile-20260904",
+    "workHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "candidateRoot": "prisma-html/governance/visual-promotion/candidates/mobile",
+    "integrationNotes": [
+      "Do not treat candidate-only records as canonical authority.",
+      "Preserve 271/271 zero-loss accounting and the 133 CURRENT / 138 DRIFT partition unless current-main evidence materially changes it.",
+      "Do not auto-repair the MultiContext divergence merely to obtain green.",
+      "Materiality Catalog was not used."
+    ]
+  }
 }
