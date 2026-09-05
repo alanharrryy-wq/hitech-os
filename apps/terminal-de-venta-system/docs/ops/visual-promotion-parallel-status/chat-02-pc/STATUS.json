@@ -4,12 +4,12 @@
   "lane": "PC_PROMOTION",
   "statusBranch": "status/vp-chat-02-pc",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc",
-  "state": "IN_PROGRESS",
-  "updatedAt": "2026-09-04T20:15:30-06:00",
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T20:19:17-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "agent/chat2-pc-promotion-20260904",
   "workHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
-  "summary": "Chat 2 PC worker shard remains complete and unchanged. Lane resumed only for the canonical continuation phase's bounded read-only revalidation of recorded source/authority inputs against current main; no candidate regeneration or lane mutation is authorized.",
+  "summary": "Chat 2 PC candidate shard remains complete, byte-stable and ready for deterministic integration review. Bounded read-only revalidation against current main 66fa02147f0cf31529c090a47f376026b406875a found no relevant source/authority drift; all 28 recorded PC/Identity/RIFAT/Atlasfin/NDC source-authority blobs match the worker manifest provenance exactly. No candidate regeneration or lane mutation was performed.",
   "blockers": [
     {
       "scope": "candidate",
@@ -26,7 +26,12 @@
     "Projection status: 688 CURRENT, 139 MISSING, 0 DRIFT. MISSING is used only where Target Index explicitly carries a projection blocker with no proven canonical source/output.",
     "Canonical Identity registry proves zero resolved PC element bindings and zero PC-specific canonical Identity recipes for these targets.",
     "Materiality Catalog was not inspected, consumed or used as fallback.",
-    "Current main advanced after the lane base; integration must validate relevant source-authority hashes/base compatibility before accepting mixed-base candidates."
+    "Current canonical main is 66fa02147f0cf31529c090a47f376026b406875a.",
+    "Bounded read-only revalidation matched 28/28 source-authority blob SHAs recorded by the PC worker manifest against current main.",
+    "From worker base to current main, changed files are coordination/prompt/status-channel/FILES_MANIFEST bytes; none of the 28 recorded candidate source-authority inputs changed.",
+    "Interoperability contract delta from worker base only adds the status-channel write exception. No prior interoperability rule was removed.",
+    "Vocabulary scope, authority domains, ID policies, field names, enums, NDC edge types, Atlasfin sources, Materiality policy, write ownership, forbidden worker writes and hard truths are unchanged; only coordinationStatusChannel was added.",
+    "The worker branch still resolves exactly to 896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078 and all five candidate output blob SHAs are unchanged."
   ],
   "decisions": [
     "Reused current Visual Control/Target Index physical census and did not run broad rediscovery.",
@@ -34,7 +39,10 @@
     "Used only exact structured Visual Control layerType == unique Atlasfin recipe familyKind as MATCHED_RECIPE evidence; otherwise recorded NO_MATCH.",
     "Normalized CSS-insignificant comma/whitespace only when comparing selectors so '.prisma-home-primary, .prisma-home-secondary' and '.prisma-home-primary,.prisma-home-secondary' do not create fake drift.",
     "Did not invent NDC meaning from visual names/selectors; unresolved meaning stayed unresolved.",
-    "Did not repair projection/source gaps, copy product bytes into RIFAT, or mutate runtime/product/global authority."
+    "Did not repair projection/source gaps, copy product bytes into RIFAT, or mutate runtime/product/global authority.",
+    "Classified main movement since baseHead as NON_RELEVANT_COORDINATION_ONLY for Chat 2 candidate provenance because all recorded semantic/physical/source authority blobs remain identical.",
+    "No shard recomputation, rebase, projection repair or candidate-file mutation is warranted by current main movement.",
+    "Remain in PC HOLD / READY_FOR_INTEGRATION and respond only to bounded evidence-backed integration correction requests."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
@@ -78,6 +86,26 @@
       "check": "status-channel branch isolation and mailbox contract",
       "result": "PASS",
       "detail": "status/vp-chat-02-pc is 2 commits ahead / 0 behind current main and changes only this Chat 2 mailbox's STATUS.json and LOG.md; all required STATUS fields are present and LOG.md preserved prior text append-only."
+    },
+    {
+      "check": "bounded source-authority hash revalidation against current main",
+      "result": "PASS",
+      "detail": "28/28 manifest-recorded source-authority Git blob SHAs match exactly on main 66fa02147f0cf31529c090a47f376026b406875a; relevant drift count 0."
+    },
+    {
+      "check": "interoperability contract drift classification",
+      "result": "PASS",
+      "detail": "Base-to-main contract change only adds the dedicated status-channel exception; no existing candidate semantics or authority rule was removed."
+    },
+    {
+      "check": "vocabulary semantic stability",
+      "result": "PASS",
+      "detail": "Core vocabulary sections used by Chat 2 are unchanged; only coordinationStatusChannel was added."
+    },
+    {
+      "check": "worker output immutability",
+      "result": "PASS",
+      "detail": "Work branch is still exactly 896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078 and MANIFEST/CANDIDATES/UNRESOLVED/CONFLICTS/SUMMARY blob SHAs all match the recorded handoff."
     }
   ],
   "unresolved": [
@@ -85,11 +113,13 @@
     "1 physical selector disagreement remains in CONFLICTS.jsonl and requires later authoritative reconciliation, not broad rediscovery.",
     "All 827 records remain without resolved NDC operational meaning in this candidate shard; no NDC ID was invented.",
     "All 827 records remain binding-blocked for canonical application authority.",
-    "Integration must revalidate relevant source-authority hashes because current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the work base is 57b01ad8bda043ec25763203354b686341bace09."
+    "The single selector conflict remains intentionally unresolved: TGT.CENSUS.PC.097AB2F857F353CA4288.V1 has '.supplier-readable-v07' in Target Index versus '.supplier-readable-v07 *' in expanded Visual Control.",
+    "The 139 projection MISSING records remain intentionally unrepaired in Chat 2.",
+    "Future integration-base movement still requires bounded revalidation if it changes any recorded source-authority input; coordination-only movement does not trigger shard regeneration."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Perform bounded read-only revalidation of the recorded PC candidate manifest/source-authority hashes against current main, classify any delta, then return to READY_FOR_INTEGRATION if relevant authority is unchanged.",
+  "nextAction": "Hold the byte-stable PC shard at the recorded worker commit. Await deterministic integration review or a bounded evidence-backed correction request; do not recensus, regenerate, repair projection gaps or mutate candidate files.",
   "handoff": {
     "readiness": "READY_FOR_INTEGRATION",
     "workBranch": "agent/chat2-pc-promotion-20260904",
@@ -116,6 +146,14 @@
       "Revalidate base/source hashes before mixed-base integration.",
       "Do not use Materiality Catalog as fallback.",
       "Do not convert the single selector conflict into permission for broad rediscovery."
-    ]
+    ],
+    "currentIntegrationBase": "66fa02147f0cf31529c090a47f376026b406875a",
+    "revalidation": {
+      "classification": "NON_RELEVANT_COORDINATION_ONLY",
+      "relevantAuthorityDrift": false,
+      "recordedSourceAuthorityChecks": 28,
+      "matchedSourceAuthorityChecks": 28,
+      "candidateMutationRequired": false
+    }
   }
 }
