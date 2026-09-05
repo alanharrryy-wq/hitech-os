@@ -1,0 +1,106 @@
+{
+  "schema": "prisma.visual-promotion.status-channel.v1",
+  "version": "1.0.0",
+  "status": "CANONICAL_COORDINATION_CHANNEL",
+  "staticRoot": "prisma-html/docs/ops/visual-promotion-parallel/status-channel",
+  "writableRoot": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status",
+  "allowedFiles": [
+    "STATUS.json",
+    "LOG.md"
+  ],
+  "states": [
+    "NOT_STARTED",
+    "IN_PROGRESS",
+    "BLOCKED",
+    "WAITING_EXTERNAL",
+    "READY_FOR_INTEGRATION",
+    "DONE",
+    "FAILED"
+  ],
+  "eventTypes": [
+    "START",
+    "PROGRESS",
+    "FINDING",
+    "DECISION",
+    "BLOCKER",
+    "BLOCKER_CLEARED",
+    "VALIDATION",
+    "HANDOFF",
+    "COMPLETE"
+  ],
+  "requiredStatusFields": [
+    "schema",
+    "chatId",
+    "lane",
+    "statusBranch",
+    "mailboxPath",
+    "state",
+    "updatedAt",
+    "baseHead",
+    "workBranch",
+    "workHead",
+    "summary",
+    "blockers",
+    "findings",
+    "decisions",
+    "changedPaths",
+    "validations",
+    "unresolved",
+    "needsUserAction",
+    "userActionRequested",
+    "nextAction",
+    "handoff"
+  ],
+  "policies": {
+    "statusIsAuthority": false,
+    "statusMayAuthorizeMutation": false,
+    "statusMayPromoteCandidate": false,
+    "statusMayResolveBinding": false,
+    "appendOnlyHumanLog": true,
+    "oneChatOneMailbox": true,
+    "oneChatOneStatusBranch": true,
+    "crossChatMailboxWritesAllowed": false,
+    "productWritesOnStatusBranchAllowed": false,
+    "candidateShardWritesOnStatusBranchAllowed": false,
+    "globalManifestWritesOnStatusBranchAllowed": false,
+    "secretsAllowed": false
+  },
+  "chats": [
+    {
+      "chatId": 1,
+      "lane": "TABLET_PROMOTION",
+      "statusBranch": "status/vp-chat-01-tablet",
+      "mailbox": "chat-01-tablet"
+    },
+    {
+      "chatId": 2,
+      "lane": "PC_PROMOTION",
+      "statusBranch": "status/vp-chat-02-pc",
+      "mailbox": "chat-02-pc"
+    },
+    {
+      "chatId": 3,
+      "lane": "MOBILE_PROMOTION",
+      "statusBranch": "status/vp-chat-03-mobile",
+      "mailbox": "chat-03-mobile"
+    },
+    {
+      "chatId": 4,
+      "lane": "SHARED_UI_PROMOTION",
+      "statusBranch": "status/vp-chat-04-shared-ui",
+      "mailbox": "chat-04-shared-ui"
+    },
+    {
+      "chatId": 5,
+      "lane": "ATLASFIN_BRIDGE",
+      "statusBranch": "status/vp-chat-05-atlasfin",
+      "mailbox": "chat-05-atlasfin"
+    },
+    {
+      "chatId": 6,
+      "lane": "VISUAL_PROMOTION_CONTROL_PLANE",
+      "statusBranch": "status/vp-chat-06-control-plane",
+      "mailbox": "chat-06-control-plane"
+    }
+  ]
+}

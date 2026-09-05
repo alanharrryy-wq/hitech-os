@@ -1,0 +1,49 @@
+{
+  "schema": "prisma.visual-promotion.status-index.v1",
+  "version": "1.0.0",
+  "contract": "prisma-html/docs/ops/visual-promotion-parallel/status-channel/STATUS_CHANNEL_CONTRACT.json",
+  "mailboxes": [
+    {
+      "chatId": 1,
+      "lane": "TABLET_PROMOTION",
+      "statusBranch": "status/vp-chat-01-tablet",
+      "statusPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/STATUS.json",
+      "logPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md"
+    },
+    {
+      "chatId": 2,
+      "lane": "PC_PROMOTION",
+      "statusBranch": "status/vp-chat-02-pc",
+      "statusPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc/STATUS.json",
+      "logPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc/LOG.md"
+    },
+    {
+      "chatId": 3,
+      "lane": "MOBILE_PROMOTION",
+      "statusBranch": "status/vp-chat-03-mobile",
+      "statusPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-03-mobile/STATUS.json",
+      "logPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-03-mobile/LOG.md"
+    },
+    {
+      "chatId": 4,
+      "lane": "SHARED_UI_PROMOTION",
+      "statusBranch": "status/vp-chat-04-shared-ui",
+      "statusPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui/STATUS.json",
+      "logPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui/LOG.md"
+    },
+    {
+      "chatId": 5,
+      "lane": "ATLASFIN_BRIDGE",
+      "statusBranch": "status/vp-chat-05-atlasfin",
+      "statusPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-05-atlasfin/STATUS.json",
+      "logPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-05-atlasfin/LOG.md"
+    },
+    {
+      "chatId": 6,
+      "lane": "VISUAL_PROMOTION_CONTROL_PLANE",
+      "statusBranch": "status/vp-chat-06-control-plane",
+      "statusPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/STATUS.json",
+      "logPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-06-control-plane/LOG.md"
+    }
+  ]
+}

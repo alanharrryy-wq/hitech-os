@@ -277,5 +277,27 @@
     "UNKNOWN_STAYS_UNKNOWN",
     "CANDIDATE_IS_NOT_AUTHORITY",
     "SOURCE_STATIC_IS_NOT_RUNTIME_VISUAL_GREEN"
-  ]
+  ],
+  "coordinationStatusChannel": {
+    "schema": "prisma.visual-promotion.status-channel.v1",
+    "staticContractPath": "prisma-html/docs/ops/visual-promotion-parallel/status-channel/STATUS_CHANNEL_CONTRACT.json",
+    "writableRoot": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status",
+    "statusFiles": [
+      "STATUS.json",
+      "LOG.md"
+    ],
+    "states": [
+      "NOT_STARTED",
+      "IN_PROGRESS",
+      "BLOCKED",
+      "WAITING_EXTERNAL",
+      "READY_FOR_INTEGRATION",
+      "DONE",
+      "FAILED"
+    ],
+    "statusIsAuthority": false,
+    "statusMayAuthorizeMutation": false,
+    "dedicatedBranchRequired": true,
+    "crossChatMailboxWritesAllowed": false
+  }
 }

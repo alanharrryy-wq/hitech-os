@@ -27,6 +27,10 @@ These rules are inherited by every chat below:
 - Do not merge into protected branches. Finish on the lane branch with exact changed paths, validation and commit SHA.
 - No fake green. Unknown/ambiguous stays blocked or unresolved.
 - Web, Chart Lab and Control Center are out of scope and protected.
+- Read `status-channel/README.md` and `status-channel/STATUS_CHANNEL_CONTRACT.json`; publish status to the mailbox mapped to your assigned Chat number.
+- Status reporting is separate from lane work: update only your dedicated `STATUS.json` and `LOG.md` on the mapped `status/vp-chat-XX-...` branch. Never put lane source/candidate changes on the status branch.
+- Publish immediately when this instruction is received, whenever a blocker appears/clears, after a material finding/decision/milestone, and at completion. Include work branch/head, blockers, findings, validations and next action.
+
 
 ---
 

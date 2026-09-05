@@ -58,6 +58,17 @@ The only defined lanes are:
 
 All six lanes are designed to start independently from repository authority. None may require another lane to finish before beginning its own work.
 
+## Shared status / blocker channel
+
+All six chats publish progress, findings and blockers through `status-channel/`.
+
+The static contract lives here, while writable mailboxes live at:
+
+`apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/`
+
+This split prevents routine status edits from invalidating the global `prisma-html/FILES_MANIFEST.json`. Each Chat has exactly one mailbox and one deterministic status branch, so authorship is unambiguous without conversational memory.
+
+
 ## Integration rule
 
 Parallel workers must have disjoint write ownership. Global canonical registries are assembled only by deterministic integration after worker outputs exist. Workers may record their exact `baseHead`; mixed-base output is never silently merged. If inputs drift, the integration layer must revalidate or block.
