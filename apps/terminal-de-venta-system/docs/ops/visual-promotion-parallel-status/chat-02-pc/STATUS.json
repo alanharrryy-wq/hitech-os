@@ -4,12 +4,12 @@
   "lane": "PC_PROMOTION",
   "statusBranch": "status/vp-chat-02-pc",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc",
-  "state": "READY_FOR_INTEGRATION",
-  "updatedAt": "2026-09-04T20:20:36-06:00",
+  "state": "IN_PROGRESS",
+  "updatedAt": "2026-09-04T23:43:30-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "agent/chat2-pc-promotion-20260904",
   "workHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
-  "summary": "Chat 2 PC candidate shard remains complete, byte-stable and ready for deterministic integration review. Bounded read-only revalidation against current main 66fa02147f0cf31529c090a47f376026b406875a found no relevant source/authority drift; all 28 recorded PC/Identity/RIFAT/Atlasfin/NDC source-authority blobs match the worker manifest provenance exactly. No candidate regeneration or lane mutation was performed.",
+  "summary": "Chat 2 entered CANDIDATE_CORPUS_CERTIFICATION_PARALLEL. Source worker evidence remains immutable at agent/chat2-pc-promotion-20260904 @ 896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078. A new certified derivative will be produced from current main only under prisma-html/governance/visual-promotion/candidates/pc/certification/**, preserving all 827 semantics and provenance.",
   "blockers": [
     {
       "scope": "candidate",
@@ -121,7 +121,7 @@
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Remain in PC HOLD with the byte-stable shard and current revalidation evidence. Act only on a bounded integration correction request backed by stronger authority/evidence.",
+  "nextAction": "Read the current strict candidate/certification contract and Control Plane schemas, then create chat2/pc-corpus-cert-20260904 from canonical main and produce the five certification artifacts with 827/827 strict validation, invalid=0 and semanticMutationCount=0.",
   "handoff": {
     "readiness": "READY_FOR_INTEGRATION",
     "workBranch": "agent/chat2-pc-promotion-20260904",
@@ -156,6 +156,20 @@
       "recordedSourceAuthorityChecks": 28,
       "matchedSourceAuthorityChecks": 28,
       "candidateMutationRequired": false
+    },
+    "certificationPhase": {
+      "phase": "CANDIDATE_CORPUS_CERTIFICATION_PARALLEL",
+      "certificationWorkBranch": "chat2/pc-corpus-cert-20260904",
+      "sourceBranch": "agent/chat2-pc-promotion-20260904",
+      "sourceHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+      "sourceBase": "57b01ad8bda043ec25763203354b686341bace09",
+      "inputCount": 827,
+      "sourceAccounting": {
+        "candidates": 186,
+        "unresolved": 640,
+        "conflicts": 1
+      },
+      "allowedWriteRoot": "prisma-html/governance/visual-promotion/candidates/pc/certification"
     }
   }
 }
