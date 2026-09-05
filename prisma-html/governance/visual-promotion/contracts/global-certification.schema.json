@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.visual-promotion.global-candidate-certification.v1",
+  "title": "PRISMA Global Candidate Certification Row v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "prisma.visual-promotion.global-candidate-certification.v1"
+    },
+    "surfaceKey": {
+      "enum": [
+        "tablet",
+        "pc",
+        "mobile",
+        "shared-ui"
+      ]
+    },
+    "targetId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "certificationStatus": {
+      "enum": [
+        "VALID_ELIGIBLE_CANDIDATE",
+        "VALID_REGISTER_TARGET_FIRST",
+        "VALID_BLOCKED",
+        "VALID_NOT_APPLICABLE"
+      ]
+    },
+    "candidateRecordSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidateSource": {
+      "type": "object"
+    },
+    "laneCertification": {
+      "type": "object"
+    },
+    "strictCandidateSchemaValid": {
+      "const": true
+    },
+    "closedVocabularyValid": {
+      "const": true
+    },
+    "referenceValid": {
+      "const": true
+    },
+    "provenanceValid": {
+      "const": true
+    },
+    "semanticMutation": {
+      "const": false
+    },
+    "currentlyAuthorizedCanonicalPromotion": {
+      "const": false
+    },
+    "runtimeVisualGreen": {
+      "const": false
+    }
+  },
+  "required": [
+    "schema",
+    "surfaceKey",
+    "targetId",
+    "certificationStatus",
+    "candidateRecordSha256",
+    "candidateSource",
+    "laneCertification",
+    "strictCandidateSchemaValid",
+    "closedVocabularyValid",
+    "referenceValid",
+    "provenanceValid",
+    "semanticMutation",
+    "currentlyAuthorizedCanonicalPromotion",
+    "runtimeVisualGreen"
+  ]
+}

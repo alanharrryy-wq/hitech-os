@@ -1,0 +1,264 @@
+{
+  "schema": "prisma.visual-promotion.intake-registry.v1",
+  "version": "1.0.0",
+  "phase": "CANDIDATE_CORPUS_FINAL_AGGREGATION",
+  "sourceBaseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "controlPlane": {
+    "branch": "chat6/visual-promotion-control-plane-20260904",
+    "sourceHead": "7cc48fa49906c8f443b267fd6c3590fd3f4340fb",
+    "validatedEquivalentCodeHead": "cb21ca01ecf8ec755fe34820d3d5b34673f70581"
+  },
+  "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+  "broadRediscoveryAllowed": false,
+  "surfaceOrder": [
+    "tablet",
+    "pc",
+    "mobile",
+    "shared-ui"
+  ],
+  "surfaces": {
+    "tablet": {
+      "workerHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+      "certificationHead": "fd111022438bab909151c2220b52e95aa5aa7eb3",
+      "recordCount": 929,
+      "workerFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "c424146b13d566b668c59ce0ca626a5bcc544a21",
+          "sha256": "5ba25d4c118303bbb69f2bdaa002227e2b91624bb7c9cb00ed5b2c5b49452ef5"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "d19b79126b588c58bd804ca40df0f37bc4692785",
+          "sha256": "3d3a70e4b271f70305d41dfd70511e9776d6ec23f32c4011a4b543d6a628b915",
+          "recordCount": 139
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "166f9ba5b8cc9b6b32e61bc889da3970c54f6453",
+          "sha256": "b4d732ea89e661828b9bef4927e0f397ea20b42b46f229119fd5e98493c699ab",
+          "recordCount": 788
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "7a4d44a2c5bcfabddc3bfa5f9a96a359b8996508",
+          "sha256": "2ed2031784b6764e82bbfb20c06255318ce1e0b899e28b9e68480789b82891f5",
+          "recordCount": 2
+        }
+      },
+      "certificationFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "6914a2e372f69bd8295fa9f2259af4910851add6",
+          "sha256": "beb01276e9a02f09a6750ccb7426445688cf65c28af4908c96e55749fa789eb8"
+        },
+        "NORMALIZED.jsonl": {
+          "gitBlobSha": "776eb8bbc2b6ae70cbd2b0da351f9057d8ba2d67",
+          "sha256": "10c07566ea6b36d160e19249f87b350b7eb3f2cefc57fe49fdc11d5247c53f28",
+          "recordCount": 929
+        },
+        "CERTIFICATION.jsonl": {
+          "gitBlobSha": "7a6ffef009a6775fc8e9d6f131803185c7cedf08",
+          "sha256": "2ff618e48b02aa8f56f008538ca0ffd02b63835b3c14ecce389cc6f58b499eb5",
+          "recordCount": 929
+        },
+        "INVALID.jsonl": {
+          "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recordCount": 0
+        }
+      },
+      "allowedRawTransforms": []
+    },
+    "pc": {
+      "workerHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+      "certificationHead": "8cc979c141000fcedabf832f16468a6ee3e328e2",
+      "recordCount": 827,
+      "workerFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "1fcdaa0a4cba0c3ac2b123a4ec7f150ad7dd2daa",
+          "sha256": "6ecdae797f048cfd4b33c994b7abbd2feb70e69519facdd9a015f5de3cab388e"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "814b11fe333045b4f81d622542fdb016c577bbcd",
+          "sha256": "f96f8878fa598795b62f5b447372d3d7dec97a24d05d383500d8b3bb4f561933",
+          "recordCount": 186
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "a43e769afd44af068a1c6c40ac3c9140144a9ff6",
+          "sha256": "9ebda8bb2ce86b054653b197e13730d65a891571b1e2b1592c73b6f73a11a5bb",
+          "recordCount": 640
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "d4deaf154ce03242340b3fe385fc2cc11d3c62f4",
+          "sha256": "0267edd96d9630882b3d3555a640543e6f16efe26fcdc3b00624cdaa10b7a3f9",
+          "recordCount": 1
+        }
+      },
+      "certificationFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "bc53a0e1d92df2092248bacfb9ca042b65e188e2",
+          "sha256": "7c12b5af232134ff5fa2f6992c908068caa6d152e1faaf6af650063bd9c0b46a"
+        },
+        "NORMALIZED.jsonl": {
+          "gitBlobSha": "d7e7c730342a24d3daeadb3f9b07cfd95278c0b0",
+          "sha256": "127068ef114305f7dc386cd7a764527b39a6039da90e8af50df52439d4ff2044",
+          "recordCount": 827
+        },
+        "CERTIFICATION.jsonl": {
+          "gitBlobSha": "9c0517f3e098cdf0c02aa52aa469bbf04b4264d7",
+          "sha256": "46e114dccd889a055550acc27ce6c455a01e67347d5fadd2c96db588e5786f21",
+          "recordCount": 827
+        },
+        "INVALID.jsonl": {
+          "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recordCount": 0
+        }
+      },
+      "allowedRawTransforms": []
+    },
+    "mobile": {
+      "workerHead": "7f32ce6f1b602a14781fa2f4f3f323035f8029ec",
+      "certificationHead": "664035e83943ae48c923585765d3c505b1bd8c53",
+      "recordCount": 271,
+      "workerFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "320c385eb3369539d0ab2a40af879ede200a1e9f",
+          "sha256": "337154d89ddadb08861b806560bba8769ebeb5da417b5788870cb16cc62633d5"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recordCount": 0
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "edc991f6359e566db032f6ecd0f14d742735d2a4",
+          "sha256": "291ca7bdd5f0c7c26064c0cf8a0d2bb1c30b69797f6b988a0cd19965c7c17350",
+          "recordCount": 133
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "79ac54af75206f70d7923540c0ef39f6707f97a1",
+          "sha256": "f34febd565cdb691c2e2aa47abd3060d5a0f44cbf18cb59c9d3fb2b8cb54faee",
+          "recordCount": 138
+        }
+      },
+      "certificationFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "73a83bddce5f9c1b8c2ff1d968c122d1050282ab",
+          "sha256": "92651a2c4a7826ac03b8031d676f463e95aa399e7a8ce8d25ea0bedb722c0a76"
+        },
+        "NORMALIZED.jsonl": {
+          "gitBlobSha": "cc474d39d2027371921d8aba19ee02911c96b0f2",
+          "sha256": "bfec6c59764f92ed54edd63dd1df4273165044ade95839a92d08930e93703ee1",
+          "recordCount": 271
+        },
+        "CERTIFICATION.jsonl": {
+          "gitBlobSha": "5b1ebf8f14557a104419fd13b27b7ca34bdc2664",
+          "sha256": "81eb0afbf8c7fa54833ed09f503d2ccf2ee5407c5aed089dcda6bbd75219a287",
+          "recordCount": 271
+        },
+        "INVALID.jsonl": {
+          "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recordCount": 0
+        }
+      },
+      "allowedRawTransforms": [
+        "FLATTEN_PROJECTION_OBJECT_TO_STRICT_TOP_LEVEL_FIELDS",
+        "NORMALIZE_NDC_REFS_TO_DOMAIN_SCOPED_RAW_IDS",
+        "NORMALIZE_UNQUALIFIED_EVIDENCE_REFS_TO_STRICT_AUTHORITY_REFS",
+        "NORMALIZE_ATLASFIN_ADAPTER_TO_DOMAIN_SCOPED_RAW_ID"
+      ]
+    },
+    "shared-ui": {
+      "workerHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
+      "certificationHead": "553577aa74045c73ab9c92d1f81538e7e0a8c65a",
+      "recordCount": 70,
+      "workerFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "e3abb2041db6ce58c5487cdfc4b4d6bfe599781a",
+          "sha256": "c51394943b5ff2c06bcd714801122063cbd097498b2f467132d8d6b8d179b1c4"
+        },
+        "CANDIDATES.jsonl": {
+          "gitBlobSha": "9c351af0fb8111f347762ea766af8699fb25452f",
+          "sha256": "ff89e661faf98f80f1e09fe2157ba1e60e1c250ae5f9e5101a8baf9e482aae3f",
+          "recordCount": 40
+        },
+        "UNRESOLVED.jsonl": {
+          "gitBlobSha": "6f68e7cf18e4af89635381fbfde230cfad04f417",
+          "sha256": "2f9b48426a6e60f82774751964ba5bd44c06eea714c8c530be687f8035f50055",
+          "recordCount": 19
+        },
+        "CONFLICTS.jsonl": {
+          "gitBlobSha": "d29df0fc6aa42a473d140e1d11c79eee80d088ef",
+          "sha256": "b0f79b271c2314c7afb9d499cc471af414d2f662062561374a227549dd1edd31",
+          "recordCount": 11
+        }
+      },
+      "certificationFiles": {
+        "MANIFEST.json": {
+          "gitBlobSha": "132257fd22056f35ce71b35e2a1710dd597e83b0",
+          "sha256": "a67b7750bef7db3b938072cda445e25b4293dda3977420887d04a54c8a603361"
+        },
+        "NORMALIZED.jsonl": {
+          "gitBlobSha": "ad91d542af9ba5334bc47fba0b953c515caf2fa3",
+          "sha256": "e3c0410ba724af7ac701d5a1b7a30dadbb1abd2bfe4cd5dedad43a673d5c1c36",
+          "recordCount": 70
+        },
+        "CERTIFICATION.jsonl": {
+          "gitBlobSha": "b7c7e1a281640b058061ada51d051c38c929cf4c",
+          "sha256": "89c65c06be8f48072b4ca594d35770e2841a26771a3a9e00ad35f998af35ca40",
+          "recordCount": 70
+        },
+        "INVALID.jsonl": {
+          "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recordCount": 0
+        }
+      },
+      "allowedRawTransforms": [
+        "EXPLICIT_STRICT_SCHEMA_TAG",
+        "QUALIFIED_ATLASFIN_ADAPTER_TO_STRICT_RAW_REGISTRY_ID"
+      ]
+    }
+  },
+  "atlasfin": {
+    "bridgeHead": "c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0",
+    "certificationHead": "6c7743f55434eb8d3429f286e2f9eae275d93d87",
+    "nonNullReferenceCount": 2421,
+    "bridgeFiles": {
+      "PRISMA_ATLASFIN_VISUAL_PROMOTION_BRIDGE_V1.schema.json": {
+        "gitBlobSha": "0582e359da296cc41d51125654bcab406224a4ab",
+        "sha256": "fc48a2e751645f586bf485e3b6e2bb50345fa162e85a8cae6c766dd099a4a13a"
+      },
+      "atlasfin_bridge.py": {
+        "gitBlobSha": "6e223a6bec35e9665b0d95376d82850a37423420",
+        "sha256": "745e19e6bfd70c2f5b90574e57d70b7cbd4f60c54fa09ffebe903b5c52b76eea"
+      },
+      "test_atlasfin_bridge.py": {
+        "gitBlobSha": "f2cfe0611202139a4c1c92d9ce9310e6d451507c",
+        "sha256": "c8818f35ca5ccf0bc2deab76d9397d25a3b2715845796e065ecbc4467cfece76"
+      }
+    },
+    "certificationFiles": {
+      "MANIFEST.json": {
+        "gitBlobSha": "1fbf1b53e248b743c381c261a965d35fc940ffa5",
+        "sha256": "f7ec2376dbc0f918e24c6d47870967487303c40244b24bd73072e9ef7dcf6f33"
+      },
+      "NORMALIZATION_POLICY.json": {
+        "gitBlobSha": "f0f2c850e0adb34c6af7fd77db6551675f3781f6",
+        "sha256": "24b7651c26bce61f86df7ec98096083727e0f44def6820141d5309db025ee4f3"
+      },
+      "ATLASFIN_REFERENCE_CERTIFICATION.jsonl": {
+        "gitBlobSha": "579f5eda34500333cfc1e1c373e858da2b382e5d",
+        "sha256": "2566b64eabfec3d88c59518a4a3160d48a8ddda65a02709eda1b14102b0a2eea",
+        "recordCount": 2421
+      },
+      "RECIPE_REVIEW_GROUPS.json": {
+        "gitBlobSha": "89fe722e859562c902e50f2b1a88f5db26e1222a",
+        "sha256": "77c2b5f683cd8a83285b613923f887736d779937fa36323dd794c546f1a90a59"
+      },
+      "INVALID_REFS.jsonl": {
+        "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "recordCount": 0
+      }
+    }
+  }
+}

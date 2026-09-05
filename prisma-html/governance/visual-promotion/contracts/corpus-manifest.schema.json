@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.visual-promotion.corpus-certification-manifest.v1",
+  "title": "PRISMA Candidate Corpus Certification Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "prisma.visual-promotion.corpus-certification-manifest.v1"
+    },
+    "phase": {
+      "const": "CANDIDATE_CORPUS_FINAL_AGGREGATION"
+    },
+    "status": {
+      "const": "PASS_CANDIDATE_CORPUS_CERTIFIED"
+    },
+    "candidateOnly": {
+      "const": true
+    },
+    "canonicalPromotionPerformed": {
+      "const": false
+    },
+    "productRuntimeMutationPerformed": {
+      "const": false
+    },
+    "materialityCatalogPolicy": {
+      "const": "STANDBY_USER_INVOKED_ONLY"
+    },
+    "materialityCatalogInspected": {
+      "const": false
+    },
+    "broadRediscoveryPerformed": {
+      "const": false
+    },
+    "sourceBaseHead": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "recordCount": {
+      "const": 2097
+    },
+    "certificationCount": {
+      "const": 2097
+    },
+    "invalidCount": {
+      "const": 0
+    },
+    "missingCount": {
+      "const": 0
+    },
+    "extraCount": {
+      "const": 0
+    },
+    "duplicateTargetIds": {
+      "const": 0
+    },
+    "semanticMutationCount": {
+      "const": 0
+    },
+    "currentlyAuthorizedCanonicalPromotions": {
+      "const": 0
+    },
+    "GVAE_EXACT_APPLY": {
+      "const": 0
+    },
+    "runtimeVisualGreen": {
+      "const": false
+    },
+    "wholeSurfaceApplyReadyCount": {
+      "const": 0
+    },
+    "surfaceCounts": {
+      "const": {
+        "tablet": 929,
+        "pc": 827,
+        "mobile": 271,
+        "shared-ui": 70
+      }
+    },
+    "inputs": {
+      "type": "object"
+    },
+    "atlasfinReferenceCertification": {
+      "type": "object"
+    },
+    "outputs": {
+      "type": "object"
+    },
+    "validation": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "phase",
+    "status",
+    "candidateOnly",
+    "canonicalPromotionPerformed",
+    "productRuntimeMutationPerformed",
+    "materialityCatalogPolicy",
+    "materialityCatalogInspected",
+    "broadRediscoveryPerformed",
+    "sourceBaseHead",
+    "recordCount",
+    "certificationCount",
+    "invalidCount",
+    "missingCount",
+    "extraCount",
+    "duplicateTargetIds",
+    "semanticMutationCount",
+    "currentlyAuthorizedCanonicalPromotions",
+    "GVAE_EXACT_APPLY",
+    "runtimeVisualGreen",
+    "wholeSurfaceApplyReadyCount",
+    "surfaceCounts",
+    "inputs",
+    "atlasfinReferenceCertification",
+    "outputs",
+    "validation"
+  ]
+}

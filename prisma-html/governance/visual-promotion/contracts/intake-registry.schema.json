@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "prisma.visual-promotion.intake-registry.v1",
+  "title": "PRISMA Visual Promotion Exact Intake Registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "prisma.visual-promotion.intake-registry.v1"
+    },
+    "version": {
+      "const": "1.0.0"
+    },
+    "phase": {
+      "const": "CANDIDATE_CORPUS_FINAL_AGGREGATION"
+    },
+    "sourceBaseHead": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "controlPlane": {
+      "type": "object"
+    },
+    "materialityCatalogPolicy": {
+      "const": "STANDBY_USER_INVOKED_ONLY"
+    },
+    "broadRediscoveryAllowed": {
+      "const": false
+    },
+    "surfaceOrder": {
+      "const": [
+        "tablet",
+        "pc",
+        "mobile",
+        "shared-ui"
+      ]
+    },
+    "surfaces": {
+      "type": "object"
+    },
+    "atlasfin": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "version",
+    "phase",
+    "sourceBaseHead",
+    "controlPlane",
+    "materialityCatalogPolicy",
+    "broadRediscoveryAllowed",
+    "surfaceOrder",
+    "surfaces",
+    "atlasfin"
+  ]
+}
