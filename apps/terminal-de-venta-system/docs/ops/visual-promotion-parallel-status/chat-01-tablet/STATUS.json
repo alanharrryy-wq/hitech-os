@@ -4,20 +4,94 @@
   "lane": "TABLET_PROMOTION",
   "statusBranch": "status/vp-chat-01-tablet",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet",
-  "state": "NOT_STARTED",
-  "updatedAt": null,
-  "baseHead": null,
-  "workBranch": null,
-  "workHead": null,
-  "summary": "No status report has been published yet.",
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T19:54:52-06:00",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
+  "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+  "summary": "Chat 1 Tablet candidate shard is complete and zero-loss at its recorded base. It reused the existing Tablet census, applied Atlasfin-first conservatively, kept Materiality Catalog in standby, minted no canonical IDs, and wrote only the owned Tablet candidate shard. A bounded current-main authority drift check is the next coordination step before integration consumes the shard.",
   "blockers": [],
-  "findings": [],
-  "decisions": [],
-  "changedPaths": [],
-  "validations": [],
-  "unresolved": [],
+  "findings": [
+    "Tablet Target Index contained 933 records at the lane base: 929 VISUAL_CONTROL_CENSUS_TARGET inputs and 4 existing non-census exact targets excluded from worker input.",
+    "Chat 1 reconciled all 929 census inputs exactly once: 139 candidate outcomes, 788 unresolved outcomes, and 2 conflicts.",
+    "Physical status at the lane base: 927 CURRENT and 2 DRIFT; all 929 source/output projection relationships were CURRENT against the governing visual-source manifest.",
+    "Atlasfin-first accounting: 138 MATCHED_RECIPE, 789 NO_MATCH, and 2 NOT_APPLICABLE because physical evidence was in DRIFT.",
+    "NDC remained UNRESOLVED for all 929 records because no direct existing NDC authority relation was proven; no NDC meaning was inferred from selector names.",
+    "One existing resolved Identity binding was reused only on exact selector plus implementationLayerId equality.",
+    "The two physical conflicts are TGT.CENSUS.TABLET.3B2FED34BC21B5C9FEEC.V1 and TGT.CENSUS.TABLET.850AD4CEF4CCD12BCD05.V1."
+  ],
+  "decisions": [
+    "Reuse current Target Index and expanded Visual Control evidence; do not run broad rediscovery.",
+    "Use Atlasfin as priority visual reference but promote only evidence-backed recipe-level candidates; do not guess family or preset variants.",
+    "Do not inspect or fall back to the Surface Visual Governor Materiality Catalog; keep it STANDBY_USER_INVOKED_ONLY.",
+    "Preserve null/UNRESOLVED values where current machine authority is ambiguous; unknown stays unknown.",
+    "Do not mint canonical NDC, VIS, BND, TGT, LYR, Identity recipe/family/preset, or adapter IDs from the surface worker.",
+    "Treat lane output as candidate exchange data only, never as Work Entry authorization, GVAE receipt, runtime certification, or canonical authority."
+  ],
+  "changedPaths": [
+    "prisma-html/governance/visual-promotion/candidates/tablet/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/tablet/CANDIDATES.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/UNRESOLVED.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/CONFLICTS.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/tablet/SUMMARY.md",
+    "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/STATUS.json",
+    "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-01-tablet/LOG.md"
+  ],
+  "validations": [
+    {
+      "name": "candidate zero-loss accounting",
+      "result": "PASS",
+      "details": "929 input census targets = 929 output records; duplicates=0, missing=0, extras=0."
+    },
+    {
+      "name": "closed vocabulary validation",
+      "result": "PASS",
+      "details": "enum violations=0."
+    },
+    {
+      "name": "ambiguous forbidden field validation",
+      "result": "PASS",
+      "details": "forbidden ambiguous field count=0."
+    },
+    {
+      "name": "write ownership validation",
+      "result": "PASS",
+      "details": "candidate-shard writes outside Chat 1 owned directory=0."
+    },
+    {
+      "name": "work branch delta",
+      "result": "PASS",
+      "details": "work branch is two commits ahead of base and modifies only the five Tablet candidate-shard files."
+    }
+  ],
+  "unresolved": [
+    "Two census targets are physically DRIFT at the recorded base and remain blocked rather than guessed.",
+    "788 census records remain unresolved because semantic/application authority was insufficient for a candidate promotion.",
+    "NDC existing-meaning resolution remains unresolved for all 929 records absent direct machine-readable linkage.",
+    "Current main may have advanced after the lane base; relevant authority hashes still need a bounded drift check before integration consumes mixed-base evidence."
+  ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Await first report from assigned chat.",
-  "handoff": null
+  "nextAction": "Run a bounded current-main drift check only across Chat 1 input authorities and update this mailbox immediately with the result; do not rediscover the Tablet surface.",
+  "handoff": {
+    "ready": true,
+    "classification": "LANE_CANDIDATE_HANDOFF_READY",
+    "workBranch": "chat1/tablet-visual-promotion-57b01ad8",
+    "workHead": "1b669d98dc9063fe4d6f5f8ddc06262a6968e728",
+    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "candidateRoot": "prisma-html/governance/visual-promotion/candidates/tablet",
+    "accounting": {
+      "input": 929,
+      "candidates": 139,
+      "unresolved": 788,
+      "conflicts": 2,
+      "output": 929
+    },
+    "integrationNotes": [
+      "Preserve candidate-only semantics.",
+      "Canonical composer must dedupe the one existing resolved Identity binding rather than mint another binding/target.",
+      "Do not turn DISCOVERY_ONLY or ELIGIBLE_CANDIDATE into application authorization.",
+      "Before mixed-base integration, compare the exact authority snapshots recorded in MANIFEST.json or perform fresh revalidation if relevant drift exists."
+    ]
+  }
 }
