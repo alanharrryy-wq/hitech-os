@@ -4,17 +4,17 @@
   "lane": "SHARED_UI_PROMOTION",
   "statusBranch": "status/vp-chat-04-shared-ui",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-04-shared-ui",
-  "state": "WAITING_EXTERNAL",
-  "updatedAt": "2026-09-04T19:51:58-06:00",
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T19:53:17-06:00",
   "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
   "workBranch": "visual-promotion-chat4-shared-ui-20260904",
   "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
-  "summary": "Chat 4 Shared UI promotion lane is complete within its canonical write boundary. The required five-file Shared UI candidate shard was produced with zero-loss accounting for all 70 census targets and exposed as draft PR #539. Lane-local work is finished; integration is waiting on a global FILES_MANIFEST responsibility that Chat 4 is contractually forbidden to mutate. Current main has advanced to d08013db42c34ccafb80075392ec6d7a289cf7b5 since the lane base; overlap/relevance of that movement is the next read-only check.",
+  "summary": "Chat 4 Shared UI promotion is lane-complete and ready for integration/handoff. The required five-file shard reconciles all 70 Shared UI census targets with zero loss. Read-only drift evaluation shows current main advanced to d08013db42c34ccafb80075392ec6d7a289cf7b5 only through the new status-channel coordination layer plus global FILES_MANIFEST maintenance; no Shared UI candidate path or underlying Shared UI visual authority/evidence path used by Chat 4 was changed. No lane regeneration or rebase is justified. A separate global FILES_MANIFEST integration remains outside Chat 4 authority.",
   "blockers": [
     {
       "id": "GLOBAL_FILES_MANIFEST_SCOPE_CONFLICT",
-      "status": "ACTIVE_EXTERNAL",
-      "detail": "PRISMA VISCORE1 Certification fails only at 'Committed file manifest must already match'. prisma-html/tools/refresh_files_manifest.py inventories the five new prisma-html lane files, but the Chat 4 worker contract forbids writes to global FILES_MANIFEST.json, its generator, workflow, or other lanes."
+      "status": "ACTIVE_EXTERNAL_INTEGRATION",
+      "detail": "PRISMA VISCORE1 Certification fails only at 'Committed file manifest must already match'. prisma-html/tools/refresh_files_manifest.py inventories the five new prisma-html lane files, but the Chat 4 worker contract forbids writes to global FILES_MANIFEST.json, its generator, workflow, or other lanes. This does not invalidate lane handoff readiness."
     },
     {
       "id": "PROMOTION_SEMANTIC_BLOCKERS_RECORDED",
@@ -30,7 +30,9 @@
     "Identity Shared UI is a NEUTRAL_SOURCE and its existing neutral binding definitions are blocked by missing concrete surface binding authority; no exact existing binding was claimed for these physical targets.",
     "Projection evidence is CURRENT for all 70 exact-byte-copy source/output pairs.",
     "Consumer references in Tablet, PC and Mobile were recorded as evidence only; no consumer files were edited.",
-    "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the immutable lane base remains 57b01ad8bda043ec25763203354b686341bace09."
+    "Current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the immutable lane base remains 57b01ad8bda043ec25763203354b686341bace09.",
+    "Base-to-current-main compare is 3 commits ahead and changes only coordination/status artifacts, AGENTS.md, the visual-promotion shared docs/vocabulary with status-channel additions, and prisma-html/FILES_MANIFEST.json maintenance. It does not touch prisma-html/governance/visual-promotion/candidates/shared-ui/**, Shared UI Target Index/expanded evidence, Shared UI Identity adapter/bindings, NDC source registries used, Atlasfin registries used, or the Shared UI projection manifest.",
+    "The new shared-contract changes add status-channel reporting as a coordination-only write exception; they do not grant new lane mutation authority or alter Chat 4 candidate ownership."
   ],
   "decisions": [
     "Reused the current Visual Control/Target Index census and did not perform broad rediscovery.",
@@ -39,7 +41,8 @@
     "Did not edit consumer shards/products, generated projection, global Identity/RIFAT/Target Index/Factory Ledger/Evidence Index or FILES_MANIFEST.json.",
     "Used local candidate binding keys only for the 40 single-region candidate records.",
     "Fail-closed on the global FILES_MANIFEST conflict rather than manufacturing a green check outside Chat 4 ownership.",
-    "Kept PR #539 as draft for handoff instead of merging."
+    "Kept PR #539 as draft for handoff instead of merging.",
+    "Did not rebase/regenerate the lane merely because main moved: read-only path comparison found no relevant Shared UI authority/candidate overlap, while the changed global manifest remains an integration concern for the authorized composer."
   ],
   "changedPaths": [
     "prisma-html/governance/visual-promotion/candidates/shared-ui/MANIFEST.json",
@@ -70,6 +73,11 @@
       "detail": "Exactly five work paths changed, all under prisma-html/governance/visual-promotion/candidates/shared-ui/**."
     },
     {
+      "name": "base-to-current-main-relevant-drift",
+      "result": "PASS_NO_RELEVANT_SHARED_UI_OVERLAP",
+      "detail": "Current main is 3 commits ahead. Changes are status-channel/shared coordination docs, AGENTS.md and FILES_MANIFEST maintenance; no Chat 4 candidate or Shared UI authority/evidence input path changed."
+    },
+    {
       "name": "ForgeOS Quality Gate",
       "result": "PASS"
     },
@@ -93,21 +101,22 @@
     "70 targets remain NDC UNRESOLVED.",
     "70 targets have Atlasfin NO_MATCH at the proven element/family/preset/recipe level.",
     "Exact binding/layer-application/recipe/semantic readiness remains unresolved or blocked as recorded per target.",
-    "Global FILES_MANIFEST update/integration belongs to Control Plane/canonical composer, not Chat 4.",
-    "Current main movement from lane base to d08013db42c34ccafb80075392ec6d7a289cf7b5 has not yet been evaluated for relevant overlap."
+    "Global FILES_MANIFEST update/integration belongs to Control Plane/canonical composer, not Chat 4."
   ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Read-only compare the immutable Chat 4 base against current main to determine whether the new main movement overlaps Chat 4 authority or candidate paths; then update this mailbox. Do not mutate outside Chat 4 candidate ownership.",
+  "nextAction": "No further lane-local mutation is authorized or necessary. Keep this mailbox current if integration state changes; Control Plane/canonical composer can consume draft PR #539 and perform its own authorized deterministic global-manifest integration/revalidation.",
   "handoff": {
     "pr": 539,
     "prState": "OPEN_DRAFT",
     "workBranch": "visual-promotion-chat4-shared-ui-20260904",
     "workHead": "57b502f1064571cebd917b36882ef9c11e9fa7d8",
     "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "currentMainObserved": "d08013db42c34ccafb80075392ec6d7a289cf7b5",
+    "relevantMainDrift": false,
     "accounting": "70 = 40 candidates + 19 unresolved + 11 conflicts",
     "integrationOwnerNeeded": "VISUAL_PROMOTION_CONTROL_PLANE_OR_CANONICAL_COMPOSER",
-    "integrationNote": "A coordinator may consume the five Chat 4 shard files and perform the separately authorized global FILES_MANIFEST integration. Chat 4 must not make that global write.",
+    "integrationNote": "A coordinator may consume the five Chat 4 shard files and perform the separately authorized global FILES_MANIFEST integration/revalidation. Chat 4 must not make that global write or silently rebase mixed-base output.",
     "safety": "Materiality not inspected; broad rediscovery false; no product/runtime/consumer/global authority writes; no canonical IDs minted."
   }
 }
