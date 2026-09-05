@@ -4,20 +4,113 @@
   "lane": "PC_PROMOTION",
   "statusBranch": "status/vp-chat-02-pc",
   "mailboxPath": "apps/terminal-de-venta-system/docs/ops/visual-promotion-parallel-status/chat-02-pc",
-  "state": "NOT_STARTED",
-  "updatedAt": null,
-  "baseHead": null,
-  "workBranch": null,
-  "workHead": null,
-  "summary": "No status report has been published yet.",
-  "blockers": [],
-  "findings": [],
-  "decisions": [],
-  "changedPaths": [],
-  "validations": [],
-  "unresolved": [],
+  "state": "READY_FOR_INTEGRATION",
+  "updatedAt": "2026-09-04T19:51:32-06:00",
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "workBranch": "agent/chat2-pc-promotion-20260904",
+  "workHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+  "summary": "Chat 2 PC promotion worker lane completed zero-loss candidate reconciliation for all 827 current PC Target Index census records. Outputs are candidate-only and ready for deterministic integration review; no product/runtime/global-authority mutation was performed.",
+  "blockers": [
+    {
+      "scope": "candidate",
+      "targetId": "TGT.CENSUS.PC.097AB2F857F353CA4288.V1",
+      "code": "CURRENT_AUTHORITY_SELECTOR_DISAGREEMENT",
+      "detail": "Target Index selector is '.supplier-readable-v07' while expanded Visual Control selector is '.supplier-readable-v07 *'.",
+      "impact": "This candidate remains blocked/conflicted. It does not block completion of the PC worker lane."
+    }
+  ],
+  "findings": [
+    "PC input census count is 827 and every target is reconciled exactly once.",
+    "Physical status: 826 CURRENT, 1 DRIFT, 0 MISSING.",
+    "Atlasfin-first classification: 186 MATCHED_RECIPE and 641 NO_MATCH. No family/preset was guessed and Atlasfin recipe IDs were not promoted into Identity recipe authority.",
+    "Projection status: 688 CURRENT, 139 MISSING, 0 DRIFT. MISSING is used only where Target Index explicitly carries a projection blocker with no proven canonical source/output.",
+    "Canonical Identity registry proves zero resolved PC element bindings and zero PC-specific canonical Identity recipes for these targets.",
+    "Materiality Catalog was not inspected, consumed or used as fallback.",
+    "Current main advanced after the lane base; integration must validate relevant source-authority hashes/base compatibility before accepting mixed-base candidates."
+  ],
+  "decisions": [
+    "Reused current Visual Control/Target Index physical census and did not run broad rediscovery.",
+    "Preserved every existing TGT.CENSUS.* targetId byte-for-byte and minted no canonical IDs.",
+    "Used only exact structured Visual Control layerType == unique Atlasfin recipe familyKind as MATCHED_RECIPE evidence; otherwise recorded NO_MATCH.",
+    "Normalized CSS-insignificant comma/whitespace only when comparing selectors so '.prisma-home-primary, .prisma-home-secondary' and '.prisma-home-primary,.prisma-home-secondary' do not create fake drift.",
+    "Did not invent NDC meaning from visual names/selectors; unresolved meaning stayed unresolved.",
+    "Did not repair projection/source gaps, copy product bytes into RIFAT, or mutate runtime/product/global authority."
+  ],
+  "changedPaths": [
+    "prisma-html/governance/visual-promotion/candidates/pc/CANDIDATES.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/pc/CONFLICTS.jsonl",
+    "prisma-html/governance/visual-promotion/candidates/pc/MANIFEST.json",
+    "prisma-html/governance/visual-promotion/candidates/pc/SUMMARY.md",
+    "prisma-html/governance/visual-promotion/candidates/pc/UNRESOLVED.jsonl"
+  ],
+  "validations": [
+    {
+      "check": "zero-loss accounting",
+      "result": "PASS",
+      "detail": "827 input = 186 CANDIDATES + 640 UNRESOLVED + 1 CONFLICT."
+    },
+    {
+      "check": "unique target IDs",
+      "result": "PASS",
+      "detail": "827 unique output targetIds; no duplicate or missing census target."
+    },
+    {
+      "check": "closed vocabulary and authority domains",
+      "result": "PASS",
+      "detail": "All candidate status values and evidence authority domains conform to the cohort vocabulary."
+    },
+    {
+      "check": "write ownership",
+      "result": "PASS",
+      "detail": "Work branch diff contains exactly five added files under prisma-html/governance/visual-promotion/candidates/pc/**."
+    },
+    {
+      "check": "scope and mutation boundaries",
+      "result": "PASS",
+      "detail": "Materiality fallback NOT_USED; broad rediscovery NOT_RUN; global authority writes 0; product/runtime writes 0."
+    },
+    {
+      "check": "work branch head verification",
+      "result": "PASS",
+      "detail": "agent/chat2-pc-promotion-20260904 is identical to commit 896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078 and is 5 commits ahead / 0 behind its recorded base."
+    }
+  ],
+  "unresolved": [
+    "640 records remain in UNRESOLVED.jsonl because no stronger supported Atlasfin match/semantic/binding authority was proven in this worker lane.",
+    "1 physical selector disagreement remains in CONFLICTS.jsonl and requires later authoritative reconciliation, not broad rediscovery.",
+    "All 827 records remain without resolved NDC operational meaning in this candidate shard; no NDC ID was invented.",
+    "All 827 records remain binding-blocked for canonical application authority.",
+    "Integration must revalidate relevant source-authority hashes because current main is d08013db42c34ccafb80075392ec6d7a289cf7b5 while the work base is 57b01ad8bda043ec25763203354b686341bace09."
+  ],
   "needsUserAction": false,
   "userActionRequested": null,
-  "nextAction": "Await first report from assigned chat.",
-  "handoff": null
+  "nextAction": "Keep the PC candidate shard unchanged and available for deterministic control-plane/integration reconciliation. If integration consumes this lane, first perform base/source-authority hash revalidation against current main and preserve the recorded conflict/unresolved states unless stronger authority resolves them.",
+  "handoff": {
+    "readiness": "READY_FOR_INTEGRATION",
+    "workBranch": "agent/chat2-pc-promotion-20260904",
+    "workHead": "896f4a7f3463dc4ad1267f3e7d8f6a9fd70f4078",
+    "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+    "outputRoot": "prisma-html/governance/visual-promotion/candidates/pc",
+    "files": [
+      "MANIFEST.json",
+      "CANDIDATES.jsonl",
+      "UNRESOLVED.jsonl",
+      "CONFLICTS.jsonl",
+      "SUMMARY.md"
+    ],
+    "accounting": {
+      "input": 827,
+      "candidates": 186,
+      "unresolved": 640,
+      "conflicts": 1,
+      "output": 827
+    },
+    "integrationNotes": [
+      "Candidate is not authority; do not promote directly from worker output.",
+      "Preserve targetIds and authority-qualified IDs.",
+      "Revalidate base/source hashes before mixed-base integration.",
+      "Do not use Materiality Catalog as fallback.",
+      "Do not convert the single selector conflict into permission for broad rediscovery."
+    ]
+  }
 }
