@@ -1,0 +1,81 @@
+{
+  "baseHead": "57b01ad8bda043ec25763203354b686341bace09",
+  "candidateOnly": true,
+  "surfaceKey": "mobile",
+  "lane": "CHAT_3_MOBILE_PROMOTION",
+  "writeRoot": "prisma-html/governance/visual-promotion/candidates/mobile/**",
+  "atlasfinFirst": true,
+  "materialityCatalogPolicy": "STANDBY_USER_INVOKED_ONLY",
+  "materialityCatalogInspected": false,
+  "broadRediscoveryPerformed": false,
+  "inputTargetCount": 271,
+  "accounting": {
+    "candidateCount": 0,
+    "unresolvedCount": 133,
+    "conflictCount": 138,
+    "totalOutcomeCount": 271,
+    "uniqueTargetIds": 271
+  },
+  "projectionStatusCounts": {
+    "CURRENT": 133,
+    "DRIFT": 138,
+    "MISSING": 0,
+    "NOT_REQUIRED": 0,
+    "UNRESOLVED": 0
+  },
+  "manifestProjectionStatusCounts": {
+    "CURRENT": 6,
+    "DRIFT": 1,
+    "MISSING": 1
+  },
+  "physicalEvidence": {
+    "exactExpandedLayerJoin": 271,
+    "exactCssOwnerJoin": 271,
+    "exactRouteIdCount": 11,
+    "exactRegionIdCount": 2
+  },
+  "atlasfinEvidence": {
+    "adapterId": "atlasfin::ADP.MB.TOUCH.V2",
+    "targetMatchStatus": "AMBIGUOUS",
+    "materialityFallbackUsed": false
+  },
+  "ndcEvidence": {
+    "supportingSurfaceRef": "ndc::SURF.mb.owner_home",
+    "targetPrimaryMeaningResolved": 0
+  },
+  "identityEvidence": {
+    "adapterId": "identity::prisma.adapter.mobile.v1",
+    "registryReadiness": "BINDING_READY_SOURCE_ONLY",
+    "adapterSourceReadiness": "DISCOVERY_REQUIRED",
+    "existingMobileElementBindings": 0,
+    "existingMobileIdentityRecipes": 0
+  },
+  "driftEvidence": {
+    "governedCleanupCommit": "731574f97dba0ec46420369b777071500ce2f833",
+    "driftedTargetCount": 138,
+    "directTargetLocalRuleChangeTargetId": "TGT.CENSUS.MOBILE.C30F6FBF52AEFF7B5E02.V1",
+    "repairDirectionChosen": false
+  },
+  "forbiddenWritesPerformed": [],
+  "outputFiles": [
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/CANDIDATES.jsonl",
+      "recordCount": 0,
+      "gitBlobSha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/UNRESOLVED.jsonl",
+      "recordCount": 133,
+      "gitBlobSha": "edc991f6359e566db032f6ecd0f14d742735d2a4"
+    },
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/CONFLICTS.jsonl",
+      "recordCount": 138,
+      "gitBlobSha": "79ac54af75206f70d7923540c0ef39f6707f97a1"
+    },
+    {
+      "path": "prisma-html/governance/visual-promotion/candidates/mobile/SUMMARY.md",
+      "gitBlobSha": "80522b7677697a07a4d35aaaf2e50e1cd57c8aba"
+    }
+  ]
+}
