@@ -96,3 +96,49 @@ No updates published yet.
 - Write scope is only `prisma-html/extras/atlasfin/bridge/certification/**`.
 - Exact raw surface worker heads will be consumed independently; no wait on Chats 1-4 certification branches.
 - No PR is allowed for Chat 5 certification, no `FILES_MANIFEST.json` update is allowed, PR #540 remains unmerged, and Materiality Catalog remains entirely uninspected.
+
+
+## 2026-09-04T23:51:17-06:00 — FINDING
+- Exact raw source accounting was re-derived from the recorded worker heads: Tablet 929, PC 827, Mobile 271, Shared UI 70, total 2,097.
+- The raw corpus contains 2,421 non-null Atlasfin refs: 2,097 adapter refs plus 324 recipe refs.
+- All 2,421 normalized non-null refs validate against current structured Atlasfin authority. Hard invalid refs: 0.
+- 341 representation-only normalizations are required, exactly Mobile 271 + Shared UI 70 qualified `atlasfin::` adapter values.
+- Every normalized reference row preserves source head, source file, source line and deterministic source-record SHA-256.
+- Re-derived review groups: table 66 Tablet + 105 PC, card 41 + 54, panel 20 + 27, overlay 11 Tablet only.
+- Recipe equality remains review-only evidence and never authorizes semantic coalescing.
+
+## 2026-09-04T23:51:17-06:00 — DECISION
+- Certified strict representation for values inside `atlasfin.*` fields is the raw Atlasfin ID.
+- A source value `atlasfin::<id>` may normalize to `<id>` only as representation, with the original serialized value retained in certification evidence.
+- Authority-qualified evidence refs remain qualified.
+- All-null and `NO_MATCH` records are excluded from semantic recipe coalescing.
+- Materiality Catalog remains entirely uninspected.
+- No certification PR, no `FILES_MANIFEST.json` update, no canonical promotion and no product/runtime mutation.
+
+## 2026-09-04T23:51:17-06:00 — VALIDATION
+- Certification work branch: `chat5/atlasfin-corpus-cert-20260904`.
+- Certification base: `8cc1918c5e015d1408335c15313e7364e04859c2`.
+- Certification head: `6c7743f55434eb8d3429f286e2f9eae275d93d87`.
+- Branch is exactly one commit ahead of base, zero commits behind at certification creation, and changes exactly six required files under `prisma-html/extras/atlasfin/bridge/certification/**`.
+- `ATLASFIN_REFERENCE_CERTIFICATION.jsonl`: 2,421 rows, all `VALID_REFERENCE`.
+- `INVALID_REFS.jsonl`: 0 rows.
+- Representation normalizations: 341.
+- Semantic mutations: 0.
+- Source-record hashes: all valid 64-hex SHA-256 values.
+- Materiality inspected: false.
+- No PR exists for the certification branch.
+
+## 2026-09-04T23:51:17-06:00 — COMPLETE
+- Chat 5 Atlasfin corpus reference certification is complete and `READY_FOR_INTEGRATION`.
+- Required outputs created:
+  - `MANIFEST.json`
+  - `NORMALIZATION_POLICY.json`
+  - `ATLASFIN_REFERENCE_CERTIFICATION.jsonl`
+  - `RECIPE_REVIEW_GROUPS.json`
+  - `INVALID_REFS.jsonl`
+  - `SUMMARY.md`
+- No user action is required.
+
+## 2026-09-04T23:51:17-06:00 — HANDOFF
+- Chat 6 should consume `chat5/atlasfin-corpus-cert-20260904@6c7743f55434eb8d3429f286e2f9eae275d93d87` together with immutable raw worker heads and source bridge `chat5-atlasfin-bridge-20260904@c5ef78edcc1bcb50ca7b108e316cdc0dbe1034d0`.
+- Final `prisma-html/FILES_MANIFEST.json` refresh remains Chat 6/integration-owned and must happen exactly once after accepted corpus bytes are assembled.
